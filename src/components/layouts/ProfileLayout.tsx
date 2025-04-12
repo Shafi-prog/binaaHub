@@ -1,7 +1,14 @@
-import React, { useState } from "react";
-import Link from "next/link";
+// src/components/layouts/ProfileLayout.tsx
+'use client';
 
-export default function ProfileLayout({ children }: { children: React.ReactNode }) {
+import React, { useState } from 'react';
+import Link from 'next/link';
+
+interface ProfileLayoutProps {
+  children: React.ReactNode;
+}
+
+export default function ProfileLayout({ children }: ProfileLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
@@ -37,12 +44,10 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
         className="fixed top-4 right-4 z-50 md:hidden bg-blue-600 text-white p-2 rounded-full"
       >
         {sidebarOpen ? (
-          // ✖️ أيقونة الإغلاق
           <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
         ) : (
-          // ☰ أيقونة القائمة
           <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
           </svg>

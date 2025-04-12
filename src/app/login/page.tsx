@@ -1,48 +1,48 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { supabase } from '@/lib/supabaseClient';
-import bcrypt from 'bcryptjs';
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import bcrypt from 'bcryptjs'
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [message, setMessage] = useState('');
-  const router = useRouter();
+  const supabase = createClientComponentClient()
+  const router = useRouter()
+
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [message, setMessage] = useState('')
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => {
+      if (data.user) router.push('/profile')
+    })
+  }, [])
 
   const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setMessage('');
+    e.preventDefault()
+    setMessage('')
 
-    const cleanEmail = email.trim().toLowerCase();
-
-    const { data: users, error } = await supabase
-      .from('users')
-      .select('*')
-      .eq('email', cleanEmail)
-      .limit(1);
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    })
 
     if (error) {
-      setMessage('حدث خطأ في الاتصال بالخادم.');
-      return;
+      setMessage('البريد أو كلمة المرور غير صحيحة.')
+    } else {
+      router.push('/profile')
     }
+  }
 
-    const user = users?.[0];
-    if (!user) {
-      setMessage('لا يوجد حساب بهذا البريد');
-      return;
-    }
-
-    const passwordMatch = await bcrypt.compare(password, user.password);
-    if (!passwordMatch) {
-      setMessage('كلمة المرور غير صحيحة');
-      return;
-    }
-
-    localStorage.setItem('user', JSON.stringify(user));
-    router.push('/profile');
-  };
+  const handleGoogleLogin = async () => {
+    await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${location.origin}/auth/callback`,
+      },
+    })
+  }
 
   return (
     <main className="min-h-screen flex flex-col md:flex-row">
@@ -92,7 +92,7 @@ export default function LoginPage() {
           </form>
 
           <button
-            onClick={() => router.push('/api/auth/signin/google')}
+            onClick={handleGoogleLogin}
             className="mt-4 w-full bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition"
           >
             تسجيل الدخول باستخدام Google
@@ -101,10 +101,13 @@ export default function LoginPage() {
           {message && <p className="mt-4 text-sm text-red-500">{message}</p>}
 
           <p className="mt-6 text-sm text-gray-500">
-            لا تملك حساب؟ <a href="/signup" className="text-blue-600 underline">سجل الآن</a>
+            لا تملك حساب؟{' '}
+            <a href="/signup" className="text-blue-600 underline">
+              سجل الآن
+            </a>
           </p>
         </div>
       </div>
     </main>
-  );
+  )
 }

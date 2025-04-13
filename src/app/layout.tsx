@@ -9,11 +9,11 @@ const tajawal = Tajawal({
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html>
+    <html lang="ar" dir="rtl">
       <body className={tajawal.className}>
         <Navbar />
         {children}
       </body>
-    </html>
+    </html >
   );
 }

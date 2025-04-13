@@ -63,3 +63,4 @@ export default function ProjectsPage() {
     </div>
   );
 }
+console.log('🔍 projects rendered')

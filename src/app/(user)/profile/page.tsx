@@ -1,25 +1,36 @@
-'use client';
-
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
-import Link from 'next/link';
-import ProfileLayout from '@/components/layouts/ProfileLayout';
+import { cookies } from 'next/headers'
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import Link from 'next/link'
+import ProfileLayout from '@/components/layouts/ProfileLayout'
 
 export default async function ProfilePage() {
-  const supabase = createServerComponentClient({ cookies });
+  const supabase = createServerComponentClient({ cookies })
   const {
     data: { user },
-  } = await supabase.auth.getUser();
+  } = await supabase.auth.getUser()
 
   if (!user) {
-    redirect('/login');
+    return <div className="p-10 text-center text-red-600">🚫 لم يتم العثور على مستخدم. يرجى تسجيل الدخول مجددًا.</div>
+  }
+
+  const { data, error } = await supabase
+    .from('users')
+    .select('name, email, account_type')
+    .eq('email', user.email!)
+    .single()
+
+  if (error || !data) {
+    return <div className="p-10 text-center text-red-600">❌ حدث خطأ أثناء تحميل بيانات المستخدم: {error?.message}</div>
+  }
+
+  if (data.account_type !== 'user') {
+    return <div className="p-10 text-center text-yellow-600">⚠️ حسابك لا يملك صلاحية الوصول إلى هذه الصفحة</div>
   }
 
   const orders = [
     { id: 1, userId: user.id, item: 'بلك أسود 20 سم', date: '2025-04-01', status: 'قيد التوصيل' },
     { id: 2, userId: user.id, item: 'حديد تسليح 12مم', date: '2025-03-27', status: 'تم التوصيل' },
-  ];
+  ]
 
   const warranties = [
     {
@@ -40,7 +51,7 @@ export default async function ProfilePage() {
       warrantyYears: 1,
       warrantyFile: '/warranty/ac.pdf',
     },
-  ];
+  ]
 
   const projects = [
     {
@@ -51,15 +62,16 @@ export default async function ProfilePage() {
       status: 'قيد التنفيذ',
       startDate: '2024-01-15',
     },
-  ];
+  ]
 
   return (
     <ProfileLayout>
       <div className="space-y-6">
         <div id="account" className="bg-white p-6 rounded-lg shadow">
           <h2 className="text-xl font-semibold mb-4 text-blue-700">بيانات الحساب</h2>
-          <p><strong>البريد:</strong> {user.email}</p>
-          <p><strong>موقع المنزل:</strong> الرياض - حي النرجس</p>
+          <p><strong>الاسم:</strong> {data.name}</p>
+          <p><strong>البريد:</strong> {data.email}</p>
+          <p><strong>نوع الحساب:</strong> {data.account_type === 'user' ? 'مستخدم' : 'متجر'}</p>
         </div>
 
         <div id="orders" className="bg-white p-6 rounded-lg shadow">
@@ -140,5 +152,5 @@ export default async function ProfilePage() {
         </div>
       </div>
     </ProfileLayout>
-  );
+  )
 }

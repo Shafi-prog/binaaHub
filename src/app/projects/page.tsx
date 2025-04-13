@@ -1,66 +1,49 @@
-import React from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+// src/app/(user)/projects/page.tsx
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
+import { Card, CardContent } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
 
-const projects = [
-  {
-    id: 1,
-    name: "مشروع بناء فيلا شمال الرياض",
-    status: "قيد التنفيذ",
-    cost: "450,000 ريال",
-    stores: [
-      { name: "متجر الخرسانة", url: "#" },
-      { name: "متجر الأدوات الصحية", url: "#" },
-    ],
-  },
+export default async function ProjectsPage() {
+  const supabase = createServerComponentClient({ cookies })
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) return redirect('/login')
+
+  const projects = [
     {
-    id: 2,
-    name: "مشروع ترميم شقة حي الملقا",
-    status: "مكتمل",
-    cost: "95,000 ريال",
-    stores: [
-      { name: "متجر البويا", url: "#" },
-    ],
-  },
-];
+      id: 1,
+      name: 'مشروع توسعة فلة بالرياض',
+      location: 'حي الرمال',
+      status: 'قيد التنفيذ',
+      startDate: '2024-04-01',
+    },
+    {
+      id: 2,
+      name: 'مشروع تسوير أرض تجارية',
+      location: 'الدمام - الصناعية الجديدة',
+      status: 'بإنتظار المقاول',
+      startDate: '2024-05-12',
+    },
+  ]
 
-export default function ProjectsPage() {
   return (
-    <div className="p-4 md:p-8 font-[Tajawal] space-y-6">
-      <h1 className="text-2xl md:text-3xl font-bold">مشاريعي</h1>
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {projects.map((project) => (
-          <Card key={project.id} className="rounded-2xl shadow-md">
-            <CardContent className="p-4 space-y-3">
-              <h2 className="text-xl font-semibold">{project.name}</h2>
-              <Badge variant="outline" className="text-sm">
-                {project.status}
-              </Badge>
-              <div className="text-sm text-gray-600">التكلفة: {project.cost}</div>
-              <div>
-                <div className="text-sm font-medium mb-1">المتاجر المرتبطة:</div>
-                <ul className="list-disc list-inside text-sm space-y-1">
-                  {project.stores.map((store, i) => (
-                    <li key={i}>
-                      <a
-                        href={store.url}
-                        className="text-blue-600 hover:underline"
-                      >
-                        {store.name}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <Button variant="outline" className="mt-2 w-full">
-                تفاصيل المشروع
-              </Button>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+    <div className="max-w-3xl mx-auto p-4 space-y-4">
+      <h1 className="text-xl font-bold text-blue-800">مشاريعي</h1>
+      {projects.map(({ id, name, location, status, startDate }) => (
+        <Card key={id}>
+          <CardContent className="p-4 space-y-2 text-right">
+            <p><strong>اسم المشروع:</strong> {name}</p>
+            <p><strong>الموقع:</strong> {location}</p>
+            <p><strong>الحالة:</strong> {status}</p>
+            <p><strong>تاريخ البدء:</strong> {startDate}</p>
+            <Button variant="outline" className="mt-2 w-full">تفاصيل المشروع</Button>
+          </CardContent>
+        </Card>
+      ))}
     </div>
-  );
+  )
 }
-console.log('🔍 projects rendered')

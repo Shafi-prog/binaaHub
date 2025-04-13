@@ -11,14 +11,15 @@ export async function middleware(req: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
-  const protectedRoutes = ['/profile', '/orders', '/projects']
-  const isProtected = protectedRoutes.some(path => req.nextUrl.pathname.startsWith(path))
+  const pathname = req.nextUrl.pathname
+  const isProtected = ['/profile', '/orders', '/projects'].some(path => pathname.startsWith(path))
+  const isStoreOnly = ['/dashboard'].some(path => pathname.startsWith(path))
 
-  if (!user && isProtected) {
+  if (!user && (isProtected || isStoreOnly)) {
     return NextResponse.redirect(new URL('/login', req.url))
   }
 
-  if (user && isProtected) {
+  if (user) {
     const { data, error } = await supabase
       .from('users')
       .select('account_type')
@@ -29,8 +30,12 @@ export async function middleware(req: NextRequest) {
       return NextResponse.redirect(new URL('/login', req.url))
     }
 
-    if (data.account_type === 'store') {
+    if (data.account_type === 'store' && isProtected) {
       return NextResponse.redirect(new URL('/dashboard', req.url))
+    }
+
+    if (data.account_type !== 'store' && isStoreOnly) {
+      return NextResponse.redirect(new URL('/', req.url))
     }
   }
 

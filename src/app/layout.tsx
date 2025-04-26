@@ -1,11 +1,12 @@
-import './globals.css';
-import { Tajawal } from 'next/font/google';
-import Navbar from '../components/Navbar'; // Fixed path
+// src/app/layout.tsx
+import './globals.css'
+import { Tajawal } from 'next/font/google'
+import Navbar from '../components/Navbar'
 
 const tajawal = Tajawal({
   subsets: ['arabic'],
-  weight: '200'
-});
+  weight: '200',
+})
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -14,6 +15,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Navbar />
         {children}
       </body>
-    </html >
-  );
+    </html>
+  )
 }

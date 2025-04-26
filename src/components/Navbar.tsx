@@ -5,8 +5,8 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import dynamic from 'next/dynamic'
 
-const MenuIcon = dynamic(() => import('lucide-react').then(m => m.Menu), { ssr: false })
-const XIcon = dynamic(() => import('lucide-react').then(m => m.X), { ssr: false })
+const MenuIcon = dynamic(() => import('lucide-react').then((m) => m.Menu), { ssr: false })
+const XIcon = dynamic(() => import('lucide-react').then((m) => m.X), { ssr: false })
 
 const NAV_LINKS = [
   { href: '/', label: 'الرئيسية' },
@@ -43,17 +43,27 @@ export default function Navbar() {
         {/* Desktop Navigation */}
         <div className="hidden md:flex gap-6 items-center text-sm">
           {NAV_LINKS.map(({ href, label }, i) => (
-            <Link key={i} href={href} className="hover:text-blue-500">{label}</Link>
+            <Link key={i} href={href} className="hover:text-blue-500">
+              {label}
+            </Link>
           ))}
           {user ? (
             <>
-              <Link href="/profile" className="hover:text-blue-500">{user.name}</Link>
-              <button onClick={handleLogout} className="text-red-500 hover:underline">تسجيل الخروج</button>
+              <Link href="/profile" className="hover:text-blue-500">
+                {user.name}
+              </Link>
+              <button onClick={handleLogout} className="text-red-500 hover:underline">
+                تسجيل الخروج
+              </button>
             </>
           ) : (
             <>
-              <Link href="/login" className="hover:text-blue-500">تسجيل الدخول</Link>
-              <Link href="/signup" className="hover:text-blue-500">إنشاء حساب</Link>
+              <Link href="/login" className="hover:text-blue-500">
+                تسجيل الدخول
+              </Link>
+              <Link href="/signup" className="hover:text-blue-500">
+                إنشاء حساب
+              </Link>
             </>
           )}
         </div>
@@ -65,7 +75,9 @@ export default function Navbar() {
       </nav>
 
       {/* Mobile Sidebar */}
-      <aside className={`fixed top-0 right-0 h-full w-64 bg-white z-50 shadow-lg transform transition-transform duration-300 md:hidden ${menuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+      <aside
+        className={`fixed top-0 right-0 h-full w-64 bg-white z-50 shadow-lg transform transition-transform duration-300 md:hidden ${menuOpen ? 'translate-x-0' : 'translate-x-full'}`}
+      >
         <div className="p-4 flex justify-between items-center border-b">
           <h2 className="text-lg font-bold text-blue-700">القائمة</h2>
           <button onClick={() => setMenuOpen(false)} className="text-gray-600">
@@ -75,18 +87,42 @@ export default function Navbar() {
         <ul className="p-4 space-y-4 text-sm text-gray-700">
           {NAV_LINKS.map(({ href, label }, i) => (
             <li key={i}>
-              <Link href={href} onClick={() => setMenuOpen(false)}>{label}</Link>
+              <Link href={href} onClick={() => setMenuOpen(false)}>
+                {label}
+              </Link>
             </li>
           ))}
           {user ? (
             <>
-              <li><Link href="/profile" onClick={() => setMenuOpen(false)}>{user.name}</Link></li>
-              <li><button onClick={() => { handleLogout(); setMenuOpen(false); }} className="text-red-500">تسجيل الخروج</button></li>
+              <li>
+                <Link href="/profile" onClick={() => setMenuOpen(false)}>
+                  {user.name}
+                </Link>
+              </li>
+              <li>
+                <button
+                  onClick={() => {
+                    handleLogout()
+                    setMenuOpen(false)
+                  }}
+                  className="text-red-500"
+                >
+                  تسجيل الخروج
+                </button>
+              </li>
             </>
           ) : (
             <>
-              <li><Link href="/login" onClick={() => setMenuOpen(false)}>تسجيل الدخول</Link></li>
-              <li><Link href="/signup" onClick={() => setMenuOpen(false)}>إنشاء حساب</Link></li>
+              <li>
+                <Link href="/login" onClick={() => setMenuOpen(false)}>
+                  تسجيل الدخول
+                </Link>
+              </li>
+              <li>
+                <Link href="/signup" onClick={() => setMenuOpen(false)}>
+                  إنشاء حساب
+                </Link>
+              </li>
             </>
           )}
         </ul>

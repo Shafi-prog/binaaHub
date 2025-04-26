@@ -1,17 +1,18 @@
-// src/app/(user)/projects/page.tsx
+import ClientIcon from '@/components/ClientIcon' // src/app/(user)/projects/page.tsx import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-
 export default async function ProjectsPage() {
   const supabase = createServerComponentClient({ cookies })
   const {
     data: { user },
   } = await supabase.auth.getUser()
 
-  if (!user) return redirect('/login')
+  if (!user) {
+    redirect('/login')
+  }
 
   const projects = [
     {
@@ -36,11 +37,21 @@ export default async function ProjectsPage() {
       {projects.map(({ id, name, location, status, startDate }) => (
         <Card key={id}>
           <CardContent className="p-4 space-y-2 text-right">
-            <p><strong>اسم المشروع:</strong> {name}</p>
-            <p><strong>الموقع:</strong> {location}</p>
-            <p><strong>الحالة:</strong> {status}</p>
-            <p><strong>تاريخ البدء:</strong> {startDate}</p>
-            <Button variant="outline" className="mt-2 w-full">تفاصيل المشروع</Button>
+            <p>
+              <strong>اسم المشروع:</strong> {name}
+            </p>
+            <p>
+              <strong>الموقع:</strong> {location}
+            </p>
+            <p>
+              <strong>الحالة:</strong> {status}
+            </p>
+            <p>
+              <strong>تاريخ البدء:</strong> {startDate}
+            </p>
+            <Button variant="outline" className="mt-2 w-full">
+              تفاصيل المشروع
+            </Button>
           </CardContent>
         </Card>
       ))}

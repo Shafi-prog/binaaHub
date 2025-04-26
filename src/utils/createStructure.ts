@@ -16,7 +16,7 @@ const folders = [
   '(marketing)',
   '(services)',
   '(public)',
-  'projects/[id]'
+  'projects/[id]',
 ]
 
 const ensureDir = (dir: string) => {
@@ -35,7 +35,7 @@ folders.forEach((folder) => {
       pagePath,
       `export default function Page() {
   return <div className="p-8">🚧 ${folder} page</div>
-}`
+}`,
     )
     console.log('📝 Stub page.tsx:', pagePath)
   }
@@ -62,15 +62,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={font.className}>{children}</body>
     </html>
   )
-}`
+}`,
   )
   console.log('🧱 layout.tsx created')
 }
 
 const rootPage = path.join(root, 'page.tsx')
 if (!fs.existsSync(rootPage)) {
-  fs.writeFileSync(rootPage, `export default function Home() {
+  fs.writeFileSync(
+    rootPage,
+    `export default function Home() {
   return <main className="p-10 text-center text-2xl">مرحبًا بك في BinaaHub 🚀</main>
-}`)
+}`,
+  )
   console.log('🏠 Home page created')
 }

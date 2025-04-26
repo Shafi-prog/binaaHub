@@ -5,12 +5,17 @@ import ProfileLayout from '@/components/layouts/ProfileLayout'
 
 export default async function ProfilePage() {
   const supabase = createServerComponentClient({ cookies })
+
   const {
     data: { user },
   } = await supabase.auth.getUser()
 
   if (!user) {
-    return <div className="p-10 text-center text-red-600">🚫 لم يتم العثور على مستخدم. يرجى تسجيل الدخول مجددًا.</div>
+    return (
+      <div className="p-10 text-center text-red-600">
+        🚫 لم يتم العثور على مستخدم. يرجى تسجيل الدخول مجددًا.
+      </div>
+    )
   }
 
   const { data, error } = await supabase
@@ -20,11 +25,19 @@ export default async function ProfilePage() {
     .single()
 
   if (error || !data) {
-    return <div className="p-10 text-center text-red-600">❌ حدث خطأ أثناء تحميل بيانات المستخدم: {error?.message}</div>
+    return (
+      <div className="p-10 text-center text-red-600">
+        ❌ حدث خطأ أثناء تحميل بيانات المستخدم: {error?.message}
+      </div>
+    )
   }
 
   if (data.account_type !== 'user') {
-    return <div className="p-10 text-center text-yellow-600">⚠️ حسابك لا يملك صلاحية الوصول إلى هذه الصفحة</div>
+    return (
+      <div className="p-10 text-center text-yellow-600">
+        ⚠️ حسابك لا يملك صلاحية الوصول إلى هذه الصفحة
+      </div>
+    )
   }
 
   const orders = [
@@ -67,44 +80,66 @@ export default async function ProfilePage() {
   return (
     <ProfileLayout>
       <div className="space-y-6">
+        {/* بيانات الحساب */}
         <div id="account" className="bg-white p-6 rounded-lg shadow">
           <h2 className="text-xl font-semibold mb-4 text-blue-700">بيانات الحساب</h2>
-          <p><strong>الاسم:</strong> {data.name}</p>
-          <p><strong>البريد:</strong> {data.email}</p>
-          <p><strong>نوع الحساب:</strong> {data.account_type === 'user' ? 'مستخدم' : 'متجر'}</p>
+          <p>
+            <strong>الاسم:</strong> {data.name}
+          </p>
+          <p>
+            <strong>البريد:</strong> {data.email}
+          </p>
+          <p>
+            <strong>نوع الحساب:</strong> {data.account_type === 'user' ? 'مستخدم' : 'متجر'}
+          </p>
         </div>
 
+        {/* الطلبات */}
         <div id="orders" className="bg-white p-6 rounded-lg shadow">
           <h2 className="text-xl font-semibold mb-4 text-blue-700">طلباتي</h2>
           <ul className="space-y-2">
-            {orders.map(order => (
+            {orders.map((order) => (
               <li key={order.id} className="border-b pb-2">
-                <p><strong>{order.item}</strong> - <span className="text-sm text-gray-500">{order.date}</span></p>
+                <p>
+                  <strong>{order.item}</strong> -{' '}
+                  <span className="text-sm text-gray-500">{order.date}</span>
+                </p>
                 <p className="text-sm text-green-600">{order.status}</p>
               </li>
             ))}
           </ul>
-          <Link href="/orders" className="text-blue-600 text-sm underline mt-2 inline-block">عرض كل الطلبات</Link>
+          <Link href="/orders" className="text-blue-600 text-sm underline mt-2 inline-block">
+            عرض كل الطلبات
+          </Link>
         </div>
 
+        {/* الضمانات */}
         <div id="warranty" className="bg-white p-6 rounded-lg shadow">
           <h2 className="text-xl font-semibold mb-4 text-blue-700">ضماناتي</h2>
           <ul className="space-y-4">
-            {warranties.map(warranty => {
+            {warranties.map((warranty) => {
               const endDate = new Date(
                 new Date(warranty.purchaseDate).setFullYear(
-                  new Date(warranty.purchaseDate).getFullYear() + warranty.warrantyYears
-                )
-              );
-              const today = new Date();
-              const isActive = endDate > today;
+                  new Date(warranty.purchaseDate).getFullYear() + warranty.warrantyYears,
+                ),
+              )
+              const today = new Date()
+              const isActive = endDate > today
 
               return (
                 <li key={warranty.id} className="border-b pb-3">
-                  <p><strong>المنتج:</strong> {warranty.item}</p>
-                  <p><strong>المتجر:</strong> {warranty.store}</p>
-                  <p><strong>تاريخ الشراء:</strong> {warranty.purchaseDate}</p>
-                  <p><strong>مدة الضمان:</strong> {warranty.warrantyYears} سنوات</p>
+                  <p>
+                    <strong>المنتج:</strong> {warranty.item}
+                  </p>
+                  <p>
+                    <strong>المتجر:</strong> {warranty.store}
+                  </p>
+                  <p>
+                    <strong>تاريخ الشراء:</strong> {warranty.purchaseDate}
+                  </p>
+                  <p>
+                    <strong>مدة الضمان:</strong> {warranty.warrantyYears} سنوات
+                  </p>
                   <p>
                     <strong>تاريخ الانتهاء:</strong> {endDate.toLocaleDateString('ar-EG')}{' '}
                     <span className={isActive ? 'text-green-600' : 'text-red-600'}>
@@ -120,22 +155,28 @@ export default async function ProfilePage() {
                     تحميل الضمان
                   </a>
                 </li>
-              );
+              )
             })}
           </ul>
         </div>
 
+        {/* المشاريع */}
         <div id="projects" className="bg-white p-6 rounded-lg shadow">
           <h2 className="text-xl font-semibold mb-4 text-blue-700">مشاريعي</h2>
           {projects.length ? (
             <ul className="space-y-2">
-              {projects.map(project => (
+              {projects.map((project) => (
                 <li key={project.id} className="border-b pb-2">
-                  <p><strong>{project.name}</strong></p>
+                  <p>
+                    <strong>{project.name}</strong>
+                  </p>
                   <p>الموقع: {project.location}</p>
                   <p>الحالة: {project.status}</p>
                   <p>تاريخ البدء: {project.startDate}</p>
-                  <Link href={`/projects/${project.id}`} className="text-sm text-blue-600 underline">
+                  <Link
+                    href={`/projects/${project.id}`}
+                    className="text-sm text-blue-600 underline"
+                  >
                     عرض التفاصيل
                   </Link>
                 </li>
@@ -146,6 +187,7 @@ export default async function ProfilePage() {
           )}
         </div>
 
+        {/* الإشعارات */}
         <div id="notifications" className="bg-white p-6 rounded-lg shadow">
           <h2 className="text-xl font-semibold mb-4 text-blue-700">الإشعارات</h2>
           <p className="text-gray-500">لا توجد إشعارات جديدة.</p>

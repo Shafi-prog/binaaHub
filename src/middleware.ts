@@ -12,8 +12,8 @@ export async function middleware(req: NextRequest) {
   } = await supabase.auth.getUser()
 
   const pathname = req.nextUrl.pathname
-  const isProtected = ['/profile', '/orders', '/projects'].some(path => pathname.startsWith(path))
-  const isStoreOnly = ['/dashboard'].some(path => pathname.startsWith(path))
+  const isProtected = ['/profile', '/orders', '/projects'].some((path) => pathname.startsWith(path))
+  const isStoreOnly = ['/dashboard'].some((path) => pathname.startsWith(path))
 
   if (!user && (isProtected || isStoreOnly)) {
     return NextResponse.redirect(new URL('/login', req.url))

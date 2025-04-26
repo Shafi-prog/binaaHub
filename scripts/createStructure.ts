@@ -4,8 +4,8 @@ Automatically Generated Scaffold Script for Future-Ready Modular Architecture
 */
 
 // File: scripts/createStructure.ts (or run manually in setup)
-import fs from 'fs';
-import path from 'path';
+import fs from 'fs'
+import path from 'path'
 
 const folders = [
   'src/app/(marketing)/',
@@ -36,16 +36,16 @@ const folders = [
   'src/components/contact',
   'src/lib',
   'public/images',
-  'scripts'
-];
+  'scripts',
+]
 
-folders.forEach(folder => {
-  const dir = path.join(process.cwd(), folder);
+folders.forEach((folder) => {
+  const dir = path.join(process.cwd(), folder)
   if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
-    console.log('Created:', folder);
+    fs.mkdirSync(dir, { recursive: true })
+    console.log('Created:', folder)
   }
-});
+})
 
 const placeholderPages = [
   'src/app/(marketing)/page.tsx',
@@ -65,13 +65,16 @@ const placeholderPages = [
   'src/app/(finance)/loans/page.tsx',
   'src/app/(finance)/insurance/page.tsx',
   'src/app/(dashboard)/construction-data/page.tsx',
-  'src/app/(dashboard)/material-prices/page.tsx'
-];
+  'src/app/(dashboard)/material-prices/page.tsx',
+]
 
-placeholderPages.forEach(file => {
-  const filePath = path.join(process.cwd(), file);
+placeholderPages.forEach((file) => {
+  const filePath = path.join(process.cwd(), file)
   if (!fs.existsSync(filePath)) {
-    fs.writeFileSync(filePath, `export default function Page() { return <div>${file.split('/').slice(-2, -1)}</div>; }`);
-    console.log('Created page:', file);
+    fs.writeFileSync(
+      filePath,
+      `export default function Page() { return <div>${file.split('/').slice(-2, -1)}</div>; }`,
+    )
+    console.log('Created page:', file)
   }
-});
+})

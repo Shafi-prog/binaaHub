@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 export function Button({ children, className, ...props }: any) {
   return (
@@ -8,5 +8,5 @@ export function Button({ children, className, ...props }: any) {
     >
       {children}
     </button>
-  );
+  )
 }

@@ -4,9 +4,9 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#171717', // أسود داكن
+        primary: '#171717', // Example: Custom color
       },
     },
   },
   plugins: [],
-}
+};

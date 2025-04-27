@@ -1,4 +1,7 @@
-import React from 'react'
+'use client'
+
+export const dynamic = 'force-dynamic' // إضافة force-dynamic لضمان تحويل الصفحة إلى Dynamic Rendering بدلاً من Prerendering
+
 import ClientIcon from '@/components/ClientIcon'
 import Link from 'next/link'
 
@@ -77,9 +80,7 @@ export default function HomePage() {
           ].map(({ title, price, desc, href, featured }, idx) => (
             <div
               key={idx}
-              className={`bg-white p-6 rounded-lg shadow ${
-                featured ? 'border-2 border-blue-600' : 'border'
-              }`}
+              className={`bg-white p-6 rounded-lg shadow ${featured ? 'border-2 border-blue-600' : 'border'}`}
             >
               <h4 className="text-xl font-semibold text-blue-800 mb-2">{title}</h4>
               <p className="text-gray-600 text-sm mb-4">{desc}</p>

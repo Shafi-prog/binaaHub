@@ -1,33 +1,50 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import dynamic from 'next/dynamic'
+import { useEffect, useState } from 'react'
 
 const MenuIcon = dynamic(() => import('lucide-react').then((m) => m.Menu), { ssr: false })
 const XIcon = dynamic(() => import('lucide-react').then((m) => m.X), { ssr: false })
 
 const NAV_LINKS = [
   { href: '/', label: 'الرئيسية' },
-  { href: '/#features', label: 'الخدمات' },
+  {
+    href: '/#features',
+    label: 'الخدمات',
+    submenu: [
+      { href: '/services/marketing', label: 'التسويق' },
+      { href: '/services/development', label: 'التطوير' },
+      { href: '/services/design', label: 'التصميم' },
+    ],
+  },
   { href: '/#pricing', label: 'الأسعار' },
 ]
 
 export default function Navbar() {
   const [user, setUser] = useState<any>(null)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [servicesOpenMobile, setServicesOpenMobile] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
-    const savedUser = localStorage.getItem('user')
-    if (savedUser) {
-      setUser(JSON.parse(savedUser))
+    if (typeof window !== 'undefined') {
+      const savedUser = localStorage.getItem('user')
+      if (savedUser) {
+        try {
+          setUser(JSON.parse(savedUser))
+        } catch (error) {
+          console.error('Error parsing user from localStorage', error)
+        }
+      }
     }
   }, [])
 
   const handleLogout = () => {
-    localStorage.removeItem('user')
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('user')
+    }
     setUser(null)
     router.push('/')
   }
@@ -41,11 +58,26 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex gap-6 items-center text-sm">
-          {NAV_LINKS.map(({ href, label }, i) => (
-            <Link key={i} href={href} className="hover:text-blue-500">
-              {label}
-            </Link>
+        <div className="hidden md:flex gap-6 items-center text-sm relative">
+          {NAV_LINKS.map(({ href, label, submenu }, i) => (
+            <div key={i} className="relative group">
+              <Link href={href} className="hover:text-blue-500">
+                {label}
+              </Link>
+              {submenu && (
+                <div className="absolute hidden group-hover:block bg-white shadow-lg rounded-md py-2 mt-2 w-40">
+                  {submenu.map((item, index) => (
+                    <Link
+                      key={index}
+                      href={item.href}
+                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
           ))}
           {user ? (
             <>
@@ -85,11 +117,33 @@ export default function Navbar() {
           </button>
         </div>
         <ul className="p-4 space-y-4 text-sm text-gray-700">
-          {NAV_LINKS.map(({ href, label }, i) => (
+          {NAV_LINKS.map(({ href, label, submenu }, i) => (
             <li key={i}>
-              <Link href={href} onClick={() => setMenuOpen(false)}>
-                {label}
-              </Link>
+              {submenu ? (
+                <>
+                  <button
+                    onClick={() => setServicesOpenMobile(!servicesOpenMobile)}
+                    className="w-full text-right text-blue-700 hover:underline"
+                  >
+                    {label}
+                  </button>
+                  {servicesOpenMobile && (
+                    <ul className="pl-4 mt-2 space-y-2">
+                      {submenu.map((item, index) => (
+                        <li key={index}>
+                          <Link href={item.href} onClick={() => setMenuOpen(false)}>
+                            {item.label}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </>
+              ) : (
+                <Link href={href} onClick={() => setMenuOpen(false)}>
+                  {label}
+                </Link>
+              )}
             </li>
           ))}
           {user ? (

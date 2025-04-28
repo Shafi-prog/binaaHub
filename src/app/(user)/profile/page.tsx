@@ -1,198 +1,42 @@
-import { cookies } from 'next/headers'
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
-import Link from 'next/link'
-import ProfileLayout from '@/components/layouts/ProfileLayout'
+// src/app/(user)/profile/page.tsx
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
+import { ProfileClient } from './ProfileClient'; // ✅ استيراد الـ Client Component المحلي
 
 export default async function ProfilePage() {
-  const supabase = createServerComponentClient({ cookies })
+  const supabase = createServerComponentClient({ cookies });
 
   const {
     data: { user },
-  } = await supabase.auth.getUser()
+  } = await supabase.auth.getUser();
 
   if (!user) {
-    return (
-      <div className="p-10 text-center text-red-600">
-        🚫 لم يتم العثور على مستخدم. يرجى تسجيل الدخول مجددًا.
-      </div>
-    )
+    redirect('/login');
   }
 
-  const { data, error } = await supabase
+  const { data: userData, error } = await supabase
     .from('users')
     .select('name, email, account_type')
     .eq('email', user.email!)
-    .single()
+    .single();
 
-  if (error || !data) {
-    return (
-      <div className="p-10 text-center text-red-600">
-        ❌ حدث خطأ أثناء تحميل بيانات المستخدم: {error?.message}
-      </div>
-    )
+  if (error || !userData) {
+    redirect('/login');
   }
-
-  if (data.account_type !== 'user') {
-    return (
-      <div className="p-10 text-center text-yellow-600">
-        ⚠️ حسابك لا يملك صلاحية الوصول إلى هذه الصفحة
-      </div>
-    )
-  }
-
-  const orders = [
-    { id: 1, userId: user.id, item: 'بلك أسود 20 سم', date: '2025-04-01', status: 'قيد التوصيل' },
-    { id: 2, userId: user.id, item: 'حديد تسليح 12مم', date: '2025-03-27', status: 'تم التوصيل' },
-  ]
-
-  const warranties = [
-    {
-      id: 1,
-      userId: user.id,
-      item: 'سخان كهربائي',
-      store: 'متجر الأجهزة المتميزة',
-      purchaseDate: '2023-03-20',
-      warrantyYears: 2,
-      warrantyFile: '/warranty/sample.pdf',
-    },
-    {
-      id: 2,
-      userId: user.id,
-      item: 'مكيف سبيلت',
-      store: 'مكيفات الخليج',
-      purchaseDate: '2022-04-05',
-      warrantyYears: 1,
-      warrantyFile: '/warranty/ac.pdf',
-    },
-  ]
-
-  const projects = [
-    {
-      id: 1,
-      userId: user.id,
-      name: 'مشروع فيلا شمال الرياض',
-      location: 'حي الياسمين',
-      status: 'قيد التنفيذ',
-      startDate: '2024-01-15',
-    },
-  ]
 
   return (
-    <ProfileLayout>
-      <div className="space-y-6">
-        {/* بيانات الحساب */}
-        <div id="account" className="bg-white p-6 rounded-lg shadow">
-          <h2 className="text-xl font-semibold mb-4 text-blue-700">بيانات الحساب</h2>
-          <p>
-            <strong>الاسم:</strong> {data.name}
-          </p>
-          <p>
-            <strong>البريد:</strong> {data.email}
-          </p>
-          <p>
-            <strong>نوع الحساب:</strong> {data.account_type === 'user' ? 'مستخدم' : 'متجر'}
-          </p>
-        </div>
+    <main className="min-h-screen bg-gray-100 flex items-center justify-center">
+      <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md text-center">
+        <h1 className="text-3xl font-bold text-blue-700 mb-6 font-tajawal">الملف الشخصي</h1>
 
-        {/* الطلبات */}
-        <div id="orders" className="bg-white p-6 rounded-lg shadow">
-          <h2 className="text-xl font-semibold mb-4 text-blue-700">طلباتي</h2>
-          <ul className="space-y-2">
-            {orders.map((order) => (
-              <li key={order.id} className="border-b pb-2">
-                <p>
-                  <strong>{order.item}</strong> -{' '}
-                  <span className="text-sm text-gray-500">{order.date}</span>
-                </p>
-                <p className="text-sm text-green-600">{order.status}</p>
-              </li>
-            ))}
-          </ul>
-          <Link href="/orders" className="text-blue-600 text-sm underline mt-2 inline-block">
-            عرض كل الطلبات
-          </Link>
-        </div>
-
-        {/* الضمانات */}
-        <div id="warranty" className="bg-white p-6 rounded-lg shadow">
-          <h2 className="text-xl font-semibold mb-4 text-blue-700">ضماناتي</h2>
-          <ul className="space-y-4">
-            {warranties.map((warranty) => {
-              const endDate = new Date(
-                new Date(warranty.purchaseDate).setFullYear(
-                  new Date(warranty.purchaseDate).getFullYear() + warranty.warrantyYears,
-                ),
-              )
-              const today = new Date()
-              const isActive = endDate > today
-
-              return (
-                <li key={warranty.id} className="border-b pb-3">
-                  <p>
-                    <strong>المنتج:</strong> {warranty.item}
-                  </p>
-                  <p>
-                    <strong>المتجر:</strong> {warranty.store}
-                  </p>
-                  <p>
-                    <strong>تاريخ الشراء:</strong> {warranty.purchaseDate}
-                  </p>
-                  <p>
-                    <strong>مدة الضمان:</strong> {warranty.warrantyYears} سنوات
-                  </p>
-                  <p>
-                    <strong>تاريخ الانتهاء:</strong> {endDate.toLocaleDateString('ar-EG')}{' '}
-                    <span className={isActive ? 'text-green-600' : 'text-red-600'}>
-                      ({isActive ? 'ساري ✅' : 'منتهي ❌'})
-                    </span>
-                  </p>
-                  <a
-                    href={warranty.warrantyFile}
-                    className="text-blue-600 hover:underline text-sm"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    تحميل الضمان
-                  </a>
-                </li>
-              )
-            })}
-          </ul>
-        </div>
-
-        {/* المشاريع */}
-        <div id="projects" className="bg-white p-6 rounded-lg shadow">
-          <h2 className="text-xl font-semibold mb-4 text-blue-700">مشاريعي</h2>
-          {projects.length ? (
-            <ul className="space-y-2">
-              {projects.map((project) => (
-                <li key={project.id} className="border-b pb-2">
-                  <p>
-                    <strong>{project.name}</strong>
-                  </p>
-                  <p>الموقع: {project.location}</p>
-                  <p>الحالة: {project.status}</p>
-                  <p>تاريخ البدء: {project.startDate}</p>
-                  <Link
-                    href={`/projects/${project.id}`}
-                    className="text-sm text-blue-600 underline"
-                  >
-                    عرض التفاصيل
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="text-gray-500">لا توجد مشاريع حالياً.</p>
-          )}
-        </div>
-
-        {/* الإشعارات */}
-        <div id="notifications" className="bg-white p-6 rounded-lg shadow">
-          <h2 className="text-xl font-semibold mb-4 text-blue-700">الإشعارات</h2>
-          <p className="text-gray-500">لا توجد إشعارات جديدة.</p>
-        </div>
+        {/* نستخدم ProfileClient هنا */}
+        <ProfileClient
+          name={userData.name}
+          email={userData.email}
+          accountType={userData.account_type}
+        />
       </div>
-    </ProfileLayout>
-  )
+    </main>
+  );
 }

@@ -1,53 +1,47 @@
-// src/middleware.ts
-import { createServerClient } from '@supabase/ssr'
-import type { NextRequest } from 'next/server'
-import { NextResponse } from 'next/server'
+import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs';
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 
 export async function middleware(req: NextRequest) {
-  const res = NextResponse.next()
+  const res = NextResponse.next();
+  const supabase = createMiddlewareClient({ req, res });
 
-  // تأكد من تعيين المتغيرات البيئية بشكل صحيح في ملف .env
-  const supabaseUrl = process.env.SUPABASE_URL!
-  const supabaseKey = process.env.SUPABASE_ANON_KEY!
+  const { data: { session } } = await supabase.auth.getSession();
 
-  // تأكد من تمرير المعاملات بشكل صحيح مع cookies
-  const supabase = createServerClient(supabaseUrl, supabaseKey, { cookies: req.cookies })
+  const pathname = req.nextUrl.pathname;
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  const isProtectedUser = ['/profile', '/orders', '/projects'].some((path) => pathname.startsWith(path));
+  const isProtectedStore = ['/store/dashboard'].some((path) => pathname.startsWith(path));
 
-  const pathname = req.nextUrl.pathname
-  const isProtected = ['/profile', '/orders', '/projects'].some((path) => pathname.startsWith(path))
-  const isStoreOnly = ['/dashboard'].some((path) => pathname.startsWith(path))
-
-  if (!user && (isProtected || isStoreOnly)) {
-    return NextResponse.redirect(new URL('/login', req.url))
+  if (!session && (isProtectedUser || isProtectedStore)) {
+    return NextResponse.redirect(new URL('/login', req.url));
   }
 
-  if (user) {
-    const { data, error } = await supabase
+  if (session) {
+    const { data: userData, error } = await supabase
       .from('users')
       .select('account_type')
-      .eq('email', user.email!)
-      .single()
+      .eq('email', session.user.email!)
+      .single();
 
-    if (error || !data) {
-      return NextResponse.redirect(new URL('/login', req.url))
+    if (error || !userData) {
+      return NextResponse.redirect(new URL('/login', req.url));
     }
 
-    if (data.account_type === 'store' && isProtected) {
-      return NextResponse.redirect(new URL('/dashboard', req.url))
+    const accountType = userData.account_type;
+
+    if (accountType === 'store' && isProtectedUser) {
+      return NextResponse.redirect(new URL('/store/dashboard', req.url));
     }
 
-    if (data.account_type !== 'store' && isStoreOnly) {
-      return NextResponse.redirect(new URL('/', req.url))
+    if (accountType !== 'store' && isProtectedStore) {
+      return NextResponse.redirect(new URL('/profile', req.url));
     }
   }
 
-  return res
+  return res;
 }
 
 export const config = {
-  matcher: ['/profile', '/orders', '/projects', '/dashboard'],
-}
+  matcher: ['/profile', '/orders', '/projects', '/store/dashboard'], // تطبيق الميدلوير على هذه الصفحات
+};

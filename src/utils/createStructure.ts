@@ -34,8 +34,8 @@ folders.forEach((folder) => {
     fs.writeFileSync(
       pagePath,
       `export default function Page() {
-  return <div className="p-8">🚧 ${folder} page</div>
-}`,
+    return <div className="p-8">🚧 ${folder} page</div>
+  }`,
     )
     console.log('📝 Stub page.tsx:', pagePath)
   }
@@ -46,23 +46,23 @@ if (!fs.existsSync(layoutPath)) {
   fs.writeFileSync(
     layoutPath,
     `import './globals.css'
-import { Tajawal } from 'next/font/google'
-import type { Metadata } from 'next'
+  import { Tajawal } from 'next/font/google'
+  import type { Metadata } from 'next'
 
-const font = Tajawal({ subsets: ['arabic'], weight: '400' })
+  const font = Tajawal({ subsets: ['arabic'], weight: '400' })
 
-export const metadata: Metadata = {
-  title: 'BinaaHub',
-  description: 'منصة البناء بدون عناء',
-}
+  export const metadata: Metadata = {
+    title: 'BinaaHub',
+    description: 'منصة البناء بدون عناء',
+  }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="ar" dir="rtl">
-      <body className={font.className}>{children}</body>
-    </html>
-  )
-}`,
+  export default function RootLayout({ children }: { children: React.ReactNode }) {
+    return (
+      <html lang="ar" dir="rtl">
+        <body className={font.className}>{children}</body>
+      </html>
+    )
+  }`,
   )
   console.log('🧱 layout.tsx created')
 }
@@ -72,8 +72,8 @@ if (!fs.existsSync(rootPage)) {
   fs.writeFileSync(
     rootPage,
     `export default function Home() {
-  return <main className="p-10 text-center text-2xl">مرحبًا بك في BinaaHub 🚀</main>
-}`,
+    return <main className="p-10 text-center text-2xl">مرحبًا بك في BinaaHub 🚀</main>
+  }`,
   )
   console.log('🏠 Home page created')
 }

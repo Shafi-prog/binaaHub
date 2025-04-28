@@ -1,11 +1,9 @@
 module.exports = {
-  content: ['./src/**/*.{js,ts,jsx,tsx}'],
+  content: [
+    './src/**/*.{html,js,ts,jsx,tsx}', // التأكد من تحديد الملفات التي تستخدم tailwindcss
+  ],
   theme: {
-    extend: {
-      colors: {
-        primary: '#171717',  // اللون الأسود الداكن
-      },
-    },
+    extend: {},
   },
   plugins: [],
 }

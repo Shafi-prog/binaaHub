@@ -1,6 +1,7 @@
 'use client'
 
 import { BarChart, Bot, Calculator, LayoutTemplate, PanelLeft, Settings } from 'lucide-react'
+import dynamic from 'next/dynamic'
 
 const icons = {
   marketing: BarChart,
@@ -19,7 +20,10 @@ interface ClientIconProps {
   className?: string
 }
 
+// ✅ استخدام Dynamic Import للمكونات الداخلية
 export default function ClientIcon({ type, size = 24, className }: ClientIconProps) {
   const IconComponent = icons[type]
-  return <IconComponent size={size} className={className} />
+  const DynamicIcon = dynamic(() => Promise.resolve(IconComponent), { ssr: false })
+
+  return <DynamicIcon size={size} className={className} />
 }

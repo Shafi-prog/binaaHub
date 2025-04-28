@@ -1,9 +1,9 @@
-import React from 'react'
+'use client'
 
-export function Badge({ children, className }: any) {
-  return (
-    <span className={`inline-block px-3 py-1 bg-gray-200 rounded-full text-sm ${className}`}>
-      {children}
-    </span>
-  )
+interface BadgeProps {
+  children: React.ReactNode
+}
+
+export default function Badge({ children }: BadgeProps) {
+  return <span className="bg-gray-200 rounded px-2 py-1 text-xs">{children}</span>
 }

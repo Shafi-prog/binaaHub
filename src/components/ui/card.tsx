@@ -1,9 +1,23 @@
-import React from 'react'
+'use client'
 
-export function Card({ children, className }: any) {
-  return <div className={`bg-white border rounded-xl ${className}`}>{children}</div>
+import { HTMLAttributes } from 'react'
+
+interface CardProps extends HTMLAttributes<HTMLDivElement> {
+  children: React.ReactNode
 }
 
-export function CardContent({ children, className }: any) {
-  return <div className={className}>{children}</div>
+export function Card({ children, ...props }: CardProps) {
+  return (
+    <div {...props} className={`border p-4 rounded-lg shadow ${props.className ?? ''}`}>
+      {children}
+    </div>
+  )
+}
+
+export function CardContent({ children, ...props }: CardProps) {
+  return (
+    <div {...props} className={`p-4 ${props.className ?? ''}`}>
+      {children}
+    </div>
+  )
 }

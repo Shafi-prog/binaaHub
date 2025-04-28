@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2017",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -15,28 +11,16 @@
     "moduleResolution": "Node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve", // تعديل هنا لاستخدام JSX بشكل صحيح مع React 17+ (Next.js 13/15)
+    "jsx": "preserve",
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "src/*"
-      ],
-      "@components/*": [
-        "src/components/*"
-      ],
-      "@app/*": [
-        "src/app/*"
-      ],
-      "@lib/*": [
-        "src/lib/*"
-      ],
-      "@mocks/*": [
-        "src/mocks/*"
-      ],
-      "@scripts/*": [
-        "scripts/*"
-      ]
+      "@/*": ["src/*"],
+      "@components/*": ["src/components/*"],
+      "@app/*": ["src/app/*"],
+      "@lib/*": ["src/lib/*"],
+      "@mocks/*": ["src/mocks/*"],
+      "@scripts/*": ["scripts/*"]
     },
     "plugins": [
       {
@@ -52,8 +36,5 @@
     ".next/types/**/*.ts",
     "next.config.js"
   ],
-  "exclude": [
-    "node_modules",
-    ".next"
-  ]
+  "exclude": ["node_modules", ".next"]
 }

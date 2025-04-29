@@ -7,7 +7,6 @@ import { toast } from 'react-hot-toast';
 
 export default function SignupPage() {
   const router = useRouter();
-
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -24,10 +23,7 @@ export default function SignupPage() {
 
     setLoading(true);
 
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-    });
+    const { data, error } = await supabase.auth.signUp({ email, password });
 
     if (error) {
       toast.error(error.message || 'خطأ أثناء إنشاء الحساب');
@@ -40,7 +36,7 @@ export default function SignupPage() {
         name,
         email,
         password,
-        account_type: accountType, // ✅ نحفظ النوع مع الحساب
+        account_type: accountType,
       },
     ]);
 
@@ -52,8 +48,8 @@ export default function SignupPage() {
 
     toast.success('تم إنشاء الحساب بنجاح ✅');
     setTimeout(() => {
-      window.location.href = '/login';
-    }, 1000);
+      router.push('/login');
+    }, 800);
 
     setLoading(false);
   };
@@ -63,18 +59,22 @@ export default function SignupPage() {
       <div className="hidden md:flex w-1/2 items-center justify-center bg-white">
         <img
           src="/forms-concept-illustration_114360-4957.avif"
-          alt="تسجيل حساب"
+          alt="إنشاء حساب"
           className="object-cover max-w-full max-h-screen"
         />
       </div>
 
       <div className="flex flex-col justify-center items-center w-full md:w-1/2 p-8">
         <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md">
-          <h2 className="text-3xl font-bold text-center text-blue-700 mb-8 font-tajawal">إنشاء حساب جديد</h2>
+          <h2 className="text-3xl font-bold text-center text-blue-700 mb-8 font-tajawal">
+            إنشاء حساب جديد
+          </h2>
 
           <form onSubmit={handleSignup} className="space-y-6">
             <div>
-              <label className="block text-right text-sm mb-1 font-medium text-gray-700">الاسم الكامل</label>
+              <label className="block text-right text-sm mb-1 font-medium text-gray-700">
+                الاسم الكامل
+              </label>
               <input
                 type="text"
                 value={name}
@@ -85,7 +85,9 @@ export default function SignupPage() {
             </div>
 
             <div>
-              <label className="block text-right text-sm mb-1 font-medium text-gray-700">البريد الإلكتروني</label>
+              <label className="block text-right text-sm mb-1 font-medium text-gray-700">
+                البريد الإلكتروني
+              </label>
               <input
                 type="email"
                 value={email}
@@ -96,7 +98,9 @@ export default function SignupPage() {
             </div>
 
             <div>
-              <label className="block text-right text-sm mb-1 font-medium text-gray-700">كلمة المرور</label>
+              <label className="block text-right text-sm mb-1 font-medium text-gray-700">
+                كلمة المرور
+              </label>
               <input
                 type="password"
                 value={password}
@@ -106,7 +110,7 @@ export default function SignupPage() {
               />
             </div>
 
-            {/* ✅ اختيار نوع الحساب */}
+            {/* اختيار نوع الحساب */}
             <div className="flex justify-center gap-4 mt-4">
               <button
                 type="button"

@@ -19,7 +19,6 @@ export default function LoginPage() {
 
     setLoading(true);
 
-    // تسجيل الدخول
     const { error: signInError } = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -31,10 +30,8 @@ export default function LoginPage() {
       return;
     }
 
-    // ✅ تحديث الجلسة يدويًا لضمان مزامنة الكوكيز مع السيرفر
-    await supabase.auth.getSession();
+    await supabase.auth.getSession(); // ✅ تحديث الجلسة بعد تسجيل الدخول
 
-    // ✅ بعد تسجيل الدخول: قراءة نوع الحساب
     const { data: userData, error: fetchError } = await supabase
       .from('users')
       .select('account_type')
@@ -51,9 +48,9 @@ export default function LoginPage() {
 
     setTimeout(() => {
       if (userData.account_type === 'store') {
-        window.location.href = '/store/dashboard'; // ✅ حساب متجر
+        window.location.assign('/store/dashboard'); // انتقال مباشر
       } else {
-        window.location.href = '/profile'; // ✅ حساب مستخدم
+        window.location.assign('/profile'); // انتقال مباشر
       }
     }, 800);
 
@@ -64,11 +61,7 @@ export default function LoginPage() {
     <main className="min-h-screen bg-gray-100 flex">
       {/* صورة يسار */}
       <div className="hidden md:flex w-1/2 items-center justify-center bg-white">
-        <img
-          src="/login-image.png"
-          alt="صورة تسجيل الدخول"
-          className="object-cover max-w-full max-h-screen"
-        />
+        <img src="/login-image.png" alt="صورة تسجيل الدخول" className="object-cover max-w-full max-h-screen" />
       </div>
 
       {/* نموذج تسجيل دخول يمين */}
@@ -79,32 +72,20 @@ export default function LoginPage() {
           </h2>
 
           <form onSubmit={handleLogin} className="space-y-6">
-            <div>
-              <label className="block text-right text-sm mb-1 font-medium text-gray-700">
-                البريد الإلكتروني
-              </label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-2 border rounded-md text-right focus:outline-none focus:ring-2 focus:ring-blue-400"
-                placeholder="ادخل بريدك الإلكتروني"
-              />
-            </div>
-
-            <div>
-              <label className="block text-right text-sm mb-1 font-medium text-gray-700">
-                كلمة المرور
-              </label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-2 border rounded-md text-right focus:outline-none focus:ring-2 focus:ring-blue-400"
-                placeholder="ادخل كلمة المرور"
-              />
-            </div>
-
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-4 py-2 border rounded-md text-right focus:outline-none focus:ring-2 focus:ring-blue-400"
+              placeholder="ادخل بريدك الإلكتروني"
+            />
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full px-4 py-2 border rounded-md text-right focus:outline-none focus:ring-2 focus:ring-blue-400"
+              placeholder="ادخل كلمة المرور"
+            />
             <button
               type="submit"
               className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition font-semibold"
@@ -115,10 +96,8 @@ export default function LoginPage() {
           </form>
 
           <div className="text-center text-sm text-gray-500 mt-6">
-            لا تملك حساباً؟
-            <a href="/signup" className="text-blue-600 hover:underline ml-1">
-              إنشاء حساب
-            </a>
+            لا تملك حساباً؟{' '}
+            <a href="/signup" className="text-blue-600 hover:underline">إنشاء حساب</a>
           </div>
         </div>
       </div>

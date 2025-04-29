@@ -7,7 +7,6 @@ export async function middleware(req: NextRequest) {
   const supabase = createMiddlewareClient({ req, res });
 
   const { data: { session } } = await supabase.auth.getSession();
-
   const pathname = req.nextUrl.pathname;
 
   const isProtectedUser = ['/profile', '/orders', '/projects'].some((path) => pathname.startsWith(path));
@@ -43,5 +42,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/profile', '/orders', '/projects', '/store/dashboard'], // تطبيق الميدلوير على هذه الصفحات
+  matcher: ['/profile', '/orders', '/projects', '/store/dashboard'],
 };

@@ -1,6 +1,5 @@
 // src/app/projects/page.tsx
-import Button from '@/components/ui/Button' // ✅ صحيح Default Export
-import { Card, CardContent } from '@/components/ui/Card' // ✅ Named Export صحيح
+import { Button, Card, CardContent } from '@/components/ui'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'

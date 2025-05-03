@@ -1,9 +1,14 @@
+/** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    './src/**/*.{html,js,ts,jsx,tsx}', // ✅ يغطي جميع مكونات وملفات Next.js
-  ],
+  // غطّي كل ملفاتك تحت src، بما في ذلك pages وcomponents وapp
+  content: ['./src/**/*.{js,ts,jsx,tsx,html}'],
+
   theme: {
-    extend: {}, // ✅ جاهز للتخصيص لاحقًا
+    extend: {},
+    container: {
+      center: true,     // يضيف margin-auto أفقياً
+      padding: '1rem',  // 16px حشوة أفقية افتراضية
+    },
   },
-  plugins: [], // ✅ أضف هنا أي إضافات Tailwind لاحقًا إن احتجت
-}
+  plugins: [],
+};

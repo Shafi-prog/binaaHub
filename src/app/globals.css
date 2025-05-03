@@ -1,7 +1,7 @@
-/* TailwindCSS directives */
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+/* src/app/globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* إعدادات الألوان والخلفيات */
 :root {
@@ -21,4 +21,11 @@ body {
   color: var(--foreground);
   font-family: 'Tajawal', Arial, sans-serif;
   direction: rtl;
+}
+
+/* تنسيقات مساعدة */
+h1,
+h2,
+h3 {
+  @apply font-bold text-gray-900;
 }

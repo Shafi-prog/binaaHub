@@ -1,9 +1,9 @@
 module.exports = {
   content: [
-    './src/**/*.{html,js,ts,jsx,tsx}', // التأكد من تحديد الملفات التي تستخدم tailwindcss
+    './src/**/*.{html,js,ts,jsx,tsx}', // ✅ يغطي جميع مكونات وملفات Next.js
   ],
   theme: {
-    extend: {},
+    extend: {}, // ✅ جاهز للتخصيص لاحقًا
   },
-  plugins: [],
+  plugins: [], // ✅ أضف هنا أي إضافات Tailwind لاحقًا إن احتجت
 }

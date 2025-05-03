@@ -1,26 +1,26 @@
-'use client';
+'use client'
 
-import { toast } from 'react-hot-toast';
+import { toast } from 'react-hot-toast'
 
-export function LogoutButton() {
+export default function LogoutButton() {
     const handleLogout = async () => {
         try {
             const res = await fetch('/api/logout', {
                 method: 'POST',
-            });
+            })
 
             if (res.ok) {
-                toast.success('تم تسجيل الخروج بنجاح ✅');
+                toast.success('تم تسجيل الخروج بنجاح ✅')
                 setTimeout(() => {
-                    window.location.href = '/login';
-                }, 1000);
+                    window.location.href = '/login'
+                }, 1000)
             } else {
-                toast.error('فشل تسجيل الخروج');
+                toast.error('فشل تسجيل الخروج')
             }
         } catch (error) {
-            toast.error('حدث خطأ أثناء تسجيل الخروج');
+            toast.error('حدث خطأ أثناء تسجيل الخروج')
         }
-    };
+    }
 
     return (
         <button
@@ -29,5 +29,5 @@ export function LogoutButton() {
         >
             تسجيل الخروج
         </button>
-    );
+    )
 }

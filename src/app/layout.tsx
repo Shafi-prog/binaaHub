@@ -1,8 +1,9 @@
 // src/app/layout.tsx
-import Navbar from '@/components/Navbar'; // تأكد أن المسار صحيح
+import Navbar from '@/components/layouts/Navbar'; // تأكد أن المسار صحيح
 import { Tajawal } from 'next/font/google';
 import { Toaster } from 'react-hot-toast';
 import './globals.css';
+
 
 const tajawal = Tajawal({
   subsets: ['arabic'],

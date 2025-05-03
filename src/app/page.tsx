@@ -2,7 +2,7 @@
 
 export const dynamic = 'force-dynamic' // إضافة force-dynamic لضمان تحويل الصفحة إلى Dynamic Rendering بدلاً من Prerendering
 
-import ClientIcon from '@/components/ClientIcon'
+import { ClientIcon } from '@/components/icons'
 import Link from 'next/link'
 
 const sections = [

@@ -1,8 +1,7 @@
-/* src/app/globals.css */
-
-/* استيراد TailwindCSS */
-/* داخل globals.css */
-@import './tailwind.css';
+/* TailwindCSS directives */
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
 
 /* إعدادات الألوان والخلفيات */
 :root {
@@ -17,7 +16,6 @@
   }
 }
 
-/* تخصيص الأنماط العامة */
 body {
   background: var(--background);
   color: var(--foreground);

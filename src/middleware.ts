@@ -13,7 +13,7 @@ export async function middleware(req: NextRequest) {
   const isProtectedStore = ['/store/dashboard'].some((path) => pathname.startsWith(path));
 
   if (!session && (isProtectedUser || isProtectedStore)) {
-    return NextResponse.redirect(new URL('/login', req.url));
+    return NextResponse.redirect(new URL('/auth/login', req.url)); // ✅ اصلاح رابط التحويل
   }
 
   if (session) {
@@ -24,7 +24,7 @@ export async function middleware(req: NextRequest) {
       .single();
 
     if (error || !userData) {
-      return NextResponse.redirect(new URL('/login', req.url));
+      return NextResponse.redirect(new URL('/auth/login', req.url));
     }
 
     const accountType = userData.account_type;

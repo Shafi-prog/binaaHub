@@ -1,6 +1,6 @@
 {
   "name": "binna",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "scripts": {
     "fix:all": "npm run lint:fix && npm run format && npm run cleanup-pages && npm run fix-import-lines && npm run fix-pages-syntax && npm run fix-format-pages && npm run refactor-pages",

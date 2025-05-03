@@ -1,63 +1,64 @@
-'use client';
+'use client'
 
-import { supabase } from '@/lib/supabaseClient';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { toast } from 'react-hot-toast';
+import { supabase } from '@/lib/supabaseClient'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
+import { toast } from 'react-hot-toast'
 
 export default function LoginPage() {
-  const router = useRouter();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
+  const router = useRouter()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
 
     if (!email || !password) {
-      toast.error('يرجى إدخال البريد الإلكتروني وكلمة المرور.');
-      return;
+      toast.error('يرجى إدخال البريد الإلكتروني وكلمة المرور.')
+      return
     }
 
-    setLoading(true);
+    setLoading(true)
 
-    const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+    const { error: signInError } = await supabase.auth.signInWithPassword({
+      email,
+      password
+    })
 
     if (signInError) {
-      toast.error(signInError.message || 'خطأ في تسجيل الدخول');
-      setLoading(false);
-      return;
+      toast.error(signInError.message || 'خطأ في تسجيل الدخول')
+      setLoading(false)
+      return
     }
 
-    // بعد تسجيل الدخول، نقرأ نوع الحساب مباشرة من الجدول
     const { data: userData, error: fetchError } = await supabase
       .from('users')
       .select('account_type')
       .eq('email', email)
-      .single();
+      .single()
 
     if (fetchError || !userData) {
-      toast.error('فشل في تحديد نوع الحساب.');
-      setLoading(false);
-      return;
+      toast.error('فشل في تحديد نوع الحساب.')
+      setLoading(false)
+      return
     }
 
-    toast.success('تم تسجيل الدخول بنجاح ✅');
+    toast.success('تم تسجيل الدخول بنجاح ✅')
 
     setTimeout(() => {
       if (userData.account_type === 'store') {
-        router.replace('/store/dashboard'); // تحويل مباشر للمتجر
+        router.replace('/store/dashboard')
       } else {
-        router.replace('/profile'); // تحويل مباشر للمستخدم
+        router.replace('/profile')
       }
-    }, 800);
+    }, 800)
 
-    setLoading(false);
-  };
+    setLoading(false)
+  }
 
   return (
     <main className="min-h-screen bg-gray-100 flex">
-      {/* القسم الأيسر: صورة */}
       <div className="hidden md:flex w-1/2 items-center justify-center bg-white">
         <img
           src="/login-image.png"
@@ -66,7 +67,6 @@ export default function LoginPage() {
         />
       </div>
 
-      {/* القسم الأيمن: نموذج تسجيل الدخول */}
       <div className="flex flex-col justify-center items-center w-full md:w-1/2 p-8">
         <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md">
           <h2 className="text-3xl font-bold text-center text-blue-700 mb-8 font-tajawal">
@@ -118,5 +118,5 @@ export default function LoginPage() {
         </div>
       </div>
     </main>
-  );
+  )
 }

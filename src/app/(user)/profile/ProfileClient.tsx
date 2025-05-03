@@ -1,22 +1,28 @@
-'use client';
+'use client'
 
-import { LogoutButton } from '@/components/ui/LogoutButton';
+import LogoutButton from '@/components/ui/LogoutButton'
 
 type ProfileClientProps = {
-    name: string;
-    email: string;
-    accountType: 'user' | 'store';
-};
+  name: string
+  email: string
+  accountType: 'user' | 'store'
+}
 
 export function ProfileClient({ name, email, accountType }: ProfileClientProps) {
-    return (
-        <div className="space-y-4 text-right text-gray-700">
-            <p><strong>الاسم:</strong> {name}</p>
-            <p><strong>البريد الإلكتروني:</strong> {email}</p>
-            <p><strong>نوع الحساب:</strong> {accountType === 'user' ? 'مستخدم' : 'متجر'}</p>
+  return (
+    <div className="space-y-4 text-right text-gray-700">
+      <p>
+        <strong>الاسم:</strong> {name}
+      </p>
+      <p>
+        <strong>البريد الإلكتروني:</strong> {email}
+      </p>
+      <p>
+        <strong>نوع الحساب:</strong> {accountType === 'user' ? 'مستخدم' : 'متجر'}
+      </p>
 
-            {/* زر تسجيل الخروج */}
-            <LogoutButton />
-        </div>
-    );
+      {/* زر تسجيل الخروج */}
+      <LogoutButton />
+    </div>
+  )
 }

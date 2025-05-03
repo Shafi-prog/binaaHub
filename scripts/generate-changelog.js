@@ -1,5 +1,5 @@
 // scripts/generate-changelog.js
-const fs = require('fs');
+const fs = require('fs')
 const content = `# 📦 Changelog
 
 ## [Unreleased]
@@ -12,7 +12,7 @@ const content = `# 📦 Changelog
 - ✅ حذف الملفات المكررة وتحسين استيراد المكونات
 - ✅ إعداد ESLint و Prettier و VSCode
 
-`;
+`
 
-fs.writeFileSync('CHANGELOG.md', content, 'utf8');
-console.log('✅ CHANGELOG.md created');
+fs.writeFileSync('CHANGELOG.md', content, 'utf8')
+console.log('✅ CHANGELOG.md created')

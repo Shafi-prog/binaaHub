@@ -1,2 +1,1 @@
-export { default as ClientIcon } from './ClientIcon';
-
+export { default as ClientIcon } from './ClientIcon'

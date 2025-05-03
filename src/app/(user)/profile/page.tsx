@@ -1,28 +1,28 @@
 // src/app/(user)/profile/page.tsx
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
-import { ProfileClient } from './ProfileClient'; // ✅ استيراد الـ Client Component المحلي
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
+import { ProfileClient } from './ProfileClient' // ✅ استيراد الـ Client Component المحلي
 
 export default async function ProfilePage() {
-  const supabase = createServerComponentClient({ cookies });
+  const supabase = createServerComponentClient({ cookies })
 
   const {
     data: { user },
-  } = await supabase.auth.getUser();
+  } = await supabase.auth.getUser()
 
   if (!user) {
-    redirect('/login');
+    redirect('/login')
   }
 
   const { data: userData, error } = await supabase
     .from('users')
     .select('name, email, account_type')
     .eq('email', user.email!)
-    .single();
+    .single()
 
   if (error || !userData) {
-    redirect('/login');
+    redirect('/login')
   }
 
   return (
@@ -38,5 +38,5 @@ export default async function ProfilePage() {
         />
       </div>
     </main>
-  );
+  )
 }

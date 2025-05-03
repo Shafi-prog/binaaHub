@@ -1,34 +1,34 @@
-'use client';
+'use client'
 
-import { supabase } from '@/lib/supabaseClient';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { toast } from 'react-hot-toast';
+import { supabase } from '@/lib/supabaseClient'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
+import { toast } from 'react-hot-toast'
 
 export default function SignupPage() {
-  const router = useRouter();
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [accountType, setAccountType] = useState<'user' | 'store'>('user');
-  const [loading, setLoading] = useState(false);
+  const router = useRouter()
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [accountType, setAccountType] = useState<'user' | 'store'>('user')
+  const [loading, setLoading] = useState(false)
 
   const handleSignup = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
 
     if (!name || !email || !password) {
-      toast.error('يرجى تعبئة جميع الحقول.');
-      return;
+      toast.error('يرجى تعبئة جميع الحقول.')
+      return
     }
 
-    setLoading(true);
+    setLoading(true)
 
-    const { data, error } = await supabase.auth.signUp({ email, password });
+    const { data, error } = await supabase.auth.signUp({ email, password })
 
     if (error) {
-      toast.error(error.message || 'خطأ أثناء إنشاء الحساب');
-      setLoading(false);
-      return;
+      toast.error(error.message || 'خطأ أثناء إنشاء الحساب')
+      setLoading(false)
+      return
     }
 
     const { error: insertError } = await supabase.from('users').insert([
@@ -38,21 +38,21 @@ export default function SignupPage() {
         password,
         account_type: accountType,
       },
-    ]);
+    ])
 
     if (insertError) {
-      toast.error(insertError.message || 'فشل في حفظ بيانات الحساب.');
-      setLoading(false);
-      return;
+      toast.error(insertError.message || 'فشل في حفظ بيانات الحساب.')
+      setLoading(false)
+      return
     }
 
-    toast.success('تم إنشاء الحساب بنجاح ✅');
+    toast.success('تم إنشاء الحساب بنجاح ✅')
     setTimeout(() => {
-      router.push('/login');
-    }, 800);
+      router.push('/login')
+    }, 800)
 
-    setLoading(false);
-  };
+    setLoading(false)
+  }
 
   return (
     <main className="min-h-screen bg-gray-100 flex">
@@ -146,5 +146,5 @@ export default function SignupPage() {
         </div>
       </div>
     </main>
-  );
+  )
 }

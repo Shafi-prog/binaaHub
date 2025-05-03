@@ -24,8 +24,10 @@ body {
 }
 
 /* تنسيقات مساعدة */
-h1,
-h2,
-h3 {
-  @apply font-bold text-gray-900;
+@layer components {
+  h1,
+  h2,
+  h3 {
+    @apply font-bold text-gray-900;
+  }
 }

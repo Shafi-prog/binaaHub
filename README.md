@@ -1,5 +1,24 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+![Logo](public/logo.png)
+
+---
+
+## ✅ Fixes & Improvements
+
+### ✅ Fix: Login redirect to user page
+
+- تم حل مشكلة عدم الانتقال إلى صفحة المستخدم بعد تسجيل الدخول.
+- السبب كان: `router.replace()` لا يعمل دائمًا بشكل موثوق بعد تسجيل الدخول مباشرة.
+- الحل: استُخدم `window.location.href = ...` لضمان التوجيه المؤكد.
+- أيضًا تم تغيير المجلد من `src/app/(user)/profile` إلى `src/app/user/profile` لأن Next.js لا يتعامل بشكل جيد مع الأقواس أحيانًا.
+- وتم تحديث `middleware.ts` لإدراج المسارات الجديدة للمستخدم والمتجر.
+
+---
+
+## Getting Started
+...
+
 ## Getting Started
 
 First, run the development server:

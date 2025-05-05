@@ -1,12 +1,28 @@
-// src/components/Navbar.tsx
-
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import Link from 'next/link'
 
 export default async function Navbar() {
-  const supabase = createServerComponentClient({ cookies })
-  const { data: { user } } = await supabase.auth.getUser()
+  const cookieStore = cookies()
+  const supabase = createServerComponentClient({ cookies: () => cookieStore })
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  let accountType: 'user' | 'store' | null = null
+  let userName: string | null = null
+
+  if (user) {
+    const { data: userData } = await supabase
+      .from('users')
+      .select('account_type, name')
+      .eq('email', user.email)
+      .single()
+
+    accountType = userData?.account_type ?? null
+    userName = userData?.name ?? null
+  }
 
   const navLinks = [
     { href: '/', label: 'الرئيسية' },
@@ -31,7 +47,12 @@ export default async function Navbar() {
 
           {user ? (
             <>
-              <Link href="/user/profile" className="hover:text-blue-500">{user.email}</Link>
+              <Link
+                href={accountType === 'store' ? '/store/dashboard' : '/user/dashboard'}
+                className="hover:text-blue-500"
+              >
+                {userName ?? user.email}
+              </Link>
               <Link href="/logout" className="text-red-500 hover:underline">تسجيل الخروج</Link>
             </>
           ) : (
@@ -43,7 +64,6 @@ export default async function Navbar() {
         </div>
       </nav>
 
-      {/* ✅ Mobile Navigation (بسيطة) */}
       <div className="md:hidden px-4 pb-2 text-sm flex flex-wrap gap-4 justify-center border-t">
         {navLinks.map(({ href, label }) => (
           <Link key={href} href={href} className="block text-gray-700">
@@ -52,7 +72,9 @@ export default async function Navbar() {
         ))}
         {user ? (
           <>
-            <Link href="/user/profile">{user.email}</Link>
+            <Link href={accountType === 'store' ? '/store/dashboard' : '/user/dashboard'}>
+              {userName ?? user.email}
+            </Link>
             <Link href="/logout" className="text-red-500">خروج</Link>
           </>
         ) : (

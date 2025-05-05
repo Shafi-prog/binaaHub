@@ -25,17 +25,17 @@ export default function SignupPage() {
 
     const { data, error } = await supabase.auth.signUp({ email, password })
 
-    if (error) {
-      toast.error(error.message || 'خطأ أثناء إنشاء الحساب')
+    if (error || !data.user) {
+      toast.error(error?.message || 'خطأ أثناء إنشاء الحساب')
       setLoading(false)
       return
     }
 
     const { error: insertError } = await supabase.from('users').insert([
       {
+        id: data.user.id,
         name,
         email,
-        password,
         account_type: accountType,
       },
     ])

@@ -2,13 +2,20 @@
 
 import { supabase } from '@/lib/supabaseClient'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { toast } from 'react-hot-toast'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
+  const router = useRouter()
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => {
+      console.log('🧠 Session at mount:', data.session)
+    })
+  }, [])
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -20,16 +27,21 @@ export default function LoginPage() {
 
     setLoading(true)
 
-    const { error: signInError } = await supabase.auth.signInWithPassword({
+    const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
       email,
       password,
     })
 
-    if (signInError) {
-      toast.error(signInError.message || 'خطأ في تسجيل الدخول')
+    if (signInError || !signInData.session) {
+      toast.error(signInError?.message || 'خطأ في تسجيل الدخول')
       setLoading(false)
       return
     }
+
+    await supabase.auth.setSession({
+      access_token: signInData.session.access_token,
+      refresh_token: signInData.session.refresh_token,
+    })
 
     const { data: userData, error: fetchError } = await supabase
       .from('users')
@@ -47,16 +59,15 @@ export default function LoginPage() {
 
     const redirectTo =
       userData.account_type === 'store'
-        ? '/user/store/dashboard'
+        ? '/store/dashboard'
         : userData.account_type === 'user' || userData.account_type === 'client'
-        ? '/user/profile'
+        ? '/user/dashboard'
         : userData.account_type === 'engineer' || userData.account_type === 'consultant'
         ? '/dashboard/construction-data'
         : '/'
 
-    window.location.href = redirectTo
-
-    setLoading(false)
+    console.log('🔁 Redirecting to:', redirectTo)
+    router.push(redirectTo)
   }
 
   return (

@@ -2,34 +2,53 @@ binna
 ├── scripts
 └── src
     ├── app
-    │   ├── (ai)
-    │   │   └── ai-assistant
     │   ├── (auth)
     │   │   ├── login
     │   │   └── signup
-    │   ├── (dashboard)
-    │   │   ├── construction-data
-    │   │   └── material-prices
     │   ├── (finance)
     │   │   ├── banking
     │   │   ├── insurance
     │   │   └── loans
-    │   ├── (services)
-    │   │   ├── calculators
-    │   │   ├── design
-    │   │   ├── supervision
-    │   │   └── waste-removal
+    │   ├── (marketing)
     │   ├── 403
     │   ├── api
     │   │   ├── auth
     │   │   └── logout
-    │   ├── marketing
-    │   ├── orders
-    │   ├── projects
-    │   │   └── [id]
-    │   │       └── edit
+    │   ├── store
+    │   │   ├── balance
+    │   │   ├── dashboard
+    │   │   ├── marketing
+    │   │   ├── orders
+    │   │   ├── products
+    │   │   ├── profile
+    │   │   ├── promo-code
+    │   │   │   ├── commission
+    │   │   │   └── usage
+    │   │   └── warranties
     │   └── user
-    │       └── profile
+    │       ├── (ai)
+    │       │   └── ai-assistant
+    │       ├── (services)
+    │       │   ├── calculators
+    │       │   ├── design
+    │       │   ├── supervision
+    │       │   └── waste-removal
+    │       ├── balance
+    │       ├── dashboard
+    │       ├── invite-code
+    │       │   ├── commission
+    │       │   └── usage
+    │       ├── orders
+    │       ├── profile
+    │       ├── projects
+    │       │   └── [id]
+    │       │       └── edit
+    │       ├── services
+    │       │   ├── design
+    │       │   ├── insurance
+    │       │   └── supervision
+    │       ├── spending-tracking
+    │       └── warranties
     ├── components
     │   ├── charts
     │   ├── contact
@@ -38,6 +57,7 @@ binna
     │   ├── icons
     │   ├── layouts
     │   ├── maps
+    │   ├── marketing
     │   └── ui
     ├── lib
     ├── mocks

@@ -35,6 +35,6 @@
     "src/**/*",
     ".next/types/**/*.ts",
     "next.config.js"
-  ],
+, "scripts/createStoreStructure.js"  ],
   "exclude": ["node_modules", ".next"]
 }

@@ -13,15 +13,16 @@ export async function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname
 
   const isProtectedUserRoute = [
-    '/profile',
     '/user/profile',
-    '/orders',
-    '/projects',
+    '/user/dashboard',
+    '/user/orders',
+    '/user/projects',
   ].some((path) => pathname.startsWith(path))
 
   const isProtectedStoreRoute = [
     '/store/dashboard',
-    '/user/store/dashboard',
+    '/store/profile',
+    '/store/orders',
   ].some((path) => pathname.startsWith(path))
 
   if (!session && (isProtectedUserRoute || isProtectedStoreRoute)) {
@@ -42,11 +43,11 @@ export async function middleware(req: NextRequest) {
     const accountType = userData.account_type
 
     if (accountType === 'store' && isProtectedUserRoute) {
-      return NextResponse.redirect(new URL('/user/store/dashboard', req.url))
+      return NextResponse.redirect(new URL('/store/dashboard', req.url))
     }
 
     if (accountType !== 'store' && isProtectedStoreRoute) {
-      return NextResponse.redirect(new URL('/user/profile', req.url))
+      return NextResponse.redirect(new URL('/user/dashboard', req.url))
     }
   }
 
@@ -55,11 +56,12 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
-    '/profile',
     '/user/profile',
-    '/orders',
-    '/projects',
+    '/user/dashboard',
+    '/user/orders',
+    '/user/projects',
     '/store/dashboard',
-    '/user/store/dashboard',
+    '/store/profile',
+    '/store/orders',
   ]
 }

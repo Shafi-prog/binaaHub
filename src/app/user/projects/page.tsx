@@ -1,6 +1,6 @@
 // src/app/projects/page.tsx
 import { Button, Card, CardContent } from '@/components/ui'
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import { createServerComponentClient } from '@supabase/ssr
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 

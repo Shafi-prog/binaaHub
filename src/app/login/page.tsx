@@ -1,5 +1,4 @@
 'use client'
-// app/login/page.tsx
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'react-hot-toast'
@@ -53,6 +52,7 @@ export default function LoginPage() {
 
     toast.success('تم تسجيل الدخول بنجاح ✅')
 
+    // تحديد الصفحة المناسبة للتوجيه حسب نوع الحساب
     const redirectTo =
       userData.account_type === 'store'
         ? '/store/dashboard'
@@ -62,8 +62,10 @@ export default function LoginPage() {
         ? '/dashboard/construction-data'
         : '/'
 
-    router.push(redirectTo)
-    setLoading(false)
+    // استخدام setTimeout لإعطاء وقت للتوجيه بعد تسجيل الدخول
+    setTimeout(() => {
+      window.location.href = redirectTo
+    }, 500)
   }
 
   return (

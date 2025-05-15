@@ -49,7 +49,7 @@ export default function SignupPage() {
     toast.success('تم إنشاء الحساب بنجاح ✅')
     setTimeout(() => {
       setLoading(false)
-      router.push('/login')
+      window.location.href = '/login'
     }, 800)
   }
 

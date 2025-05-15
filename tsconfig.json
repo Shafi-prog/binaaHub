@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "ES2017",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -15,12 +19,24 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"],
-      "@components/*": ["src/components/*"],
-      "@app/*": ["src/app/*"],
-      "@lib/*": ["src/lib/*"],
-      "@mocks/*": ["src/mocks/*"],
-      "@scripts/*": ["scripts/*"]
+      "@/*": [
+        "src/*"
+      ],
+      "@components/*": [
+        "src/components/*"
+      ],
+      "@app/*": [
+        "src/app/*"
+      ],
+      "@lib/*": [
+        "src/lib/*"
+      ],
+      "@mocks/*": [
+        "src/mocks/*"
+      ],
+      "@scripts/*": [
+        "scripts/*"
+      ]
     },
     "plugins": [
       {
@@ -34,7 +50,11 @@
     "next-env.d.ts",
     "src/**/*",
     ".next/types/**/*.ts",
-    "next.config.js"
-, "scripts/createStoreStructure.js"  ],
-  "exclude": ["node_modules", ".next"]
+    "next.config.js",
+    "scripts/createStoreStructure.js"
+  ],
+  "exclude": [
+    "node_modules",
+    ".next"
+  ]
 }

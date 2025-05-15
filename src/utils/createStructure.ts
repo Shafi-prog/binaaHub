@@ -1,8 +1,11 @@
-// scripts/createStructure.ts
-import fs from 'fs'
-import path from 'path'
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-const root = path.resolve(__dirname, '../src/app')
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const root = path.resolve(__dirname, '../src/app');
 
 const folders = [
   '(auth)/login',
@@ -17,63 +20,82 @@ const folders = [
   '(services)',
   '(public)',
   'projects/[id]',
-]
+];
 
 const ensureDir = (dir: string) => {
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true })
-    console.log('✅ Created:', dir)
+  try {
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+      console.log('✅ Created:', dir);
+    }
+  } catch (error) {
+    console.error('❌ Error creating directory:', dir, error);
   }
-}
+};
 
 folders.forEach((folder) => {
-  const fullPath = path.join(root, folder)
-  ensureDir(fullPath)
-  const pagePath = path.join(fullPath, 'page.tsx')
+  const fullPath = path.join(root, folder);
+  ensureDir(fullPath);
+  const pagePath = path.join(fullPath, 'page.tsx');
   if (!fs.existsSync(pagePath)) {
-    fs.writeFileSync(
-      pagePath,
-      `export default function Page() {
+    try {
+      fs.writeFileSync(
+        pagePath,
+        `export default function Page() {
     return <div className="p-8">🚧 ${folder} page</div>
   }`,
-    )
-    console.log('📝 Stub page.tsx:', pagePath)
+        'utf-8'
+      );
+      console.log('📝 Stub page.tsx:', pagePath);
+    } catch (error) {
+      console.error('❌ Error creating file:', pagePath, error);
+    }
   }
-})
+});
 
-const layoutPath = path.join(root, 'layout.tsx')
+const layoutPath = path.join(root, 'layout.tsx');
 if (!fs.existsSync(layoutPath)) {
-  fs.writeFileSync(
-    layoutPath,
-    `import './globals.css'
-  import { Tajawal } from 'next/font/google'
-  import type { Metadata } from 'next'
+  try {
+    fs.writeFileSync(
+      layoutPath,
+      `import './globals.css';
+  import { Tajawal } from 'next/font/google';
+  import type { Metadata } from 'next';
 
-  const font = Tajawal({ subsets: ['arabic'], weight: '400' })
+  const font = Tajawal({ subsets: ['arabic'], weight: '400' });
 
   export const metadata: Metadata = {
     title: 'BinaaHub',
     description: 'منصة البناء بدون عناء',
-  }
+  };
 
   export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
       <html lang="ar" dir="rtl">
         <body className={font.className}>{children}</body>
       </html>
-    )
+    );
   }`,
-  )
-  console.log('🧱 layout.tsx created')
+      'utf-8'
+    );
+    console.log('🧱 layout.tsx created');
+  } catch (error) {
+    console.error('❌ Error creating layout.tsx:', error);
+  }
 }
 
-const rootPage = path.join(root, 'page.tsx')
+const rootPage = path.join(root, 'page.tsx');
 if (!fs.existsSync(rootPage)) {
-  fs.writeFileSync(
-    rootPage,
-    `export default function Home() {
+  try {
+    fs.writeFileSync(
+      rootPage,
+      `export default function Home() {
     return <main className="p-10 text-center text-2xl">مرحبًا بك في BinaaHub 🚀</main>
   }`,
-  )
-  console.log('🏠 Home page created')
+      'utf-8'
+    );
+    console.log('🏠 Home page created');
+  } catch (error) {
+    console.error('❌ Error creating Home page:', error);
+  }
 }

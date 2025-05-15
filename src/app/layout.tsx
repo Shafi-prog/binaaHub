@@ -1,26 +1,49 @@
-import { cookies } from 'next/headers'
-import Navbar from '@/components/Navbar'
-import { Tajawal } from 'next/font/google'
-import { Toaster } from 'react-hot-toast'
-import './globals.css'
+/// <reference lib="dom" />
+/** @jsxImportSource react */
+"use client";
 
-const tajawal = Tajawal({
-  subsets: ['arabic'],
-  weight: ['200', '300', '400', '500', '700', '800', '900'],
-})
+import type { ReactNode } from 'react';
+import { useEffect, useState } from 'react';
+import './globals.css';
+import { Tajawal } from 'next/font/google';
+import { Toaster } from 'react-hot-toast';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import Navbar from '@/components/Navbar';
+import type { Session } from '@supabase/auth-helpers-nextjs';
+import type { Database } from '@/types/database';
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const cookieStore = cookies()
+const tajawal = Tajawal({ subsets: ['arabic'], weight: ['400'] });
+
+export default function RootLayout({ children }: { children: ReactNode }) {
+  const [session, setSession] = useState<Session | null>(null);
+  const supabase = createClientComponentClient<Database>();
+
+  useEffect(() => {
+    const getSession = async () => {
+      const { data } = await supabase.auth.getSession();
+      setSession(data.session);
+    };
+
+    getSession();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setSession(session);
+      }
+    );
+
+    return () => {
+      subscription?.unsubscribe();
+    };
+  }, [supabase]);
 
   return (
     <html lang="ar" dir="rtl">
       <body className={tajawal.className}>
-        {/* تمرير الكوكيز إلى نافبار لتفادي الخطأ */}
-        {/* @ts-expect-error Server Component with props */}
-        <Navbar cookieStore={cookieStore} />
-        <main className="container px-4 py-8">{children}</main>
-        <Toaster position="top-center" reverseOrder={false} />
+        <Toaster position="top-center" />
+        <Navbar session={session} />
+        {children}
       </body>
     </html>
-  )
+  );
 }

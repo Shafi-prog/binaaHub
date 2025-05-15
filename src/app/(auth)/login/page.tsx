@@ -62,6 +62,7 @@ export default function LoginPage() {
         ? '/dashboard/construction-data'
         : '/'
 
+    router.refresh() // تحديث بيانات الخادم قبل التوجيه
     router.push(redirectTo)
     setLoading(false)
   }

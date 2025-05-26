@@ -1,4 +1,5 @@
 'use client'
+
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'react-hot-toast'
@@ -8,6 +9,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
+  const [status, setStatus] = useState('')
   const router = useRouter()
 
   useEffect(() => {
@@ -25,47 +27,87 @@ export default function LoginPage() {
     }
 
     setLoading(true)
+    setStatus('🔐 جاري تسجيل الدخول...')
+    console.log('🔐 محاولة تسجيل الدخول لـ:', email)
 
-    const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    })
+    try {
+      // Use API route for server-side authentication
+      console.log('🔐 إرسال طلب المصادقة إلى الخادم...')
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      })
 
-    if (signInError || !signInData.session) {
-      toast.error(signInError?.message || 'خطأ في تسجيل الدخول')
+      const result = await response.json()
+
+      if (!response.ok || !result.success) {
+        console.error('❌ فشل في التوثيق:', result.error)
+        toast.error(result.error || 'فشل في تسجيل الدخول')
+        setStatus('❌ فشل تسجيل الدخول')
+        setLoading(false)
+        return
+      }
+
+      console.log('✅ تم التوثيق بنجاح')
+      console.log('👤 المستخدم:', result.user.email)
+      console.log('🎯 نوع الحساب:', result.user.account_type)
+      console.log('🚀 سيتم التوجيه إلى:', result.redirectTo)
+
+      // Set the session on the client side
+      if (result.session) {
+        console.log('🔐 تعيين الجلسة على العميل...')
+        const { error: sessionError } = await supabase.auth.setSession({
+          access_token: result.session.access_token,
+          refresh_token: result.session.refresh_token
+        })
+        
+        if (sessionError) {
+          console.error('❌ خطأ في تعيين الجلسة:', sessionError)
+          toast.error('خطأ في إعداد الجلسة')
+          setLoading(false)
+          return
+        }
+
+        // Set access token in cookies for middleware with proper settings
+        console.log('🍪 تعيين التوكن في الكوكيز...')
+        const accessToken = result.session.access_token
+        
+        // Set cookies with different names to ensure middleware picks them up
+        document.cookie = `sb-access-token=${accessToken}; path=/; max-age=3600; samesite=lax`
+        document.cookie = `supabase-auth-token=${accessToken}; path=/; max-age=3600; samesite=lax`
+        
+        console.log('🍪 تحقق من الكوكيز المحفوظة:', document.cookie)
+        console.log('✅ تم تعيين الجلسة والكوكيز بنجاح')
+        
+      } else {
+        console.error('❌ لم يتم إرجاع بيانات الجلسة من الخادم')
+        toast.error('خطأ في بيانات الجلسة')
+        setLoading(false)
+        return
+      }
+
+      setStatus('✅ تم تسجيل الدخول بنجاح!')
+      toast.success('تم تسجيل الدخول بنجاح ✅')
+
+      console.log('🔄 تنفيذ التوجيه إلى:', result.redirectTo)
+      setStatus(`🔄 التوجيه إلى ${result.redirectTo}...`)
+      
+      // Add a small delay to ensure cookies are set, then redirect
+      await new Promise(resolve => setTimeout(resolve, 1000))
+      
+      // Use window.location for direct navigation to ensure cookies are sent
+      console.log('🔄 إعادة تحديث الصفحة لضمان انتشار الكوكيز...')
+      window.location.href = result.redirectTo
+
+    } catch (error) {
+      console.error('❌ خطأ عام:', error)
+      toast.error('حدث خطأ غير متوقع')
+      setStatus('❌ خطأ غير متوقع')
       setLoading(false)
-      return
     }
-
-    // جلب نوع الحساب
-    const { data: userData, error: fetchError } = await supabase
-      .from('users')
-      .select('account_type')
-      .eq('email', email)
-      .single()
-
-    if (fetchError || !userData?.account_type) {
-      toast.error('فشل في تحديد نوع الحساب.')
-      setLoading(false)
-      return
-    }
-
-    toast.success('تم تسجيل الدخول بنجاح ✅')
-
-    // تحديد الصفحة المناسبة للتوجيه حسب نوع الحساب
-    const redirectTo =
-      userData.account_type === 'store'
-        ? '/store/dashboard'
-        : userData.account_type === 'user' || userData.account_type === 'client'
-        ? '/user/dashboard'
-        : userData.account_type === 'engineer' || userData.account_type === 'consultant'
-        ? '/dashboard/construction-data'
-        : '/'
-
-    // استخدام setTimeout لإعطاء وقت للتوجيه بعد تسجيل الدخول
-    setTimeout(() => {
-      window.location.href = redirectTo
-    }, 500)
   }
 
   return (
@@ -84,6 +126,12 @@ export default function LoginPage() {
             تسجيل الدخول
           </h2>
 
+          {status && (
+            <div className="mb-4 p-3 bg-blue-50 text-blue-700 rounded-lg text-center">
+              {status}
+            </div>
+          )}
+
           <form onSubmit={handleLogin} className="space-y-4">
             <input
               type="email"
@@ -91,6 +139,7 @@ export default function LoginPage() {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="البريد الإلكتروني"
               className="w-full p-3 border rounded"
+              disabled={loading}
             />
             <input
               type="password"
@@ -98,15 +147,23 @@ export default function LoginPage() {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="كلمة المرور"
               className="w-full p-3 border rounded"
+              disabled={loading}
             />
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+              className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 disabled:opacity-50"
               disabled={loading}
             >
               {loading ? 'جاري الدخول...' : 'تسجيل الدخول'}
             </button>
           </form>
+          
+          {/* Test credentials for development */}
+          <div className="mt-4 p-3 bg-gray-50 rounded text-sm text-gray-600">
+            <p>للاختبار:</p>
+            <p>👤 المستخدم: user@user.com / 123456</p>
+            <p>🏪 المتجر: store@store.com / 123456</p>
+          </div>
         </div>
       </div>
     </main>

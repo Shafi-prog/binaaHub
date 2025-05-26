@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login Test</title>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <h1>Manual Login Test</h1>
+    <div>
+        <input type="email" id="email" value="user@user.com" placeholder="Email">
+        <input type="password" id="password" value="123456" placeholder="Password">
+        <button onclick="testLogin()">Test Login</button>
+    </div>
+    <div id="result"></div>
+
+    <script>
+        const { createClient } = supabase;
+        const supabaseClient = createClient(
+            'https://rqcfcdubxpgzrxdmnwbu.supabase.co',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJxY2ZjZHVieHBnenJ4ZG1ud2J1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzEzMzM2MDksImV4cCI6MjA0NjkwOTYwOX0.O7mGGdgUYbFNRjIzNh-4a15m7fVUvY6N-V2dHFRpj0w'
+        );
+
+        async function testLogin() {
+            console.log('🔐 Starting test login...');
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            try {
+                // Test login
+                const { data: signInData, error: signInError } = await supabaseClient.auth.signInWithPassword({
+                    email,
+                    password,
+                });
+
+                console.log('Login result:', { signInData, signInError });
+                
+                if (signInError) {
+                    document.getElementById('result').innerHTML = `❌ Error: ${signInError.message}`;
+                    return;
+                }
+
+                // Get user data
+                const { data: userData, error: fetchError } = await supabaseClient
+                    .from('users')
+                    .select('account_type')
+                    .eq('email', email)
+                    .single();
+
+                console.log('User data:', { userData, fetchError });
+
+                if (fetchError) {
+                    document.getElementById('result').innerHTML = `❌ Fetch Error: ${fetchError.message}`;
+                    return;
+                }
+
+                // Determine redirect URL
+                const redirectTo = userData.account_type === 'store' 
+                    ? '/store/dashboard'
+                    : userData.account_type === 'user' || userData.account_type === 'client'
+                        ? '/user/dashboard'
+                        : userData.account_type === 'engineer' || userData.account_type === 'consultant'
+                            ? '/dashboard/construction-data'
+                            : '/';
+
+                console.log('🚀 Should redirect to:', redirectTo);
+                
+                document.getElementById('result').innerHTML = `
+                    ✅ Login successful!<br>
+                    Email: ${signInData.session.user.email}<br>
+                    Account Type: ${userData.account_type}<br>
+                    Should redirect to: ${redirectTo}<br>
+                    <button onclick="window.location.href='http://localhost:3001${redirectTo}'">Go to Dashboard</button>
+                `;
+
+            } catch (error) {
+                console.error('Test error:', error);
+                document.getElementById('result').innerHTML = `❌ Test Error: ${error.message}`;
+            }
+        }
+    </script>
+</body>
+</html>

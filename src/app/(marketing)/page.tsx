@@ -1,1 +1,3 @@
-export default function Page() { return <div>(marketing)</div>; }
+export default function MarketingPage() {
+  return <div>(marketing)</div>
+}

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار نهائي لتسجيل الدخول والتوجيه</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            direction: rtl;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #f9f9f9;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .log {
+            background: #1e1e1e;
+            color: #f0f0f0;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 400px;
+            overflow-y: auto;
+            margin: 10px 0;
+        }
+        .success { color: #28a745; }
+        .error { color: #dc3545; }
+        .warning { color: #ffc107; }
+        .info { color: #17a2b8; }
+        input {
+            padding: 8px;
+            margin: 5px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            width: 200px;
+        }
+        .cookie-status {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 اختبار نهائي لتسجيل الدخول والتوجيه</h1>
+        
+        <div class="test-section">
+            <h3>1️⃣ اختبار تسجيل الدخول</h3>
+            <div>
+                <input type="email" id="email" placeholder="البريد الإلكتروني" value="user@user.com">
+                <input type="password" id="password" placeholder="كلمة المرور" value="123456">
+                <button onclick="testLogin()">🔐 تسجيل الدخول</button>
+            </div>
+            <button onclick="testStoreLogin()">🏪 اختبار متجر (store@store.com)</button>
+        </div>
+
+        <div class="test-section">
+            <h3>2️⃣ حالة الكوكيز</h3>
+            <div id="cookieStatus" class="cookie-status">
+                يرجى النقر على الزر أدناه لفحص الكوكيز
+            </div>
+            <button onclick="checkCookies()">🍪 فحص الكوكيز</button>
+            <button onclick="clearCookies()">🗑️ مسح الكوكيز</button>
+        </div>
+
+        <div class="test-section">
+            <h3>3️⃣ الوصول المباشر للصفحات المحمية</h3>
+            <button onclick="testAccessProtectedPage('/user/dashboard')">👤 الذهاب لـ /user/dashboard</button>
+            <button onclick="testAccessProtectedPage('/store/dashboard')">🏪 الذهاب لـ /store/dashboard</button>
+        </div>
+
+        <div class="test-section">
+            <h3>📊 سجل الأحداث</h3>
+            <button onclick="clearLog()">🧹 مسح السجل</button>
+            <div id="log" class="log"></div>
+        </div>
+    </div>
+
+    <script>
+        function log(message, type = 'info') {
+            const logEl = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type === 'success' ? 'success' : 
+                             type === 'error' ? 'error' : 
+                             type === 'warning' ? 'warning' : 'info';
+            logEl.innerHTML += `<span class="${className}">[${timestamp}] ${message}</span>\n`;
+            logEl.scrollTop = logEl.scrollHeight;
+            console.log(`[${timestamp}] ${message}`);
+        }
+
+        function clearLog() {
+            document.getElementById('log').innerHTML = '';
+        }
+
+        async function testLogin() {
+            try {
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                
+                log(`🔐 بدء تسجيل الدخول لـ: ${email}`);
+                
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password }),
+                    credentials: 'include' // مهم: يضمن إرسال واستقبال الكوكيز
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`خطأ في الاستجابة: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    log(`✅ تم تسجيل الدخول بنجاح!`, 'success');
+                    log(`👤 المستخدم: ${result.user.email}`, 'info');
+                    log(`🎯 نوع الحساب: ${result.user.account_type}`, 'info');
+                    log(`🚀 سيتم التوجيه إلى: ${result.redirectTo}`, 'info');
+                    
+                    // فحص الكوكيز بعد تسجيل الدخول مباشرة
+                    checkCookies();
+                    
+                    // إضافة تأخير قبل التوجيه
+                    log(`⏱️ انتظار ثانيتين قبل التوجيه...`, 'info');
+                    setTimeout(() => {
+                        log(`🔄 جاري التوجيه إلى: ${result.redirectTo}`, 'info');
+                        window.location.href = result.redirectTo;
+                    }, 2000);
+                } else {
+                    log(`❌ فشل تسجيل الدخول: ${result.error}`, 'error');
+                }
+            } catch (error) {
+                log(`❌ خطأ: ${error.message}`, 'error');
+            }
+        }
+
+        function testStoreLogin() {
+            document.getElementById('email').value = 'store@store.com';
+            document.getElementById('password').value = '123456';
+            testLogin();
+        }
+
+        function checkCookies() {
+            const cookieStatus = document.getElementById('cookieStatus');
+            const cookies = document.cookie.split(';').reduce((acc, cookie) => {
+                if (cookie.trim()) {
+                    const [name, value] = cookie.trim().split('=');
+                    acc[name] = value ? value.slice(0, 20) + '...' : 'empty';
+                }
+                return acc;
+            }, {});
+            
+            let statusHTML = '<ul>';
+            
+            if (Object.keys(cookies).length === 0) {
+                statusHTML += '<li>❌ لا توجد كوكيز مخزنة!</li>';
+                log('⚠️ لا توجد كوكيز محفوظة!', 'warning');
+            } else {
+                for (const [name, value] of Object.entries(cookies)) {
+                    const isAuthCookie = name.includes('sb-') || name.includes('supabase');
+                    statusHTML += `<li>${isAuthCookie ? '✅' : '❓'} ${name}: ${value}</li>`;
+                    log(`🍪 كوكي: ${name} = ${value}`, isAuthCookie ? 'success' : 'info');
+                }
+            }
+            
+            statusHTML += '</ul>';
+            cookieStatus.innerHTML = statusHTML;
+        }
+
+        function clearCookies() {
+            // مسح جميع الكوكيز الممكنة المتعلقة بالمصادقة
+            document.cookie = 'sb-access-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+            document.cookie = 'supabase-auth-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+            document.cookie = 'sb-refresh-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+            document.cookie = 'supabase-refresh-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+            
+            log('🗑️ تم مسح الكوكيز', 'warning');
+            checkCookies();
+        }
+
+        async function testAccessProtectedPage(url) {
+            try {
+                log(`🔄 محاولة الوصول إلى: ${url}`, 'info');
+                
+                const response = await fetch(url, {
+                    credentials: 'include' // مهم: يضمن إرسال الكوكيز
+                });
+                
+                if (response.redirected) {
+                    log(`🔄 تم التوجيه إلى: ${response.url}`, 'warning');
+                    return;
+                }
+                
+                if (response.ok) {
+                    log(`✅ نجح الوصول إلى: ${url}`, 'success');
+                } else {
+                    log(`❌ فشل الوصول (${response.status}): ${url}`, 'error');
+                }
+            } catch (error) {
+                log(`❌ خطأ في الوصول: ${error.message}`, 'error');
+            }
+        }
+
+        // التحقق من الكوكيز عند تحميل الصفحة
+        window.onload = () => {
+            log('🚀 تم تحميل صفحة الاختبار', 'success');
+            checkCookies();
+        };
+    </script>
+</body>
+</html>

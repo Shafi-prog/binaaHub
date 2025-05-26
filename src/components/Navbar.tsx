@@ -12,7 +12,7 @@ interface NavbarProps {
   session: Session | null
 }
 
-export default function Navbar({ session }: NavbarProps) {
+export default function Navbar(props: NavbarProps) {
   // إنشاؤه هنا فقط للـ Client Side
   const supabase = createClientComponentClient<Database>()
   const router = useRouter()
@@ -22,11 +22,11 @@ export default function Navbar({ session }: NavbarProps) {
 
   // بعد استلام الـ session من الـ Layout، نجلب البيانات من الـ users table
   useEffect(() => {
-    if (session?.user.id) {
+    if (props.session?.user.id) {
       supabase
         .from('users')
         .select('account_type, name')
-        .eq('id', session.user.id)
+        .eq('id', props.session.user.id)
         .single()
         .then(({ data, error }) => {
           if (!error && data) {
@@ -35,7 +35,7 @@ export default function Navbar({ session }: NavbarProps) {
           }
         })
     }
-  }, [session, supabase])
+  }, [props.session, supabase])
 
   const navLinks = [
     { href: '/', label: 'الرئيسية' },
@@ -53,9 +53,7 @@ export default function Navbar({ session }: NavbarProps) {
       <nav className="container mx-auto flex justify-between items-center py-4 px-6">
         <Link href="/" className="flex items-center gap-2">
           <img src="/logo.png" alt="شعار" className="w-10 h-10" />
-          <span className="hidden md:inline text-sm font-bold text-blue-700">
-            بناء دون عناء
-          </span>
+          <span className="hidden md:inline text-sm font-bold text-blue-700">بناء دون عناء</span>
         </Link>
 
         <div className="hidden md:flex gap-6 items-center text-sm">
@@ -65,18 +63,15 @@ export default function Navbar({ session }: NavbarProps) {
             </Link>
           ))}
 
-          {session && accountType ? (
+          {props.session && accountType ? (
             <>
               <Link
                 href={accountType === 'store' ? '/store/dashboard' : '/user/dashboard'}
                 className="hover:text-blue-500"
               >
-                {userName ?? session.user.email}
+                {userName ?? props.session.user.email}
               </Link>
-              <button
-                onClick={handleSignOut}
-                className="text-red-500 hover:underline"
-              >
+              <button onClick={handleSignOut} className="text-red-500 hover:underline">
                 تسجيل الخروج
               </button>
             </>
@@ -99,15 +94,12 @@ export default function Navbar({ session }: NavbarProps) {
               {l.label}
             </Link>
           ))}
-          {session && accountType ? (
+          {props.session && accountType ? (
             <>
               <Link href={accountType === 'store' ? '/store/dashboard' : '/user/dashboard'}>
-                {userName ?? session.user.email}
+                {userName ?? props.session.user.email}
               </Link>
-              <button
-                onClick={handleSignOut}
-                className="text-red-500"
-              >
+              <button onClick={handleSignOut} className="text-red-500">
                 خروج
               </button>
             </>

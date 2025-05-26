@@ -1,33 +1,33 @@
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
 
 // Import the ProfileClient component
-import { ProfileClient } from './ProfileClient';
+import ProfileClient from './ProfileClient'
 
 export default async function ProfilePage() {
-  const supabase = createServerComponentClient({ cookies });
+  const supabase = createServerComponentClient({ cookies })
   const {
     data: { user },
-  } = await supabase.auth.getUser();
+  } = await supabase.auth.getUser()
 
   if (!user) {
-    redirect('/login');
+    redirect('/login')
   }
 
   // حماية إضافية: إذا لم يكن لدى المستخدم بريد إلكتروني أو معرف
   if (!user?.email || !user?.id) {
-    redirect('/login');
+    redirect('/login')
   }
 
   const { data: userData, error } = await supabase
     .from('users')
     .select('name, email, account_type')
     .eq('id', user.id)
-    .single();
+    .single()
 
   if (error || !userData || !userData.email || !userData.account_type) {
-    redirect('/login');
+    redirect('/login')
   }
 
   return (
@@ -41,5 +41,5 @@ export default async function ProfilePage() {
         />
       </div>
     </main>
-  );
+  )
 }

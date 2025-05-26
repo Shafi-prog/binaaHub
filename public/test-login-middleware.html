@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار تسجيل الدخول والتوجيه الكامل</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            direction: rtl;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #f9f9f9;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .log {
+            background: #1e1e1e;
+            color: #f0f0f0;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 400px;
+            overflow-y: auto;
+            margin: 10px 0;
+        }
+        .success { color: #28a745; }
+        .error { color: #dc3545; }
+        .warning { color: #ffc107; }
+        .info { color: #17a2b8; }
+        input {
+            padding: 8px;
+            margin: 5px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 اختبار تسجيل الدخول والتوجيه الكامل</h1>
+        
+        <div class="test-section">
+            <h3>1️⃣ اختبار تسجيل الدخول عبر API</h3>
+            <div>
+                <input type="email" id="email" placeholder="البريد الإلكتروني" value="user@user.com">
+                <input type="password" id="password" placeholder="كلمة المرور" value="123456">
+                <button onclick="testLogin()">🔐 تسجيل الدخول</button>
+            </div>
+            <button onclick="testStoreLogin()">🏪 اختبار متجر (store@store.com)</button>
+        </div>
+
+        <div class="test-section">
+            <h3>2️⃣ اختبار التوجيه المباشر</h3>
+            <button onclick="testDirectNavigation('/user/dashboard')">👤 الذهاب لـ /user/dashboard</button>
+            <button onclick="testDirectNavigation('/store/dashboard')">🏪 الذهاب لـ /store/dashboard</button>
+        </div>
+
+        <div class="test-section">
+            <h3>3️⃣ إدارة الجلسة</h3>
+            <button onclick="checkSession()">🔍 فحص الجلسة الحالية</button>
+            <button onclick="clearSession()">🗑️ مسح الجلسة</button>
+            <button onclick="checkCookies()">🍪 فحص الكوكيز</button>
+        </div>
+
+        <div class="test-section">
+            <h3>📊 سجل الأحداث</h3>
+            <button onclick="clearLog()">🧹 مسح السجل</button>
+            <div id="log" class="log"></div>
+        </div>
+    </div>
+
+    <script>
+        function log(message, type = 'info') {
+            const logEl = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString('ar-SA');
+            const className = type === 'success' ? 'success' : 
+                             type === 'error' ? 'error' : 
+                             type === 'warning' ? 'warning' : 'info';
+            logEl.innerHTML += `<span class="${className}">[${timestamp}] ${message}</span>\n`;
+            logEl.scrollTop = logEl.scrollHeight;
+            console.log(`[${timestamp}] ${message}`);
+        }
+
+        function clearLog() {
+            document.getElementById('log').innerHTML = '';
+        }
+
+        async function testLogin() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            log(`🔐 بدء اختبار تسجيل الدخول لـ: ${email}`, 'info');
+            
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email, password }),
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    log(`✅ تم تسجيل الدخول بنجاح!`, 'success');
+                    log(`👤 المستخدم: ${result.user.email}`, 'info');
+                    log(`🎯 نوع الحساب: ${result.user.account_type}`, 'info');
+                    log(`🚀 URL التوجيه: ${result.redirectTo}`, 'info');
+                    
+                    if (result.session) {
+                        log(`🔐 إعداد الجلسة...`, 'info');
+                        
+                        // Set cookie
+                        document.cookie = `sb-access-token=${result.session.access_token}; path=/; max-age=3600; secure; samesite=strict`;
+                        log(`🍪 تم حفظ التوكن في الكوكيز`, 'success');
+                        
+                        // Test redirect
+                        log(`🔄 محاولة التوجيه إلى: ${result.redirectTo}`, 'info');
+                        
+                        // Use setTimeout to simulate actual redirect delay
+                        setTimeout(() => {
+                            window.location.href = result.redirectTo;
+                        }, 2000);
+                        
+                        log(`⏱️ سيتم التوجيه خلال ثانيتين...`, 'warning');
+                    }
+                } else {
+                    log(`❌ فشل تسجيل الدخول: ${result.error}`, 'error');
+                }
+            } catch (error) {
+                log(`❌ خطأ في الشبكة: ${error.message}`, 'error');
+            }
+        }
+
+        async function testStoreLogin() {
+            document.getElementById('email').value = 'store@store.com';
+            document.getElementById('password').value = '123456';
+            await testLogin();
+        }
+
+        function testDirectNavigation(path) {
+            log(`🔄 محاولة التنقل المباشر إلى: ${path}`, 'info');
+            window.location.href = path;
+        }
+
+        async function checkSession() {
+            log(`🔍 فحص الجلسة الحالية...`, 'info');
+            
+            // Check if we have cookies
+            const cookies = document.cookie;
+            log(`🍪 الكوكيز الحالية: ${cookies}`, 'info');
+            
+            // Try to get current URL to see where we are
+            log(`📍 الموقع الحالي: ${window.location.href}`, 'info');
+            
+            // Check if we can access protected routes
+            try {
+                const userResponse = await fetch('/user/dashboard');
+                const storeResponse = await fetch('/store/dashboard');
+                
+                log(`👤 وصول /user/dashboard: ${userResponse.status}`, userResponse.ok ? 'success' : 'error');
+                log(`🏪 وصول /store/dashboard: ${storeResponse.status}`, storeResponse.ok ? 'success' : 'error');
+            } catch (error) {
+                log(`❌ خطأ في فحص المسارات: ${error.message}`, 'error');
+            }
+        }
+
+        function clearSession() {
+            log(`🗑️ مسح الجلسة والكوكيز...`, 'warning');
+            
+            // Clear cookies
+            document.cookie = 'sb-access-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+            document.cookie = 'supabase-auth-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+            
+            log(`✅ تم مسح الكوكيز`, 'success');
+            
+            // Reload page
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
+        }
+
+        function checkCookies() {
+            const cookies = document.cookie.split(';').reduce((acc, cookie) => {
+                const [name, value] = cookie.trim().split('=');
+                acc[name] = value;
+                return acc;
+            }, {});
+            
+            log(`🍪 فحص الكوكيز:`, 'info');
+            for (const [name, value] of Object.entries(cookies)) {
+                if (name.includes('sb-') || name.includes('supabase')) {
+                    log(`  - ${name}: ${value ? 'موجود' : 'فارغ'}`, value ? 'success' : 'warning');
+                }
+            }
+            
+            if (Object.keys(cookies).length === 0) {
+                log(`⚠️ لا توجد كوكيز محفوظة`, 'warning');
+            }
+        }
+
+        // Initialize
+        log(`🚀 تم تحميل صفحة الاختبار`, 'success');
+        log(`📍 الموقع: ${window.location.href}`, 'info');
+        checkCookies();
+    </script>
+</body>
+</html>

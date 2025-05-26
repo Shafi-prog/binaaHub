@@ -1,12 +1,6 @@
 // src/types/database.ts
 
-export type Json =
-  | string
-  | number
-  | boolean
-  | null
-  | { [key: string]: Json }
-  | Json[]
+export type Json = string | number | boolean | null | { [key: string]: Json }
 
 export interface Database {
   public: {
@@ -33,8 +27,8 @@ export interface Database {
       }
       /* ... بقية جداولك ... */
     }
-    Views: {}
-    Functions: {}
+    Views: Record<string, never>
+    Functions: Record<string, never>
     /* ... */
   }
 }

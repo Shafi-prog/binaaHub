@@ -1,3 +1,3 @@
-export default function Page() {
-  return <main className='p-4'>services/design page</main>;
+export default function DesignPage() {
+  return <main className="p-4">services/design page</main>
 }

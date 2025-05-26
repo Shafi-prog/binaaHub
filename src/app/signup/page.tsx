@@ -49,7 +49,7 @@ export default function SignupPage() {
     toast.success('تم إنشاء الحساب بنجاح ✅')
     setTimeout(() => {
       setLoading(false)
-      window.location.href = '/login'
+      router.push('/login')
     }, 800)
   }
 
@@ -114,14 +114,18 @@ export default function SignupPage() {
               <button
                 type="button"
                 onClick={() => setAccountType('user')}
-                className={`px-4 py-2 rounded-full text-sm ${accountType === 'user' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'}`}
+                className={`px-4 py-2 rounded-full text-sm ${
+                  accountType === 'user' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'
+                }`}
               >
                 مستخدم
               </button>
               <button
                 type="button"
                 onClick={() => setAccountType('store')}
-                className={`px-4 py-2 rounded-full text-sm ${accountType === 'store' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'}`}
+                className={`px-4 py-2 rounded-full text-sm ${
+                  accountType === 'store' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'
+                }`}
               >
                 متجر
               </button>

@@ -1,11 +1,10 @@
 // src/app/projects/page.tsx
 import { Button, Card, CardContent } from '@/components/ui'
-import { createServerComponentClient } from '@supabase/ssr
-import { cookies } from 'next/headers'
+import { createServerSupabase } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 
 export default async function ProjectsPage() {
-  const supabase = createServerComponentClient({ cookies })
+  const supabase = createServerSupabase()
   const {
     data: { user },
   } = await supabase.auth.getUser()

@@ -5,7 +5,7 @@ import { createClient } from '@supabase/supabase-js'
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 
-let supabaseInstance: ReturnType<typeof createClient> | null = null;
+let supabaseInstance: ReturnType<typeof createClient> | null = null
 
 export const supabase = (() => {
   if (!supabaseInstance) {
@@ -15,8 +15,8 @@ export const supabase = (() => {
         autoRefreshToken: true, // ✅ تجديد الجلسة تلقائيًا
         detectSessionInUrl: true, // ✅ معالجة ريديركت OAuth لو استخدمت لاحقًا
       },
-    });
-    console.log('🔐 Supabase Connected:', supabaseUrl);
+    })
+    console.log('🔐 Supabase Connected:', supabaseUrl)
   }
-  return supabaseInstance;
-})();
+  return supabaseInstance
+})()

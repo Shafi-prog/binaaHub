@@ -1,8 +1,6 @@
-import { createClient } from '@supabase/supabase-js'
+import { createServerClient } from '@supabase/ssr'
 import { NextRequest, NextResponse } from 'next/server'
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY! || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+import { cookies } from 'next/headers'
 
 export async function POST(request: NextRequest) {
   try {
@@ -10,8 +8,31 @@ export async function POST(request: NextRequest) {
     
     console.log('🔐 [API] Login attempt for:', email)
     
-    // Create server-side supabase client
-    const supabase = createClient(supabaseUrl, supabaseServiceKey)
+    const cookieStore = await cookies()
+    
+    // Create server client with proper cookie handling
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          getAll() {
+            return cookieStore.getAll()
+          },
+          setAll(cookiesToSet) {
+            try {
+              cookiesToSet.forEach(({ name, value, options }) => {
+                cookieStore.set(name, value, options)
+              })
+            } catch {
+              // The `setAll` method was called from a Server Component.
+              // This can be ignored if you have middleware refreshing
+              // user sessions.
+            }
+          },
+        },
+      }
+    )
     
     // Authenticate user
     const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
@@ -56,43 +77,17 @@ export async function POST(request: NextRequest) {
             ? '/dashboard/construction-data'
             : '/'
 
-    console.log('🚀 [API] Redirect URL determined:', redirectTo)    // Create response with session info
-    const response = NextResponse.json({
+    console.log('🚀 [API] Redirect URL determined:', redirectTo)    // Return success response - cookies are automatically handled by createRouteHandlerClient
+    console.log('✅ [API] Login successful, session automatically managed by Supabase')
+
+    return NextResponse.json({
       success: true,
       redirectTo,
       user: {
         email: signInData.session.user.email,
         account_type: userData.account_type
-      },
-      session: {
-        access_token: signInData.session.access_token,
-        refresh_token: signInData.session.refresh_token,
-        expires_at: signInData.session.expires_at
       }
     })
-
-    // Set cookies server-side for middleware access
-    const accessToken = signInData.session.access_token
-    response.cookies.set('sb-access-token', accessToken, {
-      path: '/',
-      maxAge: 3600, // 1 hour
-      httpOnly: false, // Allow client-side access
-      secure: false, // Allow over HTTP for localhost development
-      sameSite: 'lax'
-    })
-    
-    response.cookies.set('supabase-auth-token', accessToken, {
-      path: '/',
-      maxAge: 3600,
-      httpOnly: false,
-      secure: false,
-      sameSite: 'lax'
-    })
-
-    console.log('🍪 [API] Set cookies server-side for middleware access')
-    console.log('✅ [API] Login successful, returning session data')
-
-    return response
 
   } catch (error) {
     console.error('❌ [API] Unexpected error:', error)

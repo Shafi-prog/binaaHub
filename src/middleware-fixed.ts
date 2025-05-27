@@ -1,12 +1,10 @@
-import { createServerClient } from '@supabase/ssr'
+import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 export default async function middleware(req: NextRequest) {
-  let supabaseResponse = NextResponse.next({
-    request: req,
-  })
-
+  const res = NextResponse.next()
+  
   // السماح بالوصول إلى الصفحات العامة
   const publicPaths = ['/', '/login', '/signup', '/not-found', '/403', '/direct-login', '/verify-auth']
   const pathname = req.nextUrl.pathname
@@ -21,43 +19,12 @@ export default async function middleware(req: NextRequest) {
     pathname.includes('.') // ملفات ثابتة مثل CSS, JS, images
   ) {
     console.log('✅ [middleware] مسار عام، السماح بالمرور')
-    return supabaseResponse
+    return res
   }
 
-  // Create Supabase client for middleware
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return req.cookies.getAll()
-        },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) => req.cookies.set(name, value))
-          supabaseResponse = NextResponse.next({
-            request: req,
-          })
-          cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
-          )
-        },
-      },
-    }
-  )
-  // Debug: Log cookies received by middleware
-  const cookies = req.cookies.getAll()
-  console.log('🍪 [middleware] Total cookies received:', cookies.length)
-  const authCookies = cookies.filter(c => 
-    c.name.includes('sb-') || 
-    c.name.includes('supabase') || 
-    c.name.includes('auth')
-  )
-  console.log('🔑 [middleware] Auth-related cookies:', authCookies.length)
-  authCookies.forEach(cookie => {
-    console.log(`   - ${cookie.name}: ${cookie.value.substring(0, 20)}...`)
-  })
-
+  // Create Supabase middleware client
+  const supabase = createMiddlewareClient({ req, res })
+  
   // Get session from Supabase
   const { data: { session }, error: sessionError } = await supabase.auth.getSession()
   
@@ -91,6 +58,7 @@ export default async function middleware(req: NextRequest) {
       console.error('❌ [middleware] Database query error:', error)
     }
   }
+
   if (!session || !userData) {
     console.warn('⚠️ [middleware] Session/User data missing. Redirecting to /login. Path:', pathname)
     return NextResponse.redirect(new URL('/login', req.url))
@@ -120,7 +88,7 @@ export default async function middleware(req: NextRequest) {
   }
 
   console.log('✅ [middleware] السماح بالوصول للمسار:', pathname)
-  return supabaseResponse
+  return res
 }
 
 export const config = {

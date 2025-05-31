@@ -100,12 +100,15 @@ export default function StoresPage() {
           throw new Error('Store query failed');
         }
         
-        const { data: storesData, error: storesError } = storesResult;if (storesError) {
+        const { data: storesData, error: storesError } = storesResult;        if (storesError) {
           console.error('❌ [Stores] Supabase error details:');
           console.error('Error message:', storesError.message || 'Unknown error');
           console.error('Error code:', storesError.code || 'No code');
           console.error('Error hint:', storesError.hint || 'No hint');
           console.error('Error details:', storesError.details || 'No details');
+          
+          // Show user-friendly error message
+          setError(`Database setup required. Error: ${storesError.message}. Using demo data for now.`);
           
           // If there's a database error, use mock data for development
           console.log('🔄 [Stores] Using mock data due to database error');
@@ -210,11 +213,10 @@ export default function StoresPage() {
           
           setStores(mockStores);
           console.log('✅ [Stores] Loaded mock stores:', mockStores.length);
-          return;
-        }
+          return;        }
 
-        setStores(storesData || []);
-        console.log('✅ [Stores] Loaded stores:', storesData?.length || 0);      } catch (error) {
+        setStores((storesData as unknown as Store[]) || []);
+        console.log('✅ [Stores] Loaded stores:', storesData?.length || 0);} catch (error) {
         console.error('❌ [Stores] Error loading stores:');
         console.error('Error type:', typeof error);
         console.error('Error message:', error instanceof Error ? error.message : 'Unknown error');
@@ -299,10 +301,9 @@ export default function StoresPage() {
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                <option value="all">جميع الفئات</option>
+              >                <option value="all">جميع الفئات</option>
                 {categories.map((category) => (
-                  <option key={category} value={category}>
+                  <option key={category} value={category || ''}>
                     {category}
                   </option>
                 ))}
@@ -315,10 +316,9 @@ export default function StoresPage() {
                 value={selectedCity}
                 onChange={(e) => setSelectedCity(e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                <option value="all">جميع المدن</option>
+              >                <option value="all">جميع المدن</option>
                 {cities.map((city) => (
-                  <option key={city} value={city}>
+                  <option key={city} value={city || ''}>
                     {city}
                   </option>
                 ))}

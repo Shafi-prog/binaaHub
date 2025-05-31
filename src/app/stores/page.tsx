@@ -50,11 +50,8 @@ export default function StoresPage() {
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [selectedCity, setSelectedCity] = useState<string>('all');
-  const [viewMode, setViewMode] = useState<ViewMode>('grid');
+  const [selectedCity, setSelectedCity] = useState<string>('all');  const [viewMode, setViewMode] = useState<ViewMode>('grid');
   const [isHydrated, setIsHydrated] = useState(false);
-
-  const supabase = createClientComponentClient();
 
   // Handle hydration
   useEffect(() => {
@@ -65,30 +62,45 @@ export default function StoresPage() {
     if (!isHydrated) return;    const fetchStores = async () => {
       try {
         setLoading(true);
-        setError(null);
-
-        console.log('🔍 [Stores] Fetching active stores...');
+        setError(null);        console.log('🔍 [Stores] Fetching active stores...');
         console.log('🔗 [Stores] Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL);
         console.log('🔑 [Stores] Has Anon Key:', !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
         
         // Test basic connection first
-        const { error: connectionError } = await supabase
-          .from('stores')
-          .select('count')
-          .limit(1);
+        let connectionTestResult;
+        try {
+          connectionTestResult = await supabase
+            .from('stores')
+            .select('count')
+            .limit(1);
+        } catch (connErr) {
+          console.error('❌ [Stores] Connection test exception:', connErr);
+          throw new Error('Database connection failed');
+        }
           
-        if (connectionError) {
-          console.error('❌ [Stores] Connection test failed:', connectionError);
+        if (connectionTestResult.error) {
+          console.error('❌ [Stores] Connection test failed:');
+          console.error('Error message:', connectionTestResult.error.message || 'Unknown error');
+          console.error('Error code:', connectionTestResult.error.code || 'No code');
+          console.error('Error hint:', connectionTestResult.error.hint || 'No hint');
         } else {
           console.log('✅ [Stores] Connection test successful');
         }
         
         // Fetch active stores
-        const { data: storesData, error: storesError } = await supabase
-          .from('stores')
-          .select('*')
-          .eq('is_active', true)
-          .order('rating', { ascending: false });if (storesError) {
+        let storesResult;
+        try {
+          storesResult = await supabase
+            .from('stores')
+            .select('*')
+            .eq('is_active', true)
+            .order('rating', { ascending: false });
+        } catch (queryErr) {
+          console.error('❌ [Stores] Query exception:', queryErr);
+          throw new Error('Store query failed');
+        }
+        
+        const { data: storesData, error: storesError } = storesResult;if (storesError) {
           console.error('❌ [Stores] Supabase error details:');
           console.error('Error message:', storesError.message || 'Unknown error');
           console.error('Error code:', storesError.code || 'No code');

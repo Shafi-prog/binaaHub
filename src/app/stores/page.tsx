@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { supabase } from '@/lib/supabaseClient';
 import Link from 'next/link';
 import { Card, LoadingSpinner, EmptyState } from '@/components/ui';
 import { formatCurrency } from '@/lib/utils';

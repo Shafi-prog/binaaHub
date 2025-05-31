@@ -214,9 +214,11 @@ export default function StoresPage() {
         }
 
         setStores(storesData || []);
-        console.log('✅ [Stores] Loaded stores:', storesData?.length || 0);
-      } catch (error) {
-        console.error('❌ [Stores] Error loading stores:', error);
+        console.log('✅ [Stores] Loaded stores:', storesData?.length || 0);      } catch (error) {
+        console.error('❌ [Stores] Error loading stores:');
+        console.error('Error type:', typeof error);
+        console.error('Error message:', error instanceof Error ? error.message : 'Unknown error');
+        console.error('Full error:', error);
         setError('حدث خطأ في تحميل المتاجر');
       } finally {
         setLoading(false);

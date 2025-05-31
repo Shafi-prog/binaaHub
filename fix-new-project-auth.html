@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>حل مشكلة مصادقة صفحة المشروع الجديد</title>
+    <style>
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 20px;
+        background-color: #f8f9fa;
+        line-height: 1.6;
+      }
+      .container {
+        max-width: 900px;
+        margin: 0 auto;
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      .status {
+        padding: 15px;
+        margin: 15px 0;
+        border-radius: 8px;
+        border: 1px solid;
+        position: relative;
+      }
+      .success {
+        background: #d4edda;
+        border-color: #c3e6cb;
+        color: #155724;
+      }
+      .error {
+        background: #f8d7da;
+        border-color: #f5c6cb;
+        color: #721c24;
+      }
+      .warning {
+        background: #fff3cd;
+        border-color: #ffeaa7;
+        color: #856404;
+      }
+      .info {
+        background: #cce7ff;
+        border-color: #b3d9ff;
+        color: #004085;
+      }
+      button {
+        padding: 12px 24px;
+        margin: 8px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.2s;
+      }
+      button:hover {
+        transform: translateY(-1px);
+      }
+      .btn-primary {
+        background: #0066cc;
+        color: white;
+      }
+      .btn-success {
+        background: #28a745;
+        color: white;
+      }
+      .btn-warning {
+        background: #ffc107;
+        color: black;
+      }
+      .btn-danger {
+        background: #dc3545;
+        color: white;
+      }
+      .btn-info {
+        background: #17a2b8;
+        color: white;
+      }
+      .btn-secondary {
+        background: #6c757d;
+        color: white;
+      }
+      #log {
+        background: #1e1e1e;
+        color: #f8f8f2;
+        border: 1px solid #444;
+        padding: 20px;
+        border-radius: 8px;
+        font-family: 'Consolas', 'Monaco', monospace;
+        font-size: 13px;
+        max-height: 500px;
+        overflow-y: auto;
+        white-space: pre-wrap;
+      }
+      .test-section {
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 20px 0;
+      }
+      .test-section h3 {
+        margin-top: 0;
+        color: #495057;
+      }
+      .action-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 15px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🛠️ حل مشكلة مصادقة صفحة المشروع الجديد</h1>
+
+      <div class="status info">
+        <strong>🎯 المشكلة:</strong> عند النقر على "مشروع جديد" يتم إعادة التوجيه إلى صفحة تسجيل
+        الدخول بدلاً من صفحة إنشاء المشروع
+      </div>
+
+      <div id="currentStatus" class="status warning">⏳ جاري فحص الحالة الحالية...</div>
+
+      <div class="test-section">
+        <h3>🔍 1. تشخيص المشكلة</h3>
+        <div class="action-group">
+          <button onclick="checkAuthStatus()" class="btn-primary">فحص حالة المصادقة</button>
+          <button onclick="debugServerAuth()" class="btn-info">تشخيص مصادقة الخادم</button>
+          <button onclick="testProtectedRoutes()" class="btn-warning">
+            اختبار المسارات المحمية
+          </button>
+        </div>
+      </div>
+
+      <div class="test-section">
+        <h3>🔧 2. محاولة الإصلاح</h3>
+        <div class="action-group">
+          <button onclick="refreshSession()" class="btn-success">تحديث الجلسة</button>
+          <button onclick="syncCookies()" class="btn-info">مزامنة Cookies</button>
+          <button onclick="forceReauth()" class="btn-warning">إعادة مصادقة قسرية</button>
+        </div>
+      </div>
+
+      <div class="test-section">
+        <h3>🧪 3. اختبار الحل</h3>
+        <div class="action-group">
+          <button onclick="testNewProjectAccess()" class="btn-success">
+            اختبار الوصول للمشروع الجديد
+          </button>
+          <button onclick="simulateNewProjectClick()" class="btn-primary">
+            محاكاة النقر على "مشروع جديد"
+          </button>
+        </div>
+      </div>
+
+      <div class="test-section">
+        <h3>📊 4. النتائج والحلول</h3>
+        <div id="testResults"></div>
+      </div>
+
+      <div style="margin: 20px 0">
+        <button onclick="clearLog()" class="btn-secondary">🗑️ مسح السجل</button>
+        <button onclick="exportReport()" class="btn-info">📋 تصدير التقرير</button>
+      </div>
+
+      <h3>📋 سجل التشخيص التفصيلي:</h3>
+      <div id="log"></div>
+    </div>
+
+    <script>
+      const log = document.getElementById('log');
+      const currentStatus = document.getElementById('currentStatus');
+      const testResults = document.getElementById('testResults');
+
+      let diagnosticData = {
+        timestamp: new Date().toISOString(),
+        tests: [],
+        authState: null,
+        serverState: null,
+        solutions: [],
+      };
+
+      function addLog(message, type = 'info') {
+        const timestamp = new Date().toLocaleString('ar-SA');
+        const colors = {
+          error: '#ff6b6b',
+          success: '#51cf66',
+          warning: '#ffd43b',
+          info: '#74c0fc',
+        };
+
+        const coloredMessage = `<span style="color: ${colors[type] || '#f8f8f2'}">[${timestamp}] ${type.toUpperCase()}: ${message}</span>\n`;
+        log.innerHTML += coloredMessage;
+        log.scrollTop = log.scrollHeight;
+        console.log(`[${timestamp}] ${type.toUpperCase()}: ${message}`);
+      }
+
+      function clearLog() {
+        log.innerHTML = '';
+        testResults.innerHTML = '';
+        diagnosticData.tests = [];
+      }
+
+      function updateStatus(message, type) {
+        currentStatus.className = `status ${type}`;
+        currentStatus.innerHTML = message;
+      }
+
+      function addResult(title, status, details, solution = null) {
+        const result = document.createElement('div');
+        result.className = `status ${status}`;
+        let content = `<strong>${title}:</strong> ${details}`;
+        if (solution) {
+          content += `<br><strong>الحل المقترح:</strong> ${solution}`;
+          diagnosticData.solutions.push({ title, solution });
+        }
+        result.innerHTML = content;
+        testResults.appendChild(result);
+
+        diagnosticData.tests.push({ title, status, details, solution });
+      }
+
+      async function checkAuthStatus() {
+        addLog('🔍 بدء فحص حالة المصادقة الشاملة...');
+
+        try {
+          // Check client-side cookies
+          const cookies = document.cookie;
+          addLog(`🍪 إجمالي Cookies: ${cookies.split(';').length}`);
+
+          // Check for Supabase auth cookies
+          const authCookies = cookies
+            .split(';')
+            .filter((c) => c.includes('sb-') || c.includes('supabase') || c.includes('auth'));
+          addLog(`🔑 Auth Cookies: ${authCookies.length} موجودة`);
+
+          if (authCookies.length === 0) {
+            addResult(
+              '🍪 Auth Cookies',
+              'error',
+              'لا توجد cookies مصادقة',
+              'تسجيل دخول جديد مطلوب',
+            );
+            return;
+          }
+
+          // Try to access a known working auth endpoint
+          const authCheck = await fetch('/auth-diagnostic');
+          const authText = await authCheck.text();
+
+          if (authCheck.ok) {
+            if (authText.includes('authenticated') || authText.includes('✅')) {
+              addResult('🔐 حالة المصادقة', 'success', 'مصادق بنجاح على جانب العميل');
+              diagnosticData.authState = 'authenticated';
+            } else {
+              addResult(
+                '🔐 حالة المصادقة',
+                'error',
+                'غير مصادق على جانب العميل',
+                'إعادة تسجيل دخول',
+              );
+              diagnosticData.authState = 'unauthenticated';
+            }
+          } else {
+            addResult('🔐 حالة المصادقة', 'error', `خطأ في فحص المصادقة: ${authCheck.status}`);
+          }
+
+          updateStatus('✅ تم فحص حالة المصادقة', 'info');
+        } catch (error) {
+          addLog(`❌ خطأ في فحص المصادقة: ${error.message}`, 'error');
+          addResult('🔐 حالة المصادقة', 'error', `خطأ: ${error.message}`);
+        }
+      }
+
+      async function debugServerAuth() {
+        addLog('🖥️ بدء تشخيص مصادقة الخادم...');
+
+        try {
+          const response = await fetch('/api/debug-auth');
+          const data = await response.json();
+
+          addLog(`📊 استجابة تشخيص الخادم: ${JSON.stringify(data, null, 2)}`);
+
+          if (response.ok) {
+            diagnosticData.serverState = data;
+
+            if (data.session.exists && data.user.exists) {
+              addResult(
+                '🖥️ مصادقة الخادم',
+                'success',
+                `مصادق بنجاح - User: ${data.user.data?.email}`,
+              );
+            } else if (data.session.exists && !data.user.exists) {
+              addResult(
+                '🖥️ مصادقة الخادم',
+                'warning',
+                'Session موجودة لكن User غير متاح',
+                'مشكلة في استخراج بيانات المستخدم',
+              );
+            } else if (!data.session.exists && data.cookies.authCookies.length > 0) {
+              addResult(
+                '🖥️ مصادقة الخادم',
+                'error',
+                'Cookies موجودة لكن Session غير صالحة',
+                'مشكلة في مزامنة Cookies بين العميل والخادم',
+              );
+            } else {
+              addResult(
+                '🖥️ مصادقة الخادم',
+                'error',
+                'لا توجد session أو cookies صالحة',
+                'تسجيل دخول جديد مطلوب',
+              );
+            }
+          } else {
+            addResult('🖥️ مصادقة الخادم', 'error', `خطأ في API: ${data.error}`);
+          }
+        } catch (error) {
+          addLog(`❌ خطأ في تشخيص الخادم: ${error.message}`, 'error');
+          addResult('🖥️ مصادقة الخادم', 'error', `خطأ: ${error.message}`);
+        }
+      }
+
+      async function testProtectedRoutes() {
+        addLog('🛡️ اختبار المسارات المحمية...');
+
+        const routes = ['/user/dashboard', '/user/projects', '/user/projects/new', '/user/profile'];
+
+        for (const route of routes) {
+          try {
+            addLog(`🧪 اختبار ${route}...`);
+
+            const response = await fetch(route, {
+              method: 'GET',
+              redirect: 'manual',
+            });
+
+            if (response.status === 200) {
+              addLog(`✅ ${route}: وصول ناجح`);
+              if (route === '/user/projects/new') {
+                addResult('🆕 صفحة المشروع الجديد', 'success', 'متاحة ويمكن الوصول إليها!');
+              }
+            } else if (response.status === 307 || response.status === 302) {
+              const location = response.headers.get('location');
+              addLog(`🔄 ${route}: إعادة توجيه إلى ${location}`);
+
+              if (route === '/user/projects/new' && location === '/login') {
+                addResult(
+                  '🆕 صفحة المشروع الجديد',
+                  'error',
+                  'يتم إعادة التوجيه إلى تسجيل الدخول',
+                  'هذه هي المشكلة الأساسية!',
+                );
+              }
+            } else {
+              addLog(`❌ ${route}: خطأ ${response.status}`);
+            }
+          } catch (error) {
+            addLog(`❌ خطأ في اختبار ${route}: ${error.message}`, 'error');
+          }
+        }
+      }
+
+      async function refreshSession() {
+        addLog('🔄 محاولة تحديث الجلسة...');
+
+        try {
+          // Try to refresh via auth refresh endpoint
+          const response = await fetch('/api/auth/refresh', {
+            method: 'POST',
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            addLog('✅ تم تحديث الجلسة بنجاح');
+            addResult('🔄 تحديث الجلسة', 'success', 'تم تحديث الجلسة بنجاح');
+
+            // Test new project access after refresh
+            setTimeout(() => testNewProjectAccess(), 1000);
+          } else {
+            addLog(`❌ فشل تحديث الجلسة: ${response.status}`);
+            addResult('🔄 تحديث الجلسة', 'error', `فشل التحديث: ${response.status}`);
+          }
+        } catch (error) {
+          addLog(`❌ خطأ في تحديث الجلسة: ${error.message}`, 'error');
+          addResult('🔄 تحديث الجلسة', 'error', `خطأ: ${error.message}`);
+        }
+      }
+
+      async function syncCookies() {
+        addLog('🔄 محاولة مزامنة Cookies...');
+
+        try {
+          // Force a page refresh to sync cookies
+          window.location.reload();
+        } catch (error) {
+          addLog(`❌ خطأ في مزامنة Cookies: ${error.message}`, 'error');
+        }
+      }
+
+      async function forceReauth() {
+        addLog('🔐 إجراء إعادة مصادقة قسرية...');
+
+        try {
+          addResult('🔐 إعادة المصادقة', 'info', 'سيتم توجيهك إلى صفحة تسجيل الدخول');
+          setTimeout(() => {
+            window.location.href = '/login';
+          }, 2000);
+        } catch (error) {
+          addLog(`❌ خطأ في إعادة المصادقة: ${error.message}`, 'error');
+        }
+      }
+
+      async function testNewProjectAccess() {
+        addLog('🆕 اختبار الوصول المباشر لصفحة المشروع الجديد...');
+
+        try {
+          const response = await fetch('/user/projects/new', {
+            method: 'GET',
+            redirect: 'manual',
+          });
+
+          if (response.status === 200) {
+            addLog('✅ نجح الوصول لصفحة المشروع الجديد!');
+            addResult('✅ حل المشكلة', 'success', 'صفحة المشروع الجديد متاحة الآن!');
+          } else if (response.status === 307 || response.status === 302) {
+            const location = response.headers.get('location');
+            addLog(`❌ ما زالت المشكلة موجودة - إعادة توجيه إلى: ${location}`);
+            addResult(
+              '❌ المشكلة مستمرة',
+              'error',
+              `إعادة توجيه إلى ${location}`,
+              'يجب حل مشكلة المصادقة',
+            );
+          } else {
+            addLog(`❌ خطأ غير متوقع: ${response.status}`);
+            addResult('❌ خطأ', 'error', `خطأ HTTP ${response.status}`);
+          }
+        } catch (error) {
+          addLog(`❌ خطأ في الاختبار: ${error.message}`, 'error');
+          addResult('❌ خطأ في الاختبار', 'error', `خطأ: ${error.message}`);
+        }
+      }
+
+      async function simulateNewProjectClick() {
+        addLog('🖱️ محاكاة النقر على زر "مشروع جديد"...');
+
+        try {
+          // First check if we're on dashboard
+          const currentUrl = window.location.href;
+          if (!currentUrl.includes('/dashboard')) {
+            addResult(
+              '📍 الموقع الحالي',
+              'warning',
+              'لست في صفحة Dashboard',
+              'انتقل إلى Dashboard أولاً',
+            );
+            return;
+          }
+
+          // Simulate the exact click behavior
+          addLog('🔗 محاولة الانتقال إلى /user/projects/new...');
+
+          // Use window.location to simulate exactly what the button does
+          window.location.href = '/user/projects/new';
+        } catch (error) {
+          addLog(`❌ خطأ في المحاكاة: ${error.message}`, 'error');
+          addResult('🖱️ محاكاة النقر', 'error', `خطأ: ${error.message}`);
+        }
+      }
+
+      function exportReport() {
+        const report = {
+          ...diagnosticData,
+          timestamp: new Date().toISOString(),
+          url: window.location.href,
+          userAgent: navigator.userAgent,
+        };
+
+        const reportText = JSON.stringify(report, null, 2);
+        const blob = new Blob([reportText], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `auth-debug-report-${Date.now()}.json`;
+        a.click();
+
+        URL.revokeObjectURL(url);
+        addLog('📋 تم تصدير التقرير بنجاح');
+      }
+
+      // Auto-run initial checks
+      setTimeout(() => {
+        checkAuthStatus();
+      }, 1000);
+    </script>
+  </body>
+</html>

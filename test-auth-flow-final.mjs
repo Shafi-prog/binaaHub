@@ -13,12 +13,12 @@ async function testCompleteAuthFlow() {
       },
       body: JSON.stringify({
         email: 'store@store.com',
-        password: '123456'
+        password: '123456',
       }),
     });
 
     console.log(`Login Status: ${loginResponse.status}`);
-    
+
     if (!loginResponse.ok) {
       const error = await loginResponse.text();
       console.error('❌ Login failed:', error);
@@ -30,7 +30,7 @@ async function testCompleteAuthFlow() {
       success: loginData.success,
       redirectTo: loginData.redirectTo,
       userEmail: loginData.user?.email,
-      accountType: loginData.user?.account_type
+      accountType: loginData.user?.account_type,
     });
 
     // Extract all Set-Cookie headers
@@ -40,7 +40,7 @@ async function testCompleteAuthFlow() {
         setCookieHeaders.push(value);
       }
     }
-    
+
     console.log('🍪 Cookies from login:', setCookieHeaders.length ? 'Present' : 'None');
     if (setCookieHeaders.length > 0) {
       setCookieHeaders.forEach((cookie, i) => {
@@ -51,40 +51,40 @@ async function testCompleteAuthFlow() {
 
     // Step 2: Test middleware with protected route
     console.log('\n🛡️ Step 2: Testing middleware with protected route...');
-    
-    const cookieHeader = setCookieHeaders.map(cookie => cookie.split(';')[0]).join('; ');
+
+    const cookieHeader = setCookieHeaders.map((cookie) => cookie.split(';')[0]).join('; ');
     console.log('🍪 Sending cookies:', cookieHeader ? 'Yes' : 'No');
 
     const protectedResponse = await fetch(`http://localhost:3002${loginData.redirectTo}`, {
       headers: {
-        'Cookie': cookieHeader
+        Cookie: cookieHeader,
       },
-      redirect: 'manual'
+      redirect: 'manual',
     });
 
     console.log(`Protected route status: ${protectedResponse.status}`);
-    
+
     if (protectedResponse.status === 307 || protectedResponse.status === 302) {
       const redirectLocation = protectedResponse.headers.get('location');
       console.log(`Redirect to: ${redirectLocation}`);
-      
+
       if (redirectLocation?.includes('/login')) {
         console.error('❌ MIDDLEWARE FAILED: Redirected back to login');
         console.error('   This means the Supabase auth helpers are not working properly');
-        
+
         // Step 3: Debug what cookies the server sees
         console.log('\n🔍 Step 3: Debugging server-side cookies...');
         const debugResponse = await fetch('http://localhost:3002/api/check-cookies', {
           headers: {
-            'Cookie': cookieHeader
-          }
+            Cookie: cookieHeader,
+          },
         });
 
         if (debugResponse.ok) {
           const debugData = await debugResponse.json();
           console.log('Server sees cookies:', {
             total: debugData.total,
-            names: debugData.cookies.map(c => c.name)
+            names: debugData.cookies.map((c) => c.name),
           });
         }
       } else {
@@ -96,7 +96,6 @@ async function testCompleteAuthFlow() {
     } else {
       console.log(`🤔 Unexpected status: ${protectedResponse.status}`);
     }
-
   } catch (error) {
     console.error('❌ Test failed:', error.message);
   }

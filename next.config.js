@@ -1,9 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
-  webpack(config) {
-    return config
+  experimental: {
+    forceSwcTransforms: true,
   },
-}
+  compiler: {
+    // Remove console logs in production
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
+  // Other settings
+  reactStrictMode: true,
+  productionBrowserSourceMaps: true,
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

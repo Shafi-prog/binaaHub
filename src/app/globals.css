@@ -3,6 +3,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.font-tajawal {
+  font-family: 'Tajawal', sans-serif;
+}
+
 /* إعدادات الألوان والخلفيات */
 :root {
   --background: #ffffff;

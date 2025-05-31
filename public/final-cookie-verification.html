@@ -1,276 +1,283 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Final Cookie Verification</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 20px;
-      background-color: #f8f9fa;
-      color: #333;
-      line-height: 1.6;
-    }
-    h1 {
-      color: #1a73e8;
-      text-align: center;
-      margin-bottom: 30px;
-    }
-    .card {
-      background-color: white;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      border-radius: 8px;
-      padding: 20px;
-      margin-bottom: 20px;
-    }
-    .section {
-      margin-bottom: 15px;
-      padding-bottom: 15px;
-      border-bottom: 1px solid #eee;
-    }
-    .section-title {
-      font-weight: bold;
-      color: #1a73e8;
-      margin-bottom: 10px;
-    }
-    .cookie-list {
-      background-color: #f5f5f5;
-      padding: 10px;
-      border-radius: 5px;
-      font-family: monospace;
-      font-size: 14px;
-      overflow-x: auto;
-    }
-    .cookie-item {
-      padding: 3px 0;
-    }
-    button {
-      background-color: #1a73e8;
-      color: white;
-      border: none;
-      padding: 10px 15px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 16px;
-      transition: background-color 0.2s;
-    }
-    button:hover {
-      background-color: #1557b0;
-    }
-    .actions {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      margin-top: 20px;
-    }
-    .success {
-      color: #0d904f;
-      font-weight: bold;
-    }
-    .error {
-      color: #d93025;
-      font-weight: bold;
-    }
-    .warning {
-      color: #f29900;
-      font-weight: bold;
-    }
-    #testResults {
-      margin-top: 20px;
-    }
-    .result-item {
-      padding: 8px;
-      margin-bottom: 5px;
-      border-radius: 4px;
-    }
-    .result-success {
-      background-color: #e6f4ea;
-    }
-    .result-warning {
-      background-color: #fef7e0;
-    }
-    .result-error {
-      background-color: #fce8e6;
-    }
-    .dashboard-links {
-      display: flex;
-      justify-content: space-around;
-      margin-top: 20px;
-    }
-    .dashboard-link {
-      display: inline-block;
-      background-color: #34a853;
-      color: white;
-      text-decoration: none;
-      padding: 10px 20px;
-      border-radius: 4px;
-      font-weight: bold;
-    }
-  </style>
-</head>
-<body>
-  <h1>Final Cookie Verification Tool</h1>
-  
-  <div class="card">
-    <div class="section">
-      <div class="section-title">Current Authentication Status</div>
-      <div id="authStatus">Checking...</div>
-    </div>
-    
-    <div class="section">
-      <div class="section-title">Cookie Information</div>
-      <div class="cookie-list" id="cookieList">Loading cookies...</div>
-    </div>
-    
-    <div class="section">
-      <div class="section-title">Authentication Tokens</div>
-      <div id="tokenInfo">Checking for tokens...</div>
-    </div>
-    
-    <div class="section">
-      <div class="section-title">HTTP-Only Cookie Detection</div>
-      <div id="httpOnlyCookies">
-        Checking for HTTP-only cookies...
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Final Cookie Verification</title>
+    <style>
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f8f9fa;
+        color: #333;
+        line-height: 1.6;
+      }
+      h1 {
+        color: #1a73e8;
+        text-align: center;
+        margin-bottom: 30px;
+      }
+      .card {
+        background-color: white;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+      }
+      .section {
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #eee;
+      }
+      .section-title {
+        font-weight: bold;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+      .cookie-list {
+        background-color: #f5f5f5;
+        padding: 10px;
+        border-radius: 5px;
+        font-family: monospace;
+        font-size: 14px;
+        overflow-x: auto;
+      }
+      .cookie-item {
+        padding: 3px 0;
+      }
+      button {
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.2s;
+      }
+      button:hover {
+        background-color: #1557b0;
+      }
+      .actions {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-top: 20px;
+      }
+      .success {
+        color: #0d904f;
+        font-weight: bold;
+      }
+      .error {
+        color: #d93025;
+        font-weight: bold;
+      }
+      .warning {
+        color: #f29900;
+        font-weight: bold;
+      }
+      #testResults {
+        margin-top: 20px;
+      }
+      .result-item {
+        padding: 8px;
+        margin-bottom: 5px;
+        border-radius: 4px;
+      }
+      .result-success {
+        background-color: #e6f4ea;
+      }
+      .result-warning {
+        background-color: #fef7e0;
+      }
+      .result-error {
+        background-color: #fce8e6;
+      }
+      .dashboard-links {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 20px;
+      }
+      .dashboard-link {
+        display: inline-block;
+        background-color: #34a853;
+        color: white;
+        text-decoration: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Final Cookie Verification Tool</h1>
+
+    <div class="card">
+      <div class="section">
+        <div class="section-title">Current Authentication Status</div>
+        <div id="authStatus">Checking...</div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Cookie Information</div>
+        <div class="cookie-list" id="cookieList">Loading cookies...</div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Authentication Tokens</div>
+        <div id="tokenInfo">Checking for tokens...</div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">HTTP-Only Cookie Detection</div>
+        <div id="httpOnlyCookies">Checking for HTTP-only cookies...</div>
+      </div>
+
+      <div class="actions">
+        <button id="checkButton">Refresh Cookie Status</button>
+        <button id="loginRedirectButton">Go to Login Page</button>
+        <button id="clearCookiesButton">Clear All Cookies</button>
       </div>
     </div>
-    
-    <div class="actions">
-      <button id="checkButton">Refresh Cookie Status</button>
-      <button id="loginRedirectButton">Go to Login Page</button>
-      <button id="clearCookiesButton">Clear All Cookies</button>
+
+    <div class="card">
+      <div class="section-title">Protected Page Access Test</div>
+      <p>Test if you can access protected pages without being redirected:</p>
+
+      <div class="dashboard-links">
+        <a href="/user/dashboard" class="dashboard-link">User Dashboard</a>
+        <a href="/store/dashboard" class="dashboard-link">Store Dashboard</a>
+      </div>
+
+      <div id="testResults"></div>
     </div>
-  </div>
-  
-  <div class="card">
-    <div class="section-title">Protected Page Access Test</div>
-    <p>Test if you can access protected pages without being redirected:</p>
-    
-    <div class="dashboard-links">
-      <a href="/user/dashboard" class="dashboard-link">User Dashboard</a>
-      <a href="/store/dashboard" class="dashboard-link">Store Dashboard</a>
-    </div>
-    
-    <div id="testResults"></div>
-  </div>
-  
-  <script>
-    // Function to display cookies
-    function displayCookies() {
-      const cookieList = document.getElementById('cookieList');
-      const cookies = document.cookie.split(';');
-      
-      if (cookies.length === 1 && cookies[0] === '') {
-        cookieList.innerHTML = '<div class="error">No cookies found</div>';
-        return;
-      }
-      
-      let cookieHtml = '';
-      cookies.forEach(cookie => {
-        const trimmedCookie = cookie.trim();
-        cookieHtml += `<div class="cookie-item">${trimmedCookie}</div>`;
-      });
-      
-      cookieList.innerHTML = cookieHtml;
-    }
-    
-    // Function to check for authentication tokens
-    function checkForTokens() {
-      const tokenInfo = document.getElementById('tokenInfo');
-      const cookies = document.cookie.split(';').map(c => c.trim());
-      
-      const accessTokenCookie = cookies.find(c => c.startsWith('sb-access-token=') || c.startsWith('sb-access-token-client=') || c.startsWith('access_token='));
-      const refreshTokenCookie = cookies.find(c => c.startsWith('sb-refresh-token='));
-      
-      if (accessTokenCookie) {
-        tokenInfo.innerHTML = '<span class="success">✓ Access token found</span>';
-        if (refreshTokenCookie) {
-          tokenInfo.innerHTML += '<br><span class="success">✓ Refresh token found</span>';
-        } else {
-          tokenInfo.innerHTML += '<br><span class="warning">⚠ Refresh token not found</span>';
+
+    <script>
+      // Function to display cookies
+      function displayCookies() {
+        const cookieList = document.getElementById('cookieList');
+        const cookies = document.cookie.split(';');
+
+        if (cookies.length === 1 && cookies[0] === '') {
+          cookieList.innerHTML = '<div class="error">No cookies found</div>';
+          return;
         }
-      } else {
-        tokenInfo.innerHTML = '<span class="error">✗ No authentication tokens found</span>';
-      }
-    }
-    
-    // Function to check HTTP-only cookies via server
-    async function checkHttpOnlyCookies() {
-      const httpOnlyCookies = document.getElementById('httpOnlyCookies');
-      httpOnlyCookies.innerHTML = 'Checking server-side cookies...';
-      
-      try {
-        const response = await fetch('/api/check-cookies', {
-          method: 'GET',
-          credentials: 'include'
+
+        let cookieHtml = '';
+        cookies.forEach((cookie) => {
+          const trimmedCookie = cookie.trim();
+          cookieHtml += `<div class="cookie-item">${trimmedCookie}</div>`;
         });
-        
-        if (response.ok) {
-          const data = await response.json();
-          
-          if (data.hasSbAccessToken) {
-            httpOnlyCookies.innerHTML = '<span class="success">✓ Server detected HTTP-only sb-access-token</span>';
+
+        cookieList.innerHTML = cookieHtml;
+      }
+
+      // Function to check for authentication tokens
+      function checkForTokens() {
+        const tokenInfo = document.getElementById('tokenInfo');
+        const cookies = document.cookie.split(';').map((c) => c.trim());
+
+        const accessTokenCookie = cookies.find(
+          (c) =>
+            c.startsWith('sb-access-token=') ||
+            c.startsWith('sb-access-token-client=') ||
+            c.startsWith('access_token='),
+        );
+        const refreshTokenCookie = cookies.find((c) => c.startsWith('sb-refresh-token='));
+
+        if (accessTokenCookie) {
+          tokenInfo.innerHTML = '<span class="success">✓ Access token found</span>';
+          if (refreshTokenCookie) {
+            tokenInfo.innerHTML += '<br><span class="success">✓ Refresh token found</span>';
           } else {
-            httpOnlyCookies.innerHTML = '<span class="error">✗ Server could not detect HTTP-only sb-access-token</span>';
+            tokenInfo.innerHTML += '<br><span class="warning">⚠ Refresh token not found</span>';
           }
         } else {
-          httpOnlyCookies.innerHTML = '<span class="error">✗ Error checking HTTP-only cookies</span>';
+          tokenInfo.innerHTML = '<span class="error">✗ No authentication tokens found</span>';
         }
-      } catch (error) {
-        httpOnlyCookies.innerHTML = `<span class="error">✗ Error: ${error.message}</span>`;
       }
-    }
-    
-    // Function to check authentication status
-    function checkAuthStatus() {
-      const authStatus = document.getElementById('authStatus');
-      const cookies = document.cookie.split(';').map(c => c.trim());
-      
-      const hasAccessToken = cookies.some(c => 
-        c.startsWith('sb-access-token=') || 
-        c.startsWith('sb-access-token-client=') ||
-        c.startsWith('access_token=')
-      );
-      
-      if (hasAccessToken) {
-        authStatus.innerHTML = '<span class="success">✓ You appear to be authenticated</span>';
-      } else {
-        authStatus.innerHTML = '<span class="error">✗ You are not authenticated</span>';
+
+      // Function to check HTTP-only cookies via server
+      async function checkHttpOnlyCookies() {
+        const httpOnlyCookies = document.getElementById('httpOnlyCookies');
+        httpOnlyCookies.innerHTML = 'Checking server-side cookies...';
+
+        try {
+          const response = await fetch('/api/check-cookies', {
+            method: 'GET',
+            credentials: 'include',
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+
+            if (data.hasSbAccessToken) {
+              httpOnlyCookies.innerHTML =
+                '<span class="success">✓ Server detected HTTP-only sb-access-token</span>';
+            } else {
+              httpOnlyCookies.innerHTML =
+                '<span class="error">✗ Server could not detect HTTP-only sb-access-token</span>';
+            }
+          } else {
+            httpOnlyCookies.innerHTML =
+              '<span class="error">✗ Error checking HTTP-only cookies</span>';
+          }
+        } catch (error) {
+          httpOnlyCookies.innerHTML = `<span class="error">✗ Error: ${error.message}</span>`;
+        }
       }
-    }
-    
-    // Function to run all checks
-    function runAllChecks() {
-      displayCookies();
-      checkForTokens();
-      checkAuthStatus();
-      checkHttpOnlyCookies();
-    }
-    
-    // Function to clear all cookies
-    function clearAllCookies() {
-      const cookies = document.cookie.split(';');
-      
-      cookies.forEach(cookie => {
-        const name = cookie.split('=')[0].trim();
-        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+
+      // Function to check authentication status
+      function checkAuthStatus() {
+        const authStatus = document.getElementById('authStatus');
+        const cookies = document.cookie.split(';').map((c) => c.trim());
+
+        const hasAccessToken = cookies.some(
+          (c) =>
+            c.startsWith('sb-access-token=') ||
+            c.startsWith('sb-access-token-client=') ||
+            c.startsWith('access_token='),
+        );
+
+        if (hasAccessToken) {
+          authStatus.innerHTML = '<span class="success">✓ You appear to be authenticated</span>';
+        } else {
+          authStatus.innerHTML = '<span class="error">✗ You are not authenticated</span>';
+        }
+      }
+
+      // Function to run all checks
+      function runAllChecks() {
+        displayCookies();
+        checkForTokens();
+        checkAuthStatus();
+        checkHttpOnlyCookies();
+      }
+
+      // Function to clear all cookies
+      function clearAllCookies() {
+        const cookies = document.cookie.split(';');
+
+        cookies.forEach((cookie) => {
+          const name = cookie.split('=')[0].trim();
+          document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+        });
+
+        alert('All cookies have been cleared');
+        runAllChecks();
+      }
+
+      // Event listeners
+      document.getElementById('checkButton').addEventListener('click', runAllChecks);
+      document.getElementById('loginRedirectButton').addEventListener('click', () => {
+        window.location.href = '/login';
       });
-      
-      alert('All cookies have been cleared');
-      runAllChecks();
-    }
-    
-    // Event listeners
-    document.getElementById('checkButton').addEventListener('click', runAllChecks);
-    document.getElementById('loginRedirectButton').addEventListener('click', () => {
-      window.location.href = '/login';
-    });
-    document.getElementById('clearCookiesButton').addEventListener('click', clearAllCookies);
-    
-    // Run checks on page load
-    window.onload = runAllChecks;
-  </script>
-</body>
+      document.getElementById('clearCookiesButton').addEventListener('click', clearAllCookies);
+
+      // Run checks on page load
+      window.onload = runAllChecks;
+    </script>
+  </body>
 </html>

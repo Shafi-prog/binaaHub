@@ -1,12 +1,12 @@
-'use client'
+'use client';
 
-import LogoutButton from '@/components/ui/LogoutButton'
+import LogoutButton from '@/components/ui/LogoutButton';
 
 export type ProfileClientProps = {
-  name: string
-  email: string
-  accountType: 'user' | 'store'
-}
+  name: string;
+  email: string;
+  accountType: 'user' | 'store';
+};
 
 export default function ProfileClient({ name, email, accountType }: ProfileClientProps) {
   return (
@@ -23,5 +23,5 @@ export default function ProfileClient({ name, email, accountType }: ProfileClien
 
       <LogoutButton />
     </div>
-  )
+  );
 }

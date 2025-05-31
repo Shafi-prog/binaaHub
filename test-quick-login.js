@@ -14,13 +14,13 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 async function testLoginAndRedirect() {
   console.log('🧪 اختبار تسجيل الدخول والتوجيه...');
-  
+
   try {
     // 1. تسجيل الدخول
     console.log('1️⃣ تسجيل الدخول...');
     const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
       email: 'user@user.com',
-      password: '123456'
+      password: '123456',
     });
 
     if (signInError) {
@@ -47,13 +47,14 @@ async function testLoginAndRedirect() {
 
     // 3. تحديد صفحة التوجيه
     console.log('3️⃣ تحديد صفحة التوجيه...');
-    const redirectTo = userData.account_type === 'store'
-      ? '/store/dashboard'
-      : userData.account_type === 'user' || userData.account_type === 'client'
-        ? '/user/dashboard'
-        : userData.account_type === 'engineer' || userData.account_type === 'consultant'
-          ? '/dashboard/construction-data'
-          : '/';
+    const redirectTo =
+      userData.account_type === 'store'
+        ? '/store/dashboard'
+        : userData.account_type === 'user' || userData.account_type === 'client'
+          ? '/user/dashboard'
+          : userData.account_type === 'engineer' || userData.account_type === 'consultant'
+            ? '/dashboard/construction-data'
+            : '/';
 
     console.log('✅ صفحة التوجيه:', redirectTo);
 
@@ -64,7 +65,9 @@ async function testLoginAndRedirect() {
 
     // 5. التحقق من الجلسة النهائية
     console.log('5️⃣ التحقق من الجلسة النهائية...');
-    const { data: { session } } = await supabase.auth.getSession();
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
     console.log('✅ الجلسة النهائية:', session ? 'موجودة' : 'غير موجودة');
     if (session) {
       console.log('👤 المستخدم:', session.user.email);
@@ -78,7 +81,6 @@ async function testLoginAndRedirect() {
 
     console.log('🎉 جميع خطوات الاختبار نجحت!');
     console.log(`🚀 المستخدم ${userData.account_type} يجب أن يُوجه إلى: ${redirectTo}`);
-
   } catch (error) {
     console.error('❌ خطأ في الاختبار:', error.message);
   }

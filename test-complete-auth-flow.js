@@ -15,12 +15,12 @@ async function testCompleteAuthFlow() {
       },
       body: JSON.stringify({
         email: 'user@example.com',
-        password: 'password123'
+        password: 'password123',
       }),
     });
 
     console.log(`Login API Status: ${loginResponse.status}`);
-    
+
     if (!loginResponse.ok) {
       const error = await loginResponse.text();
       console.error('❌ Login API failed:', error);
@@ -32,7 +32,7 @@ async function testCompleteAuthFlow() {
       success: loginData.success,
       redirectTo: loginData.redirectTo,
       userEmail: loginData.user?.email,
-      accountType: loginData.user?.account_type
+      accountType: loginData.user?.account_type,
     });
 
     // Extract cookies from login response
@@ -41,13 +41,13 @@ async function testCompleteAuthFlow() {
 
     // Step 2: Test middleware by accessing protected route
     console.log('\n🛡️ Step 2: Testing middleware with protected route...');
-    
+
     // Make request to protected route with cookies
     const protectedResponse = await fetch(`${BASE_URL}${loginData.redirectTo}`, {
       headers: {
-        'Cookie': setCookieHeaders
+        Cookie: setCookieHeaders,
       },
-      redirect: 'manual' // Don't follow redirects automatically
+      redirect: 'manual', // Don't follow redirects automatically
     });
 
     console.log(`Protected route status: ${protectedResponse.status}`);
@@ -69,24 +69,20 @@ async function testCompleteAuthFlow() {
     console.log('\n🍪 Step 3: Testing what cookies middleware receives...');
     const cookieCheckResponse = await fetch(`${BASE_URL}/api/check-cookies`, {
       headers: {
-        'Cookie': setCookieHeaders
-      }
+        Cookie: setCookieHeaders,
+      },
     });
 
     if (cookieCheckResponse.ok) {
       const cookieData = await cookieCheckResponse.json();
       console.log('Server-side cookies:', {
         total: cookieData.total,
-        supabaseRelated: cookieData.cookies.filter(c => 
-          c.name.includes('supabase') || 
-          c.name.includes('sb-') ||
-          c.name.includes('auth')
+        supabaseRelated: cookieData.cookies.filter(
+          (c) => c.name.includes('supabase') || c.name.includes('sb-') || c.name.includes('auth'),
         ).length,
-        hasAuthTokens: cookieData.cookies.some(c => 
-          c.name.includes('access') || 
-          c.name.includes('refresh') ||
-          c.name.includes('sb-')
-        )
+        hasAuthTokens: cookieData.cookies.some(
+          (c) => c.name.includes('access') || c.name.includes('refresh') || c.name.includes('sb-'),
+        ),
       });
     }
 
@@ -94,16 +90,15 @@ async function testCompleteAuthFlow() {
     console.log('\n✅ Step 4: Testing verification page...');
     const verifyResponse = await fetch(`${BASE_URL}/verify-auth`, {
       headers: {
-        'Cookie': setCookieHeaders
+        Cookie: setCookieHeaders,
       },
-      redirect: 'manual'
+      redirect: 'manual',
     });
 
     console.log(`Verify page status: ${verifyResponse.status}`);
     if (verifyResponse.status === 307 || verifyResponse.status === 302) {
       console.log(`Verify page redirect: ${verifyResponse.headers.get('location')}`);
     }
-
   } catch (error) {
     console.error('❌ Test failed with error:', error.message);
   }

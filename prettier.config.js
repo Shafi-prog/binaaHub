@@ -7,4 +7,4 @@ module.exports = {
   bracketSpacing: true, // يحط فراغ بين الأقواس
   arrowParens: 'always', // دايمًا يحط أقواس للسهم
   printWidth: 100, // أقصى طول للسطر 100 حرف
-}
+};

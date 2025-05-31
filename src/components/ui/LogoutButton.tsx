@@ -1,26 +1,29 @@
-'use client'
+'use client';
 
-import { toast } from 'react-hot-toast'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { useRouter } from 'next/navigation';
+import { toast } from 'react-hot-toast';
 
-export default function LogoutButton() {
+interface LogoutButtonProps {
+  className?: string;
+}
+
+export default function LogoutButton({ className = '' }: LogoutButtonProps) {
+  const supabase = createClientComponentClient();
+  const router = useRouter();
+
   const handleLogout = async () => {
     try {
-      const res = await fetch('/api/logout', {
-        method: 'POST',
-      })
-
-      if (res.ok) {
-        toast.success('تم تسجيل الخروج بنجاح ✅')
-        setTimeout(() => {
-          window.location.href = '/login'
-        }, 1000)
-      } else {
-        toast.error('فشل تسجيل الخروج')
-      }
+      await supabase.auth.signOut();
+      toast.success('تم تسجيل الخروج بنجاح');
+      router.push('/login');
     } catch (error) {
-      toast.error('حدث خطأ أثناء تسجيل الخروج')
+      console.error('❌ [Logout] Error:', error);
+      toast.error('حدث خطأ أثناء تسجيل الخروج');
+      // Fallback
+      window.location.href = '/login';
     }
-  }
+  };
 
   return (
     <button
@@ -29,5 +32,5 @@ export default function LogoutButton() {
     >
       تسجيل الخروج
     </button>
-  )
+  );
 }

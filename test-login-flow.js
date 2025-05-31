@@ -16,13 +16,13 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 async function testLoginFlow() {
   console.log('🧪 بدء اختبار عملية تسجيل الدخول...\n');
-  
+
   try {
     // 1. اختبار التوثيق
     console.log('1️⃣ اختبار التوثيق...');
     const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
       email: 'user@user.com',
-      password: '123456'
+      password: '123456',
     });
 
     if (signInError) {
@@ -62,8 +62,11 @@ async function testLoginFlow() {
 
     // 4. اختبار الجلسة
     console.log('\n4️⃣ اختبار الجلسة...');
-    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-    
+    const {
+      data: { session },
+      error: sessionError,
+    } = await supabase.auth.getSession();
+
     if (sessionError) {
       console.error('❌ فشل جلب الجلسة:', sessionError.message);
       return;
@@ -81,7 +84,6 @@ async function testLoginFlow() {
     console.log('✅ تم تسجيل الخروج بنجاح');
 
     console.log('\n🎉 جميع الاختبارات نجحت! عملية تسجيل الدخول تعمل بشكل صحيح.');
-    
   } catch (error) {
     console.error('❌ خطأ غير متوقع:', error.message);
   }

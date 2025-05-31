@@ -1,17 +1,17 @@
 // src/components/layouts/ProfileLayout.tsx
-'use client'
+'use client';
 
-import React, { useState } from 'react'
-import Link from 'next/link'
+import React, { useState } from 'react';
+import Link from 'next/link';
 
 interface ProfileLayoutProps {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 export default function ProfileLayout({ children }: ProfileLayoutProps) {
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const toggleSidebar = () => setSidebarOpen(!sidebarOpen)
+  const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
   return (
     <div className="flex min-h-screen font-[Tajawal]">
@@ -89,5 +89,5 @@ export default function ProfileLayout({ children }: ProfileLayoutProps) {
       {/* Main Content */}
       <main className="flex-1 p-6 md:ml-64 w-full">{children}</main>
     </div>
-  )
+  );
 }

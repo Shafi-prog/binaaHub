@@ -1,137 +1,291 @@
-'use client'
-import { useEffect, useState } from 'react'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import { User } from '@supabase/supabase-js'
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { User } from '@supabase/supabase-js';
+import type { Database } from '@/types/database';
+import { getUserDashboardStats, type UserDashboardStats } from '@/lib/api/user-dashboard';
+import { LoadingSpinner } from '@/components/ui';
+import { formatCurrency, translateStatus } from '@/lib/utils';
+import { verifyAuthWithRetry } from '@/lib/auth-recovery';
+import { ClientIcon } from '@/components/icons';
+import type { IconKey } from '@/components/icons/ClientIcon';
 
 export default function UserDashboard() {
-  const [user, setUser] = useState<User | null>(null)
-  const [loading, setLoading] = useState(true)
-  const supabase = createClientComponentClient()
+  const [user, setUser] = useState<User | null>(null);
+  const [stats, setStats] = useState<UserDashboardStats | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [isHydrated, setIsHydrated] = useState(false);
+  const [cookieInfo, setCookieInfo] = useState<string[]>([]);
+  const [showDebug, setShowDebug] = useState(false);
+  const [headerInfo, setHeaderInfo] = useState<any>(null);
+  const supabase = createClientComponentClient<Database>();
+  const router = useRouter();
+
+  // Check if this is a post-login redirect
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const isPostLogin = urlParams.has('post_login');
+
+    if (isPostLogin) {
+      console.log('🔄 [User Dashboard] Detected post-login redirect');
+      const newUrl = window.location.pathname;
+      window.history.replaceState({}, '', newUrl);
+      setTimeout(() => setIsHydrated(true), 500);
+    } else {
+      setIsHydrated(true);
+    }
+  }, []);
 
   useEffect(() => {
-    const getUser = async () => {
+    if (!isHydrated) return;
+
+    const loadDashboard = async () => {
       try {
-        const { data: { user } } = await supabase.auth.getUser()
-        setUser(user)
-      } catch (error) {
-        console.error('Error getting user:', error)
+        setLoading(true);
+        setError(null);
+
+        // Check cookies for debugging
+        const cookies = document.cookie.split(';').map((c) => c.trim());
+        setCookieInfo(cookies);
+        console.log('🍪 [UserDashboard] Cookies available:', cookies);
+
+        console.log('🔐 [User Dashboard] Starting auth verification...');
+        const authResult = await verifyAuthWithRetry(5);
+
+        if (!authResult.user) {
+          console.log('❌ [User Dashboard] Auth failed, redirecting to login');
+          setError('Authentication session not found');
+          setTimeout(() => router.push('/login'), 2000);
+          return;
+        }
+
+        // Get debugging info from API
+        try {
+          const response = await fetch('/api/debug-headers');
+          if (response.ok) {
+            const data = await response.json();
+            setHeaderInfo(data);
+            console.log('🔍 [UserDashboard] Header info:', data);
+          }
+        } catch (error) {
+          console.error('❌ [UserDashboard] Error fetching header info:', error);
+        }
+
+        setUser(authResult.user);
+        console.log('✅ [User Dashboard] Auth verified:', authResult.user.email);
+
+        // Get user dashboard stats
+        const dashboardStats = await getUserDashboardStats(authResult.user.id);
+        setStats(dashboardStats);
+      } catch (err) {
+        console.error('❌ [User Dashboard] Error:', err);
+        setError(err instanceof Error ? err.message : 'Error loading dashboard');
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    getUser()
-  }, [supabase])
+    loadDashboard();
+  }, [isHydrated, router]);
 
-  const handleLogout = async () => {
-    await supabase.auth.signOut()
-    window.location.href = '/login'
+  if (!isHydrated || loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <LoadingSpinner />
+      </div>
+    );
   }
 
-  if (loading) {
+  if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">جاري التحميل...</p>
+      <div className="p-4">
+        <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded">
+          {error}
         </div>
       </div>
-    )
+    );
   }
+
+  if (!stats) {
+    return (
+      <div className="p-4">
+        <div className="bg-yellow-50 border border-yellow-200 text-yellow-600 px-4 py-3 rounded">
+          No data available
+        </div>
+      </div>
+    );
+  }
+
+  const dashboardCards = [
+    {
+      title: 'المشاريع النشطة',
+      value: stats.activeProjects,
+      icon: 'dashboard' as IconKey,
+      href: '/user/projects',
+      color: 'bg-blue-500',
+    },
+    {
+      title: 'الطلبات المكتملة',
+      value: stats.completedProjects,
+      icon: 'settings' as IconKey,
+      href: '/user/orders',
+      color: 'bg-green-500',
+    },
+    {
+      title: 'إجمالي الإنفاق',
+      value: `${formatCurrency(stats.totalOrders)}`,
+      icon: 'money' as IconKey,
+      href: '/user/spending-tracking',
+      color: 'bg-purple-500',
+    },
+    {
+      title: 'الضمانات النشطة',
+      value: stats.activeWarranties,
+      icon: 'shield' as IconKey,
+      href: '/user/warranties',
+      color: 'bg-orange-500',
+    },
+  ];
+
+  const quickActions = [
+    { title: 'إنشاء مشروع جديد', href: '/user/projects/new', icon: 'design' as IconKey },
+    { title: 'طلب خدمة تصميم', href: '/user/services/design', icon: 'ai' as IconKey },
+    { title: 'حاسبة التكاليف', href: '/user/services/calculators', icon: 'calculator' as IconKey },
+    { title: 'تتبع الإنفاق', href: '/user/spending-tracking', icon: 'chart' as IconKey },
+  ];
 
   return (
     <main className="min-h-screen bg-gray-50 font-tajawal">
       <div className="container mx-auto px-6 py-8">
+        {/* Success Message */}
+        <div className="bg-green-100 p-4 mb-6 rounded-lg">
+          <p className="text-green-700 font-bold">
+            ✅ تم تسجيل الدخول بنجاح! أنت الآن في صفحة لوحة التحكم المحمية.
+          </p>
+        </div>
+
         {/* Header */}
-        <div className="bg-white shadow-sm rounded-lg p-6 mb-8">
-          <div className="flex justify-between items-center">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-800 mb-2">لوحة تحكم المستخدم</h1>
-              <p className="text-gray-600">مرحباً بك {user?.email}</p>
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">
+            مرحباً، {user?.user_metadata?.name || user?.email?.split('@')[0] || 'المستخدم'}! 👋
+          </h1>
+          <p className="text-gray-600">إليك نظرة عامة على حسابك ومشاريعك</p>
+        </div>
+
+        {/* Debug Toggle */}
+        <div className="mb-6">
+          <button
+            onClick={() => setShowDebug(!showDebug)}
+            className="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-lg text-sm"
+          >
+            {showDebug ? 'إخفاء معلومات التصحيح' : 'عرض معلومات التصحيح'}
+          </button>
+
+          {showDebug && (
+            <div className="mt-4 bg-white p-4 rounded-lg shadow border">
+              <h3 className="font-bold mb-2">معلومات الكوكيز والجلسة:</h3>
+
+              <div className="mb-4">
+                <h4 className="font-medium text-sm mb-1">الكوكيز المتوفرة في المتصفح:</h4>
+                <div className="bg-gray-50 p-3 rounded text-xs font-mono max-h-40 overflow-y-auto">
+                  {cookieInfo.length > 0 ? (
+                    <ul className="list-disc list-inside">
+                      {cookieInfo.map((cookie, idx) => (
+                        <li key={idx}>{cookie}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="text-red-500">لا توجد كوكيز</p>
+                  )}
+                </div>
+              </div>
+
+              <div className="bg-gray-50 p-3 rounded">
+                <h4 className="font-medium text-sm mb-1">معلومات HTTP Header:</h4>
+                <div className="text-xs font-mono overflow-x-auto max-h-40">
+                  <pre>{headerInfo ? JSON.stringify(headerInfo, null, 2) : 'جاري التحميل...'}</pre>
+                </div>
+              </div>
+
+              <div className="mt-4">
+                <Link
+                  href="/final-cookie-verification.html"
+                  className="text-blue-600 hover:underline text-sm"
+                  target="_blank"
+                >
+                  فتح أداة فحص الكوكيز
+                </Link>
+              </div>
             </div>
-            <button
-              onClick={handleLogout}
-              className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors"
-            >
-              تسجيل الخروج
-            </button>
+          )}
+        </div>
+
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          {dashboardCards.map((card, index) => (
+            <Link key={index} href={card.href} className="block">
+              <div className="bg-white rounded-lg shadow-sm border hover:shadow-md transition-shadow p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-gray-600 mb-1">{card.title}</p>
+                    <p className="text-2xl font-bold text-gray-800">{card.value}</p>
+                  </div>
+                  <div className={`${card.color} p-3 rounded-lg`}>
+                    <ClientIcon type={card.icon} size={24} className="text-white" />
+                  </div>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+
+        {/* Quick Actions */}
+        <div className="mb-8">
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">إجراءات سريعة</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {quickActions.map((action, index) => (
+              <Link key={index} href={action.href} className="block">
+                <div className="bg-white rounded-lg shadow-sm border hover:shadow-md transition-shadow p-4 text-center">
+                  <ClientIcon type={action.icon} size={32} className="mx-auto mb-3 text-blue-600" />
+                  <h3 className="font-medium text-gray-800">{action.title}</h3>
+                </div>
+              </Link>
+            ))}
           </div>
         </div>
 
-        {/* Dashboard Content */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* Profile Card */}
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <div className="flex items-center mb-4">
-              <div className="bg-blue-100 p-3 rounded-full">
-                <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
+        {/* Recent Activity */}
+        <div className="bg-white rounded-lg shadow-sm border p-6">
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">النشاط الأخير</h2>
+          <div className="space-y-4">
+            <div className="flex items-center p-3 bg-gray-50 rounded-lg">
+              <div className="bg-blue-100 p-2 rounded-lg ml-3">
+                <ClientIcon type="dashboard" size={20} className="text-blue-600" />
               </div>
-              <h3 className="text-lg font-semibold text-gray-800 mr-3">الملف الشخصي</h3>
-            </div>
-            <p className="text-gray-600 mb-4">إدارة معلوماتك الشخصية</p>
-            <button className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg transition-colors">
-              عرض الملف الشخصي
-            </button>
-          </div>
-
-          {/* Orders Card */}
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <div className="flex items-center mb-4">
-              <div className="bg-green-100 p-3 rounded-full">
-                <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                </svg>
+              <div>
+                <p className="font-medium text-gray-800">مرحباً بك في منصة بناء</p>
+                <p className="text-sm text-gray-600">ابدأ رحلتك في إدارة مشاريع البناء</p>
               </div>
-              <h3 className="text-lg font-semibold text-gray-800 mr-3">الطلبات</h3>
             </div>
-            <p className="text-gray-600 mb-4">تتبع وإدارة طلباتك</p>
-            <button className="w-full bg-green-500 hover:bg-green-600 text-white py-2 rounded-lg transition-colors">
-              عرض الطلبات
-            </button>
-          </div>
 
-          {/* Projects Card */}
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <div className="flex items-center mb-4">
-              <div className="bg-purple-100 p-3 rounded-full">
-                <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                </svg>
+            {stats.recentProjects?.map((project: any) => (
+              <div key={project.id} className="flex items-center p-3 bg-gray-50 rounded-lg">
+                <div className="bg-green-100 p-2 rounded-lg ml-3">
+                  <ClientIcon type="design" size={20} className="text-green-600" />
+                </div>
+                <div>
+                  <p className="font-medium text-gray-800">{project.name}</p>
+                  <p className="text-sm text-gray-600">{translateStatus(project.status)}</p>
+                </div>
               </div>
-              <h3 className="text-lg font-semibold text-gray-800 mr-3">المشاريع</h3>
-            </div>
-            <p className="text-gray-600 mb-4">إدارة مشاريعك البنائية</p>
-            <button className="w-full bg-purple-500 hover:bg-purple-600 text-white py-2 rounded-lg transition-colors">
-              عرض المشاريع
-            </button>
-          </div>
-        </div>
-
-        {/* Quick Stats */}
-        <div className="mt-8 bg-white rounded-lg shadow-sm p-6">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">إحصائيات سريعة</h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className="text-center p-4 bg-blue-50 rounded-lg">
-              <h3 className="text-2xl font-bold text-blue-600">0</h3>
-              <p className="text-gray-600">طلبات نشطة</p>
-            </div>
-            <div className="text-center p-4 bg-green-50 rounded-lg">
-              <h3 className="text-2xl font-bold text-green-600">0</h3>
-              <p className="text-gray-600">طلبات مكتملة</p>
-            </div>
-            <div className="text-center p-4 bg-purple-50 rounded-lg">
-              <h3 className="text-2xl font-bold text-purple-600">0</h3>
-              <p className="text-gray-600">مشاريع</p>
-            </div>
-            <div className="text-center p-4 bg-orange-50 rounded-lg">
-              <h3 className="text-2xl font-bold text-orange-600">0</h3>
-              <p className="text-gray-600">رسائل</p>
-            </div>
+            ))}
           </div>
         </div>
       </div>
     </main>
-  )
+  );
 }

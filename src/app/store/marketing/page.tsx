@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 export default function MarketingPage() {
   return (
@@ -6,5 +6,5 @@ export default function MarketingPage() {
       <h1 className="text-4xl font-bold text-blue-600 mb-4">صفحة التسويق الذكي</h1>
       <p className="text-gray-600">هذه الصفحة تحت الإنشاء حالياً.</p>
     </div>
-  )
+  );
 }

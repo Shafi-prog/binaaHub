@@ -1,137 +1,58 @@
-import { createServerClient } from '@supabase/ssr'
-import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
+import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs';
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+import type { Database } from '@/types/database';
 
-export default async function middleware(req: NextRequest) {
-  let supabaseResponse = NextResponse.next({
-    request: req,
-  })
+export async function middleware(req: NextRequest) {
+  const res = NextResponse.next();
+  const supabase = createMiddlewareClient<Database>({ req, res });
 
-  // السماح بالوصول إلى الصفحات العامة
-  const publicPaths = ['/', '/login', '/signup', '/not-found', '/403', '/direct-login', '/verify-auth']
-  const pathname = req.nextUrl.pathname
+  // Get the current session
+  const {
+    data: { session },
+    error,
+  } = await supabase.auth.getSession();
 
-  console.log('🔍 [middleware] معالجة المسار:', pathname)
+  const url = req.nextUrl;
 
-  if (
-    publicPaths.includes(pathname) ||
-    pathname.startsWith('/login') ||
-    pathname.startsWith('/signup') ||
-    pathname.startsWith('/_next') ||
-    pathname.includes('.') // ملفات ثابتة مثل CSS, JS, images
-  ) {
-    console.log('✅ [middleware] مسار عام، السماح بالمرور')
-    return supabaseResponse
+  // Handle root path
+  if (url.pathname === '/') {
+    // Always allow access to landing page
+    return res;
   }
 
-  // Create Supabase client for middleware
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return req.cookies.getAll()
-        },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) => req.cookies.set(name, value))
-          supabaseResponse = NextResponse.next({
-            request: req,
-          })
-          cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
-          )
-        },
-      },
-    }
-  )
-  // Debug: Log cookies received by middleware
-  const cookies = req.cookies.getAll()
-  console.log('🍪 [middleware] Total cookies received:', cookies.length)
-  const authCookies = cookies.filter(c => 
-    c.name.includes('sb-') || 
-    c.name.includes('supabase') || 
-    c.name.includes('auth')
-  )
-  console.log('🔑 [middleware] Auth-related cookies:', authCookies.length)
-  authCookies.forEach(cookie => {
-    console.log(`   - ${cookie.name}: ${cookie.value.substring(0, 20)}...`)
-  })
+  // Define protected and auth routes
+  const isProtectedRoute = url.pathname.startsWith('/user/') || url.pathname.startsWith('/store/');
+  const isAuthRoute = url.pathname.startsWith('/login') || url.pathname.startsWith('/signup');
 
-  // Get session from Supabase
-  const { data: { session }, error: sessionError } = await supabase.auth.getSession()
-  
-  console.log('🔐 [middleware] Session present:', !!session)
-  console.log('🔐 [middleware] Session error:', sessionError?.message)
-  
-  if (sessionError) {
-    console.error('❌ [middleware] Session error:', sessionError.message)
+  if (error) {
+    console.error('Auth error in middleware:', error);
+    return NextResponse.redirect(new URL('/login', req.url));
   }
 
-  let userData = null
-
-  if (session?.user) {
-    try {
-      console.log('✅ [middleware] User verified:', session.user.email)
-      
-      // Get user data from database
-      const { data: dbUser, error: dbError } = await supabase
-        .from('users')
-        .select('account_type')
-        .eq('email', session.user.email!)
-        .single()
-
-      if (dbUser && !dbError) {
-        userData = dbUser
-        console.log('👤 [middleware] User type:', dbUser.account_type)
-      } else {
-        console.error('❌ [middleware] User not found in database:', dbError?.message)
-      }
-    } catch (error) {
-      console.error('❌ [middleware] Database query error:', error)
-    }
-  }
-  if (!session || !userData) {
-    console.warn('⚠️ [middleware] Session/User data missing. Redirecting to /login. Path:', pathname)
-    return NextResponse.redirect(new URL('/login', req.url))
+  // Handle protected routes
+  if (isProtectedRoute && !session) {
+    return NextResponse.redirect(new URL('/login', req.url));
   }
 
-  const isProtectedUserRoute = [
-    '/user/profile',
-    '/user/dashboard',
-    '/user/orders',
-    '/user/projects',
-  ].some((path) => pathname.startsWith(path))
-
-  const isProtectedStoreRoute = ['/store/dashboard', '/store/profile', '/store/orders'].some(
-    (path) => pathname.startsWith(path),
-  )
-
-  const accountType = userData.account_type
-
-  if (accountType === 'store' && isProtectedUserRoute) {
-    console.info('🔁 [middleware] Store user tried to access user route. Redirecting to /store/dashboard')
-    return NextResponse.redirect(new URL('/store/dashboard', req.url))
+  // Handle auth routes (login/signup)
+  if (isAuthRoute && session) {
+    return NextResponse.redirect(new URL('/user/dashboard', req.url));
   }
 
-  if (accountType !== 'store' && isProtectedStoreRoute) {
-    console.info('🔁 [middleware] Non-store user tried to access store route. Redirecting to /user/dashboard')
-    return NextResponse.redirect(new URL('/user/dashboard', req.url))
-  }
-
-  console.log('✅ [middleware] السماح بالوصول للمسار:', pathname)
-  return supabaseResponse
+  return res;
 }
 
 export const config = {
   matcher: [
     /*
-     * Match all request paths except for:
-     * - API routes (/api/)
-     * - Static files (images, js, css, etc.)
-     * - favicon.ico
-     * - Service worker routes
+     * Match all request paths except:
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * - public folder
+     * - api routes that don't require auth
      */
-    '/((?!api|_next/static|_next/image|favicon.ico|.*\\.).*)',
+    '/((?!_next/static|_next/image|favicon.ico|public|api/auth).*)',
   ],
-}
+};

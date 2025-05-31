@@ -20,5 +20,5 @@ export function getMockWarrantiesByUser(userId: string) {
       expiryDate: '2023-01-15',
       isActive: false,
     },
-  ]
+  ];
 }

@@ -1,34 +1,75 @@
-'use client'
+'use client';
 
-import { supabase } from '@/lib/supabaseClient'
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
-import { toast } from 'react-hot-toast'
+import { supabase } from '@/lib/supabaseClient';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { toast } from 'react-hot-toast';
 
 export default function SignupPage() {
-  const router = useRouter()
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [accountType, setAccountType] = useState('user' as 'user' | 'store')
-  const [loading, setLoading] = useState(false)
+  const router = useRouter();
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [accountType, setAccountType] = useState('user' as 'user' | 'store');
+  const [loading, setLoading] = useState(false);
 
-  const handleSignup = async (e: React.FormEvent) => {
-    e.preventDefault()
+  // Form validation state
+  const [validationErrors, setValidationErrors] = useState({
+    name: '',
+    email: '',
+    password: '',
+  });
 
-    if (!name || !email || !password) {
-      toast.error('يرجى تعبئة جميع الحقول.')
-      return
+  // Form validation function
+  const validateForm = (): boolean => {
+    const errors = {
+      name: '',
+      email: '',
+      password: '',
+    };
+    let isValid = true;
+
+    if (!name.trim()) {
+      errors.name = 'Name is required';
+      isValid = false;
     }
 
-    setLoading(true)
+    if (!email) {
+      errors.email = 'Email is required';
+      isValid = false;
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      errors.email = 'Please enter a valid email address';
+      isValid = false;
+    }
 
-    const { data, error } = await supabase.auth.signUp({ email, password })
+    if (!password) {
+      errors.password = 'Password is required';
+      isValid = false;
+    } else if (password.length < 6) {
+      errors.password = 'Password must be at least 6 characters long';
+      isValid = false;
+    }
+
+    setValidationErrors(errors);
+    return isValid;
+  };
+
+  const handleSignup = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!name || !email || !password) {
+      toast.error('يرجى تعبئة جميع الحقول.');
+      return;
+    }
+
+    setLoading(true);
+
+    const { data, error } = await supabase.auth.signUp({ email, password });
 
     if (error || !data.user) {
-      toast.error(error?.message || 'خطأ أثناء إنشاء الحساب')
-      setLoading(false)
-      return
+      toast.error(error?.message || 'خطأ أثناء إنشاء الحساب');
+      setLoading(false);
+      return;
     }
 
     const { error: insertError } = await supabase.from('users').insert([
@@ -38,20 +79,20 @@ export default function SignupPage() {
         email,
         account_type: accountType,
       },
-    ])
+    ]);
 
     if (insertError) {
-      toast.error(insertError.message || 'فشل في حفظ بيانات الحساب.')
-      setLoading(false)
-      return
+      toast.error(insertError.message || 'فشل في حفظ بيانات الحساب.');
+      setLoading(false);
+      return;
     }
 
-    toast.success('تم إنشاء الحساب بنجاح ✅')
+    toast.success('تم إنشاء الحساب بنجاح ✅');
     setTimeout(() => {
-      setLoading(false)
-      router.push('/login')
-    }, 800)
-  }
+      setLoading(false);
+      router.push('/login');
+    }, 800);
+  };
 
   return (
     <main className="min-h-screen bg-gray-100 flex">
@@ -114,18 +155,14 @@ export default function SignupPage() {
               <button
                 type="button"
                 onClick={() => setAccountType('user')}
-                className={`px-4 py-2 rounded-full text-sm ${
-                  accountType === 'user' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'
-                }`}
+                className={`px-4 py-2 rounded-full text-sm ${accountType === 'user' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'}`}
               >
                 مستخدم
               </button>
               <button
                 type="button"
                 onClick={() => setAccountType('store')}
-                className={`px-4 py-2 rounded-full text-sm ${
-                  accountType === 'store' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'
-                }`}
+                className={`px-4 py-2 rounded-full text-sm ${accountType === 'store' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'}`}
               >
                 متجر
               </button>
@@ -142,12 +179,12 @@ export default function SignupPage() {
 
           <div className="text-center text-sm text-gray-500 mt-6">
             لديك حساب بالفعل؟
-            <a href="/login" className="text-blue-600 hover:underline ml-1">
+            <a href="/login" className="text-blue-600 hover:underline mr-1">
               تسجيل الدخول
             </a>
           </div>
         </div>
       </div>
     </main>
-  )
+  );
 }

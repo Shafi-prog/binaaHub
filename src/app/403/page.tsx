@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import Link from 'next/link'
+import Link from 'next/link';
 
 export default function ForbiddenPage() {
   return (
@@ -14,5 +14,5 @@ export default function ForbiddenPage() {
         العودة إلى الرئيسية
       </Link>
     </main>
-  )
+  );
 }

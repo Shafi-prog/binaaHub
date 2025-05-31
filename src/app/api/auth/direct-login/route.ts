@@ -1,13 +1,13 @@
-import { createServerClient } from '@supabase/ssr'
-import { NextRequest, NextResponse } from 'next/server'
-import { cookies } from 'next/headers'
+import { createServerClient } from '@supabase/ssr';
+import { NextRequest, NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
 
 export async function POST(request: NextRequest) {
-  try {    
+  try {
     let email, password, debug;
-    
+
     const contentType = request.headers.get('content-type') || '';
-    
+
     // Handle both JSON and form data
     if (contentType.includes('application/json')) {
       const body = await request.json();
@@ -28,12 +28,12 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
-    
+
     const isDebugMode = debug === 'true';
     if (isDebugMode) {
       console.log('🐛 [API] Debug mode is active');
     }
-    
+
     if (!email || !password) {
       console.error('❌ [API] Missing email or password');
       return NextResponse.json(
@@ -41,11 +41,11 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
-    
+
     console.log('🔐 [API] Login attempt for:', email);
-    
-    const cookieStore = await cookies()
-    
+
+    const cookieStore = await cookies();
+
     // Create server client with proper cookie handling
     const supabase = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -53,13 +53,13 @@ export async function POST(request: NextRequest) {
       {
         cookies: {
           getAll() {
-            return cookieStore.getAll()
+            return cookieStore.getAll();
           },
           setAll(cookiesToSet) {
             try {
               cookiesToSet.forEach(({ name, value, options }) => {
-                cookieStore.set(name, value, options)
-              })
+                cookieStore.set(name, value, options);
+              });
             } catch {
               // The `setAll` method was called from a Server Component.
               // This can be ignored if you have middleware refreshing
@@ -68,8 +68,8 @@ export async function POST(request: NextRequest) {
           },
         },
       }
-    )
-    
+    );
+
     // Authenticate user
     const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
       email,
@@ -101,7 +101,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log('👤 [API] User account type:', userData.account_type);    // Determine redirect URL
+    console.log('👤 [API] User account type:', userData.account_type); // Determine redirect URL
     const redirectTo =
       userData.account_type === 'store'
         ? '/store/dashboard'
@@ -109,25 +109,26 @@ export async function POST(request: NextRequest) {
           ? '/user/dashboard'
           : userData.account_type === 'engineer' || userData.account_type === 'consultant'
             ? '/dashboard/construction-data'
-            : '/';    console.log('🚀 [API] Redirect URL determined:', redirectTo);
+            : '/';
+    console.log('🚀 [API] Redirect URL determined:', redirectTo);
 
     // Create redirect response - let Supabase SSR handle all cookie management automatically
     const response = NextResponse.redirect(new URL(redirectTo, request.url), {
       // Add cache control headers to prevent caching
       headers: {
         'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
-        'Pragma': 'no-cache',
-        'Expires': '0',
-        'Surrogate-Control': 'no-store'
-      }
+        Pragma: 'no-cache',
+        Expires: '0',
+        'Surrogate-Control': 'no-store',
+      },
     });
 
     console.log('✅ [API] Supabase SSR will handle cookies automatically');
     console.log('✅ [API] Redirecting directly to:', redirectTo);
-      // If in debug mode, show debug page instead of direct redirect
+    // If in debug mode, show debug page instead of direct redirect
     if (isDebugMode) {
       console.log('🐛 [API] Debug mode active, showing debug info before redirect');
-      
+
       // Create a debug HTML page with cookie info and redirect link
       const debugHtml = `
         <!DOCTYPE html>
@@ -185,22 +186,18 @@ export async function POST(request: NextRequest) {
         </body>
         </html>
       `;
-      
+
       return new NextResponse(debugHtml, {
         status: 200,
         headers: {
           'Content-Type': 'text/html',
-        }
+        },
       });
     }
 
     return response;
-
   } catch (error) {
     console.error('❌ [API] Unexpected error:', error);
-    return NextResponse.json(
-      { success: false, error: 'Internal server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 });
   }
 }

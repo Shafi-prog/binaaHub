@@ -1,167 +1,194 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login Test Page</title>
     <style>
-        body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; }
-        .test-section { margin: 20px 0; padding: 20px; border: 1px solid #ddd; border-radius: 8px; }
-        button { padding: 10px 20px; margin: 10px 5px; cursor: pointer; }
-        .success { color: green; }
-        .error { color: red; }
-        .info { color: blue; }
-        #logs { background: #f5f5f5; padding: 15px; border-radius: 5px; max-height: 400px; overflow-y: auto; font-family: monospace; }
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+      }
+      .test-section {
+        margin: 20px 0;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+      }
+      button {
+        padding: 10px 20px;
+        margin: 10px 5px;
+        cursor: pointer;
+      }
+      .success {
+        color: green;
+      }
+      .error {
+        color: red;
+      }
+      .info {
+        color: blue;
+      }
+      #logs {
+        background: #f5f5f5;
+        padding: 15px;
+        border-radius: 5px;
+        max-height: 400px;
+        overflow-y: auto;
+        font-family: monospace;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <h1>🔧 Login API Test Tool</h1>
-    
+
     <div class="test-section">
-        <h3>👤 Test User Login (user@user.com)</h3>
-        <button onclick="testUserLogin()">Test User Login</button>
-        <button onclick="testUserLoginAndRedirect()">Test User Login + Navigate</button>
+      <h3>👤 Test User Login (user@user.com)</h3>
+      <button onclick="testUserLogin()">Test User Login</button>
+      <button onclick="testUserLoginAndRedirect()">Test User Login + Navigate</button>
     </div>
-    
+
     <div class="test-section">
-        <h3>🏪 Test Store Login (store@store.com)</h3>
-        <button onclick="testStoreLogin()">Test Store Login</button>
-        <button onclick="testStoreLoginAndRedirect()">Test Store Login + Navigate</button>
+      <h3>🏪 Test Store Login (store@store.com)</h3>
+      <button onclick="testStoreLogin()">Test Store Login</button>
+      <button onclick="testStoreLoginAndRedirect()">Test Store Login + Navigate</button>
     </div>
-    
+
     <div class="test-section">
-        <h3>📋 Test Logs</h3>
-        <button onclick="clearLogs()">Clear Logs</button>
-        <div id="logs"></div>
+      <h3>📋 Test Logs</h3>
+      <button onclick="clearLogs()">Clear Logs</button>
+      <div id="logs"></div>
     </div>
 
     <script>
-        function log(message, type = 'info') {
-            const logs = document.getElementById('logs');
-            const timestamp = new Date().toLocaleTimeString();
-            const className = type === 'error' ? 'error' : type === 'success' ? 'success' : 'info';
-            logs.innerHTML += `<div class="${className}">[${timestamp}] ${message}</div>`;
-            logs.scrollTop = logs.scrollHeight;
-        }
+      function log(message, type = 'info') {
+        const logs = document.getElementById('logs');
+        const timestamp = new Date().toLocaleTimeString();
+        const className = type === 'error' ? 'error' : type === 'success' ? 'success' : 'info';
+        logs.innerHTML += `<div class="${className}">[${timestamp}] ${message}</div>`;
+        logs.scrollTop = logs.scrollHeight;
+      }
 
-        function clearLogs() {
-            document.getElementById('logs').innerHTML = '';
-        }
+      function clearLogs() {
+        document.getElementById('logs').innerHTML = '';
+      }
 
-        async function testUserLogin() {
-            log('🔐 Testing user@user.com login...');
-            try {
-                const response = await fetch('/api/auth/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        email: 'user@user.com',
-                        password: '123456'
-                    }),
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    log(`✅ User login successful! Redirect to: ${result.redirectTo}`, 'success');
-                    log(`👤 User: ${result.user.email} (${result.user.account_type})`, 'success');
-                } else {
-                    log(`❌ User login failed: ${result.error}`, 'error');
-                }
-            } catch (error) {
-                log(`❌ Error testing user login: ${error.message}`, 'error');
-            }
-        }
+      async function testUserLogin() {
+        log('🔐 Testing user@user.com login...');
+        try {
+          const response = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              email: 'user@user.com',
+              password: '123456',
+            }),
+          });
 
-        async function testStoreLogin() {
-            log('🔐 Testing store@store.com login...');
-            try {
-                const response = await fetch('/api/auth/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        email: 'store@store.com',
-                        password: '123456'
-                    }),
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    log(`✅ Store login successful! Redirect to: ${result.redirectTo}`, 'success');
-                    log(`🏪 User: ${result.user.email} (${result.user.account_type})`, 'success');
-                } else {
-                    log(`❌ Store login failed: ${result.error}`, 'error');
-                }
-            } catch (error) {
-                log(`❌ Error testing store login: ${error.message}`, 'error');
-            }
-        }
+          const result = await response.json();
 
-        async function testUserLoginAndRedirect() {
-            log('🔐 Testing user login with full flow...');
-            try {
-                const response = await fetch('/api/auth/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        email: 'user@user.com',
-                        password: '123456'
-                    }),
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    log(`✅ User login successful! Redirecting to: ${result.redirectTo}`, 'success');
-                    setTimeout(() => {
-                        window.location.href = result.redirectTo;
-                    }, 1000);
-                } else {
-                    log(`❌ User login failed: ${result.error}`, 'error');
-                }
-            } catch (error) {
-                log(`❌ Error: ${error.message}`, 'error');
-            }
+          if (result.success) {
+            log(`✅ User login successful! Redirect to: ${result.redirectTo}`, 'success');
+            log(`👤 User: ${result.user.email} (${result.user.account_type})`, 'success');
+          } else {
+            log(`❌ User login failed: ${result.error}`, 'error');
+          }
+        } catch (error) {
+          log(`❌ Error testing user login: ${error.message}`, 'error');
         }
+      }
 
-        async function testStoreLoginAndRedirect() {
-            log('🔐 Testing store login with full flow...');
-            try {
-                const response = await fetch('/api/auth/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        email: 'store@store.com',
-                        password: '123456'
-                    }),
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    log(`✅ Store login successful! Redirecting to: ${result.redirectTo}`, 'success');
-                    setTimeout(() => {
-                        window.location.href = result.redirectTo;
-                    }, 1000);
-                } else {
-                    log(`❌ Store login failed: ${result.error}`, 'error');
-                }
-            } catch (error) {
-                log(`❌ Error: ${error.message}`, 'error');
-            }
+      async function testStoreLogin() {
+        log('🔐 Testing store@store.com login...');
+        try {
+          const response = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              email: 'store@store.com',
+              password: '123456',
+            }),
+          });
+
+          const result = await response.json();
+
+          if (result.success) {
+            log(`✅ Store login successful! Redirect to: ${result.redirectTo}`, 'success');
+            log(`🏪 User: ${result.user.email} (${result.user.account_type})`, 'success');
+          } else {
+            log(`❌ Store login failed: ${result.error}`, 'error');
+          }
+        } catch (error) {
+          log(`❌ Error testing store login: ${error.message}`, 'error');
         }
+      }
 
-        // Initial log
-        log('🚀 Login test tool ready!');
+      async function testUserLoginAndRedirect() {
+        log('🔐 Testing user login with full flow...');
+        try {
+          const response = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              email: 'user@user.com',
+              password: '123456',
+            }),
+          });
+
+          const result = await response.json();
+
+          if (result.success) {
+            log(`✅ User login successful! Redirecting to: ${result.redirectTo}`, 'success');
+            setTimeout(() => {
+              window.location.href = result.redirectTo;
+            }, 1000);
+          } else {
+            log(`❌ User login failed: ${result.error}`, 'error');
+          }
+        } catch (error) {
+          log(`❌ Error: ${error.message}`, 'error');
+        }
+      }
+
+      async function testStoreLoginAndRedirect() {
+        log('🔐 Testing store login with full flow...');
+        try {
+          const response = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              email: 'store@store.com',
+              password: '123456',
+            }),
+          });
+
+          const result = await response.json();
+
+          if (result.success) {
+            log(`✅ Store login successful! Redirecting to: ${result.redirectTo}`, 'success');
+            setTimeout(() => {
+              window.location.href = result.redirectTo;
+            }, 1000);
+          } else {
+            log(`❌ Store login failed: ${result.error}`, 'error');
+          }
+        } catch (error) {
+          log(`❌ Error: ${error.message}`, 'error');
+        }
+      }
+
+      // Initial log
+      log('🚀 Login test tool ready!');
     </script>
-</body>
+  </body>
 </html>

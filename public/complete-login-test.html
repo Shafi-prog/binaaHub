@@ -198,7 +198,7 @@
           const response = await fetch('/user/dashboard');
           log(
             `Dashboard access response: ${response.status}`,
-            response.status === 200 ? 'success' : 'error',
+            response.status === 200 ? 'success' : 'error'
           );
 
           if (response.status === 302 || response.url.includes('/login')) {
@@ -221,7 +221,7 @@
           const userResponse = await fetch('/user/dashboard');
           log(
             `User dashboard: ${userResponse.status}`,
-            userResponse.status === 200 ? 'success' : 'error',
+            userResponse.status === 200 ? 'success' : 'error'
           );
 
           // Test store dashboard
@@ -229,7 +229,7 @@
           const storeResponse = await fetch('/store/dashboard');
           log(
             `Store dashboard: ${storeResponse.status}`,
-            storeResponse.status === 200 ? 'success' : 'error',
+            storeResponse.status === 200 ? 'success' : 'error'
           );
         } catch (error) {
           log(`❌ Error testing dashboards: ${error.message}`, 'error');

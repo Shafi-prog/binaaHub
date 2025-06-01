@@ -234,7 +234,7 @@
             'loginResults',
             'success',
             'تم تسجيل الدخول بنجاح!',
-            `المستخدم: ${data.user.email}<br>معرف الجلسة: ${data.session.access_token.substring(0, 30)}...`,
+            `المستخدم: ${data.user.email}<br>معرف الجلسة: ${data.session.access_token.substring(0, 30)}...`
           );
 
           updateAuthStatus('authenticated', data.user);
@@ -271,7 +271,7 @@
               'sessionResults',
               'success',
               '✅ الجلسة متاحة فوراً!',
-              `المستخدم: ${data.session.user.email}`,
+              `المستخدم: ${data.session.user.email}`
             );
           } else {
             addResult('sessionResults', 'error', '❌ لا توجد جلسة - هذه هي المشكلة!');
@@ -293,14 +293,14 @@
                 'sessionResults',
                 'error',
                 'خطأ في جلب الجلسة (بعد التأخير)',
-                error.message,
+                error.message
               );
             } else if (data.session) {
               addResult(
                 'sessionResults',
                 'success',
                 '✅ الجلسة متاحة بعد التأخير',
-                `المستخدم: ${data.session.user.email}`,
+                `المستخدم: ${data.session.user.email}`
               );
             } else {
               addResult('sessionResults', 'warning', '⚠️ لا توجد جلسة حتى بعد التأخير');
@@ -322,7 +322,7 @@
             addResult(
               'sessionResults',
               'warning',
-              'لا توجد جلسة، جاري المحاولة مع refreshSession...',
+              'لا توجد جلسة، جاري المحاولة مع refreshSession...'
             );
 
             const refreshResult = await supabase.auth.refreshSession();
@@ -337,13 +337,13 @@
                 addResult(
                   'sessionResults',
                   'success',
-                  'تم العثور على المستخدم عبر getUser - يمكن إنشاء جلسة مؤقتة',
+                  'تم العثور على المستخدم عبر getUser - يمكن إنشاء جلسة مؤقتة'
                 );
               } else {
                 addResult(
                   'sessionResults',
                   'error',
-                  'فشل في جميع المحاولات - سيظهر "غير مسجل الدخول"',
+                  'فشل في جميع المحاولات - سيظهر "غير مسجل الدخول"'
                 );
               }
             }
@@ -351,7 +351,7 @@
             addResult(
               'sessionResults',
               'success',
-              'تم العثور على الجلسة مباشرة - Dashboard سيعمل!',
+              'تم العثور على الجلسة مباشرة - Dashboard سيعمل!'
             );
           } else {
             addResult('sessionResults', 'error', 'خطأ في getSession', error.message);
@@ -376,7 +376,7 @@
               addResult(
                 'dashboardResults',
                 'error',
-                '❌ Dashboard تظهر "غير مسجل الدخول" - المشكلة موجودة!',
+                '❌ Dashboard تظهر "غير مسجل الدخول" - المشكلة موجودة!'
               );
             } else if (text.includes('مرحباً بك') || text.includes('لوحة تحكم المستخدم')) {
               addResult('dashboardResults', 'success', '✅ Dashboard تعمل بشكل صحيح!');
@@ -388,7 +388,7 @@
               'dashboardResults',
               'error',
               'خطأ في الوصول للـ Dashboard',
-              `HTTP ${response.status}`,
+              `HTTP ${response.status}`
             );
           }
         } catch (error) {
@@ -397,7 +397,7 @@
               'dashboardResults',
               'error',
               'الخادم غير متاح - تأكد من تشغيل npm run dev',
-              'استخدم: npm run dev',
+              'استخدم: npm run dev'
             );
           } else {
             addResult('dashboardResults', 'error', 'خطأ في اختبار Dashboard', error.message);
@@ -419,7 +419,7 @@
         addResult(
           'diagnosticResults',
           sessionData.session ? 'success' : 'error',
-          `حالة الجلسة الحالية: ${sessionData.session ? 'موجودة' : 'غير موجودة'}`,
+          `حالة الجلسة الحالية: ${sessionData.session ? 'موجودة' : 'غير موجودة'}`
         );
 
         // Test 2: Check storage
@@ -427,7 +427,7 @@
         addResult(
           'diagnosticResults',
           authToken ? 'success' : 'warning',
-          `رمز المصادقة في التخزين: ${authToken ? 'موجود' : 'غير موجود'}`,
+          `رمز المصادقة في التخزين: ${authToken ? 'موجود' : 'غير موجود'}`
         );
 
         // Test 3: Check cookies
@@ -435,7 +435,7 @@
         addResult(
           'diagnosticResults',
           hasCookies ? 'success' : 'warning',
-          `كوكيز المصادقة: ${hasCookies ? 'موجودة' : 'غير موجودة'}`,
+          `كوكيز المصادقة: ${hasCookies ? 'موجودة' : 'غير موجودة'}`
         );
 
         // Test 4: Network connectivity
@@ -444,7 +444,7 @@
           addResult(
             'diagnosticResults',
             pingResponse.ok ? 'success' : 'error',
-            `اتصال Supabase: ${pingResponse.ok ? 'متصل' : 'منقطع'}`,
+            `اتصال Supabase: ${pingResponse.ok ? 'متصل' : 'منقطع'}`
           );
         } catch (error) {
           addResult('diagnosticResults', 'error', 'خطأ في الاتصال بـ Supabase', error.message);
@@ -456,7 +456,7 @@
 
         // Check localStorage
         const localStorageKeys = Object.keys(localStorage).filter(
-          (k) => k.includes('supabase') || k.includes('sb-') || k.includes('auth'),
+          (k) => k.includes('supabase') || k.includes('sb-') || k.includes('auth')
         );
 
         if (localStorageKeys.length > 0) {
@@ -470,7 +470,7 @@
 
         // Check sessionStorage
         const sessionStorageKeys = Object.keys(sessionStorage).filter(
-          (k) => k.includes('supabase') || k.includes('sb-') || k.includes('auth'),
+          (k) => k.includes('supabase') || k.includes('sb-') || k.includes('auth')
         );
 
         if (sessionStorageKeys.length > 0) {

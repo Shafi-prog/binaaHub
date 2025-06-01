@@ -50,7 +50,8 @@ export default function StoresPage() {
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [selectedCity, setSelectedCity] = useState<string>('all');  const [viewMode, setViewMode] = useState<ViewMode>('grid');
+  const [selectedCity, setSelectedCity] = useState<string>('all');
+  const [viewMode, setViewMode] = useState<ViewMode>('grid');
   const [isHydrated, setIsHydrated] = useState(false);
 
   // Handle hydration
@@ -59,25 +60,24 @@ export default function StoresPage() {
   }, []);
 
   useEffect(() => {
-    if (!isHydrated) return;    const fetchStores = async () => {
+    if (!isHydrated) return;
+    const fetchStores = async () => {
       try {
         setLoading(true);
-        setError(null);        console.log('🔍 [Stores] Fetching active stores...');
+        setError(null);
+        console.log('🔍 [Stores] Fetching active stores...');
         console.log('🔗 [Stores] Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL);
         console.log('🔑 [Stores] Has Anon Key:', !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
-        
+
         // Test basic connection first
         let connectionTestResult;
         try {
-          connectionTestResult = await supabase
-            .from('stores')
-            .select('count')
-            .limit(1);
+          connectionTestResult = await supabase.from('stores').select('count').limit(1);
         } catch (connErr) {
           console.error('❌ [Stores] Connection test exception:', connErr);
           throw new Error('Database connection failed');
         }
-          
+
         if (connectionTestResult.error) {
           console.error('❌ [Stores] Connection test failed:');
           console.error('Error message:', connectionTestResult.error.message || 'Unknown error');
@@ -86,7 +86,7 @@ export default function StoresPage() {
         } else {
           console.log('✅ [Stores] Connection test successful');
         }
-        
+
         // Fetch active stores
         let storesResult;
         try {
@@ -99,17 +99,20 @@ export default function StoresPage() {
           console.error('❌ [Stores] Query exception:', queryErr);
           throw new Error('Store query failed');
         }
-        
-        const { data: storesData, error: storesError } = storesResult;        if (storesError) {
+
+        const { data: storesData, error: storesError } = storesResult;
+        if (storesError) {
           console.error('❌ [Stores] Supabase error details:');
           console.error('Error message:', storesError.message || 'Unknown error');
           console.error('Error code:', storesError.code || 'No code');
           console.error('Error hint:', storesError.hint || 'No hint');
           console.error('Error details:', storesError.details || 'No details');
-          
+
           // Show user-friendly error message
-          setError(`Database setup required. Error: ${storesError.message}. Using demo data for now.`);
-          
+          setError(
+            `Database setup required. Error: ${storesError.message}. Using demo data for now.`
+          );
+
           // If there's a database error, use mock data for development
           console.log('🔄 [Stores] Using mock data due to database error');
           const mockStores: Store[] = [
@@ -210,13 +213,15 @@ export default function StoresPage() {
               updated_at: new Date().toISOString(),
             },
           ];
-          
+
           setStores(mockStores);
           console.log('✅ [Stores] Loaded mock stores:', mockStores.length);
-          return;        }
+          return;
+        }
 
         setStores((storesData as unknown as Store[]) || []);
-        console.log('✅ [Stores] Loaded stores:', storesData?.length || 0);} catch (error) {
+        console.log('✅ [Stores] Loaded stores:', storesData?.length || 0);
+      } catch (error) {
         console.error('❌ [Stores] Error loading stores:');
         console.error('Error type:', typeof error);
         console.error('Error message:', error instanceof Error ? error.message : 'Unknown error');
@@ -232,20 +237,20 @@ export default function StoresPage() {
 
   // Filter stores based on search and filters
   const filteredStores = stores.filter((store) => {
-    const matchesSearch = 
+    const matchesSearch =
       store.store_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       store.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       store.category?.toLowerCase().includes(searchTerm.toLowerCase());
-    
+
     const matchesCategory = selectedCategory === 'all' || store.category === selectedCategory;
     const matchesCity = selectedCity === 'all' || store.city === selectedCity;
-    
+
     return matchesSearch && matchesCategory && matchesCity;
   });
 
   // Get unique categories and cities for filters
-  const categories = Array.from(new Set(stores.map(s => s.category).filter(Boolean)));
-  const cities = Array.from(new Set(stores.map(s => s.city).filter(Boolean)));
+  const categories = Array.from(new Set(stores.map((s) => s.category).filter(Boolean)));
+  const cities = Array.from(new Set(stores.map((s) => s.city).filter(Boolean)));
 
   if (!isHydrated || loading) {
     return (
@@ -260,8 +265,8 @@ export default function StoresPage() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="text-red-600 text-xl mb-4">{error}</div>
-          <button 
-            onClick={() => window.location.reload()} 
+          <button
+            onClick={() => window.location.reload()}
             className="text-blue-600 hover:underline"
           >
             إعادة المحاولة
@@ -301,7 +306,9 @@ export default function StoresPage() {
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >                <option value="all">جميع الفئات</option>
+              >
+                {' '}
+                <option value="all">جميع الفئات</option>
                 {categories.map((category) => (
                   <option key={category} value={category || ''}>
                     {category}
@@ -316,7 +323,9 @@ export default function StoresPage() {
                 value={selectedCity}
                 onChange={(e) => setSelectedCity(e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >                <option value="all">جميع المدن</option>
+              >
+                {' '}
+                <option value="all">جميع المدن</option>
                 {cities.map((city) => (
                   <option key={city} value={city || ''}>
                     {city}
@@ -335,8 +344,8 @@ export default function StoresPage() {
               <button
                 onClick={() => setViewMode('grid')}
                 className={`p-2 rounded-lg transition-colors ${
-                  viewMode === 'grid' 
-                    ? 'bg-blue-500 text-white' 
+                  viewMode === 'grid'
+                    ? 'bg-blue-500 text-white'
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
               >
@@ -345,8 +354,8 @@ export default function StoresPage() {
               <button
                 onClick={() => setViewMode('list')}
                 className={`p-2 rounded-lg transition-colors ${
-                  viewMode === 'list' 
-                    ? 'bg-blue-500 text-white' 
+                  viewMode === 'list'
+                    ? 'bg-blue-500 text-white'
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
               >
@@ -363,17 +372,15 @@ export default function StoresPage() {
             description="لم يتم العثور على متاجر تطابق معايير البحث الخاصة بك"
           />
         ) : (
-          <div className={
-            viewMode === 'grid' 
-              ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'
-              : 'space-y-4'
-          }>
+          <div
+            className={
+              viewMode === 'grid'
+                ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'
+                : 'space-y-4'
+            }
+          >
             {filteredStores.map((store) => (
-              <StoreCard 
-                key={store.id} 
-                store={store} 
-                viewMode={viewMode}
-              />
+              <StoreCard key={store.id} store={store} viewMode={viewMode} />
             ))}
           </div>
         )}
@@ -387,9 +394,7 @@ function StoreCard({ store, viewMode }: { store: Store; viewMode: ViewMode }) {
   const isGridView = viewMode === 'grid';
 
   return (
-    <Card className={`hover:shadow-lg transition-shadow ${
-      isGridView ? 'p-6' : 'p-4'
-    }`}>
+    <Card className={`hover:shadow-lg transition-shadow ${isGridView ? 'p-6' : 'p-4'}`}>
       <Link href={`/stores/${store.id}`}>
         <div className={isGridView ? 'space-y-4' : 'flex gap-4'}>
           {/* Store Logo/Cover */}
@@ -406,10 +411,10 @@ function StoreCard({ store, viewMode }: { store: Store; viewMode: ViewMode }) {
                 }}
               />
             ) : (
-              <div className={`w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center`}>
-                <span className="text-white font-bold text-2xl">
-                  {store.store_name.charAt(0)}
-                </span>
+              <div
+                className={`w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center`}
+              >
+                <span className="text-white font-bold text-2xl">{store.store_name.charAt(0)}</span>
               </div>
             )}
           </div>
@@ -418,9 +423,11 @@ function StoreCard({ store, viewMode }: { store: Store; viewMode: ViewMode }) {
           <div className={isGridView ? 'space-y-3' : 'flex-1 space-y-2'}>
             <div className="flex items-start justify-between">
               <div>
-                <h3 className={`font-bold text-gray-800 hover:text-blue-600 transition-colors ${
-                  isGridView ? 'text-xl' : 'text-lg'
-                }`}>
+                <h3
+                  className={`font-bold text-gray-800 hover:text-blue-600 transition-colors ${
+                    isGridView ? 'text-xl' : 'text-lg'
+                  }`}
+                >
                   {store.store_name}
                   {store.is_verified && (
                     <span className="inline-block mr-2 bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
@@ -428,16 +435,12 @@ function StoreCard({ store, viewMode }: { store: Store; viewMode: ViewMode }) {
                     </span>
                   )}
                 </h3>
-                {store.category && (
-                  <p className="text-sm text-gray-500 mt-1">{store.category}</p>
-                )}
+                {store.category && <p className="text-sm text-gray-500 mt-1">{store.category}</p>}
               </div>
             </div>
 
             {store.description && (
-              <p className={`text-gray-600 ${
-                isGridView ? 'line-clamp-3' : 'line-clamp-2'
-              }`}>
+              <p className={`text-gray-600 ${isGridView ? 'line-clamp-3' : 'line-clamp-2'}`}>
                 {store.description}
               </p>
             )}
@@ -450,9 +453,7 @@ function StoreCard({ store, viewMode }: { store: Store; viewMode: ViewMode }) {
                   {store.rating.toFixed(1)}
                 </span>
               </div>
-              <span className="text-sm text-gray-500">
-                ({store.total_reviews} تقييم)
-              </span>
+              <span className="text-sm text-gray-500">({store.total_reviews} تقييم)</span>
             </div>
 
             {/* Location */}
@@ -460,9 +461,7 @@ function StoreCard({ store, viewMode }: { store: Store; viewMode: ViewMode }) {
               <div className="flex items-center gap-1">
                 <MapPin className="w-4 h-4 text-gray-400" />
                 <span className="text-sm text-gray-600">{store.city}</span>
-                {store.region && (
-                  <span className="text-sm text-gray-500">، {store.region}</span>
-                )}
+                {store.region && <span className="text-sm text-gray-500">، {store.region}</span>}
               </div>
             )}
 
@@ -470,10 +469,7 @@ function StoreCard({ store, viewMode }: { store: Store; viewMode: ViewMode }) {
             {store.payment_methods && store.payment_methods.length > 0 && (
               <div className="flex gap-1 flex-wrap">
                 {store.payment_methods.slice(0, 3).map((method, index) => (
-                  <span 
-                    key={index}
-                    className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded"
-                  >
+                  <span key={index} className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
                     {method}
                   </span>
                 ))}

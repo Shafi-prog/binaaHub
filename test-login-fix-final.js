@@ -47,7 +47,7 @@ const testLoginFix = async () => {
           console.log(`✅ Correct redirect path`);
         } else {
           console.log(
-            `❌ Incorrect redirect path. Expected: ${expectedRedirect}, Got: ${result.redirectTo}`,
+            `❌ Incorrect redirect path. Expected: ${expectedRedirect}, Got: ${result.redirectTo}`
           );
         }
       } else {
@@ -72,7 +72,7 @@ const testLoginFix = async () => {
   console.log('\n🔍 Test Case 3: Invalid Credentials');
   const invalidTest = await simulateLogin(
     { email: 'invalid@test.com', password: 'wrongpass' },
-    null,
+    null
   );
 
   // Summary
@@ -82,7 +82,7 @@ const testLoginFix = async () => {
   console.log(`User Login: ${userTest.success ? '✅ PASS' : '❌ FAIL'}`);
   console.log(`Store Login: ${storeTest.success ? '✅ PASS' : '❌ FAIL'}`);
   console.log(
-    `Invalid Login: ${!invalidTest.success ? '✅ PASS (correctly rejected)' : '❌ FAIL (should have been rejected)'}`,
+    `Invalid Login: ${!invalidTest.success ? '✅ PASS (correctly rejected)' : '❌ FAIL (should have been rejected)'}`
   );
 
   const allPassed = userTest.success && storeTest.success && !invalidTest.success;

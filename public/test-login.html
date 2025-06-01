@@ -103,7 +103,7 @@
             log(`✅ الجلسة موجودة للمستخدم: ${session.user.email}`, 'success');
             log(
               `⏰ انتهاء الجلسة: ${new Date(session.expires_at * 1000).toLocaleString('ar-SA')}`,
-              'info',
+              'info'
             );
           } else {
             log('❌ لا توجد جلسة نشطة', 'error');

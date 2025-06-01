@@ -65,7 +65,8 @@ type ViewMode = 'grid' | 'list';
 export default function StorePage() {
   const params = useParams();
   const router = useRouter();
-  const storeId = params.id as string;  const supabase = createClientComponentClient();
+  const storeId = params.id as string;
+  const supabase = createClientComponentClient();
   const { addItem, getItemQuantity } = useCart();
 
   const [store, setStore] = useState<Store | null>(null);
@@ -90,7 +91,7 @@ export default function StorePage() {
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
       filtered = products.filter(
-        product =>
+        (product) =>
           product.name.toLowerCase().includes(query) ||
           (product.description && product.description.toLowerCase().includes(query)) ||
           (product.barcode && product.barcode.toLowerCase().includes(query))
@@ -157,13 +158,11 @@ export default function StorePage() {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <EmptyState
-          icon={Store}
+          icon={<Store className="w-8 h-8" />}
           title="متجر غير موجود"
           description={error || 'لم يتم العثور على المتجر المطلوب'}
-          action={{
-            label: 'العودة للمتاجر',
-            onClick: () => router.push('/stores')
-          }}
+          actionLabel="العودة للمتاجر"
+          onAction={() => router.push('/stores')}
         />
       </div>
     );
@@ -213,14 +212,10 @@ export default function StorePage() {
                       <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
                         {store.store_name}
                       </h1>
-                      {store.is_verified && (
-                        <Verified className="w-6 h-6 text-blue-500" />
-                      )}
+                      {store.is_verified && <Verified className="w-6 h-6 text-blue-500" />}
                     </div>
 
-                    {store.description && (
-                      <p className="text-gray-600 mb-4">{store.description}</p>
-                    )}
+                    {store.description && <p className="text-gray-600 mb-4">{store.description}</p>}
 
                     <div className="flex flex-wrap gap-4 text-sm text-gray-600">
                       {store.rating > 0 && (
@@ -339,12 +334,11 @@ export default function StorePage() {
             {filteredProducts.length} منتج
             {searchQuery && ` من أصل ${products.length}`}
           </div>
-        </div>
-
+        </div>{' '}
         {/* Products Grid/List */}
         {filteredProducts.length === 0 ? (
           <EmptyState
-            icon={ShoppingCart}
+            icon={<ShoppingCart className="w-8 h-8" />}
             title={searchQuery ? 'لا توجد منتجات مطابقة' : 'لا توجد منتجات'}
             description={
               searchQuery
@@ -359,7 +353,9 @@ export default function StorePage() {
                 ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'
                 : 'space-y-4'
             }
-          >            {filteredProducts.map((product) => (
+          >
+            {' '}
+            {filteredProducts.map((product) => (
               <ProductCard
                 key={product.id}
                 product={product}
@@ -407,29 +403,20 @@ function ProductCard({ product, viewMode, store_name }: ProductCardProps) {
           <div className="flex-1 min-w-0">
             <h3 className="font-medium text-gray-900 mb-1">{product.name}</h3>
             {product.description && (
-              <p className="text-sm text-gray-600 mb-2 line-clamp-2">
-                {product.description}
-              </p>
+              <p className="text-sm text-gray-600 mb-2 line-clamp-2">{product.description}</p>
             )}
-            
+
             <div className="flex items-center justify-between">
               <div>
                 <span className="text-lg font-bold text-green-600">
                   {formatCurrency(product.price)}
                 </span>
                 {isLowStock && (
-                  <p className="text-xs text-orange-600 mt-1">
-                    {product.stock} متبقي فقط
-                  </p>
+                  <p className="text-xs text-orange-600 mt-1">{product.stock} متبقي فقط</p>
                 )}
-                {isOutOfStock && (
-                  <p className="text-xs text-red-600 mt-1">نفد المخزون</p>
-                )}
-              </div>              <AddToCartButton
-                product={product}
-                variant="default"
-                className="px-4 py-2"
-              />
+                {isOutOfStock && <p className="text-xs text-red-600 mt-1">نفد المخزون</p>}
+              </div>{' '}
+              <AddToCartButton product={product} variant="default" className="px-4 py-2" />
             </div>
           </div>
         </div>
@@ -452,7 +439,7 @@ function ProductCard({ product, viewMode, store_name }: ProductCardProps) {
             <ShoppingCart className="w-12 h-12" />
           </div>
         )}
-        
+
         {/* Stock Badge */}
         {isOutOfStock && (
           <div className="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full">
@@ -468,23 +455,14 @@ function ProductCard({ product, viewMode, store_name }: ProductCardProps) {
 
       {/* Product Info */}
       <div className="p-4">
-        <h3 className="font-medium text-gray-900 mb-2 line-clamp-2">
-          {product.name}
-        </h3>
-          {product.description && (
-          <p className="text-sm text-gray-600 mb-3 line-clamp-2">
-            {product.description}
-          </p>
+        <h3 className="font-medium text-gray-900 mb-2 line-clamp-2">{product.name}</h3>
+        {product.description && (
+          <p className="text-sm text-gray-600 mb-3 line-clamp-2">{product.description}</p>
         )}
 
         <div className="flex items-center justify-between">
-          <span className="text-lg font-bold text-green-600">
-            {formatCurrency(product.price)}
-          </span>          <AddToCartButton
-            product={product}
-            variant="small"
-            className="px-3 py-2 text-sm"
-          />
+          <span className="text-lg font-bold text-green-600">{formatCurrency(product.price)}</span>{' '}
+          <AddToCartButton product={product} variant="small" className="px-3 py-2 text-sm" />
         </div>
       </div>
     </Card>

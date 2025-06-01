@@ -93,7 +93,7 @@ export default function ProductsPage() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
     setFormError(null);
   };
 
@@ -140,8 +140,8 @@ export default function ProductsPage() {
 
         if (error) throw error;
 
-        setProducts(prev =>
-          prev.map(p => (p.id === editingProduct.id ? { ...p, ...productData } : p))
+        setProducts((prev) =>
+          prev.map((p) => (p.id === editingProduct.id ? { ...p, ...productData } : p))
         );
       } else {
         const { data, error } = await supabase
@@ -151,7 +151,7 @@ export default function ProductsPage() {
           .single();
 
         if (error) throw error;
-        if (data) setProducts(prev => [data, ...prev]);
+        if (data) setProducts((prev) => [data, ...prev]);
       }
 
       // Reset form
@@ -193,7 +193,7 @@ export default function ProductsPage() {
       const { error } = await supabase.from('products').delete().eq('id', productId);
       if (error) throw error;
 
-      setProducts(prev => prev.filter(p => p.id !== productId));
+      setProducts((prev) => prev.filter((p) => p.id !== productId));
     } catch (error) {
       console.error('❌ [Products] Error deleting product:', error);
       alert('حدث خطأ في حذف المنتج');
@@ -247,9 +247,7 @@ export default function ProductsPage() {
           </div>
         </div>
 
-        {error && (
-          <div className="mb-6 p-4 text-red-700 bg-red-100 rounded-md">{error}</div>
-        )}
+        {error && <div className="mb-6 p-4 text-red-700 bg-red-100 rounded-md">{error}</div>}
 
         {/* Add/Edit Product Form */}
         {showAddForm && (
@@ -259,12 +257,14 @@ export default function ProductsPage() {
                 <h2 className="text-xl font-semibold text-gray-800">
                   {editingProduct ? 'تعديل المنتج' : 'إضافة منتج جديد'}
                 </h2>
-                <button
-                  onClick={resetForm}
-                  className="text-gray-500 hover:text-gray-700"
-                >
+                <button onClick={resetForm} className="text-gray-500 hover:text-gray-700">
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
                   </svg>
                 </button>
               </div>
@@ -289,9 +289,7 @@ export default function ProductsPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    الباركود
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">الباركود</label>
                   <input
                     type="text"
                     name="barcode"
@@ -346,9 +344,7 @@ export default function ProductsPage() {
                 </div>
 
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    وصف المنتج
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">وصف المنتج</label>
                   <textarea
                     name="description"
                     value={formData.description}
@@ -411,7 +407,7 @@ export default function ProductsPage() {
 
                     <div className="space-y-2">
                       <h3 className="font-semibold text-gray-800">{product.name}</h3>
-                      
+
                       {product.description && (
                         <p className="text-sm text-gray-600 line-clamp-2">{product.description}</p>
                       )}
@@ -420,13 +416,15 @@ export default function ProductsPage() {
                         <span className="text-lg font-bold text-green-600">
                           {formatCurrency(product.price)}
                         </span>
-                        <span className={`px-2 py-1 rounded ${
-                          product.stock > 10 
-                            ? 'bg-green-100 text-green-800' 
-                            : product.stock > 0 
-                            ? 'bg-yellow-100 text-yellow-800' 
-                            : 'bg-red-100 text-red-800'
-                        }`}>
+                        <span
+                          className={`px-2 py-1 rounded ${
+                            product.stock > 10
+                              ? 'bg-green-100 text-green-800'
+                              : product.stock > 0
+                                ? 'bg-yellow-100 text-yellow-800'
+                                : 'bg-red-100 text-red-800'
+                          }`}
+                        >
                           {product.stock} في المخزن
                         </span>
                       </div>

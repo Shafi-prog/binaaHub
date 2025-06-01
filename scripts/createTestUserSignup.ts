@@ -14,7 +14,7 @@ async function createTestUserViaSignup() {
       email: 'user@user.com',
       password: 'password123',
       name: 'Test User',
-      account_type: 'user' as const
+      account_type: 'user' as const,
     };
 
     console.log(`📝 Attempting to sign up: ${testUser.email}`);
@@ -22,7 +22,7 @@ async function createTestUserViaSignup() {
     // Attempt signup
     const { data, error } = await supabase.auth.signUp({
       email: testUser.email,
-      password: testUser.password
+      password: testUser.password,
     });
 
     if (error) {
@@ -37,16 +37,16 @@ async function createTestUserViaSignup() {
 
     if (data.user) {
       console.log(`✅ Auth user created: ${testUser.email}`);
-      
+
       // Insert user data
-      const { error: insertError } = await supabase
-        .from('users')
-        .insert([{
+      const { error: insertError } = await supabase.from('users').insert([
+        {
           id: data.user.id,
           name: testUser.name,
           email: testUser.email,
           account_type: testUser.account_type,
-        }]);
+        },
+      ]);
 
       if (insertError) {
         console.error('❌ Error inserting user data:', insertError);
@@ -54,7 +54,6 @@ async function createTestUserViaSignup() {
         console.log(`✅ User data inserted: ${testUser.email}`);
       }
     }
-
   } catch (error) {
     console.error('❌ Error creating user:', error);
   }

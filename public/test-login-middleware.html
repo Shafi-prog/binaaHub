@@ -206,11 +206,11 @@
 
           log(
             `👤 وصول /user/dashboard: ${userResponse.status}`,
-            userResponse.ok ? 'success' : 'error',
+            userResponse.ok ? 'success' : 'error'
           );
           log(
             `🏪 وصول /store/dashboard: ${storeResponse.status}`,
-            storeResponse.ok ? 'success' : 'error',
+            storeResponse.ok ? 'success' : 'error'
           );
         } catch (error) {
           log(`❌ خطأ في فحص المسارات: ${error.message}`, 'error');

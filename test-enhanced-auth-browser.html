@@ -330,7 +330,7 @@
             key.includes('supabase') ||
             key.includes('auth') ||
             key.includes('user_') ||
-            key.includes('just_logged_in'),
+            key.includes('just_logged_in')
         );
 
         testResults.cookies = {
@@ -340,7 +340,7 @@
         };
 
         resultsDiv.textContent = `Cookie Analysis:\nTotal Cookies: ${Object.keys(cookies).length}\nAuth-related Cookies: ${authCookies.length}\n\nAuth Cookies Found:\n${authCookies.map((key) => `- ${key}: ${cookies[key]?.substring(0, 30)}...`).join('\n') || 'None'}\n\nAll Cookies:\n${Object.keys(
-          cookies,
+          cookies
         )
           .map((key) => `- ${key}: ${cookies[key]?.substring(0, 20)}...`)
           .join('\n')}`;

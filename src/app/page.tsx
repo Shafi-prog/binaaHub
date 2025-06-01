@@ -1,10 +1,11 @@
 'use client';
 
+// Force dynamic rendering to prevent prerender issues
+export const dynamic = 'force-dynamic';
+
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 type Feature = {
   title: string;
@@ -21,12 +22,15 @@ export default function LandingPage() {
   const [activeFeature, setActiveFeature] = useState<'user' | 'store'>('user');
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
-  const supabase = createClientComponentClient();
 
   // Check authentication status
   useEffect(() => {
     const checkAuth = async () => {
       try {
+        // Import Supabase client dynamically to prevent build issues
+        const { createClientComponentClient } = await import('@supabase/auth-helpers-nextjs');
+        const supabase = createClientComponentClient();
+        
         const {
           data: { session },
         } = await supabase.auth.getSession();
@@ -72,28 +76,13 @@ export default function LandingPage() {
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-blue-50 opacity-50"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
-          <motion.h1
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            className="text-5xl font-bold text-gray-900 mb-6"
-          >
+          <h1 className="text-5xl font-bold text-gray-900 mb-6">
             منصة <span className="text-blue-600">بناء</span> المتكاملة
-          </motion.h1>
-          <motion.p
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-xl text-gray-600 mb-8"
-          >
+          </h1>
+          <p className="text-xl text-gray-600 mb-8">
             نظام متكامل لإدارة مشاريع البناء والمتاجر المتخصصة
-          </motion.p>
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="flex justify-center gap-4"
-          >
+          </p>
+          <div className="flex justify-center gap-4">
             <Link
               href="/signup"
               className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium"
@@ -106,7 +95,7 @@ export default function LandingPage() {
             >
               تسجيل الدخول
             </Link>
-          </motion.div>
+          </div>
         </div>
       </div>
 
@@ -139,17 +128,14 @@ export default function LandingPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {features[activeFeature].map((feature, index) => (
-            <motion.div
+            <div
               key={feature.title}
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
               className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow"
             >
               <div className="text-4xl mb-4">{feature.icon}</div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">{feature.title}</h3>
               <p className="text-gray-600">{feature.description}</p>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

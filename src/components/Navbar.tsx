@@ -100,22 +100,68 @@ export default function Navbar(props: NavbarProps) {
       document.body.appendChild(loadingDiv);
 
       // Wait a bit for visual feedback
-      await new Promise((resolve) => setTimeout(resolve, 800));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
-      // Actually sign out
+      // Call the sync-login DELETE endpoint to properly clear session
+      try {
+        await fetch('/api/auth/sync-login', {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+      } catch (apiError) {
+        console.warn('⚠️ [Navbar] API logout warning:', apiError);
+      }
+
+      // Ensure Supabase session is cleared
       await supabase.auth.signOut();
 
-      // Clear any session-related cookies
-      document.cookie = 'auth_session_active=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+      // Set logout timestamp to help middleware avoid redirect loops
+      document.cookie = `logout_timestamp=${new Date().toISOString()}; path=/; max-age=10`;
+
+      // Clear comprehensive list of session-related cookies on client side
+      const authCookies = [
+        'auth_session_active',
+        'user_email',
+        'account_type',
+        'user_name',
+        'sync_login_timestamp',
+        'remember_user',
+        'last_auth_sync',
+        // Supabase cookies
+        'sb-access-token',
+        'sb-refresh-token',
+        'supabase-auth-token',
+        'supabase.auth.token',
+      ];
+
+      authCookies.forEach((cookie) => {
+        // Clear for current domain
+        document.cookie = `${cookie}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; domain=${window.location.hostname}`;
+        // Clear without domain specification
+        document.cookie = `${cookie}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
+        // Clear for subdomain
+        document.cookie = `${cookie}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; domain=.${window.location.hostname}`;
+      });
+
+      // Clear local storage
+      localStorage.removeItem('supabase.auth.token');
+      localStorage.removeItem('auth_session_active');
+      sessionStorage.clear();
 
       toast.success('تم تسجيل الخروج بنجاح', { id: 'signout' });
 
-      // Redirect to login with a parameter to show logout status
-      window.location.href = '/login?fromLogout=true';
+      // Small delay before redirect to ensure cleanup
+      await new Promise((resolve) => setTimeout(resolve, 300));
+
+      // Force a complete page reload to ensure clean state
+      window.location.href = '/';
     } catch (error) {
       console.error('❌ [Navbar] Signout error:', error);
       toast.error('حدث خطأ أثناء تسجيل الخروج', { id: 'signout' });
-      window.location.href = '/login?fromLogout=error';
+      // Always redirect to home page to avoid redirect loops
+      window.location.href = '/';
     }
   };
   return (
@@ -127,24 +173,66 @@ export default function Navbar(props: NavbarProps) {
         </Link>
 
         <div className="flex items-center gap-6">
-          {/* Main Navigation */}
+          {/* Main Navigation - Differentiate based on account type */}
           <div className="hidden md:flex items-center gap-6 text-sm">
             <Link href="/" className="hover:text-blue-500">
               الرئيسية
             </Link>
-            <Link href="/stores" className="hover:text-blue-500">
-              المتاجر
-            </Link>
-            <Link href="/#features" className="hover:text-blue-500">
-              الخدمات
-            </Link>
+
+            {/* Show different navigation based on user type */}
+            {props.session && accountType ? (
+              <>
+                {accountType === 'store' ? (
+                  // Store-specific navigation
+                  <>
+                    <Link href="/store/dashboard" className="hover:text-blue-500">
+                      لوحة المتجر
+                    </Link>
+                    <Link href="/store/products" className="hover:text-blue-500">
+                      منتجاتي
+                    </Link>
+                    <Link href="/store/orders" className="hover:text-blue-500">
+                      الطلبات
+                    </Link>
+                    <Link href="/store/analytics" className="hover:text-blue-500">
+                      التحليلات
+                    </Link>
+                  </>
+                ) : (
+                  // Regular user navigation
+                  <>
+                    <Link href="/stores" className="hover:text-blue-500">
+                      المتاجر
+                    </Link>
+                    <Link href="/user/projects" className="hover:text-blue-500">
+                      مشاريعي
+                    </Link>
+                    <Link href="/user/orders" className="hover:text-blue-500">
+                      طلباتي
+                    </Link>
+                  </>
+                )}
+                <Link href="/#features" className="hover:text-blue-500">
+                  الخدمات
+                </Link>
+              </>
+            ) : (
+              // Guest navigation
+              <>
+                <Link href="/stores" className="hover:text-blue-500">
+                  المتاجر
+                </Link>
+                <Link href="/#features" className="hover:text-blue-500">
+                  الخدمات
+                </Link>
+              </>
+            )}
           </div>
 
-          {/* Cart Icon - Show for all users */}
-          <CartIcon 
-            onClick={() => setShowCartSidebar(true)}
-            className="hover:text-blue-500"
-          />
+          {/* Cart Icon - Show for users only, not stores */}
+          {(!props.session || accountType !== 'store') && (
+            <CartIcon onClick={() => setShowCartSidebar(true)} className="hover:text-blue-500" />
+          )}
 
           {/* User Menu */}
           {props.session ? (
@@ -232,33 +320,206 @@ export default function Navbar(props: NavbarProps) {
                     </button>
 
                     {isDropdownOpen && (
-                      <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-1 z-50">
-                        <Link
-                          href={accountType === 'store' ? '/store/dashboard' : '/user/dashboard'}
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                        >
-                          لوحة التحكم
-                        </Link>
-                        <Link
-                          href={accountType === 'store' ? '/store/profile' : '/user/profile'}
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                        >
-                          الملف الشخصي
-                        </Link>
-                        {accountType === 'store' && (
+                      <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg py-2 z-50 border">
+                        {/* Account Type Badge */}
+                        <div className="px-4 py-2 border-b">
+                          <div className="flex items-center gap-2">
+                            <div
+                              className={`w-2 h-2 rounded-full ${accountType === 'store' ? 'bg-green-500' : 'bg-blue-500'}`}
+                            ></div>
+                            <span className="text-xs font-medium text-gray-500">
+                              {accountType === 'store' ? 'حساب متجر' : 'حساب مستخدم'}
+                            </span>
+                          </div>
+                          <p className="text-sm font-medium text-gray-900 mt-1">{userName}</p>
+                          <p className="text-xs text-gray-500">{props.session?.user.email}</p>
+                        </div>
+
+                        {/* Navigation Links */}
+                        <div className="py-1">
                           <Link
-                            href="/store/products"
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                            href={accountType === 'store' ? '/store/dashboard' : '/user/dashboard'}
+                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
+                            onClick={() => setIsDropdownOpen(false)}
                           >
-                            إدارة المنتجات
+                            <svg
+                              className="w-4 h-4"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"
+                              />
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M8 5v2h8V5"
+                              />
+                            </svg>
+                            لوحة التحكم
                           </Link>
-                        )}
-                        <button
-                          onClick={handleSignOut}
-                          className="block w-full text-right px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
-                        >
-                          تسجيل الخروج
-                        </button>
+
+                          <Link
+                            href={accountType === 'store' ? '/store/profile' : '/user/profile'}
+                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
+                            onClick={() => setIsDropdownOpen(false)}
+                          >
+                            <svg
+                              className="w-4 h-4"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                              />
+                            </svg>
+                            الملف الشخصي
+                          </Link>
+
+                          {/* Store-specific menu items */}
+                          {accountType === 'store' && (
+                            <>
+                              <Link
+                                href="/store/products"
+                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
+                                onClick={() => setIsDropdownOpen(false)}
+                              >
+                                <svg
+                                  className="w-4 h-4"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10m0-10L4 7"
+                                  />
+                                </svg>
+                                إدارة المنتجات
+                              </Link>
+                              <Link
+                                href="/store/orders"
+                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
+                                onClick={() => setIsDropdownOpen(false)}
+                              >
+                                <svg
+                                  className="w-4 h-4"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                                  />
+                                </svg>
+                                الطلبات الواردة
+                              </Link>
+                              <Link
+                                href="/store/analytics"
+                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
+                                onClick={() => setIsDropdownOpen(false)}
+                              >
+                                <svg
+                                  className="w-4 h-4"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                                  />
+                                </svg>
+                                التحليلات
+                              </Link>
+                            </>
+                          )}
+
+                          {/* User-specific menu items */}
+                          {accountType !== 'store' && (
+                            <>
+                              <Link
+                                href="/user/projects"
+                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
+                                onClick={() => setIsDropdownOpen(false)}
+                              >
+                                <svg
+                                  className="w-4 h-4"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                                  />
+                                </svg>
+                                مشاريعي
+                              </Link>
+                              <Link
+                                href="/user/orders"
+                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
+                                onClick={() => setIsDropdownOpen(false)}
+                              >
+                                <svg
+                                  className="w-4 h-4"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+                                  />
+                                </svg>
+                                طلباتي
+                              </Link>
+                            </>
+                          )}
+                        </div>
+
+                        {/* Logout Section */}
+                        <div className="border-t pt-1">
+                          <button
+                            onClick={handleSignOut}
+                            className="block w-full text-right px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center gap-2"
+                          >
+                            <svg
+                              className="w-4 h-4"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                              />
+                            </svg>
+                            تسجيل الخروج
+                          </button>
+                        </div>
                       </div>
                     )}
                   </div>
@@ -282,10 +543,7 @@ export default function Navbar(props: NavbarProps) {
       </div>
 
       {/* Cart Sidebar */}
-      <CartSidebar 
-        isOpen={showCartSidebar}
-        onClose={() => setShowCartSidebar(false)}
-      />
+      <CartSidebar isOpen={showCartSidebar} onClose={() => setShowCartSidebar(false)} />
     </div>
   );
 }

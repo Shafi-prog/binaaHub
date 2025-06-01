@@ -2,7 +2,11 @@
   "extends": "./tsconfig.extends.json",
   "compilerOptions": {
     "target": "ES2022",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -10,7 +14,12 @@
     "esModuleInterop": true,
     "module": "ESNext",
     "moduleResolution": "bundler",
-    "types": ["react", "react-dom", "node", "@types/node"],
+    "types": [
+      "react",
+      "react-dom",
+      "node",
+      "@types/node"
+    ],
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
@@ -29,17 +38,23 @@
   "include": [
     "**/*.ts",
     "**/*.tsx",
-    "next-env.d.ts",
     ".next/types/**/*.ts",
     "app/**/*",
     "components/**/*",
-    "src/**/*",
+    "global.d.ts",
+    "hooks/**/*",
     "lib/**/*",
+    "next-env.d.ts",
+    "next.config.js",
+    "src/**/*",
     "types/**/*",
     "utils/**/*",
-    "hooks/**/*",
-    "global.d.ts",
-    "next.config.js"
+    "out/types/**/*.ts"
   ],
-  "exclude": ["node_modules", ".next", "out", "**/binaaHub/**"]
+  "exclude": [
+    "node_modules",
+    ".next",
+    "out",
+    "**/binaaHub/**"
+  ]
 }

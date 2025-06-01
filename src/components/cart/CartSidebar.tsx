@@ -15,28 +15,31 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
 
   if (!isOpen) return null;
 
-  const groupedByStore = state.items.reduce((groups, item) => {
-    const storeId = item.product.store_id;
-    if (!groups[storeId]) {
-      groups[storeId] = {
-        store_name: item.store_name || 'متجر غير محدد',
-        items: [],
-        total: 0,
-      };
-    }
-    groups[storeId].items.push(item);
-    groups[storeId].total += item.product.price * item.quantity;
-    return groups;
-  }, {} as Record<string, { store_name: string; items: typeof state.items; total: number }>);
+  const groupedByStore = state.items.reduce(
+    (groups, item) => {
+      const storeId = item.product.store_id;
+      if (!groups[storeId]) {
+        groups[storeId] = {
+          store_name: item.store_name || 'متجر غير محدد',
+          items: [],
+          total: 0,
+        };
+      }
+      groups[storeId].items.push(item);
+      groups[storeId].total += item.product.price * item.quantity;
+      return groups;
+    },
+    {} as Record<string, { store_name: string; items: typeof state.items; total: number }>
+  );
 
   return (
     <div className="fixed inset-0 z-50 overflow-hidden">
       {/* Backdrop */}
-      <div 
+      <div
         className="absolute inset-0 bg-black bg-opacity-50 transition-opacity"
         onClick={onClose}
       />
-      
+
       {/* Sidebar */}
       <div className="absolute right-0 top-0 h-full w-full max-w-md bg-white shadow-xl">
         <div className="flex h-full flex-col">
@@ -44,13 +47,8 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
           <div className="flex items-center justify-between border-b px-4 py-3">
             <h2 className="text-lg font-semibold">سلة المشتريات</h2>
             <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-500">
-                {state.itemCount} عنصر
-              </span>
-              <button
-                onClick={onClose}
-                className="rounded-lg p-1 hover:bg-gray-100"
-              >
+              <span className="text-sm text-gray-500">{state.itemCount} عنصر</span>
+              <button onClick={onClose} className="rounded-lg p-1 hover:bg-gray-100">
                 <X className="h-5 w-5" />
               </button>
             </div>
@@ -70,14 +68,12 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                   <div key={storeId} className="space-y-3">
                     {/* Store header */}
                     <div className="flex items-center justify-between">
-                      <h3 className="font-medium text-gray-900">
-                        {storeGroup.store_name}
-                      </h3>
+                      <h3 className="font-medium text-gray-900">{storeGroup.store_name}</h3>
                       <span className="text-sm font-medium text-green-600">
                         {formatCurrency(storeGroup.total)}
                       </span>
                     </div>
-                    
+
                     {/* Store items */}
                     <div className="space-y-3">
                       {storeGroup.items.map((item) => (
@@ -85,9 +81,7 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                           key={item.product.id}
                           item={item}
                           onRemove={() => removeItem(item.product.id)}
-                          onUpdateQuantity={(quantity) => 
-                            updateQuantity(item.product.id, quantity)
-                          }
+                          onUpdateQuantity={(quantity) => updateQuantity(item.product.id, quantity)}
                         />
                       ))}
                     </div>
@@ -103,9 +97,7 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
               {/* Total */}
               <div className="flex items-center justify-between text-lg font-semibold">
                 <span>الإجمالي</span>
-                <span className="text-green-600">
-                  {formatCurrency(state.total)}
-                </span>
+                <span className="text-green-600">{formatCurrency(state.total)}</span>
               </div>
 
               {/* Actions */}
@@ -154,13 +146,9 @@ function CartItem({ item, onRemove, onUpdateQuantity }: CartItemProps) {
 
       {/* Product details */}
       <div className="flex-1 min-w-0">
-        <h4 className="font-medium text-gray-900 line-clamp-2">
-          {item.product.name}
-        </h4>
-        <p className="text-sm text-gray-500 mt-1">
-          {formatCurrency(item.product.price)} / الوحدة
-        </p>
-        
+        <h4 className="font-medium text-gray-900 line-clamp-2">{item.product.name}</h4>
+        <p className="text-sm text-gray-500 mt-1">{formatCurrency(item.product.price)} / الوحدة</p>
+
         {/* Quantity controls */}
         <div className="flex items-center gap-2 mt-2">
           <button
@@ -170,9 +158,7 @@ function CartItem({ item, onRemove, onUpdateQuantity }: CartItemProps) {
           >
             <Minus className="h-4 w-4" />
           </button>
-          <span className="w-8 text-center font-medium">
-            {item.quantity}
-          </span>
+          <span className="w-8 text-center font-medium">{item.quantity}</span>
           <button
             onClick={() => onUpdateQuantity(item.quantity + 1)}
             className="w-8 h-8 rounded-full bg-white border border-gray-300 flex items-center justify-center hover:bg-gray-50"

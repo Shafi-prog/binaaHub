@@ -38,12 +38,15 @@ export async function POST(request: NextRequest) {
 
     console.log('✅ [API] Authentication successful for sync login');
 
-    // Get user data from database
-    const { data: userData, error: fetchError } = await supabase
+    // Get user data from database - handle potential duplicates
+    const { data: userDataArray, error: fetchError } = await supabase
       .from('users')
       .select('*')
       .eq('email', email)
-      .single();
+      .order('updated_at', { ascending: false })
+      .limit(1);
+
+    const userData = userDataArray?.[0];
 
     if (fetchError || !userData?.account_type) {
       console.error('❌ [API] Error fetching user data for sync login:', fetchError?.message);
@@ -159,15 +162,18 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Get user data to validate sync status
-    const { data: userData, error: fetchError } = await supabase
+    // Get user data to validate sync status - handle potential duplicates
+    const { data: userDataArray, error: fetchError } = await supabase
       .from('users')
       .select('*')
       .eq('id', session.user.id)
-      .single();
+      .order('updated_at', { ascending: false })
+      .limit(1);
 
-    if (fetchError) {
-      console.error('❌ [API] Error validating sync login status:', fetchError.message);
+    const userData = userDataArray?.[0];
+
+    if (fetchError || !userData) {
+      console.error('❌ [API] Error validating sync login status:', fetchError?.message);
       return NextResponse.json(
         { success: false, error: 'Failed to validate sync login' },
         { status: 500 }

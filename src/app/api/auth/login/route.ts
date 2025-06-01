@@ -28,31 +28,32 @@ export async function POST(request: NextRequest) {
     console.log('✅ [API] Authentication successful for:', signInData.session.user.email);
 
     // Get user data from database
-    const { data: userData, error: fetchError } = await supabase
+    const { data: fetchedUserData, error: fetchError } = await supabase
       .from('users')
       .select('account_type')
       .eq('email', email)
       .single();
 
+    let userData = fetchedUserData;
+
     if (fetchError || !userData?.account_type) {
       console.error('❌ [API] Error fetching user data:', fetchError?.message);
-      
+
       // If user exists in auth but not in users table, create a default record
-      if (fetchError?.code === 'PGRST116') { // No rows returned
+      if (fetchError?.code === 'PGRST116') {
+        // No rows returned
         console.log('🔧 [API] Creating missing user record for:', email);
-        
+
         const defaultUserData = {
           id: signInData.session.user.id,
           email: email,
           account_type: 'user' as const,
           name: signInData.session.user.email?.split('@')[0] || 'User',
           is_verified: true,
-          status: 'active'
+          status: 'active',
         };
 
-        const { error: insertError } = await supabase
-          .from('users')
-          .insert([defaultUserData]);
+        const { error: insertError } = await supabase.from('users').insert([defaultUserData]);
 
         if (insertError) {
           console.error('❌ [API] Failed to create user record:', insertError?.message);
@@ -63,7 +64,7 @@ export async function POST(request: NextRequest) {
         }
 
         console.log('✅ [API] Created missing user record for:', email);
-        
+
         // Use the default account type
         userData = { account_type: defaultUserData.account_type };
       } else {

@@ -212,7 +212,7 @@
           appendToResult(resultId, log(`👤 البريد الإلكتروني: ${data.user?.email}`, 'info'));
           appendToResult(
             resultId,
-            log(`🔑 معرف الجلسة: ${data.session?.access_token?.substring(0, 20)}...`, 'info'),
+            log(`🔑 معرف الجلسة: ${data.session?.access_token?.substring(0, 20)}...`, 'info')
           );
 
           // Test getting user data
@@ -225,7 +225,7 @@
           if (userError) {
             appendToResult(
               resultId,
-              log(`⚠️ تحذير: فشل في جلب بيانات المستخدم: ${userError.message}`, 'warning'),
+              log(`⚠️ تحذير: فشل في جلب بيانات المستخدم: ${userError.message}`, 'warning')
             );
           } else {
             appendToResult(resultId, log(`✅ نوع الحساب: ${userData.account_type}`, 'success'));
@@ -258,7 +258,7 @@
           appendToResult(resultId, log(`🏪 البريد الإلكتروني: ${data.user?.email}`, 'info'));
           appendToResult(
             resultId,
-            log(`🔑 معرف الجلسة: ${data.session?.access_token?.substring(0, 20)}...`, 'info'),
+            log(`🔑 معرف الجلسة: ${data.session?.access_token?.substring(0, 20)}...`, 'info')
           );
 
           // Test getting store data
@@ -271,7 +271,7 @@
           if (storeError) {
             appendToResult(
               resultId,
-              log(`⚠️ تحذير: فشل في جلب بيانات المتجر: ${storeError.message}`, 'warning'),
+              log(`⚠️ تحذير: فشل في جلب بيانات المتجر: ${storeError.message}`, 'warning')
             );
           } else {
             appendToResult(resultId, log(`✅ نوع الحساب: ${storeData.account_type}`, 'success'));
@@ -380,8 +380,8 @@
               resultId,
               log(
                 `🕒 انتهاء الجلسة: ${new Date(session.expires_at * 1000).toLocaleString('ar-EG')}`,
-                'info',
-              ),
+                'info'
+              )
             );
 
             // Check cookies
@@ -490,7 +490,7 @@
           if (userError) {
             appendToResult(
               resultId,
-              log(`❌ فشل تسجيل دخول المستخدم: ${userError.message}`, 'error'),
+              log(`❌ فشل تسجيل دخول المستخدم: ${userError.message}`, 'error')
             );
             return;
           }
@@ -511,8 +511,8 @@
                 resultId,
                 log(
                   `✅ نقطة التحديث تعمل: ${refreshData.authenticated ? 'مصادق' : 'غير مصادق'}`,
-                  'success',
-                ),
+                  'success'
+                )
               );
             } else {
               appendToResult(resultId, log('⚠️ نقطة التحديث لا تعمل كما متوقع', 'warning'));
@@ -520,7 +520,7 @@
           } catch (refreshError) {
             appendToResult(
               resultId,
-              log(`⚠️ خطأ في نقطة التحديث: ${refreshError.message}`, 'warning'),
+              log(`⚠️ خطأ في نقطة التحديث: ${refreshError.message}`, 'warning')
             );
           }
 
@@ -543,7 +543,7 @@
           if (storeError) {
             appendToResult(
               resultId,
-              log(`❌ فشل تسجيل دخول المتجر: ${storeError.message}`, 'error'),
+              log(`❌ فشل تسجيل دخول المتجر: ${storeError.message}`, 'error')
             );
           } else {
             appendToResult(resultId, log('✅ تم تسجيل دخول المتجر بنجاح', 'success'));

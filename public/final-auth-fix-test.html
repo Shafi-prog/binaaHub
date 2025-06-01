@@ -332,7 +332,7 @@
             updateStepStatus(
               'step2',
               'failed',
-              `❌ صفحة تسجيل الدخول غير متاحة: ${loginResponse.status}`,
+              `❌ صفحة تسجيل الدخول غير متاحة: ${loginResponse.status}`
             );
             return false;
           }
@@ -370,7 +370,7 @@
           updateStepStatus(
             'step3',
             'failed',
-            `❌ Middleware لا يعمل بشكل صحيح: ${dashboardResponse.status}`,
+            `❌ Middleware لا يعمل بشكل صحيح: ${dashboardResponse.status}`
           );
           return { working: false, authenticated: false };
         } catch (error) {
@@ -434,14 +434,14 @@
           }
 
           const successfulMethods = Object.keys(recoveryResults).filter(
-            (method) => recoveryResults[method] === 'simulated_success',
+            (method) => recoveryResults[method] === 'simulated_success'
           );
 
           if (successfulMethods.length > 0) {
             updateStepStatus(
               'step5',
               'completed',
-              `✅ نظام الاسترداد متاح (${successfulMethods.length}/${testMethods.length} طرق)`,
+              `✅ نظام الاسترداد متاح (${successfulMethods.length}/${testMethods.length} طرق)`
             );
             return true;
           } else {

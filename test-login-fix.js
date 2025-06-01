@@ -54,7 +54,7 @@ const testLoginRedirection = async () => {
         try {
           const dashboardResponse = await fetch(`${baseUrl}${result.redirectTo}`);
           console.log(
-            `   Dashboard Access: ${dashboardResponse.status === 200 ? 'Accessible' : `HTTP ${dashboardResponse.status}`}`,
+            `   Dashboard Access: ${dashboardResponse.status === 200 ? 'Accessible' : `HTTP ${dashboardResponse.status}`}`
           );
         } catch (dashError) {
           console.log(`   Dashboard Access: Error - ${dashError.message}`);

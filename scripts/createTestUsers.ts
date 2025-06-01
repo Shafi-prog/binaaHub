@@ -2,13 +2,14 @@ import 'dotenv/config';
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+const supabaseServiceKey =
+  process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
 const supabase = createClient(supabaseUrl, supabaseServiceKey, {
   auth: {
     autoRefreshToken: false,
-    persistSession: false
-  }
+    persistSession: false,
+  },
 });
 
 async function createTestUsers() {
@@ -27,8 +28,8 @@ async function createTestUsers() {
         city: 'Riyadh',
         region: 'Riyadh Region',
         is_verified: true,
-        status: 'active'
-      }
+        status: 'active',
+      },
     },
     {
       email: 'store@store.com',
@@ -42,9 +43,9 @@ async function createTestUsers() {
         city: 'Jeddah',
         region: 'Makkah Region',
         is_verified: true,
-        status: 'active'
-      }
-    }
+        status: 'active',
+      },
+    },
   ];
 
   for (const testUser of testUsers) {
@@ -55,20 +56,23 @@ async function createTestUsers() {
       const { data: authData, error: authError } = await supabase.auth.admin.createUser({
         email: testUser.email,
         password: testUser.password,
-        email_confirm: true
+        email_confirm: true,
       });
 
       if (authError) {
         if (authError.message.includes('already registered')) {
           console.log(`ℹ️  User ${testUser.email} already exists in auth`);
-          
+
           // Get existing user
-          const { data: { users }, error: listError } = await supabase.auth.admin.listUsers();
+          const {
+            data: { users },
+            error: listError,
+          } = await supabase.auth.admin.listUsers();
           if (listError) throw listError;
-          
-          const existingUser = users.find(u => u.email === testUser.email);
+
+          const existingUser = users.find((u) => u.email === testUser.email);
           if (!existingUser) throw new Error('User not found after creation');
-          
+
           // Check if user data exists
           const { data: existingUserData, error: fetchError } = await supabase
             .from('users')
@@ -82,37 +86,35 @@ async function createTestUsers() {
 
           if (!existingUserData) {
             // Insert user data
-            const { error: insertError } = await supabase
-              .from('users')
-              .insert([{
+            const { error: insertError } = await supabase.from('users').insert([
+              {
                 id: existingUser.id,
-                ...testUser.userData
-              }]);
+                ...testUser.userData,
+              },
+            ]);
 
             if (insertError) throw insertError;
             console.log(`✅ Added user data for existing auth user: ${testUser.email}`);
           } else {
             console.log(`✅ User data already exists for: ${testUser.email}`);
           }
-          
         } else {
           throw authError;
         }
       } else {
         console.log(`✅ Auth user created: ${testUser.email}`);
-        
+
         // Insert user data
-        const { error: insertError } = await supabase
-          .from('users')
-          .insert([{
+        const { error: insertError } = await supabase.from('users').insert([
+          {
             id: authData.user.id,
-            ...testUser.userData
-          }]);
+            ...testUser.userData,
+          },
+        ]);
 
         if (insertError) throw insertError;
         console.log(`✅ User data inserted: ${testUser.email}`);
       }
-
     } catch (error) {
       console.error(`❌ Error creating user ${testUser.email}:`, error);
     }

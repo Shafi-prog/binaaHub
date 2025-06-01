@@ -5,7 +5,7 @@
 
 async function testLogin(email: string, password: string) {
   console.log(`🔐 Testing login for: ${email}`);
-  
+
   try {
     const response = await fetch('http://localhost:3001/api/auth/login', {
       method: 'POST',
@@ -16,7 +16,7 @@ async function testLogin(email: string, password: string) {
     });
 
     const result = await response.json();
-    
+
     if (response.ok) {
       console.log('✅ Login successful!');
       console.log('📄 Response:', result);
@@ -35,14 +35,14 @@ async function testLogin(email: string, password: string) {
 // Test cases
 async function runTests() {
   console.log('🚀 Starting authentication tests...\n');
-  
+
   // Test with common test credentials
   const testCredentials = [
     { email: 'user@user.com', password: 'password123' },
     { email: 'test@test.com', password: 'password123' },
-    { email: 'store@store.com', password: 'password123' }
+    { email: 'store@store.com', password: 'password123' },
   ];
-  
+
   for (const creds of testCredentials) {
     await testLogin(creds.email, creds.password);
     console.log('---\n');
@@ -53,7 +53,9 @@ if (typeof window !== 'undefined') {
   // Browser environment
   (window as any).testLogin = testLogin;
   (window as any).runTests = runTests;
-  console.log('🔧 Test functions loaded. Use testLogin("email", "password") or runTests() in console.');
+  console.log(
+    '🔧 Test functions loaded. Use testLogin("email", "password") or runTests() in console.'
+  );
 } else {
   // Node environment
   runTests();

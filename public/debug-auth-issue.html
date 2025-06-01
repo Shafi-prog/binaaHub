@@ -163,7 +163,7 @@
               'currentState',
               'success',
               'توجد جلسة نشطة',
-              `المستخدم: ${sessionData.session.user.email}<br>معرف المستخدم: ${sessionData.session.user.id}`,
+              `المستخدم: ${sessionData.session.user.email}<br>معرف المستخدم: ${sessionData.session.user.id}`
             );
           } else {
             addResult('currentState', 'warning', 'لا توجد جلسة نشطة');
@@ -178,7 +178,7 @@
               'currentState',
               'success',
               'المستخدم متاح مباشرة',
-              `المستخدم: ${userData.user.email}<br>معرف المستخدم: ${userData.user.id}`,
+              `المستخدم: ${userData.user.email}<br>معرف المستخدم: ${userData.user.id}`
             );
           } else {
             addResult('currentState', 'warning', 'لا يوجد مستخدم متاح');
@@ -190,7 +190,7 @@
             'currentState',
             'info',
             'معلومات إضافية',
-            `Storage: ${localStorage.getItem('sb-dlunxrgldjmqjxrnbrpl-auth-token') ? 'موجود' : 'غير موجود'}`,
+            `Storage: ${localStorage.getItem('sb-dlunxrgldjmqjxrnbrpl-auth-token') ? 'موجود' : 'غير موجود'}`
           );
         } catch (error) {
           addResult('currentState', 'error', 'خطأ غير متوقع', error.message);
@@ -219,7 +219,7 @@
             'loginResults',
             'success',
             'تم تسجيل الدخول بنجاح',
-            `المستخدم: ${data.user.email}<br>معرف الجلسة: ${data.session.access_token.substring(0, 20)}...`,
+            `المستخدم: ${data.user.email}<br>معرف الجلسة: ${data.session.access_token.substring(0, 20)}...`
           );
 
           // Immediate verification
@@ -231,7 +231,7 @@
               addResult(
                 'loginResults',
                 'error',
-                '❌ الجلسة غير متاحة بعد تسجيل الدخول - هذه هي المشكلة!',
+                '❌ الجلسة غير متاحة بعد تسجيل الدخول - هذه هي المشكلة!'
               );
 
               // Try refresh
@@ -276,7 +276,7 @@
               c.includes('supabase') ||
               c.includes('auth') ||
               c.includes('session') ||
-              c.includes('sb-'),
+              c.includes('sb-')
           );
 
           if (authCookies.length > 0) {
@@ -290,14 +290,14 @@
 
         // Check localStorage
         const localStorageKeys = Object.keys(localStorage).filter(
-          (k) => k.includes('supabase') || k.includes('auth') || k.includes('sb-'),
+          (k) => k.includes('supabase') || k.includes('auth') || k.includes('sb-')
         );
 
         if (localStorageKeys.length > 0) {
           const storageHtml = localStorageKeys
             .map(
               (k) =>
-                `<div><strong>${k}:</strong> ${localStorage.getItem(k)?.substring(0, 100)}...</div>`,
+                `<div><strong>${k}:</strong> ${localStorage.getItem(k)?.substring(0, 100)}...</div>`
             )
             .join('');
           document.getElementById('cookiesInfo').innerHTML +=
@@ -319,7 +319,7 @@
             'redirectResults',
             'info',
             `استجابة الصفحة الرئيسية: ${response.status}`,
-            `النوع: ${response.type}<br>تم التوجيه: ${response.redirected}`,
+            `النوع: ${response.type}<br>تم التوجيه: ${response.redirected}`
           );
         } catch (error) {
           addResult('redirectResults', 'error', 'خطأ في اختبار الصفحة الرئيسية', error.message);
@@ -348,7 +348,7 @@
               'redirectResults',
               'error',
               'خطأ في الوصول للوحة التحكم',
-              `HTTP ${response.status}`,
+              `HTTP ${response.status}`
             );
           }
         } catch (error) {
@@ -369,7 +369,7 @@
             addResult(
               'dashboardSimulation',
               'warning',
-              'لا توجد جلسة، جاري المحاولة مع refreshSession...',
+              'لا توجد جلسة، جاري المحاولة مع refreshSession...'
             );
 
             // Step 2: Try refresh
@@ -382,7 +382,7 @@
               addResult(
                 'dashboardSimulation',
                 'warning',
-                'فشل التحديث، جاري المحاولة مع getUser...',
+                'فشل التحديث، جاري المحاولة مع getUser...'
               );
 
               // Step 3: Try getUser
@@ -451,7 +451,7 @@
                   addResult(
                     'completeFlow',
                     'warning',
-                    '⚠️ المستخدم متاح لكن الجلسة غير متاحة - هذه هي المشكلة الأساسية!',
+                    '⚠️ المستخدم متاح لكن الجلسة غير متاحة - هذه هي المشكلة الأساسية!'
                   );
                 } else {
                   addResult('completeFlow', 'error', '❌ لا يوجد مستخدم أو جلسة');

@@ -207,7 +207,7 @@
             log(`👤 المستخدم: ${session.user.email}`, 'info');
             log(
               `⏰ انتهاء الجلسة: ${new Date(session.expires_at * 1000).toLocaleString()}`,
-              'info',
+              'info'
             );
           } else {
             log(`❌ لا توجد جلسة نشطة`, 'error');

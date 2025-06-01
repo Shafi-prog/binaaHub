@@ -18,7 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className="font-tajawal">
-        <Toaster 
+        <Toaster
           position="top-center"
           toastOptions={{
             // Prevent duplicate toasts

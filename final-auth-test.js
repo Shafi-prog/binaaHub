@@ -63,7 +63,7 @@ async function runAuthenticationTest() {
             url.includes('/dashboard')
           );
         },
-        { timeout: 30000 },
+        { timeout: 30000 }
       );
 
       const finalUrl = page.url();
@@ -110,7 +110,7 @@ async function runAuthenticationTest() {
 
       // Check for error messages
       const errorMessages = await page.$$eval('.bg-red-50, .error, [class*="error"]', (elements) =>
-        elements.map((el) => el.textContent),
+        elements.map((el) => el.textContent)
       );
 
       if (errorMessages.length > 0) {

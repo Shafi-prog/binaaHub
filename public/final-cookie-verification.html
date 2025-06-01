@@ -183,7 +183,7 @@
           (c) =>
             c.startsWith('sb-access-token=') ||
             c.startsWith('sb-access-token-client=') ||
-            c.startsWith('access_token='),
+            c.startsWith('access_token=')
         );
         const refreshTokenCookie = cookies.find((c) => c.startsWith('sb-refresh-token='));
 
@@ -238,7 +238,7 @@
           (c) =>
             c.startsWith('sb-access-token=') ||
             c.startsWith('sb-access-token-client=') ||
-            c.startsWith('access_token='),
+            c.startsWith('access_token=')
         );
 
         if (hasAccessToken) {

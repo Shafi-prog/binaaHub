@@ -1,3 +1,6 @@
+// Force dynamic rendering to prevent prerender issues
+export const dynamic = 'force-dynamic';
+
 import { Card } from '@/components/ui/card';
 import { ClientIcon } from '@/components/icons';
 import type { IconKey } from '@/components/icons/ClientIcon';
@@ -49,12 +52,7 @@ export default function MarketingPage() {
       title: 'حملات إعلانية',
       description: 'تصميم وإدارة حملات إعلانية فعالة عبر منصات متعددة',
       icon: 'dashboard',
-      features: [
-        'إعلانات Google',
-        'إعلانات Facebook و Instagram',
-        'تتبع الأداء',
-        'تحليل النتائج',
-      ],
+      features: ['إعلانات Google', 'إعلانات Facebook و Instagram', 'تتبع الأداء', 'تحليل النتائج'],
       benefits: ['استهداف دقيق', 'عائد استثمار مرتفع', 'تقارير مفصلة'],
       pricing: 'من 800 ر.س شهرياً',
       color: 'bg-green-500',

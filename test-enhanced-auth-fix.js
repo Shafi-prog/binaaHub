@@ -100,7 +100,7 @@ async function testEnhancedAuthFix() {
     console.log('Server auth state:', debugData.hasSession ? '✅ Has session' : '❌ No session');
     console.log(
       'New project route:',
-      newProjectResponse.status === 200 ? '✅ Accessible' : '❌ Blocked',
+      newProjectResponse.status === 200 ? '✅ Accessible' : '❌ Blocked'
     );
     console.log('Dashboard access:', dashboardResponse.status === 200 ? '✅ Working' : '❌ Issues');
   } catch (error) {

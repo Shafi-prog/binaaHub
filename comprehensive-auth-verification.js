@@ -52,7 +52,7 @@ function checkFile(filePath, description, shouldUse) {
 
   // Check for required imports and functions
   const hasVerifyAuthImport = content.includes(
-    "import { verifyAuthWithRetry } from '@/lib/auth-recovery'",
+    "import { verifyAuthWithRetry } from '@/lib/auth-recovery'"
   );
   const hasVerifyAuthUsage = content.includes('verifyAuthWithRetry(');
   const hasUserState = content.includes('useState<User | null>(null)');
@@ -153,7 +153,7 @@ async function runComprehensiveCheck() {
 
   const overallStatus = authRecoveryOk && middlewareOk && allFilesOk;
   console.log(
-    `\n🎯 الحالة العامة: ${overallStatus ? '🎉 جميع الإصلاحات مكتملة!' : '⚠️ هناك مشاكل تحتاج لحل'}`,
+    `\n🎯 الحالة العامة: ${overallStatus ? '🎉 جميع الإصلاحات مكتملة!' : '⚠️ هناك مشاكل تحتاج لحل'}`
   );
 
   if (overallStatus) {

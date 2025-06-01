@@ -33,7 +33,7 @@ export function AddToCartButton({
   disabled = false,
 }: AddToCartButtonProps) {
   const { addItem, updateQuantity, getItemQuantity } = useCart();
-  
+
   const currentQuantity = getItemQuantity(product.id);
   const isOutOfStock = product.stock <= 0;
   const isDisabled = disabled || isOutOfStock;
@@ -116,14 +116,16 @@ export function AddToCartButton({
       >
         <Minus className={iconSizes[variant]} />
       </button>
-      
-      <span className={`
+
+      <span
+        className={`
         min-w-8 text-center font-medium
         ${variant === 'small' ? 'text-xs' : variant === 'large' ? 'text-lg' : 'text-sm'}
-      `}>
+      `}
+      >
         {currentQuantity}
       </span>
-      
+
       <button
         onClick={handleIncrease}
         disabled={currentQuantity >= product.stock}

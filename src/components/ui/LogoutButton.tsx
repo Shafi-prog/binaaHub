@@ -14,14 +14,38 @@ export default function LogoutButton({ className = '' }: LogoutButtonProps) {
 
   const handleLogout = async () => {
     try {
+      // Show loading state
+      toast.loading('جاري تسجيل الخروج...', { id: 'logout' });
+
+      // Clear Supabase session
       await supabase.auth.signOut();
-      toast.success('تم تسجيل الخروج بنجاح');
-      router.push('/login');
+
+      // Clear all auth-related cookies
+      const authCookies = [
+        'auth_session_active',
+        'user_email',
+        'account_type',
+        'user_name',
+        'sync_login_timestamp',
+        'remember_user',
+        'last_auth_sync',
+      ];
+
+      authCookies.forEach((cookie) => {
+        document.cookie = `${cookie}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; domain=${window.location.hostname}`;
+        document.cookie = `${cookie}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
+      });
+
+      toast.success('تم تسجيل الخروج بنجاح', { id: 'logout' });
+
+      // Wait a moment then redirect to home page instead of login
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      window.location.href = '/';
     } catch (error) {
       console.error('❌ [Logout] Error:', error);
-      toast.error('حدث خطأ أثناء تسجيل الخروج');
-      // Fallback
-      window.location.href = '/login';
+      toast.error('حدث خطأ أثناء تسجيل الخروج', { id: 'logout' });
+      // Force redirect to home on error
+      window.location.href = '/';
     }
   };
 

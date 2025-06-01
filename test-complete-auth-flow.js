@@ -78,10 +78,10 @@ async function testCompleteAuthFlow() {
       console.log('Server-side cookies:', {
         total: cookieData.total,
         supabaseRelated: cookieData.cookies.filter(
-          (c) => c.name.includes('supabase') || c.name.includes('sb-') || c.name.includes('auth'),
+          (c) => c.name.includes('supabase') || c.name.includes('sb-') || c.name.includes('auth')
         ).length,
         hasAuthTokens: cookieData.cookies.some(
-          (c) => c.name.includes('access') || c.name.includes('refresh') || c.name.includes('sb-'),
+          (c) => c.name.includes('access') || c.name.includes('refresh') || c.name.includes('sb-')
         ),
       });
     }

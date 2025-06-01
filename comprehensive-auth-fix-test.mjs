@@ -173,7 +173,7 @@ class AuthenticationTester {
         if (hasAuthError || hasLoginButton) {
           this.log(
             '❌ CRITICAL: Dashboard shows "المستخدم غير مسجل الدخول" - FIX NEEDED!',
-            'error',
+            'error'
           );
           this.log('❌ The authentication issue is still present', 'error');
           return false;
@@ -258,13 +258,13 @@ class AuthenticationTester {
     if (successfulMethods >= 2) {
       this.log(
         `✅ Auth recovery system working (${successfulMethods}/${methods.length} methods)`,
-        'success',
+        'success'
       );
       return true;
     } else {
       this.log(
         `❌ Auth recovery insufficient (${successfulMethods}/${methods.length} methods)`,
-        'error',
+        'error'
       );
       return false;
     }

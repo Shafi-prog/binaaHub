@@ -217,7 +217,7 @@
             'loginResults',
             'success',
             'تم تسجيل الدخول بنجاح',
-            `المستخدم: ${data.user.email}<br>رمز الوصول: ${data.session.access_token.substring(0, 20)}...`,
+            `المستخدم: ${data.user.email}<br>رمز الوصول: ${data.session.access_token.substring(0, 20)}...`
           );
 
           // Test immediate session retrieval
@@ -268,7 +268,7 @@
               'sessionResults',
               'success',
               'تم العثور على جلسة صالحة',
-              `المستخدم: ${data.session.user.email}<br>انتهاء الصلاحية: ${new Date(data.session.expires_at * 1000).toLocaleString('ar-SA')}`,
+              `المستخدم: ${data.session.user.email}<br>انتهاء الصلاحية: ${new Date(data.session.expires_at * 1000).toLocaleString('ar-SA')}`
             );
           } else {
             addResult('sessionResults', 'warning', 'لا توجد جلسة نشطة');
@@ -294,7 +294,7 @@
               'sessionResults',
               'success',
               'تم تحديث الجلسة بنجاح',
-              `المستخدم: ${data.session.user.email}`,
+              `المستخدم: ${data.session.user.email}`
             );
           } else {
             addResult('sessionResults', 'warning', 'لم يتم الحصول على جلسة بعد التحديث');
@@ -320,7 +320,7 @@
               'sessionResults',
               'success',
               'تم جلب بيانات المستخدم بنجاح',
-              `المستخدم: ${data.user.email}<br>المعرف: ${data.user.id}`,
+              `المستخدم: ${data.user.email}<br>المعرف: ${data.user.id}`
             );
           } else {
             addResult('sessionResults', 'warning', 'لم يتم العثور على مستخدم');
@@ -368,7 +368,7 @@
               addResult(
                 'redirectResults',
                 'warning',
-                'لوحة التحكم تظهر "المستخدم غير مسجل الدخول"',
+                'لوحة التحكم تظهر "المستخدم غير مسجل الدخول"'
               );
             } else {
               addResult('redirectResults', 'info', 'تم الوصول لصفحة غير متوقعة');
@@ -378,7 +378,7 @@
               'redirectResults',
               'error',
               'فشل الوصول للوحة التحكم',
-              `حالة HTTP: ${response.status}`,
+              `حالة HTTP: ${response.status}`
             );
           }
         } catch (err) {

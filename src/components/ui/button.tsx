@@ -1,58 +1,45 @@
-'use client';
+"use client";
 
-import { ButtonHTMLAttributes } from 'react';
+import * as React from "react";
+import { cn } from "@/lib/utils";
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  children: React.ReactNode;
-  variant?: 'primary' | 'secondary' | 'danger';
-  size?: 'sm' | 'md' | 'lg';
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: "default" | "outline" | "secondary" | "ghost" | "link" | "destructive";
+  size?: "default" | "sm" | "lg" | "icon";
 }
 
-export default function Button({
-  children,
-  variant = 'primary',
-  size = 'md',
-  className = '',
-  ...props
-}: ButtonProps) {
-  let variantClasses = '';
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant = "default", size = "default", ...props }, ref) => {
+    const variants = {
+      default: "bg-gray-900 text-white hover:bg-gray-800",
+      outline: "border border-gray-200 hover:bg-gray-100",
+      secondary: "bg-gray-100 text-gray-900 hover:bg-gray-200",
+      ghost: "hover:bg-gray-100 hover:text-gray-900",
+      link: "text-gray-900 underline-offset-4 hover:underline",
+      destructive: "bg-red-500 text-white hover:bg-red-600",
+    };
 
-  // Set variant classes
-  switch (variant) {
-    case 'primary':
-      variantClasses = 'bg-blue-600 hover:bg-blue-700 text-white';
-      break;
-    case 'secondary':
-      variantClasses = 'bg-gray-200 hover:bg-gray-300 text-gray-800';
-      break;
-    case 'danger':
-      variantClasses = 'bg-red-600 hover:bg-red-700 text-white';
-      break;
-    default:
-      variantClasses = 'bg-blue-600 hover:bg-blue-700 text-white';
+    const sizes = {
+      default: "h-10 px-4 py-2",
+      sm: "h-8 px-3 py-1 text-sm",
+      lg: "h-12 px-8 py-3",
+      icon: "h-10 w-10",
+    };
+
+    return (
+      <button
+        className={cn(
+          "inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+          variants[variant],
+          sizes[size],
+          className
+        )}
+        ref={ref}
+        {...props}
+      />
+    );
   }
+);
+Button.displayName = "Button";
 
-  // Set size classes
-  let sizeClasses = '';
-  switch (size) {
-    case 'sm':
-      sizeClasses = 'px-3 py-1 text-sm';
-      break;
-    case 'lg':
-      sizeClasses = 'px-6 py-3 text-lg';
-      break;
-    default:
-      sizeClasses = 'px-4 py-2';
-  }
-
-  const baseClasses =
-    'rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-opacity-50 disabled:opacity-50 disabled:cursor-not-allowed';
-
-  const buttonClasses = `${baseClasses} ${variantClasses} ${sizeClasses} ${className}`;
-
-  return (
-    <button className={buttonClasses} {...props}>
-      {children}
-    </button>
-  );
-}
+export { Button };

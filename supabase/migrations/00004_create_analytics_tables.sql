@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS store_views (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   store_id UUID NOT NULL REFERENCES stores(id),
   session_id TEXT,
-  user_id UUID REFERENCES users(id),
+  user_id UUID REFERENCES auth.users(id),
   source TEXT,
   referrer TEXT,
   created_at TIMESTAMPTZ DEFAULT NOW(),

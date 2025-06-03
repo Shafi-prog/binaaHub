@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Save Functionality</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ccc; border-radius: 5px; }
+        button { padding: 10px 15px; margin: 5px; background: #007bff; color: white; border: none; border-radius: 3px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        .result { margin-top: 10px; padding: 10px; background: #f8f9fa; border-radius: 3px; }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+    </style>
+</head>
+<body>
+    <h1>Binna Marketplace - Save Functionality Test</h1>
+    
+    <div class="test-section">
+        <h3>1. Test Project Creation</h3>
+        <button onclick="testProjectCreation()">Create Test Project</button>
+        <div id="project-result" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>2. Test Warranty Creation</h3>
+        <button onclick="testWarrantyCreation()">Create Test Warranty</button>
+        <div id="warranty-result" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>3. Test Supervisor Request</h3>
+        <button onclick="testSupervisorRequest()">Create Supervisor Request</button>
+        <div id="supervisor-result" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>4. Check Database Connection</h3>
+        <button onclick="testDatabaseConnection()">Test Database</button>
+        <div id="db-result" class="result"></div>
+    </div>
+
+    <script>
+        // Test Project Creation
+        async function testProjectCreation() {
+            const resultDiv = document.getElementById('project-result');
+            resultDiv.innerHTML = 'Testing project creation...';
+            
+            try {
+                const response = await fetch('http://localhost:54321/rest/v1/projects', {
+                    method: 'GET',
+                    headers: {
+                        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0',
+                        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0'
+                    }
+                });
+                
+                if (response.ok) {
+                    const projects = await response.json();
+                    resultDiv.className = 'result success';
+                    resultDiv.innerHTML = `✅ Database connection successful! Found ${projects.length} projects.`;
+                    
+                    // Now try to create a project
+                    const createResponse = await fetch('http://localhost:54321/rest/v1/projects', {
+                        method: 'POST',
+                        headers: {
+                            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0',
+                            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0',
+                            'Content-Type': 'application/json',
+                            'Prefer': 'return=representation'
+                        },
+                        body: JSON.stringify({
+                            user_id: '416d0ef0-ffa0-4999-b9af-870a6f00bed0',
+                            name: 'Test Project from HTML',
+                            description: 'Testing project creation through HTML interface',
+                            project_type: 'renovation',
+                            status: 'planning',
+                            address: 'Test Location',
+                            budget: 50000
+                        })
+                    });
+                    
+                    if (createResponse.ok) {
+                        const newProject = await createResponse.json();
+                        resultDiv.innerHTML += `<br>✅ Project created successfully! ID: ${newProject[0].id}`;
+                    } else {
+                        const error = await createResponse.text();
+                        resultDiv.className = 'result error';
+                        resultDiv.innerHTML += `<br>❌ Failed to create project: ${error}`;
+                    }
+                } else {
+                    throw new Error(`HTTP ${response.status}: ${await response.text()}`);
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = `❌ Error: ${error.message}`;
+            }
+        }
+        
+        // Test Warranty Creation
+        async function testWarrantyCreation() {
+            const resultDiv = document.getElementById('warranty-result');
+            resultDiv.innerHTML = 'Testing warranty creation...';
+            
+            try {
+                const response = await fetch('http://localhost:54321/rest/v1/warranties', {
+                    method: 'GET',
+                    headers: {
+                        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0',
+                        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0'
+                    }
+                });
+                
+                if (response.ok) {
+                    const warranties = await response.json();
+                    resultDiv.className = 'result success';
+                    resultDiv.innerHTML = `✅ Warranty table accessible! Found ${warranties.length} warranties.`;
+                } else {
+                    throw new Error(`HTTP ${response.status}: ${await response.text()}`);
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = `❌ Error: ${error.message}`;
+            }
+        }
+        
+        // Test Supervisor Request
+        async function testSupervisorRequest() {
+            const resultDiv = document.getElementById('supervisor-result');
+            resultDiv.innerHTML = 'Testing supervisor functionality...';
+            
+            try {
+                const response = await fetch('http://localhost:3000/api/supervisor-requests', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    resultDiv.className = 'result success';
+                    resultDiv.innerHTML = `✅ Supervisor API accessible! Response: ${JSON.stringify(data).substring(0, 100)}...`;
+                } else {
+                    throw new Error(`HTTP ${response.status}: ${await response.text()}`);
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = `❌ Error: ${error.message}`;
+            }
+        }
+        
+        // Test Database Connection
+        async function testDatabaseConnection() {
+            const resultDiv = document.getElementById('db-result');
+            resultDiv.innerHTML = 'Testing database connection...';
+            
+            try {
+                const response = await fetch('http://localhost:3000/api/db-test', {
+                    method: 'GET'
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    resultDiv.className = 'result success';
+                    resultDiv.innerHTML = `✅ Database test passed! ${JSON.stringify(data)}`;
+                } else {
+                    throw new Error(`HTTP ${response.status}: ${await response.text()}`);
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = `❌ Error: ${error.message}`;
+            }
+        }
+        
+        // Auto-run tests on page load
+        window.onload = function() {
+            setTimeout(testDatabaseConnection, 1000);
+        };
+    </script>
+</body>
+</html>

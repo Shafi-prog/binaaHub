@@ -48,6 +48,9 @@ CREATE TABLE IF NOT EXISTS products (
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+-- Add barcode column to existing products table if it doesn't exist
+ALTER TABLE products ADD COLUMN IF NOT EXISTS barcode TEXT UNIQUE;
+
 -- Add shipping details to orders table
 ALTER TABLE orders
 ADD COLUMN IF NOT EXISTS shipping_provider_id UUID REFERENCES shipping_providers(id),

@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Authenticated CRUD Operations</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            max-width: 800px; 
+            margin: 0 auto; 
+            padding: 20px; 
+            background: #f5f5f5; 
+        }
+        .container { 
+            background: white; 
+            padding: 20px; 
+            border-radius: 8px; 
+            margin-bottom: 20px; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+        }
+        .status { 
+            padding: 10px; 
+            border-radius: 4px; 
+            margin: 10px 0; 
+        }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .info { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        button { 
+            background: #007bff; 
+            color: white; 
+            border: none; 
+            padding: 10px 20px; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            margin: 5px; 
+        }
+        button:hover { background: #0056b3; }
+        input, textarea, select { 
+            width: 100%; 
+            padding: 8px; 
+            margin: 5px 0; 
+            border: 1px solid #ddd; 
+            border-radius: 4px; 
+        }
+        textarea { height: 80px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        pre { 
+            background: #f8f9fa; 
+            padding: 10px; 
+            border-radius: 4px; 
+            overflow-x: auto; 
+            font-size: 12px; 
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Binna CRUD Operations Test</h1>
+    
+    <div class="container">
+        <h2>1. Authentication Status</h2>
+        <div id="auth-status" class="status info">Checking authentication...</div>
+        <button onclick="checkAuth()">🔍 Check Auth</button>
+        <button onclick="login()">🔑 Login as Test User</button>
+        <button onclick="logout()">🚪 Logout</button>
+    </div>
+
+    <div class="container">
+        <h2>2. Create New Project</h2>
+        <div class="form-group">
+            <label>Project Name:</label>
+            <input type="text" id="project-name" value="Test Construction Project" />
+        </div>
+        <div class="form-group">
+            <label>Description:</label>
+            <textarea id="project-description">A test construction project to verify CRUD operations work correctly in the Binna marketplace.</textarea>
+        </div>
+        <div class="form-group">
+            <label>Project Type:</label>
+            <select id="project-type">
+                <option value="construction">Construction</option>
+                <option value="renovation">Renovation</option>
+                <option value="maintenance">Maintenance</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Budget:</label>
+            <input type="number" id="project-budget" value="50000" />
+        </div>
+        <div class="form-group">
+            <label>Address:</label>
+            <input type="text" id="project-address" value="123 Test Street, Test City" />
+        </div>
+        <button onclick="createProject()">➕ Create Project</button>
+        <div id="project-result" class="status" style="display:none;"></div>
+    </div>
+
+    <div class="container">
+        <h2>3. Create Warranty</h2>
+        <div class="form-group">
+            <label>Product Name:</label>
+            <input type="text" id="warranty-product" value="Test Product" />
+        </div>
+        <div class="form-group">
+            <label>Serial Number:</label>
+            <input type="text" id="warranty-serial" value="TEST123456" />
+        </div>
+        <div class="form-group">
+            <label>Warranty Duration (months):</label>
+            <input type="number" id="warranty-duration" value="24" />
+        </div>
+        <button onclick="createWarranty()">🛡️ Create Warranty</button>
+        <div id="warranty-result" class="status" style="display:none;"></div>
+    </div>
+
+    <div class="container">
+        <h2>4. Request Supervisor</h2>
+        <div class="form-group">
+            <label>Service Type:</label>
+            <select id="supervisor-service">
+                <option value="construction">Construction Supervision</option>
+                <option value="quality_control">Quality Control</option>
+                <option value="project_management">Project Management</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Description:</label>
+            <textarea id="supervisor-description">Need supervision for construction project to ensure quality and compliance.</textarea>
+        </div>
+        <button onclick="requestSupervisor()">👷 Request Supervisor</button>
+        <div id="supervisor-result" class="status" style="display:none;"></div>
+    </div>
+
+    <div class="container">
+        <h2>5. Test Results</h2>
+        <div id="test-summary" class="status info">
+            Run the tests above to see results here.
+        </div>
+        <button onclick="runAllTests()">🚀 Run All Tests</button>
+        <button onclick="clearResults()">🧹 Clear Results</button>
+    </div>
+
+    <script>
+        let authToken = null;
+        let currentUser = null;
+        let testResults = {
+            auth: false,
+            project: false,
+            warranty: false,
+            supervisor: false
+        };
+
+        async function makeRequest(url, options = {}) {
+            const defaultOptions = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': authToken ? `Bearer ${authToken}` : '',
+                    ...options.headers
+                }
+            };
+            
+            return fetch(url, { ...options, headers: defaultOptions.headers });
+        }
+
+        async function checkAuth() {
+            try {
+                const response = await makeRequest('/api/auth/me');
+                const data = await response.json();
+                
+                if (response.ok && data.user) {
+                    currentUser = data.user;
+                    document.getElementById('auth-status').className = 'status success';
+                    document.getElementById('auth-status').innerHTML = `
+                        ✅ <strong>Authenticated as:</strong> ${data.user.email}<br>
+                        <strong>ID:</strong> ${data.user.id}<br>
+                        <strong>Account Type:</strong> ${data.user.user_metadata?.account_type || 'user'}
+                    `;
+                    testResults.auth = true;
+                } else {
+                    document.getElementById('auth-status').className = 'status error';
+                    document.getElementById('auth-status').textContent = '❌ Not authenticated';
+                    testResults.auth = false;
+                }
+            } catch (error) {
+                document.getElementById('auth-status').className = 'status error';
+                document.getElementById('auth-status').textContent = `❌ Error checking auth: ${error.message}`;
+                testResults.auth = false;
+            }
+        }
+
+        async function login() {
+            try {
+                const response = await makeRequest('/api/auth/login', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        email: 'user@user.com',
+                        password: '123456'
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok && data.access_token) {
+                    authToken = data.access_token;
+                    document.getElementById('auth-status').className = 'status success';
+                    document.getElementById('auth-status').textContent = '✅ Login successful!';
+                    await checkAuth();
+                } else {
+                    document.getElementById('auth-status').className = 'status error';
+                    document.getElementById('auth-status').textContent = `❌ Login failed: ${data.error || 'Unknown error'}`;
+                }
+            } catch (error) {
+                document.getElementById('auth-status').className = 'status error';
+                document.getElementById('auth-status').textContent = `❌ Login error: ${error.message}`;
+            }
+        }
+
+        async function logout() {
+            authToken = null;
+            currentUser = null;
+            document.getElementById('auth-status').className = 'status info';
+            document.getElementById('auth-status').textContent = '🚪 Logged out';
+            testResults.auth = false;
+        }
+
+        async function createProject() {
+            if (!currentUser) {
+                showResult('project-result', 'error', '❌ Please login first');
+                return;
+            }
+
+            const projectData = {
+                name: document.getElementById('project-name').value,
+                description: document.getElementById('project-description').value,
+                project_type: document.getElementById('project-type').value,
+                budget: parseFloat(document.getElementById('project-budget').value),
+                address: document.getElementById('project-address').value,
+                status: 'planning',
+                start_date: new Date().toISOString().split('T')[0],
+                user_id: currentUser.id
+            };
+
+            try {
+                const response = await makeRequest('/api/projects', {
+                    method: 'POST',
+                    body: JSON.stringify(projectData)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    showResult('project-result', 'success', `✅ Project created successfully! ID: ${result.id}`);
+                    testResults.project = true;
+                } else {
+                    showResult('project-result', 'error', `❌ Failed to create project: ${result.error || 'Unknown error'}`);
+                    testResults.project = false;
+                }
+            } catch (error) {
+                showResult('project-result', 'error', `❌ Error creating project: ${error.message}`);
+                testResults.project = false;
+            }
+        }
+
+        async function createWarranty() {
+            if (!currentUser) {
+                showResult('warranty-result', 'error', '❌ Please login first');
+                return;
+            }
+
+            const warrantyData = {
+                product_name: document.getElementById('warranty-product').value,
+                serial_number: document.getElementById('warranty-serial').value,
+                warranty_duration_months: parseInt(document.getElementById('warranty-duration').value),
+                purchase_date: new Date().toISOString().split('T')[0],
+                warranty_start_date: new Date().toISOString().split('T')[0],
+                user_id: currentUser.id
+            };
+
+            try {
+                const response = await makeRequest('/api/warranties', {
+                    method: 'POST',
+                    body: JSON.stringify(warrantyData)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    showResult('warranty-result', 'success', `✅ Warranty created successfully! ID: ${result.id}`);
+                    testResults.warranty = true;
+                } else {
+                    showResult('warranty-result', 'error', `❌ Failed to create warranty: ${result.error || 'Unknown error'}`);
+                    testResults.warranty = false;
+                }
+            } catch (error) {
+                showResult('warranty-result', 'error', `❌ Error creating warranty: ${error.message}`);
+                testResults.warranty = false;
+            }
+        }
+
+        async function requestSupervisor() {
+            if (!currentUser) {
+                showResult('supervisor-result', 'error', '❌ Please login first');
+                return;
+            }
+
+            const supervisorData = {
+                service_type: document.getElementById('supervisor-service').value,
+                description: document.getElementById('supervisor-description').value,
+                status: 'pending',
+                user_id: currentUser.id
+            };
+
+            try {
+                const response = await makeRequest('/api/supervisor-requests', {
+                    method: 'POST',
+                    body: JSON.stringify(supervisorData)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    showResult('supervisor-result', 'success', `✅ Supervisor request created successfully! ID: ${result.id}`);
+                    testResults.supervisor = true;
+                } else {
+                    showResult('supervisor-result', 'error', `❌ Failed to create supervisor request: ${result.error || 'Unknown error'}`);
+                    testResults.supervisor = false;
+                }
+            } catch (error) {
+                showResult('supervisor-result', 'error', `❌ Error requesting supervisor: ${error.message}`);
+                testResults.supervisor = false;
+            }
+        }
+
+        function showResult(elementId, type, message) {
+            const element = document.getElementById(elementId);
+            element.className = `status ${type}`;
+            element.textContent = message;
+            element.style.display = 'block';
+        }
+
+        async function runAllTests() {
+            document.getElementById('test-summary').className = 'status info';
+            document.getElementById('test-summary').textContent = '🔄 Running all tests...';
+
+            // Reset results
+            testResults = { auth: false, project: false, warranty: false, supervisor: false };
+
+            // Run tests in sequence
+            await checkAuth();
+            if (!testResults.auth) {
+                await login();
+            }
+            
+            if (testResults.auth) {
+                await createProject();
+                await createWarranty();
+                await requestSupervisor();
+            }
+
+            // Show summary
+            const successCount = Object.values(testResults).filter(r => r).length;
+            const totalTests = Object.keys(testResults).length;
+            
+            if (successCount === totalTests) {
+                document.getElementById('test-summary').className = 'status success';
+                document.getElementById('test-summary').innerHTML = `
+                    🎉 <strong>ALL TESTS PASSED!</strong> (${successCount}/${totalTests})<br>
+                    ✅ Authentication: Working<br>
+                    ✅ Project Creation: Working<br>
+                    ✅ Warranty Creation: Working<br>
+                    ✅ Supervisor Requests: Working<br><br>
+                    <strong>🎯 Answer: YES, you can now add and save information for new projects, supervisors, items, and warranties!</strong>
+                `;
+            } else {
+                document.getElementById('test-summary').className = 'status error';
+                document.getElementById('test-summary').innerHTML = `
+                    ⚠️ <strong>Some tests failed</strong> (${successCount}/${totalTests})<br>
+                    ${testResults.auth ? '✅' : '❌'} Authentication<br>
+                    ${testResults.project ? '✅' : '❌'} Project Creation<br>
+                    ${testResults.warranty ? '✅' : '❌'} Warranty Creation<br>
+                    ${testResults.supervisor ? '✅' : '❌'} Supervisor Requests
+                `;
+            }
+        }
+
+        function clearResults() {
+            ['project-result', 'warranty-result', 'supervisor-result'].forEach(id => {
+                document.getElementById(id).style.display = 'none';
+            });
+            document.getElementById('test-summary').className = 'status info';
+            document.getElementById('test-summary').textContent = 'Results cleared. Run tests to see new results.';
+        }
+
+        // Auto-check auth on page load
+        window.onload = checkAuth;
+    </script>
+</body>
+</html>

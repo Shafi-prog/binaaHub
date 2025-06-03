@@ -21,3 +21,19 @@ export function CardContent({ children, ...props }: CardProps) {
     </div>
   );
 }
+
+export function CardHeader({ children, ...props }: CardProps) {
+  return (
+    <div {...props} className={`p-4 pb-2 ${props.className ?? ''}`}>
+      {children}
+    </div>
+  );
+}
+
+export function CardTitle({ children, ...props }: CardProps) {
+  return (
+    <h3 {...props} className={`text-lg font-semibold ${props.className ?? ''}`}>
+      {children}
+    </h3>
+  );
+}

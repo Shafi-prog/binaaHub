@@ -183,8 +183,8 @@ export async function generateProjectsReport(projects: Project[]) {
     الموقع: project.location,
     الحالة: getProjectStatusAr(project.status),
     'نسبة الإنجاز': `${project.progress_percentage}%`,
-    'الميزانية المقدرة': project.budget_estimate
-      ? `${project.budget_estimate} ${project.currency}`
+    'الميزانية المقدرة': project.budget
+      ? `${project.budget} ${project.currency}`
       : '',
     'التكلفة الفعلية': `${project.actual_cost} ${project.currency}`,
     'تاريخ البدء': project.start_date

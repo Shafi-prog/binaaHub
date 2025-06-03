@@ -31,17 +31,17 @@ export default function ProfileLayout({ children }: ProfileLayoutProps) {
             </Link>
           </li>
           <li>
-            <Link href="/projects" className="text-blue-600 hover:underline">
+            <Link href="/user/projects" className="text-blue-600 hover:underline">
               مشاريعي
             </Link>
           </li>
           <li>
-            <Link href="/orders" className="text-blue-600 hover:underline">
+            <Link href="/user/orders" className="text-blue-600 hover:underline">
               الطلبات
             </Link>
           </li>
           <li>
-            <Link href="/settings" className="text-blue-600 hover:underline">
+            <Link href="/user/settings" className="text-blue-600 hover:underline">
               الإعدادات
             </Link>
           </li>

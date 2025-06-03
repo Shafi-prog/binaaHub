@@ -41,7 +41,7 @@ export async function getUserDashboardStats(userId: string): Promise<UserDashboa
     { data: recentProjects },
   ] = await Promise.all([
     // Get projects summary
-    supabase.from('projects').select('id, status').eq('user_id', userId),
+    supabase.from('projects').select('id, status, metadata').eq('user_id', userId),
 
     // Get warranties summary
     supabase.from('warranties').select('id, status').eq('user_id', userId),
@@ -84,14 +84,17 @@ export async function getUserDashboardStats(userId: string): Promise<UserDashboa
     // Get recent projects
     supabase
       .from('projects')
-      .select('id, name, project_type, status')
+      .select('id, name, project_type, status, metadata')
       .eq('user_id', userId)
       .order('updated_at', { ascending: false })
       .limit(5),
   ]);
 
-  const activeProjects = projects?.filter((p) => p.status !== 'completed').length || 0;
-  const completedProjects = projects?.filter((p) => p.status === 'completed').length || 0;
+  // Merge metadata fields into each project
+  const projectsWithMeta = (projects || []).map((p) => ({ ...p, ...(p.metadata || {}) }));
+
+  const activeProjects = projectsWithMeta.filter((p) => p.status !== 'completed').length || 0;
+  const completedProjects = projectsWithMeta.filter((p) => p.status === 'completed').length || 0;
   const activeWarranties = warranties?.filter((w) => w.status === 'active').length || 0;
 
   return {
@@ -116,11 +119,9 @@ export async function getUserDashboardStats(userId: string): Promise<UserDashboa
         created_at: o.created_at,
       })) || [],
     recentProjects:
-      recentProjects?.map((p) => ({
-        id: p.id,
-        name: p.name,
-        project_type: p.project_type,
-        status: p.status,
+      (recentProjects || []).map((p) => ({
+        ...p,
+        ...(p.metadata || {}),
         progress: p.status === 'completed' ? 100 : p.status === 'planning' ? 0 : 50,
       })) || [],
   };

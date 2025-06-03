@@ -1,6 +1,6 @@
-export { default as Badge } from './badge';
-export { default as Button } from './button';
-export { Card, CardContent } from './card';
+export { Badge } from './badge';
+export { Button } from './button';
+export { Card, CardContent, CardHeader, CardTitle } from './card';
 export { default as LogoutButton } from './LogoutButton';
 export { LoadingSpinner } from './loading-spinner';
 export {

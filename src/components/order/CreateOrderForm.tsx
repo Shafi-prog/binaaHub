@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import type { Database } from '@/types/database';
 import { Card, LoadingSpinner } from '@/components/ui';
 import { formatCurrency } from '@/lib/utils';
+import { EnhancedInput, EnhancedSelect, EnhancedButton } from '@/components/ui/enhanced-components';
 
 interface ProjectOption {
   id: string;
@@ -138,103 +139,85 @@ export default function OrderForm({
   }
 
   return (
-    <Card className="p-6">
+    <Card className="p-6 font-tajawal" dir="rtl">
       <div className="flex justify-between items-start mb-6">
         <div>
-          <h2 className="text-xl font-semibold text-gray-800 mb-1">Create Order</h2>
-          <p className="text-gray-600">Store: {storeName}</p>
+          <h2 className="text-xl font-bold text-blue-700 mb-1">إنشاء طلب شراء</h2>
+          <p className="text-gray-600">المتجر: {storeName}</p>
         </div>
-        <button onClick={onCancel} className="text-gray-500 hover:text-gray-700">
-          Cancel
-        </button>
+        <EnhancedButton variant="secondary" onClick={onCancel} type="button">
+          إلغاء
+        </EnhancedButton>
       </div>
 
       {error && (
-        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-600">
+        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
           {error}
         </div>
       )}
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Project Selection */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Project (Optional)</label>
-          <select
-            value={selectedProject || ''}
-            onChange={(e) => setSelectedProject(e.target.value || null)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          >
-            <option value="">Select a project</option>
-            {projects.map((project) => (
-              <option key={project.id} value={project.id}>
-                {project.name}
-              </option>
-            ))}
-          </select>
-        </div>
+        <EnhancedSelect
+          label="المشروع (اختياري)"
+          name="selectedProject"
+          value={selectedProject || ''}
+          onChange={(e) => setSelectedProject(e.target.value || null)}
+          options={[
+            { value: '', label: 'اختر مشروعاً' },
+            ...projects.map((project) => ({ value: project.id, label: project.name })),
+          ]}
+        />
 
         {/* Order Items */}
         <div className="space-y-4">
-          <h3 className="font-medium text-gray-900">Order Items</h3>
+          <h3 className="font-medium text-gray-900">المنتجات المطلوبة</h3>
           {items.map((item, index) => (
-            <div key={item.id} className="border border-gray-200 rounded-lg p-4">
-              <div className="flex justify-between mb-4">
+            <div key={item.id} className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+              <div className="flex flex-col md:flex-row md:justify-between mb-4 gap-2">
                 <div>
                   <h4 className="font-medium text-gray-900">{item.name}</h4>
-                  <p className="text-gray-600">{formatCurrency(item.price)} per unit</p>
+                  <p className="text-gray-600">{formatCurrency(item.price)} للوحدة</p>
                 </div>
-                <div className="flex items-center space-x-4">
-                  <label className="text-sm text-gray-600">
-                    Quantity:
-                    <input
-                      type="number"
-                      min="1"
-                      value={item.quantity}
-                      onChange={(e) => updateItem(index, { quantity: parseInt(e.target.value) })}
-                      className="ml-2 w-20 px-2 py-1 border border-gray-300 rounded"
-                    />
-                  </label>
-                  <p className="font-medium">{formatCurrency(item.price * item.quantity)}</p>
+                <div className="flex items-center gap-4">
+                  <EnhancedInput
+                    label="الكمية"
+                    type="number"
+                    min={1}
+                    value={item.quantity}
+                    onChange={(e) => updateItem(index, { quantity: parseInt(e.target.value) })}
+                    className="w-24"
+                  />
+                  <span className="font-medium">{formatCurrency(item.price * item.quantity)}</span>
                 </div>
               </div>
-
-              <div className="border-t border-gray-200 pt-4">
-                <label className="flex items-center mb-2">
+              <div className="border-t border-gray-200 pt-4 mt-2">
+                <label className="flex items-center gap-2 cursor-pointer">
                   <input
                     type="checkbox"
                     checked={item.hasWarranty}
                     onChange={(e) => updateItem(index, { hasWarranty: e.target.checked })}
                     className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                   />
-                  <span className="ml-2 text-gray-700">Include Warranty</span>
+                  <span className="text-gray-700">إضافة ضمان</span>
                 </label>
-
                 {item.hasWarranty && (
-                  <div className="ml-6 space-y-4">
+                  <div className="ml-6 space-y-4 mt-2">
+                    <EnhancedInput
+                      label="مدة الضمان (بالأشهر)"
+                      type="number"
+                      min={1}
+                      value={item.warrantyDurationMonths}
+                      onChange={(e) => updateItem(index, { warrantyDurationMonths: parseInt(e.target.value) })}
+                    />
                     <div>
-                      <label className="block text-sm text-gray-700 mb-1">
-                        Warranty Duration (months)
-                      </label>
-                      <input
-                        type="number"
-                        min="1"
-                        value={item.warrantyDurationMonths}
-                        onChange={(e) =>
-                          updateItem(index, {
-                            warrantyDurationMonths: parseInt(e.target.value),
-                          })
-                        }
-                        className="w-full px-3 py-2 border border-gray-300 rounded"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm text-gray-700 mb-1">Warranty Notes</label>
+                      <label className="block text-sm text-gray-700 mb-1">ملاحظات الضمان</label>
                       <textarea
                         value={item.warrantyNotes}
                         onChange={(e) => updateItem(index, { warrantyNotes: e.target.value })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded"
+                        className="input-field"
                         rows={2}
-                        placeholder="Add any warranty terms or conditions..."
+                        placeholder="أضف شروط أو تفاصيل الضمان..."
                       />
                     </div>
                   </div>
@@ -246,34 +229,30 @@ export default function OrderForm({
 
         {/* Order Notes */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Order Notes (Optional)
-          </label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">ملاحظات الطلب (اختياري)</label>
           <textarea
             value={orderNotes}
             onChange={(e) => setOrderNotes(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="input-field"
             rows={3}
-            placeholder="Add any special instructions or notes..."
+            placeholder="أضف أي تعليمات أو ملاحظات خاصة..."
           />
         </div>
 
         {/* Total */}
         <div className="border-t border-gray-200 pt-4">
           <div className="flex justify-between items-center mb-4">
-            <span className="text-gray-600">Total Amount:</span>
-            <span className="text-xl font-semibold text-gray-900">
-              {formatCurrency(totalAmount)}
-            </span>
+            <span className="text-gray-600">الإجمالي:</span>
+            <span className="text-xl font-semibold text-gray-900">{formatCurrency(totalAmount)}</span>
           </div>
-
-          <button
+          <EnhancedButton
             type="submit"
-            disabled={loading}
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors disabled:opacity-50"
+            variant="primary"
+            loading={loading}
+            className="w-full"
           >
-            {loading ? 'Creating Order...' : 'Place Order'}
-          </button>
+            {loading ? '...جاري إنشاء الطلب' : 'إنشاء الطلب'}
+          </EnhancedButton>
         </div>
       </form>
     </Card>

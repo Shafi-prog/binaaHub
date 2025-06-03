@@ -9,9 +9,9 @@ const root = path.resolve(__dirname, '../app');
 const folders = [
   '(auth)/login',
   '(auth)/signup',
-  '(user)/profile',
-  '(user)/projects',
-  '(user)/orders',
+  'user/profile',
+  'user/projects',
+  'user/orders',
   '(dashboard)',
   '(ai)',
   '(finance)',

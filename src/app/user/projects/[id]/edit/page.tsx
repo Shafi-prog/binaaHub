@@ -1,11 +1,16 @@
 'use client';
-import { useState, useEffect } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { User } from '@supabase/supabase-js';
-import { Card, LoadingSpinner } from '@/components/ui';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { verifyAuthWithRetry } from '@/lib/auth-recovery';
 import { getProjectById, updateProject } from '@/lib/api/dashboard';
+import type { ProjectData } from '@/types/project';
 
 export default function EditProjectPage() {
   const params = useParams();
@@ -20,12 +25,11 @@ export default function EditProjectPage() {
     name: '',
     description: '',
     project_type: '',
-    location: '',
     address: '',
     city: '',
     region: '',
-    budget_estimate: '',
-    expected_completion_date: '',
+    budget: '',
+    end_date: '',
     priority: 'medium',
     status: 'planning',
   });
@@ -66,20 +70,18 @@ export default function EditProjectPage() {
 
       const projectData = await getProjectById(projectId);
 
-      if (projectData) {
-        setFormData({
-          name: projectData.name,
-          description: projectData.description || '',
-          project_type: projectData.project_type,
-          location: projectData.location,
-          address: projectData.address || '',
-          city: projectData.city || '',
-          region: projectData.region || '',
-          budget_estimate: projectData.budget_estimate?.toString() || '',
-          expected_completion_date: projectData.expected_completion_date || '',
-          priority: projectData.priority,
-          status: projectData.status,
-        });
+      if (projectData) {      setFormData({
+        name: projectData.name,
+        description: projectData.description || '',
+        project_type: projectData.project_type,
+        address: projectData.address || '',
+        city: projectData.city || '',
+        region: projectData.region || '',
+        budget: projectData.budget?.toString() || '',
+        end_date: projectData.expected_completion_date || '',
+        priority: projectData.priority,
+        status: projectData.status,
+      });
         console.log('✅ Project data loaded for editing');
       } else {
         console.error('❌ Project not found for editing');
@@ -113,16 +115,15 @@ export default function EditProjectPage() {
       // Create update data object
       const updateData = {
         name: formData.name,
-        description: formData.description || undefined,
+        description: formData.description,
         project_type: formData.project_type,
-        location: formData.location,
         address: formData.address || undefined,
         city: formData.city || undefined,
         region: formData.region || undefined,
-        budget_estimate: formData.budget_estimate
-          ? parseFloat(formData.budget_estimate)
+        budget: formData.budget
+          ? parseFloat(formData.budget)
           : undefined,
-        expected_completion_date: formData.expected_completion_date || undefined,
+        expected_completion_date: formData.end_date || undefined,
         priority: formData.priority,
         status: formData.status,
       };
@@ -216,7 +217,7 @@ export default function EditProjectPage() {
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>{' '}
-            {/* Project Type and Location Row */}
+            {/* Project Type Row */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label
@@ -241,22 +242,6 @@ export default function EditProjectPage() {
                   <option value="renovation">تجديد</option>
                   <option value="other">أخرى</option>
                 </select>
-              </div>
-
-              <div>
-                <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-2">
-                  الموقع *
-                </label>
-                <input
-                  type="text"
-                  id="location"
-                  name="location"
-                  value={formData.location}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="أدخل موقع المشروع"
-                />
               </div>
             </div>
             {/* Address and City Row */}
@@ -297,28 +282,15 @@ export default function EditProjectPage() {
                 <label htmlFor="region" className="block text-sm font-medium text-gray-700 mb-2">
                   المنطقة
                 </label>
-                <select
+                <input
+                  type="text"
                   id="region"
                   name="region"
                   value={formData.region}
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="">اختر المنطقة</option>
-                  <option value="riyadh">الرياض</option>
-                  <option value="makkah">مكة المكرمة</option>
-                  <option value="eastern">الشرقية</option>
-                  <option value="asir">عسير</option>
-                  <option value="qassim">القصيم</option>
-                  <option value="ha'il">حائل</option>
-                  <option value="madinah">المدينة المنورة</option>
-                  <option value="northern_borders">الحدود الشمالية</option>
-                  <option value="jazan">جازان</option>
-                  <option value="najran">نجران</option>
-                  <option value="al_baha">الباحة</option>
-                  <option value="tabuk">تبوك</option>
-                  <option value="al_jawf">الجوف</option>
-                </select>
+                  placeholder="أدخل المنطقة"
+                />
               </div>
 
               <div>
@@ -346,16 +318,16 @@ export default function EditProjectPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label
-                  htmlFor="budget_estimate"
+                  htmlFor="budget"
                   className="block text-sm font-medium text-gray-700 mb-2"
                 >
                   الميزانية المقدرة (ريال سعودي)
                 </label>
                 <input
                   type="number"
-                  id="budget_estimate"
-                  name="budget_estimate"
-                  value={formData.budget_estimate}
+                  id="budget"
+                  name="budget"
+                  value={formData.budget}
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="0"
@@ -364,16 +336,16 @@ export default function EditProjectPage() {
 
               <div>
                 <label
-                  htmlFor="expected_completion_date"
+                  htmlFor="end_date"
                   className="block text-sm font-medium text-gray-700 mb-2"
                 >
                   تاريخ الإنجاز المتوقع
                 </label>
                 <input
                   type="date"
-                  id="expected_completion_date"
-                  name="expected_completion_date"
-                  value={formData.expected_completion_date}
+                  id="end_date"
+                  name="end_date"
+                  value={formData.end_date}
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
@@ -405,8 +377,7 @@ export default function EditProjectPage() {
                 disabled={
                   saving ||
                   !formData.name.trim() ||
-                  !formData.project_type.trim() ||
-                  !formData.location.trim()
+                  !formData.project_type.trim()
                 }
                 className="flex-1 bg-blue-500 hover:bg-blue-600 disabled:bg-gray-300 text-white py-3 px-6 rounded-lg transition-colors flex items-center justify-center gap-2"
               >

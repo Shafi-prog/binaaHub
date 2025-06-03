@@ -20,3 +20,6 @@ export const supabase = (() => {
   }
   return supabaseInstance;
 })();
+
+// Export a function to create new client instances for API routes
+export { createClient };

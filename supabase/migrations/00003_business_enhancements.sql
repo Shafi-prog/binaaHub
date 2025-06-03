@@ -157,6 +157,82 @@ CREATE TABLE IF NOT EXISTS customer_loyalty_points (
     PRIMARY KEY (user_id, store_id)
 );
 
+-- 11. Order Items Table (for detailed order tracking)
+CREATE TABLE IF NOT EXISTS order_items (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    order_id UUID REFERENCES orders(id) ON DELETE CASCADE,
+    product_id UUID REFERENCES products(id),
+    quantity INTEGER NOT NULL,
+    price NUMERIC NOT NULL,
+    total_price NUMERIC GENERATED ALWAYS AS (quantity * price) STORED,
+    has_warranty BOOLEAN DEFAULT false,
+    warranty_duration_months INTEGER,
+    warranty_notes TEXT,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Create indexes for order_items
+CREATE INDEX IF NOT EXISTS idx_order_items_order_id ON order_items(order_id);
+CREATE INDEX IF NOT EXISTS idx_order_items_product_id ON order_items(product_id);
+
+-- Create trigger to update order total when items change
+CREATE OR REPLACE FUNCTION update_order_total()
+RETURNS TRIGGER AS $$
+BEGIN
+    UPDATE orders
+    SET total_amount = (
+        SELECT COALESCE(SUM(total_price), 0)
+        FROM order_items
+        WHERE order_id = COALESCE(NEW.order_id, OLD.order_id)
+    )
+    WHERE id = COALESCE(NEW.order_id, OLD.order_id);
+    RETURN COALESCE(NEW, OLD);
+END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS update_order_total_trigger ON order_items;
+CREATE TRIGGER update_order_total_trigger
+AFTER INSERT OR UPDATE OR DELETE ON order_items
+FOR EACH ROW
+EXECUTE FUNCTION update_order_total();
+
+-- Create automatic warranty function
+CREATE OR REPLACE FUNCTION create_warranty_for_item()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.has_warranty = true AND NEW.warranty_duration_months IS NOT NULL THEN
+        INSERT INTO warranties (
+            user_id,
+            product_id,
+            order_item_id,
+            warranty_start_date,
+            warranty_end_date,
+            warranty_duration_months,
+            status,
+            notes
+        ) VALUES (
+            (SELECT o.user_id FROM orders o WHERE o.id = NEW.order_id),
+            NEW.product_id,
+            NEW.id,
+            CURRENT_TIMESTAMP,
+            CURRENT_TIMESTAMP + (NEW.warranty_duration_months || ' months')::INTERVAL,
+            NEW.warranty_duration_months,
+            'active',
+            NEW.warranty_notes
+        );
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS create_warranty_trigger ON order_items;
+CREATE TRIGGER create_warranty_trigger
+AFTER INSERT ON order_items
+FOR EACH ROW
+WHEN (NEW.has_warranty = true)
+EXECUTE FUNCTION create_warranty_for_item();
+
 -- Add additional indexes
 CREATE INDEX IF NOT EXISTS idx_product_categories_parent ON product_categories(parent_id);
 CREATE INDEX IF NOT EXISTS idx_store_analytics_store_date ON store_analytics(store_id, date);

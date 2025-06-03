@@ -36,11 +36,17 @@ export default function LogoutButton({ className = '' }: LogoutButtonProps) {
         document.cookie = `${cookie}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
       });
 
+      // Call backend to clear Supabase session and cookies
+      await fetch('/api/auth/sync-login', { method: 'DELETE' });
+
       toast.success('تم تسجيل الخروج بنجاح', { id: 'logout' });
 
-      // Wait a moment then redirect to home page instead of login
+      // Set logout timestamp cookie for middleware (5s grace)
+      document.cookie = `logout_timestamp=${new Date().toISOString()}; path=/; max-age=10`;
+
+      // Wait a moment then redirect to login page
       await new Promise((resolve) => setTimeout(resolve, 500));
-      window.location.href = '/';
+      window.location.href = '/login';
     } catch (error) {
       console.error('❌ [Logout] Error:', error);
       toast.error('حدث خطأ أثناء تسجيل الخروج', { id: 'logout' });

@@ -1,549 +1,220 @@
-// src/components/Navbar.tsx
 'use client';
 
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useTranslation } from '@/hooks/useTranslation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import type { Session } from '@supabase/auth-helpers-nextjs';
 import type { Database } from '@/types/database';
-import { useRouter } from 'next/navigation';
-import { toast } from 'react-hot-toast';
-import { CartIcon, CartSidebar } from '@/components/cart/CartSidebar';
+import { CartIcon } from '@/components/cart';
+import { 
+  Menu, 
+  X, 
+  User, 
+  Settings, 
+  LogOut, 
+  Bell, 
+  Building2,
+  FileText,
+  Calculator,
+  Shield,
+  Users,
+  ChevronDown,
+  Home,
+  Package,
+  DollarSign
+} from 'lucide-react';
+import { Button, LogoutButton } from '@/components/ui';
 
 interface NavbarProps {
-  session: Session | null;
+  session?: Session | null;
 }
 
-export default function Navbar(props: NavbarProps) {
-  const supabase = createClientComponentClient<Database>();
+interface UserData {
+  id: string;
+  name: string | null;
+  account_type: string;
+  email: string;
+}
+
+export default function Navbar({ session }: NavbarProps) {
+  const { t, locale } = useTranslation();
   const router = useRouter();
-  const [notifications, setNotifications] = useState<any[]>([]);
-  const [showNotifications, setShowNotifications] = useState(false);
-  const [accountType, setAccountType] = useState(null as string | null);
-  const [userName, setUserName] = useState(null as string | null);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [showCartSidebar, setShowCartSidebar] = useState(false);
+  const [userData, setUserData] = useState<UserData | null>(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const userMenuRef = useRef<HTMLDivElement>(null);
+  const supabase = createClientComponentClient<Database>();
 
+  // Load user data if session exists
   useEffect(() => {
-    let mounted = true;
+    if (session?.user?.email) {
+      const loadUserData = async () => {
+        try {
+          const { data, error } = await supabase
+            .from('users')
+            .select('id, name, account_type, email')
+            .eq('email', session.user.email)
+            .single();
 
-    const fetchUserData = async () => {
-      try {
-        if (!props.session?.user.id) {
-          setLoading(false);
-          return;
-        }
-
-        // Use a single query to get user data and notifications
-        const [{ data: userData, error: userError }, { data: notifData, error: notifError }] =
-          await Promise.all([
-            supabase
-              .from('users')
-              .select('account_type, name, unread_notifications')
-              .eq('id', props.session.user.id)
-              .single(),
-            supabase
-              .from('notifications')
-              .select('*')
-              .eq('user_id', props.session.user.id)
-              .order('created_at', { ascending: false })
-              .limit(5),
-          ]);
-
-        if (mounted) {
-          if (!userError && userData) {
-            setAccountType(userData.account_type);
-            setUserName(userData.name || props.session.user.email?.split('@')[0]);
-          } else {
-            console.error('❌ [Navbar] User data error:', userError?.message);
+          if (data && !error) {
+            setUserData(data);
           }
-
-          if (!notifError && notifData) {
-            setNotifications(notifData);
-          }
-
-          setLoading(false);
+        } catch (error) {
+          console.error('Error loading user data:', error);
         }
-      } catch (error) {
-        console.error('❌ [Navbar] Error fetching user data:', error);
-        if (mounted) setLoading(false);
-      }
-    };
+      };
 
-    if (props.session) {
-      fetchUserData();
-    } else {
-      setLoading(false);
+      loadUserData();
     }
+  }, [session, supabase]);
 
-    return () => {
-      mounted = false;
-    };
-  }, [props.session, supabase]);
-
-  const handleSignOut = async () => {
-    try {
-      setIsDropdownOpen(false); // Close dropdown before signing out
-
-      // Show loading state first
-      toast.loading('جاري تسجيل الخروج...', { id: 'signout' });
-
-      // Create a loading page
-      const loadingDiv = document.createElement('div');
-      loadingDiv.className =
-        'fixed inset-0 bg-white flex flex-col items-center justify-center z-50';
-      loadingDiv.innerHTML = `
-        <div class="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500 mb-4"></div>
-        <div class="text-xl font-bold text-gray-800">جاري تسجيل الخروج...</div>
-      `;
-      document.body.appendChild(loadingDiv);
-
-      // Wait a bit for visual feedback
-      await new Promise((resolve) => setTimeout(resolve, 500));
-
-      // Call the sync-login DELETE endpoint to properly clear session
-      try {
-        await fetch('/api/auth/sync-login', {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-      } catch (apiError) {
-        console.warn('⚠️ [Navbar] API logout warning:', apiError);
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
+        setIsUserMenuOpen(false);
       }
+    };
 
-      // Ensure Supabase session is cleared
-      await supabase.auth.signOut();
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
-      // Set logout timestamp to help middleware avoid redirect loops
-      document.cookie = `logout_timestamp=${new Date().toISOString()}; path=/; max-age=10`;
-
-      // Clear comprehensive list of session-related cookies on client side
-      const authCookies = [
-        'auth_session_active',
-        'user_email',
-        'account_type',
-        'user_name',
-        'sync_login_timestamp',
-        'remember_user',
-        'last_auth_sync',
-        // Supabase cookies
-        'sb-access-token',
-        'sb-refresh-token',
-        'supabase-auth-token',
-        'supabase.auth.token',
-      ];
-
-      authCookies.forEach((cookie) => {
-        // Clear for current domain
-        document.cookie = `${cookie}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; domain=${window.location.hostname}`;
-        // Clear without domain specification
-        document.cookie = `${cookie}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
-        // Clear for subdomain
-        document.cookie = `${cookie}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; domain=.${window.location.hostname}`;
-      });
-
-      // Clear local storage
-      localStorage.removeItem('supabase.auth.token');
-      localStorage.removeItem('auth_session_active');
-      sessionStorage.clear();
-
-      toast.success('تم تسجيل الخروج بنجاح', { id: 'signout' });
-
-      // Small delay before redirect to ensure cleanup
-      await new Promise((resolve) => setTimeout(resolve, 300));
-
-      // Force a complete page reload to ensure clean state
-      window.location.href = '/';
-    } catch (error) {
-      console.error('❌ [Navbar] Signout error:', error);
-      toast.error('حدث خطأ أثناء تسجيل الخروج', { id: 'signout' });
-      // Always redirect to home page to avoid redirect loops
-      window.location.href = '/';
+  const getDashboardRoute = () => {
+    if (!userData) return '/';
+    
+    switch (userData.account_type) {
+      case 'store':
+        return '/store/dashboard';
+      case 'user':
+      case 'client':
+        return '/user/dashboard';
+      case 'engineer':
+      case 'consultant':
+        return '/dashboard/construction-data';
+      default:
+        return '/';
     }
   };
+
+  const navigationItems = [
+    {
+      label: t('home'),
+      href: '/',
+      icon: Home,
+      requiresAuth: false
+    },
+    {
+      label: t('projects'),
+      href: '/projects',
+      icon: Building2,
+      requiresAuth: false
+    },
+    {
+      label: t('services'),
+      href: '/#features',
+      icon: Package,
+      requiresAuth: false
+    },
+    {
+      label: t('pricing'),
+      href: '/#pricing',
+      icon: DollarSign,
+      requiresAuth: false
+    }
+  ];
+
+  const userMenuItems = [
+    {
+      label: 'لوحة التحكم',
+      href: getDashboardRoute(),
+      icon: Home
+    },
+    {
+      label: 'الملف الشخصي',
+      href: '/user/profile',
+      icon: User
+    },
+    {
+      label: 'المشاريع',
+      href: '/user/projects',
+      icon: Building2
+    },
+    {
+      label: 'الطلبات',
+      href: '/user/orders',
+      icon: Package
+    },
+    {
+      label: 'الإعدادات',
+      href: '/user/settings',
+      icon: Settings
+    }
+  ];
+
+  // Store-specific menu items
+  const storeMenuItems = [
+    {
+      label: 'لوحة تحكم المتجر',
+      href: '/store/dashboard',
+      icon: Home
+    },
+    {
+      label: 'المنتجات',
+      href: '/store/products',
+      icon: Package
+    },
+    {
+      label: 'الطلبات',
+      href: '/store/orders',
+      icon: FileText
+    },
+    {
+      label: 'العملاء',
+      href: '/store/customers',
+      icon: Users
+    },
+    {
+      label: 'الإعدادات',
+      href: '/store/settings',
+      icon: Settings
+    }
+  ];
+
   return (
-    <div className="bg-white shadow-md font-tajawal sticky top-0 z-50">
-      <div className="container mx-auto flex justify-between items-center py-4 px-6">
-        <Link href="/" className="flex items-center gap-2">
-          <img src="/logo.png" alt="شعار" className="w-10 h-10" />
-          <span className="hidden md:inline text-sm font-bold text-blue-700">بناء دون عناء</span>
-        </Link>
-
+    <nav className="bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 text-white shadow-xl sticky top-0 z-50" dir="rtl">
+      <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-16">
         <div className="flex items-center gap-6">
-          {/* Main Navigation - Differentiate based on account type */}
-          <div className="hidden md:flex items-center gap-6 text-sm">
-            <Link href="/" className="hover:text-blue-500">
-              الرئيسية
-            </Link>
-
-            {/* Show different navigation based on user type */}
-            {props.session && accountType ? (
-              <>
-                {accountType === 'store' ? (
-                  // Store-specific navigation
-                  <>
-                    <Link href="/store/dashboard" className="hover:text-blue-500">
-                      لوحة المتجر
-                    </Link>
-                    <Link href="/store/products" className="hover:text-blue-500">
-                      منتجاتي
-                    </Link>
-                    <Link href="/store/orders" className="hover:text-blue-500">
-                      الطلبات
-                    </Link>
-                    <Link href="/store/analytics" className="hover:text-blue-500">
-                      التحليلات
-                    </Link>
-                  </>
-                ) : (
-                  // Regular user navigation
-                  <>
-                    <Link href="/stores" className="hover:text-blue-500">
-                      المتاجر
-                    </Link>
-                    <Link href="/user/projects" className="hover:text-blue-500">
-                      مشاريعي
-                    </Link>
-                    <Link href="/user/orders" className="hover:text-blue-500">
-                      طلباتي
-                    </Link>
-                  </>
-                )}
-                <Link href="/#features" className="hover:text-blue-500">
-                  الخدمات
-                </Link>
-              </>
-            ) : (
-              // Guest navigation
-              <>
-                <Link href="/stores" className="hover:text-blue-500">
-                  المتاجر
-                </Link>
-                <Link href="/#features" className="hover:text-blue-500">
-                  الخدمات
-                </Link>
-              </>
-            )}
-          </div>
-
-          {/* Cart Icon - Show for users only, not stores */}
-          {(!props.session || accountType !== 'store') && (
-            <CartIcon onClick={() => setShowCartSidebar(true)} className="hover:text-blue-500" />
-          )}
-
-          {/* User Menu */}
-          {props.session ? (
-            <div className="flex items-center gap-4">
-              {/* Show loading skeleton while fetching user data */}
-              {loading ? (
-                <div className="animate-pulse flex items-center gap-4">
-                  <div className="w-8 h-8 bg-gray-200 rounded-full"></div>
-                  <div className="w-20 h-4 bg-gray-200 rounded"></div>
-                </div>
-              ) : (
-                <>
-                  {/* Notifications */}
-                  {notifications.length > 0 && (
-                    <div className="relative">
-                      <button
-                        onClick={() => setShowNotifications(!showNotifications)}
-                        className="p-2 text-gray-600 hover:text-gray-800 relative"
-                      >
-                        <svg
-                          className="w-6 h-6"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-                          />
-                        </svg>
-                        <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                          {notifications.length}
-                        </span>
-                      </button>
-
-                      {showNotifications && (
-                        <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-xl py-2 z-50">
-                          {notifications.map((notif) => (
-                            <div
-                              key={notif.id}
-                              className="px-4 py-3 hover:bg-gray-50 cursor-pointer"
-                            >
-                              <p className="text-sm font-medium text-gray-900">{notif.title}</p>
-                              <p className="text-xs text-gray-500">{notif.message}</p>
-                            </div>
-                          ))}
-                          <div className="border-t mt-2 pt-2 px-4">
-                            <Link
-                              href="/notifications"
-                              className="text-sm text-blue-600 hover:text-blue-700"
-                            >
-                              عرض كل الإشعارات
-                            </Link>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  )}
-
-                  {/* User Profile Menu */}
-                  <div className="relative">
-                    <button
-                      onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                      className="flex items-center gap-2 hover:text-blue-500 focus:outline-none"
-                    >
-                      <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-medium">
-                        {userName?.charAt(0).toUpperCase()}
-                      </div>
-                      <span className="hidden md:inline">{userName}</span>
-                      <svg
-                        className={`w-4 h-4 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`}
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M19 9l-7 7-7-7"
-                        />
-                      </svg>
-                    </button>
-
-                    {isDropdownOpen && (
-                      <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg py-2 z-50 border">
-                        {/* Account Type Badge */}
-                        <div className="px-4 py-2 border-b">
-                          <div className="flex items-center gap-2">
-                            <div
-                              className={`w-2 h-2 rounded-full ${accountType === 'store' ? 'bg-green-500' : 'bg-blue-500'}`}
-                            ></div>
-                            <span className="text-xs font-medium text-gray-500">
-                              {accountType === 'store' ? 'حساب متجر' : 'حساب مستخدم'}
-                            </span>
-                          </div>
-                          <p className="text-sm font-medium text-gray-900 mt-1">{userName}</p>
-                          <p className="text-xs text-gray-500">{props.session?.user.email}</p>
-                        </div>
-
-                        {/* Navigation Links */}
-                        <div className="py-1">
-                          <Link
-                            href={accountType === 'store' ? '/store/dashboard' : '/user/dashboard'}
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
-                            onClick={() => setIsDropdownOpen(false)}
-                          >
-                            <svg
-                              className="w-4 h-4"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"
-                              />
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M8 5v2h8V5"
-                              />
-                            </svg>
-                            لوحة التحكم
-                          </Link>
-
-                          <Link
-                            href={accountType === 'store' ? '/store/profile' : '/user/profile'}
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
-                            onClick={() => setIsDropdownOpen(false)}
-                          >
-                            <svg
-                              className="w-4 h-4"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                              />
-                            </svg>
-                            الملف الشخصي
-                          </Link>
-
-                          {/* Store-specific menu items */}
-                          {accountType === 'store' && (
-                            <>
-                              <Link
-                                href="/store/products"
-                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
-                                onClick={() => setIsDropdownOpen(false)}
-                              >
-                                <svg
-                                  className="w-4 h-4"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10m0-10L4 7"
-                                  />
-                                </svg>
-                                إدارة المنتجات
-                              </Link>
-                              <Link
-                                href="/store/orders"
-                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
-                                onClick={() => setIsDropdownOpen(false)}
-                              >
-                                <svg
-                                  className="w-4 h-4"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-                                  />
-                                </svg>
-                                الطلبات الواردة
-                              </Link>
-                              <Link
-                                href="/store/analytics"
-                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
-                                onClick={() => setIsDropdownOpen(false)}
-                              >
-                                <svg
-                                  className="w-4 h-4"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                                  />
-                                </svg>
-                                التحليلات
-                              </Link>
-                            </>
-                          )}
-
-                          {/* User-specific menu items */}
-                          {accountType !== 'store' && (
-                            <>
-                              <Link
-                                href="/user/projects"
-                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
-                                onClick={() => setIsDropdownOpen(false)}
-                              >
-                                <svg
-                                  className="w-4 h-4"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-                                  />
-                                </svg>
-                                مشاريعي
-                              </Link>
-                              <Link
-                                href="/user/orders"
-                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
-                                onClick={() => setIsDropdownOpen(false)}
-                              >
-                                <svg
-                                  className="w-4 h-4"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
-                                  />
-                                </svg>
-                                طلباتي
-                              </Link>
-                            </>
-                          )}
-                        </div>
-
-                        {/* Logout Section */}
-                        <div className="border-t pt-1">
-                          <button
-                            onClick={handleSignOut}
-                            className="block w-full text-right px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center gap-2"
-                          >
-                            <svg
-                              className="w-4 h-4"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-                              />
-                            </svg>
-                            تسجيل الخروج
-                          </button>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </>
-              )}
-            </div>
+          <Link href="/" className="text-2xl font-bold">بِنَّا</Link>
+          {/* Dynamic navbar links based on account type */}
+          {userData?.account_type === 'store' ? (
+            <>
+              <Link href="/store/dashboard" className="hover:underline flex items-center gap-1"><Home className="w-5 h-5" />الرئيسية</Link>
+              <Link href="/store/products" className="hover:underline flex items-center gap-1"><Package className="w-5 h-5" />المنتجات</Link>
+              <Link href="/store/orders" className="hover:underline flex items-center gap-1"><FileText className="w-5 h-5" />الطلبات</Link>
+              <Link href="/store/customers" className="hover:underline flex items-center gap-1"><Users className="w-5 h-5" />العملاء</Link>
+              <Link href="/store/settings" className="hover:underline flex items-center gap-1"><Settings className="w-5 h-5" />الإعدادات</Link>
+            </>
           ) : (
-            <div className="flex items-center gap-4 text-sm">
-              <Link href="/login" className="px-4 py-2 text-blue-600 hover:text-blue-700">
-                تسجيل الدخول
-              </Link>
-              <Link
-                href="/signup"
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-              >
-                إنشاء حساب
-              </Link>
-            </div>
+            <>
+              <Link href="/user/dashboard" className="hover:underline flex items-center gap-1"><Home className="w-5 h-5" />الرئيسية</Link>
+              <Link href="/user/projects" className="hover:underline flex items-center gap-1"><Building2 className="w-5 h-5" />المشاريع</Link>
+              <Link href="/user/orders" className="hover:underline flex items-center gap-1"><Package className="w-5 h-5" />الطلبات</Link>
+              <Link href="/user/profile" className="hover:underline flex items-center gap-1"><User className="w-5 h-5" />الملف الشخصي</Link>
+              <Link href="/user/settings" className="hover:underline flex items-center gap-1"><Settings className="w-5 h-5" />الإعدادات</Link>
+            </>
           )}
         </div>
+        <button className="flex items-center gap-2 hover:text-red-500">
+          <LogOut className="w-5 h-5" />
+          تسجيل الخروج
+        </button>
       </div>
-
-      {/* Cart Sidebar */}
-      <CartSidebar isOpen={showCartSidebar} onClose={() => setShowCartSidebar(false)} />
-    </div>
+    </nav>
   );
 }

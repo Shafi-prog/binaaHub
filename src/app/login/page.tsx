@@ -5,6 +5,12 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useState, useEffect, Suspense } from 'react';
 import { toast } from 'react-hot-toast';
 import Link from 'next/link';
+import { 
+  Typography, 
+  EnhancedCard, 
+  EnhancedButton, 
+  EnhancedInput 
+} from '@/components/ui/enhanced-components';
 import type { Database } from '@/types/database';
 
 function LoginContent() {
@@ -103,51 +109,49 @@ function LoginContent() {
   };
 
   return (
-    <main className="min-h-screen bg-gray-100 flex">
+    <main className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex font-tajawal">
       {/* Left side - Image (hidden on mobile) */}
-      <div className="hidden md:flex w-1/2 items-center justify-center bg-white">
+      <div className="hidden md:flex w-1/2 items-center justify-center bg-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-indigo-600/20"></div>
         <img
           src="/forms-concept-illustration_114360-4957.avif"
           alt="تسجيل الدخول"
-          className="object-cover max-w-full max-h-screen"
+          className="object-cover max-w-full max-h-screen relative z-10"
         />
       </div>
 
       {/* Right side - Login Form */}
       <div className="flex flex-col justify-center items-center w-full md:w-1/2 p-8">
-        <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md">
-          <h2 className="text-3xl font-bold text-center text-blue-700 mb-8 font-tajawal">
-            تسجيل الدخول
-          </h2>
+        <EnhancedCard variant="elevated" className="p-8 w-full max-w-md">
+          <div className="text-center mb-8">
+            <Typography variant="heading" size="3xl" weight="bold" className="text-blue-700 mb-2">
+              تسجيل الدخول
+            </Typography>
+            <Typography variant="body" size="sm" className="text-gray-600">
+              مرحباً بك في منصة بناء
+            </Typography>
+          </div>
 
           <form onSubmit={handleLogin} className="space-y-6">
-            <div>
-              <label className="block text-right text-sm mb-1 font-medium text-gray-700">
-                البريد الإلكتروني
-              </label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-2 border rounded-md text-right focus:outline-none focus:ring-2 focus:ring-blue-400"
-                placeholder="ادخل بريدك الإلكتروني"
-                disabled={loading}
-              />
-            </div>
+            <EnhancedInput
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              label="البريد الإلكتروني"
+              placeholder="ادخل بريدك الإلكتروني"
+              disabled={loading}
+              required
+            />
 
-            <div>
-              <label className="block text-right text-sm mb-1 font-medium text-gray-700">
-                كلمة المرور
-              </label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-2 border rounded-md text-right focus:outline-none focus:ring-2 focus:ring-blue-400"
-                placeholder="ادخل كلمة المرور"
-                disabled={loading}
-              />
-            </div>
+            <EnhancedInput
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              label="كلمة المرور"
+              placeholder="ادخل كلمة المرور"
+              disabled={loading}
+              required
+            />
 
             {/* Remember Me */}
             <div className="flex items-center justify-between">
@@ -160,33 +164,38 @@ function LoginContent() {
                   className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                   disabled={loading}
                 />
-                <label htmlFor="remember-me" className="mr-2 block text-sm text-gray-700">
+                <Typography variant="label" size="sm" className="mr-2">
                   تذكرني
-                </label>
+                </Typography>
               </div>
-              <div className="text-sm">
-                <a href="#" className="text-blue-600 hover:text-blue-500">
+              <div>
+                <Link href="#" className="text-blue-600 hover:text-blue-500 text-sm">
                   نسيت كلمة المرور؟
-                </a>
+                </Link>
               </div>
             </div>
 
-            <button
+            <EnhancedButton
               type="submit"
-              className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition font-semibold mt-6 disabled:opacity-50 disabled:cursor-not-allowed"
-              disabled={loading}
+              variant="primary"
+              size="lg"
+              fullWidth
+              loading={loading}
+              className="mt-6"
             >
               {loading ? 'جاري تسجيل الدخول...' : 'تسجيل الدخول'}
-            </button>
+            </EnhancedButton>
           </form>
 
-          <div className="text-center text-sm text-gray-500 mt-6">
-            ليس لديك حساب؟
-            <Link href="/signup" className="text-blue-600 hover:underline mr-1">
-              إنشاء حساب جديد
-            </Link>
+          <div className="text-center mt-6">
+            <Typography variant="body" size="sm" className="text-gray-500">
+              ليس لديك حساب؟
+              <Link href="/signup" className="text-blue-600 hover:underline mr-1 font-semibold">
+                إنشاء حساب جديد
+              </Link>
+            </Typography>
           </div>
-        </div>
+        </EnhancedCard>
       </div>
     </main>
   );

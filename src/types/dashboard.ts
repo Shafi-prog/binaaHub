@@ -60,7 +60,7 @@ export interface Project {
   start_date?: string;
   expected_completion_date?: string;
   actual_completion_date?: string;
-  budget_estimate?: number;
+  budget?: number;
   actual_cost: number;
   currency: string;
   progress_percentage: number;
@@ -448,7 +448,7 @@ export interface ProjectForm {
   priority: 'low' | 'medium' | 'high' | 'urgent';
   start_date?: string;
   expected_completion_date?: string;
-  budget_estimate?: number;
+  budget?: number;
 }
 
 export interface ExpenseForm {

@@ -9,6 +9,9 @@ import { verifyAuthWithRetry } from '@/lib/auth-recovery';
 import { getProjectById } from '@/lib/api/dashboard';
 import { formatCurrency, formatDate, translateStatus } from '@/lib/utils';
 import type { Project } from '@/types/dashboard';
+import { MapPicker } from '@/components/maps/MapPicker';
+import { NotificationService, NotificationTypes } from '@/lib/notifications';
+import { useNotification } from '@/components/ui/NotificationSystem';
 
 interface ProjectCompat {
   id: string;
@@ -16,7 +19,7 @@ interface ProjectCompat {
   description?: string;
   status: 'planning' | 'in_progress' | 'completed' | 'cancelled';
   priority: 'low' | 'medium' | 'high' | 'urgent';
-  budget_estimate?: number;
+  budget?: number;
   actual_cost?: number;
   start_date?: string;
   end_date?: string;
@@ -25,7 +28,19 @@ interface ProjectCompat {
   progress_percentage?: number;
   created_at: string;
   updated_at: string;
+  location?: string; // JSON string with lat/lng
 }
+
+// Advice for each stage
+const STAGE_ADVICE: Record<string, string> = {
+  planning: 'تأكد من جمع كل التصاريح اللازمة وتحديد الميزانية واختيار المقاول المناسب قبل الانتقال للمرحلة التالية.',
+  design: 'راجع التصاميم مع المهندس وتأكد من مطابقتها للاحتياجات، وابدأ في تجهيز مستندات الرخص.',
+  permits: 'تأكد من استكمال جميع الأوراق الرسمية والحصول على الرخص اللازمة قبل بدء التنفيذ.',
+  construction: 'تابع تقدم العمل مع المقاول، واحتفظ بسجلات المصروفات، وراقب الجودة بشكل دوري.',
+  finishing: 'اختر مواد التشطيب بعناية، ونسق مع الموردين لضمان التسليم في الوقت المناسب.',
+  completed: 'راجع جميع الأعمال المنجزة، واحتفظ بنسخ من الضمانات والفواتير، واحتفل بإنجاز المشروع!',
+  on_hold: 'تابع الإجراءات المطلوبة لإعادة تفعيل المشروع أو حل المشكلات العالقة.'
+};
 
 export default function ProjectDetailPage() {
   const params = useParams();
@@ -37,6 +52,8 @@ export default function ProjectDetailPage() {
   const [loading, setLoading] = useState(true);
   const [authError, setAuthError] = useState<string | null>(null);
   const [projectError, setProjectError] = useState<string | null>(null);
+  const { showNotification } = useNotification();
+  const [lastNotifiedStage, setLastNotifiedStage] = useState<string | null>(null);
 
   const supabase = createClientComponentClient();
 
@@ -69,12 +86,15 @@ export default function ProjectDetailPage() {
 
   useEffect(() => {
     if (user && projectId) {
+      // Debug: log user and projectId
+      console.log('[DEBUG] user.id:', user.id, 'projectId:', projectId);
       fetchProject();
     }
   }, [user, projectId]);
+
   const fetchProject = async () => {
     try {
-      console.log('🔍 Fetching project:', projectId);
+      console.log('🔍 Fetching project:', projectId, 'for user:', user?.id);
 
       const projectData = await getProjectById(projectId);
 
@@ -86,7 +106,7 @@ export default function ProjectDetailPage() {
           description: projectData.description,
           status: projectData.status as any,
           priority: projectData.priority,
-          budget_estimate: projectData.budget_estimate,
+          budget: projectData.budget,
           actual_cost: projectData.actual_cost,
           start_date: projectData.start_date,
           end_date: projectData.actual_completion_date,
@@ -95,19 +115,46 @@ export default function ProjectDetailPage() {
           progress_percentage: projectData.progress_percentage,
           created_at: projectData.created_at,
           updated_at: projectData.updated_at,
+          location: projectData.location,
         };
 
         setProject(compatProject);
         console.log('✅ Project loaded:', compatProject);
       } else {
-        setProjectError('المشروع غير موجود');
-        console.log('❌ Project not found');
+        setProjectError(`المشروع غير موجود (projectId: ${projectId}, userId: ${user?.id})`);
+        console.log('❌ Project not found', { projectId, userId: user?.id });
       }
     } catch (error) {
-      console.error('Error fetching project:', error);
+      console.error('Error fetching project:', error, { projectId, userId: user?.id });
       setProjectError('حدث خطأ في تحميل بيانات المشروع');
     }
   };
+
+  useEffect(() => {
+    if (project && project.status && lastNotifiedStage !== project.status) {
+      // Show advice notification when stage changes
+      const advice = STAGE_ADVICE[project.status];
+      if (advice) {
+        showNotification({
+          type: 'info',
+          message: `نصيحة للمرحلة الحالية: ${advice}`,
+        });
+        // Optionally, create a persistent notification in DB
+        NotificationService.createNotification({
+          user_id: user?.id || '',
+          type: NotificationTypes.PROJECT_UPDATED,
+          title: 'تقدم المشروع',
+          message: `تم الانتقال إلى مرحلة: ${project.status}`,
+          data: { projectId: project.id, status: project.status },
+          is_read: false,
+          priority: 'normal',
+          channel: 'app',
+          sent_at: new Date().toISOString(),
+        });
+      }
+      setLastNotifiedStage(project.status);
+    }
+  }, [project?.status]);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -299,11 +346,11 @@ export default function ProjectDetailPage() {
             <Card className="p-6">
               <h2 className="text-xl font-bold text-gray-900 mb-4">معلومات المشروع</h2>
               <div className="space-y-4">
-                {project.budget_estimate && (
+                {project.budget && (
                   <div>
                     <h3 className="font-medium text-gray-700 mb-1">الميزانية المقدرة</h3>
                     <p className="text-2xl font-bold text-green-600">
-                      {formatCurrency(project.budget_estimate)}
+                      {formatCurrency(project.budget)}
                     </p>
                   </div>
                 )}
@@ -340,10 +387,70 @@ export default function ProjectDetailPage() {
                   <h3 className="font-medium text-gray-700 mb-1">آخر تحديث</h3>
                   <p className="text-gray-600">{formatDate(project.updated_at)}</p>
                 </div>
+
+                {/* Map display for location */}
+                {project.location && (() => {
+                  let loc: { lat: number; lng: number } | null = null;
+                  try {
+                    const parsed = typeof project.location === 'string' ? JSON.parse(project.location) : project.location;
+                    if (parsed && typeof parsed.lat === 'number' && typeof parsed.lng === 'number') {
+                      loc = { lat: parsed.lat, lng: parsed.lng };
+                    }
+                  } catch {}
+                  return loc ? (
+                    <div>
+                      <h3 className="font-medium text-gray-700 mb-1">موقع المشروع على الخريطة</h3>
+                      <div className="h-40 w-full border rounded-lg overflow-hidden mb-2">
+                        <MapPicker initialLocation={loc} readOnly />
+                      </div>
+                      <div className="text-xs text-gray-500">خط العرض: {loc.lat}, خط الطول: {loc.lng}</div>
+                    </div>
+                  ) : null;
+                })()}
               </div>
+            </Card>
+            {/* Construction Stage Progress */}
+            <Card className="p-6">
+              <h2 className="text-xl font-bold text-gray-900 mb-4">مراحل البناء</h2>
+              <StageProgress status={project.status} />
+              {STAGE_ADVICE[project.status] && (
+                <div className="mt-4 p-3 bg-blue-50 border border-blue-100 rounded-lg text-blue-800 text-sm">
+                  <span className="font-bold">نصيحة:</span> {STAGE_ADVICE[project.status]}
+                </div>
+              )}
             </Card>
           </div>
         </div>
+      </div>
+    </div>
+  );
+}
+
+// Construction stage progress bar component
+const STAGES = [
+  { value: 'planning', label: 'تخطيط' },
+  { value: 'design', label: 'تصميم' },
+  { value: 'permits', label: 'رخص' },
+  { value: 'construction', label: 'تنفيذ' },
+  { value: 'finishing', label: 'تشطيب' },
+  { value: 'completed', label: 'مكتمل' },
+];
+function StageProgress({ status }: { status: string }) {
+  const currentIdx = STAGES.findIndex((s) => s.value === status);
+  return (
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center gap-2">
+        {STAGES.map((stage, idx) => (
+          <div key={stage.value} className="flex items-center gap-1">
+            <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-white ${idx <= currentIdx ? 'bg-blue-600' : 'bg-gray-300'}`}>{idx + 1}</div>
+            {idx < STAGES.length - 1 && <div className={`h-1 w-8 ${idx < currentIdx ? 'bg-blue-600' : 'bg-gray-200'}`}></div>}
+          </div>
+        ))}
+      </div>
+      <div className="flex justify-between text-xs text-gray-700 mt-1">
+        {STAGES.map((stage) => (
+          <span key={stage.value} className="w-8 text-center">{stage.label}</span>
+        ))}
       </div>
     </div>
   );

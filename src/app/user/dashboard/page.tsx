@@ -8,6 +8,13 @@ import { User } from '@supabase/supabase-js';
 import type { Database } from '@/types/database';
 import { getUserDashboardStats, type UserDashboardStats } from '@/lib/api/user-dashboard';
 import { LoadingSpinner } from '@/components/ui';
+import { 
+  Typography, 
+  EnhancedCard, 
+  EnhancedButton, 
+  EnhancedBadge 
+} from '@/components/ui/enhanced-components';
+import { StatCard } from '@/components/ui';
 import { formatCurrency, translateStatus } from '@/lib/utils';
 import { verifyAuthWithRetry } from '@/lib/auth-recovery';
 import { ClientIcon } from '@/components/icons';
@@ -156,42 +163,63 @@ export default function UserDashboard() {
     { title: 'طلب خدمة تصميم', href: '/user/services/design', icon: 'ai' as IconKey },
     { title: 'حاسبة التكاليف', href: '/user/services/calculators', icon: 'calculator' as IconKey },
     { title: 'تتبع الإنفاق', href: '/user/spending-tracking', icon: 'chart' as IconKey },
+    { title: 'إدارة الضمانات', href: '/user/warranties', icon: 'settings' as IconKey },
+    { title: 'لوحة العمولات', href: '/user/commissions', icon: 'marketing' as IconKey },
+    { title: 'إدارة المشرفين', href: '/user/supervisors', icon: 'dashboard' as IconKey },
+    { title: 'ماسح الباركود', href: '/barcode-scanner', icon: 'calculator' as IconKey },
   ];
 
   return (
-    <main className="min-h-screen bg-gray-50 font-tajawal">
+    <main className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-indigo-50/20 font-tajawal">
       <div className="container mx-auto px-6 py-8">
         {/* Success Message */}
-        <div className="bg-green-100 p-4 mb-6 rounded-lg">
-          <p className="text-green-700 font-bold">
-            ✅ تم تسجيل الدخول بنجاح! أنت الآن في صفحة لوحة التحكم المحمية.
-          </p>
-        </div>
+        <EnhancedCard variant="elevated" className="mb-6 bg-gradient-to-r from-green-50 to-emerald-50 border-green-200">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+              <ClientIcon type="shield" size={20} className="text-green-600" />
+            </div>
+            <div>
+              <Typography variant="subheading" size="lg" weight="semibold" className="text-green-800 mb-1">
+                تم تسجيل الدخول بنجاح!
+              </Typography>
+              <Typography variant="body" size="sm" className="text-green-700">
+                أنت الآن في صفحة لوحة التحكم المحمية
+              </Typography>
+            </div>
+          </div>
+        </EnhancedCard>
 
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">
+          <Typography variant="heading" size="3xl" weight="bold" className="text-gray-800 mb-3">
             مرحباً، {user?.user_metadata?.name || user?.email?.split('@')[0] || 'المستخدم'}! 👋
-          </h1>
-          <p className="text-gray-600">إليك نظرة عامة على حسابك ومشاريعك</p>
+          </Typography>
+          <Typography variant="body" size="lg" className="text-gray-600">
+            إليك نظرة عامة على حسابك ومشاريعك
+          </Typography>
         </div>
 
         {/* Debug Toggle */}
         <div className="mb-6">
-          <button
+          <EnhancedButton
+            variant="secondary"
+            size="sm"
             onClick={() => setShowDebug(!showDebug)}
-            className="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-lg text-sm"
           >
             {showDebug ? 'إخفاء معلومات التصحيح' : 'عرض معلومات التصحيح'}
-          </button>
+          </EnhancedButton>
 
           {showDebug && (
-            <div className="mt-4 bg-white p-4 rounded-lg shadow border">
-              <h3 className="font-bold mb-2">معلومات الكوكيز والجلسة:</h3>
+            <EnhancedCard variant="outlined" className="mt-4">
+              <Typography variant="subheading" size="lg" weight="semibold" className="mb-4">
+                معلومات الكوكيز والجلسة:
+              </Typography>
 
               <div className="mb-4">
-                <h4 className="font-medium text-sm mb-1">الكوكيز المتوفرة في المتصفح:</h4>
-                <div className="bg-gray-50 p-3 rounded text-xs font-mono max-h-40 overflow-y-auto">
+                <Typography variant="label" size="sm" className="mb-2">
+                  الكوكيز المتوفرة في المتصفح:
+                </Typography>
+                <div className="bg-gray-50 p-3 rounded-lg text-xs font-mono max-h-40 overflow-y-auto">
                   {cookieInfo.length > 0 ? (
                     <ul className="list-disc list-inside">
                       {cookieInfo.map((cookie, idx) => (
@@ -199,13 +227,17 @@ export default function UserDashboard() {
                       ))}
                     </ul>
                   ) : (
-                    <p className="text-red-500">لا توجد كوكيز</p>
+                    <Typography variant="body" size="sm" className="text-red-500">
+                      لا توجد كوكيز
+                    </Typography>
                   )}
                 </div>
               </div>
 
-              <div className="bg-gray-50 p-3 rounded">
-                <h4 className="font-medium text-sm mb-1">معلومات HTTP Header:</h4>
+              <div className="bg-gray-50 p-3 rounded-lg">
+                <Typography variant="label" size="sm" className="mb-2">
+                  معلومات HTTP Header:
+                </Typography>
                 <div className="text-xs font-mono overflow-x-auto max-h-40">
                   <pre>{headerInfo ? JSON.stringify(headerInfo, null, 2) : 'جاري التحميل...'}</pre>
                 </div>
@@ -220,7 +252,7 @@ export default function UserDashboard() {
                   فتح أداة فحص الكوكيز
                 </Link>
               </div>
-            </div>
+            </EnhancedCard>
           )}
         </div>
 
@@ -228,63 +260,87 @@ export default function UserDashboard() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {dashboardCards.map((card, index) => (
             <Link key={index} href={card.href} className="block">
-              <div className="bg-white rounded-lg shadow-sm border hover:shadow-md transition-shadow p-6">
+              <EnhancedCard variant="elevated" hover className="p-6 transition-all duration-300 hover:scale-105">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-600 mb-1">{card.title}</p>
-                    <p className="text-2xl font-bold text-gray-800">{card.value}</p>
+                    <Typography variant="caption" size="sm" className="text-gray-600 mb-1">
+                      {card.title}
+                    </Typography>
+                    <Typography variant="heading" size="2xl" weight="bold" className="text-gray-800">
+                      {card.value}
+                    </Typography>
                   </div>
-                  <div className={`${card.color} p-3 rounded-lg`}>
+                  <div className={`${card.color} p-3 rounded-xl shadow-lg`}>
                     <ClientIcon type={card.icon} size={24} className="text-white" />
                   </div>
                 </div>
-              </div>
+              </EnhancedCard>
             </Link>
           ))}
         </div>
 
         {/* Quick Actions */}
         <div className="mb-8">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">إجراءات سريعة</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <Typography variant="subheading" size="xl" weight="semibold" className="text-gray-800 mb-6">
+            إجراءات سريعة
+          </Typography>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {quickActions.map((action, index) => (
               <Link key={index} href={action.href} className="block">
-                <div className="bg-white rounded-lg shadow-sm border hover:shadow-md transition-shadow p-4 text-center">
-                  <ClientIcon type={action.icon} size={32} className="mx-auto mb-3 text-blue-600" />
-                  <h3 className="font-medium text-gray-800">{action.title}</h3>
-                </div>
+                <EnhancedCard 
+                  variant="elevated" 
+                  hover 
+                  className="p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-xl group"
+                >
+                  <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                    <ClientIcon type={action.icon} size={32} className="text-blue-600" />
+                  </div>
+                  <Typography variant="body" size="md" weight="medium" className="text-gray-800">
+                    {action.title}
+                  </Typography>
+                </EnhancedCard>
               </Link>
             ))}
           </div>
         </div>
 
         {/* Recent Activity */}
-        <div className="bg-white rounded-lg shadow-sm border p-6">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">النشاط الأخير</h2>
+        <EnhancedCard variant="elevated" className="p-8">
+          <Typography variant="subheading" size="xl" weight="semibold" className="text-gray-800 mb-6">
+            النشاط الأخير
+          </Typography>
           <div className="space-y-4">
-            <div className="flex items-center p-3 bg-gray-50 rounded-lg">
-              <div className="bg-blue-100 p-2 rounded-lg ml-3">
+            <div className="flex items-center p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl">
+              <div className="w-12 h-12 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-xl flex items-center justify-center ml-4">
                 <ClientIcon type="dashboard" size={20} className="text-blue-600" />
               </div>
               <div>
-                <p className="font-medium text-gray-800">مرحباً بك في منصة بناء</p>
-                <p className="text-sm text-gray-600">ابدأ رحلتك في إدارة مشاريع البناء</p>
+                <Typography variant="body" size="md" weight="medium" className="text-gray-800">
+                  مرحباً بك في منصة بناء
+                </Typography>
+                <Typography variant="caption" size="sm" className="text-gray-600">
+                  ابدأ رحلتك في إدارة مشاريع البناء
+                </Typography>
               </div>
             </div>
 
             {stats.recentProjects?.map((project: any) => (
-              <div key={project.id} className="flex items-center p-3 bg-gray-50 rounded-lg">
-                <div className="bg-green-100 p-2 rounded-lg ml-3">
+              <div key={project.id} className="flex items-center p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl">
+                <div className="w-12 h-12 bg-gradient-to-br from-green-100 to-emerald-100 rounded-xl flex items-center justify-center ml-4">
                   <ClientIcon type="design" size={20} className="text-green-600" />
                 </div>
                 <div>
-                  <p className="font-medium text-gray-800">{project.name}</p>
-                  <p className="text-sm text-gray-600">{translateStatus(project.status)}</p>
+                  <Typography variant="body" size="md" weight="medium" className="text-gray-800">
+                    {project.name}
+                  </Typography>
+                  <EnhancedBadge variant="success" size="sm">
+                    {translateStatus(project.status)}
+                  </EnhancedBadge>
                 </div>
               </div>
             ))}
           </div>
-        </div>
+        </EnhancedCard>
       </div>
     </main>
   );

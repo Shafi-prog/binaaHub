@@ -26,9 +26,8 @@ export default function AuthFlowTest() {
         }, 2000);
       } else {
         setStatus(`❌ ${accountType} login failed: ${result.error}`);
-      }
-    } catch (error) {
-      setStatus(`❌ Login error: ${error.message}`);
+      }    } catch (error) {
+      setStatus(`❌ Login error: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   };
 
@@ -60,9 +59,8 @@ export default function AuthFlowTest() {
         }, 2000);
       } else {
         setStatus(`❌ Logout failed: ${result.error}`);
-      }
-    } catch (error) {
-      setStatus(`❌ Logout error: ${error.message}`);
+      }    } catch (error) {
+      setStatus(`❌ Logout error: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   };
 
@@ -81,9 +79,8 @@ export default function AuthFlowTest() {
       } else {
         setStatus('❌ No active session');
         setSessionInfo(null);
-      }
-    } catch (error) {
-      setStatus(`❌ Session check error: ${error.message}`);
+      }    } catch (error) {
+      setStatus(`❌ Session check error: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   };
 

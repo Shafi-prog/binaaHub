@@ -9,6 +9,12 @@ import type { Database } from '@/types/database';
 import { getStoreDashboardStats, type StoreStats } from '@/lib/api/store-dashboard';
 import { StatCard, RecentOrdersTable } from '@/components/store/DashboardComponents';
 import { LoadingSpinner } from '@/components/ui';
+import { 
+  Typography, 
+  EnhancedCard, 
+  EnhancedButton, 
+  EnhancedBadge 
+} from '@/components/ui/enhanced-components';
 import { formatCurrency } from '@/lib/utils';
 import { verifyAuthWithRetry } from '@/lib/auth-recovery';
 import { ClientIcon } from '@/components/icons';
@@ -168,6 +174,8 @@ export default function StoreDashboard() {
     { title: 'إدارة الطلبات', href: '/store/orders', icon: 'settings' as IconKey },
     { title: 'حملة تسويقية', href: '/store/marketing', icon: 'marketing' as IconKey },
     { title: 'إحصائيات المبيعات', href: '/store/analytics', icon: 'dashboard' as IconKey },
+    { title: 'استيراد منتجات Excel', href: '/store/products/import', icon: 'ai' as IconKey },
+    { title: 'ماسح الباركود', href: '/barcode-scanner', icon: 'calculator' as IconKey },
   ];
 
   return (
@@ -241,7 +249,7 @@ export default function StoreDashboard() {
         {/* Quick Actions */}
         <div className="mb-8">
           <h2 className="text-xl font-semibold text-gray-800 mb-4">إجراءات سريعة</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4">
             {quickActions.map((action, index) => (
               <Link key={index} href={action.href} className="block">
                 <div className="bg-white rounded-lg shadow-sm border hover:shadow-md transition-shadow p-4 text-center">

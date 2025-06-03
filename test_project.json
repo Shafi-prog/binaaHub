@@ -1,0 +1,9 @@
+{
+  "user_id": "416d0ef0-ffa0-4999-b9af-870a6f00bed0",
+  "name": "Test Project",
+  "description": "Test project to verify save functionality",
+  "project_type": "renovation",
+  "budget": 50000,
+  "address": "Test Location, Lagos",
+  "status": "planning"
+}

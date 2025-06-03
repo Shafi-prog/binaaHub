@@ -1,5 +1,7 @@
 // Dashboard API service functions
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
+import { cookies } from 'next/headers';
 import type {
   DashboardStats,
   Project,
@@ -47,10 +49,10 @@ export async function getDashboardStats(userId: string): Promise<DashboardStats>
   };
 
   try {
-    // Get projects
+    // Get projects (no metadata)
     const projectsResult = await supabase
       .from('projects')
-      .select('id, project_type, status, budget_estimate, actual_cost')
+      .select('id, project_type, status, budget, actual_cost, is_active')
       .eq('user_id', userId);
 
     if (projectsResult.error) {
@@ -59,10 +61,10 @@ export async function getDashboardStats(userId: string): Promise<DashboardStats>
 
     const projects = projectsResult.data || [];
     stats.totalProjects = projects.length;
-    stats.activeProjects = projects.filter((p) => p.status !== 'completed').length;
-    stats.completedProjects = projects.filter((p) => p.status === 'completed').length;
+    stats.activeProjects = projects.filter((p) => p.status !== 'completed' && p.is_active !== false).length;
+    stats.completedProjects = projects.filter((p) => p.status === 'completed' || p.is_active === false).length;
     stats.totalSpent = projects.reduce((sum, p) => sum + (p.actual_cost || 0), 0);
-    stats.totalBudget = projects.reduce((sum, p) => sum + (p.budget_estimate || 0), 0);
+    stats.totalBudget = projects.reduce((sum, p) => sum + (p.budget || 0), 0);
 
     // Get orders
     const ordersResult = await supabase.from('orders').select('id, status').eq('user_id', userId);
@@ -157,7 +159,7 @@ export async function getRecentProjects(
       .select('*', { count: 'exact', head: true })
       .eq('user_id', userId);
 
-    // Get paginated data
+    // Get paginated data (no metadata)
     const { data: projects, error } = await supabase
       .from('projects')
       .select('*')
@@ -603,91 +605,53 @@ export async function getRecentExpenses(
 }
 
 // Create a new project
-export async function createProject(projectData: {
-  name: string;
-  description?: string;
-  project_type?: string;
-  location: string;
-  address?: string;
-  city?: string;
-  region?: string;
-  status?: string;
-  priority?: string;
-  start_date?: string;
-  expected_completion_date?: string;
-  budget_estimate?: number;
-  rooms_count?: number;
-  bathrooms_count?: number;
-  floors_count?: number;
-  plot_area?: number;
-  building_area?: number;
-}): Promise<Project> {
+export async function createProject(projectData: any) {
   try {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-      throw new Error('User not authenticated');
+    const supabase = createClientComponentClient();
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    
+    if (authError || !user) {
+      throw new Error('Unauthorized');
     }
+
+    // Map the project data to match the actual database schema (no metadata)
+    const dbProjectData = {
+      user_id: user.id,
+      name: projectData.name || projectData.title || 'Untitled Project',
+      description: projectData.description || '',
+      project_type: projectData.project_type || 'residential',
+      status: projectData.status || 'planning',
+      address: projectData.address || '',
+      budget: projectData.budget || projectData.budget_estimate || null,
+      start_date: projectData.start_date || projectData.expected_start_date || null,
+      end_date: projectData.end_date || projectData.expected_completion_date || null,
+      location_lat: projectData.location?.lat || projectData.location_lat || null,
+      location_lng: projectData.location?.lng || projectData.location_lng || null,
+      city: projectData.city || '',
+      region: projectData.region || '',
+      district: projectData.district || '',
+      country: projectData.country || '',
+      priority: projectData.priority || 'medium',
+      is_active: typeof projectData.is_active === 'boolean' ? projectData.is_active : true,
+      image_url: projectData.image_url || null,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    };
 
     const { data, error } = await supabase
       .from('projects')
-      .insert({
-        user_id: user.id,
-        name: projectData.name,
-        description: projectData.description || '',
-        project_type: projectData.project_type || 'residential',
-        location: projectData.location,
-        address: projectData.address || '',
-        city: projectData.city || '',
-        region: projectData.region || '',
-        status: projectData.status || 'planning',
-        priority: projectData.priority || 'medium',
-        start_date: projectData.start_date || null,
-        expected_completion_date: projectData.expected_completion_date || null,
-        budget_estimate: projectData.budget_estimate || 0,
-        rooms_count: projectData.rooms_count || null,
-        bathrooms_count: projectData.bathrooms_count || null,
-        floors_count: projectData.floors_count || 1,
-        plot_area: projectData.plot_area || null,
-        building_area: projectData.building_area || null,
-        progress_percentage: 0,
-        actual_cost: 0,
-        currency: 'SAR',
-        is_active: true,
-      })
+      .insert(dbProjectData)
       .select()
       .single();
 
-    if (error) throw error;
+    if (error) {
+      console.error('Database error:', error);
+      throw new Error(`Failed to create project: ${error.message}`);
+    }
 
-    // Transform the data to match the Project interface
-    return {
-      id: data.id,
-      user_id: data.user_id,
-      name: data.name,
-      description: data.description || '',
-      project_type: data.project_type,
-      location: data.location,
-      address: data.address || '',
-      city: data.city || '',
-      region: data.region || '',
-      status: data.status,
-      priority: data.priority,
-      start_date: data.start_date,
-      expected_completion_date: data.expected_completion_date,
-      actual_completion_date: data.actual_completion_date,
-      budget_estimate: data.budget_estimate || 0,
-      actual_cost: data.actual_cost || 0,
-      currency: data.currency || 'SAR',
-      progress_percentage: data.progress_percentage || 0,
-      is_active: data.is_active,
-      created_at: data.created_at,
-      updated_at: data.updated_at,
-    };
-  } catch (error) {
-    console.error('Error creating project:', error);
+    return data;
+  } catch (error: any) {
+    console.error('Project creation error:', error);
     throw error;
   }
 }
@@ -708,7 +672,7 @@ export async function updateProject(
     start_date: string;
     expected_completion_date: string;
     actual_completion_date: string;
-    budget_estimate: number;
+    budget: number;
     actual_cost: number;
     progress_percentage: number;
     rooms_count: number;
@@ -756,7 +720,7 @@ export async function updateProject(
       start_date: data.start_date,
       expected_completion_date: data.expected_completion_date,
       actual_completion_date: data.actual_completion_date,
-      budget_estimate: data.budget_estimate || 0,
+      budget: data.budget || 0,
       actual_cost: data.actual_cost || 0,
       currency: data.currency || 'SAR',
       progress_percentage: data.progress_percentage || 0,
@@ -788,7 +752,7 @@ export async function getProjectById(projectId: string): Promise<Project | null>
         id, user_id, name, description, project_type, location, 
         address, city, region, status, priority, start_date, 
         expected_completion_date, actual_completion_date,
-        budget_estimate, actual_cost, currency, progress_percentage, 
+        budget, actual_cost, currency, progress_percentage, 
         is_active, created_at, updated_at, rooms_count, bathrooms_count,
         floors_count, plot_area, building_area
         `
@@ -821,7 +785,7 @@ export async function getProjectById(projectId: string): Promise<Project | null>
       start_date: data.start_date,
       expected_completion_date: data.expected_completion_date,
       actual_completion_date: data.actual_completion_date,
-      budget_estimate: data.budget_estimate || 0,
+      budget: data.budget || 0,
       actual_cost: data.actual_cost || 0,
       currency: data.currency || 'SAR',
       progress_percentage: data.progress_percentage || 0,

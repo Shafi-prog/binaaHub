@@ -238,6 +238,18 @@ export default function ProductsPage() {
             >
               العودة للوحة التحكم
             </Link>
+            <Link
+              href="/store/products/import"
+              className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors"
+            >
+              استيراد Excel
+            </Link>
+            <Link
+              href="/barcode-scanner"
+              className="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg transition-colors"
+            >
+              ماسح الباركود
+            </Link>
             <button
               onClick={() => setShowAddForm(true)}
               className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors"

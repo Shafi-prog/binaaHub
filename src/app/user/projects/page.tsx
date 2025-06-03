@@ -131,9 +131,10 @@ export default function ProjectsPage() {
       </div>
     );
   }
-  const activeProjects = projects.filter((p) => p.status !== 'completed');
-  const completedProjects = projects.filter((p) => p.status === 'completed');
-  const totalBudget = projects.reduce((sum, p) => sum + (p.budget_estimate || 0), 0);
+  // Updated logic to match backend: consider both status and is_active
+  const activeProjects = projects.filter((p) => (p.status || p.is_active) !== 'completed' && (p.is_active !== false));
+  const completedProjects = projects.filter((p) => (p.status || p.is_active) === 'completed' || p.is_active === false);
+  const totalBudget = projects.reduce((sum, p) => sum + (p.budget || 0), 0);
   const totalSpent = projects.reduce((sum, p) => sum + (p.actual_cost || 0), 0);
 
   return (
@@ -353,7 +354,7 @@ export default function ProjectsPage() {
                         <div className="text-sm">
                           <span className="text-gray-600">الميزانية: </span>
                           <span className="font-medium text-gray-800">
-                            {formatCurrency(project.budget_estimate || 0)}
+                            {formatCurrency(project.budget || 0)}
                           </span>
                         </div>
                       </div>

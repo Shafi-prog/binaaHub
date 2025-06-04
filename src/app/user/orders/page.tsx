@@ -16,6 +16,7 @@ import {
 import { getRecentOrders, getDashboardStats } from '@/lib/api/dashboard';
 import { formatCurrency, formatDate, translateStatus } from '@/lib/utils';
 import { verifyAuthWithRetry } from '@/lib/auth-recovery';
+import { updateOrderStatus, confirmDelivery } from '@/lib/api/orders';
 import type { Order } from '@/types/dashboard';
 import type { PaginatedResponse } from '@/types/shared';
 
@@ -27,6 +28,8 @@ export default function OrdersPage() {
   const [authError, setAuthError] = useState<string | null>(null);
   const [filter, setFilter] = useState<string>('all');
   const [isHydrated, setIsHydrated] = useState(false);
+  const [confirmingOrderId, setConfirmingOrderId] = useState<string | null>(null);
+  const [now, setNow] = useState(Date.now());
 
   const router = useRouter();
   const supabase = createClientComponentClient();
@@ -75,6 +78,33 @@ export default function OrdersPage() {
 
     fetchOrdersData();
   }, [isHydrated, router, supabase]);
+
+  // Timer for 24-hour confirmation window
+  useEffect(() => {
+    const interval = setInterval(() => setNow(Date.now()), 60000); // update every minute
+    return () => clearInterval(interval);
+  }, []);
+
+  // Helper to check if 24h passed since delivered_at
+  const isConfirmWindowActive = (order: Order) => {
+    if (!order.delivered_at) return false;
+    const delivered = new Date(order.delivered_at).getTime();
+    return now - delivered < 24 * 60 * 60 * 1000;
+  };
+  const confirmWindowMinutesLeft = (order: Order) => {
+    if (!order.delivered_at) return 0;
+    const delivered = new Date(order.delivered_at).getTime();
+    const left = 24 * 60 - Math.floor((now - delivered) / 60000);
+    return left > 0 ? left : 0;
+  };
+
+  // Confirm delivery handler
+  const handleConfirmDelivery = async (orderId: string) => {
+    setConfirmingOrderId(orderId);
+    await confirmDelivery(orderId);
+    setOrders((prev) => prev.map((o) => o.id === orderId ? { ...o, status: 'delivered' } : o));
+    setConfirmingOrderId(null);
+  };
 
   if (loading) {
     return (
@@ -296,9 +326,17 @@ export default function OrdersPage() {
                       </button>
                     )}
                     {order.status === 'delivered' && (
-                      <button className="bg-green-100 hover:bg-green-200 text-green-600 text-sm py-2 px-4 rounded transition-colors">
-                        تأكيد الاستلام
-                      </button>
+                      isConfirmWindowActive(order) ? (
+                        <button
+                          className="bg-green-100 hover:bg-green-200 text-green-600 text-sm py-2 px-4 rounded transition-colors"
+                          disabled={confirmingOrderId === order.id}
+                          onClick={() => handleConfirmDelivery(order.id)}
+                        >
+                          {confirmingOrderId === order.id ? '...جارٍ التأكيد' : `تأكيد الاستلام (${confirmWindowMinutesLeft(order)} دقيقة متبقية)`}
+                        </button>
+                      ) : (
+                        <span className="text-xs text-gray-500">تم التأكيد تلقائياً بعد 24 ساعة</span>
+                      )
                     )}
                   </div>
                 </div>

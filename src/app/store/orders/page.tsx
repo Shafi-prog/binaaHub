@@ -11,6 +11,7 @@ import { formatCurrency, formatDate, translateStatus } from '@/lib/utils';
 import { verifyAuthWithRetry } from '@/lib/auth-recovery';
 import { ClientIcon } from '@/components/icons';
 import type { IconKey } from '@/components/icons/ClientIcon';
+import { updateOrderStatus } from '@/lib/api/orders';
 
 interface StoreOrdersUser extends User {
   store_name?: string;
@@ -24,6 +25,7 @@ export default function StoreOrdersPage() {
   const [filter, setFilter] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [isHydrated, setIsHydrated] = useState(false);
+  const [updatingOrderId, setUpdatingOrderId] = useState<string | null>(null);
 
   const router = useRouter();
   const supabase = createClientComponentClient();
@@ -68,6 +70,35 @@ export default function StoreOrdersPage() {
 
     loadStoreOrders();
   }, [isHydrated, router]);
+
+  // Store order action handlers
+  const handleAcceptOrder = async (orderId: string) => {
+    setUpdatingOrderId(orderId);
+    await updateOrderStatus(orderId, 'confirmed');
+    setStats((prev) => ({
+      ...prev!,
+      recentOrders: prev!.recentOrders.map((o: any) => o.id === orderId ? { ...o, status: 'confirmed' } : o)
+    }));
+    setUpdatingOrderId(null);
+  };
+  const handleShipOrder = async (orderId: string) => {
+    setUpdatingOrderId(orderId);
+    await updateOrderStatus(orderId, 'shipped');
+    setStats((prev) => ({
+      ...prev!,
+      recentOrders: prev!.recentOrders.map((o: any) => o.id === orderId ? { ...o, status: 'shipped' } : o)
+    }));
+    setUpdatingOrderId(null);
+  };
+  const handleCancelOrder = async (orderId: string) => {
+    setUpdatingOrderId(orderId);
+    await updateOrderStatus(orderId, 'cancelled');
+    setStats((prev) => ({
+      ...prev!,
+      recentOrders: prev!.recentOrders.map((o: any) => o.id === orderId ? { ...o, status: 'cancelled' } : o)
+    }));
+    setUpdatingOrderId(null);
+  };
 
   if (!isHydrated || loading) {
     return (
@@ -333,21 +364,33 @@ export default function StoreOrdersPage() {
                       تفاصيل الطلب
                     </button>
                     {order.status === 'pending' && (
-                      <button className="bg-green-500 hover:bg-green-600 text-white text-sm py-2 px-4 rounded transition-colors">
-                        قبول الطلب
+                      <button
+                        className="bg-green-500 hover:bg-green-600 text-white text-sm py-2 px-4 rounded transition-colors"
+                        disabled={updatingOrderId === order.id}
+                        onClick={() => handleAcceptOrder(order.id)}
+                      >
+                        {updatingOrderId === order.id ? '...جارٍ القبول' : 'قبول الطلب'}
                       </button>
                     )}
-                    {order.status === 'processing' && (
-                      <button className="bg-purple-500 hover:bg-purple-600 text-white text-sm py-2 px-4 rounded transition-colors">
-                        تحديث للشحن
+                    {order.status === 'confirmed' && (
+                      <button
+                        className="bg-purple-500 hover:bg-purple-600 text-white text-sm py-2 px-4 rounded transition-colors"
+                        disabled={updatingOrderId === order.id}
+                        onClick={() => handleShipOrder(order.id)}
+                      >
+                        {updatingOrderId === order.id ? '...جارٍ الشحن' : 'تحديث للشحن'}
                       </button>
                     )}
                     <button className="bg-gray-100 hover:bg-gray-200 text-gray-600 text-sm py-2 px-4 rounded transition-colors">
                       طباعة الفاتورة
                     </button>
                     {(order.status === 'pending' || order.status === 'processing') && (
-                      <button className="bg-red-100 hover:bg-red-200 text-red-600 text-sm py-2 px-4 rounded transition-colors">
-                        إلغاء الطلب
+                      <button
+                        className="bg-red-100 hover:bg-red-200 text-red-600 text-sm py-2 px-4 rounded transition-colors"
+                        disabled={updatingOrderId === order.id}
+                        onClick={() => handleCancelOrder(order.id)}
+                      >
+                        {updatingOrderId === order.id ? '...جارٍ الإلغاء' : 'إلغاء الطلب'}
                       </button>
                     )}
                   </div>

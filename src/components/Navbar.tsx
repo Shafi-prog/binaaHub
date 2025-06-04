@@ -7,7 +7,6 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import type { Session } from '@supabase/auth-helpers-nextjs';
 import type { Database } from '@/types/database';
-import { CartIcon } from '@/components/cart';
 import { 
   Menu, 
   X, 
@@ -26,6 +25,8 @@ import {
   DollarSign
 } from 'lucide-react';
 import { Button, LogoutButton } from '@/components/ui';
+import { NotificationService } from '@/lib/notifications';
+import { CartIcon } from '@/components/cart/CartSidebar';
 
 interface NavbarProps {
   session?: Session | null;
@@ -47,6 +48,10 @@ export default function Navbar({ session }: NavbarProps) {
   const [loading, setLoading] = useState(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
   const supabase = createClientComponentClient<Database>();
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [notifications, setNotifications] = useState<any[]>([]);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [showComingSoon, setShowComingSoon] = useState<string | null>(null);
 
   // Load user data if session exists
   useEffect(() => {
@@ -84,6 +89,39 @@ export default function Navbar({ session }: NavbarProps) {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+
+  // Fetch unread count and recent notifications
+  useEffect(() => {
+    if (!userData?.id) return;
+    let unsub: (() => void) | undefined;
+    const fetchNotifications = async () => {
+      const count = await NotificationService.getUnreadCount(userData.id);
+      setUnreadCount(count);
+      // Fetch recent notifications (limit 10)
+      const { data, error } = await supabase
+        .from('notifications')
+        .select('*')
+        .eq('user_id', userData.id)
+        .order('created_at', { ascending: false })
+        .limit(10);
+      if (!error && data) setNotifications(data);
+    };
+    fetchNotifications();
+    // Subscribe to real-time notifications
+    NotificationService.getInstance().subscribeToNotifications(userData.id, (notif) => {
+      setUnreadCount((c) => c + 1);
+      setNotifications((prev) => [notif, ...prev].slice(0, 10));
+    });
+    unsub = () => NotificationService.getInstance().unsubscribeFromNotifications(userData.id);
+    return unsub;
+  }, [userData?.id]);
+
+  // Mark notification as read
+  const handleMarkAsRead = async (id: string) => {
+    await NotificationService.markAsRead(id);
+    setNotifications((prev) => prev.map((n) => n.id === id ? { ...n, is_read: true } : n));
+    setUnreadCount((c) => Math.max(0, c - 1));
+  };
 
   const getDashboardRoute = () => {
     if (!userData) return '/';
@@ -186,34 +224,149 @@ export default function Navbar({ session }: NavbarProps) {
     }
   ];
 
+  // Helper for links to unimplemented/placeholder pages
+  const handleComingSoon = (label: string) => {
+    setShowComingSoon(label);
+    setTimeout(() => setShowComingSoon(null), 2000);
+  };
+
   return (
     <nav className="bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 text-white shadow-xl sticky top-0 z-50" dir="rtl">
+      {/* Toast for coming soon pages */}
+      {showComingSoon && (
+        <div className="fixed top-20 right-1/2 translate-x-1/2 z-50 bg-yellow-100 text-yellow-900 px-6 py-3 rounded-lg shadow-lg border border-yellow-300 animate-fade-in">
+          <span className="font-bold">{showComingSoon}</span> - هذه الصفحة قيد التطوير وستتوفر قريبًا
+        </div>
+      )}
       <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-16">
         <div className="flex items-center gap-6">
           <Link href="/" className="text-2xl font-bold">بِنَّا</Link>
-          {/* Dynamic navbar links based on account type */}
-          {userData?.account_type === 'store' ? (
+          <Link href="/projects" className="hover:underline flex items-center gap-1"><Building2 className="w-5 h-5" />المشاريع</Link>
+          {/* Building Advice Section */}
+          <Link href="/building-advice" className="hover:underline flex items-center gap-1"><Bell className="w-5 h-5" />نصائح البناء</Link>
+          {/* User-specific construction journey dropdown */}
+          {userData && userData.account_type !== 'store' && (
+            <div className="relative group" onMouseLeave={() => setShowComingSoon(null)}>
+              <button
+                className="flex items-center gap-1 hover:underline focus:outline-none"
+                onClick={() => handleComingSoon('رحلة البناء')}
+                onMouseEnter={() => setShowComingSoon(null)}
+                aria-haspopup="true"
+                aria-expanded={false}
+              >
+                <Shield className="w-5 h-5" />رحلة البناء
+                <ChevronDown className="w-4 h-4" />
+              </button>
+              {/* لا تظهر القائمة إلا عند الضغط فقط وليس عند المرور */}
+              {/* <div className="absolute ..."> ... </div> */}
+            </div>
+          )}
+          {/* Cart icon and payment channels for users */}
+          {userData && userData.account_type !== 'store' && (
             <>
-              <Link href="/store/dashboard" className="hover:underline flex items-center gap-1"><Home className="w-5 h-5" />الرئيسية</Link>
-              <Link href="/store/products" className="hover:underline flex items-center gap-1"><Package className="w-5 h-5" />المنتجات</Link>
-              <Link href="/store/orders" className="hover:underline flex items-center gap-1"><FileText className="w-5 h-5" />الطلبات</Link>
-              <Link href="/store/customers" className="hover:underline flex items-center gap-1"><Users className="w-5 h-5" />العملاء</Link>
-              <Link href="/store/settings" className="hover:underline flex items-center gap-1"><Settings className="w-5 h-5" />الإعدادات</Link>
+              <Link href="/cart" className="hover:underline flex items-center gap-1"><span className="relative"><CartIcon className="w-6 h-6" onClick={() => handleComingSoon('سلة المشتريات')} /><span className="absolute -top-2 -right-2 bg-red-500 text-xs text-white rounded-full px-1">سلة</span></span></Link>
+              <button type="button" className="hover:underline flex items-center gap-1 bg-transparent border-0" onClick={() => handleComingSoon('قنوات الدفع')}><DollarSign className="w-5 h-5" />قنوات الدفع</button>
+              {/* Communicate with stores for order modification/cancellation */}
+              <button type="button" className="hover:underline flex items-center gap-1 bg-transparent border-0" onClick={() => handleComingSoon('تواصل مع المتاجر')}><Bell className="w-5 h-5" />تواصل مع المتاجر</button>
+              {/* Sell extra/unused items */}
+              <button type="button" className="hover:underline flex items-center gap-1 bg-transparent border-0" onClick={() => handleComingSoon('بيع مواد فائضة')}><Package className="w-5 h-5" />بيع مواد فائضة</button>
             </>
-          ) : (
+          )}
+          {/* Show these only if NOT logged in */}
+          {!userData && (
             <>
-              <Link href="/user/dashboard" className="hover:underline flex items-center gap-1"><Home className="w-5 h-5" />الرئيسية</Link>
-              <Link href="/user/projects" className="hover:underline flex items-center gap-1"><Building2 className="w-5 h-5" />المشاريع</Link>
-              <Link href="/user/orders" className="hover:underline flex items-center gap-1"><Package className="w-5 h-5" />الطلبات</Link>
-              <Link href="/user/profile" className="hover:underline flex items-center gap-1"><User className="w-5 h-5" />الملف الشخصي</Link>
-              <Link href="/user/settings" className="hover:underline flex items-center gap-1"><Settings className="w-5 h-5" />الإعدادات</Link>
+              <Link href="/login" className="hover:underline flex items-center gap-1">تسجيل الدخول</Link>
+              <Link href="/signup" className="hover:underline flex items-center gap-1">تسجيل حساب</Link>
+              <Link href="/ads" className="hover:underline text-green-200 flex items-center gap-1">إعلانات</Link>
             </>
           )}
         </div>
-        <button className="flex items-center gap-2 hover:text-red-500">
-          <LogOut className="w-5 h-5" />
-          تسجيل الخروج
-        </button>
+        {/* Notifications Bell for users and stores */}
+        {userData && (
+          <div className="relative hover:underline flex items-center gap-1 mr-2">
+            <button
+              className="relative"
+              onClick={() => setShowNotifications((v) => !v)}
+              aria-label="عرض الإشعارات"
+            >
+              <Bell className="w-6 h-6" />
+              {unreadCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-xs text-white rounded-full px-1">
+                  {unreadCount > 99 ? '99+' : unreadCount}
+                </span>
+              )}
+            </button>
+            {/* Notifications Dropdown */}
+            {showNotifications && (
+              <div className="absolute left-0 mt-2 w-80 bg-white text-gray-900 border rounded shadow-lg z-50 min-w-max text-right max-h-96 overflow-y-auto">
+                <div className="flex justify-between items-center px-4 py-2 border-b">
+                  <span className="font-bold">الإشعارات</span>
+                  <button className="text-xs text-blue-600 hover:underline" onClick={() => setShowNotifications(false)}>إغلاق</button>
+                </div>
+                {notifications.length === 0 ? (
+                  <div className="p-4 text-gray-500 text-center">لا توجد إشعارات جديدة</div>
+                ) : (
+                  notifications.map((notif) => (
+                    <div
+                      key={notif.id}
+                      className={`px-4 py-3 border-b last:border-b-0 cursor-pointer hover:bg-blue-50 ${notif.is_read ? '' : 'bg-blue-100'}`}
+                      onClick={() => handleMarkAsRead(notif.id)}
+                    >
+                      <div className="font-medium text-sm mb-1">{notif.title || 'إشعار جديد'}</div>
+                      <div className="text-xs text-gray-700">{notif.message}</div>
+                      <div className="text-xs text-gray-400 mt-1">{new Date(notif.created_at).toLocaleString('ar-EG')}</div>
+                    </div>
+                  ))
+                )}
+              </div>
+            )}
+          </div>
+        )}
+        {/* Show dropdown and sign out only if logged in */}
+        {userData && (
+          <div className="relative" ref={userMenuRef}>
+            <button
+              className="flex items-center gap-2 px-3 py-2 rounded hover:bg-blue-900"
+              onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+            >
+              <span>{userData.name || 'الحساب'}</span>
+              <ChevronDown className="w-4 h-4" />
+            </button>
+            {isUserMenuOpen && (
+              <div className="absolute left-0 mt-2 w-56 bg-white text-gray-900 border rounded shadow-lg z-50 min-w-max text-right">
+                {userData.account_type === 'store' ? (
+                  <>
+                    <Link href="/store/dashboard" className="block px-4 py-2 hover:bg-gray-100 flex items-center gap-2"><Home className="w-5 h-5" />لوحة المتجر</Link>
+                    <Link href="/store/products" className="block px-4 py-2 hover:bg-gray-100 flex items-center gap-2"><Package className="w-5 h-5" />منتجاتي</Link>
+                    <Link href="/store/orders" className="block px-4 py-2 hover:bg-gray-100 flex items-center gap-2"><FileText className="w-5 h-5" />الطلبات</Link>
+                    <Link href="/store/profile" className="block px-4 py-2 hover:bg-gray-100 flex items-center gap-2"><User className="w-5 h-5" />الملف الشخصي</Link>
+                    <Link href="/store/settings" className="block px-4 py-2 hover:bg-gray-100 flex items-center gap-2"><Settings className="w-5 h-5" />الإعدادات</Link>
+                  </>
+                ) : (
+                  <>
+                    <Link href="/user/dashboard" className="block px-4 py-2 hover:bg-gray-100 flex items-center gap-2"><Home className="w-5 h-5" />لوحة المستخدم</Link>
+                    <Link href="/user/projects" className="block px-4 py-2 hover:bg-gray-100 flex items-center gap-2"><Building2 className="w-5 h-5" />مشاريعي</Link>
+                    <Link href="/user/orders" className="block px-4 py-2 hover:bg-gray-100 flex items-center gap-2"><Package className="w-5 h-5" />طلباتي</Link>
+                    <Link href="/user/profile" className="block px-4 py-2 hover:bg-gray-100 flex items-center gap-2"><User className="w-5 h-5" />الملف الشخصي</Link>
+                    <Link href="/user/settings" className="block px-4 py-2 hover:bg-gray-100 flex items-center gap-2"><Settings className="w-5 h-5" />الإعدادات</Link>
+                  </>
+                )}
+                <button
+                  onClick={async () => {
+                    setLoading(true);
+                    await supabase.auth.signOut();
+                    setLoading(false);
+                    setUserData(null);
+                    router.push('/login');
+                  }}
+                  className="w-full text-right px-4 py-2 text-red-600 hover:bg-gray-100 flex items-center gap-2 border-t mt-2"
+                >
+                  <LogOut className="w-5 h-5" />تسجيل الخروج
+                </button>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </nav>
   );

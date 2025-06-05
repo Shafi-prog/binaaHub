@@ -44,6 +44,34 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL('/login', req.url));
   }
 
+  // Force user/store to complete profile after login
+  if (isProtectedRoute && session) {
+    try {
+      if (url.pathname.startsWith('/user/') && url.pathname !== '/user/profile') {
+        const { data: userProfile } = await supabase
+          .from('users')
+          .select('name, phone, city, region')
+          .eq('id', session.user.id)
+          .single();
+        if (!userProfile || !userProfile.name || !userProfile.phone || !userProfile.city || !userProfile.region) {
+          return NextResponse.redirect(new URL('/user/profile', req.url));
+        }
+      }
+      if (url.pathname.startsWith('/store/') && url.pathname !== '/store/profile') {
+        const { data: storeData } = await supabase
+          .from('stores')
+          .select('store_name, phone, city, region')
+          .eq('user_id', session.user.id)
+          .single();
+        if (!storeData || !storeData.store_name || !storeData.phone || !storeData.city || !storeData.region) {
+          return NextResponse.redirect(new URL('/store/profile', req.url));
+        }
+      }
+    } catch (profileError) {
+      console.warn('Profile check failed in middleware:', profileError);
+    }
+  }
+
   // Handle auth routes (login/signup) - redirect authenticated users to dashboard
   // BUT check for logout indicators to avoid redirect loops
   if (isAuthRoute && session) {

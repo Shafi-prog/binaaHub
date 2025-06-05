@@ -3,20 +3,17 @@ import { EnhancedInput, EnhancedSelect, EnhancedButton } from '@/components/ui/e
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 const TRADES = [
-  { value: 'painter', label: 'دهان – طلاء الجدران والأسقف' },
-  { value: 'drywaller', label: 'عامل جبس – تركيب الجبس' },
-  { value: 'plasterer', label: 'مبيض محارة – أعمال المحارة' },
-  { value: 'tiler', label: 'مبلط – تركيب البلاط' },
-  { value: 'flooring', label: 'فني أرضيات – تركيب الأرضيات' },
-  { value: 'electrician', label: 'كهربائي' },
-  { value: 'plumber', label: 'سباك' },
-  { value: 'hvac', label: 'فني تكييف' },
-  { value: 'fire', label: 'فني رشاشات الحريق' },
-  { value: 'carpenter', label: 'نجار' },
-  { value: 'steel', label: 'فني حديد' },
   { value: 'mason', label: 'عامل بناء' },
   { value: 'concrete', label: 'فني خرسانة' },
+  { value: 'steel', label: 'فني حديد' },
+  { value: 'carpenter', label: 'نجار' },
+  { value: 'plumber', label: 'سباك' },
+  { value: 'electrician', label: 'كهربائي' },
+  { value: 'tiler', label: 'مبلط' },
+  { value: 'flooring', label: 'فني أرضيات' },
   { value: 'roofer', label: 'فني أسطح' },
+  { value: 'plasterer', label: 'مبيض محارة' },
+  { value: 'drywaller', label: 'عامل جبس' },
 ];
 
 const REGIONS = [
@@ -24,34 +21,41 @@ const REGIONS = [
   { value: 'riyadh', label: 'الرياض' },
   { value: 'makkah', label: 'مكة المكرمة' },
   { value: 'eastern', label: 'المنطقة الشرقية' },
-  // ... add more regions as needed
 ];
+
 const CITIES = {
   riyadh: [
     { value: '', label: 'اختر المدينة' },
     { value: 'riyadh', label: 'الرياض' },
     { value: 'diriyah', label: 'الدرعية' },
-    // ...
   ],
   makkah: [
     { value: '', label: 'اختر المدينة' },
     { value: 'makkah', label: 'مكة' },
     { value: 'jeddah', label: 'جدة' },
-    // ...
   ],
   eastern: [
     { value: '', label: 'اختر المدينة' },
     { value: 'dammam', label: 'الدمام' },
     { value: 'khobar', label: 'الخبر' },
-    // ...
   ],
 };
+
+const COUNTRY_CODES = [
+  { value: '+966', label: '🇸🇦 +966' },
+  { value: '+971', label: '🇦🇪 +971' },
+  { value: '+974', label: '🇶🇦 +974' },
+  { value: '+973', label: '🇧َ +973' },
+  { value: '+965', label: '🇰🇼 +965' },
+  { value: '+968', label: '🇴🇲 +968' },
+];
 
 export default function UserProfileForm({ user }: { user: any }) {
   const supabase = createClientComponentClient();
   const [name, setName] = useState(user.name || '');
   const [email, setEmail] = useState(user.email || '');
   const [emailVerified, setEmailVerified] = useState(user.email_verified || false);
+  const [countryCode, setCountryCode] = useState(user.country_code || '+966');
   const [phone, setPhone] = useState(user.phone || '');
   const [phoneVerified, setPhoneVerified] = useState(user.phone_verified || false);
   const [role, setRole] = useState(user.role || '');
@@ -68,14 +72,62 @@ export default function UserProfileForm({ user }: { user: any }) {
   const [emailCode, setEmailCode] = useState('');
   const [phoneVerificationStep, setPhoneVerificationStep] = useState<'idle' | 'sent' | 'verifying' | 'verified'>(phoneVerified ? 'verified' : 'idle');
   const [phoneCode, setPhoneCode] = useState('');
+  const [apiLoading, setApiLoading] = useState(false);
 
+  // Handle geolocation via browser
   const handleLocate = () => {
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         setLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+        setSuccess('تم تحديد الموقع بنجاح عبر GPS');
       },
-      () => setError('تعذر تحديد الموقع')
+      () => setError('تعذر تحديد الموقع عبر GPS')
     );
+  };
+
+  // Handle location fetch via National Address API
+  const handleNationalAddress = async () => {
+    setApiLoading(true);
+    setError(null);
+    setSuccess(null);
+
+    try {
+      const response = await fetch('http://apina.address.gov.sa/NationalAddress/v3.1/maps/map-engine', {
+        method: 'GET',
+        headers: {
+          'Ocp-Apim-Subscription-Key': 'Hussam@2020',
+          'Content-Type': 'application/json',
+        },
+        // If the API requires query parameters like region/city, uncomment and adjust:
+        // mode: 'cors', // Enable if CORS is needed
+        // Example with query params:
+        // 'http://apina.address.gov.sa/NationalAddress/v3.1/maps/map-engine?region=riyadh&city=riyadh&subscription-key=Hussam@2020'
+      });
+
+      if (!response.ok) {
+        throw new Error(`فشل طلب API: ${response.status}`);
+      }
+
+      const data = await response.json();
+      // Assuming the API returns coordinates in the format { lat, lng }
+      // Adjust based on actual API response structure
+      if (data && data.lat && data.lng) {
+        setLocation({ lat: data.lat, lng: data.lng });
+        setSuccess('تم جلب الموقع من العنوان الوطني بنجاح');
+        // Optionally update other fields like neighborhood, city, or region if API provides them
+        if (data.neighborhood) setNeighborhood(data.neighborhood);
+        if (data.city) setCity(data.city);
+        if (data.region) setRegion(data.region);
+      } else {
+        setError('بيانات الموقع غير متوفرة من API');
+      }
+    } catch (err: any) {
+      setError(err.message || 'حدث خطأ أثناء جلب الموقع من العنوان الوطني');
+      // Fallback to opening the map in a new tab
+      window.open('http://apina.address.gov.sa/NationalAddress/v3.1/maps/map-engine?subscription-key=Hussam@2020', '_blank');
+    } finally {
+      setApiLoading(false);
+    }
   };
 
   // Simulate sending code (replace with real API integration)
@@ -84,7 +136,7 @@ export default function UserProfileForm({ user }: { user: any }) {
     setSuccess('تم إرسال رمز التحقق إلى بريدك الإلكتروني');
   };
   const handleConfirmEmailCode = async () => {
-    if (emailCode === '1234') { // Simulate correct code
+    if (emailCode === '1234') {
       setEmailVerificationStep('verified');
       setSuccess('تم التحقق من البريد الإلكتروني بنجاح');
     } else {
@@ -96,18 +148,12 @@ export default function UserProfileForm({ user }: { user: any }) {
     setSuccess('تم إرسال رمز التحقق إلى رقم الجوال');
   };
   const handleConfirmPhoneCode = async () => {
-    if (phoneCode === '5678') { // Simulate correct code
+    if (phoneCode === '5678') {
       setPhoneVerificationStep('verified');
       setSuccess('تم التحقق من رقم الجوال بنجاح');
     } else {
       setError('رمز التحقق غير صحيح');
     }
-  };
-
-  const handleStoreRequest = async () => {
-    // Placeholder for real store conversion request (Wathq, etc.)
-    setStoreRequestSent(true);
-    setSuccess('تم إرسال طلب التحويل إلى متجر. سيتم التواصل معك قريباً.');
   };
 
   const handleSave = async (e: React.FormEvent) => {
@@ -142,44 +188,45 @@ export default function UserProfileForm({ user }: { user: any }) {
     try {
       const { data: { user: authUser } } = await supabase.auth.getUser();
       if (!authUser) throw new Error('يرجى تسجيل الدخول');
-      // Update user auth info if changed
       if (authUser.email !== email) {
         const { error: emailErr } = await supabase.auth.updateUser({ email });
         if (emailErr) throw emailErr;
-      }      // Update user profile info in the correct table and format
-      // First, update the auth.users metadata
-      const { error: authUpdateError } = await supabase.auth.updateUser({
-        data: { 
-          name: name.trim(),
-          phone: phone.trim(),
-          full_name: name.trim()
-        }
-      });
-      if (authUpdateError) throw authUpdateError;      // Then, upsert user_profiles table with proper schema
-      const profileData = {
-        user_id: authUser.id,
-        occupation: role === 'worker' ? trades.join(', ') : role,
-        company_name: role === 'worker' ? 'Freelancer' : null,
-        preferred_language: 'ar',
-        notification_preferences: {
-          email: true,
-          sms: true,
-          push: true
-        },
-        coordinates: location ? { lat: location.lat, lng: location.lng } : null,
-        country_code: '+966', // Default for Saudi Arabia
-        // Include location fields that are now available in user_profiles table
-        city: city || null,
-        region: region || null,
-        neighborhood: neighborhood || null,
-        address: `${neighborhood ? neighborhood + ', ' : ''}${city ? city + ', ' : ''}${region || ''}`.trim().replace(/,$/, '') || null,
+      }
+      // Save to users table instead of user_profiles
+      const userUpdateData = {
+        name,
+        email,
+        country_code: countryCode,
+        phone,
+        role,
+        region,
+        city,
+        neighborhood,
+        // Only include fields that exist in your users table schema
       };
+      const { error: userError } = await supabase
+        .from('users')
+        .update(userUpdateData)
+        .eq('id', authUser.id);
+      if (userError) throw userError;
 
-      const { error: profileError } = await supabase
-        .from('user_profiles')
-        .upsert(profileData, { onConflict: 'user_id' });
-      
-      if (profileError) throw profileError;
+      // Supervisor activation logic
+      if (role === 'supervisor') {
+        // Upsert supervisor record
+        const { error: supervisorError } = await supabase
+          .from('construction_supervisors')
+          .upsert({
+            user_id: authUser.id,
+            full_name: name,
+            phone: phone,
+            email: email,
+            area: city,
+            is_available: true,
+            is_verified: false,
+            updated_at: new Date().toISOString(),
+          }, { onConflict: 'user_id' });
+        if (supervisorError) throw supervisorError;
+      }
       setSuccess('تم حفظ التغييرات بنجاح');
     } catch (e: any) {
       setError(e.message || 'حدث خطأ أثناء الحفظ');
@@ -191,7 +238,6 @@ export default function UserProfileForm({ user }: { user: any }) {
   return (
     <form dir="rtl" className="max-w-xl mx-auto bg-white rounded-xl shadow-lg p-8 space-y-6" onSubmit={handleSave}>
       <h2 className="text-2xl font-bold mb-4 text-blue-700">الملف الشخصي</h2>
-      {/* Show full name after login for friendliness */}
       {name && (
         <div className="mb-4 text-lg font-semibold text-green-700">مرحباً، {name} 👋</div>
       )}
@@ -238,14 +284,26 @@ export default function UserProfileForm({ user }: { user: any }) {
           )}
         </div>
         <div className="flex gap-2 items-end">
+          <select
+            className="border rounded px-2 py-2 text-sm bg-gray-50"
+            value={countryCode}
+            onChange={e => setCountryCode(e.target.value)}
+            style={{ minWidth: 90 }}
+            required
+          >
+            {COUNTRY_CODES.map(c => (
+              <option key={c.value} value={c.value}>{c.label}</option>
+            ))}
+          </select>
           <EnhancedInput
-            label="رقم الهاتف"
+            label="رقم الجوال"
             value={phone}
             onChange={e => setPhone(e.target.value)}
-            placeholder="أدخل رقم هاتفك"
+            placeholder="أدخل رقم الجوال بدون صفر"
             type="tel"
             required
             disabled={phoneVerificationStep === 'verified'}
+            style={{ direction: 'ltr' }}
           />
           {phoneVerificationStep === 'idle' && (
             <EnhancedButton type="button" variant="secondary" onClick={handleVerifyPhone}>
@@ -270,20 +328,23 @@ export default function UserProfileForm({ user }: { user: any }) {
           )}
         </div>
       </div>
-      <EnhancedSelect
-        label="الدور في المنصة"
-        value={role}
-        onChange={e => {
-          setRole(e.target.value);
-          if (e.target.value !== 'worker') setTrades([]);
-        }}
-        options={[
-          { value: '', label: 'اختر الدور' },
-          { value: 'supervisor', label: 'مشرف (استقبال فرص الإشراف على المشاريع)' },
-          { value: 'worker', label: 'عامل/فني (استقبال فرص العمل حسب التخصص)' },
-        ]}
-        dir="rtl"
-      />
+      <div className="mb-4">
+        <label className="block font-medium mb-2">الدور في المنصة</label>
+        <div className="flex flex-wrap gap-4">
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input type="radio" name="role" value="user" checked={role === 'user'} onChange={() => setRole('user')} />
+            مستخدم
+          </label>
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input type="radio" name="role" value="supervisor" checked={role === 'supervisor'} onChange={() => setRole('supervisor')} />
+            مشرف
+          </label>
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input type="radio" name="role" value="worker" checked={role === 'worker'} onChange={() => setRole('worker')} />
+            عامل/فني
+          </label>
+        </div>
+      </div>
       {role === 'worker' && (
         <div>
           <label className="block mb-2 font-medium">التخصصات (اختر تخصصاتك لتصلك فرص العمل المناسبة)</label>
@@ -306,7 +367,9 @@ export default function UserProfileForm({ user }: { user: any }) {
         </div>
       )}
       {role === 'supervisor' && (
-        <div className="mb-4 text-blue-700 font-medium">ستصلك فرص الإشراف على المشاريع تلقائياً بناءً على منطقتك الجغرافية.</div>
+        <div className="mb-4 text-blue-700 font-medium border p-3 rounded-lg bg-blue-50">
+          ستظهر هنا طلبات الإشراف على المنازل (قريباً)
+        </div>
       )}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <EnhancedSelect
@@ -341,41 +404,35 @@ export default function UserProfileForm({ user }: { user: any }) {
       </div>
       <div>
         <label className="block mb-2 font-medium">الموقع الجغرافي</label>
+        <div className="flex gap-2 items-center mb-2">
+          <EnhancedButton
+            type="button"
+            variant="primary"
+            onClick={handleNationalAddress}
+            loading={apiLoading}
+          >
+            {apiLoading ? 'جاري جلب الموقع...' : 'جلب الموقع من العنوان الوطني'}
+          </EnhancedButton>
+          <EnhancedButton
+            type="button"
+            variant="secondary"
+            onClick={() => window.open('http://apina.address.gov.sa/NationalAddress/v3.1/maps/map-engine?subscription-key=Hussam@2020', '_blank')}
+          >
+            فتح خريطة العنوان الوطني
+          </EnhancedButton>
+        </div>
         <EnhancedButton
           type="button"
-          variant="primary"
+          variant="secondary"
           onClick={handleLocate}
         >
-          حدد موقعي على الخريطة
+          حدد موقعي على الخريطة (GPS)
         </EnhancedButton>
         {location && (
           <div className="mt-2 text-sm text-gray-700">
             الإحداثيات: {location.lat}, {location.lng}
           </div>
         )}
-      </div>
-      <div className="flex flex-col gap-2">
-        <EnhancedButton
-          type="button"
-          variant="secondary"
-          onClick={handleStoreRequest}
-          disabled={storeRequestSent}
-        >
-          طلب التحويل إلى متجر (للمتاجر الفردية مثل متاجر الأسمنت، يتطلب تحقق السجل التجاري)
-        </EnhancedButton>
-        {/* Placeholders for future API integrations */}
-        <EnhancedButton type="button" variant="secondary" disabled>
-          تحقق من الهوية (نفاذ - Nafath)
-        </EnhancedButton>
-        <EnhancedButton type="button" variant="secondary" disabled>
-          تحقق من العنوان الوطني (SPL)
-        </EnhancedButton>
-        <EnhancedButton type="button" variant="secondary" disabled>
-          تحقق من السجل التجاري (Wathq)
-        </EnhancedButton>
-        <EnhancedButton type="button" variant="secondary" disabled>
-          تحقق من رقم IBAN (SAMA)
-        </EnhancedButton>
       </div>
       <EnhancedButton
         type="submit"

@@ -22,11 +22,13 @@ import {
   ChevronDown,
   Home,
   Package,
-  DollarSign
+  DollarSign,
+  Calendar
 } from 'lucide-react';
 import { Button, LogoutButton } from '@/components/ui';
 import { NotificationService } from '@/lib/notifications';
 import { CartIcon } from '@/components/cart/CartSidebar';
+import { useSession } from '@supabase/auth-helpers-react';
 
 interface NavbarProps {
   session?: Session | null;
@@ -42,20 +44,33 @@ interface UserData {
 export default function Navbar({ session }: NavbarProps) {
   const { t, locale } = useTranslation();
   const router = useRouter();
+  const supabase = createClientComponentClient<Database>();
+  const supabaseSession = useSession();
   const [userData, setUserData] = useState<UserData | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
-  const supabase = createClientComponentClient<Database>();
   const [unreadCount, setUnreadCount] = useState(0);
   const [notifications, setNotifications] = useState<any[]>([]);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showComingSoon, setShowComingSoon] = useState<string | null>(null);
+  const [journeyOpen, setJourneyOpen] = useState(false);
+  const journeyRef = useRef<HTMLDivElement>(null);
 
   // Load user data if session exists
   useEffect(() => {
-    if (session?.user?.email) {
+    // Always use Supabase Auth user ID as the source of truth
+    const authUser = supabaseSession?.user || session?.user;
+    if (authUser) {
+      setUserData({
+        id: authUser.id,
+        name: authUser.user_metadata?.name || authUser.email || null,
+        account_type: authUser.user_metadata?.account_type || 'user',
+        email: authUser.email || '',
+      });
+    } else if (session?.user?.email) {
+      // fallback: load from users table if needed
       const loadUserData = async () => {
         try {
           const { data, error } = await supabase
@@ -63,7 +78,6 @@ export default function Navbar({ session }: NavbarProps) {
             .select('id, name, account_type, email')
             .eq('email', session.user.email)
             .single();
-
           if (data && !error) {
             setUserData(data);
           }
@@ -71,10 +85,9 @@ export default function Navbar({ session }: NavbarProps) {
           console.error('Error loading user data:', error);
         }
       };
-
       loadUserData();
     }
-  }, [session, supabase]);
+  }, [session, supabase, supabaseSession]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -89,6 +102,22 @@ export default function Navbar({ session }: NavbarProps) {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+
+  React.useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (journeyRef.current && !journeyRef.current.contains(event.target as Node)) {
+        setJourneyOpen(false);
+      }
+    }
+    if (journeyOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [journeyOpen]);
 
   // Fetch unread count and recent notifications
   useEffect(() => {
@@ -242,26 +271,37 @@ export default function Navbar({ session }: NavbarProps) {
         <div className="flex items-center gap-6">
           <Link href="/" className="text-2xl font-bold">بِنَّا</Link>
           <Link href="/projects" className="hover:underline flex items-center gap-1"><Building2 className="w-5 h-5" />المشاريع</Link>
-          {/* Building Advice Section */}
-          <Link href="/building-advice" className="hover:underline flex items-center gap-1"><Bell className="w-5 h-5" />نصائح البناء</Link>
+          {/* Building Journey Dropdown - only one instance, always visible */}
+          <div className="relative" ref={journeyRef}>
+            <button
+              className="flex items-center gap-1 px-3 py-2 rounded hover:bg-blue-900 focus:outline-none transition-colors text-white font-medium"
+              style={{ background: journeyOpen ? 'rgba(30, 64, 175, 0.15)' : 'none' }}
+              onClick={() => setJourneyOpen((v) => !v)}
+              type="button"
+            >
+              <Calendar className="w-5 h-5" />
+              <span className="ml-1">رحلة البناء</span>
+              <ChevronDown className={`w-4 h-4 transition-transform ${journeyOpen ? 'rotate-180' : ''}`} />
+            </button>
+            {journeyOpen && (
+              <div className="absolute z-50 mt-2 right-0 bg-white border border-gray-200 rounded-lg shadow-2xl min-w-[220px] text-right animate-fade-in overflow-visible">
+                <div className="p-4 border-b font-bold text-gray-700">مراحل رحلة البناء</div>
+                <ul className="divide-y divide-gray-100">
+                  <li className="px-4 py-2 hover:bg-gray-50 cursor-pointer">اختيار الأرض</li>
+                  <li className="px-4 py-2 hover:bg-gray-50 cursor-pointer">تخطيط المشروع</li>
+                  <li className="px-4 py-2 hover:bg-gray-50 cursor-pointer">تصميم معماري وإنشائي</li>
+                  <li className="px-4 py-2 hover:bg-gray-50 cursor-pointer">الحصول على التراخيص</li>
+                  <li className="px-4 py-2 hover:bg-gray-50 cursor-pointer">تنفيذ البناء</li>
+                  <li className="px-4 py-2 hover:bg-gray-50 cursor-pointer">التشطيبات والتسليم</li>
+                </ul>
+              </div>
+            )}
+          </div>
+          <Link href="/building-advice" className="hover:underline flex items-center gap-1"><Shield className="w-5 h-5" />نصائح البناء</Link>
+          <Link href="/public/supervisors" className="text-gray-700 hover:text-blue-700 font-medium">
+            خدمة الاشراف على المشروع
+          </Link>
           {/* User-specific construction journey dropdown */}
-          {userData && userData.account_type !== 'store' && (
-            <div className="relative group" onMouseLeave={() => setShowComingSoon(null)}>
-              <button
-                className="flex items-center gap-1 hover:underline focus:outline-none"
-                onClick={() => handleComingSoon('رحلة البناء')}
-                onMouseEnter={() => setShowComingSoon(null)}
-                aria-haspopup="true"
-                aria-expanded={false}
-              >
-                <Shield className="w-5 h-5" />رحلة البناء
-                <ChevronDown className="w-4 h-4" />
-              </button>
-              {/* لا تظهر القائمة إلا عند الضغط فقط وليس عند المرور */}
-              {/* <div className="absolute ..."> ... </div> */}
-            </div>
-          )}
-          {/* Cart icon and payment channels for users */}
           {userData && userData.account_type !== 'store' && (
             <>
               <Link href="/cart" className="hover:underline flex items-center gap-1"><span className="relative"><CartIcon className="w-6 h-6" onClick={() => handleComingSoon('سلة المشتريات')} /><span className="absolute -top-2 -right-2 bg-red-500 text-xs text-white rounded-full px-1">سلة</span></span></Link>

@@ -178,72 +178,31 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
   try {
     const supabase = createRouteHandlerClient({ cookies })
-
-    // Check authentication
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    const { searchParams } = new URL(request.url)
+    // Public access for public page
+    const isPublic = searchParams.get('public') === '1';
+    const email = searchParams.get('email') || undefined;
+    const city = searchParams.get('city') || undefined;
+    let supervisors;
+    if (isPublic) {
+      supervisors = await SupervisorService.getAvailableSupervisors({ isPublic: true, email, city });
+      return NextResponse.json({ supervisors });
+    }
+    // Authenticated access for user dashboard
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
     if (authError || !user) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
-      )
+      );
     }
-
-    const { searchParams } = new URL(request.url)
-    const action = searchParams.get('action')
-
-    switch (action) {
-      case 'dashboard':
-        const dashboard = await SupervisorService.getSupervisorDashboard(user.id)
-        return NextResponse.json(dashboard)
-
-      case 'find_supervisors':
-        const location = searchParams.get('location')
-        const specialization = searchParams.get('specialization')
-        const filters: any = {}
-        if (location) filters.location = location
-        if (specialization) filters.specializations = [specialization]
-        
-        const supervisors = await SupervisorService.getAvailableSupervisors(filters)
-        return NextResponse.json(supervisors)
-
-      case 'balance':
-        const userBalance = await SupervisorService.getUserBalance(user.id)
-        return NextResponse.json(userBalance)
-
-      case 'authorizations':
-        const authorizations = await SupervisorService.getUserAuthorizations(user.id)
-        return NextResponse.json(authorizations)
-
-      case 'supervisor_authorizations':
-        const supervisorAuths = await SupervisorService.getSupervisorAuthorizations(user.id)
-        return NextResponse.json(supervisorAuths)
-
-      case 'commissions':
-        const commissions = await SupervisorService.getSupervisorCommissions(user.id)
-        return NextResponse.json(commissions)
-
-      case 'project_warranties':
-        const projectId = searchParams.get('projectId')
-        if (!projectId) {
-          return NextResponse.json(
-            { error: 'Project ID is required' },
-            { status: 400 }
-          )
-        }
-        const warranties = await SupervisorService.getProjectWarranties(projectId)
-        return NextResponse.json(warranties)
-
-      default:
-        return NextResponse.json(
-          { error: 'Invalid action' },
-          { status: 400 }
-        )
-    }
+    supervisors = await SupervisorService.getAvailableSupervisors({ email, city });
+    return NextResponse.json({ supervisors });
   } catch (error) {
-    console.error('Supervisor GET API error:', error)
+    console.error('Supervisor GET API error:', error);
     return NextResponse.json(
       { error: 'Failed to fetch supervisor data' },
       { status: 500 }
-    )
+    );
   }
 }

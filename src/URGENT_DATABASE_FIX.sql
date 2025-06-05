@@ -1,5 +1,13 @@
+-- =============================================================================
+-- URGENT: Apply this SQL script to your remote Supabase database
+-- =============================================================================
+-- Go to: https://lqhopwohuddhapkhhikf.supabase.co/project/lqhopwohuddhapkhhikf/sql
+-- Copy and paste this entire script, then click "Run"
+
 -- Add missing columns to projects table to match form expectations
 -- This fixes the "Could not find the 'city' column" error
+
+BEGIN;
 
 -- Add missing location columns
 ALTER TABLE public.projects ADD COLUMN IF NOT EXISTS city TEXT;
@@ -12,8 +20,10 @@ ALTER TABLE public.projects ADD COLUMN IF NOT EXISTS priority TEXT CHECK (priori
 ALTER TABLE public.projects ADD COLUMN IF NOT EXISTS is_active BOOLEAN DEFAULT true;
 ALTER TABLE public.projects ADD COLUMN IF NOT EXISTS image_url TEXT;
 
--- Note: Skipping date column type changes as they conflict with existing views/rules
--- The form will work with TIMESTAMPTZ columns as well
+-- Ensure start_date and end_date are DATE type (not TIMESTAMPTZ) to match form expectations
+-- Note: This might fail if there's existing data. In that case, comment out these lines.
+-- ALTER TABLE public.projects ALTER COLUMN start_date TYPE DATE;
+-- ALTER TABLE public.projects ALTER COLUMN end_date TYPE DATE;
 
 -- Update existing records to have default values
 UPDATE public.projects SET 
@@ -38,3 +48,12 @@ COMMENT ON COLUMN public.projects.country IS 'Project country location (default:
 COMMENT ON COLUMN public.projects.priority IS 'Project priority level (low, medium, high, urgent)';
 COMMENT ON COLUMN public.projects.is_active IS 'Whether the project is currently active';
 COMMENT ON COLUMN public.projects.image_url IS 'URL to project image/photo';
+
+COMMIT;
+
+-- Verify the changes were applied
+SELECT column_name, data_type, is_nullable, column_default
+FROM information_schema.columns 
+WHERE table_name = 'projects' 
+  AND table_schema = 'public'
+ORDER BY ordinal_position;

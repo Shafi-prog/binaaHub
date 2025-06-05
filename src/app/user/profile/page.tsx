@@ -75,6 +75,17 @@ export default function UserProfile() {
           return;
         }
         setUser(authResult.user);
+        // Check if user profile is incomplete (e.g., missing name, phone, city, etc.)
+        const { data: userProfile } = await supabase
+          .from('users')
+          .select('name, phone, city, region')
+          .eq('id', authResult.user.id)
+          .single();
+        if (!userProfile || !userProfile.name || !userProfile.phone || !userProfile.city || !userProfile.region) {
+          // Already on profile page, so do nothing
+        } else {
+          // If profile is complete and this is a forced redirect, optionally redirect to dashboard
+        }
       } catch (error) {
         console.error('Error:', error);
       } finally {

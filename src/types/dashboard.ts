@@ -65,8 +65,17 @@ export interface Project {
   currency: string;
   progress_percentage: number;
   is_active: boolean;
+  for_sale?: boolean;
+  images?: ProjectImage[];
   created_at: string;
   updated_at: string;
+}
+
+export interface ProjectImage {
+  id: string;
+  project_id: string;
+  image_url: string;
+  created_at: string;
 }
 
 export interface ProjectPhase {

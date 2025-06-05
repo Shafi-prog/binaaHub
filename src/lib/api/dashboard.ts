@@ -13,6 +13,7 @@ import type {
   SpendingByCategory,
   Notification,
 } from '@/types/dashboard';
+import type { ProjectImage } from '@/types/dashboard';
 
 export interface PaginatedResponse<T> {
   items: T[];
@@ -152,14 +153,46 @@ export async function getRecentProjects(
   const supabase = createClientComponentClient();
   const start = (page - 1) * PAGE_SIZE;
 
+  console.log('🔍 [getRecentProjects] Starting with params:', { userId, page, start, PAGE_SIZE });
+  console.log('🌐 [getRecentProjects] Supabase URL check...');
+  
+  // Add environment debug info
+  console.log('🔧 [getRecentProjects] Environment check:', {
+    nodeEnv: typeof process !== 'undefined' ? process.env.NODE_ENV : 'unknown',
+    supabaseUrl: typeof process !== 'undefined' ? process.env.NEXT_PUBLIC_SUPABASE_URL : 'unknown',
+    isClient: typeof window !== 'undefined'
+  });
+
   try {
+    // Check current session first
+    console.log('🔐 [getRecentProjects] Checking current session...');
+    const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+    console.log('🔐 [getRecentProjects] Session check result:', { 
+      hasSession: !!sessionData?.session, 
+      hasUser: !!sessionData?.session?.user,
+      sessionUserId: sessionData?.session?.user?.id,
+      providedUserId: userId,
+      userIdMatch: sessionData?.session?.user?.id === userId,
+      sessionError: sessionError?.message 
+    });
+
     // Get total count
-    const { count } = await supabase
+    console.log('📊 [getRecentProjects] Getting total count...');
+    const { count, error: countError } = await supabase
       .from('projects')
       .select('*', { count: 'exact', head: true })
       .eq('user_id', userId);
 
+    console.log('📊 [getRecentProjects] Count result:', { count, countError });
+
+    if (countError) {
+      console.error('❌ [getRecentProjects] Count error:', countError);
+      console.error('❌ [getRecentProjects] Count error details:', JSON.stringify(countError, null, 2));
+      throw countError;
+    }
+
     // Get paginated data (no metadata)
+    console.log('📋 [getRecentProjects] Getting paginated data...');
     const { data: projects, error } = await supabase
       .from('projects')
       .select('*')
@@ -167,16 +200,45 @@ export async function getRecentProjects(
       .order('created_at', { ascending: false })
       .range(start, start + PAGE_SIZE - 1);
 
-    if (error) throw error;
+    console.log('📋 [getRecentProjects] Projects result:', { 
+      projectsCount: projects?.length || 0, 
+      error: error?.message,
+      errorDetails: error ? JSON.stringify(error, null, 2) : null,
+      sampleProject: projects?.[0] ? {
+        id: projects[0].id,
+        name: projects[0].name,
+        user_id: projects[0].user_id
+      } : null
+    });
 
-    return {
+    if (error) {
+      console.error('❌ [getRecentProjects] Projects query error:', error);
+      console.error('❌ [getRecentProjects] Projects error details:', JSON.stringify(error, null, 2));
+      throw error;
+    }
+
+    const result = {
       items: projects || [],
       hasMore: count ? start + PAGE_SIZE < count : false,
       total: count || 0,
       page,
     };
+
+    console.log('✅ [getRecentProjects] Final result:', result);
+    console.log('📊 [getRecentProjects] Summary:', {
+      itemsReturned: result.items.length,
+      totalInDb: result.total,
+      hasMore: result.hasMore,
+      page: result.page,
+      expectedUserId: userId
+    });
+    
+    return result;
   } catch (error) {
-    console.error('Error fetching projects:', error);
+    console.error('❌ [getRecentProjects] Error fetching projects:', error);
+    console.error('❌ [getRecentProjects] Error details:', JSON.stringify(error, null, 2));
+    console.error('❌ [getRecentProjects] Stack trace:', error instanceof Error ? error.stack : 'No stack trace');
+    
     return { items: [], hasMore: false, total: 0, page };
   }
 }
@@ -605,55 +667,24 @@ export async function getRecentExpenses(
 }
 
 // Create a new project
-export async function createProject(projectData: any) {
-  try {
-    const supabase = createClientComponentClient();
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
-    
-    if (authError || !user) {
-      throw new Error('Unauthorized');
+export async function createProject(projectData: any): Promise<Project> {
+  const supabase = createClientComponentClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error('User not authenticated');
+  const { images, ...rest } = projectData;
+  const { data, error } = await supabase
+    .from('projects')
+    .insert({ ...rest, user_id: user.id })
+    .select()
+    .single();
+  if (error) throw error;
+  // Optionally insert images if provided
+  if (images && Array.isArray(images)) {
+    for (const imageUrl of images) {
+      await addProjectImage(data.id, imageUrl);
     }
-
-    // Map the project data to match the actual database schema (no metadata)
-    const dbProjectData = {
-      user_id: user.id,
-      name: projectData.name || projectData.title || 'Untitled Project',
-      description: projectData.description || '',
-      project_type: projectData.project_type || 'residential',
-      status: projectData.status || 'planning',
-      address: projectData.address || '',
-      budget: projectData.budget || projectData.budget_estimate || null,
-      start_date: projectData.start_date || projectData.expected_start_date || null,
-      end_date: projectData.end_date || projectData.expected_completion_date || null,
-      location_lat: projectData.location?.lat || projectData.location_lat || null,
-      location_lng: projectData.location?.lng || projectData.location_lng || null,
-      city: projectData.city || '',
-      region: projectData.region || '',
-      district: projectData.district || '',
-      country: projectData.country || '',
-      priority: projectData.priority || 'medium',
-      is_active: typeof projectData.is_active === 'boolean' ? projectData.is_active : true,
-      image_url: projectData.image_url || null,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-    };
-
-    const { data, error } = await supabase
-      .from('projects')
-      .insert(dbProjectData)
-      .select()
-      .single();
-
-    if (error) {
-      console.error('Database error:', error);
-      throw new Error(`Failed to create project: ${error.message}`);
-    }
-
-    return data;
-  } catch (error: any) {
-    console.error('Project creation error:', error);
-    throw error;
   }
+  return data;
 }
 
 // Update an existing project
@@ -821,4 +852,28 @@ export async function deleteProject(projectId: string): Promise<void> {
     console.error('Error deleting project:', error);
     throw error;
   }
+}
+
+// Add a function to create a project image
+export async function addProjectImage(projectId: string, imageUrl: string): Promise<ProjectImage> {
+  const supabase = createClientComponentClient();
+  const { data, error } = await supabase
+    .from('project_images')
+    .insert({ project_id: projectId, image_url: imageUrl })
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
+}
+
+// Get all images for a project
+export async function getProjectImages(projectId: string): Promise<ProjectImage[]> {
+  const supabase = createClientComponentClient();
+  const { data, error } = await supabase
+    .from('project_images')
+    .select('*')
+    .eq('project_id', projectId)
+    .order('created_at', { ascending: true });
+  if (error) throw error;
+  return data || [];
 }

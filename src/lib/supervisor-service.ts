@@ -67,25 +67,34 @@ export class SupervisorService {
     minRating?: number;
     maxHourlyRate?: number;
     location?: { lat: number; lng: number; radius: number };
+    email?: string;
+    city?: string;
+    isPublic?: boolean;
   }): Promise<ConstructionSupervisor[]> {
     let query = supabase
       .from('construction_supervisors')
-      .select('id, user_id, full_name, phone, email, location, specializations, experience_years, certifications, portfolio_urls, hourly_rate, daily_rate, rating, total_projects, is_available, is_verified, created_at, updated_at')
-      .eq('is_available', true)
-      .eq('is_verified', true);
+      .select('id, user_id, full_name, phone, email, location, specializations, experience_years, certifications, portfolio_urls, hourly_rate, daily_rate, rating, total_projects, is_available, is_verified, created_at, updated_at');
 
+    // Only show available/verified for public or default
+    if (!filters || filters.isPublic || (!filters.email && !filters.city)) {
+      query = query.eq('is_available', true).eq('is_verified', true);
+    }
     if (filters?.minRating) {
       query = query.gte('rating', filters.minRating);
     }
-
     if (filters?.maxHourlyRate) {
       query = query.lte('hourly_rate', filters.maxHourlyRate);
     }
-
     if (filters?.specializations && filters.specializations.length > 0) {
       query = query.overlaps('specializations', filters.specializations);
-    }    const { data, error } = await query.order('rating', { ascending: false });
-
+    }
+    if (filters?.email) {
+      query = query.ilike('email', `%${filters.email}%`);
+    }
+    if (filters?.city) {
+      query = query.ilike('location', `%${filters.city}%`);
+    }
+    const { data, error } = await query.order('rating', { ascending: false });
     if (error) throw error;
     return (data || []) as ConstructionSupervisor[];
   }
@@ -980,6 +989,36 @@ export class SupervisorService {
       console.error('Error getting transaction history:', error);
       throw error;
     }
+  }
+
+  /**
+   * Request a supervision agreement (user requests a supervisor)
+   */
+  static async requestAgreement({ supervisorId, userId }: { supervisorId: string; userId: string; }) {
+    // Insert a new supervisor_request row with status 'pending'
+    const { data, error } = await supabase
+      .from('supervisor_requests')
+      .insert({
+        user_id: userId,
+        supervisor_id: supervisorId,
+        request_type: 'full_supervision',
+        description: 'طلب إشراف من المستخدم',
+        status: 'pending',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      })
+      .select('*')
+      .single();
+    if (error) throw error;
+    // Notify supervisor
+    await this.sendSupervisorNotification(
+      supervisorId,
+      'طلب إشراف جديد',
+      'لديك طلب إشراف جديد من مستخدم',
+      'supervisor_request',
+      data.id
+    );
+    return data;
   }
 
   /**

@@ -80,17 +80,23 @@ export default function ProjectsPage() {
         }
 
         console.log('✅ [Projects] User authenticated:', authResult.user.email);
+        console.log('🆔 [Projects] User ID:', authResult.user.id);
         setUser(authResult.user);
 
+        console.log('📡 [Projects] Fetching projects data...');
         const [projectsResponse, spendingDataResponse] = await Promise.all([
-          getRecentProjects(authResult.user.id, 20),
+          getRecentProjects(authResult.user.id, 1), // Change from 20 to page 1
           getSpendingByCategory(authResult.user.id),
         ]);
 
+        console.log('📊 [Projects] Projects response:', projectsResponse);
+        console.log('📈 [Projects] Spending response:', spendingDataResponse);
+        
         setProjects(projectsResponse?.items || []);
         setSpendingData(spendingDataResponse);
 
         console.log('✅ [Projects] Data loaded successfully');
+        console.log('📝 [Projects] Final projects count:', projectsResponse?.items?.length || 0);
       } catch (error) {
         console.error('❌ [Projects] Error loading data:', error);
         setError('حدث خطأ في تحميل البيانات');

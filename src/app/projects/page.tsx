@@ -1,6 +1,8 @@
+"use client";
 import { Button, Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
 import { Building2, MapPin, Calendar, Clock, ArrowRight, UserCheck } from 'lucide-react';
 import Link from 'next/link';
+import React, { useState } from 'react';
 
 export default function PublicProjectsPage() {
   // Sample public project showcase data
@@ -14,6 +16,11 @@ export default function PublicProjectsPage() {
       description: 'مشروع توسعة وتطوير مجمع تجاري بمساحة 15,000 متر مربع',
       image: '/projects/commercial-1.jpg',
       category: 'تجاري',
+      for_sale: true,
+      images: [
+        { image_url: '/projects/commercial-1.jpg' },
+        { image_url: '/projects/commercial-2.jpg' },
+      ],
     },
     {
       id: 2,
@@ -24,6 +31,11 @@ export default function PublicProjectsPage() {
       description: 'تطوير مجمع فلل سكنية فاخرة يضم 50 فيلا بتصاميم عصرية',
       image: '/projects/residential-1.jpg',
       category: 'سكني',
+      for_sale: false,
+      images: [
+        { image_url: '/projects/residential-1.jpg' },
+        { image_url: '/projects/residential-2.jpg' },
+      ],
     },
     {
       id: 3,
@@ -34,6 +46,11 @@ export default function PublicProjectsPage() {
       description: 'إنشاء مجمع طبي متكامل يضم عيادات متخصصة ومركز تشخيص',
       image: '/projects/medical-1.jpg',
       category: 'طبي',
+      for_sale: true,
+      images: [
+        { image_url: '/projects/medical-1.jpg' },
+        { image_url: '/projects/medical-2.jpg' },
+      ],
     },
     {
       id: 4,
@@ -44,6 +61,11 @@ export default function PublicProjectsPage() {
       description: 'بناء مجمع تعليمي يضم مدارس ومعاهد تقنية متطورة',
       image: '/projects/educational-1.jpg',
       category: 'تعليمي',
+      for_sale: false,
+      images: [
+        { image_url: '/projects/educational-1.jpg' },
+        { image_url: '/projects/educational-2.jpg' },
+      ],
     },
   ];
 
@@ -86,6 +108,22 @@ export default function PublicProjectsPage() {
           <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
             اكتشف مجموعة متنوعة من المشاريع الإنشائية المتميزة التي تم تنفيذها بأعلى معايير الجودة
           </p>
+          {/* Navbar with Building Journey */}
+          <div className="flex flex-wrap justify-center gap-4 mb-8">
+            <Link href="/user/projects">
+              <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors flex items-center gap-2">
+                <Building2 className="h-5 w-5" />
+                مشاريعي
+              </Button>
+            </Link>
+            {/* رحلة البناء أزيلت من هنا وأصبحت في النافبار */}
+            <Link href="/signup">
+              <Button variant="outline" className="px-6 py-3 rounded-lg font-medium border-blue-200 text-blue-700 hover:bg-blue-50 transition-colors flex items-center gap-2">
+                إنشاء حساب جديد
+                <ArrowRight className="h-5 w-5 ml-2" />
+              </Button>
+            </Link>
+          </div>
           
           {/* Call to Action */}
           <div className="bg-white rounded-lg shadow-lg p-6 max-w-2xl mx-auto mb-12 border border-blue-100">
@@ -118,9 +156,24 @@ export default function PublicProjectsPage() {
         {/* Projects Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {featuredProjects.map((project) => (
-            <Card key={project.id} className="overflow-hidden hover:shadow-xl transition-shadow duration-300 border-0 shadow-lg">
-              <div className="aspect-video bg-gradient-to-r from-blue-100 to-indigo-100 flex items-center justify-center">
+            <Card key={project.id} className="overflow-hidden hover:shadow-xl transition-shadow duration-300 border-0 shadow-lg relative">
+              {/* Multiple images carousel placeholder */}
+              <div className="aspect-video bg-gradient-to-r from-blue-100 to-indigo-100 flex items-center justify-center relative">
                 <Building2 className="h-16 w-16 text-blue-600 opacity-50" />
+                {/* For Sale Watermark */}
+                {project.for_sale && (
+                  <div className="absolute top-2 left-2 bg-red-600 text-white px-3 py-1 rounded-full text-xs font-bold opacity-90 z-10">
+                    معروض للبيع
+                  </div>
+                )}
+                {/* Images carousel (replace with real images array) */}
+                {Array.isArray(project.images) && project.images.length > 0 ? (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <img src={project.images[0].image_url} alt="صورة المشروع" className="object-cover w-full h-full" />
+                  </div>
+                ) : (
+                  <img src={project.image} alt="صورة المشروع" className="object-cover w-full h-full opacity-60" />
+                )}
               </div>
               
               <CardHeader className="space-y-3">

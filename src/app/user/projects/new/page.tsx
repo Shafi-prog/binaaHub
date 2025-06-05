@@ -7,6 +7,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { ARAB_COUNTRIES, SAUDI_REGIONS, SAUDI_DISTRICTS } from '@/lib/geo-data';
 import { MapPicker } from '@/components/maps/MapPicker';
+import { createProject } from '@/lib/api/dashboard';
 
 export default function NewProjectPage() {
   const router = useRouter();
@@ -23,10 +24,14 @@ export default function NewProjectPage() {
     lat: 24.7136,
     lng: 46.6753,
     budget: '',
+    start_date: '',
+    end_date: '',
     priority: 'medium',
     status: 'planning',
     is_active: true,
     image: null as File | null,
+    for_sale: false,
+    images: [] as File[],
   });
   const [districtOptions, setDistrictOptions] = useState<{ value: string; label: string }[]>([]);
   const [cityOptions, setCityOptions] = useState<{ value: string; label: string }[]>([]);
@@ -65,6 +70,16 @@ export default function NewProjectPage() {
   const handleActiveToggle = () => {
     setForm((prev) => ({ ...prev, is_active: !prev.is_active }));
   };
+  const handleForSaleToggle = () => {
+    setForm((prev) => ({ ...prev, for_sale: !prev.for_sale }));
+  };
+  const handleImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setForm((prev) => ({ ...prev, images: Array.from(e.target.files!) }));
+    } else {
+      setForm((prev) => ({ ...prev, images: [] }));
+    }
+  };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -87,6 +102,7 @@ export default function NewProjectPage() {
     setLoading(true);
     setError(null);
     let imageUrl = null;
+    let imageUrls: string[] = [];
     try {
       const { data: { user }, error: userError } = await supabase.auth.getUser();
       if (userError || !user) {
@@ -94,44 +110,35 @@ export default function NewProjectPage() {
         setLoading(false);
         return;
       }
-      if (form.image) {
-        const { data: uploadData, error: uploadError } = await supabase.storage.from('project-images').upload(`user-${user.id}/${Date.now()}-${form.image.name}`, form.image);
-        if (uploadError) {
-          setError('فشل رفع صورة المشروع. سيتم إنشاء المشروع بدون صورة.');
-          imageUrl = null;
-        } else {
-          imageUrl = uploadData?.path ? supabase.storage.from('project-images').getPublicUrl(uploadData.path).data.publicUrl : null;
+      // Upload multiple images
+      if (form.images && form.images.length > 0) {
+        for (const file of form.images) {
+          const { data: uploadData, error: uploadError } = await supabase.storage.from('project-images').upload(`user-${user.id}/${Date.now()}-${file.name}`, file);
+          if (!uploadError && uploadData?.path) {
+            const url = supabase.storage.from('project-images').getPublicUrl(uploadData.path).data.publicUrl;
+            if (url) imageUrls.push(url);
+          }
         }
       }
-      // Store all standard fields in top-level columns only
-      const { error: insertError } = await supabase.from('projects').insert({
-        user_id: user.id,
-        name: form.name,
-        description: form.description,
-        project_type: form.project_type,
-        country: form.country,
-        region: form.region,
-        city: form.city,
-        district: form.district,
-        location_lat: form.lat,
-        location_lng: form.lng,
-        address: `${form.country} - ${form.region} - ${form.city} - ${form.district}`,
-        budget: form.budget ? Number(form.budget) : null,
-        priority: form.priority,
-        status: form.status,
-        start_date: form.start_date,
-        end_date: form.end_date,
-        is_active: form.is_active,
-        image_url: imageUrl,
-      });
-      if (insertError) {
-        setError('حدث خطأ أثناء حفظ المشروع: ' + insertError.message);
-        setLoading(false);
-        return;
+      // Single image backward compatibility
+      if (form.image && imageUrls.length === 0) {
+        const { data: uploadData, error: uploadError } = await supabase.storage.from('project-images').upload(`user-${user.id}/${Date.now()}-${form.image.name}`, form.image);
+        if (!uploadError && uploadData?.path) {
+          imageUrl = supabase.storage.from('project-images').getPublicUrl(uploadData.path).data.publicUrl;
+        }
       }
+      const projectData = {
+        ...form,
+        budget: form.budget ? Number(form.budget) : null,
+        image_url: imageUrl || imageUrls[0] || null,
+        images: imageUrls,
+        lat: undefined,
+        lng: undefined,
+      };
+      await createProject(projectData);
       router.push('/user/projects');
-    } catch (error) {
-      setError('حدث خطأ غير متوقع أثناء حفظ المشروع');
+    } catch (error: any) {
+      setError('حدث خطأ غير متوقع أثناء حفظ المشروع' + (error?.message ? `: ${error.message}` : ''));
       setLoading(false);
     }
   };
@@ -224,6 +231,24 @@ export default function NewProjectPage() {
                 placeholder="مثال: 500000"
               />
             </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <EnhancedInput
+                label="تاريخ البداية المتوقع"
+                name="start_date"
+                type="date"
+                value={form.start_date}
+                onChange={handleChange}
+                placeholder="اختر تاريخ البداية"
+              />
+              <EnhancedInput
+                label="تاريخ الانتهاء المتوقع"
+                name="end_date"
+                type="date"
+                value={form.end_date}
+                onChange={handleChange}
+                placeholder="اختر تاريخ الانتهاء"
+              />
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <EnhancedSelect
                 label="الدولة"
@@ -279,12 +304,32 @@ export default function NewProjectPage() {
                 <div className="mt-2 text-xs text-gray-500">تم اختيار صورة: {form.image.name}</div>
               )}
             </div>
+            <div>
+              <label className="block text-sm font-medium mb-2">صور المشروع (يمكن اختيار عدة صور)</label>
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handleImagesChange}
+                className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 font-tajawal"
+              />
+              {form.images && form.images.length > 0 && (
+                <div className="mt-2 text-xs text-gray-500">{form.images.length} صورة مختارة</div>
+              )}
+            </div>
             <div className="flex items-center gap-4">
               <label className="text-sm font-medium">تفعيل الإشراف على المشروع</label>
               <button type="button" onClick={handleActiveToggle} className={`w-12 h-6 rounded-full transition-colors duration-200 ${form.is_active ? 'bg-blue-600' : 'bg-gray-300'}`}> 
                 <span className={`block w-6 h-6 bg-white rounded-full shadow transform transition-transform duration-200 ${form.is_active ? 'translate-x-6' : ''}`}></span>
               </button>
               <span className="text-xs text-gray-500">{form.is_active ? 'مفعل' : 'غير مفعل'}</span>
+            </div>
+            <div className="flex items-center gap-4">
+              <label className="text-sm font-medium">عرض المشروع للبيع</label>
+              <button type="button" onClick={handleForSaleToggle} className={`w-12 h-6 rounded-full transition-colors duration-200 ${form.for_sale ? 'bg-red-600' : 'bg-gray-300'}`}> 
+                <span className={`block w-6 h-6 bg-white rounded-full shadow transform transition-transform duration-200 ${form.for_sale ? 'translate-x-6' : ''}`}></span>
+              </button>
+              <span className="text-xs text-gray-500">{form.for_sale ? 'معروض للبيع' : 'غير معروض للبيع'}</span>
             </div>
             <>
               <div>

@@ -11,11 +11,15 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import { Input } from '@/components/ui';
 
 export default function SupervisorsPage() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [email, setEmail] = useState("");
+  const [city, setCity] = useState("");
+  const [filters, setFilters] = useState({ email: "", city: "" });
   const supabase = createClientComponentClient<Database>();
   const router = useRouter();
 
@@ -67,6 +71,10 @@ export default function SupervisorsPage() {
     return null;
   }
 
+  const handleSearch = () => {
+    setFilters({ email, city });
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -84,8 +92,24 @@ export default function SupervisorsPage() {
                 ابحث عن مشرفين للبناء وأدر مشاريعك بسهولة
               </p>
             </div>
-          </div>        </div>
-        <SupervisorManagement />
+          </div>        
+        </div>
+        <div className="flex flex-wrap gap-4 mb-6">
+          <Input
+            placeholder="البريد الإلكتروني"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            className="w-64"
+          />
+          <Input
+            placeholder="المدينة"
+            value={city}
+            onChange={e => setCity(e.target.value)}
+            className="w-64"
+          />
+          <Button onClick={handleSearch}>بحث</Button>
+        </div>
+        <SupervisorManagement filters={filters} userId={user.id} />
       </div>
     </div>
   );

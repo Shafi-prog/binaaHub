@@ -167,6 +167,10 @@ export default function LandingPage() {
           </Link>
         </div>
       </div>
+      {/* Bottom line: MADE WITH LOVE شافي */}
+      <div className="w-full py-4 bg-transparent flex justify-center items-center">
+        <span className="text-xs text-gray-400 font-semibold tracking-widest">MADE WITH LOVE شافي- بنتي الغالية ريناد تسلم عليكم</span>
+      </div>
     </main>
   );
 }

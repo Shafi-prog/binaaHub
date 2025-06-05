@@ -33,6 +33,17 @@ export default function StoreProfilePage() {
         return;
       }
       setUser(session.user);
+      // Check if store profile is incomplete (e.g., missing store_name, phone, city, region)
+      const { data: storeData } = await supabase
+        .from('stores')
+        .select('store_name, phone, city, region')
+        .eq('user_id', session.user.id)
+        .single();
+      if (!storeData || !storeData.store_name || !storeData.phone || !storeData.city || !storeData.region) {
+        // Already on profile page, so do nothing
+      } else {
+        // If profile is complete and this is a forced redirect, optionally redirect to dashboard
+      }
 
       // جلب بيانات المتجر من جدول stores
       const { data: storeData } = await supabase

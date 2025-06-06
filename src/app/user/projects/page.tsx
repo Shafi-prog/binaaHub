@@ -437,6 +437,27 @@ export default function ProjectsPage() {
           </div>
         </div>
       </div>
+      <main className="max-w-4xl mx-auto p-6 space-y-6">
+        <div className="flex justify-between items-center mb-4">
+          <h1 className="text-2xl font-bold text-blue-700">مشاريعي</h1>
+          <Link href="/user/help-center/articles/project-steps" className="text-blue-600 hover:underline">مراحل البناء</Link>
+        </div>
+        {/* Checklist for project steps */}
+        <div className="bg-white rounded-lg shadow p-4 mb-6">
+          <h2 className="text-lg font-bold mb-2">خطوات مشروعك</h2>
+          <ul className="list-disc pl-6 space-y-1 text-gray-700">
+            <li>اختيار الأرض</li>
+            <li>تصميم معماري وإنشائي</li>
+            <li>الحصول على التراخيص</li>
+            <li>شراء المواد</li>
+            <li>تنفيذ البناء</li>
+            <li>التشطيبات والتسليم</li>
+          </ul>
+        </div>
+        {/* ...existing project list/table... */}
+        {/* Floating help button */}
+        <Link href="/user/help-center" className="fixed bottom-8 right-8 bg-blue-600 text-white rounded-full shadow-lg px-5 py-3 hover:bg-blue-700 z-50">مساعدة؟</Link>
+      </main>
     </div>
   );
 }

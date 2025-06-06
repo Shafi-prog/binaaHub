@@ -20,6 +20,11 @@ import { verifyAuthWithRetry } from '@/lib/auth-recovery';
 import { ClientIcon } from '@/components/icons';
 import type { IconKey } from '@/components/icons/ClientIcon';
 
+function formatInvitationCode(code: string) {
+  if (!code) return '';
+  return code.startsWith('BinnaHub - ') ? code : `BinnaHub - ${code}`;
+}
+
 export default function UserDashboard() {
   const [user, setUser] = useState<User | null>(null);
   const [stats, setStats] = useState<UserDashboardStats | null>(null);
@@ -31,6 +36,10 @@ export default function UserDashboard() {
   const [headerInfo, setHeaderInfo] = useState<any>(null);
   const supabase = createClientComponentClient<Database>();
   const router = useRouter();
+
+  // Invitation code analytics state
+  const [invitationCode, setInvitationCode] = useState<string | null>(null);
+  const [inviteAnalytics, setInviteAnalytics] = useState<{ visits: number; purchases: number } | null>(null);
 
   // Check if this is a post-login redirect
   useEffect(() => {
@@ -98,6 +107,38 @@ export default function UserDashboard() {
 
     loadDashboard();
   }, [isHydrated, router]);
+
+  useEffect(() => {
+    if (user && user.id) {
+      // Fetch invitation code
+      supabase
+        .from('users')
+        .select('invitation_code')
+        .eq('id', user.id)
+        .single()
+        .then(({ data }) => {
+          if (data?.invitation_code) setInvitationCode(data.invitation_code);
+        });
+      // Fetch analytics (manual count)
+      Promise.all([
+        supabase
+          .from('user_invite_analytics')
+          .select('id', { count: 'exact', head: true })
+          .eq('user_id', user.id)
+          .eq('event_type', 'visit'),
+        supabase
+          .from('user_invite_analytics')
+          .select('id', { count: 'exact', head: true })
+          .eq('user_id', user.id)
+          .eq('event_type', 'purchase'),
+      ]).then(([visitsRes, purchasesRes]) => {
+        setInviteAnalytics({
+          visits: visitsRes.count || 0,
+          purchases: purchasesRes.count || 0,
+        });
+      });
+    }
+  }, [user, supabase]);
 
   if (!isHydrated || loading) {
     return (
@@ -168,6 +209,11 @@ export default function UserDashboard() {
     { title: 'إدارة المشرفين', href: '/user/supervisors', icon: 'dashboard' as IconKey },
     { title: 'ماسح الباركود', href: '/barcode-scanner', icon: 'calculator' as IconKey },
   ];
+
+  let conversionRate = null;
+  if (inviteAnalytics && inviteAnalytics.visits > 0) {
+    conversionRate = ((inviteAnalytics.purchases / inviteAnalytics.visits) * 100).toFixed(1);
+  }
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-indigo-50/20 font-tajawal">
@@ -278,6 +324,40 @@ export default function UserDashboard() {
             </Link>
           ))}
         </div>
+
+        {/* Invitation Code Analytics */}
+        {invitationCode && (
+          <EnhancedCard variant="elevated" className="mb-8 p-6">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <div>
+                <div className="font-mono text-blue-800 mb-2">رمز الدعوة: {formatInvitationCode(invitationCode)}</div>
+                <div className="text-xs text-gray-700 mb-2">شارك هذا الرمز مع أصدقائك أو العملاء ليحصلوا على مزايا، وستحصل أنت على عمولة عند استخدامه.</div>
+                <div className="flex gap-6">
+                  <div className="text-center">
+                    <div className="font-bold text-lg text-blue-700">{inviteAnalytics?.visits ?? 0}</div>
+                    <div className="text-xs text-gray-500">زيارات عبر الرمز</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="font-bold text-lg text-green-700">{inviteAnalytics?.purchases ?? 0}</div>
+                    <div className="text-xs text-gray-500">عمليات شراء عبر الرمز</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="font-bold text-lg text-indigo-700">{conversionRate ?? 0}%</div>
+                    <div className="text-xs text-gray-500">معدل التحويل</div>
+                  </div>
+                </div>
+              </div>
+              <button
+                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 font-mono"
+                onClick={() => {
+                  if (invitationCode) {
+                    navigator.clipboard.writeText(invitationCode);
+                  }
+                }}
+              >نسخ رمز الدعوة</button>
+            </div>
+          </EnhancedCard>
+        )}
 
         {/* Quick Actions */}
         <div className="mb-8">

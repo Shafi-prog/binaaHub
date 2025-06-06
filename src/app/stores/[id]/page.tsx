@@ -45,6 +45,7 @@ interface Store {
   payment_methods: string[] | null;
   created_at: string;
   updated_at: string;
+  map_url?: string | null;
 }
 
 interface Product {
@@ -243,7 +244,8 @@ export default function StorePage() {
                       {store.phone && (
                         <div className="flex items-center gap-1">
                           <Phone className="w-4 h-4" />
-                          <span>{store.phone}</span>
+                          <a href={`tel:${store.phone}`} className="text-blue-600 hover:underline">{store.phone}</a>
+                          <a href={`https://wa.me/${store.phone.replace(/[^\d]/g, '')}`} target="_blank" rel="noopener" className="ml-2 text-green-600 hover:underline">واتساب</a>
                         </div>
                       )}
                     </div>
@@ -273,6 +275,21 @@ export default function StorePage() {
               </div>
             </div>
           </div>
+          {/* Store location (map or address) */}
+          {store.map_url && (
+            <div className="my-4">
+              <iframe
+                src={store.map_url}
+                width="100%"
+                height="250"
+                style={{ border: 0, borderRadius: '12px' }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="موقع المتجر على الخريطة"
+              />
+            </div>
+          )}
         </div>
       </div>
 

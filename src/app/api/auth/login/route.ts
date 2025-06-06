@@ -44,6 +44,8 @@ export async function POST(request: NextRequest) {
         // No rows returned
         console.log('🔧 [API] Creating missing user record for:', email);
 
+        // Generate invitation code if not present
+        const invitationCode = 'BinnaHub-' + Math.random().toString(36).substring(2, 10);
         const defaultUserData = {
           id: signInData.session.user.id,
           email: email,
@@ -51,6 +53,7 @@ export async function POST(request: NextRequest) {
           name: signInData.session.user.email?.split('@')[0] || 'User',
           is_verified: true,
           status: 'active',
+          invitation_code: invitationCode,
         };
 
         const { error: insertError } = await supabase.from('users').insert([defaultUserData]);

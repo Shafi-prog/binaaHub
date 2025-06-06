@@ -24,6 +24,11 @@ interface StoreDashboardUser extends User {
   store_name?: string;
 }
 
+function formatInvitationCode(code: string) {
+  if (!code) return '';
+  return code.startsWith('BinnaHub - ') ? code : `BinnaHub - ${code}`;
+}
+
 export default function StoreDashboard() {
   const [user, setUser] = useState<StoreDashboardUser | null>(null);
   const [stats, setStats] = useState<StoreStats | null>(null);
@@ -35,6 +40,48 @@ export default function StoreDashboard() {
   const [headerInfo, setHeaderInfo] = useState<any>(null);
   const supabase = createClientComponentClient<Database>();
   const router = useRouter();
+
+  // Invitation code state
+  const [invitationCode, setInvitationCode] = useState<string | null>(null);
+  // Invitation code analytics state
+  const [inviteAnalytics, setInviteAnalytics] = useState<{ visits: number; purchases: number } | null>(null);
+  useEffect(() => {
+    if (user && user.id) {
+      // Fetch invitation code
+      supabase
+        .from('stores')
+        .select('invitation_code')
+        .eq('user_id', user.id)
+        .single()
+        .then(({ data }) => {
+          if (data?.invitation_code) setInvitationCode(data.invitation_code);
+        });
+      // Fetch analytics (manual count)
+      Promise.all([
+        supabase
+          .from('store_invite_analytics')
+          .select('id', { count: 'exact', head: true })
+          .eq('store_id', user.id)
+          .eq('event_type', 'visit'),
+        supabase
+          .from('store_invite_analytics')
+          .select('id', { count: 'exact', head: true })
+          .eq('store_id', user.id)
+          .eq('event_type', 'purchase'),
+      ]).then(([visitsRes, purchasesRes]) => {
+        setInviteAnalytics({
+          visits: visitsRes.count || 0,
+          purchases: purchasesRes.count || 0,
+        });
+      });
+    }
+  }, [user, supabase]);
+
+  // Conversion Analytics
+  let conversionRate = null;
+  if (inviteAnalytics && inviteAnalytics.visits > 0) {
+    conversionRate = ((inviteAnalytics.purchases / inviteAnalytics.visits) * 100).toFixed(1);
+  }
 
   // Check if this is a post-login redirect
   useEffect(() => {
@@ -244,6 +291,39 @@ export default function StoreDashboard() {
               </div>
             </Link>
           ))}
+        </div>
+
+        {/* Invitation Code and Analytics */}
+        <div className="bg-white rounded-lg shadow-sm border p-6 mb-8">
+          <h2 className="text-xl font-semibold text-gray-800 mb-2">رمز الدعوة الخاص بالمتجر</h2>
+          {invitationCode ? (
+            <div className="font-mono text-blue-700 bg-blue-50 rounded p-2 text-center text-lg mb-2">
+              {formatInvitationCode(invitationCode)}
+            </div>
+          ) : (
+            <div className="text-gray-500">لا يوجد رمز دعوة متاح حالياً</div>
+          )}
+          <div className="text-sm text-gray-600 text-center mb-2">
+            شارك هذا الرمز مع العملاء لزيارة متجرك مباشرة أو تتبع عمليات الشراء المرتبطة بك.
+          </div>
+          {inviteAnalytics && (
+            <div className="flex justify-center gap-8 mt-2">
+              <div className="text-center">
+                <div className="font-bold text-lg text-blue-700">{inviteAnalytics.visits}</div>
+                <div className="text-xs text-gray-500">زيارات عبر الرمز</div>
+              </div>
+              <div className="text-center">
+                <div className="font-bold text-lg text-green-700">{inviteAnalytics.purchases}</div>
+                <div className="text-xs text-gray-500">مشتريات عبر الرمز</div>
+              </div>
+              <div className="text-center">
+                <div className="font-bold text-lg text-purple-700">
+                  {conversionRate !== null ? `${conversionRate}%` : '--'}
+                </div>
+                <div className="text-xs text-gray-500">معدل التحويل</div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Quick Actions */}

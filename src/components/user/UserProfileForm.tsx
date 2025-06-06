@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { EnhancedInput, EnhancedSelect, EnhancedButton } from '@/components/ui/enhanced-components';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
@@ -73,6 +73,23 @@ export default function UserProfileForm({ user }: { user: any }) {
   const [phoneVerificationStep, setPhoneVerificationStep] = useState<'idle' | 'sent' | 'verifying' | 'verified'>(phoneVerified ? 'verified' : 'idle');
   const [phoneCode, setPhoneCode] = useState('');
   const [apiLoading, setApiLoading] = useState(false);
+
+  // Invitation code state
+  const [invitationCode, setInvitationCode] = useState<string | null>(null);
+  // Fetch invitation code on mount
+  useEffect(() => {
+    if (user && user.id) {
+      const supabase = createClientComponentClient();
+      supabase
+        .from('users')
+        .select('invitation_code')
+        .eq('id', user.id)
+        .single()
+        .then(({ data }) => {
+          if (data?.invitation_code) setInvitationCode(data.invitation_code);
+        });
+    }
+  }, [user]);
 
   // Handle geolocation via browser
   const handleLocate = () => {
@@ -442,6 +459,11 @@ export default function UserProfileForm({ user }: { user: any }) {
       >
         {saving ? 'جاري الحفظ...' : 'حفظ التغييرات'}
       </EnhancedButton>
+      {invitationCode && (
+        <div className="mt-4 text-xs text-blue-700 bg-blue-50 rounded p-2 font-mono text-center">
+          رمز الدعوة الخاص بك: <b>{invitationCode}</b>
+        </div>
+      )}
     </form>
   );
 }

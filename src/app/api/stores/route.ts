@@ -154,7 +154,9 @@ export async function POST(request: NextRequest) {
         is_active: true,
         is_verified: false,
         rating: 0,
-        total_reviews: 0
+        total_reviews: 0,
+        // Generate invitation code for new store
+        invitation_code: 'BinnaHub-' + Math.random().toString(36).substring(2, 10)
       })
       .select()
       .single();

@@ -1,0 +1,5 @@
+{
+  "/_not-found/page": "/_not-found",
+  "/user/projects/[id]/page": "/user/projects/[id]",
+  "/user/projects/[id]/edit/page": "/user/projects/[id]/edit"
+}

@@ -9,7 +9,8 @@ const path = require('path');
 
 // Read environment variables from .env.local
 const envPath = path.join(__dirname, '.env.local');
-let supabaseUrl, supabaseAnonKey;
+let supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://lqhopwohuddhapkhhikf.supabase.co';
+let supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || undefined;
 
 try {
   const envContent = fs.readFileSync(envPath, 'utf8');

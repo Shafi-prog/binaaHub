@@ -1,10 +1,9 @@
 // Test script to verify project management fixes with proper authentication
 const { createClient } = require('@supabase/supabase-js');
-const fetch = require('node-fetch');
 
-const SUPABASE_URL = 'https://nplvmpfivmgdkjkrmkpq.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5wbHZtcGZpdm1nZGtqa3Jta3BxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzE5MjM0MzIsImV4cCI6MjA0NzQ5OTQzMn0.vbkZdBhg7PlQZIc7cNL2KnC8FKlJN-G9aAdfvWy_FUI';
-const BASE_URL = 'http://localhost:3000';
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://lqhopwohuddhapkhhikf.supabase.co';
+const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxxaG9wd29odWRkaGFwa2hoaWtmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM5Njc1NjQsImV4cCI6MjA1OTU0MzU2NH0.Zze96fAMkynERwRFhyMF-F6_ds5WcwGckLD0qGQD9JQ';
+const BASE_URL = 'http://localhost:3001';
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -59,16 +58,14 @@ async function authenticateUser() {
 async function testProjectCreation(userId) {
   console.log('\n📋 Step 2: Testing project creation...');
   
-  try {
-    const testProject = {
+  try {    const testProject = {
       name: 'Test Project - Schema Fix Validation',
       description: 'Testing the fixed schema mapping and project creation',
       project_type: 'residential',
       status: 'planning',
       address: 'Test Location, City',
       budget: 150000,
-      progress_percentage: 0,
-      expected_completion_date: '2024-06-01',
+      end_date: '2024-06-01', // Use actual database column name
       user_id: userId
     };
 
@@ -108,12 +105,10 @@ async function testGetProjectById(projectId) {
     const result = await response.json();
     
     if (result.success && result.project) {
-      console.log('✅ getProjectById successful');
-      console.log(`📝 Project retrieved: ${result.project.name}`);
-      console.log(`📅 Expected completion: ${result.project.expected_completion_date}`);
+      console.log('✅ getProjectById successful');      console.log(`📝 Project retrieved: ${result.project.name}`);
+      console.log(`📅 Expected completion: ${result.project.expected_completion_date || 'Not set'}`);
       console.log(`📅 Actual completion: ${result.project.actual_completion_date || 'Not set'}`);
       console.log(`💰 Budget: ${result.project.budget}`);
-      console.log(`📊 Progress: ${result.project.progress_percentage || 0}%`);
       return result.project;
     } else {
       console.error('❌ getProjectById returned error:', result.error);
@@ -127,16 +122,11 @@ async function testGetProjectById(projectId) {
 
 async function testUpdateProject(projectId) {
   console.log('\n✏️ Step 4: Testing updateProject function...');
-  
   try {
     const updateData = {
-      progress_percentage: 25,
-      actual_cost: 37500,
-      location: {
-        lat: 24.7136,
-        lng: 46.6753
-      },
-      expected_completion_date: '2024-07-01'
+      description: 'Updated test project with enhanced details',
+      status: 'in_progress',
+      expected_completion_date: '2024-07-01' // API should handle mapping to end_date
     };
 
     const response = await makeAuthenticatedRequest(`/api/dashboard/projects/${projectId}`, {
@@ -151,12 +141,11 @@ async function testUpdateProject(projectId) {
     }
 
     const result = await response.json();
-    
-    if (result.success) {
+      if (result.success) {
       console.log('✅ updateProject successful');
-      console.log(`📊 Progress updated to: ${updateData.progress_percentage}%`);
-      console.log(`💰 Actual cost updated to: ${updateData.actual_cost}`);
-      console.log(`📍 Location updated to: ${JSON.stringify(updateData.location)}`);
+      console.log(`📝 Description updated to: ${updateData.description}`);
+      console.log(`📊 Status updated to: ${updateData.status}`);
+      console.log(`📅 Expected completion updated to: ${updateData.expected_completion_date}`);
       return true;
     } else {
       console.error('❌ updateProject returned error:', result.error);

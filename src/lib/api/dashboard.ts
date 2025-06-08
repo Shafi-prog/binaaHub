@@ -848,7 +848,7 @@ export async function getProjectById(projectId: string): Promise<Project | null>
       .select(
         `
         id, user_id, name, description, project_type, location, 
-        address, status, start_date, 
+        address, status, start_date, end_date,
         budget, is_active, created_at, updated_at
         `
       ).eq('id', projectId)
@@ -902,18 +902,16 @@ export async function getProjectById(projectId: string): Promise<Project | null>
       location: data.location,
       address: data.address || '',
       city: '', // Column doesn't exist yet
-      region: '', // Column doesn't exist yet
-      district: '', // Column doesn't exist yet
+      region: '', // Column doesn't exist yet      district: '', // Column doesn't exist yet
       country: '', // Column doesn't exist yet  
       status: data.status,
-      priority: 'medium' as const, // Column doesn't exist yet, use default
-      start_date: data.start_date,
-      expected_completion_date: undefined, // Column doesn't exist yet
+      priority: 'medium' as const, // Column doesn't exist yet, use default      start_date: data.start_date,
+      expected_completion_date: data.end_date, // Map from end_date column
       actual_completion_date: undefined, // Column doesn't exist yet
       budget: data.budget || 0,
-      actual_cost: 0, // Column doesn't exist yet
+      actual_cost: undefined, // Column doesn't exist yet
       currency: 'SAR', // Column doesn't exist yet, use default
-      progress_percentage: 0, // Column doesn't exist yet
+      progress_percentage: undefined, // Column doesn't exist yet
       is_active: data.is_active,
       created_at: data.created_at,
       updated_at: data.updated_at,

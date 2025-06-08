@@ -1,2 +1,5 @@
 node_modules
 .vercel
+.next/cache/webpack/client-development/0.pack.gz
+
+.next

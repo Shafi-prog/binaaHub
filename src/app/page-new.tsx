@@ -1,7 +1,12 @@
 'use client';
+
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+
+// Force dynamic rendering to prevent prerender issues
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
 
 type Feature = {
   title: string;
@@ -40,7 +45,7 @@ export default function LandingPage() {
         title: "الإشراف المهني",
         description: "احصل على إشراف من خبراء البناء",
         icon: "👷"
-      }, // <-- Add comma here
+      }
     ],
     store: [
       {

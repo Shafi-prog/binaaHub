@@ -1009,14 +1009,13 @@ export class SupervisorService {
       })
       .select('*')
       .single();
-    if (error) throw error;
-    // Notify supervisor
+    if (error) throw error;    // Notify supervisor
     await this.sendSupervisorNotification(
       supervisorId,
       'طلب إشراف جديد',
       'لديك طلب إشراف جديد من مستخدم',
       'supervisor_request',
-      data.id
+      String(data.id)
     );
     return data;
   }

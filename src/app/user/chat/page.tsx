@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
@@ -19,7 +19,7 @@ const LoadingProgressIndicator = () => (
   </div>
 );
 
-export default function ChatPage() {
+function ChatPageContent() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -153,10 +153,17 @@ export default function ChatPage() {
               supervisorId={supervisorId || undefined} 
               projectId={projectId || undefined} 
               className="w-full"
-            />
-          )}
+            />          )}
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ChatPage() {
+  return (
+    <Suspense fallback={<LoadingProgressIndicator />}>
+      <ChatPageContent />
+    </Suspense>
   );
 }

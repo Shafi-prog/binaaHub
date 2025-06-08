@@ -1,0 +1,18 @@
+Removed files not needed for production build:
+- check-and-populate-correct-database.ts
+- check-and-populate-correct-database.js
+- check-and-fix-database.ts
+- check-current-database.js
+- check-schema.js
+- src/check-schema.js
+- test_create_project.js
+- test-api-login.js
+- test-api-simple.js
+- test-auth-flow-final.mjs
+- test-auth-flow-port-3006.js
+- test_final_verification.html
+- test_project.json
+- test_project_api.json
+- test_save_functionality.html
+- test_authenticated_crud.html
+- simple-test.js

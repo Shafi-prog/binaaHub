@@ -1,0 +1,17 @@
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  trailingSlash: true,
+  basePath: '/binaaHub',
+  assetPrefix: '/binaaHub/',
+  images: {
+    unoptimized: true
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
+  }
+}
+
+module.exports = nextConfig

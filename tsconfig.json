@@ -1,23 +1,50 @@
 {
+<<<<<<< HEAD
   "compilerOptions": {
     "target": "es5",
     "lib": ["dom", "dom.iterable", "es6"],
+=======
+  "extends": "./tsconfig.extends.json",
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+>>>>>>> e0e83bc2e6a4c393009b329773f07bfad211af6b
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
     "noEmit": true,
     "esModuleInterop": true,
+<<<<<<< HEAD
     "module": "esnext",
     "moduleResolution": "bundler",
+=======
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "types": [
+      "react",
+      "react-dom",
+      "node",
+      "@types/node"
+    ],
+>>>>>>> e0e83bc2e6a4c393009b329773f07bfad211af6b
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+<<<<<<< HEAD
+=======
+    "allowImportingTsExtensions": true,
+>>>>>>> e0e83bc2e6a4c393009b329773f07bfad211af6b
     "plugins": [
       {
         "name": "next"
       }
     ],
+<<<<<<< HEAD
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
@@ -34,4 +61,33 @@
     "src/**/*"
   ],
   "exclude": ["node_modules"]
+=======
+    "forceConsistentCasingInFileNames": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "app/**/*",
+    "components/**/*",
+    "global.d.ts",
+    "hooks/**/*",
+    "lib/**/*",
+    "next-env.d.ts",
+    "next.config.js",
+    "src/**/*",
+    "types/**/*",
+    "utils/**/*",
+    "out/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    ".next",
+    "out",
+    "**/binaaHub/**"
+  ]
+>>>>>>> e0e83bc2e6a4c393009b329773f07bfad211af6b
 }

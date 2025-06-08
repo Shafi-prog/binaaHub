@@ -3,6 +3,12 @@
 @tailwind components;
 @tailwind utilities;
 
+<<<<<<< HEAD
+=======
+/* استيراد خط Tajawal مع أوزان متعددة */
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@200;300;400;500;700;800;900&display=swap');
+
+>>>>>>> e0e83bc2e6a4c393009b329773f07bfad211af6b
 .font-tajawal {
   font-family: 'Tajawal', 'Arial Unicode MS', 'Tahoma', sans-serif;
 }

@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Complete Login Flow Test</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+      }
+      .test-section {
+        margin: 20px 0;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+      }
+      button {
+        padding: 10px 20px;
+        margin: 10px 5px;
+        cursor: pointer;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+      }
+      button:hover {
+        background: #0056b3;
+      }
+      .success {
+        color: green;
+      }
+      .error {
+        color: red;
+      }
+      .info {
+        color: blue;
+      }
+      #logs {
+        background: #f5f5f5;
+        padding: 15px;
+        border-radius: 5px;
+        max-height: 500px;
+        overflow-y: auto;
+        font-family: monospace;
+        font-size: 12px;
+      }
+      .redirect-test {
+        background: #e7f3ff;
+        padding: 10px;
+        border-radius: 5px;
+        margin: 10px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🔧 Complete Login Flow Test</h1>
+
+    <div class="test-section">
+      <h3>🎯 Full Flow Test (API + Redirect)</h3>
+      <div class="redirect-test">
+        <p><strong>This will test the complete flow:</strong></p>
+        <ol>
+          <li>Call login API</li>
+          <li>Set session on client</li>
+          <li>Wait for session propagation</li>
+          <li>Navigate to dashboard</li>
+        </ol>
+      </div>
+      <button onclick="testCompleteUserFlow()">Test Complete User Flow</button>
+      <button onclick="testCompleteStoreFlow()">Test Complete Store Flow</button>
+    </div>
+
+    <div class="test-section">
+      <h3>🔍 Diagnostic Tests</h3>
+      <button onclick="testSessionStatus()">Check Current Session</button>
+      <button onclick="testDashboardAccess()">Test Direct Dashboard Access</button>
+      <button onclick="clearSession()">Clear Session</button>
+    </div>
+
+    <div class="test-section">
+      <h3>📋 Test Logs</h3>
+      <button onclick="clearLogs()">Clear Logs</button>
+      <div id="logs"></div>
+    </div>
+
+    <script>
+      function log(message, type = 'info') {
+        const logs = document.getElementById('logs');
+        const timestamp = new Date().toLocaleTimeString();
+        const className = type === 'error' ? 'error' : type === 'success' ? 'success' : 'info';
+        logs.innerHTML += `<div class="${className}">[${timestamp}] ${message}</div>`;
+        logs.scrollTop = logs.scrollHeight;
+      }
+
+      function clearLogs() {
+        document.getElementById('logs').innerHTML = '';
+      }
+
+      async function testCompleteUserFlow() {
+        log('🔄 Starting complete user login flow...');
+
+        try {
+          // Step 1: API Login
+          log('🔐 Step 1: Calling login API...');
+          const response = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              email: 'user@user.com',
+              password: '123456',
+            }),
+          });
+
+          const result = await response.json();
+
+          if (!result.success) {
+            log(`❌ API login failed: ${result.error}`, 'error');
+            return;
+          }
+
+          log(`✅ API login successful! Redirect to: ${result.redirectTo}`, 'success');
+          log(`👤 User: ${result.user.email} (${result.user.account_type})`, 'success');
+
+          // Step 2: Set session (simulate what the login page does)
+          if (result.session) {
+            log('🔐 Step 2: Setting session on client...');
+            // Note: We can't actually set Supabase session from this test page
+            // But we can simulate the behavior
+            log('✅ Session data received (would be set in real app)', 'success');
+          }
+
+          // Step 3: Wait for propagation
+          log('⏳ Step 3: Waiting for session propagation...');
+          await new Promise((resolve) => setTimeout(resolve, 2000));
+
+          // Step 4: Navigate
+          log(`🚀 Step 4: Navigating to ${result.redirectTo}...`, 'success');
+          window.location.href = result.redirectTo;
+        } catch (error) {
+          log(`❌ Error in complete flow: ${error.message}`, 'error');
+        }
+      }
+
+      async function testCompleteStoreFlow() {
+        log('🔄 Starting complete store login flow...');
+
+        try {
+          // Step 1: API Login
+          log('🔐 Step 1: Calling login API...');
+          const response = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              email: 'store@store.com',
+              password: '123456',
+            }),
+          });
+
+          const result = await response.json();
+
+          if (!result.success) {
+            log(`❌ API login failed: ${result.error}`, 'error');
+            return;
+          }
+
+          log(`✅ API login successful! Redirect to: ${result.redirectTo}`, 'success');
+          log(`🏪 User: ${result.user.email} (${result.user.account_type})`, 'success');
+
+          // Step 2: Set session (simulate what the login page does)
+          if (result.session) {
+            log('🔐 Step 2: Setting session on client...');
+            log('✅ Session data received (would be set in real app)', 'success');
+          }
+
+          // Step 3: Wait for propagation
+          log('⏳ Step 3: Waiting for session propagation...');
+          await new Promise((resolve) => setTimeout(resolve, 2000));
+
+          // Step 4: Navigate
+          log(`🚀 Step 4: Navigating to ${result.redirectTo}...`, 'success');
+          window.location.href = result.redirectTo;
+        } catch (error) {
+          log(`❌ Error in complete flow: ${error.message}`, 'error');
+        }
+      }
+
+      async function testSessionStatus() {
+        log('🔍 Checking current session status...');
+        try {
+          // Try to access a protected route to see what happens
+          const response = await fetch('/user/dashboard');
+          log(
+            `Dashboard access response: ${response.status}`,
+            response.status === 200 ? 'success' : 'error'
+          );
+
+          if (response.status === 302 || response.url.includes('/login')) {
+            log('❌ No session - redirected to login', 'error');
+          } else if (response.status === 200) {
+            log('✅ Session valid - dashboard accessible', 'success');
+          } else {
+            log(`⚠️ Unexpected response: ${response.status}`, 'error');
+          }
+        } catch (error) {
+          log(`❌ Error checking session: ${error.message}`, 'error');
+        }
+      }
+
+      async function testDashboardAccess() {
+        log('🔍 Testing direct dashboard access...');
+        try {
+          // Test user dashboard
+          log('Testing /user/dashboard...');
+          const userResponse = await fetch('/user/dashboard');
+          log(
+            `User dashboard: ${userResponse.status}`,
+            userResponse.status === 200 ? 'success' : 'error'
+          );
+
+          // Test store dashboard
+          log('Testing /store/dashboard...');
+          const storeResponse = await fetch('/store/dashboard');
+          log(
+            `Store dashboard: ${storeResponse.status}`,
+            storeResponse.status === 200 ? 'success' : 'error'
+          );
+        } catch (error) {
+          log(`❌ Error testing dashboards: ${error.message}`, 'error');
+        }
+      }
+
+      function clearSession() {
+        log('🗑️ Clearing any local session data...');
+        // Clear localStorage and sessionStorage
+        localStorage.clear();
+        sessionStorage.clear();
+        log('✅ Local storage cleared', 'success');
+      }
+
+      // Initial log
+      log('🚀 Complete login flow test ready!');
+      log('ℹ️ Use the buttons above to test different scenarios');
+    </script>
+  </body>
+</html>

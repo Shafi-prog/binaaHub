@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 "use client";
+=======
+'use client';
+
+>>>>>>> e0e83bc2e6a4c393009b329773f07bfad211af6b
 import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
@@ -31,10 +36,13 @@ export default function EditProjectPage() {
     end_date: '',
     priority: 'medium',
     status: 'planning',
+<<<<<<< HEAD
     progress_percentage: '',
     actual_cost: '',
     location_lat: '',
     location_lng: '',
+=======
+>>>>>>> e0e83bc2e6a4c393009b329773f07bfad211af6b
   });
 
   const supabase = createClientComponentClient();
@@ -73,6 +81,7 @@ export default function EditProjectPage() {
 
       const projectData = await getProjectById(projectId);
 
+<<<<<<< HEAD
       if (projectData) {
         setFormData({
           name: projectData.name,
@@ -90,6 +99,20 @@ export default function EditProjectPage() {
           location_lat: projectData.location ? (JSON.parse(projectData.location).lat || '').toString() : '',
           location_lng: projectData.location ? (JSON.parse(projectData.location).lng || '').toString() : '',
         });
+=======
+      if (projectData) {      setFormData({
+        name: projectData.name,
+        description: projectData.description || '',
+        project_type: projectData.project_type,
+        address: projectData.address || '',
+        city: projectData.city || '',
+        region: projectData.region || '',
+        budget: projectData.budget?.toString() || '',
+        end_date: projectData.expected_completion_date || '',
+        priority: projectData.priority,
+        status: projectData.status,
+      });
+>>>>>>> e0e83bc2e6a4c393009b329773f07bfad211af6b
         console.log('✅ Project data loaded for editing');
       } else {
         console.error('❌ Project not found for editing');
@@ -134,9 +157,12 @@ export default function EditProjectPage() {
         expected_completion_date: formData.end_date || undefined,
         priority: formData.priority,
         status: formData.status,
+<<<<<<< HEAD
         progress_percentage: formData.progress_percentage ? parseInt(formData.progress_percentage) : undefined,
         actual_cost: formData.actual_cost ? parseFloat(formData.actual_cost) : undefined,
         location: formData.location_lat && formData.location_lng ? JSON.stringify({ lat: parseFloat(formData.location_lat), lng: parseFloat(formData.location_lng) }) : undefined,
+=======
+>>>>>>> e0e83bc2e6a4c393009b329773f07bfad211af6b
       };
 
       const result = await updateProject(projectId, updateData);
@@ -380,6 +406,7 @@ export default function EditProjectPage() {
                 <option value="urgent">عاجلة</option>
               </select>
             </div>
+<<<<<<< HEAD
             {/* Progress Percentage */}
             <div>
               <label htmlFor="progress_percentage" className="block text-sm font-medium text-gray-700 mb-2">
@@ -445,6 +472,8 @@ export default function EditProjectPage() {
                 />
               </div>
             </div>
+=======
+>>>>>>> e0e83bc2e6a4c393009b329773f07bfad211af6b
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 pt-6">
               {' '}

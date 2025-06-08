@@ -1,0 +1,485 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Debug Authentication Issue</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background: #f5f5f5;
+        direction: rtl;
+      }
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      .test-section {
+        margin: 20px 0;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background: #fafafa;
+      }
+      .result {
+        margin: 10px 0;
+        padding: 10px;
+        border-radius: 5px;
+        font-family: monospace;
+      }
+      .success {
+        background: #d4edda;
+        color: #155724;
+      }
+      .error {
+        background: #f8d7da;
+        color: #721c24;
+      }
+      .warning {
+        background: #fff3cd;
+        color: #856404;
+      }
+      .info {
+        background: #d1ecf1;
+        color: #0c5460;
+      }
+      button {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin: 5px;
+      }
+      button:hover {
+        background: #0056b3;
+      }
+      input {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-sizing: border-box;
+      }
+      .cookies-info {
+        background: #e9ecef;
+        padding: 10px;
+        border-radius: 5px;
+        margin: 10px 0;
+        font-size: 12px;
+        max-height: 200px;
+        overflow-y: auto;
+      }
+    </style>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🔍 تشخيص مشكلة المصادقة</h1>
+      <p>هذا الاختبار يساعد في تحديد سبب عدم عمل المصادقة بعد تسجيل الدخول الناجح</p>
+
+      <div class="test-section">
+        <h2>📋 معلومات الجلسة الحالية</h2>
+        <button onclick="checkCurrentState()">فحص الحالة الحالية</button>
+        <div id="currentState"></div>
+      </div>
+
+      <div class="test-section">
+        <h2>🔐 اختبار تسجيل الدخول</h2>
+        <input type="email" id="email" placeholder="البريد الإلكتروني" value="user@example.com" />
+        <input type="password" id="password" placeholder="كلمة المرور" value="password123" />
+        <button onclick="performLogin()">تسجيل الدخول</button>
+        <button onclick="performLogout()">تسجيل الخروج</button>
+        <div id="loginResults"></div>
+      </div>
+
+      <div class="test-section">
+        <h2>🍪 معلومات الكوكيز</h2>
+        <button onclick="checkCookies()">فحص الكوكيز</button>
+        <div id="cookiesInfo"></div>
+      </div>
+
+      <div class="test-section">
+        <h2>🌐 اختبار التوجيه</h2>
+        <button onclick="testPageRedirect()">اختبار الصفحة الرئيسية</button>
+        <button onclick="testDashboardDirect()">اختبار لوحة التحكم مباشرة</button>
+        <div id="redirectResults"></div>
+      </div>
+
+      <div class="test-section">
+        <h2>🔄 محاكاة منطق Dashboard</h2>
+        <button onclick="simulateDashboardLogic()">محاكاة منطق لوحة التحكم</button>
+        <div id="dashboardSimulation"></div>
+      </div>
+
+      <div class="test-section">
+        <h2>🧪 اختبار شامل للتدفق</h2>
+        <button onclick="runCompleteFlow()">تشغيل الاختبار الشامل</button>
+        <div id="completeFlow"></div>
+      </div>
+    </div>
+
+    <script>
+      const supabaseUrl = 'https://dlunxrgldjmqjxrnbrpl.supabase.co';
+      const supabaseKey =
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRsdW54cmdsamRtcWp4cm5icnBsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzU1NTI5NjYsImV4cCI6MjA1MTEyODk2Nn0.K3xd_xTyFGMY0iJC7XVQzNHNLSGPgRh2y6TiFxR0rV8';
+      const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+      function addResult(containerId, type, message, details = '') {
+        const container = document.getElementById(containerId);
+        const result = document.createElement('div');
+        result.className = `result ${type}`;
+        const timestamp = new Date().toLocaleTimeString('ar-SA');
+        result.innerHTML = `
+                <div><strong>${message}</strong> <small>(${timestamp})</small></div>
+                ${details ? `<div style="margin-top: 5px;">${details}</div>` : ''}
+            `;
+        container.appendChild(result);
+        container.scrollTop = container.scrollHeight;
+      }
+
+      function clearResults(containerId) {
+        document.getElementById(containerId).innerHTML = '';
+      }
+
+      async function checkCurrentState() {
+        clearResults('currentState');
+        addResult('currentState', 'info', 'فحص الحالة الحالية...');
+
+        try {
+          // Check session
+          const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+          if (sessionError) {
+            addResult('currentState', 'error', 'خطأ في جلب الجلسة', sessionError.message);
+          } else if (sessionData.session) {
+            addResult(
+              'currentState',
+              'success',
+              'توجد جلسة نشطة',
+              `المستخدم: ${sessionData.session.user.email}<br>معرف المستخدم: ${sessionData.session.user.id}`
+            );
+          } else {
+            addResult('currentState', 'warning', 'لا توجد جلسة نشطة');
+          }
+
+          // Check user directly
+          const { data: userData, error: userError } = await supabase.auth.getUser();
+          if (userError) {
+            addResult('currentState', 'error', 'خطأ في جلب المستخدم', userError.message);
+          } else if (userData.user) {
+            addResult(
+              'currentState',
+              'success',
+              'المستخدم متاح مباشرة',
+              `المستخدم: ${userData.user.email}<br>معرف المستخدم: ${userData.user.id}`
+            );
+          } else {
+            addResult('currentState', 'warning', 'لا يوجد مستخدم متاح');
+          }
+
+          // Check auth state
+          const authState = supabase.auth.getSession();
+          addResult(
+            'currentState',
+            'info',
+            'معلومات إضافية',
+            `Storage: ${localStorage.getItem('sb-dlunxrgldjmqjxrnbrpl-auth-token') ? 'موجود' : 'غير موجود'}`
+          );
+        } catch (error) {
+          addResult('currentState', 'error', 'خطأ غير متوقع', error.message);
+        }
+      }
+
+      async function performLogin() {
+        clearResults('loginResults');
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        addResult('loginResults', 'info', 'محاولة تسجيل الدخول...', `البريد: ${email}`);
+
+        try {
+          const { data, error } = await supabase.auth.signInWithPassword({
+            email: email,
+            password: password,
+          });
+
+          if (error) {
+            addResult('loginResults', 'error', 'فشل تسجيل الدخول', error.message);
+            return;
+          }
+
+          addResult(
+            'loginResults',
+            'success',
+            'تم تسجيل الدخول بنجاح',
+            `المستخدم: ${data.user.email}<br>معرف الجلسة: ${data.session.access_token.substring(0, 20)}...`
+          );
+
+          // Immediate verification
+          setTimeout(async () => {
+            const { data: verifyData } = await supabase.auth.getSession();
+            if (verifyData.session) {
+              addResult('loginResults', 'success', '✅ الجلسة متاحة فوراً بعد تسجيل الدخول');
+            } else {
+              addResult(
+                'loginResults',
+                'error',
+                '❌ الجلسة غير متاحة بعد تسجيل الدخول - هذه هي المشكلة!'
+              );
+
+              // Try refresh
+              const { data: refreshData } = await supabase.auth.refreshSession();
+              if (refreshData.session) {
+                addResult('loginResults', 'warning', '⚠️ تم استرداد الجلسة بعد التحديث');
+              } else {
+                addResult('loginResults', 'error', '❌ فشل في استرداد الجلسة حتى بعد التحديث');
+              }
+            }
+          }, 500);
+        } catch (error) {
+          addResult('loginResults', 'error', 'خطأ غير متوقع', error.message);
+        }
+      }
+
+      async function performLogout() {
+        addResult('loginResults', 'info', 'تسجيل الخروج...');
+        try {
+          await supabase.auth.signOut();
+          addResult('loginResults', 'success', 'تم تسجيل الخروج');
+        } catch (error) {
+          addResult('loginResults', 'error', 'خطأ في تسجيل الخروج', error.message);
+        }
+      }
+
+      function checkCookies() {
+        clearResults('cookiesInfo');
+        const cookies = document.cookie
+          .split(';')
+          .map((c) => c.trim())
+          .filter((c) => c);
+
+        if (cookies.length === 0) {
+          addResult('cookiesInfo', 'warning', 'لا توجد كوكيز');
+        } else {
+          addResult('cookiesInfo', 'info', `عدد الكوكيز: ${cookies.length}`);
+
+          // Show relevant cookies
+          const authCookies = cookies.filter(
+            (c) =>
+              c.includes('supabase') ||
+              c.includes('auth') ||
+              c.includes('session') ||
+              c.includes('sb-')
+          );
+
+          if (authCookies.length > 0) {
+            const cookiesHtml = authCookies.map((c) => `<div>${c}</div>`).join('');
+            document.getElementById('cookiesInfo').innerHTML +=
+              `<div class="cookies-info"><strong>كوكيز المصادقة:</strong><br>${cookiesHtml}</div>`;
+          } else {
+            addResult('cookiesInfo', 'warning', 'لا توجد كوكيز مصادقة');
+          }
+        }
+
+        // Check localStorage
+        const localStorageKeys = Object.keys(localStorage).filter(
+          (k) => k.includes('supabase') || k.includes('auth') || k.includes('sb-')
+        );
+
+        if (localStorageKeys.length > 0) {
+          const storageHtml = localStorageKeys
+            .map(
+              (k) =>
+                `<div><strong>${k}:</strong> ${localStorage.getItem(k)?.substring(0, 100)}...</div>`
+            )
+            .join('');
+          document.getElementById('cookiesInfo').innerHTML +=
+            `<div class="cookies-info"><strong>Local Storage:</strong><br>${storageHtml}</div>`;
+        }
+      }
+
+      async function testPageRedirect() {
+        clearResults('redirectResults');
+        addResult('redirectResults', 'info', 'اختبار التوجيه من الصفحة الرئيسية...');
+
+        try {
+          const response = await fetch('http://localhost:3002/', {
+            credentials: 'include',
+            redirect: 'manual',
+          });
+
+          addResult(
+            'redirectResults',
+            'info',
+            `استجابة الصفحة الرئيسية: ${response.status}`,
+            `النوع: ${response.type}<br>تم التوجيه: ${response.redirected}`
+          );
+        } catch (error) {
+          addResult('redirectResults', 'error', 'خطأ في اختبار الصفحة الرئيسية', error.message);
+        }
+      }
+
+      async function testDashboardDirect() {
+        addResult('redirectResults', 'info', 'اختبار الوصول المباشر للوحة التحكم...');
+
+        try {
+          const response = await fetch('http://localhost:3002/user/dashboard', {
+            credentials: 'include',
+          });
+
+          if (response.ok) {
+            const text = await response.text();
+            if (text.includes('المستخدم غير مسجل الدخول')) {
+              addResult('redirectResults', 'error', '❌ لوحة التحكم تظهر "غير مسجل الدخول"');
+            } else if (text.includes('مرحباً بك') || text.includes('لوحة تحكم المستخدم')) {
+              addResult('redirectResults', 'success', '✅ لوحة التحكم تعمل بشكل صحيح');
+            } else {
+              addResult('redirectResults', 'warning', 'محتوى غير متوقع في لوحة التحكم');
+            }
+          } else {
+            addResult(
+              'redirectResults',
+              'error',
+              'خطأ في الوصول للوحة التحكم',
+              `HTTP ${response.status}`
+            );
+          }
+        } catch (error) {
+          addResult('redirectResults', 'error', 'خطأ في اختبار لوحة التحكم', error.message);
+        }
+      }
+
+      async function simulateDashboardLogic() {
+        clearResults('dashboardSimulation');
+        addResult('dashboardSimulation', 'info', 'محاكاة منطق لوحة التحكم...');
+
+        try {
+          // Step 1: Try getSession
+          addResult('dashboardSimulation', 'info', 'الخطوة 1: محاولة getSession...');
+          let { data, error } = await supabase.auth.getSession();
+
+          if (!data?.session && !error) {
+            addResult(
+              'dashboardSimulation',
+              'warning',
+              'لا توجد جلسة، جاري المحاولة مع refreshSession...'
+            );
+
+            // Step 2: Try refresh
+            const refreshResult = await supabase.auth.refreshSession();
+            if (refreshResult.data?.session) {
+              addResult('dashboardSimulation', 'success', 'تم استرداد الجلسة بعد التحديث');
+              data = refreshResult.data;
+              error = refreshResult.error;
+            } else {
+              addResult(
+                'dashboardSimulation',
+                'warning',
+                'فشل التحديث، جاري المحاولة مع getUser...'
+              );
+
+              // Step 3: Try getUser
+              const userResult = await supabase.auth.getUser();
+              if (userResult.data?.user && !userResult.error) {
+                addResult('dashboardSimulation', 'success', 'تم العثور على المستخدم عبر getUser');
+                // This is where the dashboard would create a mock session
+              } else {
+                addResult('dashboardSimulation', 'error', 'فشل في جميع المحاولات');
+              }
+            }
+          } else if (data?.session) {
+            addResult('dashboardSimulation', 'success', 'تم العثور على الجلسة مباشرة');
+          } else {
+            addResult('dashboardSimulation', 'error', 'خطأ في getSession', error.message);
+          }
+        } catch (error) {
+          addResult('dashboardSimulation', 'error', 'خطأ في المحاكاة', error.message);
+        }
+      }
+
+      async function runCompleteFlow() {
+        clearResults('completeFlow');
+        addResult('completeFlow', 'info', '🚀 بدء الاختبار الشامل...');
+
+        // Step 1: Logout
+        await supabase.auth.signOut();
+        addResult('completeFlow', 'info', 'تم تسجيل الخروج');
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+
+        // Step 2: Login
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email: 'user@example.com',
+          password: 'password123',
+        });
+
+        if (error) {
+          addResult('completeFlow', 'error', 'فشل تسجيل الدخول', error.message);
+          return;
+        }
+
+        addResult('completeFlow', 'success', 'تم تسجيل الدخول بنجاح');
+
+        // Step 3: Multiple session checks
+        for (let i = 1; i <= 5; i++) {
+          await new Promise((resolve) => setTimeout(resolve, 200));
+          const { data: sessionData } = await supabase.auth.getSession();
+
+          if (sessionData.session) {
+            addResult('completeFlow', 'success', `✅ الجلسة متاحة في التحقق رقم ${i}`);
+            break;
+          } else {
+            addResult('completeFlow', 'warning', `⚠️ لا توجد جلسة في التحقق رقم ${i}`);
+
+            if (i === 5) {
+              addResult('completeFlow', 'error', '❌ فشل في جميع محاولات التحقق من الجلسة');
+
+              // Try the dashboard recovery logic
+              addResult('completeFlow', 'info', 'محاولة استرداد الجلسة...');
+              const { data: refreshData } = await supabase.auth.refreshSession();
+              if (refreshData.session) {
+                addResult('completeFlow', 'success', '✅ تم استرداد الجلسة بعد التحديث');
+              } else {
+                const { data: userData } = await supabase.auth.getUser();
+                if (userData.user) {
+                  addResult(
+                    'completeFlow',
+                    'warning',
+                    '⚠️ المستخدم متاح لكن الجلسة غير متاحة - هذه هي المشكلة الأساسية!'
+                  );
+                } else {
+                  addResult('completeFlow', 'error', '❌ لا يوجد مستخدم أو جلسة');
+                }
+              }
+            }
+          }
+        }
+
+        addResult('completeFlow', 'info', '🏁 انتهى الاختبار الشامل');
+      }
+
+      // Auto-check state on load
+      document.addEventListener('DOMContentLoaded', function () {
+        checkCurrentState();
+
+        // Listen for auth changes
+        supabase.auth.onAuthStateChange((event, session) => {
+          const timestamp = new Date().toLocaleTimeString('ar-SA');
+          if (event === 'SIGNED_IN') {
+            console.log(`🔐 SIGNED_IN at ${timestamp}:`, session?.user?.email);
+          } else if (event === 'SIGNED_OUT') {
+            console.log(`🚪 SIGNED_OUT at ${timestamp}`);
+          } else if (event === 'TOKEN_REFRESHED') {
+            console.log(`🔄 TOKEN_REFRESHED at ${timestamp}:`, session?.user?.email);
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

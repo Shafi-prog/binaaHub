@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React from 'react';
 
 // Custom 404 page for Next.js App Router
@@ -52,5 +53,23 @@ export default function NotFound(): React.JSX.Element {
         العودة للرئيسية
       </a>
     </div>
+=======
+'use client';
+
+import Link from 'next/link';
+
+export default function NotFound() {
+  return (
+    <main className="min-h-screen flex flex-col justify-center items-center bg-gray-100 text-center p-8">
+      <h1 className="text-5xl font-bold text-red-600 mb-4">404</h1>
+      <p className="text-xl text-gray-700 mb-8">الصفحة غير موجودة.</p>
+      <Link
+        href="/"
+        className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-md font-semibold"
+      >
+        العودة إلى الرئيسية
+      </Link>
+    </main>
+>>>>>>> e0e83bc2e6a4c393009b329773f07bfad211af6b
   );
 }

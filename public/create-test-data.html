@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Test Data - Projects Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .status {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .status.info { background: #e3f2fd; color: #1976d2; }
+        .status.success { background: #e8f5e8; color: #2e7d32; }
+        .status.error { background: #ffebee; color: #c62828; }
+        .status.warning { background: #fff3e0; color: #f57c00; }
+        .btn {
+            background: #4CAF50;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        .btn:hover { background: #45a049; }
+        .btn:disabled { 
+            background: #cccccc; 
+            cursor: not-allowed; 
+        }
+        .log {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px 0;
+            height: 400px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        .progress {
+            background: #f0f0f0;
+            border-radius: 5px;
+            padding: 3px;
+            margin: 10px 0;
+        }
+        .progress-bar {
+            background: #4CAF50;
+            height: 20px;
+            border-radius: 3px;
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Create Test Data for Projects Dashboard</h1>
+        
+        <div class="status info">
+            <strong>Purpose:</strong> This tool will create a test user account and populate it with 6 sample projects to fix the "0 projects" issue.
+        </div>
+        
+        <div class="status warning">
+            <strong>Test Credentials:</strong> test@example.com / testpassword123
+        </div>
+        
+        <button id="createDataBtn" class="btn" onclick="createTestData()">
+            🚀 Create Test User & Projects
+        </button>
+        
+        <button id="checkDataBtn" class="btn" onclick="checkExistingData()">
+            🔍 Check Existing Data
+        </button>
+        
+        <button id="goToProjectsBtn" class="btn" onclick="goToProjects()" style="background: #2196F3;">
+            📊 Go to Projects Dashboard
+        </button>
+        
+        <div class="progress" style="display: none;" id="progressContainer">
+            <div class="progress-bar" id="progressBar" style="width: 0%">0%</div>
+        </div>
+        
+        <div class="log" id="logContainer">
+            Ready to create test data. Click the button above to start...\n
+        </div>
+    </div>
+
+    <script>
+        function log(message) {
+            const logContainer = document.getElementById('logContainer');
+            const timestamp = new Date().toLocaleTimeString();
+            logContainer.innerHTML += `[${timestamp}] ${message}\n`;
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+
+        function updateProgress(percent, text) {
+            const container = document.getElementById('progressContainer');
+            const bar = document.getElementById('progressBar');
+            container.style.display = 'block';
+            bar.style.width = percent + '%';
+            bar.textContent = text || percent + '%';
+        }
+
+        function hideProgress() {
+            document.getElementById('progressContainer').style.display = 'none';
+        }
+
+        async function checkExistingData() {
+            log('🔍 Checking existing projects data...');
+            
+            try {
+                const response = await fetch('/api/projects');
+                
+                if (response.ok) {
+                    const projects = await response.json();
+                    log(`📊 Found ${projects.length} existing projects`);
+                    
+                    if (projects.length > 0) {
+                        log('📋 Existing projects:');
+                        projects.forEach((p, i) => {
+                            log(`   ${i + 1}. ${p.name} - Status: ${p.status}`);
+                        });
+                    } else {
+                        log('ℹ️ No projects found - this explains the 0 projects issue');
+                    }
+                } else {
+                    const error = await response.json();
+                    log(`❌ Error checking projects: ${error.error || 'Unknown error'}`);
+                }
+            } catch (error) {
+                log(`💥 Exception checking projects: ${error.message}`);
+            }
+        }
+
+        async function createTestData() {
+            const btn = document.getElementById('createDataBtn');
+            btn.disabled = true;
+            btn.textContent = '⏳ Creating...';
+            
+            log('🧪 Starting Test User and Projects Creation');
+            
+            const testEmail = 'test@example.com';
+            const testPassword = 'testpassword123';
+            
+            try {
+                updateProgress(10, 'Creating user account...');
+                
+                // Step 1: Try to sign up the test user
+                log('1️⃣ Creating test user account...');
+                
+                try {
+                    const signupData = {
+                        email: testEmail,
+                        password: testPassword,
+                        name: 'Test User'
+                    };
+                    
+                    // First try the signup page approach
+                    const signupResponse = await fetch('/signup', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: new URLSearchParams(signupData)
+                    });
+                    
+                    if (signupResponse.ok) {
+                        log('✅ User account created via signup');
+                    } else {
+                        log('ℹ️ User might already exist, continuing...');
+                    }
+                } catch (signupError) {
+                    log(`ℹ️ Signup attempt completed: ${signupError.message}`);
+                }
+                
+                updateProgress(30, 'Signing in...');
+                
+                // Step 2: Sign in to establish session
+                log('2️⃣ Signing in to establish session...');
+                
+                const signinResponse = await fetch('/api/auth/sync-login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: testEmail,
+                        password: testPassword,
+                        remember_me: true
+                    })
+                });
+                
+                const signinResult = await signinResponse.json();
+                
+                if (!signinResponse.ok) {
+                    log(`❌ Signin failed: ${signinResult.error}`);
+                    throw new Error(`Signin failed: ${signinResult.error}`);
+                }
+                
+                log('✅ Successfully signed in!');
+                log(`👤 User ID: ${signinResult.user.id}`);
+                log(`📧 Email: ${signinResult.user.email}`);
+                
+                updateProgress(50, 'Creating projects...');
+                
+                // Step 3: Create test projects
+                log('3️⃣ Creating test projects...');
+                
+                const testProjects = [
+                    {
+                        name: 'E-commerce Platform',
+                        description: 'Modern online shopping platform with React and Node.js',
+                        status: 'completed',
+                        budget: 15000,
+                        client_name: 'TechCorp Solutions',
+                        project_type: 'web_development'
+                    },
+                    {
+                        name: 'Mobile Banking App',
+                        description: 'Secure mobile banking application for iOS and Android',
+                        status: 'in_progress',
+                        budget: 25000,
+                        client_name: 'SecureBank Ltd',
+                        project_type: 'mobile_development'
+                    },
+                    {
+                        name: 'CRM Dashboard',
+                        description: 'Customer relationship management dashboard',
+                        status: 'completed',
+                        budget: 8000,
+                        client_name: 'BusinessFlow Inc',
+                        project_type: 'web_development'
+                    },
+                    {
+                        name: 'Data Analytics Platform',
+                        description: 'Real-time data analytics and visualization platform',
+                        status: 'in_progress',
+                        budget: 30000,
+                        client_name: 'DataTech Analytics',
+                        project_type: 'data_analytics'
+                    },
+                    {
+                        name: 'Inventory Management System',
+                        description: 'Comprehensive inventory tracking and management system',
+                        status: 'completed',
+                        budget: 12000,
+                        client_name: 'LogiFlow Systems',
+                        project_type: 'enterprise_software'
+                    },
+                    {
+                        name: 'Social Media Campaign Tool',
+                        description: 'Social media management and campaign optimization tool',
+                        status: 'planning',
+                        budget: 18000,
+                        client_name: 'MarketReach Agency',
+                        project_type: 'marketing_automation'
+                    }
+                ];
+                
+                let createdCount = 0;
+                
+                // Create projects one by one
+                for (let i = 0; i < testProjects.length; i++) {
+                    const project = testProjects[i];
+                    const progress = 50 + ((i + 1) / testProjects.length) * 40;
+                    updateProgress(progress, `Creating project ${i + 1}/${testProjects.length}...`);
+                    
+                    log(`📝 Creating project ${i + 1}: ${project.name}`);
+                    
+                    try {
+                        const projectResponse = await fetch('/api/projects', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(project)
+                        });
+                        
+                        if (projectResponse.ok) {
+                            const createdProject = await projectResponse.json();
+                            log(`✅ Project created: ${createdProject.name} (ID: ${createdProject.id})`);
+                            createdCount++;
+                        } else {
+                            const error = await projectResponse.json();
+                            log(`❌ Failed to create project ${project.name}: ${error.error || 'Unknown error'}`);
+                        }
+                    } catch (projectError) {
+                        log(`💥 Exception creating project ${project.name}: ${projectError.message}`);
+                    }
+                    
+                    // Small delay to prevent overwhelming the server
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                }
+                
+                updateProgress(100, 'Complete!');
+                
+                log(`🎉 Test data creation completed!`);
+                log(`✅ Successfully created ${createdCount} out of ${testProjects.length} projects`);
+                log(`📧 Test credentials: ${testEmail} / ${testPassword}`);
+                log('🔗 You can now visit the projects dashboard to see the data');
+                
+                setTimeout(hideProgress, 3000);
+                
+            } catch (error) {
+                log(`💥 Unexpected error: ${error.message}`);
+                hideProgress();
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '🚀 Create Test User & Projects';
+            }
+        }
+
+        function goToProjects() {
+            window.open('/user/projects', '_blank');
+        }
+
+        // Initial check on page load
+        window.onload = function() {
+            log('🌐 Test data creation tool loaded');
+            log('ℹ️ This tool will help resolve the "0 projects" dashboard issue');
+        };
+    </script>
+</body>
+</html>

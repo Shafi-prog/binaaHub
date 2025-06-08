@@ -286,6 +286,7 @@ export async function getSpendingByCategory(
   projectId?: string
 ): Promise<SpendingByCategory[]> {
   try {
+<<<<<<< HEAD
     console.log('🔍 [getSpendingByCategory] Starting fetch for userId:', userId, 'projectId:', projectId);
     
     // First check if the construction tables exist
@@ -309,11 +310,25 @@ export async function getSpendingByCategory(
         projects!project_id(user_id)
         `
       );    if (projectId) {
+=======
+    let query = supabase
+      .from('construction_expenses')
+      .select(
+        `
+        id, amount, category_id,
+        construction_categories:category_id(id, name, name_ar, color)
+        `
+      )
+      .eq('user_id', userId);
+
+    if (projectId) {
+>>>>>>> e0e83bc2e6a4c393009b329773f07bfad211af6b
       query = query.eq('project_id', projectId);
     }
 
     const { data, error } = await query;
 
+<<<<<<< HEAD
     console.log('📊 [getSpendingByCategory] Raw query result:', { data, error });
 
     if (error) {
@@ -348,6 +363,16 @@ export async function getSpendingByCategory(
         continue;
       }
       
+=======
+    if (error) throw error; // Group by category and sum amounts
+    const categoryMap = new Map<string, SpendingByCategory>();
+
+    for (const expense of data || []) {
+      const categoryId = expense.category_id;
+      const categoryData = expense.construction_categories;
+
+      if (!categoryData) continue;
+>>>>>>> e0e83bc2e6a4c393009b329773f07bfad211af6b
       if (categoryMap.has(categoryId)) {
         const existing = categoryMap.get(categoryId)!;
         existing.total_amount += expense.amount;
@@ -368,12 +393,18 @@ export async function getSpendingByCategory(
       }
     }
 
+<<<<<<< HEAD
     const result = Array.from(categoryMap.values());
     console.log('✅ [getSpendingByCategory] Returning result:', result);
     return result;
   } catch (error) {
     console.error('❌ [getSpendingByCategory] Error fetching spending by category:', error);
     // Return empty array instead of throwing error to prevent app crashes
+=======
+    return Array.from(categoryMap.values());
+  } catch (error) {
+    console.error('Error fetching spending by category:', error);
+>>>>>>> e0e83bc2e6a4c393009b329773f07bfad211af6b
     return [];
   }
 }
@@ -742,7 +773,12 @@ export async function updateProject(
     status: string;
     priority: string;
     start_date: string;
+<<<<<<< HEAD
     expected_completion_date: string; // Will be mapped to end_date
+=======
+    expected_completion_date: string;
+    actual_completion_date: string;
+>>>>>>> e0e83bc2e6a4c393009b329773f07bfad211af6b
     budget: number;
     actual_cost: number;
     progress_percentage: number;
@@ -762,6 +798,7 @@ export async function updateProject(
       throw new Error('User not authenticated');
     }
 
+<<<<<<< HEAD
     // Map expected_completion_date to end_date for the DB
     const updatePayload: any = { ...updates, updated_at: new Date().toISOString() };
     if (updatePayload.expected_completion_date) {
@@ -776,15 +813,27 @@ export async function updateProject(
     const { data, error } = await supabase
       .from('projects')
       .update(updatePayload)
+=======
+    const { data, error } = await supabase
+      .from('projects')
+      .update({
+        ...updates,
+        updated_at: new Date().toISOString(),
+      })
+>>>>>>> e0e83bc2e6a4c393009b329773f07bfad211af6b
       .eq('id', projectId)
       .eq('user_id', user.id) // Ensure user can only update their own projects
       .select()
       .single();
 
+<<<<<<< HEAD
     if (error) {
       console.error('[updateProject] Supabase error:', error);
       throw error;
     }
+=======
+    if (error) throw error;
+>>>>>>> e0e83bc2e6a4c393009b329773f07bfad211af6b
 
     // Transform the data to match the Project interface
     return {
@@ -800,7 +849,12 @@ export async function updateProject(
       status: data.status,
       priority: data.priority,
       start_date: data.start_date,
+<<<<<<< HEAD
       expected_completion_date: data.end_date, // Map end_date back to expected_completion_date
+=======
+      expected_completion_date: data.expected_completion_date,
+      actual_completion_date: data.actual_completion_date,
+>>>>>>> e0e83bc2e6a4c393009b329773f07bfad211af6b
       budget: data.budget || 0,
       actual_cost: data.actual_cost || 0,
       currency: data.currency || 'SAR',
@@ -818,12 +872,16 @@ export async function updateProject(
 // Get a single project by ID
 export async function getProjectById(projectId: string): Promise<Project | null> {
   try {
+<<<<<<< HEAD
     console.log('🔍 [getProjectById] Starting fetch for projectId:', projectId);
     
+=======
+>>>>>>> e0e83bc2e6a4c393009b329773f07bfad211af6b
     const {
       data: { user },
     } = await supabase.auth.getUser();
 
+<<<<<<< HEAD
     console.log('👤 [getProjectById] Auth user:', user ? { id: user.id, email: user.email } : 'null');
     
     if (!user) {
@@ -844,10 +902,18 @@ export async function getProjectById(projectId: string): Promise<Project | null>
     if (allUserProjects && allUserProjects.length > 0) {
       console.log('📋 [getProjectById] User\'s project IDs:', allUserProjects.map(p => ({ id: p.id, name: p.name })));
     }    const { data, error } = await supabase
+=======
+    if (!user) {
+      throw new Error('User not authenticated');
+    }
+
+    const { data, error } = await supabase
+>>>>>>> e0e83bc2e6a4c393009b329773f07bfad211af6b
       .from('projects')
       .select(
         `
         id, user_id, name, description, project_type, location, 
+<<<<<<< HEAD
         address, status, start_date, end_date,
         budget, is_active, created_at, updated_at
         `
@@ -894,6 +960,29 @@ export async function getProjectById(projectId: string): Promise<Project | null>
     }
       console.log('✅ [getProjectById] Project found, transforming data...');
       const transformedProject = {
+=======
+        address, city, region, status, priority, start_date, 
+        expected_completion_date, actual_completion_date,
+        budget, actual_cost, currency, progress_percentage, 
+        is_active, created_at, updated_at, rooms_count, bathrooms_count,
+        floors_count, plot_area, building_area
+        `
+      )
+      .eq('id', projectId)
+      .eq('user_id', user.id) // Ensure user can only access their own projects
+      .single();
+
+    if (error) {
+      if (error.code === 'PGRST116') {
+        // No rows returned
+        return null;
+      }
+      throw error;
+    }
+
+    // Transform the data to match the Project interface
+    return {
+>>>>>>> e0e83bc2e6a4c393009b329773f07bfad211af6b
       id: data.id,
       user_id: data.user_id,
       name: data.name,
@@ -901,6 +990,7 @@ export async function getProjectById(projectId: string): Promise<Project | null>
       project_type: data.project_type,
       location: data.location,
       address: data.address || '',
+<<<<<<< HEAD
       city: '', // Column doesn't exist yet
       region: '', // Column doesn't exist yet      district: '', // Column doesn't exist yet
       country: '', // Column doesn't exist yet  
@@ -955,6 +1045,25 @@ export async function getProjectById(projectId: string): Promise<Project | null>
     };
     
     console.error('❌ [getProjectById] DETAILED CATCH ERROR:', detailedError);
+=======
+      city: data.city || '',
+      region: data.region || '',
+      status: data.status,
+      priority: data.priority,
+      start_date: data.start_date,
+      expected_completion_date: data.expected_completion_date,
+      actual_completion_date: data.actual_completion_date,
+      budget: data.budget || 0,
+      actual_cost: data.actual_cost || 0,
+      currency: data.currency || 'SAR',
+      progress_percentage: data.progress_percentage || 0,
+      is_active: data.is_active,
+      created_at: data.created_at,
+      updated_at: data.updated_at,
+    };
+  } catch (error) {
+    console.error('Error fetching project:', error);
+>>>>>>> e0e83bc2e6a4c393009b329773f07bfad211af6b
     throw error;
   }
 }

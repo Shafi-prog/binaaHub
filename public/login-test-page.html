@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>اختبار تسجيل الدخول</title>
+    <style>
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        margin: 0;
+        padding: 20px;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .container {
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        max-width: 800px;
+        width: 100%;
+        margin-bottom: 20px;
+      }
+      .title {
+        color: #4a5568;
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 24px;
+        font-weight: bold;
+      }
+      .test-section {
+        margin: 20px 0;
+        padding: 15px;
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        background: #f8fafc;
+      }
+      .test-button {
+        background: linear-gradient(45deg, #4299e1, #3182ce);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        margin: 5px;
+        transition: all 0.3s ease;
+      }
+      .test-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(66, 153, 225, 0.4);
+      }
+      .status {
+        margin: 10px 0;
+        padding: 10px;
+        border-radius: 5px;
+        font-weight: bold;
+      }
+      .success {
+        background: #c6f6d5;
+        color: #22543d;
+        border: 1px solid #9ae6b4;
+      }
+      .error {
+        background: #fed7d7;
+        color: #742a2a;
+        border: 1px solid #fc8181;
+      }
+      .info {
+        background: #bee3f8;
+        color: #2a4365;
+        border: 1px solid #90cdf4;
+      }
+      .warning {
+        background: #fefcbf;
+        color: #744210;
+        border: 1px solid #f6e05e;
+      }
+      .log-area {
+        background: #1a202c;
+        color: #e2e8f0;
+        padding: 15px;
+        border-radius: 8px;
+        font-family: 'Courier New', monospace;
+        font-size: 14px;
+        max-height: 400px;
+        overflow-y: auto;
+        white-space: pre-wrap;
+        margin-top: 10px;
+      }
+      .credentials {
+        background: #f0fff4;
+        border: 2px solid #68d391;
+        padding: 15px;
+        border-radius: 8px;
+        margin: 10px 0;
+      }
+      .app-link {
+        display: inline-block;
+        background: #38a169;
+        color: white;
+        text-decoration: none;
+        padding: 15px 30px;
+        border-radius: 8px;
+        margin: 10px;
+        font-weight: bold;
+        transition: all 0.3s ease;
+      }
+      .app-link:hover {
+        background: #2f855a;
+        transform: translateY(-2px);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="title">🔐 اختبار تسجيل الدخول - تطبيق بناء</h1>
+
+      <div class="credentials">
+        <h3>📋 بيانات الاختبار:</h3>
+        <p><strong>البريد الإلكتروني:</strong> user@user.com</p>
+        <p><strong>كلمة المرور:</strong> 123456</p>
+        <p><strong>نوع الحساب:</strong> user (يجب التوجيه إلى /user/dashboard)</p>
+      </div>
+
+      <div class="test-section">
+        <h3>🌐 روابط التطبيق:</h3>
+        <a href="http://localhost:3002/login" target="_blank" class="app-link"
+          >فتح صفحة تسجيل الدخول</a
+        >
+        <a href="http://localhost:3002/user/dashboard" target="_blank" class="app-link"
+          >لوحة تحكم المستخدم</a
+        >
+        <a href="http://localhost:3002/store/dashboard" target="_blank" class="app-link"
+          >لوحة تحكم المتجر</a
+        >
+      </div>
+
+      <div class="test-section">
+        <h3>🧪 اختبارات تلقائية:</h3>
+        <button class="test-button" onclick="testDatabaseConnection()">
+          اختبار قاعدة البيانات
+        </button>
+        <button class="test-button" onclick="testLoginAPI()">اختبار API تسجيل الدخول</button>
+        <button class="test-button" onclick="testRedirection()">اختبار التوجيه</button>
+        <button class="test-button" onclick="clearLogs()">مسح السجل</button>
+      </div>
+
+      <div id="status-area"></div>
+      <div id="log-area" class="log-area"></div>
+    </div>
+
+    <script>
+      let logArea = document.getElementById('log-area');
+      let statusArea = document.getElementById('status-area');
+
+      function addLog(message, type = 'info') {
+        const timestamp = new Date().toLocaleTimeString('ar-SA');
+        logArea.textContent += `[${timestamp}] ${message}\n`;
+        logArea.scrollTop = logArea.scrollHeight;
+        console.log(message);
+      }
+
+      function showStatus(message, type = 'info') {
+        const statusDiv = document.createElement('div');
+        statusDiv.className = `status ${type}`;
+        statusDiv.textContent = message;
+        statusArea.appendChild(statusDiv);
+        setTimeout(() => statusDiv.remove(), 5000);
+      }
+
+      function clearLogs() {
+        logArea.textContent = '';
+        statusArea.innerHTML = '';
+      }
+
+      async function testDatabaseConnection() {
+        addLog('🔍 اختبار الاتصال بقاعدة البيانات...');
+        showStatus('جاري اختبار قاعدة البيانات...', 'info');
+
+        try {
+          const response = await fetch('http://localhost:3002/api/test-db');
+          if (response.ok) {
+            addLog('✅ تم الاتصال بقاعدة البيانات بنجاح');
+            showStatus('✅ قاعدة البيانات متصلة', 'success');
+          } else {
+            addLog('❌ فشل الاتصال بقاعدة البيانات');
+            showStatus('❌ فشل الاتصال بقاعدة البيانات', 'error');
+          }
+        } catch (error) {
+          addLog(`❌ خطأ في الاتصال: ${error.message}`);
+          showStatus('❌ خطأ في الاتصال', 'error');
+        }
+      }
+
+      async function testLoginAPI() {
+        addLog('🔐 اختبار API تسجيل الدخول...');
+        showStatus('جاري اختبار تسجيل الدخول...', 'info');
+
+        try {
+          // This would need to be implemented based on your API structure
+          addLog('📝 ملاحظة: اختبار API يحتاج تنفيذ مخصص');
+          showStatus('⚠️ اختبار API يحتاج تنفيذ', 'warning');
+        } catch (error) {
+          addLog(`❌ خطأ في اختبار API: ${error.message}`);
+          showStatus('❌ خطأ في اختبار API', 'error');
+        }
+      }
+
+      async function testRedirection() {
+        addLog('🚀 اختبار التوجيه...');
+        showStatus('جاري اختبار التوجيه...', 'info');
+
+        const testUrls = [
+          { url: 'http://localhost:3002/login', name: 'صفحة تسجيل الدخول' },
+          { url: 'http://localhost:3002/user/dashboard', name: 'لوحة تحكم المستخدم' },
+          { url: 'http://localhost:3002/store/dashboard', name: 'لوحة تحكم المتجر' },
+        ];
+
+        for (const testUrl of testUrls) {
+          try {
+            addLog(`🔍 اختبار ${testUrl.name}...`);
+            const response = await fetch(testUrl.url, { method: 'HEAD' });
+            if (response.ok) {
+              addLog(`✅ ${testUrl.name} متاحة`);
+            } else {
+              addLog(`❌ ${testUrl.name} غير متاحة (${response.status})`);
+            }
+          } catch (error) {
+            addLog(`❌ خطأ في اختبار ${testUrl.name}: ${error.message}`);
+          }
+        }
+
+        showStatus('✅ تم إكمال اختبار التوجيه', 'success');
+      }
+
+      // تشغيل اختبار أولي
+      window.onload = function () {
+        addLog('🚀 تم تحميل صفحة اختبار تسجيل الدخول');
+        addLog('📋 بيانات الاختبار: user@user.com / 123456');
+        addLog('🎯 الهدف: التوجيه إلى /user/dashboard للمستخدم العادي');
+        showStatus('صفحة الاختبار جاهزة', 'success');
+      };
+    </script>
+  </body>
+</html>

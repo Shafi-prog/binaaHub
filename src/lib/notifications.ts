@@ -86,6 +86,7 @@ export class NotificationService {
     notification: Omit<Notification, 'id' | 'created_at' | 'updated_at'>
   ): Promise<Notification | null> {
     try {
+<<<<<<< HEAD
       // Validate required fields
       if (!notification.user_id || !notification.title || !notification.message) {
         console.error('[createNotification] Missing required fields:', {
@@ -118,6 +119,15 @@ export class NotificationService {
         console.error('[createNotification] Supabase error:', error, 'Payload:', dbNotification);
         throw error;
       }
+=======
+      const { data, error } = await supabase
+        .from('notifications')
+        .insert([notification])
+        .select()
+        .single();
+
+      if (error) throw error;
+>>>>>>> e0e83bc2e6a4c393009b329773f07bfad211af6b
       return data;
     } catch (error) {
       console.error('Error creating notification:', error);

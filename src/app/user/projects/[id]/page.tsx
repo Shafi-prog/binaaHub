@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 "use client";
+=======
+'use client';
+>>>>>>> e0e83bc2e6a4c393009b329773f07bfad211af6b
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
@@ -52,7 +56,10 @@ export default function ProjectDetailPage() {
   const [loading, setLoading] = useState(true);
   const [authError, setAuthError] = useState<string | null>(null);
   const [projectError, setProjectError] = useState<string | null>(null);
+<<<<<<< HEAD
   const [retryCount, setRetryCount] = useState(0);
+=======
+>>>>>>> e0e83bc2e6a4c393009b329773f07bfad211af6b
   const { showNotification } = useNotification();
   const [lastNotifiedStage, setLastNotifiedStage] = useState<string | null>(null);
 
@@ -94,6 +101,7 @@ export default function ProjectDetailPage() {
   }, [user, projectId]);
 
   const fetchProject = async () => {
+<<<<<<< HEAD
     if (!user) {
       console.error('❌ [fetchProject] No user available');
       setProjectError('المستخدم غير مصادق عليه');
@@ -129,6 +137,13 @@ export default function ProjectDetailPage() {
       const projectData = await getProjectById(projectId);
       console.log('📦 getProjectById result:', projectData);
       
+=======
+    try {
+      console.log('🔍 Fetching project:', projectId, 'for user:', user?.id);
+
+      const projectData = await getProjectById(projectId);
+
+>>>>>>> e0e83bc2e6a4c393009b329773f07bfad211af6b
       if (projectData) {
         // Transform to backward compatible format
         const compatProject: ProjectCompat = {
@@ -140,14 +155,20 @@ export default function ProjectDetailPage() {
           budget: projectData.budget,
           actual_cost: projectData.actual_cost,
           start_date: projectData.start_date,
+<<<<<<< HEAD
           end_date: projectData.actual_completion_date, // Use actual_completion_date as end_date
           deadline: projectData.expected_completion_date, // Use expected_completion_date as deadline
+=======
+          end_date: projectData.actual_completion_date,
+          deadline: projectData.expected_completion_date,
+>>>>>>> e0e83bc2e6a4c393009b329773f07bfad211af6b
           category: projectData.project_type,
           progress_percentage: projectData.progress_percentage,
           created_at: projectData.created_at,
           updated_at: projectData.updated_at,
           location: projectData.location,
         };
+<<<<<<< HEAD
         setProject(compatProject);
         setProjectError(null);
         console.log('✅ Project loaded:', compatProject);
@@ -184,11 +205,19 @@ export default function ProjectDetailPage() {
           setProjectError(`المشروع غير موجود (projectId: ${projectId}, userId: ${user?.id})`);
         }
         setProject(null);
+=======
+
+        setProject(compatProject);
+        console.log('✅ Project loaded:', compatProject);
+      } else {
+        setProjectError(`المشروع غير موجود (projectId: ${projectId}, userId: ${user?.id})`);
+>>>>>>> e0e83bc2e6a4c393009b329773f07bfad211af6b
         console.log('❌ Project not found', { projectId, userId: user?.id });
       }
     } catch (error) {
       console.error('Error fetching project:', error, { projectId, userId: user?.id });
       setProjectError('حدث خطأ في تحميل بيانات المشروع');
+<<<<<<< HEAD
       setProject(null);
     } finally {
       setLoading(false);
@@ -206,6 +235,11 @@ export default function ProjectDetailPage() {
     await fetchProject();
   };
 
+=======
+    }
+  };
+
+>>>>>>> e0e83bc2e6a4c393009b329773f07bfad211af6b
   useEffect(() => {
     if (project && project.status && lastNotifiedStage !== project.status) {
       // Show advice notification when stage changes
@@ -276,6 +310,7 @@ export default function ProjectDetailPage() {
         <Card className="p-6 text-center">
           <h2 className="text-xl font-bold text-red-600 mb-4">خطأ</h2>
           <p className="text-gray-600">{authError || projectError}</p>
+<<<<<<< HEAD
           {retryCount < 3 && (
             <button
               onClick={retryFetchProject}
@@ -293,6 +328,11 @@ export default function ProjectDetailPage() {
           <button
             onClick={() => router.back()}
             className="mt-2 bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg transition-colors"
+=======
+          <button
+            onClick={() => router.back()}
+            className="mt-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors"
+>>>>>>> e0e83bc2e6a4c393009b329773f07bfad211af6b
           >
             العودة
           </button>

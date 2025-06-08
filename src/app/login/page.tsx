@@ -20,6 +20,7 @@ function LoginContent() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const [lastAttempt, setLastAttempt] = useState(0);
   const supabase = createClientComponentClient<Database>();
   // Remove fromLogout parameter handling since we redirect to home page now
 
@@ -42,18 +43,27 @@ function LoginContent() {
       return false;
     }
     return true;
-  };
-
-  const handleLogin = async (e: React.FormEvent) => {
+  };  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!validateForm()) {
       return;
     }
 
-    setLoading(true);
+    // Prevent multiple rapid submissions
+    if (loading) {
+      return;
+    }
 
-    try {
+    // Rate limiting: prevent requests within 2 seconds of each other
+    const now = Date.now();
+    if (now - lastAttempt < 2000) {
+      toast.error('يرجى الانتظار قليلاً قبل المحاولة مرة أخرى');
+      return;
+    }
+    setLastAttempt(now);
+
+    setLoading(true);    try {
       // Use the sync-login API endpoint for better authentication handling
       const response = await fetch('/api/auth/sync-login', {
         method: 'POST',
@@ -70,6 +80,25 @@ function LoginContent() {
       const result = await response.json();
 
       if (!response.ok || !result.success) {
+        // If rate limited, try direct Supabase auth as fallback
+        if (response.status === 429 || result.error?.includes('rate limit')) {
+          console.log('🔄 [Login] Rate limited, trying direct auth fallback...');
+          
+          const { data, error } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+          });
+
+          if (error) {
+            throw new Error(error.message);
+          }
+
+          // Only redirect, do not show a second toast
+          await new Promise((resolve) => setTimeout(resolve, 800));
+          router.push('/');
+          return;
+        }
+        
         throw new Error(result.error || 'فشل في تسجيل الدخول');
       }
 
@@ -99,9 +128,17 @@ function LoginContent() {
                 : '/';
 
         router.push(redirectPath);
-      }
-    } catch (error: any) {
+      }    } catch (error: any) {
       console.error('❌ [Login] Error:', error);
+      
+      // Check if it's a rate limit error
+      if (error.message?.includes('rate limit') || error.message?.includes('too many requests')) {
+        toast.error('تم تجاوز حد المحاولات. يرجى المحاولة بعد دقيقة واحدة.');
+        // Add a longer delay for rate limit errors
+        setTimeout(() => setLoading(false), 3000);
+        return;
+      }
+      
       toast.error(error.message || 'حدث خطأ أثناء تسجيل الدخول');
     } finally {
       setLoading(false);

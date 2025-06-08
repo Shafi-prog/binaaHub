@@ -26,27 +26,40 @@ export default function LayoutProvider({ children }: LayoutProviderProps) {
   const [accountType, setAccountType] = useState<string | null>(null);
   const [showTour, setShowTour] = useState(false);
   const supabase = createClientComponentClient<Database>();
-
   useEffect(() => {
+    let isMounted = true;
+    
     const getSessionAndRole = async () => {
-      const { data } = await supabase.auth.getSession();
-      setSession(data.session);
-      if (data.session?.user) {
-        // Try to get account_type from user_metadata first
-        const metaType = data.session.user.user_metadata?.account_type;
-        if (metaType) {
-          setAccountType(metaType);
+      try {
+        const { data } = await supabase.auth.getSession();
+        if (!isMounted) return;
+        
+        setSession(data.session);
+        if (data.session?.user) {
+          // Try to get account_type from user_metadata first
+          const metaType = data.session.user.user_metadata?.account_type;
+          if (metaType) {
+            setAccountType(metaType);
+          } else {
+            // Fallback: fetch from users table
+            const { data: userRow } = await supabase
+              .from('users')
+              .select('account_type')
+              .eq('id', data.session.user.id)
+              .single();
+            if (isMounted) {
+              setAccountType(userRow?.account_type || null);
+            }
+          }
         } else {
-          // Fallback: fetch from users table
-          const { data: userRow } = await supabase
-            .from('users')
-            .select('account_type')
-            .eq('id', data.session.user.id)
-            .single();
-          setAccountType(userRow?.account_type || null);
+          setAccountType(null);
         }
-      } else {
-        setAccountType(null);
+      } catch (error) {
+        console.error('Error getting session:', error);
+        if (isMounted) {
+          setSession(null);
+          setAccountType(null);
+        }
       }
     };
 
@@ -55,6 +68,8 @@ export default function LayoutProvider({ children }: LayoutProviderProps) {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (!isMounted) return;
+      
       setSession(session);
       if (session?.user) {
         const metaType = session.user.user_metadata?.account_type;
@@ -66,7 +81,11 @@ export default function LayoutProvider({ children }: LayoutProviderProps) {
             .select('account_type')
             .eq('id', session.user.id)
             .single()
-            .then(({ data: userRow }) => setAccountType(userRow?.account_type || null));
+            .then(({ data: userRow }) => {
+              if (isMounted) {
+                setAccountType(userRow?.account_type || null);
+              }
+            });
         }
       } else {
         setAccountType(null);
@@ -74,6 +93,7 @@ export default function LayoutProvider({ children }: LayoutProviderProps) {
     });
 
     return () => {
+      isMounted = false;
       subscription?.unsubscribe();
     };
   }, [supabase]);

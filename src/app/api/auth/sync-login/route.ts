@@ -22,14 +22,26 @@ export async function POST(request: NextRequest) {
 
     const supabase = createRouteHandlerClient({ cookies });
 
+    // Add delay to prevent rapid successive requests
+    await new Promise(resolve => setTimeout(resolve, 500));
+
     // Authenticate user
     const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
       email,
       password,
-    });
-
-    if (signInError || !signInData.session) {
+    });    if (signInError || !signInData.session) {
       console.error('❌ [API] Auth error in sync login:', signInError?.message);
+      
+      // Check for rate limiting errors
+      if (signInError?.message?.includes('rate limit') || 
+          signInError?.message?.includes('too many requests') ||
+          signInError?.message?.includes('429')) {
+        return NextResponse.json(
+          { success: false, error: 'تم تجاوز حد المحاولات. يرجى المحاولة بعد دقيقة واحدة.' },
+          { status: 429 }
+        );
+      }
+      
       return NextResponse.json(
         { success: false, error: signInError?.message || 'Login failed' },
         { status: 401 }

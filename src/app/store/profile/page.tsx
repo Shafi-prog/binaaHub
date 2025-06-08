@@ -159,13 +159,15 @@ export default function StoreProfilePage() {
       setSuccessMessage('تم حفظ بيانات المتجر بنجاح');
       console.log('✅ Store profile updated successfully');
     } catch (error: any) {
-      console.error('Error updating store profile:', error);
-      if (error.message?.includes('network') || error.message?.includes('timeout')) {
+      // Improved error logging
+      console.error('Error updating store profile:', error, JSON.stringify(error));
+      const errorMsg = error?.message || error?.error_description || JSON.stringify(error) || 'حدث خطأ في حفظ البيانات. يرجى المحاولة مرة أخرى.';
+      if (errorMsg.includes('network') || errorMsg.includes('timeout')) {
         setFormError('حدث خطأ في الاتصال. يرجى التحقق من اتصال الإنترنت والمحاولة مرة أخرى.');
-      } else if (error.message?.includes('permission')) {
+      } else if (errorMsg.includes('permission')) {
         setFormError('ليس لديك صلاحية لتحديث بيانات المتجر.');
       } else {
-        setFormError('حدث خطأ في حفظ البيانات. يرجى المحاولة مرة أخرى.');
+        setFormError(errorMsg);
       }
     } finally {
       setLoading(false);

@@ -37,12 +37,18 @@ export default function EditProjectPage() {
     priority: 'medium',
     status: 'planning',
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> successful-build
     progress_percentage: '',
     actual_cost: '',
     location_lat: '',
     location_lng: '',
+<<<<<<< HEAD
 =======
 >>>>>>> e0e83bc2e6a4c393009b329773f07bfad211af6b
+=======
+>>>>>>> successful-build
   });
 
   const supabase = createClientComponentClient();
@@ -75,6 +81,7 @@ export default function EditProjectPage() {
 
     initAuth();
   }, [router, projectId]);
+
   const loadProjectData = async () => {
     try {
       console.log('🔍 Loading project data for editing:', projectId);
@@ -82,6 +89,9 @@ export default function EditProjectPage() {
       const projectData = await getProjectById(projectId);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> successful-build
       if (projectData) {
         setFormData({
           name: projectData.name,
@@ -99,6 +109,7 @@ export default function EditProjectPage() {
           location_lat: projectData.location ? (JSON.parse(projectData.location).lat || '').toString() : '',
           location_lng: projectData.location ? (JSON.parse(projectData.location).lng || '').toString() : '',
         });
+<<<<<<< HEAD
 =======
       if (projectData) {      setFormData({
         name: projectData.name,
@@ -113,6 +124,8 @@ export default function EditProjectPage() {
         status: projectData.status,
       });
 >>>>>>> e0e83bc2e6a4c393009b329773f07bfad211af6b
+=======
+>>>>>>> successful-build
         console.log('✅ Project data loaded for editing');
       } else {
         console.error('❌ Project not found for editing');
@@ -135,6 +148,7 @@ export default function EditProjectPage() {
       [name]: value,
     }));
   };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) return;
@@ -158,11 +172,17 @@ export default function EditProjectPage() {
         priority: formData.priority,
         status: formData.status,
 <<<<<<< HEAD
+<<<<<<< HEAD
         progress_percentage: formData.progress_percentage ? parseInt(formData.progress_percentage) : undefined,
         actual_cost: formData.actual_cost ? parseFloat(formData.actual_cost) : undefined,
         location: formData.location_lat && formData.location_lng ? JSON.stringify({ lat: parseFloat(formData.location_lat), lng: parseFloat(formData.location_lng) }) : undefined,
 =======
 >>>>>>> e0e83bc2e6a4c393009b329773f07bfad211af6b
+=======
+        progress_percentage: formData.progress_percentage ? parseInt(formData.progress_percentage) : undefined,
+        actual_cost: formData.actual_cost ? parseFloat(formData.actual_cost) : undefined,
+        location: formData.location_lat && formData.location_lng ? JSON.stringify({ lat: parseFloat(formData.location_lat), lng: parseFloat(formData.location_lng) }) : undefined,
+>>>>>>> successful-build
       };
 
       const result = await updateProject(projectId, updateData);
@@ -407,6 +427,9 @@ export default function EditProjectPage() {
               </select>
             </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> successful-build
             {/* Progress Percentage */}
             <div>
               <label htmlFor="progress_percentage" className="block text-sm font-medium text-gray-700 mb-2">
@@ -416,12 +439,19 @@ export default function EditProjectPage() {
                 type="number"
                 id="progress_percentage"
                 name="progress_percentage"
+<<<<<<< HEAD
                 min={0}
                 max={100}
                 value={formData.progress_percentage}
                 onChange={handleInputChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="0-100"
+=======
+                value={formData.progress_percentage}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="0"
+>>>>>>> successful-build
               />
             </div>
             {/* Actual Cost */}
@@ -439,11 +469,19 @@ export default function EditProjectPage() {
                 placeholder="0"
               />
             </div>
+<<<<<<< HEAD
             {/* Location Fields */}
             <div className="grid grid-cols-2 gap-6">
               <div>
                 <label htmlFor="location_lat" className="block text-sm font-medium text-gray-700 mb-2">
                   خط العرض (Latitude)
+=======
+            {/* Location Latitude and Longitude */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label htmlFor="location_lat" className="block text-sm font-medium text-gray-700 mb-2">
+                  خط العرض
+>>>>>>> successful-build
                 </label>
                 <input
                   type="number"
@@ -452,6 +490,7 @@ export default function EditProjectPage() {
                   value={formData.location_lat}
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+<<<<<<< HEAD
                   placeholder="مثال: 24.7136"
                   step="any"
                 />
@@ -459,6 +498,15 @@ export default function EditProjectPage() {
               <div>
                 <label htmlFor="location_lng" className="block text-sm font-medium text-gray-700 mb-2">
                   خط الطول (Longitude)
+=======
+                  placeholder="0"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="location_lng" className="block text-sm font-medium text-gray-700 mb-2">
+                  خط الطول
+>>>>>>> successful-build
                 </label>
                 <input
                   type="number"
@@ -467,6 +515,7 @@ export default function EditProjectPage() {
                   value={formData.location_lng}
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+<<<<<<< HEAD
                   placeholder="مثال: 46.6753"
                   step="any"
                 />
@@ -474,6 +523,12 @@ export default function EditProjectPage() {
             </div>
 =======
 >>>>>>> e0e83bc2e6a4c393009b329773f07bfad211af6b
+=======
+                  placeholder="0"
+                />
+              </div>
+            </div>
+>>>>>>> successful-build
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 pt-6">
               {' '}

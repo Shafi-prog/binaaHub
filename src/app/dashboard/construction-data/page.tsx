@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { LoadingSpinner } from '@/components/ui';
+import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { Typography, EnhancedCard, EnhancedButton, EnhancedBadge } from '@/components/ui/enhanced-components';
 import { ClientIcon } from '@/components/icons';
 import type { IconKey } from '@/components/icons/ClientIcon';

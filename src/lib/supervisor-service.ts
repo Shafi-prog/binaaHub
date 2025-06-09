@@ -1007,15 +1007,16 @@ export class SupervisorService {
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       })
-      .select('*')
-      .single();
-    if (error) throw error;    // Notify supervisor
+      .select('*')    .single();
+    if (error) throw error;
+    // Notify supervisor
+    const id = (data as { id: string | number | undefined })?.id?.toString() || '';
     await this.sendSupervisorNotification(
       supervisorId,
       'طلب إشراف جديد',
       'لديك طلب إشراف جديد من مستخدم',
       'supervisor_request',
-      String(data.id)
+      id
     );
     return data;
   }

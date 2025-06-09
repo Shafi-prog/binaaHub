@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 "use client";
 =======
 'use client';
@@ -8,32 +9,16 @@ import { useParams, useRouter } from 'next/navigation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { User } from '@supabase/supabase-js';
 import Link from 'next/link';
+=======
+export const dynamic = 'force-dynamic';
+
+// Only import types and server-safe utilities at the top
+>>>>>>> successful-build
 import { Card, LoadingSpinner, StatusBadge, ProgressBar } from '@/components/ui';
-import { verifyAuthWithRetry } from '@/lib/auth-recovery';
-import { getProjectById } from '@/lib/api/dashboard';
 import { formatCurrency, formatDate, translateStatus } from '@/lib/utils';
 import type { Project } from '@/types/dashboard';
 import { MapPicker } from '@/components/maps/MapPicker';
-import { NotificationService, NotificationTypes } from '@/lib/notifications';
-import { useNotification } from '@/components/ui/NotificationSystem';
-
-interface ProjectCompat {
-  id: string;
-  title: string; // For backward compatibility
-  description?: string;
-  status: 'planning' | 'in_progress' | 'completed' | 'cancelled';
-  priority: 'low' | 'medium' | 'high' | 'urgent';
-  budget?: number;
-  actual_cost?: number;
-  start_date?: string;
-  end_date?: string;
-  deadline?: string;
-  category?: string;
-  progress_percentage?: number;
-  created_at: string;
-  updated_at: string;
-  location?: string; // JSON string with lat/lng
-}
+import dynamicImport from 'next/dynamic';
 
 // Advice for each stage
 const STAGE_ADVICE: Record<string, string> = {
@@ -46,11 +31,9 @@ const STAGE_ADVICE: Record<string, string> = {
   on_hold: 'تابع الإجراءات المطلوبة لإعادة تفعيل المشروع أو حل المشكلات العالقة.'
 };
 
-export default function ProjectDetailPage() {
-  const params = useParams();
-  const router = useRouter();
-  const projectId = params.id as string;
+const ProjectDetailClient = dynamicImport(() => import('./ProjectDetailClient'), { ssr: false });
 
+<<<<<<< HEAD
   const [user, setUser] = useState<User | null>(null);
   const [project, setProject] = useState<ProjectCompat | null>(null);
   const [loading, setLoading] = useState(true);
@@ -584,4 +567,8 @@ function StageProgress({ status }: { status: string }) {
       </div>
     </div>
   );
+=======
+export default function ProjectDetailPageWrapper() {
+  return <ProjectDetailClient />;
+>>>>>>> successful-build
 }

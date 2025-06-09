@@ -19,7 +19,7 @@ const LoadingProgressIndicator = () => (
   </div>
 );
 
-function ChatPageContent() {
+function ChatPageInner() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -163,7 +163,7 @@ function ChatPageContent() {
 export default function ChatPage() {
   return (
     <Suspense fallback={<LoadingProgressIndicator />}>
-      <ChatPageContent />
+      <ChatPageInner />
     </Suspense>
   );
 }

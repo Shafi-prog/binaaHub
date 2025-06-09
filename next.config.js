@@ -6,6 +6,7 @@ const nextConfig = {
   },
   experimental: {
     forceSwcTransforms: false,
+    optimizeCss: true,
   },
   eslint: {
     // Re-enable linting but ignore errors during build for now

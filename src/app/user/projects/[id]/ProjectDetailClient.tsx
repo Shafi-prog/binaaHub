@@ -6,7 +6,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import Link from 'next/link';
 import { verifyAuthWithRetry } from '@/lib/auth-recovery';
-import { getProjectById } from '@/lib/api/dashboard';
+import { getProjectById, updateProject as updateProjectAPI } from '@/lib/api/dashboard';
 import { NotificationService, NotificationTypes } from '@/lib/notifications';
 import { useNotification } from '@/components/ui/NotificationSystem';
 import { Card, LoadingSpinner, StatusBadge, ProgressBar } from '@/components/ui';
@@ -48,11 +48,15 @@ function ProjectDetailClient() {
    * @property {string} updated_at
    * @property {string} [location]
    */
-
   const params = useParams();
   const router = useRouter();
-  // Fix: type projectId as string
+  // Fix: type projectId as string and handle undefined case
   const projectId = Array.isArray(params.id) ? params.id[0] : params.id;
+  
+  // Early return if projectId is undefined
+  if (!projectId) {
+    return <div>خطأ: معرف المشروع غير صحيح</div>;
+  }
 
   // Fix: explicitly type user state as any to avoid type error
   const [user, setUser] = useState<any>(null);
@@ -141,47 +145,54 @@ function ProjectDetailClient() {
       setLoading(false);
     }
   };
-
-  // Fix: type for updateProject param and utility functions
-  const updateProject = async (updatedFields: any) => {
-    if (!user || !project) return;
+  // Updated `handleUpdateProject` function to use corrected notification types
+  const handleUpdateProject = async (updatedFields: any) => {
+    if (!user || !project) {
+      showNotification({
+        type: NotificationTypes.ERROR,
+        message: 'لا يمكن تحديث المشروع بدون بيانات المستخدم أو المشروع',
+      });
+      return;
+    }
     setLoading(true);
     try {
-      const freshSupabase = createClientComponentClient();
-      const updatePayload = {
-        name: updatedFields.title ?? project.title,
-        description: updatedFields.description ?? project.description,
-        status: updatedFields.status ?? project.status,
-        priority: updatedFields.priority ?? project.priority,
-        budget: updatedFields.budget ?? project.budget,
-        actual_cost: updatedFields.actual_cost ?? project.actual_cost,
-        start_date: updatedFields.start_date ?? project.start_date,
-        actual_completion_date: updatedFields.end_date ?? project.end_date,
-        expected_completion_date: updatedFields.deadline ?? project.deadline,
-        project_type: updatedFields.category ?? project.category,
-        progress_percentage: updatedFields.progress_percentage ?? project.progress_percentage,
-        location: updatedFields.location ?? project.location,
-        updated_at: new Date().toISOString(),
-      };
-      const { error } = await freshSupabase
-        .from('projects')
-        .update(updatePayload)
-        .eq('id', project.id)
-        .eq('user_id', user.id);
-      if (error) {
-        showNotification({ type: 'error', message: 'فشل تحديث المشروع: ' + error.message });
-        setProjectError('فشل تحديث المشروع: ' + error.message);
+      const updatedProject = await updateProjectAPI(project.id, updatedFields);
+      if (updatedProject) {
+        setProject((prevProject: any) => ({ ...prevProject, ...updatedFields }));
+        showNotification({
+          type: NotificationTypes.SUCCESS,
+          message: 'تم تحديث المشروع بنجاح',
+        });
       } else {
-        showNotification({ type: 'success', message: 'تم تحديث المشروع بنجاح' });
-        await fetchProject();
+        showNotification({
+          type: NotificationTypes.ERROR,
+          message: 'فشل تحديث المشروع',
+        });
       }
     } catch (error) {
-      showNotification({ type: 'error', message: 'حدث خطأ أثناء تحديث المشروع' });
-      setProjectError('حدث خطأ أثناء تحديث المشروع');
+      showNotification({
+        type: NotificationTypes.ERROR,
+        message: 'حدث خطأ أثناء تحديث المشروع',
+      });
     } finally {
       setLoading(false);
     }
   };
+
+  // Added toast notifications for project loading and error handling
+  useEffect(() => {
+    if (loading) {
+      showNotification({
+        type: NotificationTypes.INFO,
+        message: 'جارٍ تحميل بيانات المشروع...',
+      });
+    } else if (projectError) {
+      showNotification({
+        type: NotificationTypes.ERROR,
+        message: projectError,
+      });
+    }
+  }, [loading, projectError]);
 
   useEffect(() => {
     if (project && project.status && lastNotifiedStage !== project.status) {

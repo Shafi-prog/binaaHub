@@ -40,7 +40,9 @@ export default function NotificationSystem() {
     setPortalContainer(container);
 
     return () => {
-      document.body.removeChild(container);
+      if (container.parentNode === document.body) {
+        document.body.removeChild(container);
+      }
     };
   }, []);
 

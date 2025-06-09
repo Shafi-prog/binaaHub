@@ -8,11 +8,11 @@ import { User } from '@supabase/supabase-js';
 import type { Database } from '@/types/database';
 import { getUserDashboardStats, type UserDashboardStats } from '@/lib/api/user-dashboard';
 import { LoadingSpinner } from '@/components/ui';
-import {
-  Typography,
-  EnhancedCard,
-  EnhancedButton,
-  EnhancedBadge
+import { 
+  Typography, 
+  EnhancedCard, 
+  EnhancedButton, 
+  EnhancedBadge 
 } from '@/components/ui/enhanced-components';
 import { StatCard } from '@/components/ui';
 import { formatCurrency, translateStatus } from '@/lib/utils';
@@ -22,12 +22,12 @@ import type { IconKey } from '@/components/icons/ClientIcon';
 
 function formatInvitationCode(code: string) {
   if (!code) return '';
-  return code.startsWith('BinnaHub - ') ? code : `BinnaHub - ${code}`;  
+  return code.startsWith('BinnaHub - ') ? code : `BinnaHub - ${code}`;
 }
 
 export default function UserDashboard() {
   const [user, setUser] = useState<User | null>(null);
-  const [stats, setStats] = useState<UserDashboardStats | null>(null);  
+  const [stats, setStats] = useState<UserDashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isHydrated, setIsHydrated] = useState(false);
@@ -43,11 +43,11 @@ export default function UserDashboard() {
 
   // Check if this is a post-login redirect
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);      
+    const urlParams = new URLSearchParams(window.location.search);
     const isPostLogin = urlParams.has('post_login');
 
     if (isPostLogin) {
-      console.log('🔄 [User Dashboard] Detected post-login redirect');  
+      console.log('🔄 [User Dashboard] Detected post-login redirect');
       const newUrl = window.location.pathname;
       window.history.replaceState({}, '', newUrl);
       setTimeout(() => setIsHydrated(true), 500);
@@ -67,7 +67,7 @@ export default function UserDashboard() {
         // Check cookies for debugging
         const cookies = document.cookie.split(';').map((c) => c.trim());
         setCookieInfo(cookies);
-        console.log('🍪 [UserDashboard] Cookies available:', cookies);  
+        console.log('🍪 [UserDashboard] Cookies available:', cookies);
 
         console.log('🔐 [User Dashboard] Starting auth verification...');
         const authResult = await verifyAuthWithRetry(5);
@@ -85,7 +85,7 @@ export default function UserDashboard() {
           if (response.ok) {
             const data = await response.json();
             setHeaderInfo(data);
-            console.log('🔍 [UserDashboard] Header info:', data);       
+            console.log('🔍 [UserDashboard] Header info:', data);
           }
         } catch (error) {
           console.error('❌ [UserDashboard] Error fetching header info:', error);
@@ -142,7 +142,7 @@ export default function UserDashboard() {
 
   if (!isHydrated || loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">   
+      <div className="flex items-center justify-center min-h-screen">
         <LoadingSpinner />
       </div>
     );
@@ -262,7 +262,7 @@ export default function UserDashboard() {
               </Typography>
 
               <div className="mb-4">
-                <Typography variant="label" size="sm" className="mb-2"> 
+                <Typography variant="label" size="sm" className="mb-2">
                   الكوكيز المتوفرة في المتصفح:
                 </Typography>
                 <div className="bg-gray-50 p-3 rounded-lg text-xs font-mono max-h-40 overflow-y-auto">
@@ -281,7 +281,7 @@ export default function UserDashboard() {
               </div>
 
               <div className="bg-gray-50 p-3 rounded-lg">
-                <Typography variant="label" size="sm" className="mb-2"> 
+                <Typography variant="label" size="sm" className="mb-2">
                   معلومات HTTP Header:
                 </Typography>
                 <div className="text-xs font-mono overflow-x-auto max-h-40">
@@ -292,7 +292,7 @@ export default function UserDashboard() {
               <div className="mt-4">
                 <Link
                   href="/final-cookie-verification.html"
-                  className="text-blue-600 hover:underline text-sm"     
+                  className="text-blue-600 hover:underline text-sm"
                   target="_blank"
                 >
                   فتح أداة فحص الكوكيز
@@ -305,9 +305,9 @@ export default function UserDashboard() {
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {dashboardCards.map((card, index) => (
-            <Link key={index} href={card.href} className="block">       
+            <Link key={index} href={card.href} className="block">
               <EnhancedCard variant="elevated" hover className="p-6 transition-all duration-300 hover:scale-105">
-                <div className="flex items-center justify-between">     
+                <div className="flex items-center justify-between">
                   <div>
                     <Typography variant="caption" size="sm" className="text-gray-600 mb-1">
                       {card.title}
@@ -327,7 +327,7 @@ export default function UserDashboard() {
 
         {/* Invitation Code Analytics */}
         {invitationCode && (
-          <EnhancedCard variant="elevated" className="mb-8 p-6">        
+          <EnhancedCard variant="elevated" className="mb-8 p-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <div>
                 <div className="font-mono text-blue-800 mb-2">رمز الدعوة: {formatInvitationCode(invitationCode)}</div>
@@ -351,7 +351,7 @@ export default function UserDashboard() {
                 className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 font-mono"
                 onClick={() => {
                   if (invitationCode) {
-                    navigator.clipboard.writeText(invitationCode);      
+                    navigator.clipboard.writeText(invitationCode);
                   }
                 }}
               >نسخ رمز الدعوة</button>
@@ -366,10 +366,10 @@ export default function UserDashboard() {
           </Typography>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {quickActions.map((action, index) => (
-              <Link key={index} href={action.href} className="block">   
-                <EnhancedCard
-                  variant="elevated"
-                  hover
+              <Link key={index} href={action.href} className="block">
+                <EnhancedCard 
+                  variant="elevated" 
+                  hover 
                   className="p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-xl group"
                 >
                   <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
@@ -391,7 +391,7 @@ export default function UserDashboard() {
           </Typography>
           <div className="space-y-4">
             <div className="flex items-center p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl">
-              <div className="w-12 h-12 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-xl flex items-center justify-center ml-4">        
+              <div className="w-12 h-12 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-xl flex items-center justify-center ml-4">
                 <ClientIcon type="dashboard" size={20} className="text-blue-600" />
               </div>
               <div>
@@ -406,7 +406,7 @@ export default function UserDashboard() {
 
             {stats.recentProjects?.map((project: any) => (
               <div key={project.id} className="flex items-center p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl">
-                <div className="w-12 h-12 bg-gradient-to-br from-green-100 to-emerald-100 rounded-xl flex items-center justify-center ml-4">    
+                <div className="w-12 h-12 bg-gradient-to-br from-green-100 to-emerald-100 rounded-xl flex items-center justify-center ml-4">
                   <ClientIcon type="design" size={20} className="text-green-600" />
                 </div>
                 <div>

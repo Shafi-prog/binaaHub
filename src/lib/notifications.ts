@@ -86,7 +86,6 @@ export class NotificationService {
     notification: Omit<Notification, 'id' | 'created_at' | 'updated_at'>
   ): Promise<Notification | null> {
     try {
-<<<<<<< HEAD
       // Validate required fields
       if (!notification.user_id || !notification.title || !notification.message) {
         console.error('[createNotification] Missing required fields:', {
@@ -119,15 +118,6 @@ export class NotificationService {
         console.error('[createNotification] Supabase error:', error, 'Payload:', dbNotification);
         throw error;
       }
-=======
-      const { data, error } = await supabase
-        .from('notifications')
-        .insert([notification])
-        .select()
-        .single();
-
-      if (error) throw error;
->>>>>>> e0e83bc2e6a4c393009b329773f07bfad211af6b
       return data;
     } catch (error) {
       console.error('Error creating notification:', error);
@@ -196,7 +186,7 @@ export class NotificationService {
   }
 }
 
-// Notification types for different events
+// Corrected syntax errors and completed `NotificationTypes` enum and `createTypedNotification` helper function
 export const NotificationTypes = {
   PROJECT_UPDATED: 'project_updated',
   ORDER_STATUS_CHANGED: 'order_status_changed',
@@ -205,12 +195,15 @@ export const NotificationTypes = {
   DELIVERY_SCHEDULED: 'delivery_scheduled',
   SYSTEM_ANNOUNCEMENT: 'system_announcement',
   PROMOTION: 'promotion',
+  ERROR: 'error',
+  SUCCESS: 'success',
+  INFO: 'info',
 } as const;
 
 // Helper function to create typed notifications
 export const createTypedNotification = {
-  projectUpdated: (userId: string, projectName: string, status: string) =>
-    NotificationService.createNotification({
+  projectUpdated: (userId: string, projectName: string, status: string) => {
+    return NotificationService.createNotification({
       user_id: userId,
       type: NotificationTypes.PROJECT_UPDATED,
       title: 'تحديث حالة المشروع',
@@ -220,7 +213,8 @@ export const createTypedNotification = {
       priority: 'normal',
       channel: 'app',
       sent_at: new Date().toISOString(),
-    }),
+    });
+  },
   orderStatusChanged: (userId: string, orderNumber: string, status: string) =>
     NotificationService.createNotification({
       user_id: userId,

@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-// Utility functions placeholder
-export function formatCurrency(value: number) { return value.toString(); }
-export function formatDate(date: string | Date) { return date.toString(); }
-export function translateStatus(status: string) { return status; }
-=======
 // Utility functions for dashboard functionality
 import { type ClassValue, clsx } from 'clsx';
 
@@ -269,4 +263,3 @@ export function translateStatus(status: string, type?: 'project' | 'order' | 'wa
 
   return statusMap[status] || status;
 }
->>>>>>> e0e83bc2e6a4c393009b329773f07bfad211af6b

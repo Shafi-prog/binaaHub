@@ -78,32 +78,7 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
   return (
     <NotificationContext.Provider value={{ notifications, showNotification, dismissNotification }}>
       {children}
-<<<<<<< HEAD
       {/* Removed <Toaster /> to prevent duplicate toasts. Use the global Toaster in layout.tsx */}
-=======
-      <Toaster
-        position="top-right"
-        toastOptions={{
-          className: 'rounded-md shadow-lg',
-          duration: 5000,
-          style: {
-            background: '#ffffff',
-            color: '#1f2937',
-          },
-        }}
-      >
-        {(t) => (
-          <ToastBar toast={t}>
-            {({ icon, message }) => (
-              <div className="flex items-center gap-2 p-2">
-                {icon}
-                {message}
-              </div>
-            )}
-          </ToastBar>
-        )}
-      </Toaster>
->>>>>>> e0e83bc2e6a4c393009b329773f07bfad211af6b
     </NotificationContext.Provider>
   );
 }

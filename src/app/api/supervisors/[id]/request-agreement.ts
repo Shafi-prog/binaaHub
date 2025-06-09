@@ -4,14 +4,15 @@ import { cookies } from 'next/headers';
 import { SupervisorService } from '@/lib/supervisor-service';
 
 // POST /api/supervisors/[id]/request-agreement
-export async function POST(request: NextRequest, { params }: { params: { id: string } }) {
+export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
+    const { id } = await params;
     const supabase = createRouteHandlerClient({ cookies });
     const { data: { user }, error: authError } = await supabase.auth.getUser();
     if (authError || !user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-    const supervisorId = params.id;
+    const supervisorId = id;
     // Optionally, get projectId or other info from body if needed
     // const { projectId } = await request.json();
     // Call SupervisorService to create/request agreement

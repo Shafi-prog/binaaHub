@@ -3,9 +3,12 @@ import { createClient } from '@supabase/supabase-js';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    // Await the params in Next.js 15
+    const { id } = await params;
+    
     // Get the bearer token from the authorization header
     const authHeader = request.headers.get('authorization');
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -41,13 +44,11 @@ export async function GET(
     }
 
     console.log('Authenticated user:', user.id);
-    console.log('Requested project ID:', params.id);
-
-    // Query the project
+    console.log('Requested project ID:', id);    // Query the project
     const { data, error } = await supabase
       .from('projects')
       .select('*')
-      .eq('id', params.id)
+      .eq('id', id)
       .eq('user_id', user.id)
       .single();
     
@@ -82,9 +83,12 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    // Await the params in Next.js 15
+    const { id } = await params;
+    
     // Get the bearer token from the authorization header
     const authHeader = request.headers.get('authorization');
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -131,12 +135,11 @@ export async function PUT(
     
     console.log('Update data received:', updateData);
     console.log('Transformed data for DB:', transformedData);
-    
-    // Update the project
+      // Update the project
     const { data, error } = await supabase
       .from('projects')
       .update(transformedData)
-      .eq('id', params.id)
+      .eq('id', id)
       .eq('user_id', user.id)
       .select()
       .single();

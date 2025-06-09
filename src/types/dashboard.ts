@@ -61,14 +61,19 @@ export interface Project {
   expected_completion_date?: string;
   actual_completion_date?: string;
   budget?: number;
-  actual_cost: number;
+  actual_cost?: number;
   currency: string;
-  progress_percentage: number;
+  progress_percentage?: number;
   is_active: boolean;
   for_sale?: boolean;
   images?: ProjectImage[];
   created_at: string;
   updated_at: string;
+  country?: string; // Added `country` property to the `Project` interface to resolve type errors.
+  location_lat?: number;
+  location_lng?: number; // Added `location_lat` and `location_lng` properties to the `Project` interface to resolve type errors.
+  metadata?: Record<string, any>; // Added `metadata` property to the `Project` interface to resolve type errors.
+  image_url?: string; // Added `image_url` property to the `Project` interface to resolve type errors.
 }
 
 export interface ProjectImage {
@@ -88,8 +93,8 @@ export interface ProjectPhase {
   start_date?: string;
   end_date?: string;
   budget?: number;
-  actual_cost: number;
-  progress_percentage: number;
+  actual_cost?: number;
+  progress_percentage?: number;
   created_at: string;
   updated_at: string;
 }

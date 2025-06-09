@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-import React from 'react';
-export function MapPicker() { return <div>MapPicker Placeholder</div>; }
-=======
-'use client';
-import { useEffect, useRef } from 'react';
+"use client";
+import { useEffect, useRef } from "react";
 
 interface MapPickerProps {
   initialLocation?: { lat: number; lng: number } | null;
@@ -17,8 +13,7 @@ export function MapPicker({ initialLocation, onLocationSelect, readOnly = false 
   const defaultLocation = { lat: 24.7136, lng: 46.6753 }; // Riyadh
 
   useEffect(() => {
-    // Add a manual input for coordinates in a simple form
-    const container = document.getElementById('map-container');
+    const container = document.getElementById("map-container");
     if (!container) return;
 
     if (readOnly && initialLocation) {
@@ -37,14 +32,14 @@ export function MapPicker({ initialLocation, onLocationSelect, readOnly = false 
           <label class="block text-sm font-medium text-gray-700 mb-1">خط العرض (Latitude)</label>
           <input type="number" id="lat-input" step="any" value="${initialLocation?.lat || defaultLocation.lat}"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            ${readOnly ? 'disabled' : ''}
+            ${readOnly ? "disabled" : ""}
           />
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">خط الطول (Longitude)</label>
           <input type="number" id="lng-input" step="any" value="${initialLocation?.lng || defaultLocation.lng}"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            ${readOnly ? 'disabled' : ''}
+            ${readOnly ? "disabled" : ""}
           />
         </div>
         ${
@@ -54,17 +49,17 @@ export function MapPicker({ initialLocation, onLocationSelect, readOnly = false 
             تحديث الموقع
           </button>
         `
-            : ''
+            : ""
         }
       </div>
     `;
 
     if (!readOnly) {
-      const updateBtn = document.getElementById('update-location');
-      const latInput = document.getElementById('lat-input') as HTMLInputElement;
-      const lngInput = document.getElementById('lng-input') as HTMLInputElement;
+      const updateBtn = document.getElementById("update-location");
+      const latInput = document.getElementById("lat-input") as HTMLInputElement;
+      const lngInput = document.getElementById("lng-input") as HTMLInputElement;
 
-      updateBtn?.addEventListener('click', () => {
+      updateBtn?.addEventListener("click", () => {
         const lat = parseFloat(latInput.value);
         const lng = parseFloat(lngInput.value);
 
@@ -77,4 +72,3 @@ export function MapPicker({ initialLocation, onLocationSelect, readOnly = false 
 
   return <div id="map-container" className="w-full h-full" />;
 }
->>>>>>> e0e83bc2e6a4c393009b329773f07bfad211af6b

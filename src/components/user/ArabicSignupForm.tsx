@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from 'react';
 import { EnhancedInput, EnhancedButton } from '@/components/ui/enhanced-components';
 

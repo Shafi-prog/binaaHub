@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-import React from 'react';
-export function Button({ children, ...props }: React.ButtonHTMLAttributes<HTMLButtonElement>) {
-  return <button {...props}>{children}</button>;
-}
-=======
 "use client";
 
 import * as React from "react";
@@ -49,4 +43,3 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 Button.displayName = "Button";
 
 export { Button };
->>>>>>> e0e83bc2e6a4c393009b329773f07bfad211af6b

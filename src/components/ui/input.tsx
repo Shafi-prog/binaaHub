@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-import React from 'react';
-export function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
-  return <input {...props} />;
-}
-=======
 "use client";
 
 import * as React from "react";
@@ -30,4 +24,3 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 Input.displayName = "Input";
 
 export { Input };
->>>>>>> e0e83bc2e6a4c393009b329773f07bfad211af6b

@@ -6,9 +6,10 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const supabase = createClient(supabaseUrl, supabaseAnonKey);
     
     // Check authentication
@@ -18,7 +19,7 @@ export async function PATCH(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const claimId = params.id;
+    const claimId = id;
     const body = await request.json();
     const { status, resolution_notes } = body;
 
@@ -69,9 +70,10 @@ export async function PATCH(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const supabase = createClient(supabaseUrl, supabaseAnonKey);
     
     // Check authentication
@@ -81,7 +83,7 @@ export async function DELETE(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const claimId = params.id;
+    const claimId = id;
 
     // Verify user owns the warranty claim
     const { data: claim, error: claimError } = await supabase

@@ -1,93 +1,54 @@
 {
-<<<<<<< HEAD
-  "compilerOptions": {
-    "target": "es5",
-    "lib": ["dom", "dom.iterable", "es6"],
-=======
   "extends": "./tsconfig.extends.json",
   "compilerOptions": {
     "target": "ES2022",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
->>>>>>> e0e83bc2e6a4c393009b329773f07bfad211af6b
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
     "noEmit": true,
     "esModuleInterop": true,
-<<<<<<< HEAD
-    "module": "esnext",
-    "moduleResolution": "bundler",
-=======
     "module": "ESNext",
     "moduleResolution": "bundler",
-    "types": [
-      "react",
-      "react-dom",
-      "node",
-      "@types/node"
-    ],
->>>>>>> e0e83bc2e6a4c393009b329773f07bfad211af6b
+    "types": ["react", "react-dom", "node", "@types/node"],
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-<<<<<<< HEAD
-=======
     "allowImportingTsExtensions": true,
->>>>>>> e0e83bc2e6a4c393009b329773f07bfad211af6b
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
-<<<<<<< HEAD
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"],
-      "@/components/*": ["./src/components/*"],
-      "@/lib/*": ["./src/lib/*"],
-      "@/app/*": ["./src/app/*"]
-    }
-  },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts",
-    "src/**/*"
-  ],
-  "exclude": ["node_modules"]
-=======
+    "plugins": [{ "name": "next" }],
     "forceConsistentCasingInFileNames": true,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"],
+      "@/components/*": ["src/components/*"],
+      "@/lib/*": ["src/lib/*"],
+      "@/types/*": ["src/types/*"],
+      "@/utils/*": ["src/utils/*"],
+      "@/hooks/*": ["src/hooks/*"],
+      "@/app/*": ["src/app/*"]
+    }
   },
   "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts",
-    "app/**/*",
-    "components/**/*",
-    "global.d.ts",
-    "hooks/**/*",
-    "lib/**/*",
-    "next-env.d.ts",
-    "next.config.js",
-    "src/**/*",
-    "types/**/*",
-    "utils/**/*",
-    "out/types/**/*.ts"
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.js",
+    "src/**/*.jsx",
+    "src/**/*.json",
+    "src/**/*.d.ts",
+    "src/**/*.config.js",
+    "src/**/*.env",
+    ".next/types/**/*.ts"
   ],
   "exclude": [
     "node_modules",
-    ".next",
+    "dist",
+    "build",
     "out",
-    "**/binaaHub/**"
+    "src/**/*.test.ts",
+    "src/**/*.test.js"
   ]
->>>>>>> e0e83bc2e6a4c393009b329773f07bfad211af6b
 }

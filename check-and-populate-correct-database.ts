@@ -46,7 +46,7 @@ async function checkDatabaseState() {
     
     if (projects && projects.length > 0) {
       console.log('📋 Existing projects:');
-      projects.forEach((p, i) => {
+      projects.forEach((p: any, i: number) => {
         console.log(`   ${i + 1}. ${p.name} (${p.id}) - Status: ${p.status} - Created: ${p.created_at}`);
       });
       
@@ -222,7 +222,7 @@ async function checkDatabaseState() {
     
     if (insertedProjects && insertedProjects.length > 0) {
       console.log('📋 Created projects:');
-      insertedProjects.forEach((p, i) => {
+      insertedProjects.forEach((p: any, i: number) => {
         console.log(`   ${i + 1}. ${p.name} (${p.id}) - Status: ${p.status}`);
       });
     }

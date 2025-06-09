@@ -1011,12 +1011,13 @@ export class SupervisorService {
       .single();
     if (error) throw error;
     // Notify supervisor
+    const id = (data as { id: string | number | undefined })?.id?.toString() || '';
     await this.sendSupervisorNotification(
       supervisorId,
       'طلب إشراف جديد',
       'لديك طلب إشراف جديد من مستخدم',
       'supervisor_request',
-      data.id
+      id
     );
     return data;
   }

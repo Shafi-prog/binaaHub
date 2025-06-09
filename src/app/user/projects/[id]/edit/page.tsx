@@ -32,6 +32,10 @@ export default function EditProjectPage() {
     end_date: '',
     priority: 'medium',
     status: 'planning',
+    progress_percentage: '',
+    actual_cost: '',
+    location_lat: '',
+    location_lng: '',
   });
 
   const supabase = createClientComponentClient();
@@ -64,24 +68,30 @@ export default function EditProjectPage() {
 
     initAuth();
   }, [router, projectId]);
+
   const loadProjectData = async () => {
     try {
       console.log('🔍 Loading project data for editing:', projectId);
 
       const projectData = await getProjectById(projectId);
 
-      if (projectData) {      setFormData({
-        name: projectData.name,
-        description: projectData.description || '',
-        project_type: projectData.project_type,
-        address: projectData.address || '',
-        city: projectData.city || '',
-        region: projectData.region || '',
-        budget: projectData.budget?.toString() || '',
-        end_date: projectData.expected_completion_date || '',
-        priority: projectData.priority,
-        status: projectData.status,
-      });
+      if (projectData) {
+        setFormData({
+          name: projectData.name,
+          description: projectData.description || '',
+          project_type: projectData.project_type,
+          address: projectData.address || '',
+          city: projectData.city || '',
+          region: projectData.region || '',
+          budget: projectData.budget?.toString() || '',
+          end_date: projectData.expected_completion_date || '',
+          priority: projectData.priority,
+          status: projectData.status,
+          progress_percentage: projectData.progress_percentage?.toString() || '',
+          actual_cost: projectData.actual_cost?.toString() || '',
+          location_lat: projectData.location ? (JSON.parse(projectData.location).lat || '').toString() : '',
+          location_lng: projectData.location ? (JSON.parse(projectData.location).lng || '').toString() : '',
+        });
         console.log('✅ Project data loaded for editing');
       } else {
         console.error('❌ Project not found for editing');
@@ -104,6 +114,7 @@ export default function EditProjectPage() {
       [name]: value,
     }));
   };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) return;
@@ -126,6 +137,9 @@ export default function EditProjectPage() {
         expected_completion_date: formData.end_date || undefined,
         priority: formData.priority,
         status: formData.status,
+        progress_percentage: formData.progress_percentage ? parseInt(formData.progress_percentage) : undefined,
+        actual_cost: formData.actual_cost ? parseFloat(formData.actual_cost) : undefined,
+        location: formData.location_lat && formData.location_lng ? JSON.stringify({ lat: parseFloat(formData.location_lat), lng: parseFloat(formData.location_lng) }) : undefined,
       };
 
       const result = await updateProject(projectId, updateData);
@@ -368,6 +382,68 @@ export default function EditProjectPage() {
                 <option value="high">عالية</option>
                 <option value="urgent">عاجلة</option>
               </select>
+            </div>
+            {/* Progress Percentage */}
+            <div>
+              <label htmlFor="progress_percentage" className="block text-sm font-medium text-gray-700 mb-2">
+                نسبة الإنجاز (%)
+              </label>
+              <input
+                type="number"
+                id="progress_percentage"
+                name="progress_percentage"
+                value={formData.progress_percentage}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="0"
+              />
+            </div>
+            {/* Actual Cost */}
+            <div>
+              <label htmlFor="actual_cost" className="block text-sm font-medium text-gray-700 mb-2">
+                التكلفة الفعلية (ريال سعودي)
+              </label>
+              <input
+                type="number"
+                id="actual_cost"
+                name="actual_cost"
+                value={formData.actual_cost}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="0"
+              />
+            </div>
+            {/* Location Latitude and Longitude */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label htmlFor="location_lat" className="block text-sm font-medium text-gray-700 mb-2">
+                  خط العرض
+                </label>
+                <input
+                  type="number"
+                  id="location_lat"
+                  name="location_lat"
+                  value={formData.location_lat}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="0"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="location_lng" className="block text-sm font-medium text-gray-700 mb-2">
+                  خط الطول
+                </label>
+                <input
+                  type="number"
+                  id="location_lng"
+                  name="location_lng"
+                  value={formData.location_lng}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="0"
+                />
+              </div>
             </div>
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 pt-6">

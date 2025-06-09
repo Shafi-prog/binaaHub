@@ -4,6 +4,7 @@
 // This test will verify that project creation works with the current database schema
 
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createProject } from '@/lib/api/dashboard';
 
 // Test data that matches the new project form
 const testProjectData = {
@@ -177,9 +178,8 @@ async function testCreateProjectAPI() {
   console.log("========================");
 
   try {
-    // Import the API function
-    const { createProject } = await import('../lib/api/dashboard.js');
-    
+    // Use the statically imported API function
+    // const { createProject } = await import('../lib/api/dashboard'); // Removed
     console.log("Test: Using createProject API function...");
     const result = await createProject(testProjectData);
     
@@ -188,7 +188,8 @@ async function testCreateProjectAPI() {
     
     return result;
   } catch (error) {
-    console.log("❌ createProject API function failed:", error.message);
+    const message = error instanceof Error ? error.message : String(error);
+    console.log("❌ createProject API function failed:", message);
     return null;
   }
 }

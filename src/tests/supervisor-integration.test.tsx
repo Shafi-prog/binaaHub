@@ -45,29 +45,30 @@ jest.mock('next/navigation', () => ({
 }));
 
 describe('Supervisor Integration Tests', () => {
-  beforeEach(() => {      mockUseTranslation.mockReturnValue({
-        t: (key: string, params?: Record<string, any>) => {
-          const translations: Record<string, string> = {
-            'supervisor.update': 'تحديث',
-            'supervisor.create': 'إنشاء',
-            'supervisor.noSupervisors': 'لا يوجد مشرفون',
-            'supervisor.noActiveSupervisors': 'لم يتم العثور على مشرفين نشطين',
-            'supervisor.noInactiveSupervisors': 'لم يتم العثور على مشرفين غير نشطين',
-            'supervisor.assignedStores': '{count} متجر معين',
-            'supervisor.search': 'البحث عن المشرفين',
-            'supervisor.searchPlaceholder': 'ابحث بالاسم أو التخصص أو الموقع...',
-            'supervisor.addSupervisor': 'إضافة مشرف جديد',
-            'common.loading': 'جارٍ التحميل...',
-            'common.error': 'خطأ',
-            'common.retry': 'إعادة المحاولة',
-            'supervisor.management': 'إدارة المشرفين',
-            'supervisor.description': 'ابحث عن مشرفين للبناء وأدر مشاريعك بسهولة',
-            'supervisor.addNew': 'إضافة مشرف جديد',
-            'cancel': 'إلغاء',
-            'request.approve': 'موافقة',
-            'request.reject': 'رفض'
-          };
-        
+  beforeEach(() => {
+    mockUseTranslation.mockReturnValue({
+      t: (key: string, params?: Record<string, any>) => {
+        const translations: Record<string, string> = {
+          'supervisor.update': 'تحديث',
+          'supervisor.create': 'إنشاء',
+          'supervisor.noSupervisors': 'لا يوجد مشرفون',
+          'supervisor.noActiveSupervisors': 'لم يتم العثور على مشرفين نشطين',
+          'supervisor.noInactiveSupervisors': 'لم يتم العثور على مشرفين غير نشطين',
+          'supervisor.assignedStores': '{count} متجر معين',
+          'supervisor.search': 'البحث عن المشرفين',
+          'supervisor.searchPlaceholder': 'ابحث بالاسم أو التخصص أو الموقع...',
+          'supervisor.addSupervisor': 'إضافة مشرف جديد',
+          'common.loading': 'جارٍ التحميل...',
+          'common.error': 'خطأ',
+          'common.retry': 'إعادة المحاولة',
+          'supervisor.management': 'إدارة المشرفين',
+          'supervisor.description': 'ابحث عن مشرفين للبناء وأدر مشاريعك بسهولة',
+          'supervisor.addNew': 'إضافة مشرف جديد',
+          'cancel': 'إلغاء',
+          'request.approve': 'موافقة',
+          'request.reject': 'رفض'
+        };
+      
         let result = translations[key] || key;
         
         // Handle parameter interpolation
@@ -79,25 +80,22 @@ describe('Supervisor Integration Tests', () => {
         
         return result;
       },
-      language: 'ar' as const,
-      setLanguage: jest.fn(),
-      isRTL: true
+      locale: 'ar' as any,
+      changeLocale: jest.fn()
     });
   });
 
   describe('SupervisorManagement Component', () => {
     test('renders with Arabic translations', async () => {
-      render(<SupervisorManagement />);
+      render(<SupervisorManagement userId="test-user-id" />);
       
       await waitFor(() => {
         expect(screen.getByPlaceholderText('ابحث بالاسم أو التخصص أو الموقع...')).toBeInTheDocument();
       });
       
       expect(screen.getByText('إضافة مشرف جديد')).toBeInTheDocument();
-    });
-
-    test('displays no supervisors message in Arabic', async () => {
-      render(<SupervisorManagement />);
+    });    test('displays no supervisors message in Arabic', async () => {
+      render(<SupervisorManagement userId="test-user-id" />);
       
       await waitFor(() => {
         expect(screen.getByText('لا يوجد مشرفون')).toBeInTheDocument();
@@ -105,7 +103,7 @@ describe('Supervisor Integration Tests', () => {
     });
 
     test('handles search functionality', async () => {
-      render(<SupervisorManagement />);
+      render(<SupervisorManagement userId="test-user-id" />);
       
       const searchInput = await waitFor(() => 
         screen.getByPlaceholderText('ابحث بالاسم أو التخصص أو الموقع...')
@@ -113,10 +111,8 @@ describe('Supervisor Integration Tests', () => {
       
       fireEvent.change(searchInput, { target: { value: 'أحمد' } });
       expect(searchInput).toHaveValue('أحمد');
-    });
-
-    test('shows correct button text for create/update', async () => {
-      render(<SupervisorManagement />);
+    });    test('shows correct button text for create/update', async () => {
+      render(<SupervisorManagement userId="test-user-id" />);
       
       await waitFor(() => {
         expect(screen.getByText('إضافة مشرف جديد')).toBeInTheDocument();
@@ -132,7 +128,6 @@ describe('Supervisor Integration Tests', () => {
       });
     });
   });
-
   describe('Translation Integration', () => {
     test('properly interpolates Arabic translations with parameters', () => {
       const { t } = mockUseTranslation();
@@ -141,17 +136,11 @@ describe('Supervisor Integration Tests', () => {
       expect(storeCountText).toBe('5 متجر معين');
     });
 
-    test('returns RTL direction for Arabic', () => {
-      const { isRTL } = mockUseTranslation();
-      expect(isRTL).toBe(true);
-    });
-
-    test('has correct language set', () => {
-      const { language } = mockUseTranslation();
-      expect(language).toBe('ar');
+    test('uses Arabic locale', () => {
+      const { locale } = mockUseTranslation();
+      expect(locale).toBe('ar');
     });
   });
-
   describe('Error Handling', () => {
     test('displays error messages in Arabic', async () => {
       // Mock an error state
@@ -161,12 +150,11 @@ describe('Supervisor Integration Tests', () => {
           if (key === 'common.retry') return 'إعادة المحاولة';
           return key;
         },
-        language: 'ar' as const,
-        setLanguage: jest.fn(),
-        isRTL: true
+        locale: 'ar' as any,
+        changeLocale: jest.fn()
       });
 
-      render(<SupervisorManagement />);
+      render(<SupervisorManagement userId="test-user-id" />);
       
       // This would test error states if we had error scenarios
       expect(mockUseTranslation).toHaveBeenCalled();

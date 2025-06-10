@@ -10,8 +10,13 @@ import { getProjectById, updateProject as updateProjectAPI } from '@/lib/api/das
 import { NotificationService, NotificationTypes } from '@/lib/notifications';
 import { useNotification } from '@/components/ui/NotificationSystem';
 import { Card, LoadingSpinner, StatusBadge, ProgressBar } from '@/components/ui';
-import { formatCurrency, formatDate, translateStatus } from '@/lib/utils';
+import { formatCurrency, formatDate, translateStatus, calculateProjectProgress } from '@/lib/utils';
 import { MapPicker } from '@/components/maps/MapPicker';
+import ProjectIntegrationTabs from '@/components/user/ProjectIntegrationTabs';
+import ProjectOrderComponent from '@/components/user/ProjectOrderComponent';
+import ProjectWarrantyManager from '@/components/user/ProjectWarrantyManager';
+import ProjectExpenseTracker from '@/components/user/ProjectExpenseTracker';
+import { toast } from 'react-hot-toast';
 
 // Advice for each stage
 const STAGE_ADVICE = {
@@ -59,14 +64,19 @@ function ProjectDetailClient() {
   }
 
   // Fix: explicitly type user state as any to avoid type error
-  const [user, setUser] = useState<any>(null);
-  const [project, setProject] = useState<any>(null);
+  const [user, setUser] = useState<any>(null);  const [project, setProject] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   // Fix: explicitly type error states as string | null
   const [authError, setAuthError] = useState<string | null>(null);
   const [projectError, setProjectError] = useState<string | null>(null);
   const { showNotification } = useNotification();
   const [lastNotifiedStage, setLastNotifiedStage] = useState(null);
+  
+  // Integration modal states
+  const [showOrderModal, setShowOrderModal] = useState(false);
+  const [showWarrantyModal, setShowWarrantyModal] = useState(false);
+  const [showExpenseModal, setShowExpenseModal] = useState(false);
+  const [showIntegrationTabs, setShowIntegrationTabs] = useState(false);
 
   const supabase = createClientComponentClient();
 
@@ -181,16 +191,18 @@ function ProjectDetailClient() {
 
   // Added toast notifications for project loading and error handling
   useEffect(() => {
+    const toastId = 'project-loading-toast';
     if (loading) {
-      showNotification({
-        type: NotificationTypes.INFO,
-        message: 'جارٍ تحميل بيانات المشروع...',
-      });
-    } else if (projectError) {
-      showNotification({
-        type: NotificationTypes.ERROR,
-        message: projectError,
-      });
+      toast.dismiss(toastId);
+      toast.loading('جارٍ تحميل بيانات المشروع...', { id: toastId });
+    } else {
+      toast.dismiss(toastId);
+      if (projectError) {
+        showNotification({
+          type: NotificationTypes.ERROR,
+          message: projectError,
+        });
+      }
     }
   }, [loading, projectError]);
 
@@ -234,8 +246,45 @@ function ProjectDetailClient() {
       case 'medium': return 'yellow';
       case 'high': return 'orange';
       case 'urgent': return 'red';
-      default: return 'gray';
-    }
+      default: return 'gray';    }
+  };
+
+  // Integration callbacks
+  const handleOrderCreate = () => {
+    setShowOrderModal(true);
+  };
+
+  const handleWarrantyCreate = () => {
+    setShowWarrantyModal(true);
+  };
+
+  const handleExpenseCreate = () => {
+    setShowExpenseModal(true);
+  };
+
+  const handleOrderCreated = (orderId: string) => {
+    setShowOrderModal(false);
+    showNotification({
+      type: NotificationTypes.SUCCESS,
+      message: 'تم إنشاء الطلب بنجاح',
+    });
+    // Optionally refresh project data or update state
+  };
+
+  const handleWarrantyCreated = (warrantyId: string) => {
+    setShowWarrantyModal(false);
+    showNotification({
+      type: NotificationTypes.SUCCESS,
+      message: 'تم تسجيل الضمان بنجاح',
+    });
+  };
+
+  const handleExpenseCreated = (expenseId: string) => {
+    setShowExpenseModal(false);
+    showNotification({
+      type: NotificationTypes.SUCCESS,
+      message: 'تم إضافة المصروف بنجاح',
+    });
   };
 
   if (loading) {
@@ -318,15 +367,14 @@ function ProjectDetailClient() {
                 </div>
                 
                 {/* Progress */}
-                {project.progress_percentage !== undefined && (
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">التقدم</label>                    <ProgressBar 
-                      percentage={project.progress_percentage} 
-                      className="mb-2"
-                    />
-                    <p className="text-sm text-gray-600">{project.progress_percentage}% مكتمل</p>
-                  </div>
-                )}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">التقدم</label>
+                  <ProgressBar 
+                    percentage={typeof project.progress_percentage === 'number' ? project.progress_percentage : (project.progress_percentage ? parseInt(project.progress_percentage) : calculateProjectProgress(project))}
+                    className="mb-2"
+                  />
+                  <p className="text-sm text-gray-600">{typeof project.progress_percentage === 'number' ? project.progress_percentage : (project.progress_percentage ? parseInt(project.progress_percentage) : calculateProjectProgress(project))}% مكتمل</p>
+                </div>
 
                 {/* Location */}
                 {project.location && (
@@ -386,30 +434,44 @@ function ProjectDetailClient() {
           </div>
 
           {/* Right Column - Actions & Info */}
-          <div className="space-y-6">
-            {/* Quick Actions */}
+          <div className="space-y-6">            {/* Quick Actions */}
             <Card className="p-6">
               <h2 className="text-xl font-semibold mb-4">إجراءات سريعة</h2>
               <div className="space-y-3">
                 <button 
-                  onClick={() => {
-                    // Add functionality to edit project
-                    showNotification({ 
-                      type: 'info', 
-                      message: 'سيتم إضافة خاصية التعديل قريباً' 
-                    });
-                  }}
+                  onClick={() => setShowIntegrationTabs(true)}
                   className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg transition-colors"
+                >
+                  نظرة شاملة على المشروع
+                </button>
+                
+                <button 
+                  onClick={handleOrderCreate}
+                  className="w-full bg-indigo-500 hover:bg-indigo-600 text-white py-2 px-4 rounded-lg transition-colors"
+                >
+                  طلب مواد البناء
+                </button>
+                
+                <button 
+                  onClick={handleWarrantyCreate}
+                  className="w-full bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg transition-colors"
+                >
+                  تسجيل ضمان
+                </button>
+                
+                <button 
+                  onClick={handleExpenseCreate}
+                  className="w-full bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 rounded-lg transition-colors"
+                >
+                  إضافة مصروف
+                </button>
+                
+                <button 
+                  onClick={() => router.push(`/user/projects/${project.id}/edit`)}
+                  className="w-full bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded-lg transition-colors"
                 >
                   تعديل المشروع
                 </button>
-                
-                <Link 
-                  href={`/user/projects/${project.id}/expenses`}
-                  className="block w-full bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg transition-colors text-center"
-                >
-                  إدارة المصروفات
-                </Link>
                 
                 <Link 
                   href={`/user/projects/${project.id}/timeline`}
@@ -461,9 +523,112 @@ function ProjectDetailClient() {
                   {STAGE_ADVICE[project.status as keyof typeof STAGE_ADVICE]}
                 </p>
               </Card>
-            )}
-          </div>
+            )}          </div>
         </div>
+
+        {/* Integration Modals */}
+        
+        {/* Comprehensive Integration Tabs Modal */}
+        {showIntegrationTabs && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg shadow-xl max-w-7xl w-full max-h-[95vh] overflow-hidden">
+              <div className="flex justify-between items-center p-6 border-b">
+                <h2 className="text-2xl font-bold">إدارة شاملة للمشروع: {project.title}</h2>
+                <button
+                  onClick={() => setShowIntegrationTabs(false)}
+                  className="text-gray-500 hover:text-gray-700 text-2xl"
+                >
+                  ×
+                </button>
+              </div>
+              <div className="overflow-y-auto max-h-[calc(95vh-120px)]">
+                <ProjectIntegrationTabs
+                  projectId={project.id}
+                  projectName={project.title}
+                  onOrderCreate={handleOrderCreate}
+                  onWarrantyCreate={handleWarrantyCreate}
+                  onExpenseCreate={handleExpenseCreate}
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Order Component Modal */}
+        {showOrderModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg shadow-xl max-w-6xl w-full max-h-[95vh] overflow-hidden">
+              <div className="flex justify-between items-center p-6 border-b">
+                <h2 className="text-2xl font-bold">طلب مواد البناء - {project.title}</h2>
+                <button
+                  onClick={() => setShowOrderModal(false)}
+                  className="text-gray-500 hover:text-gray-700 text-2xl"
+                >
+                  ×
+                </button>
+              </div>
+              <div className="overflow-y-auto max-h-[calc(95vh-120px)]">
+                <ProjectOrderComponent
+                  projectId={project.id}
+                  projectName={project.title}
+                  onOrderCreated={handleOrderCreated}
+                  onCancel={() => setShowOrderModal(false)}
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Warranty Manager Modal */}
+        {showWarrantyModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg shadow-xl max-w-5xl w-full max-h-[95vh] overflow-hidden">
+              <div className="flex justify-between items-center p-6 border-b">
+                <h2 className="text-2xl font-bold">إدارة الضمانات - {project.title}</h2>
+                <button
+                  onClick={() => setShowWarrantyModal(false)}
+                  className="text-gray-500 hover:text-gray-700 text-2xl"
+                >
+                  ×
+                </button>
+              </div>
+              <div className="overflow-y-auto max-h-[calc(95vh-120px)]">
+                <ProjectWarrantyManager
+                  projectId={project.id}
+                  projectName={project.title}
+                  onWarrantyCreated={handleWarrantyCreated}
+                  onCancel={() => setShowWarrantyModal(false)}
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Expense Tracker Modal */}
+        {showExpenseModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg shadow-xl max-w-5xl w-full max-h-[95vh] overflow-hidden">
+              <div className="flex justify-between items-center p-6 border-b">
+                <h2 className="text-2xl font-bold">تتبع المصروفات - {project.title}</h2>
+                <button
+                  onClick={() => setShowExpenseModal(false)}
+                  className="text-gray-500 hover:text-gray-700 text-2xl"
+                >
+                  ×
+                </button>
+              </div>
+              <div className="overflow-y-auto max-h-[calc(95vh-120px)]">
+                <ProjectExpenseTracker
+                  projectId={project.id}
+                  projectName={project.title}
+                  projectBudget={project.budget}
+                  onExpenseCreated={handleExpenseCreated}
+                  onCancel={() => setShowExpenseModal(false)}
+                />
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

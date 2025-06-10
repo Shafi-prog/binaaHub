@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { Card, LoadingSpinner, StatusBadge } from '@/components/ui';
 import { verifyAuthWithRetry } from '@/lib/auth-recovery';
 import { getRecentProjects } from '@/lib/api/dashboard';
-import { formatCurrency, formatDate, translateStatus } from '@/lib/utils';
+import { formatCurrency, formatDate, translateStatus, calculateProjectProgress } from '@/lib/utils';
 import type { Project } from '@/types/dashboard';
 import { 
   Plus, 
@@ -82,6 +82,23 @@ export default function ProjectsPage() {
       case 'completed': return 'bg-green-100 text-green-800';
       case 'on_hold': return 'bg-red-100 text-red-800';
       default: return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  // Fix: treat 'active' as 'قيد التنفيذ' for legacy/old data
+  const getStatusLabel = (status: string) => {
+    switch (status) {
+      case 'construction':
+      case 'finishing':
+      case 'in_progress':
+      case 'active':
+        return 'قيد التنفيذ';
+      case 'planning': return 'التخطيط';
+      case 'design': return 'التصميم';
+      case 'permits': return 'التراخيص';
+      case 'completed': return 'مكتمل';
+      case 'on_hold': return 'متوقف';
+      default: return status;
     }
   };
 
@@ -209,7 +226,7 @@ export default function ProjectsPage() {
                   </div>
                   <div className="ml-3">
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(project.status)}`}>
-                      {translateStatus(project.status)}
+                      {getStatusLabel(project.status)}
                     </span>
                   </div>
                 </div>
@@ -218,12 +235,12 @@ export default function ProjectsPage() {
                 <div className="mb-4">
                   <div className="flex items-center justify-between text-sm text-gray-600 mb-1">
                     <span>التقدم</span>
-                    <span>{getProgressPercentage(project.status)}%</span>
+                    <span>{calculateProjectProgress(project)}%</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
                     <div 
                       className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-                      style={{ width: `${getProgressPercentage(project.status)}%` }}
+                      style={{ width: `${calculateProjectProgress(project)}%` }}
                     ></div>
                   </div>
                 </div>
@@ -295,7 +312,7 @@ export default function ProjectsPage() {
               <Building2 className="h-6 w-6 text-orange-600" />
             </div>
             <div className="text-2xl font-bold text-gray-900">
-              {projects.filter(p => ['construction', 'finishing'].includes(p.status)).length}
+              {projects.filter(p => ['construction', 'finishing', 'in_progress', 'active'].includes((p.status || '').toLowerCase())).length}
             </div>
             <div className="text-sm text-gray-600">قيد التنفيذ</div>
           </Card>

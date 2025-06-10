@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Project Loading Test</title>
+</head>
+<body>
+    <h1>Testing Project Loading Fix</h1>
+    <div id="results"></div>
+    
+    <script>
+        const results = document.getElementById('results');
+        
+        function log(message, type = 'info') {
+            const div = document.createElement('div');
+            div.style.padding = '5px';
+            div.style.margin = '2px 0';
+            div.style.color = type === 'error' ? 'red' : type === 'success' ? 'green' : 'black';
+            div.textContent = `${new Date().toLocaleTimeString()} - ${message}`;
+            results.appendChild(div);
+            console.log(message);
+        }
+        
+        async function testProjectAPI() {
+            try {
+                log('🔍 Testing project API call...');
+                
+                const projectId = 'd85a1908-ab4e-4ea0-9892-9493cdd52e27';
+                const apiUrl = `http://localhost:3001/api/dashboard/projects/${projectId}`;
+                
+                log(`📡 Calling API: ${apiUrl}`);
+                
+                const response = await fetch(apiUrl, {
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                log(`📊 Response status: ${response.status}`);
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    log(`❌ API Error: ${errorText}`, 'error');
+                    return;
+                }
+                
+                const data = await response.json();
+                log(`✅ API Success: Project loaded`, 'success');
+                log(`📋 Project name: ${data.name || 'Unknown'}`);
+                log(`📅 Project status: ${data.status || 'Unknown'}`);
+                
+                // Test the edit page
+                const editUrl = `http://localhost:3001/user/projects/${projectId}/edit`;
+                log(`🔗 Edit page URL: ${editUrl}`);
+                
+            } catch (error) {
+                log(`❌ Test failed: ${error.message}`, 'error');
+            }
+        }
+        
+        // Run test when page loads
+        setTimeout(testProjectAPI, 1000);
+    </script>
+</body>
+</html>

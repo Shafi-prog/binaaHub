@@ -27,6 +27,14 @@ const PAGE_SIZE = 5;
 
 const supabase = createClientComponentClient();
 
+// Helper: determine if a project is active (in progress)
+function isProjectActive(project: { status: string; is_active?: boolean }) {
+  return (
+    ['construction', 'finishing', 'in_progress'].includes(project.status) &&
+    project.is_active !== false
+  );
+}
+
 // Get dashboard statistics
 export async function getDashboardStats(userId: string): Promise<DashboardStats> {
   if (!userId) {
@@ -50,11 +58,10 @@ export async function getDashboardStats(userId: string): Promise<DashboardStats>
     monthlySpending: 0,
   };
 
-  try {
-    // Get projects (no metadata)
+  try {    // Get projects (no metadata)
     const projectsResult = await supabase
       .from('projects')
-      .select('id, project_type, status, budget, actual_cost, is_active')
+      .select('id, project_type, status, budget, is_active')
       .eq('user_id', userId);
 
     if (projectsResult.error) {
@@ -63,9 +70,11 @@ export async function getDashboardStats(userId: string): Promise<DashboardStats>
 
     const projects = projectsResult.data || [];
     stats.totalProjects = projects.length;
-    stats.activeProjects = projects.filter((p) => p.status !== 'completed' && p.is_active !== false).length;
+    // Count only active (in progress) projects
+    stats.activeProjects = projects.filter(isProjectActive).length;
+    // Completed: status === 'completed' or is_active === false
     stats.completedProjects = projects.filter((p) => p.status === 'completed' || p.is_active === false).length;
-    stats.totalSpent = projects.reduce((sum, p) => sum + (p.actual_cost || 0), 0);
+    stats.totalSpent = 0; // projects.reduce((sum, p) => sum + (p.actual_cost || 0), 0); // actual_cost column doesn't exist yet
     stats.totalBudget = projects.reduce((sum, p) => sum + (p.budget || 0), 0);
 
     // Get orders
@@ -723,8 +732,19 @@ export async function updateProject(
       updatePayload.end_date = updatePayload.expected_completion_date;
       delete updatePayload.expected_completion_date;
     }
-    // Remove fields not in schema
+    // Only remove fields that truly do not exist in the schema
     delete updatePayload.actual_completion_date;
+    delete updatePayload.district;
+    delete updatePayload.country;
+    delete updatePayload.currency;
+    delete updatePayload.rooms_count;
+    delete updatePayload.bathrooms_count;
+    delete updatePayload.floors_count;
+    delete updatePayload.plot_area;
+    delete updatePayload.building_area;
+    delete updatePayload.metadata;
+    delete updatePayload.image_url;
+    // DO NOT delete actual_cost, city, region, priority, or progress_percentage
 
     console.log('[updateProject] Update payload:', updatePayload);
 
@@ -750,32 +770,21 @@ export async function updateProject(
       project_type: data.project_type,
       location: data.location,
       address: data.address || '',
-      city: '', // Column doesn't exist yet
-      region: '', // Column doesn't exist yet      district: '', // Column doesn't exist yet
-      country: '', // Column doesn't exist yet  
+      city: data.city || '',
+      region: data.region || '',
       status: data.status,
-      priority: 'medium' as const, // Column doesn't exist yet, use default      start_date: data.start_date,
-      expected_completion_date: data.end_date, // Map from end_date column
-      actual_completion_date: undefined, // Column doesn't exist yet
+      priority: data.priority || 'medium',
+      start_date: data.start_date,
+      expected_completion_date: data.end_date,
+      actual_completion_date: data.actual_completion_date,
       budget: data.budget || 0,
-      actual_cost: undefined, // Column doesn't exist yet
-      currency: 'SAR', // Column doesn't exist yet, use default
-      progress_percentage: undefined, // Column doesn't exist yet
+      actual_cost: data.actual_cost,
+      progress_percentage: data.progress_percentage,
       is_active: data.is_active,
       created_at: data.created_at,
       updated_at: data.updated_at,
-      location_lat: undefined, // Column doesn't exist yet
-      location_lng: undefined, // Column doesn't exist yet
-      rooms_count: undefined, // Column doesn't exist yet
-      bathrooms_count: undefined, // Column doesn't exist yet
-      floors_count: undefined, // Column doesn't exist yet
-      plot_area: undefined, // Column doesn't exist yet
-      building_area: undefined, // Column doesn't exist yet
-      metadata: undefined, // Column doesn't exist yet
-      image_url: undefined, // Column doesn't exist yet
+      currency: 'SAR',
     };
-    
-    console.log('✅ [getProjectById] Returning transformed project:', transformedProject);
     return transformedProject;
   } catch (error: any) {
     // EMERGENCY CATCH BLOCK - Multiple logging approaches
@@ -841,8 +850,8 @@ export async function getProjectById(projectId: string): Promise<Project | null>
       .select(
         `
         id, user_id, name, description, project_type, location, 
-        address, status, start_date, end_date,
-        budget, is_active, created_at, updated_at
+        address, city, region, status, priority, start_date, end_date,
+        budget, actual_cost, progress_percentage, is_active, created_at, updated_at
         `
       ).eq('id', projectId)
       .eq('user_id', user.id) // Ensure user can only access their own projects
@@ -884,8 +893,7 @@ export async function getProjectById(projectId: string): Promise<Project | null>
       
       console.error('❌ [getProjectById] DETAILED ERROR INFO:', errorInfo);
       throw error;
-    }
-      console.log('✅ [getProjectById] Project found, transforming data...');
+    }      console.log('✅ [getProjectById] Project found, transforming data...');
       const transformedProject: Project = {
       id: data.id,
       user_id: data.user_id,
@@ -894,24 +902,19 @@ export async function getProjectById(projectId: string): Promise<Project | null>
       project_type: data.project_type,
       location: data.location,
       address: data.address || '',
-      city: '',
-      region: '',
+      city: data.city || '',
+      region: data.region || '',
       status: data.status,
-      priority: 'medium',
+      priority: data.priority || 'medium',
       start_date: data.start_date,
-      expected_completion_date: data.end_date,
+      expected_completion_date: data.end_date, // Map end_date to expected_completion_date
       budget: data.budget || 0,
-      actual_cost: 0,
-      currency: 'SAR',
-      progress_percentage: 0,
+      actual_cost: data.actual_cost ?? 0,
+      progress_percentage: data.progress_percentage ?? 0,
       is_active: data.is_active,
       created_at: data.created_at,
       updated_at: data.updated_at,
-      floors_count: undefined,
-      plot_area: undefined,
-      building_area: undefined,
-      metadata: undefined,
-      image_url: undefined,
+      currency: 'SAR',
     };
     
     console.log('✅ [getProjectById] Returning transformed project:', transformedProject);

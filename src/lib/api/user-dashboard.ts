@@ -29,6 +29,14 @@ export type UserDashboardStats = {
   }>;
 };
 
+// Helper: determine if a project is active (in progress)
+function isProjectActive(project: { status: string; is_active?: boolean }) {
+  return (
+    ['construction', 'finishing', 'in_progress'].includes(project.status) &&
+    project.is_active !== false
+  );
+}
+
 export async function getUserDashboardStats(userId: string): Promise<UserDashboardStats> {
   const supabase = createClientComponentClient<Database>();
 
@@ -41,7 +49,7 @@ export async function getUserDashboardStats(userId: string): Promise<UserDashboa
     { data: recentProjects },
   ] = await Promise.all([
     // Get projects summary
-    supabase.from('projects').select('id, status, metadata').eq('user_id', userId),
+    supabase.from('projects').select('id, status, is_active, metadata').eq('user_id', userId),
 
     // Get warranties summary
     supabase.from('warranties').select('id, status').eq('user_id', userId),
@@ -93,7 +101,8 @@ export async function getUserDashboardStats(userId: string): Promise<UserDashboa
   // Merge metadata fields into each project
   const projectsWithMeta = (projects || []).map((p) => ({ ...p, ...(p.metadata || {}) }));
 
-  const activeProjects = projectsWithMeta.filter((p) => p.status !== 'completed').length || 0;
+  // Use new active logic
+  const activeProjects = projectsWithMeta.filter(isProjectActive).length || 0;
   const completedProjects = projectsWithMeta.filter((p) => p.status === 'completed').length || 0;
   const activeWarranties = warranties?.filter((w) => w.status === 'active').length || 0;
 

@@ -47,13 +47,23 @@ export interface Project {
   building_area?: number;
   floors_count?: number;
   rooms_count?: number;
-  bathrooms_count?: number;
-  status:
+  bathrooms_count?: number;  status:
     | 'planning'
     | 'design'
     | 'permits'
-    | 'construction'
-    | 'finishing'
+    | 'site_preparation'
+    | 'foundation'
+    | 'structure'
+    | 'roofing'
+    | 'plumbing'
+    | 'electrical'
+    | 'insulation'
+    | 'drywall'
+    | 'flooring'
+    | 'painting'
+    | 'fixtures'
+    | 'landscaping'
+    | 'final_inspection'
     | 'completed'
     | 'on_hold';
   priority: 'low' | 'medium' | 'high' | 'urgent';
@@ -63,9 +73,11 @@ export interface Project {
   budget?: number;
   actual_cost?: number;
   currency: string;
-  progress_percentage?: number;
-  is_active: boolean;
+  progress_percentage?: number;  is_active: boolean;
   for_sale?: boolean;
+  advertisement_number?: string;
+  sale_price?: number;
+  sale_description?: string;
   images?: ProjectImage[];
   created_at: string;
   updated_at: string;

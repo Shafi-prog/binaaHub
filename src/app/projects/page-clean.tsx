@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { supabase } from '@/utils/supabase/client';
-import ProjectsDebugger from '@/components/ProjectsDebugger';
 import { 
   Search, 
   Filter, 
@@ -18,6 +17,7 @@ import {
 interface Project {
   id: string;
   name: string;
+  title?: string;
   description: string;
   project_type: string;
   location: string;
@@ -72,15 +72,12 @@ export default function ProjectsPage() {
     applyFilters();
   }, [projects, searchQuery, filterType, filterLocation, priceRange]);
 
-  const loadProjects = async () => {    try {
+  const loadProjects = async () => {
+    try {
       setLoading(true);
       setError(null);
       
       console.log('🔍 Loading projects from database...');
-      console.log('🔗 Environment check:');
-      console.log('- Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL ? 'Present' : 'Missing');
-      console.log('- Supabase Key:', process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? 'Present' : 'Missing');
-      console.log('- NODE_ENV:', process.env.NODE_ENV);
       
       // Check if supabase client is properly initialized
       if (!supabase) {
@@ -89,67 +86,36 @@ export default function ProjectsPage() {
         return;
       }
       
-      // Check environment variables are available
-      if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-        const missingVars = [];
-        if (!process.env.NEXT_PUBLIC_SUPABASE_URL) missingVars.push('NEXT_PUBLIC_SUPABASE_URL');
-        if (!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) missingVars.push('NEXT_PUBLIC_SUPABASE_ANON_KEY');
-        
-        console.error('❌ Missing environment variables:', missingVars);
-        setError(`Missing environment variables: ${missingVars.join(', ')}`);
-        return;
-      }
-      
       // Try basic query first to test table access
       console.log('🔍 Step 1: Testing basic table access...');
-      console.log('🔍 Attempting to connect to projects table...');
-        let { data: basicData, error: basicError } = await supabase
+      let { data: basicData, error: basicError } = await supabase
         .from('projects')
-        .select('id, name, status')
+        .select('id, name, title, status')
         .limit(5);
-        
-      // Enhanced error logging
-      console.log('📊 Basic query result:', {
-        data: basicData,
-        error: basicError,
-        errorType: typeof basicError,
-        errorKeys: basicError ? Object.keys(basicError) : 'No error',
-        errorString: basicError ? JSON.stringify(basicError) : 'No error'
-      });
         
       if (basicError) {
         console.error('❌ Basic table access failed:', basicError);
-        
-        // Check if error is empty object
-        if (basicError && typeof basicError === 'object' && Object.keys(basicError).length === 0) {
-          console.log('⚠️ Error is empty object - this might indicate:');
-          console.log('1. Projects table does not exist');
-          console.log('2. Insufficient permissions');
-          console.log('3. Network/connection issue');
-          console.log('4. Invalid credentials');
-          
-          setError('Database access failed: Empty error response. The projects table may not exist or there may be a permissions issue.');
-        } else {
-          setError(`Cannot access projects table: ${basicError.message || 'Unknown database error'}`);
-        }
+        setError(`Cannot access projects table: ${basicError.message || 'Unknown database error'}`);
         return;
       }
       
       console.log('✅ Basic table access successful, found', basicData?.length || 0, 'projects');
       
-      // Try to get column information by querying one row with for-sale columns      console.log('🔍 Step 2: Testing for-sale columns...');
+      // Try to get column information by querying one row with for-sale columns
+      console.log('🔍 Step 2: Testing for-sale columns...');
       const { data: columnTest, error: columnError } = await supabase
         .from('projects')
-        .select('id, name, status, for_sale, target_price, total_investment')
+        .select('id, name, title, status, for_sale, target_price, total_investment')
         .limit(1);
         
       if (columnError) {
         console.log('⚠️ For-sale columns missing, using basic query only');
         console.log('Column error:', columnError.message);
-          // Use basic columns only - map to expected Project structure
+        
+        // Use basic columns only - map to expected Project structure
         const { data: basicProjects, error: basicProjectsError } = await supabase
           .from('projects')
-          .select('id, name, description, status, location, project_type, completion_date, images, address, city, region')
+          .select('id, name, title, description, status, location, project_type, completion_date, images, address, city, region')
           .eq('status', 'completed')
           .order('created_at', { ascending: false })
           .limit(50);
@@ -160,12 +126,14 @@ export default function ProjectsPage() {
           return;
         }
         
-        console.log('✅ Loaded projects with basic columns:', basicProjects?.length || 0);        // Map to Project interface
+        console.log('✅ Loaded projects with basic columns:', basicProjects?.length || 0);
+        
+        // Map to Project interface
         const mappedProjects = (basicProjects || []).map(p => ({
           ...p,
-          name: p.name || 'مشروع بدون اسم',
+          name: p.name || p.title || 'مشروع بدون اسم',
           for_sale: false,
-          target_price: undefined,
+          target_price: null,
           total_investment: 0,
           expected_profit: 0,
           city: p.city || p.location || 'غير محدد',
@@ -185,11 +153,13 @@ export default function ProjectsPage() {
       }
       
       // If for-sale columns exist, use full query
-      console.log('✅ For-sale columns available, using full query');      let { data, error } = await supabase
+      console.log('✅ For-sale columns available, using full query');
+      let { data, error } = await supabase
         .from('projects')
         .select(`
           id,
           name,
+          title,
           description,
           status,
           total_investment,
@@ -234,10 +204,11 @@ export default function ProjectsPage() {
       }
 
       console.log('✅ Projects loaded successfully:', data?.length || 0);
-        // Map the data to ensure consistent structure
+      
+      // Map the data to ensure consistent structure
       const mappedProjects = (data || []).map(p => ({
         ...p,
-        name: p.name || 'مشروع بدون اسم',
+        name: p.name || p.title || 'مشروع بدون اسم',
         city: p.city || p.location || 'غير محدد',
         region: p.region || 'غير محدد'
       }));
@@ -360,29 +331,12 @@ export default function ProjectsPage() {
         <div className="text-center max-w-md mx-auto">
           <div className="text-red-500 text-6xl mb-4">⚠️</div>
           <h1 className="text-2xl font-bold text-gray-900 mb-2">خطأ في تحميل المشاريع</h1>
-          <p className="text-gray-600 mb-4">{error}</p>          <button
+          <p className="text-gray-600 mb-4">{error}</p>
+          <button
             onClick={loadProjects}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors mr-2"
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
           >
             إعادة المحاولة
-          </button>
-          <button
-            onClick={async () => {
-              console.log('🔍 Manual Debug Test Starting...');
-              try {
-                const testResult = await supabase
-                  .from('projects')
-                  .select('id, name, status')
-                  .limit(3);
-                console.log('🔍 Manual test result:', testResult);
-                alert(`Test result: ${testResult.error ? 'Error: ' + testResult.error.message : 'Success! Found ' + (testResult.data?.length || 0) + ' projects'}`);              } catch (err: any) {
-                console.error('🔍 Manual test error:', err);
-                alert('Test failed: ' + (err?.message || 'Unknown error'));
-              }
-            }}
-            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
-          >
-            اختبار قاعدة البيانات
           </button>
           {process.env.NODE_ENV === 'development' && debugInfo && (
             <div className="mt-4 p-4 bg-gray-100 rounded-lg text-left text-xs">

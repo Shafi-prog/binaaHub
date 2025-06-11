@@ -2,6 +2,7 @@
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
+import { isProjectActive } from '@/lib/project-utils';
 import type {
   DashboardStats,
   Project,
@@ -26,14 +27,6 @@ export interface PaginatedResponse<T> {
 const PAGE_SIZE = 5;
 
 const supabase = createClientComponentClient();
-
-// Helper: determine if a project is active (in progress)
-function isProjectActive(project: { status: string; is_active?: boolean }) {
-  return (
-    ['construction', 'finishing', 'in_progress'].includes(project.status) &&
-    project.is_active !== false
-  );
-}
 
 // Get dashboard statistics
 export async function getDashboardStats(userId: string): Promise<DashboardStats> {
@@ -124,30 +117,30 @@ export async function getDashboardStats(userId: string): Promise<DashboardStats>
       throw new Error(`Failed to fetch notifications: ${notificationsResult.error.message}`);
     }
 
-    stats.unreadNotifications = (notificationsResult.data || []).length;
-
-    // Calculate monthly spending (from expenses)
+    stats.unreadNotifications = (notificationsResult.data || []).length;    // Calculate monthly spending (from expenses)
     const startOfMonth = new Date();
     startOfMonth.setDate(1);
     startOfMonth.setHours(0, 0, 0, 0);
 
-    const expensesResult = await supabase
-      .from('construction_expenses')
-      .select('amount')
-      .eq('user_id', userId)
-      .gte('created_at', startOfMonth.toISOString());
+    try {
+      const expensesResult = await supabase
+        .from('construction_expenses')
+        .select('amount, projects!inner(user_id)')
+        .eq('projects.user_id', userId)
+        .gte('created_at', startOfMonth.toISOString());
 
-    if (expensesResult.error) {
-      throw new Error(`Failed to fetch expenses: ${expensesResult.error.message}`);
+      if (!expensesResult.error) {
+        stats.monthlySpending = (expensesResult.data || []).reduce(
+          (sum, exp) => sum + (exp.amount || 0),
+          0
+        );
+      }
+    } catch (expenseError) {
+      // If expenses calculation fails, set to 0
+      stats.monthlySpending = 0;
     }
 
-    stats.monthlySpending = (expensesResult.data || []).reduce(
-      (sum, exp) => sum + (exp.amount || 0),
-      0
-    );
-
-    return stats;
-  } catch (error) {
+    return stats;  } catch (error: any) {
     if (error instanceof Error) {
       throw new Error(`Dashboard stats error: ${error.message}`);
     }
@@ -163,46 +156,18 @@ export async function getRecentProjects(
   const supabase = createClientComponentClient();
   const start = (page - 1) * PAGE_SIZE;
 
-  console.log('🔍 [getRecentProjects] Starting with params:', { userId, page, start, PAGE_SIZE });
-  console.log('🌐 [getRecentProjects] Supabase URL check...');
-  
-  // Add environment debug info
-  console.log('🔧 [getRecentProjects] Environment check:', {
-    nodeEnv: typeof process !== 'undefined' ? process.env.NODE_ENV : 'unknown',
-    supabaseUrl: typeof process !== 'undefined' ? process.env.NEXT_PUBLIC_SUPABASE_URL : 'unknown',
-    isClient: typeof window !== 'undefined'
-  });
-
   try {
-    // Check current session first
-    console.log('🔐 [getRecentProjects] Checking current session...');
-    const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
-    console.log('🔐 [getRecentProjects] Session check result:', { 
-      hasSession: !!sessionData?.session, 
-      hasUser: !!sessionData?.session?.user,
-      sessionUserId: sessionData?.session?.user?.id,
-      providedUserId: userId,
-      userIdMatch: sessionData?.session?.user?.id === userId,
-      sessionError: sessionError?.message 
-    });
-
     // Get total count
-    console.log('📊 [getRecentProjects] Getting total count...');
     const { count, error: countError } = await supabase
       .from('projects')
       .select('*', { count: 'exact', head: true })
       .eq('user_id', userId);
 
-    console.log('📊 [getRecentProjects] Count result:', { count, countError });
-
     if (countError) {
-      console.error('❌ [getRecentProjects] Count error:', countError);
-      console.error('❌ [getRecentProjects] Count error details:', JSON.stringify(countError, null, 2));
       throw countError;
     }
 
-    // Get paginated data (no metadata)
-    console.log('📋 [getRecentProjects] Getting paginated data...');
+    // Get paginated data
     const { data: projects, error } = await supabase
       .from('projects')
       .select('*')
@@ -210,20 +175,7 @@ export async function getRecentProjects(
       .order('created_at', { ascending: false })
       .range(start, start + PAGE_SIZE - 1);
 
-    console.log('📋 [getRecentProjects] Projects result:', { 
-      projectsCount: projects?.length || 0, 
-      error: error?.message,
-      errorDetails: error ? JSON.stringify(error, null, 2) : null,
-      sampleProject: projects?.[0] ? {
-        id: projects[0].id,
-        name: projects[0].name,
-        user_id: projects[0].user_id
-      } : null
-    });
-
     if (error) {
-      console.error('❌ [getRecentProjects] Projects query error:', error);
-      console.error('❌ [getRecentProjects] Projects error details:', JSON.stringify(error, null, 2));
       throw error;
     }
 
@@ -233,21 +185,8 @@ export async function getRecentProjects(
       total: count || 0,
       page,
     };
-
-    console.log('✅ [getRecentProjects] Final result:', result);
-    console.log('📊 [getRecentProjects] Summary:', {
-      itemsReturned: result.items.length,
-      totalInDb: result.total,
-      hasMore: result.hasMore,
-      page: result.page,
-      expectedUserId: userId
-    });
-    
-    return result;
-  } catch (error) {
-    console.error('❌ [getRecentProjects] Error fetching projects:', error);
-    console.error('❌ [getRecentProjects] Error details:', JSON.stringify(error, null, 2));
-    console.error('❌ [getRecentProjects] Stack trace:', error instanceof Error ? error.stack : 'No stack trace');
+      return result;  } catch (error: any) {
+    console.error('Error fetching recent projects:', error);
     
     return { items: [], hasMore: false, total: 0, page };
   }
@@ -283,8 +222,7 @@ export async function getRecentOrders(
       hasMore: count ? start + PAGE_SIZE < count : false,
       total: count || 0,
       page,
-    };
-  } catch (error) {
+    };  } catch (error: any) {
     console.error('Error fetching orders:', error);
     return { items: [], hasMore: false, total: 0, page };
   }
@@ -295,12 +233,11 @@ export async function getSpendingByCategory(
   userId: string,
   projectId?: string
 ): Promise<SpendingByCategory[]> {
-  try {
-    let query = supabase
-      .from('construction_expenses')
-      .select(
-        `id, amount, category_id, category(id, name, name_ar, color)`
-      );
+  try {    let query = supabase
+      .from('construction_expenses')      .select(
+        `id, amount, category_id, project_id, construction_categories(id, name, name_ar, color), projects!inner(user_id)`
+      )
+      .eq('projects.user_id', userId);
 
     if (projectId) {
       query = query.eq('project_id', projectId);
@@ -316,13 +253,12 @@ export async function getSpendingByCategory(
 
     for (const expense of data || []) {
       const categoryId = expense.category_id;
-      const categoryData = expense.category as unknown as ConstructionCategory;
+      const categoryData = expense.construction_categories as unknown as ConstructionCategory;
 
-      if (!categoryData) continue;
-
-      if (categoryMap.has(categoryId)) {
+      if (!categoryData) continue;      if (categoryMap.has(categoryId)) {
         const existing = categoryMap.get(categoryId)!;
         existing.total_amount += expense.amount;
+        existing.transaction_count += 1;
       } else {
         categoryMap.set(categoryId, {
           category_id: categoryId,
@@ -333,11 +269,9 @@ export async function getSpendingByCategory(
           transaction_count: 1,
         });
       }
-    }
-
-    return Array.from(categoryMap.values());
-  } catch (error) {
-    console.error('Error fetching spending by category:', error);
+    }    return Array.from(categoryMap.values());
+  } catch (error: any) {
+    console.error('Error fetching spending by category:', error?.message || error);
     return [];
   }
 }
@@ -395,8 +329,7 @@ export async function getActiveWarranties(
       });
     }
 
-    return warranties;
-  } catch (error) {
+    return warranties;  } catch (error: any) {
     console.error('Error fetching active warranties:', error);
     return [];
   }
@@ -456,8 +389,7 @@ export async function getAllWarranties(userId: string, status?: string): Promise
       });
     }
 
-    return warranties;
-  } catch (error) {
+    return warranties;  } catch (error: any) {
     console.error('Error fetching warranties:', error);
     return [];
   }
@@ -488,8 +420,7 @@ export async function getWarrantyStats(userId: string): Promise<{
       totalClaims: warranties.reduce((sum, w) => sum + (w.claim_count || 0), 0),
     };
 
-    return stats;
-  } catch (error) {
+    return stats;  } catch (error: any) {
     console.error('Error fetching warranty stats:', error);
     return { total: 0, active: 0, expired: 0, expiringSoon: 0, totalClaims: 0 };
   }
@@ -501,8 +432,7 @@ export async function createWarranty(warranty: Partial<Warranty>): Promise<Warra
     const { data, error } = await supabase.from('warranties').insert([warranty]).select().single();
 
     if (error) throw error;
-    return data;
-  } catch (error) {
+    return data;  } catch (error: any) {
     console.error('Error creating warranty:', error);
     return null;
   }
@@ -516,8 +446,7 @@ export async function updateWarranty(
   try {
     const { error } = await supabase.from('warranties').update(updates).eq('id', warrantyId);
 
-    return !error;
-  } catch (error) {
+    return !error;  } catch (error: any) {
     console.error('Error updating warranty:', error);
     return false;
   }
@@ -528,8 +457,7 @@ export async function deleteWarranty(warrantyId: string): Promise<boolean> {
   try {
     const { error } = await supabase.from('warranties').delete().eq('id', warrantyId);
 
-    return !error;
-  } catch (error) {
+    return !error;  } catch (error: any) {
     console.error('Error deleting warranty:', error);
     return false;
   }
@@ -553,8 +481,7 @@ export async function getDeliveryAddresses(userId: string): Promise<DeliveryAddr
       addresses.push(a as DeliveryAddress);
     }
 
-    return addresses;
-  } catch (error) {
+    return addresses;  } catch (error: any) {
     console.error('Error fetching delivery addresses:', error);
     return [];
   }
@@ -570,8 +497,7 @@ export async function getUserProfile(userId: string): Promise<UserProfile | null
       .single();
 
     if (error && error.code !== 'PGRST116') throw error;
-    return data as UserProfile | null;
-  } catch (error) {
+    return data as UserProfile | null;  } catch (error: any) {
     console.error('Error fetching user profile:', error);
     return null;
   }
@@ -599,8 +525,7 @@ export async function getRecentNotifications(
       notifications.push(n as Notification);
     }
 
-    return notifications;
-  } catch (error) {
+    return notifications;  } catch (error: any) {
     console.error('Error fetching notifications:', error);
     return [];
   }
@@ -614,8 +539,7 @@ export async function markNotificationAsRead(notificationId: string): Promise<bo
       .update({ is_read: true, read_at: new Date().toISOString() })
       .eq('id', notificationId);
 
-    return !error;
-  } catch (error) {
+    return !error;  } catch (error: any) {
     console.error('Error marking notification as read:', error);
     return false;
   }
@@ -662,11 +586,9 @@ export async function getRecentExpenses(
         created_at: e.created_at,
         updated_at: e.updated_at,
       } as ConstructionExpense);
-    }
-
-    return expenses;
-  } catch (error) {
-    console.error('Error fetching recent expenses:', error);
+    }    return expenses;
+  } catch (error: any) {
+    console.error('Error fetching recent expenses:', error?.message || error);
     return [];
   }
 }
@@ -715,6 +637,11 @@ export async function updateProject(
     floors_count: number;
     plot_area: number;
     building_area: number;
+    // For-sale related fields
+    for_sale: boolean;
+    advertisement_number: string;
+    sale_price: number;
+    sale_description: string;
   }>
 ): Promise<Project> {
   try {
@@ -731,8 +658,7 @@ export async function updateProject(
     if (updatePayload.expected_completion_date) {
       updatePayload.end_date = updatePayload.expected_completion_date;
       delete updatePayload.expected_completion_date;
-    }
-    // Only remove fields that truly do not exist in the schema
+    }    // Only remove fields that truly do not exist in the schema
     delete updatePayload.actual_completion_date;
     delete updatePayload.district;
     delete updatePayload.country;
@@ -744,7 +670,7 @@ export async function updateProject(
     delete updatePayload.building_area;
     delete updatePayload.metadata;
     delete updatePayload.image_url;
-    // DO NOT delete actual_cost, city, region, priority, or progress_percentage
+    // DO NOT delete actual_cost, city, region, priority, progress_percentage, or for_sale fields
 
     console.log('[updateProject] Update payload:', updatePayload);
 
@@ -771,12 +697,10 @@ export async function updateProject(
       location: data.location,
       address: data.address || '',
       city: data.city || '',
-      region: data.region || '',
-      status: data.status,
-      priority: data.priority || 'medium',
-      start_date: data.start_date,
+      region: data.region || '',      status: data.status,
+      priority: data.priority || 'medium',      start_date: data.start_date,
       expected_completion_date: data.end_date,
-      actual_completion_date: data.actual_completion_date,
+      actual_completion_date: undefined, // This field doesn't exist in the database
       budget: data.budget || 0,
       actual_cost: data.actual_cost,
       progress_percentage: data.progress_percentage,
@@ -820,32 +744,34 @@ export async function updateProject(
 // Get a single project by ID
 export async function getProjectById(projectId: string): Promise<Project | null> {
   try {
-    console.log('🔍 [getProjectById] Starting fetch for projectId:', projectId);
-    
     const {
       data: { user },
     } = await supabase.auth.getUser();
-
-    console.log('👤 [getProjectById] Auth user:', user ? { id: user.id, email: user.email } : 'null');
     
     if (!user) {
-      console.error('❌ [getProjectById] User not authenticated');
       throw new Error('User not authenticated');
     }
     
-    console.log('🔍 [getProjectById] Querying project with filters:', { projectId, userId: user.id });
-
-    // First, let's check if this user has any projects at all (for debugging)
-    const { data: allUserProjects, error: allProjectsError } = await supabase
+    // First check if project exists at all
+    const { data: projectExists, error: existsError } = await supabase
       .from('projects')
-      .select('id, name, user_id')
-      .eq('user_id', user.id);
+      .select('id, user_id, name')
+      .eq('id', projectId)
+      .single();
     
-    console.log('📊 [getProjectById] User has total projects:', allUserProjects?.length || 0);
+    if (existsError) {
+      if (existsError.code === 'PGRST116') {
+        // Project doesn't exist
+        throw new Error('PROJECT_NOT_FOUND');
+      }
+      throw existsError;
+    }
     
-    if (allUserProjects && allUserProjects.length > 0) {
-      console.log('📋 [getProjectById] User\'s project IDs:', allUserProjects.map(p => ({ id: p.id, name: p.name })));
-    }    const { data, error } = await supabase
+    // Check if user owns the project
+    if (projectExists.user_id !== user.id) {
+      throw new Error('PROJECT_ACCESS_DENIED');
+    }    // Now get the full project data
+    const { data, error } = await supabase
       .from('projects')
       .select(
         `
@@ -854,47 +780,15 @@ export async function getProjectById(projectId: string): Promise<Project | null>
         budget, actual_cost, progress_percentage, is_active, created_at, updated_at
         `
       ).eq('id', projectId)
-      .eq('user_id', user.id) // Ensure user can only access their own projects
+      .eq('user_id', user.id)
       .single();
     
-    console.log('📊 [getProjectById] Raw query result:', { data, error });
-    
     if (error) {
-      // EMERGENCY FIX: Multiple error logging approaches
-      console.error('❌ [getProjectById] Database error detected!');
-      console.error('Error object keys:', Object.keys(error || {}));
-      console.error('Error message:', error?.message || 'No message');
-      console.error('Error code:', error?.code || 'No code');
-      console.error('Error details:', error?.details || 'No details');
-      console.error('Error hint:', error?.hint || 'No hint');
-      console.error('Raw error:', error);
-      console.error('Stringified error:', JSON.stringify(error, null, 2));
-      
-      if (error.code === 'PGRST116') {
-        // No rows returned
-        console.log('❌ [getProjectById] No rows returned (PGRST116) - Project not found or access denied');
-        return null;
-      }
-      
-      // Enhanced error logging with fallbacks
-      const errorInfo = {
-        timestamp: new Date().toISOString(),
-        function: 'getProjectById',
-        projectId: projectId,
-        userId: user?.id,
-        message: error?.message || 'Unknown error',
-        code: error?.code || 'Unknown code',
-        details: error?.details || 'No details available',
-        hint: error?.hint || 'No hint available',
-        full_error: error,
-        error_type: typeof error,
-        error_constructor: error?.constructor?.name
-      };
-      
-      console.error('❌ [getProjectById] DETAILED ERROR INFO:', errorInfo);
       throw error;
-    }      console.log('✅ [getProjectById] Project found, transforming data...');
-      const transformedProject: Project = {
+    }
+
+    // Transform the data to match the Project interface
+    const transformedProject: Project = {
       id: data.id,
       user_id: data.user_id,
       name: data.name,
@@ -903,11 +797,10 @@ export async function getProjectById(projectId: string): Promise<Project | null>
       location: data.location,
       address: data.address || '',
       city: data.city || '',
-      region: data.region || '',
-      status: data.status,
-      priority: data.priority || 'medium',
-      start_date: data.start_date,
-      expected_completion_date: data.end_date, // Map end_date to expected_completion_date
+      region: data.region || '',      status: data.status,
+      priority: data.priority || 'medium',      start_date: data.start_date,
+      expected_completion_date: data.end_date,
+      actual_completion_date: undefined, // This field doesn't exist in the database
       budget: data.budget || 0,
       actual_cost: data.actual_cost ?? 0,
       progress_percentage: data.progress_percentage ?? 0,
@@ -916,11 +809,19 @@ export async function getProjectById(projectId: string): Promise<Project | null>
       updated_at: data.updated_at,
       currency: 'SAR',
     };
+      return transformedProject;
+  } catch (error: any) {
+    console.error('Error in getProjectById:', error?.message || error);
     
-    console.log('✅ [getProjectById] Returning transformed project:', transformedProject);
-    return transformedProject;
-  } catch (error) {
-    console.error('❌ [getProjectById] Error:', error);
+    // Provide specific error messages for different scenarios
+    if (error.message === 'PROJECT_NOT_FOUND') {
+      throw new Error('المشروع غير موجود في قاعدة البيانات');
+    } else if (error.message === 'PROJECT_ACCESS_DENIED') {
+      throw new Error('ليس لديك صلاحية للوصول إلى هذا المشروع');
+    } else if (error.message === 'User not authenticated') {
+      throw new Error('يرجى تسجيل الدخول أولاً');
+    }
+    
     throw error;
   }
 }
@@ -940,10 +841,8 @@ export async function deleteProject(projectId: string): Promise<void> {
       .from('projects')
       .delete()
       .eq('id', projectId)
-      .eq('user_id', user.id); // Ensure user can only delete their own projects
-
-    if (error) throw error;
-  } catch (error) {
+      .eq('user_id', user.id); // Ensure user can only delete their own projects    if (error) throw error;
+  } catch (error: any) {
     console.error('Error deleting project:', error);
     throw error;
   }
@@ -971,4 +870,55 @@ export async function getProjectImages(projectId: string): Promise<ProjectImage[
     .order('created_at', { ascending: true });
   if (error) throw error;
   return data || [];
+}
+
+// Get all user's projects (no pagination)
+export async function getAllProjects(userId: string): Promise<Project[]> {
+  const supabase = createClientComponentClient();
+
+  try {
+    const { data: projects, error } = await supabase
+      .from('projects')
+      .select(`
+        id, user_id, name, description, project_type, location, 
+        address, city, region, status, priority, start_date, end_date,
+        budget, actual_cost, progress_percentage, is_active, created_at, updated_at
+      `)
+      .eq('user_id', userId)
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      throw error;
+    }
+
+    // Transform projects to match the Project interface
+    const transformedProjects: Project[] = (projects || []).map(data => ({
+      id: data.id,
+      user_id: data.user_id,
+      name: data.name,
+      description: data.description || '',
+      project_type: data.project_type,
+      location: data.location,
+      address: data.address || '',
+      city: data.city || '',
+      region: data.region || '',
+      status: data.status,
+      priority: data.priority || 'medium',
+      start_date: data.start_date,
+      expected_completion_date: data.end_date, // Map end_date to expected_completion_date
+      actual_completion_date: undefined, // This field doesn't exist in the database
+      budget: data.budget || 0,
+      actual_cost: data.actual_cost ?? 0,
+      progress_percentage: data.progress_percentage ?? 0,
+      is_active: data.is_active,
+      created_at: data.created_at,
+      updated_at: data.updated_at,
+      currency: 'SAR',
+    }));
+
+    return transformedProjects;
+  } catch (error: any) {
+    console.error('Error fetching all projects:', error);
+    return [];
+  }
 }

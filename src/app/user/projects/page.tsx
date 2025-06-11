@@ -6,8 +6,8 @@ import { User } from '@supabase/supabase-js';
 import Link from 'next/link';
 import { Card, LoadingSpinner, StatusBadge } from '@/components/ui';
 import { verifyAuthWithRetry } from '@/lib/auth-recovery';
-import { getRecentProjects } from '@/lib/api/dashboard';
-import { formatCurrency, formatDate, translateStatus, calculateProjectProgress } from '@/lib/utils';
+import { getAllProjects } from '@/lib/api/dashboard';
+import { formatCurrency, formatDate, translateStatus } from '@/lib/utils';
 import type { Project } from '@/types/dashboard';
 import { 
   Plus, 
@@ -21,6 +21,14 @@ import {
   Filter,
   Search
 } from 'lucide-react';
+import { 
+  isProjectActive, 
+  getStatusLabel, 
+  getProgressFromStatus, 
+  getStatusColor, 
+  calculateProjectProgress,
+  getProjectTypeLabel 
+} from '@/lib/project-utils';
 
 export default function ProjectsPage() {
   const router = useRouter();
@@ -55,11 +63,10 @@ export default function ProjectsPage() {
 
     initAuth();
   }, [router]);
-
   const fetchProjects = async (userId: string) => {
     try {
-      const response = await getRecentProjects(userId, 1);
-      setProjects(response.items || []);
+      const projects = await getAllProjects(userId);
+      setProjects(projects || []);
     } catch (error) {
       console.error('Error fetching projects:', error);
     }
@@ -71,49 +78,6 @@ export default function ProjectsPage() {
     const matchesStatus = statusFilter === 'all' || project.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'planning': return 'bg-yellow-100 text-yellow-800';
-      case 'design': return 'bg-blue-100 text-blue-800';
-      case 'permits': return 'bg-purple-100 text-purple-800';
-      case 'construction': return 'bg-orange-100 text-orange-800';
-      case 'finishing': return 'bg-indigo-100 text-indigo-800';
-      case 'completed': return 'bg-green-100 text-green-800';
-      case 'on_hold': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
-    }
-  };
-
-  // Fix: treat 'active' as 'قيد التنفيذ' for legacy/old data
-  const getStatusLabel = (status: string) => {
-    switch (status) {
-      case 'construction':
-      case 'finishing':
-      case 'in_progress':
-      case 'active':
-        return 'قيد التنفيذ';
-      case 'planning': return 'التخطيط';
-      case 'design': return 'التصميم';
-      case 'permits': return 'التراخيص';
-      case 'completed': return 'مكتمل';
-      case 'on_hold': return 'متوقف';
-      default: return status;
-    }
-  };
-
-  const getProgressPercentage = (status: string) => {
-    switch (status) {
-      case 'planning': return 10;
-      case 'design': return 25;
-      case 'permits': return 40;
-      case 'construction': return 70;
-      case 'finishing': return 90;
-      case 'completed': return 100;
-      case 'on_hold': return 0;
-      default: return 0;
-    }
-  };
 
   if (loading) {
     return (
@@ -261,7 +225,7 @@ export default function ProjectsPage() {
                   )}
                   <div className="flex items-center text-sm text-gray-600">
                     <Building2 className="h-4 w-4 mr-2" />
-                    <span>النوع: {project.project_type || 'غير محدد'}</span>
+                    <span>النوع: {getProjectTypeLabel(project.project_type || '')}</span>
                   </div>
                 </div>
 
@@ -312,7 +276,7 @@ export default function ProjectsPage() {
               <Building2 className="h-6 w-6 text-orange-600" />
             </div>
             <div className="text-2xl font-bold text-gray-900">
-              {projects.filter(p => ['construction', 'finishing', 'in_progress', 'active'].includes((p.status || '').toLowerCase())).length}
+              {projects.filter(isProjectActive).length}
             </div>
             <div className="text-sm text-gray-600">قيد التنفيذ</div>
           </Card>
@@ -322,7 +286,7 @@ export default function ProjectsPage() {
               <Building2 className="h-6 w-6 text-yellow-600" />
             </div>
             <div className="text-2xl font-bold text-gray-900">
-              {projects.filter(p => ['planning', 'design', 'permits'].includes(p.status)).length}
+              {projects.filter(p => ['planning', 'design', 'permits'].includes((p.status || '').toLowerCase())).length}
             </div>
             <div className="text-sm text-gray-600">في مرحلة التخطيط</div>
           </Card>

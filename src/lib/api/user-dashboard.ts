@@ -31,8 +31,9 @@ export type UserDashboardStats = {
 
 // Helper: determine if a project is active (in progress)
 function isProjectActive(project: { status: string; is_active?: boolean }) {
+  const status = (project.status || '').toString().trim().toLowerCase();
   return (
-    ['construction', 'finishing', 'in_progress'].includes(project.status) &&
+    ['construction', 'finishing', 'in_progress', 'active'].includes(status) &&
     project.is_active !== false
   );
 }
@@ -48,7 +49,7 @@ export async function getUserDashboardStats(userId: string): Promise<UserDashboa
     { data: recentOrders },
     { data: recentProjects },
   ] = await Promise.all([
-    // Get projects summary
+    // Get projects summary - remove limit to get all projects
     supabase.from('projects').select('id, status, is_active, metadata').eq('user_id', userId),
 
     // Get warranties summary

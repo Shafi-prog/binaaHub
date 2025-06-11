@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { User } from '@supabase/supabase-js';
@@ -8,10 +8,13 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { verifyAuthWithRetry } from '@/lib/auth-recovery';
-import { getProjectById, updateProject, getSpendingByCategory, getRecentExpenses } from '@/lib/api/dashboard';
+import { getProjectById, updateProject, getSpendingByCategory, getRecentExpenses, deleteProject, getAllProjects } from '@/lib/api/dashboard';
 import type { ProjectData } from '@/types/project';
 import { StatCard } from '@/components/user/DashboardComponents';
 import { DollarSign, TrendingUp, Calendar, FileText, BarChart2, CheckCircle, AlertTriangle } from 'lucide-react';
+import { toast } from 'react-hot-toast';
+import { getAllProjectStatuses, canProjectBeForSale } from '@/lib/project-utils';
+import ForSaleModal from '@/components/ForSaleModal';
 
 export default function EditProjectPage() {
   const params = useParams();
@@ -22,7 +25,7 @@ export default function EditProjectPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [authError, setAuthError] = useState<string | null>(null);
-  const [formData, setFormData] = useState({
+  const [loadError, setLoadError] = useState<string | null>(null);  const [formData, setFormData] = useState({
     name: '',
     description: '',
     project_type: '',
@@ -37,13 +40,88 @@ export default function EditProjectPage() {
     actual_cost: '',
     location_lat: '',
     location_lng: '',
+    for_sale: false,
+    advertisement_number: '',
+    sale_price: '',
+    sale_description: '',
   });
   const [dashboardStats, setDashboardStats] = useState<any>(null);
   const [spendingByCategory, setSpendingByCategory] = useState<any[]>([]);
-  const [recentExpenses, setRecentExpenses] = useState<any[]>([]);
+  const [recentExpenses, setRecentExpenses] = useState<any[]>([]);  const [showImportModal, setShowImportModal] = useState(false);
+  const [importedProjects, setImportedProjects] = useState<any[]>([]);
+  const [showForSaleModal, setShowForSaleModal] = useState(false);
+  const [originalStatus, setOriginalStatus] = useState('');
+  const [deleting, setDeleting] = useState(false);
+  const [allProjects, setAllProjects] = useState<any[]>([]);
+  const [projectFilter, setProjectFilter] = useState({
+    search: '',
+    status: 'all',
+    limit: 10,
+    sort: 'updated_at',
+    sortDir: 'desc',
+  });
+  const [selectedProjectIndex, setSelectedProjectIndex] = useState(0);
 
   const supabase = createClientComponentClient();
+  const lastAuthErrorRef = useRef<string | null>(null);
+  const lastLoadErrorRef = useRef<string | null>(null);
 
+  // Define loadProjectData function before useEffects
+  const loadProjectData = useCallback(async () => {
+    try {
+      const projectData = await getProjectById(projectId);
+      if (projectData) {        setFormData({
+          name: projectData.name,
+          description: projectData.description || '',
+          project_type: projectData.project_type,
+          address: projectData.address || '',
+          city: projectData.city || '',
+          region: projectData.region || '',
+          budget: projectData.budget?.toString() || '',
+          end_date: projectData.expected_completion_date || '',
+          priority: projectData.priority,
+          status: projectData.status,
+          progress_percentage: projectData.progress_percentage?.toString() || '',
+          actual_cost: projectData.actual_cost?.toString() || '',
+          location_lat: projectData.location ? (() => {
+            try {
+              const loc = JSON.parse(projectData.location);
+              return (loc.lat || '').toString();
+            } catch (e) {
+              return '';
+            }
+          })() : '',
+          location_lng: projectData.location ? (() => {
+            try {
+              const loc = JSON.parse(projectData.location);
+              return (loc.lng || '').toString();
+            } catch (e) {
+              return '';
+            }
+          })() : '',
+          for_sale: projectData.for_sale || false,
+          advertisement_number: projectData.advertisement_number || '',
+          sale_price: projectData.sale_price?.toString() || '',
+          sale_description: projectData.sale_description || '',        });
+        setOriginalStatus(projectData.status || 'planning');
+        setLoadError(null);} else {
+        setLoadError('المشروع غير موجود أو ليس لديك صلاحية الوصول إليه');
+      }
+    } catch (error: any) {
+      console.error('Error loading project:', error);
+      
+      // Handle specific error messages
+      if (error.message && error.message.includes('غير موجود في قاعدة البيانات')) {
+        setLoadError('المشروع غير موجود في قاعدة البيانات');
+      } else if (error.message && error.message.includes('ليس لديك صلاحية')) {
+        setLoadError('ليس لديك صلاحية للوصول إلى هذا المشروع. تأكد من تسجيل الدخول بالحساب الصحيح.');
+      } else if (error.message && error.message.includes('تسجيل الدخول')) {
+        setLoadError('يرجى تسجيل الدخول أولاً');
+      } else {
+        setLoadError('حدث خطأ في تحميل بيانات المشروع');
+      }
+    }
+  }, [projectId]);
   useEffect(() => {
     const initAuth = async () => {
       try {
@@ -51,7 +129,6 @@ export default function EditProjectPage() {
         if (user) {
           setUser(user.user);
           setAuthError(null);
-          loadProjectData();
         } else {
           setAuthError('يرجى تسجيل الدخول للمتابعة');
           router.push('/login');
@@ -65,61 +142,88 @@ export default function EditProjectPage() {
     };
 
     initAuth();
-  }, [router, projectId]);
-
-  const loadProjectData = async () => {
-    try {
-      const projectData = await getProjectById(projectId);
-      if (projectData) {
-        setFormData({
-          name: projectData.name,
-          description: projectData.description || '',
-          project_type: projectData.project_type,
-          address: projectData.address || '',
-          city: projectData.city || '',
-          region: projectData.region || '',
-          budget: projectData.budget?.toString() || '',
-          end_date: projectData.expected_completion_date || '',
-          priority: projectData.priority,
-          status: projectData.status,
-          progress_percentage: projectData.progress_percentage?.toString() || '',
-          actual_cost: projectData.actual_cost?.toString() || '',
-          location_lat: projectData.location ? (JSON.parse(projectData.location).lat || '').toString() : '',
-          location_lng: projectData.location ? (JSON.parse(projectData.location).lng || '').toString() : '',
-        });
-      } else {
-        alert('المشروع غير موجود');
-        router.push('/user/projects');
-      }
-    } catch (error) {
-      alert('حدث خطأ في تحميل بيانات المشروع');
-      router.push('/user/projects');
+  }, [router]);
+  // Separate useEffect for loading project data when user and projectId are available
+  useEffect(() => {
+    if (user && projectId && !loading) {
+      loadProjectData();
     }
-  };
+  }, [user, projectId, loading, loadProjectData]);
+
+  // Unified notification for loading and error (improved)
+  useEffect(() => {
+    const toastId = 'project-loading-toast';
+    if (loading) {
+      toast.dismiss(toastId);
+      toast.loading('جاري تحميل بيانات المشروع...', { id: toastId as any });
+      lastAuthErrorRef.current = null;
+      lastLoadErrorRef.current = null;
+    } else {
+      toast.dismiss(toastId);
+      // Show auth error toast only if it changed
+      if (authError && lastAuthErrorRef.current !== authError) {
+        toast.error(authError, { id: toastId as any });
+        lastAuthErrorRef.current = authError;
+      }
+      // Show load error toast only if it changed and not the special case handled below
+      if (
+        loadError &&
+        loadError !== 'المشروع غير موجود أو ليس لديك صلاحية الوصول إليه' &&
+        lastLoadErrorRef.current !== loadError
+      ) {
+        // Show more specific error if possible
+        if (loadError.includes('غير موجود')) {
+          toast.error('المشروع غير موجود في قاعدة البيانات', { id: toastId as any });
+        } else if (loadError.includes('صلاحية')) {
+          toast.error('ليس لديك صلاحية للوصول إلى هذا المشروع. تأكد من تسجيل الدخول بالحساب الصحيح.', { id: toastId as any });
+        } else if (loadError.includes('تسجيل الدخول')) {
+          toast.error('يرجى تسجيل الدخول أولاً', { id: toastId as any });
+        } else {
+          toast.error('حدث خطأ في تحميل بيانات المشروع', { id: toastId as any });
+        }
+        lastLoadErrorRef.current = loadError;
+      }
+    }  }, [loading, authError, loadError]);
 
   useEffect(() => {
     const fetchDashboard = async () => {
       try {
-        const [spending, expenses] = await Promise.all([
-          getSpendingByCategory(user?.id || '', projectId),
-          getRecentExpenses(user?.id || '', 5),
-        ]);
-        setSpendingByCategory(spending);
-        setRecentExpenses(expenses.filter(e => e.project_id === projectId));
+        // Since construction_expenses table is empty and causing errors,
+        // we'll skip these calls for now and just set empty arrays
+        setSpendingByCategory([]);
+        setRecentExpenses([]);
       } catch (e) {
         // ignore
       }
     };
     if (user) fetchDashboard();
   }, [user, projectId]);
-
-  const handleInputChange = (
+  // Fetch all user projects for display/filtering
+  useEffect(() => {
+    const fetchAllProjects = async () => {
+      if (!user) return;
+      try {
+        const projects = await getAllProjects(user.id);
+        setAllProjects(projects || []);
+      } catch (e) {
+        setAllProjects([]);
+      }
+    };
+    fetchAllProjects();
+  }, [user]);  const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
-    const { name, value } = e.target;
+    const { name, value, type } = e.target;
+    const checked = (e.target as HTMLInputElement).checked;
+    
+    // Check if status is changing to 'completed' from a non-completed status
+    if (name === 'status' && value === 'completed' && originalStatus !== 'completed') {
+      setShowForSaleModal(true);
+    }
+    
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: type === 'checkbox' ? checked : value,
     }));
   };
 
@@ -128,8 +232,7 @@ export default function EditProjectPage() {
     if (!user) return;
 
     setSaving(true);
-    try {
-      const updateData = {
+    try {      const updateData = {
         name: formData.name,
         description: formData.description,
         project_type: formData.project_type,
@@ -144,7 +247,11 @@ export default function EditProjectPage() {
         status: formData.status,
         progress_percentage: formData.progress_percentage ? parseInt(formData.progress_percentage) : undefined,
         actual_cost: formData.actual_cost ? parseFloat(formData.actual_cost) : undefined,
-        location: formData.location_lat && formData.location_lng ? JSON.stringify({ lat: parseFloat(formData.location_lat), lng: parseFloat(formData.location_lng) }) : undefined,
+        location: formData.location_lat && formData.location_lng ? JSON.stringify({ lat: parseFloat(formData.location_lat), lng: parseFloat(formData.location_lng) }) : undefined,        // For-sale related fields
+        for_sale: formData.for_sale || false,
+        advertisement_number: formData.for_sale ? formData.advertisement_number : undefined,
+        sale_price: formData.for_sale && formData.sale_price ? parseFloat(formData.sale_price) : undefined,
+        sale_description: formData.for_sale ? formData.sale_description : undefined,
       };
 
       const result = await updateProject(projectId, updateData);
@@ -156,6 +263,128 @@ export default function EditProjectPage() {
     }
   };
 
+  const handleDeleteProject = async () => {
+    if (!window.confirm('هل أنت متأكد من حذف هذا المشروع؟ لا يمكن التراجع عن هذا الإجراء.')) return;
+    setDeleting(true);
+    try {
+      await deleteProject(projectId);
+      router.push('/user/projects');
+    } catch (error) {
+      alert('حدث خطأ أثناء حذف المشروع');
+    } finally {
+      setDeleting(false);
+    }
+  };
+  const handleImportProjects = async () => {
+    if (!user) return;
+    try {
+      const allProjects = await getAllProjects(user.id);
+      setImportedProjects(allProjects || []);
+      setShowImportModal(true);
+    } catch (error) {
+      alert('حدث خطأ أثناء استيراد المشاريع');
+    }
+  };
+  // Handle for-sale modal submission
+  const handleForSaleSubmit = async (forSaleData: {
+    for_sale: boolean;
+    advertisement_number: string;
+    sale_price: string;
+    sale_description: string;
+    profit_percentage: number;
+  }) => {
+    try {
+      setSaving(true);
+      
+      // Update form data with for-sale information
+      setFormData(prev => ({
+        ...prev,
+        for_sale: forSaleData.for_sale,
+        advertisement_number: forSaleData.advertisement_number,
+        sale_price: forSaleData.sale_price,
+        sale_description: forSaleData.sale_description,
+      }));
+
+      // Prepare update data
+      const updateData = {
+        name: formData.name,
+        description: formData.description,
+        project_type: formData.project_type,
+        address: formData.address || undefined,
+        city: formData.city || undefined,
+        region: formData.region || undefined,
+        budget: formData.budget ? parseFloat(formData.budget) : undefined,
+        expected_completion_date: formData.end_date || undefined,
+        priority: formData.priority,
+        status: 'completed',
+        progress_percentage: formData.progress_percentage ? parseInt(formData.progress_percentage) : undefined,
+        actual_cost: formData.actual_cost ? parseFloat(formData.actual_cost) : undefined,
+        location: formData.location_lat && formData.location_lng ? 
+          JSON.stringify({ lat: parseFloat(formData.location_lat), lng: parseFloat(formData.location_lng) }) : undefined,        // For-sale related fields
+        for_sale: forSaleData.for_sale,
+        advertisement_number: forSaleData.for_sale ? forSaleData.advertisement_number : undefined,
+        sale_price: forSaleData.for_sale && forSaleData.sale_price ? parseFloat(forSaleData.sale_price) : undefined,
+        sale_description: forSaleData.for_sale ? forSaleData.sale_description : undefined,
+      };
+
+      const result = await updateProject(projectId, updateData);
+      
+      setShowForSaleModal(false);
+      setOriginalStatus('completed');
+      
+      if (forSaleData.for_sale) {
+        toast.success('تم حفظ المشروع كمكتمل وعرضه للبيع بنجاح!');
+      } else {
+        toast.success('تم حفظ المشروع كمكتمل بنجاح!');
+      }
+      
+      // Optionally redirect to project detail page
+      router.push(`/user/projects/${projectId}`);
+      
+    } catch (error) {
+      toast.error('حدث خطأ في حفظ المشروع');
+      console.error('Error updating project:', error);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleForSaleModalClose = () => {
+    setShowForSaleModal(false);
+    // Reset status to original value if user cancels
+    setFormData(prev => ({
+      ...prev,
+      status: originalStatus,
+    }));
+  };
+
+  // Filtering logic for all projects
+  const filteredProjects = allProjects
+    .filter((p) =>
+      (projectFilter.status === 'all' || p.status === projectFilter.status) &&
+      (projectFilter.search === '' || (p.name && p.name.toLowerCase().includes(projectFilter.search.toLowerCase())))
+    )
+    .sort((a, b) => {
+      if (projectFilter.sortDir === 'desc') {
+        return new Date(b[projectFilter.sort]).getTime() - new Date(a[projectFilter.sort]).getTime();
+      } else {
+        return new Date(a[projectFilter.sort]).getTime() - new Date(b[projectFilter.sort]).getTime();
+      }
+    })
+    .slice(0, projectFilter.limit);
+
+  // Navigation for next/prev project
+  const handlePrevProject = () => {
+    setSelectedProjectIndex((prev) => (prev > 0 ? prev - 1 : filteredProjects.length - 1));
+    const prevProject = filteredProjects[selectedProjectIndex > 0 ? selectedProjectIndex - 1 : filteredProjects.length - 1];
+    if (prevProject) router.push(`/user/projects/${prevProject.id}/edit`);
+  };
+  const handleNextProject = () => {
+    setSelectedProjectIndex((prev) => (prev < filteredProjects.length - 1 ? prev + 1 : 0));
+    const nextProject = filteredProjects[selectedProjectIndex < filteredProjects.length - 1 ? selectedProjectIndex + 1 : 0];
+    if (nextProject) router.push(`/user/projects/${nextProject.id}/edit`);
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -163,16 +392,33 @@ export default function EditProjectPage() {
       </div>
     );
   }
-
+  // Only show error page if project is truly missing or access denied
   if (authError) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <Card className="p-6 text-center">
-          <h2 className="text-xl font-bold text-red-600 mb-4">خطأ في المصادقة</h2>
+          <h2 className="text-xl font-bold text-red-600 mb-4">خطأ</h2>
           <p className="text-gray-600">{authError}</p>
+          <Button onClick={() => router.push('/login')} className="mt-4">العودة لتسجيل الدخول</Button>
         </Card>
       </div>
     );
+  }
+  // Only show error page if project is truly missing or access denied
+  if (loadError === 'المشروع غير موجود أو ليس لديك صلاحية الوصول إليه') {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <Card className="p-6 text-center">
+          <h2 className="text-xl font-bold text-red-600 mb-4">خطأ</h2>
+          <p className="text-gray-600">{loadError}</p>
+          <Button onClick={() => router.push('/user/projects')} className="mt-4">العودة للمشاريع</Button>
+        </Card>
+      </div>
+    );
+  }
+  // For other errors, show a toast but keep the UI visible
+  if (loadError) {
+    toast.error(loadError);
   }
 
   return (
@@ -184,6 +430,11 @@ export default function EditProjectPage() {
             <Card className="p-8 mb-6">
               <h2 className="text-2xl font-bold mb-6 text-blue-700">تعديل بيانات المشروع</h2>
               <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="flex gap-4 mb-4">
+                  <Button variant="destructive" onClick={handleDeleteProject} disabled={deleting}>
+                    {deleting ? 'جاري الحذف...' : 'حذف المشروع'}
+                  </Button>
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">اسم المشروع *</label>
@@ -192,14 +443,14 @@ export default function EditProjectPage() {
                   <div>
                     <label htmlFor="project_type" className="block text-sm font-medium text-gray-700 mb-2">نوع المشروع</label>
                     <Input id="project_type" name="project_type" value={formData.project_type} onChange={handleInputChange} />
-                  </div>
-                  <div>
+                  </div>                  <div>
                     <label htmlFor="status" className="block text-sm font-medium text-gray-700 mb-2">الحالة</label>
                     <select id="status" name="status" value={formData.status} onChange={handleInputChange} className="w-full border rounded-lg px-3 py-2">
-                      <option value="planning">تخطيط</option>
-                      <option value="active">قيد التنفيذ</option>
-                      <option value="completed">مكتمل</option>
-                      <option value="on_hold">معلق</option>
+                      {getAllProjectStatuses().map(status => (
+                        <option key={status.value} value={status.value}>
+                          {status.label} ({status.progress}%)
+                        </option>
+                      ))}
                     </select>
                   </div>
                   <div>
@@ -245,12 +496,73 @@ export default function EditProjectPage() {
                   <div>
                     <label htmlFor="location_lat" className="block text-sm font-medium text-gray-700 mb-2">خط العرض</label>
                     <Input id="location_lat" name="location_lat" value={formData.location_lat} onChange={handleInputChange} />
-                  </div>
-                  <div>
+                  </div>                  <div>
                     <label htmlFor="location_lng" className="block text-sm font-medium text-gray-700 mb-2">خط الطول</label>
                     <Input id="location_lng" name="location_lng" value={formData.location_lng} onChange={handleInputChange} />
                   </div>
                 </div>
+
+                {/* For Sale Section - Only show when project is completed */}
+                {canProjectBeForSale({ status: formData.status }) && (
+                  <div className="border-t pt-6">
+                    <h3 className="text-lg font-semibold mb-4 text-green-700">عرض المشروع للبيع</h3>
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-3">
+                        <input
+                          id="for_sale"
+                          name="for_sale"
+                          type="checkbox"
+                          checked={formData.for_sale}
+                          onChange={handleInputChange}
+                          className="rounded border-gray-300 text-green-600 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50"
+                        />
+                        <label htmlFor="for_sale" className="text-sm font-medium text-gray-700">
+                          عرض هذا المشروع للبيع على الصفحة العامة
+                        </label>
+                      </div>
+                      
+                      {formData.for_sale && (
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 p-4 bg-green-50 rounded-lg">
+                          <div>
+                            <label htmlFor="advertisement_number" className="block text-sm font-medium text-gray-700 mb-2">رقم الإعلان *</label>
+                            <Input 
+                              id="advertisement_number" 
+                              name="advertisement_number" 
+                              value={formData.advertisement_number} 
+                              onChange={handleInputChange}
+                              placeholder="مثال: AD-2025-001"
+                              required={formData.for_sale}
+                            />
+                          </div>
+                          <div>
+                            <label htmlFor="sale_price" className="block text-sm font-medium text-gray-700 mb-2">سعر البيع (ر.س)</label>
+                            <Input 
+                              id="sale_price" 
+                              name="sale_price" 
+                              type="number"
+                              value={formData.sale_price} 
+                              onChange={handleInputChange}
+                              placeholder="مثال: 1500000"
+                            />
+                          </div>
+                          <div className="md:col-span-2">
+                            <label htmlFor="sale_description" className="block text-sm font-medium text-gray-700 mb-2">وصف الإعلان</label>
+                            <textarea 
+                              id="sale_description" 
+                              name="sale_description" 
+                              rows={3}
+                              value={formData.sale_description} 
+                              onChange={handleInputChange}
+                              className="w-full border rounded-lg px-3 py-2"
+                              placeholder="اكتب وصف جذاب للمشروع لعرضه للمشترين المحتملين..."
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
                 <div className="flex justify-end mt-8">
                   <Button type="submit" disabled={saving} className="bg-blue-600 text-white px-8 py-2 rounded-lg hover:bg-blue-700">
                     {saving ? 'جاري الحفظ...' : 'حفظ التعديلات'}
@@ -312,7 +624,85 @@ export default function EditProjectPage() {
             </Card>
           </div>
         </div>
-      </div>
+        {/* All User Projects Section with Filters */}
+        <div className="my-8 p-4 bg-gray-50 rounded-lg border">
+          <h2 className="text-lg font-bold mb-2">جميع مشاريع المستخدم</h2>
+          <div className="flex flex-wrap gap-2 mb-4">
+            <input
+              type="text"
+              placeholder="بحث بالاسم..."
+              value={projectFilter.search}
+              onChange={e => setProjectFilter(f => ({ ...f, search: e.target.value }))}
+              className="border px-2 py-1 rounded"
+            />
+            <select
+              value={projectFilter.status}
+              onChange={e => setProjectFilter(f => ({ ...f, status: e.target.value }))}
+              className="border px-2 py-1 rounded"
+            >
+              <option value="all">كل الحالات</option>
+              <option value="planning">تخطيط</option>
+              <option value="design">تصميم</option>
+              <option value="permits">تراخيص</option>
+              <option value="construction">تنفيذ</option>
+              <option value="finishing">تشطيب</option>
+              <option value="completed">مكتمل</option>
+              <option value="on_hold">موقوف</option>
+              <option value="active">نشط</option>
+            </select>
+            <select
+              value={projectFilter.limit}
+              onChange={e => setProjectFilter(f => ({ ...f, limit: Number(e.target.value) }))}
+              className="border px-2 py-1 rounded"
+            >
+              {[5, 10, 20, 50, 100].map(n => <option key={n} value={n}>{n} مشروع</option>)}
+            </select>
+            <select
+              value={projectFilter.sort}
+              onChange={e => setProjectFilter(f => ({ ...f, sort: e.target.value }))}
+              className="border px-2 py-1 rounded"
+            >
+              <option value="updated_at">الأحدث</option>
+              <option value="created_at">تاريخ الإنشاء</option>
+              <option value="name">الاسم</option>
+            </select>
+            <select
+              value={projectFilter.sortDir}
+              onChange={e => setProjectFilter(f => ({ ...f, sortDir: e.target.value }))}
+              className="border px-2 py-1 rounded"
+            >
+              <option value="desc">تنازلي</option>
+              <option value="asc">تصاعدي</option>
+            </select>
+          </div>
+          <div className="flex gap-2 justify-end mb-4">
+            <button onClick={handlePrevProject} className="p-2 bg-gray-200 rounded hover:bg-gray-300" title="المشروع السابق">
+              ◀
+            </button>
+            <button onClick={handleNextProject} className="p-2 bg-gray-200 rounded hover:bg-gray-300" title="المشروع التالي">
+              ▶
+            </button>
+          </div>
+          <ul className="divide-y">
+            {filteredProjects.map((proj, idx) => (
+              <li key={proj.id} className={`py-2 flex flex-col md:flex-row md:items-center md:gap-4 ${idx === selectedProjectIndex ? 'bg-blue-50' : ''}`}>
+                <span className="font-medium">{proj.name}</span>
+                <span className="text-gray-500">{proj.status}</span>
+                <span className="text-xs text-gray-400">{proj.updated_at ? new Date(proj.updated_at).toLocaleString('ar-EG') : ''}</span>
+              </li>
+            ))}            {filteredProjects.length === 0 && <li className="text-gray-400">لا توجد مشاريع مطابقة</li>}
+          </ul>
+        </div>
+      </div>      {/* For Sale Modal */}
+      <ForSaleModal
+        isOpen={showForSaleModal}
+        onClose={handleForSaleModalClose}
+        onSubmit={handleForSaleSubmit}
+        projectName={formData.name}
+        totalCost={formData.actual_cost ? parseFloat(formData.actual_cost) : 0}
+        budget={formData.budget ? parseFloat(formData.budget) : 0}
+        loading={saving}
+      />
     </div>
   );
 }

@@ -285,8 +285,7 @@ export default function Navbar({ session, accountType }: NavbarProps) {
               <Link href="/store/warranty" className="hover:underline flex items-center gap-1"><Shield className="w-5 h-5" />الضمانات</Link>
               <Link href="/store/documents" className="hover:underline flex items-center gap-1"><FileText className="w-5 h-5" />الملفات والفواتير</Link>
               <Link href="/store/support" className="hover:underline flex items-center gap-1"><Bell className="w-5 h-5" />الدعم الفني</Link>
-            </>
-          ) : userData?.account_type === 'user' || userData?.account_type === 'client' ? (
+            </>          ) : userData?.account_type === 'user' || userData?.account_type === 'client' ? (
             <>
               <Link href="/user/dashboard" className="hover:underline flex items-center gap-1"><Home className="w-5 h-5" />لوحة المستخدم</Link>
               <Link href="/user/projects" className="hover:underline flex items-center gap-1"><Building2 className="w-5 h-5" />مشاريعي</Link>
@@ -297,8 +296,7 @@ export default function Navbar({ session, accountType }: NavbarProps) {
               <Link href="/user/support" className="hover:underline flex items-center gap-1"><Bell className="w-5 h-5" />الدعم الفني</Link>
               <Link href="/stores" className="hover:underline flex items-center gap-1"><Package className="w-5 h-5" />المتاجر</Link>
             </>
-          ) : (
-            // Not logged in
+          ) : (// Not logged in
             <>
               <Link href="/projects" className="hover:underline flex items-center gap-1"><Building2 className="w-5 h-5" />المشاريع</Link>
               <Link href="/stores" className="hover:underline flex items-center gap-1"><Package className="w-5 h-5" />المتاجر</Link>
@@ -406,8 +404,7 @@ export default function Navbar({ session, accountType }: NavbarProps) {
                       <Link href="/store/warranty" className="block px-4 py-2 hover:bg-gray-100 flex items-center gap-2"><Shield className="w-5 h-5" />الضمانات</Link>
                       <Link href="/store/analytics" className="block px-4 py-2 hover:bg-gray-100 flex items-center gap-2"><Calculator className="w-5 h-5" />التحليلات</Link>
                       <Link href="/store/support" className="block px-4 py-2 hover:bg-gray-100 flex items-center gap-2"><Bell className="w-5 h-5" />الدعم الفني</Link>
-                    </>
-                  ) : (
+                    </>                  ) : (
                     <>
                       <Link href="/user/dashboard" className="block px-4 py-2 hover:bg-gray-100 flex items-center gap-2"><Home className="w-5 h-5" />لوحة المستخدم</Link>
                       <Link href="/user/projects" className="block px-4 py-2 hover:bg-gray-100 flex items-center gap-2"><Building2 className="w-5 h-5" />مشاريعي</Link>

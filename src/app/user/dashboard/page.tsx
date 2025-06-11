@@ -197,10 +197,9 @@ export default function UserDashboard() {
       href: '/user/warranties',
       color: 'bg-orange-500',
     },
-  ];
-
-  const quickActions = [
+  ];  const quickActions = [
     { title: 'إنشاء مشروع جديد', href: '/user/projects/new', icon: 'design' as IconKey },
+    { title: 'تصفح المشاريع', href: '/projects/', icon: 'money' as IconKey },
     { title: 'طلب خدمة تصميم', href: '/user/services/design', icon: 'ai' as IconKey },
     { title: 'حاسبة التكاليف', href: '/user/services/calculators', icon: 'calculator' as IconKey },
     { title: 'تتبع الإنفاق', href: '/user/spending-tracking', icon: 'chart' as IconKey },

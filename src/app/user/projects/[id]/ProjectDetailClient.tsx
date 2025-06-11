@@ -143,13 +143,25 @@ function ProjectDetailClient() {
           location: projectData.location,
         };
         setProject(compatProject);
-        setProjectError(null);
-      } else {
+        setProjectError(null);      } else {
         setProject(null);
         setProjectError(`المشروع غير موجود (projectId: ${projectId}, userId: ${user?.id})`);
       }
-    } catch (error) {
-      setProjectError('حدث خطأ أثناء تحميل بيانات المشروع');
+    } catch (error: any) {
+      console.error('Error fetching project:', error);
+      
+      // Handle specific error messages
+      if (error.message && error.message.includes('غير موجود في قاعدة البيانات')) {
+        setProjectError('المشروع غير موجود في قاعدة البيانات');
+      } else if (error.message && error.message.includes('ليس لديك صلاحية')) {
+        setProjectError('ليس لديك صلاحية للوصول إلى هذا المشروع. تأكد من تسجيل الدخول بالحساب الصحيح.');
+      } else if (error.message && error.message.includes('تسجيل الدخول')) {
+        setProjectError('يرجى تسجيل الدخول أولاً');
+        router.push('/login');
+        return;
+      } else {
+        setProjectError('حدث خطأ أثناء تحميل بيانات المشروع');
+      }
       setProject(null);
     } finally {
       setLoading(false);
@@ -205,6 +217,27 @@ function ProjectDetailClient() {
       }
     }
   }, [loading, projectError]);
+
+  // Unified notification for loading and error
+  useEffect(() => {
+    const toastId = 'project-loading-toast';
+    if (loading) {
+      toast.dismiss(toastId);
+      toast.loading('جاري تحميل بيانات المشروع...', { id: toastId as any });
+    } else {
+      toast.dismiss(toastId);
+      if (authError) {
+        toast.error(authError, { id: toastId as any });
+      } else if (projectError) {
+        // Show specific message for missing project or access denied
+        if (projectError.includes('غير موجود') || projectError.includes('صلاحية')) {
+          toast.error('المشروع غير موجود أو ليس لديك صلاحية الوصول إليه', { id: toastId as any });
+        } else {
+          toast.error('حدث خطأ في تحميل بيانات المشروع', { id: toastId as any });
+        }
+      }
+    }
+  }, [loading, authError, projectError]);
 
   useEffect(() => {
     if (project && project.status && lastNotifiedStage !== project.status) {
@@ -294,12 +327,13 @@ function ProjectDetailClient() {
       </div>
     );
   }
-  if (authError || projectError) {
+  // Only show error page if project is truly missing or access denied
+  if (authError) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <Card className="p-6 text-center">
           <h2 className="text-xl font-bold text-red-600 mb-4">خطأ</h2>
-          <p className="text-gray-600">{authError || projectError}</p>
+          <p className="text-gray-600">{authError}</p>
           <button
             onClick={() => router.back()}
             className="mt-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors"
@@ -310,6 +344,23 @@ function ProjectDetailClient() {
       </div>
     );
   }
+  if (projectError && projectError.includes('غير موجود')) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <Card className="p-6 text-center">
+          <h2 className="text-xl font-bold text-red-600 mb-4">خطأ</h2>
+          <p className="text-gray-600">المشروع غير موجود أو ليس لديك صلاحية الوصول إليه</p>
+          <button
+            onClick={() => router.push('/user/projects')}
+            className="mt-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors"
+          >
+            العودة للمشاريع
+          </button>
+        </Card>      </div>
+    );
+  }
+  
+  // Remove the toast.error call from render - it's already handled in useEffect
   if (!project) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">

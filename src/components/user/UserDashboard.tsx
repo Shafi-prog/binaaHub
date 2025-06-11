@@ -4,6 +4,8 @@ import Link from 'next/link';
 import type { Database } from '@/types/database';
 import { Card, StatCard, LoadingSpinner } from '@/components/ui';
 import { Shield, Calendar, Box, Tag, Clock, CreditCard, File } from 'lucide-react';
+import { isProjectActive, getStatusLabel, getProgressFromStatus, getProjectTypeLabel } from '@/lib/project-utils';
+import { getAllProjects } from '@/lib/api/dashboard';
 
 interface DashboardStats {
   activeWarranties: number;
@@ -11,6 +13,7 @@ interface DashboardStats {
   pendingOrders: number;
   totalSpending: number;
   activeProjects: number;
+  totalProjects: number;
   recentProjects: any[];
   recentOrders: any[];
   upcomingWarranties: any[];
@@ -20,8 +23,13 @@ export default function UserDashboard() {
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [currentUser, setCurrentUser] = useState<any>(null);
 
   const supabase = createClientComponentClient<Database>();
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => setCurrentUser(data.user));
+  }, [supabase]);
 
   useEffect(() => {
     const loadDashboardData = async () => {
@@ -42,15 +50,8 @@ export default function UserDashboard() {
           .select('*, store:stores(store_name)')
           .eq('user_id', user.id)
           .order('created_at', { ascending: false })
-          .limit(5);
-
-        // Get projects
-        const { data: projects, error: projectsError } = await supabase
-          .from('projects')
-          .select('*')
-          .eq('user_id', user.id)
-          .order('created_at', { ascending: false })
-          .limit(5);
+          .limit(5);        // Get projects using the consistent API function
+        const projects = await getAllProjects(user.id);
 
         // Calculate total spending
         const { data: totalSpending } = await supabase
@@ -59,7 +60,7 @@ export default function UserDashboard() {
           .eq('user_id', user.id)
           .eq('payment_status', 'completed');
 
-        if (warrantiesError || ordersError || projectsError) {
+        if (warrantiesError || ordersError) {
           throw new Error('Error fetching dashboard data');
         }
 
@@ -77,12 +78,14 @@ export default function UserDashboard() {
           )
           .slice(0, 5);
 
+        // Use shared helpers for stats
         setStats({
           activeWarranties: warranties?.filter((w) => w.status === 'active').length || 0,
           totalOrders: orders?.length || 0,
-          pendingOrders: orders?.filter((o) => o.status === 'pending').length || 0,
-          totalSpending: totalSpending?.reduce((sum, o) => sum + (o.total_amount || 0), 0) || 0,
-          activeProjects: projects?.filter((p) => p.status === 'active').length || 0,
+          pendingOrders: orders?.filter((o: any) => o.status === 'pending').length || 0,
+          totalSpending: (totalSpending as any[])?.reduce((sum: number, o: any) => sum + (o.total_amount || 0), 0) || 0,
+          activeProjects: projects?.filter(isProjectActive).length || 0,
+          totalProjects: projects?.length || 0,
           recentProjects: projects || [],
           recentOrders: orders || [],
           upcomingWarranties: upcomingWarranties || [],
@@ -101,28 +104,41 @@ export default function UserDashboard() {
   if (loading) return <LoadingSpinner />;
   if (error) return <div className="text-red-600">{error}</div>;
   if (!stats) return null;
-
   return (
     <div className="space-y-6">
+      {/* DEBUG: Show current user info - Only in development */}
+      {process.env.NODE_ENV === 'development' && currentUser && (
+        <div className="p-4 bg-yellow-100 rounded text-yellow-900 text-sm mb-2">
+          <strong>Debug:</strong> User ID: {currentUser.id} | Email: {currentUser.email}
+        </div>
+      )}
+
       {/* Quick Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <StatCard
           title="Active Warranties"
-          value={stats.activeWarranties.toString()}
+          value={stats?.activeWarranties?.toString() ?? '0'}
           icon={<Shield className="w-8 h-8" />}
           subtitle="Valid warranties"
           color="blue"
         />
         <StatCard
           title="Active Projects"
-          value={stats.activeProjects.toString()}
+          value={stats?.activeProjects?.toString() ?? '0'}
           icon={<Calendar className="w-8 h-8" />}
           subtitle="Ongoing projects"
           color="green"
         />
         <StatCard
+          title="Total Projects"
+          value={stats?.totalProjects?.toString() ?? '0'}
+          icon={<Box className="w-8 h-8" />}
+          subtitle="All your projects"
+          color="purple"
+        />
+        <StatCard
           title="Pending Orders"
-          value={stats.pendingOrders.toString()}
+          value={stats?.pendingOrders?.toString() ?? '0'}
           icon={<Box className="w-8 h-8" />}
           subtitle="Orders awaiting processing"
           color="yellow"
@@ -161,9 +177,7 @@ export default function UserDashboard() {
               ))
             )}
           </div>
-        </Card>
-
-        {/* Active Projects */}
+        </Card>        {/* Active Projects */}
         <Card className="p-6">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-lg font-semibold">Active Projects</h3>
@@ -172,26 +186,29 @@ export default function UserDashboard() {
             </Link>
           </div>
           <div className="space-y-4">
-            {stats.recentProjects.length === 0 ? (
+            {stats.recentProjects.filter(isProjectActive).length === 0 ? (
               <p className="text-gray-500">No active projects</p>
             ) : (
-              stats.recentProjects.map((project) => (
-                <div key={project.id} className="flex items-center justify-between">
-                  <div>
-                    <p className="font-medium">{project.name}</p>
-                    <p className="text-sm text-gray-500">{project.type}</p>
-                  </div>
-                  <div className="text-right">
-                    <div className="h-2 w-20 bg-gray-200 rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-blue-600"
-                        style={{ width: `${project.progress}%` }}
-                      />
+              stats.recentProjects.filter(isProjectActive).slice(0, 5).map((project) => {
+                const progressPercentage = project.progress_percentage || getProgressFromStatus(project.status);
+                return (
+                  <div key={project.id} className="flex items-center justify-between">
+                    <div>
+                      <p className="font-medium">{project.name}</p>
+                      <p className="text-sm text-gray-500">{getStatusLabel(project.status)}</p>
                     </div>
-                    <p className="text-sm text-gray-600 mt-1">{project.progress}%</p>
+                    <div className="text-right">
+                      <div className="h-2 w-20 bg-gray-200 rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-blue-600"
+                          style={{ width: `${progressPercentage}%` }}
+                        />
+                      </div>
+                      <p className="text-sm text-gray-600 mt-1">{progressPercentage}%</p>
+                    </div>
                   </div>
-                </div>
-              ))
+                );
+              })
             )}
           </div>
         </Card>

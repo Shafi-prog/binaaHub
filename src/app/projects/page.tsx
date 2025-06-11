@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { supabase } from '@/utils/supabase/client';
-import ProjectsDebugger from '@/components/ProjectsDebugger';
 import { 
   Search, 
   Filter, 

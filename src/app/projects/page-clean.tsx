@@ -127,13 +127,12 @@ export default function ProjectsPage() {
         }
         
         console.log('✅ Loaded projects with basic columns:', basicProjects?.length || 0);
-        
-        // Map to Project interface
+          // Map to Project interface
         const mappedProjects = (basicProjects || []).map(p => ({
           ...p,
           name: p.name || p.title || 'مشروع بدون اسم',
           for_sale: false,
-          target_price: null,
+          target_price: undefined,
           total_investment: 0,
           expected_profit: 0,
           city: p.city || p.location || 'غير محدد',

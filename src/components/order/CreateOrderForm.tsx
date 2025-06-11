@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import type { Database } from '@/types/database';
 import { Card, LoadingSpinner } from '@/components/ui';
 import { formatCurrency } from '@/lib/utils';
-import { EnhancedInput, EnhancedSelect, EnhancedButton } from '@/components/ui/enhanced-components';
+import { EnhancedInput, EnhancedSelect, Button } from '@/components/ui/enhanced-components';
 
 interface ProjectOption {
   id: string;
@@ -145,9 +145,9 @@ export default function OrderForm({
           <h2 className="text-xl font-bold text-blue-700 mb-1">إنشاء طلب شراء</h2>
           <p className="text-gray-600">المتجر: {storeName}</p>
         </div>
-        <EnhancedButton variant="secondary" onClick={onCancel} type="button">
+        <Button variant="secondary" onClick={onCancel} type="button">
           إلغاء
-        </EnhancedButton>
+        </Button>
       </div>
 
       {error && (
@@ -245,14 +245,14 @@ export default function OrderForm({
             <span className="text-gray-600">الإجمالي:</span>
             <span className="text-xl font-semibold text-gray-900">{formatCurrency(totalAmount)}</span>
           </div>
-          <EnhancedButton
+          <Button
             type="submit"
             variant="primary"
             loading={loading}
             className="w-full"
           >
             {loading ? '...جاري إنشاء الطلب' : 'إنشاء الطلب'}
-          </EnhancedButton>
+          </Button>
         </div>
       </form>
     </Card>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from 'react';
-import { EnhancedInput, EnhancedButton } from '@/components/ui/enhanced-components';
+import { EnhancedInput, Button } from '@/components/ui/enhanced-components';
 
 export default function ArabicLoginForm({ onLogin }: { onLogin: (data: any) => void }) {
   const [email, setEmail] = useState('');
@@ -32,14 +32,14 @@ export default function ArabicLoginForm({ onLogin }: { onLogin: (data: any) => v
         onChange={e => setPassword(e.target.value)}
         required
       />
-      <EnhancedButton
+      <Button
         type="submit"
         variant="primary"
         loading={loading}
         className="w-full"
       >
         دخول
-      </EnhancedButton>
+      </Button>
     </form>
   );
 }

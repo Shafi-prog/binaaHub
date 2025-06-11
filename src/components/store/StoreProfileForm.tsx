@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { EnhancedInput, EnhancedButton } from '@/components/ui/enhanced-components';
+import { EnhancedInput, Button } from '@/components/ui/enhanced-components';
 
 export default function StoreProfileForm({ store, onSave }: { store: any, onSave: (data: any) => void }) {
   const [location, setLocation] = useState(store.location || null);
@@ -31,20 +31,20 @@ export default function StoreProfileForm({ store, onSave }: { store: any, onSave
       />
       <div>
         <label className="block mb-2 font-medium">الموقع الجغرافي</label>
-        <EnhancedButton
+        <Button
           type="button"
           variant="primary"
           onClick={handleLocate}
         >
           حدد موقعي على الخريطة
-        </EnhancedButton>
+        </Button>
         {location && (
           <div className="mt-2 text-sm text-gray-700">
             الإحداثيات: {location.lat}, {location.lng}
           </div>
         )}
       </div>
-      <EnhancedButton
+      <Button
         type="button"
         variant={hasChanges ? 'success' : 'secondary'}
         onClick={handleSave}
@@ -52,7 +52,7 @@ export default function StoreProfileForm({ store, onSave }: { store: any, onSave
         className="w-full"
       >
         حفظ التغييرات
-      </EnhancedButton>
+      </Button>
     </form>
   );
 }

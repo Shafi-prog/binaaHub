@@ -397,43 +397,40 @@ export default function ProjectsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50" dir="rtl">
-      {/* Header */}
+    <div className="min-h-screen bg-gray-50" dir="rtl">      {/* Header */}
       <div className="bg-white border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-8">
           <div className="text-center">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">المشاريع</h1>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">المشاريع</h1>
+            <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto px-2">
               تصفح مجموعة مختارة من المشاريع المكتملة ومشاريع العقارات المتاحة للبيع
             </p>
           </div>
         </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      </div>      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
         {/* Search and Filters */}
-        <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
-          <div className="flex flex-col lg:flex-row gap-4">
+        <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6 mb-6 sm:mb-8">
+          <div className="flex flex-col gap-3 sm:gap-4">
             {/* Search */}
-            <div className="flex-1">
+            <div className="w-full">
               <div className="relative">
-                <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 sm:w-5 sm:h-5" />
                 <input
                   type="text"
                   placeholder="البحث في المشاريع..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pr-10 pl-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full pr-10 pl-3 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
             </div>
 
             {/* Quick Filters */}
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
               <select
                 value={filterType}
                 onChange={(e) => setFilterType(e.target.value as typeof filterType)}
-                className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="flex-1 px-3 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               >
                 <option value="all">جميع المشاريع</option>
                 <option value="for_sale">مشاريع للبيع</option>
@@ -442,24 +439,23 @@ export default function ProjectsPage() {
 
               <button
                 onClick={() => setShowFilters(!showFilters)}
-                className="flex items-center gap-2 px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                className="flex items-center justify-center gap-2 px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors whitespace-nowrap"
               >
                 <Filter className="w-4 h-4" />
-                فلاتر إضافية
+                <span className="hidden sm:inline">فلاتر إضافية</span>
+                <span className="sm:hidden">فلاتر</span>
                 <ChevronDown className={`w-4 h-4 transition-transform ${showFilters ? 'rotate-180' : ''}`} />
               </button>
             </div>
-          </div>
-
-          {/* Advanced Filters */}
+          </div>          {/* Advanced Filters */}
           {showFilters && (
-            <div className="border-t mt-4 pt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="border-t mt-3 sm:mt-4 pt-3 sm:pt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">الموقع</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">الموقع</label>
                 <select
                   value={filterLocation}
                   onChange={(e) => setFilterLocation(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="all">جميع المواقع</option>
                   {getUniqueLocations().map(location => (
@@ -470,11 +466,11 @@ export default function ProjectsPage() {
 
               {filterType !== 'showcase' && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">النطاق السعري</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">النطاق السعري</label>
                   <select
                     value={priceRange}
                     onChange={(e) => setPriceRange(e.target.value as typeof priceRange)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   >
                     <option value="all">جميع الأسعار</option>
                     <option value="low">أقل من 500,000 ريال</option>
@@ -484,7 +480,7 @@ export default function ProjectsPage() {
                 </div>
               )}
 
-              <div className="flex items-end">
+              <div className="flex items-end sm:col-span-1 lg:col-span-1">
                 <button
                   onClick={() => {
                     setSearchQuery('');
@@ -492,18 +488,16 @@ export default function ProjectsPage() {
                     setFilterLocation('all');
                     setPriceRange('all');
                   }}
-                  className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+                  className="w-full sm:w-auto px-4 py-2 text-sm text-gray-600 hover:text-gray-800 transition-colors border border-gray-300 rounded-md hover:bg-gray-50"
                 >
                   مسح الفلاتر
                 </button>
               </div>
             </div>
           )}
-        </div>
-
-        {/* Results Summary */}
-        <div className="mb-6">
-          <p className="text-gray-600">
+        </div>        {/* Results Summary */}
+        <div className="mb-4 sm:mb-6 px-1">
+          <p className="text-sm sm:text-base text-gray-600">
             تم العثور على <span className="font-semibold">{filteredProjects.length}</span> مشروع
             {filterType === 'for_sale' && ' متاح للبيع'}
             {filterType === 'showcase' && ' للعرض'}
@@ -535,17 +529,15 @@ export default function ProjectsPage() {
               🔄 إعادة تحميل البيانات
             </button>
           )}
-        </div>
-
-        {/* Projects Grid */}
+        </div>        {/* Projects Grid */}
         {filteredProjects.length === 0 ? (
-          <div className="text-center py-12">
-            <Building className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">لا توجد مشاريع</h3>
-            <p className="text-gray-600">لم يتم العثور على مشاريع تطابق معايير البحث المحددة</p>
+          <div className="text-center py-8 sm:py-12 px-4">
+            <Building className="w-12 h-12 sm:w-16 sm:h-16 text-gray-400 mx-auto mb-3 sm:mb-4" />
+            <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-2">لا توجد مشاريع</h3>
+            <p className="text-sm sm:text-base text-gray-600">لم يتم العثور على مشاريع تطابق معايير البحث المحددة</p>
             {debugInfo?.missingColumns && (
-              <div className="mt-4 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
-                <p className="text-yellow-800 text-sm">
+              <div className="mt-4 p-3 sm:p-4 bg-yellow-50 rounded-lg border border-yellow-200 text-right">
+                <p className="text-yellow-800 text-xs sm:text-sm">
                   <strong>ملاحظة للمطور:</strong> الأعمدة التالية مفقودة من قاعدة البيانات: {debugInfo.missingColumns}
                 </p>
                 <p className="text-yellow-700 text-xs mt-1">
@@ -555,31 +547,31 @@ export default function ProjectsPage() {
             )}
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
             {filteredProjects.map((project) => (
               <div key={project.id} className="bg-white rounded-xl shadow-sm border hover:shadow-lg transition-shadow">
                 {/* Project Image Placeholder */}
-                <div className="h-48 bg-gradient-to-br from-blue-100 to-indigo-200 rounded-t-xl flex items-center justify-center">
-                  <Building className="w-16 h-16 text-blue-600" />
+                <div className="h-40 sm:h-48 bg-gradient-to-br from-blue-100 to-indigo-200 rounded-t-xl flex items-center justify-center">
+                  <Building className="w-12 h-12 sm:w-16 sm:h-16 text-blue-600" />
                 </div>
 
-                <div className="p-6">
+                <div className="p-4 sm:p-6">
                   {/* Project Header */}
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex-1">
-                      <h3 className="text-xl font-bold text-gray-900 mb-2">{project.name}</h3>
-                      <div className="flex items-center text-gray-600 text-sm mb-2">
-                        <MapPin className="w-4 h-4 ml-1" />
-                        <span>{project.city}, {project.region}</span>
+                  <div className="flex items-start justify-between mb-3 sm:mb-4">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 truncate">{project.name}</h3>
+                      <div className="flex items-center text-gray-600 text-xs sm:text-sm mb-1.5 sm:mb-2">
+                        <MapPin className="w-3 h-3 sm:w-4 sm:h-4 ml-1 flex-shrink-0" />
+                        <span className="truncate">{project.city}, {project.region}</span>
                       </div>
-                      <div className="flex items-center text-gray-600 text-sm">
-                        <Tag className="w-4 h-4 ml-1" />
-                        <span>{getProjectTypeLabel(project.project_type)}</span>
+                      <div className="flex items-center text-gray-600 text-xs sm:text-sm">
+                        <Tag className="w-3 h-3 sm:w-4 sm:h-4 ml-1 flex-shrink-0" />
+                        <span className="truncate">{getProjectTypeLabel(project.project_type)}</span>
                       </div>
                     </div>
                     {project.for_sale && project.sale_price && (
-                      <div className="text-left">
-                        <div className="text-lg font-bold text-green-600">
+                      <div className="text-left ml-2 flex-shrink-0">
+                        <div className="text-sm sm:text-lg font-bold text-green-600">
                           {formatPrice(project.sale_price, project.currency)}
                         </div>
                         {project.profit_percentage && (
@@ -593,7 +585,7 @@ export default function ProjectsPage() {
                   </div>
 
                   {/* Description */}
-                  <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+                  <p className="text-gray-600 text-xs sm:text-sm mb-3 sm:mb-4 line-clamp-2">
                     {project.for_sale && project.sale_description 
                       ? project.sale_description 
                       : project.description
@@ -603,27 +595,27 @@ export default function ProjectsPage() {
                   {/* Action Button */}
                   <Link
                     href={project.for_sale ? `/projects/for-sale/${project.id}` : `#`}
-                    className="block w-full text-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                    className="block w-full text-center px-3 sm:px-4 py-2 sm:py-2.5 text-sm sm:text-base bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
                   >
                     {project.for_sale ? 'عرض التفاصيل' : 'مشروع للعرض'}
                   </Link>
 
                   {/* Project Tags */}
-                  <div className="flex items-center justify-between mt-4 pt-4 border-t">
-                    <div className="flex items-center gap-2">
+                  <div className="flex items-center justify-between mt-3 sm:mt-4 pt-3 sm:pt-4 border-t">
+                    <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
                       {project.for_sale && (
-                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-green-100 text-green-800">
-                          <DollarSign className="w-3 h-3 ml-1" />
+                        <span className="inline-flex items-center px-2 py-0.5 sm:py-1 rounded-full text-xs bg-green-100 text-green-800">
+                          <DollarSign className="w-2.5 h-2.5 sm:w-3 sm:h-3 ml-1" />
                           للبيع
                         </span>
                       )}
-                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-blue-100 text-blue-800">
+                      <span className="inline-flex items-center px-2 py-0.5 sm:py-1 rounded-full text-xs bg-blue-100 text-blue-800">
                         مكتمل
                       </span>
                     </div>
                     
                     {project.advertisement_number && (
-                      <div className="text-xs text-gray-500">
+                      <div className="text-xs text-gray-500 truncate">
                         رقم الإعلان: {project.advertisement_number}
                       </div>
                     )}

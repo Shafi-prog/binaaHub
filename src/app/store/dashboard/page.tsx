@@ -12,7 +12,7 @@ import { LoadingSpinner } from '@/components/ui';
 import { 
   Typography, 
   EnhancedCard, 
-  EnhancedButton, 
+  Button, 
   EnhancedBadge 
 } from '@/components/ui/enhanced-components';
 import { formatCurrency } from '@/lib/utils';

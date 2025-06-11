@@ -13,7 +13,23 @@ body {
   color: #22223b;
 }
 
-@media (max-width: 600px) {
+/* Mobile optimizations */
+@media (max-width: 640px) {
+  body {
+    font-size: 14px;
+    background: linear-gradient(135deg, #f8fafc 0%, #fff 50%, #f1f5f9 100%);
+  }
+}
+
+/* Tablet optimizations */
+@media (min-width: 641px) and (max-width: 1024px) {
+  body {
+    font-size: 15px;
+  }
+}
+
+/* Desktop optimizations */
+@media (min-width: 1025px) {
   body {
     font-size: 16px;
   }
@@ -28,17 +44,172 @@ body {
   box-shadow: 0 4px 24px 0 rgba(99,102,241,0.08);
 }
 
-/* Loading card enhancements */
+/* Loading card enhancements - responsive */
 .loading-card {
   background: rgba(255,255,255,0.95) !important;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
   backdrop-filter: blur(10px);
-  border-radius: 2rem !important;
-  padding: 2.5rem 2rem !important;
+  border-radius: 1.5rem !important;
+  padding: 1.5rem !important;
   display: flex !important;
   flex-direction: column !important;
   align-items: center !important;
-  max-width: 400px !important;
-  width: 100% !important;
+  max-width: 320px !important;
+  width: 90% !important;
   border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  margin: 0 auto !important;
+}
+
+@media (min-width: 640px) {
+  .loading-card {
+    padding: 2rem !important;
+    max-width: 400px !important;
+    border-radius: 2rem !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .loading-card {
+    padding: 2.5rem 2rem !important;
+    max-width: 400px !important;
+  }
+}
+
+/* Responsive utilities */
+.container-mobile {
+  @apply px-3 sm:px-6 lg:px-8;
+}
+
+.text-responsive {
+  @apply text-sm sm:text-base lg:text-lg;
+}
+
+.text-responsive-lg {
+  @apply text-lg sm:text-xl lg:text-2xl;
+}
+
+.text-responsive-xl {
+  @apply text-xl sm:text-2xl lg:text-3xl;
+}
+
+.text-responsive-2xl {
+  @apply text-2xl sm:text-3xl lg:text-4xl;
+}
+
+/* Button responsive sizes */
+.btn-responsive {
+  @apply px-3 py-2 text-sm sm:px-4 sm:py-2.5 sm:text-base;
+}
+
+.btn-responsive-lg {
+  @apply px-4 py-2.5 text-sm sm:px-6 sm:py-3 sm:text-base lg:px-8 lg:py-4 lg:text-lg;
+}
+
+/* Grid responsive utilities */
+.grid-responsive-1-2-3 {
+  @apply grid-cols-1 sm:grid-cols-2 lg:grid-cols-3;
+}
+
+.grid-responsive-1-2 {
+  @apply grid-cols-1 sm:grid-cols-2;
+}
+
+/* Card responsive padding */
+.card-responsive {
+  @apply p-4 sm:p-6 lg:p-8;
+}
+
+.card-responsive-sm {
+  @apply p-3 sm:p-4 lg:p-6;
+}
+
+/* Mobile-first navigation improvements */
+.mobile-nav-overlay {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+}
+
+/* Touch-friendly interactive elements */
+.touch-friendly {
+  @apply min-h-[44px] min-w-[44px];
+}
+
+/* Smooth scrolling for mobile */
+html {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Hide scrollbar on mobile while keeping functionality */
+@media (max-width: 640px) {
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Responsive spacing utilities */
+.space-responsive {
+  @apply space-y-3 sm:space-y-4 lg:space-y-6;
+}
+
+.gap-responsive {
+  @apply gap-3 sm:gap-4 lg:gap-6;
+}
+
+.gap-responsive-lg {
+  @apply gap-4 sm:gap-6 lg:gap-8;
+}
+
+/* Modal responsive improvements */
+.modal-responsive {
+  @apply w-[95vw] max-w-md sm:w-full sm:max-w-lg lg:max-w-xl;
+}
+
+/* Form responsive improvements */
+.form-responsive {
+  @apply space-y-3 sm:space-y-4;
+}
+
+.input-responsive {
+  @apply px-3 py-2.5 text-sm sm:px-4 sm:py-3 sm:text-base;
+}
+
+/* Animation performance optimizations for mobile */
+@media (prefers-reduced-motion: no-preference) {
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  
+  .animate-slide-up {
+    animation: slideUp 0.3s ease-out;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { 
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Reduce animations on mobile for better performance */
+@media (max-width: 640px) {
+  * {
+    animation-duration: 0.2s !important;
+    transition-duration: 0.2s !important;
+  }
 }

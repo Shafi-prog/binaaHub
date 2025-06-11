@@ -1,8 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { EnhancedModal, EnhancedButton } from '@/components/ui/enhanced-components';
-import { Typography } from '@/components/ui/enhanced-components';
+import { EnhancedModal, Typography, Button } from '@/components/ui/enhanced-components';
 import { ClientIcon } from '@/components/icons';
 import { toast } from 'react-hot-toast';
 
@@ -137,7 +136,7 @@ export default function ForSaleModal({
             </Typography>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-              <EnhancedButton
+              <Button
                 variant="success"
                 size="lg"
                 onClick={() => handleDecision('yes')}
@@ -145,8 +144,8 @@ export default function ForSaleModal({
                 leftIcon={<ClientIcon type="money" size={20} />}
               >
                 نعم، أريد عرضه للبيع
-              </EnhancedButton>
-              <EnhancedButton
+              </Button>
+              <Button
                 variant="secondary"
                 size="lg"
                 onClick={() => handleDecision('no')}
@@ -154,7 +153,7 @@ export default function ForSaleModal({
                 leftIcon={<ClientIcon type="dashboard" size={20} />}
               >
                 لا، شكراً
-              </EnhancedButton>
+              </Button>
             </div>
           </div>
         )}
@@ -277,7 +276,7 @@ export default function ForSaleModal({
             </div>
 
             <div className="flex gap-3 pt-4">
-              <EnhancedButton
+              <Button
                 variant="primary"
                 size="lg"
                 onClick={handleForSaleSubmit}
@@ -287,15 +286,15 @@ export default function ForSaleModal({
                 leftIcon={<ClientIcon type="money" size={20} />}
               >
                 {loading ? 'جاري النشر...' : 'نشر المشروع للبيع'}
-              </EnhancedButton>
-              <EnhancedButton
+              </Button>
+              <Button
                 variant="secondary"
                 size="lg"
                 onClick={() => setDecision(null)}
                 fullWidth
               >
                 عودة
-              </EnhancedButton>
+              </Button>
             </div>
           </div>
         )}

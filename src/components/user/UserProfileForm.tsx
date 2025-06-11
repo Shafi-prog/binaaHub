@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { EnhancedInput, EnhancedSelect, EnhancedButton } from '@/components/ui/enhanced-components';
+import { EnhancedInput, EnhancedSelect, Button } from '@/components/ui/enhanced-components';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 const TRADES = [
@@ -279,9 +279,9 @@ export default function UserProfileForm({ user }: { user: any }) {
             disabled={emailVerificationStep === 'verified'}
           />
           {emailVerificationStep === 'idle' && (
-            <EnhancedButton type="button" variant="secondary" onClick={handleVerifyEmail}>
+            <Button type="button" variant="secondary" onClick={handleVerifyEmail}>
               تحقق من البريد الإلكتروني
-            </EnhancedButton>
+            </Button>
           )}
           {emailVerificationStep === 'sent' && (
             <>
@@ -291,9 +291,9 @@ export default function UserProfileForm({ user }: { user: any }) {
                 onChange={e => setEmailCode(e.target.value)}
                 placeholder="أدخل رمز التحقق"
               />
-              <EnhancedButton type="button" variant="primary" onClick={handleConfirmEmailCode}>
+              <Button type="button" variant="primary" onClick={handleConfirmEmailCode}>
                 تأكيد
-              </EnhancedButton>
+              </Button>
             </>
           )}
           {emailVerificationStep === 'verified' && (
@@ -323,9 +323,9 @@ export default function UserProfileForm({ user }: { user: any }) {
             style={{ direction: 'ltr' }}
           />
           {phoneVerificationStep === 'idle' && (
-            <EnhancedButton type="button" variant="secondary" onClick={handleVerifyPhone}>
+            <Button type="button" variant="secondary" onClick={handleVerifyPhone}>
               تحقق من رقم الجوال
-            </EnhancedButton>
+            </Button>
           )}
           {phoneVerificationStep === 'sent' && (
             <>
@@ -335,9 +335,9 @@ export default function UserProfileForm({ user }: { user: any }) {
                 onChange={e => setPhoneCode(e.target.value)}
                 placeholder="أدخل رمز التحقق"
               />
-              <EnhancedButton type="button" variant="primary" onClick={handleConfirmPhoneCode}>
+              <Button type="button" variant="primary" onClick={handleConfirmPhoneCode}>
                 تأكيد
-              </EnhancedButton>
+              </Button>
             </>
           )}
           {phoneVerificationStep === 'verified' && (
@@ -422,43 +422,43 @@ export default function UserProfileForm({ user }: { user: any }) {
       <div>
         <label className="block mb-2 font-medium">الموقع الجغرافي</label>
         <div className="flex gap-2 items-center mb-2">
-          <EnhancedButton
+          <Button
             type="button"
             variant="primary"
             onClick={handleNationalAddress}
             loading={apiLoading}
           >
             {apiLoading ? 'جاري جلب الموقع...' : 'جلب الموقع من العنوان الوطني'}
-          </EnhancedButton>
-          <EnhancedButton
+          </Button>
+          <Button
             type="button"
             variant="secondary"
             onClick={() => window.open('http://apina.address.gov.sa/NationalAddress/v3.1/maps/map-engine?subscription-key=Hussam@2020', '_blank')}
           >
             فتح خريطة العنوان الوطني
-          </EnhancedButton>
+          </Button>
         </div>
-        <EnhancedButton
+        <Button
           type="button"
           variant="secondary"
           onClick={handleLocate}
         >
           حدد موقعي على الخريطة (GPS)
-        </EnhancedButton>
+        </Button>
         {location && (
           <div className="mt-2 text-sm text-gray-700">
             الإحداثيات: {location.lat}, {location.lng}
           </div>
         )}
       </div>
-      <EnhancedButton
+      <Button
         type="submit"
         variant="primary"
         loading={saving}
         className="w-full"
       >
         {saving ? 'جاري الحفظ...' : 'حفظ التغييرات'}
-      </EnhancedButton>
+      </Button>
       {invitationCode && (
         <div className="mt-4 text-xs text-blue-700 bg-blue-50 rounded p-2 font-mono text-center">
           رمز الدعوة الخاص بك: <b>{invitationCode}</b>

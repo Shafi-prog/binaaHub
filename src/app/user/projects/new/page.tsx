@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { EnhancedInput, EnhancedSelect, EnhancedButton } from '@/components/ui/enhanced-components';
+import { EnhancedInput, EnhancedSelect, Button } from '@/components/ui/enhanced-components';
 import { Card, CardContent } from '@/components/ui/card';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { ARAB_COUNTRIES, SAUDI_REGIONS, SAUDI_DISTRICTS } from '@/lib/geo-data';
@@ -376,7 +376,7 @@ export default function NewProjectPage() {
                 ]}
               />
             </div>
-            <EnhancedButton
+            <Button
               type="submit"
               variant="primary"
               size="lg"
@@ -385,7 +385,7 @@ export default function NewProjectPage() {
               className="mt-6"
             >
               {loading ? 'جاري إنشاء المشروع...' : 'إنشاء المشروع'}
-            </EnhancedButton>
+            </Button>
           </form>
         </CardContent>
       </Card>

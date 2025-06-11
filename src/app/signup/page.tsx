@@ -36,12 +36,12 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-indigo-50">
-      <div className="flex bg-white shadow-xl rounded-2xl w-full max-w-6xl">
-        <div className="w-1/2 p-12">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-indigo-50 px-2">
+      <div className="flex flex-col md:flex-row bg-white shadow-xl rounded-2xl w-full max-w-md md:max-w-6xl overflow-hidden">
+        <div className="w-full md:w-1/2 p-6 sm:p-8 md:p-12">
           <ArabicSignupForm onSignup={handleSignup} />
         </div>
-        <div className="w-1/2 flex items-center justify-center">
+        <div className="hidden md:flex w-1/2 items-center justify-center bg-blue-50">
           <img src="/login-illustration.svg" alt="Signup Illustration" className="w-2/3 h-auto" />
         </div>
       </div>

@@ -17,7 +17,8 @@ export function Typography({
   weight?: 'light' | 'normal' | 'medium' | 'semibold' | 'bold' | 'extrabold';
   children: React.ReactNode;
   className?: string;
-} & React.HTMLAttributes<HTMLElement>) {  const variantClasses: Record<string, string> = {
+} & React.HTMLAttributes<HTMLElement>) {
+  const variantClasses: Record<string, string> = {
     heading: 'text-gray-900 leading-tight',
     subheading: 'text-gray-700 leading-relaxed',
     body: 'text-gray-800 leading-relaxed',
@@ -25,13 +26,13 @@ export function Typography({
     label: 'text-gray-700 font-medium leading-normal',
   };
   const sizeClasses: Record<string, string> = {
-    xs: 'text-xs',
-    sm: 'text-sm',
-    md: 'text-base',
-    lg: 'text-lg',
-    xl: 'text-xl',
-    '2xl': 'text-2xl',
-    '3xl': 'text-3xl',
+    xs: 'text-xs sm:text-sm',
+    sm: 'text-sm sm:text-base',
+    md: 'text-base sm:text-lg',
+    lg: 'text-lg sm:text-xl',
+    xl: 'text-xl sm:text-2xl',
+    '2xl': 'text-2xl sm:text-3xl',
+    '3xl': 'text-3xl sm:text-4xl',
   };
   const weightClasses: Record<string, string> = {
     light: 'font-light',
@@ -41,9 +42,7 @@ export function Typography({
     bold: 'font-bold',
     extrabold: 'font-extrabold',
   };
-
   const Component = variant === 'heading' ? 'h2' : variant === 'subheading' ? 'h3' : 'p';
-
   return (
     <Component
       className={cn(
@@ -74,7 +73,8 @@ export function EnhancedCard({
   hover?: boolean;
   children: React.ReactNode;
   className?: string;
-} & React.HTMLAttributes<HTMLDivElement>) {  const variantClasses: Record<string, string> = {
+} & React.HTMLAttributes<HTMLDivElement>) {
+  const variantClasses: Record<string, string> = {
     default: 'bg-white shadow-sm border border-gray-200',
     elevated: 'bg-white shadow-lg border-0',
     outlined: 'bg-white border-2 border-gray-200 shadow-none',
@@ -104,74 +104,55 @@ export function EnhancedCard({
   );
 }
 
-// Enhanced Button Component
-export const EnhancedButton = forwardRef<
-  HTMLButtonElement,
-  {
-    variant?: 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'ghost' | 'outline';
-    size?: 'sm' | 'md' | 'lg' | 'xl';
-    loading?: boolean;
-    fullWidth?: boolean;
-    leftIcon?: React.ReactNode;
-    rightIcon?: React.ReactNode;
-    children: React.ReactNode;
-    className?: string;
-  } & React.ButtonHTMLAttributes<HTMLButtonElement>
->(({ 
-  variant = 'primary', 
-  size = 'md', 
-  loading = false, 
-  fullWidth = false,
-  leftIcon,
-  rightIcon,
-  children,
-  className = '',
-  disabled,
-  ...props 
-}, ref) => {  const variantClasses: Record<string, string> = {
-    primary: 'bg-blue-600 hover:bg-blue-700 text-white shadow-sm hover:shadow-md',
-    secondary: 'bg-gray-100 hover:bg-gray-200 text-gray-700 border border-gray-300',
-    success: 'bg-green-600 hover:bg-green-700 text-white shadow-sm hover:shadow-md',
-    danger: 'bg-red-600 hover:bg-red-700 text-white shadow-sm hover:shadow-md',
-    warning: 'bg-yellow-500 hover:bg-yellow-600 text-white shadow-sm hover:shadow-md',
-    ghost: 'bg-transparent hover:bg-gray-100 text-gray-700',
-    outline: 'bg-transparent border-2 border-blue-600 text-blue-600 hover:bg-blue-50',
-  };
+// Responsive Button
+export const Button = forwardRef(
+  ({ className = '', size = 'md', ...props }: any, ref) => {
+    const sizeClasses: Record<string, string> = {
+      xs: 'px-2 py-1 text-xs',
+      sm: 'px-3 py-1.5 text-sm',
+      md: 'px-4 py-2 text-sm sm:text-base',
+      lg: 'px-5 py-2.5 text-base sm:text-lg',
+      xl: 'px-6 py-3 text-lg sm:text-xl',
+    };
+    return (
+      <button
+        ref={ref}
+        className={cn(
+          'rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500',
+          sizeClasses[size],
+          className
+        )}
+        {...props}
+      />
+    );
+  }
+);
+Button.displayName = 'Button';
 
-  const sizeClasses: Record<string, string> = {
-    sm: 'px-3 py-1.5 text-sm',
-    md: 'px-4 py-2.5 text-base',
-    lg: 'px-6 py-3 text-lg',
-    xl: 'px-8 py-4 text-xl',
-  };
-
-  return (
-    <button
-      ref={ref}
-      className={cn(
-        'font-tajawal font-medium rounded-lg transition-all duration-200 ease-in-out',
-        'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2',
-        'disabled:opacity-50 disabled:cursor-not-allowed',
-        'inline-flex items-center justify-center gap-2',
-        variantClasses[variant],
-        sizeClasses[size],
-        fullWidth && 'w-full',
-        className
-      )}
-      disabled={disabled || loading}
-      {...props}
-    >
-      {loading && (
-        <div className="animate-spin rounded-full h-4 w-4 border-2 border-current border-t-transparent" />
-      )}
-      {leftIcon && !loading && leftIcon}
-      {children}
-      {rightIcon && !loading && rightIcon}
-    </button>
-  );
-});
-
-EnhancedButton.displayName = 'EnhancedButton';
+// Responsive Input
+export const Input = forwardRef(
+  ({ className = '', size = 'md', ...props }: any, ref) => {
+    const sizeClasses: Record<string, string> = {
+      xs: 'px-2 py-1 text-xs',
+      sm: 'px-3 py-1.5 text-sm',
+      md: 'px-4 py-2 text-sm sm:text-base',
+      lg: 'px-5 py-2.5 text-base sm:text-lg',
+      xl: 'px-6 py-3 text-lg sm:text-xl',
+    };
+    return (
+      <input
+        ref={ref}
+        className={cn(
+          'border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500',
+          sizeClasses[size],
+          className
+        )}
+        {...props}
+      />
+    );
+  }
+);
+Input.displayName = 'Input';
 
 // Enhanced Input Component
 export const EnhancedInput = forwardRef<
@@ -196,7 +177,8 @@ export const EnhancedInput = forwardRef<
   size = 'md' as const,
   className = '',
   ...props 
-}, ref) => {const variantClasses = {
+}, ref) => {
+  const variantClasses = {
     default: 'border border-gray-300 bg-white focus:border-blue-500',
     filled: 'border-0 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-blue-500',
     outlined: 'border-2 border-gray-300 bg-transparent focus:border-blue-500',
@@ -220,7 +202,8 @@ export const EnhancedInput = forwardRef<
           <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
             {leftIcon}
           </div>
-        )}        <input
+        )}
+        <input
           ref={ref}
           className={cn(
             'font-tajawal w-full rounded-lg transition-all duration-200',
@@ -681,7 +664,8 @@ export function EnhancedStatsGrid({
 export default {
   Typography,
   EnhancedCard,
-  EnhancedButton,
+  Button,
+  Input,
   EnhancedInput,
   EnhancedSelect,
   EnhancedBadge,

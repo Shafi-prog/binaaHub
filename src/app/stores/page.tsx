@@ -120,20 +120,20 @@ export default function StoresPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="container mx-auto px-4 max-w-6xl">
+    <div className="min-h-screen bg-gray-50 py-6 sm:py-8">
+      <div className="container mx-auto px-2 sm:px-4 max-w-md sm:max-w-6xl">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">المتاجر</h1>
-          <p className="text-gray-600">اكتشف أفضل متاجر مواد البناء والخدمات</p>
+        <div className="mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">المتاجر</h1>
+          <p className="text-sm sm:text-base text-gray-600">اكتشف أفضل متاجر مواد البناء والخدمات</p>
         </div>
 
         {/* Filters */}
-        <Card className="p-6 mb-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Card className="p-4 sm:p-6 mb-6 sm:mb-8">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6">
             {/* Search */}
             <div>
-              <label htmlFor="search" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="search" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
                 البحث
               </label>
               <input
@@ -142,20 +142,20 @@ export default function StoresPage() {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="ابحث عن متجر..."
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 text-xs sm:text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
             {/* Category Filter */}
             <div>
-              <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="category" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
                 الفئة
               </label>
               <select
                 id="category"
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 text-xs sm:text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 {categories.map((category) => (
                   <option key={category.value} value={category.value}>
@@ -168,8 +168,8 @@ export default function StoresPage() {
         </Card>
 
         {/* Results Count */}
-        <div className="mb-6">
-          <p className="text-gray-600">
+        <div className="mb-4 sm:mb-6">
+          <p className="text-xs sm:text-base text-gray-600">
             تم العثور على {filteredStores.length} متجر
             {selectedCategory !== 'all' && ` في فئة "${selectedCategory}"`}
           </p>
@@ -177,18 +177,18 @@ export default function StoresPage() {
 
         {/* Stores Grid */}
         {filteredStores.length === 0 ? (
-          <Card className="p-12 text-center">
-            <div className="text-gray-400 text-6xl mb-4">🏪</div>
-            <h3 className="text-xl font-semibold text-gray-600 mb-2">لا توجد متاجر</h3>
-            <p className="text-gray-500">لم يتم العثور على متاجر تطابق معايير البحث</p>
+          <Card className="p-8 sm:p-12 text-center">
+            <div className="text-gray-400 text-4xl sm:text-6xl mb-3 sm:mb-4">🏪</div>
+            <h3 className="text-base sm:text-xl font-semibold text-gray-600 mb-1 sm:mb-2">لا توجد متاجر</h3>
+            <p className="text-xs sm:text-base text-gray-500">لم يتم العثور على متاجر تطابق معايير البحث</p>
           </Card>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {filteredStores.map((store) => (
-              <Card key={store.id} className="p-6 hover:shadow-lg transition-shadow">
-                <div className="flex items-start justify-between mb-4">
+              <Card key={store.id} className="p-4 sm:p-6 hover:shadow-lg transition-shadow">
+                <div className="flex items-start justify-between mb-3 sm:mb-4">
                   <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-1">{store.name}</h3>
+                    <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-1">{store.name}</h3>
                     <span className="inline-block px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
                       {store.category}
                     </span>
@@ -196,40 +196,40 @@ export default function StoresPage() {
                 </div>
 
                 {store.description && (
-                  <p className="text-gray-600 text-sm mb-4 line-clamp-2">{store.description}</p>
+                  <p className="text-gray-600 text-xs sm:text-sm mb-3 sm:mb-4 line-clamp-2">{store.description}</p>
                 )}
 
                 {/* Rating */}
-                <div className="mb-4">
+                <div className="mb-3 sm:mb-4">
                   <div className="flex items-center gap-1">
                     {[1, 2, 3, 4, 5].map((star) => (
                       <span
                         key={star}
-                        className={`text-sm ${star <= store.rating ? 'text-yellow-400' : 'text-gray-300'}`}
+                        className={`text-xs sm:text-sm ${star <= store.rating ? 'text-yellow-400' : 'text-gray-300'}`}
                       >
                         ★
                       </span>
                     ))}
-                    <span className="text-sm text-gray-600 mr-1">({store.rating})</span>
+                    <span className="text-xs sm:text-sm text-gray-600 mr-1">({store.rating})</span>
                   </div>
                 </div>
 
                 {/* Contact Info */}
-                <div className="space-y-2 mb-4 text-sm text-gray-600">
+                <div className="space-y-1 sm:space-y-2 mb-3 sm:mb-4 text-xs sm:text-sm text-gray-600">
                   {store.location && (
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1 sm:gap-2">
                       <span>📍</span>
                       <span>{store.location}</span>
                     </div>
                   )}
                   {store.phone && (
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1 sm:gap-2">
                       <span>📞</span>
                       <span>{store.phone}</span>
                     </div>
                   )}
                   {store.email && (
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1 sm:gap-2">
                       <span>✉️</span>
                       <span>{store.email}</span>
                     </div>
@@ -237,14 +237,14 @@ export default function StoresPage() {
                 </div>
 
                 {/* Actions */}
-                <div className="flex gap-2">
+                <div className="flex flex-col sm:flex-row gap-2">
                   <Link
                     href={`/stores/${store.id}`}
-                    className="flex-1 bg-blue-500 hover:bg-blue-600 text-white text-center py-2 px-4 rounded-lg transition-colors text-sm"
+                    className="flex-1 bg-blue-500 hover:bg-blue-600 text-white text-center py-2 px-3 sm:px-4 rounded-lg transition-colors text-xs sm:text-sm"
                   >
                     عرض التفاصيل
                   </Link>
-                  <button className="flex-1 bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg transition-colors text-sm">
+                  <button className="flex-1 bg-green-500 hover:bg-green-600 text-white py-2 px-3 sm:px-4 rounded-lg transition-colors text-xs sm:text-sm">
                     طلب عرض أسعار
                   </button>
                 </div>

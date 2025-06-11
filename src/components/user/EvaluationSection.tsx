@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { EnhancedButton } from '@/components/ui/enhanced-components';
+import { Button } from '@/components/ui/enhanced-components';
 
 export function EvaluationSection({ userId }: { userId: string }) {
   // Placeholder for fetching evaluations
@@ -32,13 +32,13 @@ export function EvaluationSection({ userId }: { userId: string }) {
         value={comment}
         onChange={e => setComment(e.target.value)}
       />
-      <EnhancedButton
+      <Button
         className="w-full"
         onClick={handleSubmit}
         disabled={rating === 0 || !comment.trim()}
       >
         إرسال التقييم
-      </EnhancedButton>
+      </Button>
       {/* List of previous evaluations can be rendered here */}
     </div>
   );

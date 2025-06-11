@@ -259,7 +259,6 @@ export default function Navbar({ session, accountType }: NavbarProps) {
     setShowComingSoon(label);
     setTimeout(() => setShowComingSoon(null), 2000);
   };
-
   return (
     <nav className="bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 text-white shadow-xl sticky top-0 z-50" dir="rtl">
       {/* Toast for coming soon pages */}
@@ -268,7 +267,193 @@ export default function Navbar({ session, accountType }: NavbarProps) {
           <span className="font-bold">{showComingSoon}</span> - هذه الصفحة قيد التطوير وستتوفر قريبًا
         </div>
       )}
-      <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-16">
+      
+      {/* Mobile Navigation */}
+      <div className="lg:hidden">
+        <div className="flex items-center justify-between h-16 px-4">
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="p-2 rounded-md hover:bg-blue-700 focus:outline-none"
+          >
+            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+
+          {/* Logo */}
+          <Link href="/" className="text-xl font-bold">بِنَّا</Link>
+
+          {/* Right side icons */}
+          <div className="flex items-center gap-2">
+            {/* Cart Icon for stores */}
+            {userData?.account_type === 'store' && (
+              <CartIcon onClick={() => {}} className="text-white" />
+            )}
+            
+            {/* Notifications */}
+            {userData && (
+              <button
+                className="relative p-2"
+                onClick={() => setShowNotifications(!showNotifications)}
+              >
+                <Bell className="w-5 h-5" />
+                {unreadCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-xs text-white rounded-full px-1.5 py-0.5 min-w-[18px] text-center">
+                    {unreadCount > 9 ? '9+' : unreadCount}
+                  </span>
+                )}
+              </button>
+            )}
+
+            {/* User Menu Button */}
+            {userData && (
+              <button
+                onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                className="p-2 rounded-md hover:bg-blue-700"
+              >
+                <User className="w-5 h-5" />
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Mobile Menu Overlay */}
+        {isMenuOpen && (
+          <div className="fixed inset-0 z-40 bg-black bg-opacity-50" onClick={() => setIsMenuOpen(false)} />
+        )}
+
+        {/* Mobile Menu Sidebar */}
+        <div className={`fixed right-0 top-0 h-full w-80 bg-white text-gray-900 transform transition-transform duration-300 ease-in-out z-50 ${
+          isMenuOpen ? 'translate-x-0' : 'translate-x-full'
+        }`}>
+          {/* Mobile Menu Header */}
+          <div className="flex items-center justify-between p-4 border-b bg-blue-600 text-white">
+            <h2 className="text-lg font-semibold">القائمة الرئيسية</h2>
+            <button onClick={() => setIsMenuOpen(false)} className="p-2 hover:bg-blue-700 rounded">
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+
+          {/* Mobile Menu Content */}
+          <div className="p-4 space-y-4 overflow-y-auto h-full pb-20">
+            {/* User Info */}
+            {userData && (
+              <div className="bg-gray-50 p-4 rounded-lg mb-4">
+                <p className="font-semibold text-gray-800">{userData.name || 'المستخدم'}</p>
+                <p className="text-sm text-gray-600">{userData.account_type === 'store' ? 'متجر' : 'مستخدم'}</p>
+              </div>
+            )}
+
+            {/* Navigation Links */}
+            {userData?.account_type === 'store' ? (
+              <div className="space-y-2">
+                <h3 className="font-semibold text-gray-800 mb-3">لوحة المتجر</h3>
+                <Link href="/store/dashboard" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
+                  <Home className="w-5 h-5 text-blue-600" />
+                  <span>لوحة التحكم</span>
+                </Link>
+                <Link href="/store/products" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
+                  <Package className="w-5 h-5 text-blue-600" />
+                  <span>المنتجات</span>
+                </Link>
+                <Link href="/store/orders" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
+                  <FileText className="w-5 h-5 text-blue-600" />
+                  <span>الطلبات</span>
+                </Link>
+                <Link href="/store/analytics" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
+                  <Calculator className="w-5 h-5 text-blue-600" />
+                  <span>التحليلات</span>
+                </Link>
+              </div>
+            ) : userData?.account_type === 'user' || userData?.account_type === 'client' ? (
+              <div className="space-y-2">
+                <h3 className="font-semibold text-gray-800 mb-3">لوحة المستخدم</h3>
+                <Link href="/user/dashboard" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
+                  <Home className="w-5 h-5 text-blue-600" />
+                  <span>لوحة التحكم</span>
+                </Link>
+                <Link href="/user/projects" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
+                  <Building2 className="w-5 h-5 text-blue-600" />
+                  <span>مشاريعي</span>
+                </Link>
+                <Link href="/user/orders" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
+                  <Package className="w-5 h-5 text-blue-600" />
+                  <span>طلباتي</span>
+                </Link>
+                <Link href="/user/warranties" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
+                  <Shield className="w-5 h-5 text-blue-600" />
+                  <span>الضمانات</span>
+                </Link>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                <Link href="/projects" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
+                  <Building2 className="w-5 h-5 text-blue-600" />
+                  <span>المشاريع</span>
+                </Link>
+                <Link href="/stores" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
+                  <Package className="w-5 h-5 text-blue-600" />
+                  <span>المتاجر</span>
+                </Link>
+                <Link href="/login" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
+                  <User className="w-5 h-5 text-blue-600" />
+                  <span>تسجيل الدخول</span>
+                </Link>
+                <Link href="/signup" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
+                  <User className="w-5 h-5 text-blue-600" />
+                  <span>إنشاء حساب</span>
+                </Link>
+              </div>
+            )}
+
+            {/* Construction Journey */}
+            {userData?.account_type !== 'store' && (
+              <div className="border-t pt-4">
+                <h3 className="font-semibold text-gray-800 mb-3">رحلة البناء</h3>
+                <div className="space-y-2 text-sm">
+                  <div className="p-2 bg-blue-50 rounded">اختيار الأرض</div>
+                  <div className="p-2 bg-blue-50 rounded">تخطيط المشروع</div>
+                  <div className="p-2 bg-blue-50 rounded">التصميم المعماري</div>
+                  <div className="p-2 bg-blue-50 rounded">الحصول على التراخيص</div>
+                  <div className="p-2 bg-blue-50 rounded">تنفيذ البناء</div>
+                  <div className="p-2 bg-blue-50 rounded">التشطيبات والتسليم</div>
+                </div>
+              </div>
+            )}
+
+            {/* Settings and Logout */}
+            {userData && (
+              <div className="border-t pt-4 space-y-2">
+                <Link href="/user/profile" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
+                  <User className="w-5 h-5 text-blue-600" />
+                  <span>الملف الشخصي</span>
+                </Link>
+                <Link href="/user/settings" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
+                  <Settings className="w-5 h-5 text-blue-600" />
+                  <span>الإعدادات</span>
+                </Link>
+                <button
+                  onClick={async () => {
+                    setLoading(true);
+                    await supabase.auth.signOut();
+                    setLoading(false);
+                    setUserData(null);
+                    setIsMenuOpen(false);
+                    router.push('/login');
+                  }}
+                  className="flex items-center gap-3 p-3 rounded-lg hover:bg-red-50 text-red-600 w-full text-right"
+                >
+                  <LogOut className="w-5 h-5" />
+                  <span>تسجيل الخروج</span>
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Desktop Navigation */}
+      <div className="hidden lg:block">
+        <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-16">
         {/* Logo on far right */}
         <div className="flex items-center gap-6 order-2 md:order-1">
           <Link href="/" className="text-2xl font-bold">بِنَّا</Link>
@@ -434,6 +619,7 @@ export default function Navbar({ session, accountType }: NavbarProps) {
               )}
             </div>
           )}
+        </div>
         </div>
       </div>
     </nav>

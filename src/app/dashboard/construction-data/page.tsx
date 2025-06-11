@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
-import { Typography, EnhancedCard, EnhancedButton, EnhancedBadge } from '@/components/ui/enhanced-components';
+import { Typography, EnhancedCard, Button, EnhancedBadge } from '@/components/ui/enhanced-components';
 import { ClientIcon } from '@/components/icons';
 import type { IconKey } from '@/components/icons/ClientIcon';
 import Link from 'next/link';
@@ -166,13 +166,13 @@ export default function ConstructionDataDashboard() {
         </div>
 
         <div className="mb-6">
-          <EnhancedButton
+          <Button
             variant="secondary"
             size="sm"
             onClick={() => setShowDebug(!showDebug)}
           >
             {showDebug ? 'إخفاء معلومات التصحيح' : 'عرض معلومات التصحيح'}
-          </EnhancedButton>
+          </Button>
 
           {showDebug && (
             <EnhancedCard variant="outlined" className="mt-4">

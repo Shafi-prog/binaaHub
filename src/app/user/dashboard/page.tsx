@@ -11,7 +11,7 @@ import { LoadingSpinner } from '@/components/ui';
 import {
   Typography,
   EnhancedCard,
-  EnhancedButton,
+  Button,
   EnhancedBadge
 } from '@/components/ui/enhanced-components';
 import { StatCard } from '@/components/ui';
@@ -246,13 +246,13 @@ export default function UserDashboard() {
 
         {/* Debug Toggle */}
         <div className="mb-6">
-          <EnhancedButton
+          <Button
             variant="secondary"
             size="sm"
             onClick={() => setShowDebug(!showDebug)}
           >
             {showDebug ? 'إخفاء معلومات التصحيح' : 'عرض معلومات التصحيح'}
-          </EnhancedButton>
+          </Button>
 
           {showDebug && (
             <EnhancedCard variant="outlined" className="mt-4">

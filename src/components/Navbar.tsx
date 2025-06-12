@@ -343,8 +343,7 @@ export default function Navbar({ session, accountType }: NavbarProps) {
               </div>
             )}
 
-            {/* Navigation Links */}
-            {userData?.account_type === 'store' ? (
+            {/* Navigation Links */}            {userData?.account_type === 'store' ? (
               <div className="space-y-2">
                 <h3 className="font-semibold text-gray-800 mb-3">لوحة المتجر</h3>
                 <Link href="/store/dashboard" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
@@ -355,16 +354,28 @@ export default function Navbar({ session, accountType }: NavbarProps) {
                   <Package className="w-5 h-5 text-blue-600" />
                   <span>المنتجات</span>
                 </Link>
+                <Link href="/store/inventory" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
+                  <Package className="w-5 h-5 text-blue-600" />
+                  <span>المخزون</span>
+                </Link>
                 <Link href="/store/orders" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
                   <FileText className="w-5 h-5 text-blue-600" />
                   <span>الطلبات</span>
+                </Link>
+                <Link href="/store/suppliers" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
+                  <Users className="w-5 h-5 text-blue-600" />
+                  <span>الموردين</span>
+                </Link>
+                <Link href="/store/invoices" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
+                  <FileText className="w-5 h-5 text-blue-600" />
+                  <span>الفواتير</span>
                 </Link>
                 <Link href="/store/analytics" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
                   <Calculator className="w-5 h-5 text-blue-600" />
                   <span>التحليلات</span>
                 </Link>
               </div>
-            ) : userData?.account_type === 'user' || userData?.account_type === 'client' ? (
+            ): userData?.account_type === 'user' || userData?.account_type === 'client' ? (
               <div className="space-y-2">
                 <h3 className="font-semibold text-gray-800 mb-3">لوحة المستخدم</h3>
                 <Link href="/user/dashboard" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
@@ -577,19 +588,19 @@ export default function Navbar({ session, accountType }: NavbarProps) {
                 <ChevronDown className="w-4 h-4" />
               </button>
               {isUserMenuOpen && (
-                <div className="absolute left-0 mt-2 w-56 bg-white text-gray-900 border rounded shadow-lg z-50 min-w-max text-right">
-                  {userData.account_type === 'store' ? (
+                <div className="absolute left-0 mt-2 w-56 bg-white text-gray-900 border rounded shadow-lg z-50 min-w-max text-right">                  {userData.account_type === 'store' ? (
                     <>
-                      <Link href="/store/dashboard" className="block px-4 py-2 hover:bg-gray-100 flex items-center gap-2"><Home className="w-5 h-5" />لوحة المتجر</Link>
-                      <Link href="/store/products" className="block px-4 py-2 hover:bg-gray-100 flex items-center gap-2"><Package className="w-5 h-5" />منتجاتي</Link>
+                      <Link href="/store/dashboard" className="block px-4 py-2 hover:bg-gray-100 flex items-center gap-2"><Home className="w-5 h-5" />لوحة التحكم</Link>
+                      <Link href="/store/products" className="block px-4 py-2 hover:bg-gray-100 flex items-center gap-2"><Package className="w-5 h-5" />المنتجات</Link>
+                      <Link href="/store/inventory" className="block px-4 py-2 hover:bg-gray-100 flex items-center gap-2"><Package className="w-5 h-5" />المخزون</Link>
                       <Link href="/store/orders" className="block px-4 py-2 hover:bg-gray-100 flex items-center gap-2"><FileText className="w-5 h-5" />الطلبات</Link>
+                      <Link href="/store/suppliers" className="block px-4 py-2 hover:bg-gray-100 flex items-center gap-2"><Users className="w-5 h-5" />الموردين</Link>
+                      <Link href="/store/invoices" className="block px-4 py-2 hover:bg-gray-100 flex items-center gap-2"><FileText className="w-5 h-5" />الفواتير</Link>
+                      <Link href="/store/analytics" className="block px-4 py-2 hover:bg-gray-100 flex items-center gap-2"><Calculator className="w-5 h-5" />التحليلات</Link>
+                      <div className="border-t my-2"></div>
                       <Link href="/store/profile" className="block px-4 py-2 hover:bg-gray-100 flex items-center gap-2"><User className="w-5 h-5" />الملف الشخصي</Link>
                       <Link href="/store/settings" className="block px-4 py-2 hover:bg-gray-100 flex items-center gap-2"><Settings className="w-5 h-5" />الإعدادات</Link>
-                      <Link href="/store/documents" className="block px-4 py-2 hover:bg-gray-100 flex items-center gap-2"><FileText className="w-5 h-5" />الملفات والفواتير</Link>
-                      <Link href="/store/warranty" className="block px-4 py-2 hover:bg-gray-100 flex items-center gap-2"><Shield className="w-5 h-5" />الضمانات</Link>
-                      <Link href="/store/analytics" className="block px-4 py-2 hover:bg-gray-100 flex items-center gap-2"><Calculator className="w-5 h-5" />التحليلات</Link>
-                      <Link href="/store/support" className="block px-4 py-2 hover:bg-gray-100 flex items-center gap-2"><Bell className="w-5 h-5" />الدعم الفني</Link>
-                    </>                  ) : (
+                    </>                  ): (
                     <>
                       <Link href="/user/dashboard" className="block px-4 py-2 hover:bg-gray-100 flex items-center gap-2"><Home className="w-5 h-5" />لوحة المستخدم</Link>
                       <Link href="/user/projects" className="block px-4 py-2 hover:bg-gray-100 flex items-center gap-2"><Building2 className="w-5 h-5" />مشاريعي</Link>

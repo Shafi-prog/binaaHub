@@ -58,13 +58,24 @@ export async function middleware(req: NextRequest) {
         }
       }
       if (url.pathname.startsWith('/store/') && url.pathname !== '/store/profile') {
-        const { data: storeData } = await supabase
+        const { data: storeData, error: storeError } = await supabase
           .from('stores')
           .select('store_name, phone, city, region')
           .eq('user_id', session.user.id)
           .single();
+        console.log('[MIDDLEWARE] Store profile check:', { storeData, storeError });
         if (!storeData || !storeData.store_name || !storeData.phone || !storeData.city || !storeData.region) {
-          return NextResponse.redirect(new URL('/store/profile', req.url));
+          // إذا كان المستخدم بالفعل في /store/profile لا تعيد التوجيه
+          if (url.pathname !== '/store/profile') {
+            console.log('[MIDDLEWARE] Store profile incomplete, redirecting to /store/profile');
+            return NextResponse.redirect(new URL('/store/profile', req.url));
+          }
+        } else {
+          // إذا كان المستخدم في /store/profile وملفه مكتمل، وجهه للوحة التحكم
+          if (url.pathname === '/store/profile') {
+            console.log('[MIDDLEWARE] Store profile complete, redirecting to /store/dashboard');
+            return NextResponse.redirect(new URL('/store/dashboard', req.url));
+          }
         }
       }
     } catch (profileError) {

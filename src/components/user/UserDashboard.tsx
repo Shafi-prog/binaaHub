@@ -5,22 +5,10 @@ import type { Database } from '@/types/database';
 import { Card, StatCard, LoadingSpinner } from '@/components/ui';
 import { Shield, Calendar, Box, Tag, Clock, CreditCard, File } from 'lucide-react';
 import { isProjectActive, getStatusLabel, getProgressFromStatus, getProjectTypeLabel } from '@/lib/project-utils';
-import { getAllProjects } from '@/lib/api/dashboard';
-
-interface DashboardStats {
-  activeWarranties: number;
-  totalOrders: number;
-  pendingOrders: number;
-  totalSpending: number;
-  activeProjects: number;
-  totalProjects: number;
-  recentProjects: any[];
-  recentOrders: any[];
-  upcomingWarranties: any[];
-}
+import { getUserDashboardStats, type UserDashboardStats } from '@/lib/api/user-dashboard';
 
 export default function UserDashboard() {
-  const [stats, setStats] = useState<DashboardStats | null>(null);
+  const [stats, setStats] = useState<UserDashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentUser, setCurrentUser] = useState<any>(null);
@@ -34,62 +22,15 @@ export default function UserDashboard() {
   useEffect(() => {
     const loadDashboardData = async () => {
       try {
-        const user = (await supabase.auth.getUser()).data.user;
-        if (!user) throw new Error('User not authenticated');
-
-        // Get active warranties
-        const { data: warranties, error: warrantiesError } = await supabase
-          .from('warranties')
-          .select('*')
-          .eq('user_id', user.id)
-          .eq('status', 'active');
-
-        // Get orders
-        const { data: orders, error: ordersError } = await supabase
-          .from('orders')
-          .select('*, store:stores(store_name)')
-          .eq('user_id', user.id)
-          .order('created_at', { ascending: false })
-          .limit(5);        // Get projects using the consistent API function
-        const projects = await getAllProjects(user.id);
-
-        // Calculate total spending
-        const { data: totalSpending } = await supabase
-          .from('orders')
-          .select('total_amount')
-          .eq('user_id', user.id)
-          .eq('payment_status', 'completed');
-
-        if (warrantiesError || ordersError) {
-          throw new Error('Error fetching dashboard data');
-        }
-
-        // Process upcoming warranty expirations
-        const upcomingWarranties = warranties
-          ?.filter((w) => {
-            const daysUntilExpiry = Math.ceil(
-              (new Date(w.warranty_end_date).getTime() - Date.now()) / (1000 * 60 * 60 * 24)
-            );
-            return daysUntilExpiry <= 30;
-          })
-          .sort(
-            (a, b) =>
-              new Date(a.warranty_end_date).getTime() - new Date(b.warranty_end_date).getTime()
-          )
-          .slice(0, 5);
-
-        // Use shared helpers for stats
-        setStats({
-          activeWarranties: warranties?.filter((w) => w.status === 'active').length || 0,
-          totalOrders: orders?.length || 0,
-          pendingOrders: orders?.filter((o: any) => o.status === 'pending').length || 0,
-          totalSpending: (totalSpending as any[])?.reduce((sum: number, o: any) => sum + (o.total_amount || 0), 0) || 0,
-          activeProjects: projects?.filter(isProjectActive).length || 0,
-          totalProjects: projects?.length || 0,
-          recentProjects: projects || [],
-          recentOrders: orders || [],
-          upcomingWarranties: upcomingWarranties || [],
-        });
+        setLoading(true);
+        const { data: { user } } = await supabase.auth.getUser();
+        
+        if (!user) {
+          setError('User not authenticated');
+          return;
+        }        // Use the new user dashboard API that includes invoices
+        const dashboardStats = await getUserDashboardStats(user.id);
+        setStats(dashboardStats);
       } catch (error) {
         console.error('Error loading dashboard data:', error);
         setError('Failed to load dashboard data');
@@ -111,9 +52,7 @@ export default function UserDashboard() {
         <div className="p-4 bg-yellow-100 rounded text-yellow-900 text-sm mb-2">
           <strong>Debug:</strong> User ID: {currentUser.id} | Email: {currentUser.email}
         </div>
-      )}
-
-      {/* Quick Stats */}
+      )}      {/* Quick Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <StatCard
           title="Active Warranties"
@@ -130,48 +69,97 @@ export default function UserDashboard() {
           color="green"
         />
         <StatCard
-          title="Total Projects"
-          value={stats?.totalProjects?.toString() ?? '0'}
+          title="Total Orders"
+          value={stats?.totalOrders?.toString() ?? '0'}
           icon={<Box className="w-8 h-8" />}
-          subtitle="All your projects"
+          subtitle="Orders & invoices combined"
           color="purple"
         />
         <StatCard
-          title="Pending Orders"
-          value={stats?.pendingOrders?.toString() ?? '0'}
-          icon={<Box className="w-8 h-8" />}
-          subtitle="Orders awaiting processing"
-          color="yellow"
-        />
+          title="Total Invoices"
+          value={stats?.totalInvoices?.toString() ?? '0'}
+          icon={
+            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+          }          subtitle="Store invoices received"
+          color="yellow"/>
       </div>
 
       {/* Recent Activity */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Recent Orders */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">        {/* Recent Orders & Invoices */}
         <Card className="p-6">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-semibold">Recent Orders</h3>
+            <h3 className="text-lg font-semibold">Recent Orders & Invoices</h3>
             <Link href="/user/orders" className="text-blue-600 hover:text-blue-700 text-sm">
               View all
             </Link>
           </div>
           <div className="space-y-4">
             {stats.recentOrders.length === 0 ? (
-              <p className="text-gray-500">No recent orders</p>
+              <p className="text-gray-500">No recent orders or invoices</p>
             ) : (
-              stats.recentOrders.map((order) => (
-                <div key={order.id} className="flex items-center justify-between">
-                  <div>
-                    <p className="font-medium">{order.store.store_name}</p>
-                    <p className="text-sm text-gray-500">Order #{order.order_number}</p>
+              stats.recentOrders.map((item) => (
+                <div key={item.id} className="flex items-center justify-between p-3 rounded-lg border border-gray-100 hover:bg-gray-50">
+                  <div className="flex items-center space-x-3">
+                    {/* Type indicator icon */}
+                    <div className={`p-2 rounded-full ${
+                      item.type === 'invoice' 
+                        ? 'bg-purple-100 text-purple-600' 
+                        : 'bg-blue-100 text-blue-600'
+                    }`}>
+                      {item.type === 'invoice' ? (
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                      ) : (
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                        </svg>
+                      )}
+                    </div>
+                    
+                    <div>
+                      <p className="font-medium">{item.store_name}</p>
+                      <div className="flex items-center space-x-2">
+                        <span className={`text-xs px-2 py-1 rounded-full font-medium ${
+                          item.type === 'invoice' 
+                            ? 'bg-purple-100 text-purple-700' 
+                            : 'bg-blue-100 text-blue-700'
+                        }`}>
+                          {item.type === 'invoice' ? 'Invoice' : 'Order'}
+                        </span>
+                        <p className="text-sm text-gray-500">
+                          {item.type === 'invoice' && item.invoice_number 
+                            ? `#${item.invoice_number}` 
+                            : `#${item.id.slice(0, 8)}...`}
+                        </p>
+                      </div>
+                    </div>
                   </div>
+                  
                   <div className="text-right">
-                    <p className="font-medium">${order.total_amount}</p>
-                    <p
-                      className={`text-sm ${order.status === 'pending' ? 'text-yellow-600' : 'text-green-600'}`}
-                    >
-                      {order.status}
-                    </p>
+                    <p className="font-medium">${item.amount}</p>
+                    <div className="flex items-center justify-end space-x-2">
+                      <span className={`text-sm px-2 py-1 rounded-full ${
+                        item.status === 'delivered' || item.status === 'paid' 
+                          ? 'bg-green-100 text-green-700' 
+                          : item.status === 'pending'
+                          ? 'bg-yellow-100 text-yellow-700'
+                          : 'bg-gray-100 text-gray-700'
+                      }`}>
+                        {item.status}
+                      </span>
+                      {item.type === 'invoice' && item.payment_status && (
+                        <span className={`text-xs px-2 py-1 rounded-full ${
+                          item.payment_status === 'paid' 
+                            ? 'bg-green-100 text-green-600' 
+                            : 'bg-orange-100 text-orange-600'
+                        }`}>
+                          {item.payment_status}
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </div>
               ))
@@ -190,7 +178,7 @@ export default function UserDashboard() {
               <p className="text-gray-500">No active projects</p>
             ) : (
               stats.recentProjects.filter(isProjectActive).slice(0, 5).map((project) => {
-                const progressPercentage = project.progress_percentage || getProgressFromStatus(project.status);
+                const progressPercentage = project.progress || getProgressFromStatus(project.status);
                 return (
                   <div key={project.id} className="flex items-center justify-between">
                     <div>
@@ -212,42 +200,38 @@ export default function UserDashboard() {
             )}
           </div>
         </Card>
-      </div>
-
-      {/* Warranty Expirations */}
+      </div>      {/* Recent Warranties */}
       <Card className="p-6">
         <div className="flex justify-between items-center mb-4">
-          <h3 className="text-lg font-semibold">Upcoming Warranty Expirations</h3>
+          <h3 className="text-lg font-semibold">Recent Warranties</h3>
           <Link href="/user/warranties" className="text-blue-600 hover:text-blue-700 text-sm">
             View all warranties
           </Link>
         </div>
         <div className="space-y-4">
-          {stats.upcomingWarranties.length === 0 ? (
-            <p className="text-gray-500">No upcoming warranty expirations</p>
+          {stats.recentWarranties.length === 0 ? (
+            <p className="text-gray-500">No warranties found</p>
           ) : (
-            stats.upcomingWarranties.map((warranty) => {
-              const daysLeft = Math.ceil(
-                (new Date(warranty.warranty_end_date).getTime() - Date.now()) /
-                  (1000 * 60 * 60 * 24)
-              );
-              return (
-                <div key={warranty.id} className="flex items-center justify-between">
-                  <div>
-                    <p className="font-medium">{warranty.product_name}</p>
-                    <p className="text-sm text-gray-500">Expires in {daysLeft} days</p>
-                  </div>
-                  <button
-                    onClick={() => {
-                      // Handle warranty details view
-                    }}
-                    className="text-blue-600 hover:text-blue-700"
-                  >
-                    <File className="w-5 h-5" />
-                  </button>
+            stats.recentWarranties.map((warranty) => (
+              <div key={warranty.id} className="flex items-center justify-between">
+                <div>
+                  <p className="font-medium">{warranty.product_name}</p>
+                  <p className="text-sm text-gray-500">{warranty.store_name}</p>
                 </div>
-              );
-            })
+                <div className="text-right">
+                  <p className="text-sm text-gray-600">
+                    Expires: {new Date(warranty.expiry_date).toLocaleDateString()}
+                  </p>
+                  <span className={`text-xs px-2 py-1 rounded-full ${
+                    warranty.status === 'active' 
+                      ? 'bg-green-100 text-green-700' 
+                      : 'bg-gray-100 text-gray-700'
+                  }`}>
+                    {warranty.status}
+                  </span>
+                </div>
+              </div>
+            ))
           )}
         </div>
       </Card>
@@ -273,29 +257,8 @@ export default function UserDashboard() {
           className="flex items-center justify-center gap-2 p-4 bg-purple-50 text-purple-700 rounded-lg hover:bg-purple-100"
         >
           <Shield className="w-5 h-5" />
-          <span>Register Warranty</span>
-        </Link>
+          <span>Register Warranty</span>        </Link>
       </div>
-
-      {/* Total Spending Card */}
-      <Card className="p-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h3 className="text-lg font-semibold">Total Spending</h3>
-            <p className="text-gray-500">All time spending across all orders</p>
-          </div>
-          <div className="text-right">
-            <p className="text-2xl font-bold">${stats.totalSpending.toFixed(2)}</p>
-            <Link
-              href="/user/spending-tracking"
-              className="text-blue-600 hover:text-blue-700 text-sm inline-flex items-center gap-1"
-            >
-              <CreditCard className="w-4 h-4" />
-              View details
-            </Link>
-          </div>
-        </div>
-      </Card>
     </div>
   );
 }

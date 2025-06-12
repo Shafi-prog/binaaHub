@@ -178,7 +178,7 @@ export default function UserDashboard() {
     },
     {
       title: 'الطلبات المكتملة',
-      value: stats.completedProjects,
+      value: stats.completedOrders, // تم التعديل هنا لاستخدام عدد الطلبات المكتملة
       icon: 'settings' as IconKey,
       href: '/user/orders',
       color: 'bg-green-500',

@@ -17,11 +17,10 @@ export default function LoginPage() {
         body: JSON.stringify(data),
       });
 
-      const result = await response.json();
-
-      if (result.success) {
+      const result = await response.json();      if (result.success) {
         toast.success('Login successful!');
-        const redirectPath = result.role === 'store' ? '/store/dashboard' : '/user/dashboard';
+        // Use the correct property from the API response
+        const redirectPath = result.redirectTo || (result.user?.account_type === 'store' ? '/store/dashboard' : '/user/dashboard');
         window.location.href = redirectPath;
       } else {
         toast.error(`Login failed: ${result.error}`);

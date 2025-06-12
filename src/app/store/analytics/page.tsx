@@ -1,82 +1,92 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { createClientComponentClient, User } from '@supabase/auth-helpers-nextjs';
+import React, { useState, useEffect } from 'react';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/navigation';
-import { toast } from 'react-hot-toast';
 import StoreAnalyticsDashboard from '@/components/analytics/StoreAnalyticsDashboard';
-import type { Database } from '@/types/database';
+import { toast } from 'react-hot-toast';
 
-type Store = Database['public']['Tables']['stores']['Row'];
-
-export default function AnalyticsPage() {
-  const [user, setUser] = useState<User | null>(null);
-  const [storeId, setStoreId] = useState<string>('');
+export default function StoreAnalytics() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [user, setUser] = useState<any>(null);
+  const [storeId, setStoreId] = useState<string | null>(null);
+
+  const supabase = createClientComponentClient();
   const router = useRouter();
-  const supabase = createClientComponentClient<Database>();
 
   useEffect(() => {
-    const getUser = async () => {
+    getUser();
+  }, []);
+
+  const getUser = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      // Get current user session
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      if (sessionError) {
+        console.error('Session error:', sessionError);
+        router.push('/login');
+        return;
+      }
+
+      if (!session?.user) {
+        router.push('/login');
+        return;
+      }
+
+      setUser(session.user);
+
+      // Get store information for this user
+      const { data: store, error: storeError } = await supabase
+        .from('stores')
+        .select('id, store_name, status, is_verified')
+        .eq('user_id', session.user.id)
+        .single();
+
+      if (storeError) {
+        console.error('Store fetch error:', storeError);
+        setError('Failed to fetch store information');
+        return;
+      }
+
+      if (!store) {
+        setError('لم يتم العثور على متجر لهذا المستخدم');
+        return;
+      }
+
+      // Check store status (using correct column names from schema)
+      if (store.status !== 'active') {
+        setError('المتجر غير نشط حالياً');
+        return;
+      }
+
+      if (!store.is_verified) {
+        setError('المتجر في انتظار التحقق');
+        return;
+      }
+
+      setStoreId(store.id);
+
+      // Track the store view
       try {
-        // Get session
-        const {
-          data: { session },
-          error: sessionError,
-        } = await supabase.auth.getSession();
-
-        if (sessionError) {
-          throw new Error('Failed to get session: ' + sessionError.message);
-        }
-
-        if (!session) {
-          router.push('/login');
-          return;
-        }
-
-        setUser(session.user);
-
-        // Get store ID and track view
-        const { data: store, error: storeError } = await supabase
-          .from('stores')
-          .select('id, is_active, is_verified')
-          .eq('user_id', session.user.id)
-          .single();
-
-        if (storeError) {
-          throw new Error('Failed to fetch store: ' + storeError.message);
-        }
-
-        if (!store) {
-          throw new Error('لم يتم العثور على متجر لهذا المستخدم');
-        }
-
-        if (!store.is_active) {
-          throw new Error('المتجر غير نشط حالياً');
-        }
-
-        if (!store.is_verified) {
-          throw new Error('المتجر في انتظار التحقق');
-        }
-
-        setStoreId(store.id);
-
-        // Track the store view
         const { trackStoreView } = await import('@/lib/api/store-views');
         await trackStoreView(store.id, session.user.id, 'analytics');
-      } catch (err) {
-        console.error('Error:', err);
-        const errorMessage = err instanceof Error ? err.message : 'حدث خطأ في تحميل بيانات المتجر';
-        setError(errorMessage);
-        toast.error(errorMessage);
-      } finally {
-        setLoading(false);
+      } catch (trackError) {
+        console.warn('Could not track store view:', trackError);
       }
-    };
 
-    getUser();
-  }, [supabase, router]);
+    } catch (err) {
+      console.error('Error:', err);
+      const errorMessage = err instanceof Error ? err.message : 'حدث خطأ في تحميل بيانات المتجر';
+      setError(errorMessage);
+      toast.error(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (loading) {
     return (

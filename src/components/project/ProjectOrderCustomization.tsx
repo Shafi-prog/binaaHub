@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, LoadingSpinner, Button } from '@/components/ui';
 import { 
   Settings, 
-  Template, 
+  FileText, 
   ShoppingCart, 
   DollarSign, 
   Shield, 
@@ -164,7 +164,7 @@ export default function ProjectOrderCustomization({
     {
       id: 'templates',
       label: 'قوالب الطلبات',
-      icon: Template,
+      icon: FileText,
       description: 'إنشاء وإدارة قوالب الطلبات'
     },
     {
@@ -317,7 +317,13 @@ function ProjectSettingsTab({
   };
 
   const updateNotificationPreference = (key: string, value: boolean) => {
-    const newPrefs = { ...settings.notification_preferences, [key]: value };
+    const defaultPrefs = {
+      order_created: true,
+      order_approved: true,
+      order_delivered: true,
+      budget_exceeded: true
+    };
+    const newPrefs = { ...defaultPrefs, ...settings.notification_preferences, [key]: value };
     onSettingsChange({ ...settings, notification_preferences: newPrefs });
   };
 
@@ -464,10 +470,10 @@ function ProjectSettingsTab({
         
         <div className="grid grid-cols-2 gap-4">
           {[
-            { key: 'order_created', label: 'إنشاء طلب جديد' },
-            { key: 'order_approved', label: 'الموافقة على الطلب' },
-            { key: 'order_delivered', label: 'تسليم الطلب' },
-            { key: 'budget_exceeded', label: 'تجاوز الميزانية' }
+            { key: 'order_created' as const, label: 'إنشاء طلب جديد' },
+            { key: 'order_approved' as const, label: 'الموافقة على الطلب' },
+            { key: 'order_delivered' as const, label: 'تسليم الطلب' },
+            { key: 'budget_exceeded' as const, label: 'تجاوز الميزانية' }
           ].map(({ key, label }) => (
             <div key={key} className="flex items-center">
               <input

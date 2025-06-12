@@ -153,13 +153,9 @@ export class ProjectOrderTemplatesAPI {
 
   static async incrementTemplateUsage(templateId: string): Promise<void> {
     try {
-      const { error } = await supabase
-        .from('project_order_templates')
-        .update({ 
-          usage_count: supabase.sql`usage_count + 1`,
-          last_used: new Date().toISOString()
-        })
-        .eq('id', templateId);
+      const { error } = await supabase.rpc('increment_template_usage', {
+        template_id: templateId
+      });
 
       if (error) throw error;
     } catch (error) {

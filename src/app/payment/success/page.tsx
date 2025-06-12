@@ -17,12 +17,11 @@ export default function PaymentSuccessPage() {
   }>({});
 
   useEffect(() => {
-    const invoiceId = searchParams.get('invoice');
-    const amount = searchParams.get('amount');
+    const invoiceId = searchParams.get('invoice');    const amount = searchParams.get('amount');
     const transactionId = searchParams.get('transaction');
 
     setPaymentInfo({
-      invoiceId,
+      invoiceId: invoiceId || undefined,
       amount: amount || undefined,
       transactionId: transactionId || undefined
     });

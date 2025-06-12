@@ -518,7 +518,7 @@ export class ERPIntegrationService {
 
     if (error) throw error;
 
-    const totalStock = data.reduce((sum: number, entry: any) => sum + entry.actual_qty, 0);
+    const totalStock = data.reduce((sum: number, entry: { actual_qty: number }) => sum + entry.actual_qty, 0);
     return totalStock >= qty;
   }
 
@@ -675,7 +675,7 @@ export class ERPIntegrationService {
 
     if (outstandingError) throw outstandingError;
 
-    const totalOutstanding = outstandingData.reduce((sum, inv) => sum + inv.outstanding_amount, 0);
+    const totalOutstanding = outstandingData.reduce((sum: number, inv: { outstanding_amount: number }) => sum + inv.outstanding_amount, 0);
     return (totalOutstanding + grandTotal) <= creditLimit.credit_limit;
   }
 
@@ -780,7 +780,7 @@ export class ERPIntegrationService {
 
     if (error) throw error;
 
-    return data.reduce((sum, entry) => sum + entry.actual_qty, 0);
+    return data.reduce((sum: number, entry: { actual_qty: number }) => sum + entry.actual_qty, 0);
   }
 
   // Advanced Business Logic
@@ -908,7 +908,7 @@ export class ERPIntegrationService {
       if (salesError) throw salesError;
 
       // Calculate metrics
-      const totalRevenue = salesOrders?.reduce((sum, order) => sum + (order.grand_total || 0), 0) || 0;
+      const totalRevenue = salesOrders?.reduce((sum: number, order: { grand_total?: number }) => sum + (order.grand_total || 0), 0) || 0;
       const totalOrders = salesOrders?.length || 0;
       const averageOrderValue = totalOrders > 0 ? totalRevenue / totalOrders : 0;
 
@@ -949,8 +949,8 @@ export class ERPIntegrationService {
       const { data: orders, error } = await query;
       if (error) throw error;
 
-      const totalRevenue = orders?.reduce((sum, order) => sum + (order.grand_total || 0), 0) || 0;
-      const totalTaxes = orders?.reduce((sum, order) => sum + (order.total_taxes_and_charges || 0), 0) || 0;
+      const totalRevenue = orders?.reduce((sum: number, order: { grand_total?: number }) => sum + (order.grand_total || 0), 0) || 0;
+      const totalTaxes = orders?.reduce((sum: number, order: { total_taxes_and_charges?: number }) => sum + (order.total_taxes_and_charges || 0), 0) || 0;
       const netRevenue = totalRevenue - totalTaxes;
 
       return {
@@ -987,23 +987,23 @@ export class ERPIntegrationService {
       if (error) throw error;
 
       // Group by status
-      const statusDistribution = orders?.reduce((acc, order) => {
+      const statusDistribution = orders?.reduce((acc: Record<string, number>, order: { status: string }) => {
         acc[order.status] = (acc[order.status] || 0) + 1;
         return acc;
-      }, {} as Record<string, number>) || {};
+      }, {});
 
       // Group by customer
-      const customerDistribution = orders?.reduce((acc, order) => {
-        acc[order.customer_name] = (acc[order.customer_name] || 0) + (order.grand_total || 0);
+      const customerDistribution = orders?.reduce((acc: Record<string, number>, order: { customer_name: string }) => {
+        acc[order.customer_name] = (acc[order.customer_name] || 0) + 1;
         return acc;
-      }, {} as Record<string, number>) || {};
+      }, {});
 
       return {
         statusDistribution,
         customerDistribution,
         totalOrders: orders?.length || 0,
-        completedOrders: orders?.filter(o => o.status === 'Completed').length || 0,
-        pendingOrders: orders?.filter(o => o.status === 'Draft' || o.status === 'To Deliver and Bill').length || 0
+        completedOrders: orders?.filter((o: { status: string }) => o.status === 'Completed').length || 0,
+        pendingOrders: orders?.filter((o: { status: string }) => o.status === 'Draft' || o.status === 'To Deliver and Bill').length || 0
       };
     } catch (error) {
       console.error('Error getting sales analytics:', error);
@@ -1020,11 +1020,9 @@ export class ERPIntegrationService {
       if (error) throw error;
 
       const totalItems = items?.length || 0;
-      const stockItems = items?.filter(item => item.is_stock_item).length || 0;
-      const lowStockItems = items?.filter(item => (item.opening_stock || 0) < (item.safety_stock || 10)).length || 0;
-      const totalInventoryValue = items?.reduce((sum, item) => {
-        return sum + ((item.opening_stock || 0) * (item.valuation_rate || 0));
-      }, 0) || 0;
+      const stockItems = items?.filter((item: { is_stock_item: boolean }) => item.is_stock_item).length || 0;
+      const lowStockItems = items?.filter((item: { opening_stock?: number; safety_stock?: number }) => (item.opening_stock || 0) < (item.safety_stock || 10)).length || 0;
+      const totalInventoryValue = items?.reduce((sum: number, item: { valuation_rate?: number; opening_stock?: number }) => sum + (item.valuation_rate || 0) * (item.opening_stock || 0), 0) || 0;
 
       return {
         totalItems,
@@ -1051,13 +1049,13 @@ export class ERPIntegrationService {
       if (error) throw error;
 
       const totalCustomers = customers?.length || 0;
-      const activeCustomers = customers?.filter(c => !c.disabled && !c.is_frozen).length || 0;
+      const activeCustomers = customers?.filter((c: { disabled: boolean; is_frozen: boolean }) => !c.disabled && !c.is_frozen).length || 0;
 
       // Group by customer group
-      const groupDistribution = customers?.reduce((acc, customer) => {
+      const groupDistribution = customers?.reduce((acc: Record<string, number>, customer: { customer_group: string }) => {
         acc[customer.customer_group] = (acc[customer.customer_group] || 0) + 1;
         return acc;
-      }, {} as Record<string, number>) || {};
+      }, {});
 
       return {
         totalCustomers,
@@ -1079,8 +1077,8 @@ export class ERPIntegrationService {
         this.supabase.from('erp_sales_orders').select('*')
       ]);
 
-      const totalRevenue = salesOrders.data?.reduce((sum, order) => sum + (order.grand_total || 0), 0) || 0;
-      const pendingOrders = salesOrders.data?.filter(order => 
+      const totalRevenue = salesOrders.data?.reduce((sum: number, order: { grand_total?: number }) => sum + (order.grand_total || 0), 0) || 0;
+      const pendingOrders = salesOrders.data?.filter((order: { status: string }) => 
         order.status === 'Draft' || order.status === 'To Deliver and Bill'
       ).length || 0;
 
@@ -1090,7 +1088,7 @@ export class ERPIntegrationService {
         totalOrders: salesOrders.data?.length || 0,
         totalRevenue,
         pendingOrders,
-        lowStockAlerts: items.data?.filter(item => (item.opening_stock || 0) < 10).length || 0
+        lowStockAlerts: items.data?.filter((item: { opening_stock?: number }) => (item.opening_stock || 0) < 10).length || 0
       };
     } catch (error) {
       console.error('Error getting dashboard summary:', error);
@@ -1181,200 +1179,6 @@ export class ERPIntegrationService {
       console.error('Error fetching sales orders:', error);
       throw error;
     }
-  }
-
-  async createItem(itemData: any): Promise<any> {
-    try {
-      const { data, error } = await this.supabase
-        .from('erp_items')
-        .insert([{
-          ...itemData,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
-        }])
-        .select()
-        .single();
-
-      if (error) throw error;
-      return data;
-    } catch (error) {
-      console.error('Error creating item:', error);
-      throw error;
-    }
-  }
-
-  async updateItem(id: string, updates: any): Promise<any> {
-    try {
-      const { data, error } = await this.supabase
-        .from('erp_items')
-        .update({
-          ...updates,
-          updated_at: new Date().toISOString()
-        })
-        .eq('id', id)
-        .select()
-        .single();
-
-      if (error) throw error;
-      return data;
-    } catch (error) {
-      console.error('Error updating item:', error);
-      throw error;
-    }
-  }
-
-  async deleteItem(id: string): Promise<void> {
-    try {
-      const { error } = await this.supabase
-        .from('erp_items')
-        .delete()
-        .eq('id', id);
-
-      if (error) throw error;
-    } catch (error) {
-      console.error('Error deleting item:', error);
-      throw error;
-    }
-  }
-
-  async createCustomer(customerData: any): Promise<any> {
-    try {
-      const { data, error } = await this.supabase
-        .from('erp_customers')
-        .insert([{
-          ...customerData,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
-        }])
-        .select()
-        .single();
-
-      if (error) throw error;
-      return data;
-    } catch (error) {
-      console.error('Error creating customer:', error);
-      throw error;
-    }
-  }
-
-  async updateCustomer(id: string, updates: any): Promise<any> {
-    try {
-      const { data, error } = await this.supabase
-        .from('erp_customers')
-        .update({
-          ...updates,
-          updated_at: new Date().toISOString()
-        })
-        .eq('id', id)
-        .select()
-        .single();
-
-      if (error) throw error;
-      return data;
-    } catch (error) {
-      console.error('Error updating customer:', error);
-      throw error;
-    }
-  }
-
-  async deleteCustomer(id: string): Promise<void> {
-    try {
-      const { error } = await this.supabase
-        .from('erp_customers')
-        .delete()
-        .eq('id', id);
-
-      if (error) throw error;
-    } catch (error) {
-      console.error('Error deleting customer:', error);
-      throw error;
-    }
-  }
-
-  async createSalesOrder(orderData: any): Promise<any> {
-    try {
-      // Generate naming series
-      const namingSeries = await this.generateNamingSeries('SO', 'Sales Order');
-      
-      const { data, error } = await this.supabase
-        .from('erp_sales_orders')
-        .insert([{
-          ...orderData,
-          name: namingSeries,
-          naming_series: 'SO-YYYY-',
-          status: 'Draft',
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
-        }])
-        .select()
-        .single();
-
-      if (error) throw error;
-      return data;
-    } catch (error) {
-      console.error('Error creating sales order:', error);
-      throw error;
-    }
-  }
-
-  async updateSalesOrder(id: string, updates: any): Promise<any> {
-    try {
-      const { data, error } = await this.supabase
-        .from('erp_sales_orders')
-        .update({
-          ...updates,
-          updated_at: new Date().toISOString()
-        })
-        .eq('id', id)
-        .select()
-        .single();
-
-      if (error) throw error;
-      return data;
-    } catch (error) {
-      console.error('Error updating sales order:', error);
-      throw error;
-    }
-  }
-
-  async deleteSalesOrder(id: string): Promise<void> {
-    try {
-      const { error } = await this.supabase
-        .from('erp_sales_orders')
-        .delete()
-        .eq('id', id);
-
-      if (error) throw error;
-    } catch (error) {
-      console.error('Error deleting sales order:', error);
-      throw error;
-    }
-  }
-
-  private async generateNamingSeries(prefix: string, docType: string): Promise<string> {
-    const year = new Date().getFullYear();
-    const { data, error } = await this.supabase
-      .from('erp_naming_series')
-      .select('current')
-      .eq('prefix', prefix)
-      .eq('year', year)
-      .single();
-
-    let nextNumber = 1;
-    if (data) {
-      nextNumber = data.current + 1;
-      await this.supabase
-        .from('erp_naming_series')
-        .update({ current: nextNumber })
-        .eq('prefix', prefix)
-        .eq('year', year);
-    } else {
-      await this.supabase
-        .from('erp_naming_series')
-        .insert([{ prefix, year, current: nextNumber }]);
-    }
-
-    return `${prefix}-${year}-${String(nextNumber).padStart(5, '0')}`;
   }
 }
 

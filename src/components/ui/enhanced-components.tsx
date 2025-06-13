@@ -106,7 +106,7 @@ export function EnhancedCard({
 
 // Responsive Button
 export const Button = forwardRef(
-  ({ className = '', size = 'md', ...props }: any, ref) => {
+  ({ className = '', size = 'md', variant = 'default', loading = false, disabled = false, ...props }: any, ref) => {
     const sizeClasses: Record<string, string> = {
       xs: 'px-2 py-1 text-xs',
       sm: 'px-3 py-1.5 text-sm',
@@ -114,16 +114,39 @@ export const Button = forwardRef(
       lg: 'px-5 py-2.5 text-base sm:text-lg',
       xl: 'px-6 py-3 text-lg sm:text-xl',
     };
+    
+    const variantClasses: Record<string, string> = {
+      default: 'bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-300',
+      primary: 'bg-blue-600 text-white hover:bg-blue-700 border border-blue-600 shadow-sm',
+      secondary: 'bg-gray-600 text-white hover:bg-gray-700 border border-gray-600',
+      outline: 'bg-transparent text-blue-600 hover:bg-blue-50 border border-blue-600',
+      ghost: 'bg-transparent text-gray-700 hover:bg-gray-100 border-transparent',
+      danger: 'bg-red-600 text-white hover:bg-red-700 border border-red-600',
+    };
+    
     return (
       <button
         ref={ref}
+        disabled={disabled || loading}
         className={cn(
-          'rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500',
+          'rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1',
+          'disabled:opacity-50 disabled:cursor-not-allowed',
+          'relative inline-flex items-center justify-center',
           sizeClasses[size],
+          variantClasses[variant],
           className
         )}
         {...props}
-      />
+      >
+        {loading && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin"></div>
+          </div>
+        )}
+        <span className={loading ? 'opacity-0' : 'opacity-100'}>
+          {props.children}
+        </span>
+      </button>
     );
   }
 );
@@ -183,11 +206,10 @@ export const EnhancedInput = forwardRef<
     filled: 'border-0 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-blue-500',
     outlined: 'border-2 border-gray-300 bg-transparent focus:border-blue-500',
   };
-
   const sizeClasses: Record<'sm' | 'md' | 'lg', string> = {
-    sm: 'px-3 py-2 text-sm',
-    md: 'px-4 py-3 text-base',
-    lg: 'px-5 py-4 text-lg',
+    sm: 'px-3 py-2 text-sm min-h-[40px]',
+    md: 'px-4 py-3 text-base min-h-[48px]',
+    lg: 'px-5 py-4 text-lg min-h-[56px]',
   };
 
   return (

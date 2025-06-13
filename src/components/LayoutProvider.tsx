@@ -1,102 +1,70 @@
 'use client';
 
 import { useEffect, useState, createContext, useContext } from 'react';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import Navbar from '@/components/Navbar';
 import { CartProvider } from '@/contexts/CartContext';
 import { NotificationProvider } from '@/components/ui/NotificationSystem';
 import OnboardingTour from '@/components/ui/OnboardingTour';
-import type { Session } from '@supabase/auth-helpers-nextjs';
-import type { Database } from '@/types/database';
 
 interface LayoutProviderProps {
   children: React.ReactNode;
 }
 
 interface AuthContextType {
-  session: Session | null;
+  user: any | null;
   accountType: string | null;
 }
 
-const AuthContext = createContext<AuthContextType>({ session: null, accountType: null });
+const AuthContext = createContext<AuthContextType>({ user: null, accountType: null });
 export const useAuth = () => useContext(AuthContext);
 
 export default function LayoutProvider({ children }: LayoutProviderProps) {
-  const [session, setSession] = useState<Session | null>(null);
+  const [user, setUser] = useState<any | null>(null);
   const [accountType, setAccountType] = useState<string | null>(null);
   const [showTour, setShowTour] = useState(false);
-  const supabase = createClientComponentClient<Database>();
+
   useEffect(() => {
     let isMounted = true;
     
-    const getSessionAndRole = async () => {
+    const getAuthState = async () => {
       try {
-        const { data } = await supabase.auth.getSession();
-        if (!isMounted) return;
-        
-        setSession(data.session);
-        if (data.session?.user) {
-          // Try to get account_type from user_metadata first
-          const metaType = data.session.user.user_metadata?.account_type;
-          if (metaType) {
-            setAccountType(metaType);
-          } else {
-            // Fallback: fetch from users table
-            const { data: userRow } = await supabase
-              .from('users')
-              .select('account_type')
-              .eq('id', data.session.user.id)
-              .single();
-            if (isMounted) {
-              setAccountType(userRow?.account_type || null);
-            }
+        // Check for temp auth cookie
+        if (typeof window !== 'undefined') {
+          const cookies = document.cookie.split(';');
+          const tempAuthCookie = cookies
+            .find(cookie => cookie.trim().startsWith('temp_auth_user='))
+            ?.split('=')[1];
+          
+          if (tempAuthCookie && isMounted) {
+            const tempUser = JSON.parse(decodeURIComponent(tempAuthCookie));
+            console.log('✅ [LayoutProvider] Found temp auth user:', tempUser);
+            setUser(tempUser);
+            setAccountType(tempUser.account_type);
+          } else if (isMounted) {
+            console.log('❌ [LayoutProvider] No temp auth cookie found');
+            setUser(null);
+            setAccountType(null);
           }
-        } else {
-          setAccountType(null);
         }
       } catch (error) {
-        console.error('Error getting session:', error);
+        console.error('❌ [LayoutProvider] Error getting auth state:', error);
         if (isMounted) {
-          setSession(null);
+          setUser(null);
           setAccountType(null);
         }
       }
     };
 
-    getSessionAndRole();
+    getAuthState();
 
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (!isMounted) return;
-      
-      setSession(session);
-      if (session?.user) {
-        const metaType = session.user.user_metadata?.account_type;
-        if (metaType) {
-          setAccountType(metaType);
-        } else {
-          supabase
-            .from('users')
-            .select('account_type')
-            .eq('id', session.user.id)
-            .single()
-            .then(({ data: userRow }) => {
-              if (isMounted) {
-                setAccountType(userRow?.account_type || null);
-              }
-            });
-        }
-      } else {
-        setAccountType(null);
-      }
-    });
+    // Poll for auth state changes (since we don't have real-time updates with cookies)
+    const interval = setInterval(getAuthState, 2000);
 
     return () => {
       isMounted = false;
-      subscription?.unsubscribe();
+      clearInterval(interval);
     };
-  }, [supabase]);
+  }, []);
 
   useEffect(() => {
     // Show onboarding tour for users only, if not dismissed
@@ -113,12 +81,11 @@ export default function LayoutProvider({ children }: LayoutProviderProps) {
       localStorage.setItem('onboardingTourDismissed', 'true');
     }
   };
-
   return (
-    <AuthContext.Provider value={{ session, accountType }}>
+    <AuthContext.Provider value={{ user, accountType }}>
       <CartProvider>
         <NotificationProvider>
-          <Navbar session={session} accountType={accountType} />
+          <Navbar user={user} accountType={accountType} />
           {showTour && <OnboardingTour onFinish={handleDismissTour} />}
           {children}
         </NotificationProvider>

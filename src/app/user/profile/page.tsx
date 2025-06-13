@@ -74,6 +74,19 @@ function formatInvitationCode(code: string) {
 }
 
 export default function UserProfile() {
+  // Check if this is a post-login redirect and handle URL cleanup
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const isPostLogin = urlParams.has('post_login');
+
+    if (isPostLogin) {
+      console.log('🔄 [User Profile] Detected post-login redirect, cleaning URL');
+      // Remove the post_login parameter from URL immediately
+      const newUrl = window.location.pathname;
+      window.history.replaceState({}, '', newUrl);
+    }
+  }, []);
+
   const [user, setUser] = useState<any>(null);
   const [invitationCode, setInvitationCode] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);

@@ -1,7 +1,7 @@
 "use client";
 
 import ArabicLoginForm from '@/components/user/ArabicLoginForm';
-import { toast } from 'react-toastify';
+import toast from 'react-hot-toast';
 
 interface LoginData {
   email: string;
@@ -11,21 +11,43 @@ interface LoginData {
 export default function LoginPage() {
   const handleLogin = async (data: LoginData) => {
     try {
-      const response = await fetch('/api/auth/login', {
+      console.log('🔐 [Login] Starting login request for:', data.email);
+      
+      const response = await fetch('/api/auth/login-db', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
 
-      const result = await response.json();      if (result.success) {
-        toast.success('Login successful!');
+      console.log('🔐 [Login] API response status:', response.status);
+      
+      const result = await response.json();
+      console.log('🔐 [Login] API response:', result);
+
+      if (result.success) {
+        toast.success('تم تسجيل الدخول بنجاح!');
+        
+        console.log('🔐 [Login] Cookies before redirect:', document.cookie);
+        
+        // Add a small delay to ensure cookies are set
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        console.log('🔐 [Login] Cookies after delay:', document.cookie);
+        
         // Use the correct property from the API response
         const redirectPath = result.redirectTo || (result.user?.account_type === 'store' ? '/store/dashboard' : '/user/dashboard');
-        window.location.href = redirectPath;
+        
+        // Add a flag to indicate this is a post-login redirect
+        const urlWithFlag = `${redirectPath}?post_login=true`;
+        
+        console.log('🔄 [Login] Redirecting to:', urlWithFlag);
+        window.location.href = urlWithFlag;
       } else {
+        console.error('🔐 [Login] Login failed:', result.error);
         toast.error(`Login failed: ${result.error}`);
       }
     } catch (error: unknown) {
+      console.error('🔐 [Login] Exception:', error);
       if (error instanceof Error) {
         toast.error(`An error occurred: ${error.message}`);
       } else {

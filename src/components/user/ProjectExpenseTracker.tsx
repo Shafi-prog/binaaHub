@@ -76,11 +76,11 @@ interface ExpenseForm {
   quantity: number;
   unit_price: number;
   unit: string;
-  is_budgeted: boolean;
-  category_id: string;
+  is_budgeted: boolean;  category_id: string;
 }
 
-interface ConstructionCategory {
+// Note: Using a local interface for expense categories which differs from construction categories
+interface ExpenseConstructionCategory {
   id: string;
   name: string;
   name_ar: string;
@@ -127,7 +127,7 @@ export default function ProjectExpenseTracker({
   onCancel
 }: ProjectExpenseTrackerProps) {
   const [expenses, setExpenses] = useState<Expense[]>([]);
-  const [categories, setCategories] = useState<ConstructionCategory[]>([]);
+  const [categories, setCategories] = useState<ExpenseConstructionCategory[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [editingExpense, setEditingExpense] = useState<Expense | null>(null);
   const [loading, setLoading] = useState(true);

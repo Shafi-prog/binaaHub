@@ -4,17 +4,15 @@ import { cookies } from 'next/headers';
 import type { Database } from '@/types/database';
 import type { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 
-export function createServerSupabase() {
-  const cookieStore = cookies();
+export async function createServerSupabase() {
+  const cookieStore = await cookies();
 
   return createServerClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        async get(name: string) {
-          const cookieStoreResolved = await cookieStore;
-          const cookie = cookieStoreResolved.get(name);
+    {      cookies: {
+        get(name: string) {
+          const cookie = cookieStore.get(name);
           return cookie?.value;
         },
         set(name: string, value: string, options: any) {

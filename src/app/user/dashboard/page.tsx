@@ -3,9 +3,6 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { User } from '@supabase/supabase-js';
-import type { Database } from '@/types/database';
 import { getUserDashboardStats, type UserDashboardStats } from '@/lib/api/user-dashboard';
 import { LoadingSpinner } from '@/components/ui';
 import {
@@ -16,7 +13,7 @@ import {
 } from '@/components/ui/enhanced-components';
 import { StatCard } from '@/components/ui';
 import { formatCurrency, translateStatus } from '@/lib/utils';
-import { verifyAuthWithRetry } from '@/lib/auth-recovery';
+import { verifyTempAuth, type TempAuthUser } from '@/lib/temp-auth';
 import { ClientIcon } from '@/components/icons';
 import type { IconKey } from '@/components/icons/ClientIcon';
 
@@ -26,7 +23,7 @@ function formatInvitationCode(code: string) {
 }
 
 export default function UserDashboard() {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<TempAuthUser | null>(null);
   const [stats, setStats] = useState<UserDashboardStats | null>(null);  
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -34,26 +31,25 @@ export default function UserDashboard() {
   const [cookieInfo, setCookieInfo] = useState<string[]>([]);
   const [showDebug, setShowDebug] = useState(false);
   const [headerInfo, setHeaderInfo] = useState<any>(null);
-  const supabase = createClientComponentClient<Database>();
   const router = useRouter();
 
   // Invitation code analytics state
   const [invitationCode, setInvitationCode] = useState<string | null>(null);
   const [inviteAnalytics, setInviteAnalytics] = useState<{ visits: number; purchases: number } | null>(null);
-
   // Check if this is a post-login redirect
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);      
     const isPostLogin = urlParams.has('post_login');
 
     if (isPostLogin) {
-      console.log('🔄 [User Dashboard] Detected post-login redirect');  
+      console.log('🔄 [User Dashboard] Detected post-login redirect, cleaning URL');  
+      // Remove the post_login parameter from URL immediately
       const newUrl = window.location.pathname;
       window.history.replaceState({}, '', newUrl);
-      setTimeout(() => setIsHydrated(true), 500);
-    } else {
-      setIsHydrated(true);
     }
+    
+    // Always set hydrated to true after a short delay to ensure middleware processing
+    setTimeout(() => setIsHydrated(true), 300);
   }, []);
 
   useEffect(() => {
@@ -67,12 +63,10 @@ export default function UserDashboard() {
         // Check cookies for debugging
         const cookies = document.cookie.split(';').map((c) => c.trim());
         setCookieInfo(cookies);
-        console.log('🍪 [UserDashboard] Cookies available:', cookies);  
+        console.log('🍪 [UserDashboard] Cookies available:', cookies);        console.log('🔐 [User Dashboard] Starting auth verification...');
+        const authResult = await verifyTempAuth(5);
 
-        console.log('🔐 [User Dashboard] Starting auth verification...');
-        const authResult = await verifyAuthWithRetry(5);
-
-        if (!authResult.user) {
+        if (!authResult?.user) {
           console.log('❌ [User Dashboard] Auth failed, redirecting to login');
           setError('Authentication session not found');
           setTimeout(() => router.push('/login'), 2000);
@@ -107,38 +101,17 @@ export default function UserDashboard() {
 
     loadDashboard();
   }, [isHydrated, router]);
-
   useEffect(() => {
     if (user && user.id) {
-      // Fetch invitation code
-      supabase
-        .from('users')
-        .select('invitation_code')
-        .eq('id', user.id)
-        .single()
-        .then(({ data }) => {
-          if (data?.invitation_code) setInvitationCode(data.invitation_code);
-        });
-      // Fetch analytics (manual count)
-      Promise.all([
-        supabase
-          .from('user_invite_analytics')
-          .select('id', { count: 'exact', head: true })
-          .eq('user_id', user.id)
-          .eq('event_type', 'visit'),
-        supabase
-          .from('user_invite_analytics')
-          .select('id', { count: 'exact', head: true })
-          .eq('user_id', user.id)
-          .eq('event_type', 'purchase'),
-      ]).then(([visitsRes, purchasesRes]) => {
-        setInviteAnalytics({
-          visits: visitsRes.count || 0,
-          purchases: purchasesRes.count || 0,
-        });
+      // TODO: Replace with API calls that work with our new auth system
+      // For now, set placeholder values
+      setInvitationCode('BinnaHub-' + Math.random().toString(36).substring(2, 8));
+      setInviteAnalytics({
+        visits: 0,
+        purchases: 0,
       });
     }
-  }, [user, supabase]);
+  }, [user]);
 
   if (!isHydrated || loading) {
     return (
@@ -237,7 +210,7 @@ export default function UserDashboard() {
         {/* Header */}
         <div className="mb-8">
           <Typography variant="heading" size="3xl" weight="bold" className="text-gray-800 mb-3">
-            مرحباً، {user?.user_metadata?.name || user?.email?.split('@')[0] || 'المستخدم'}! 👋
+            مرحباً، {user?.name || user?.email?.split('@')[0] || 'المستخدم'}! 👋
           </Typography>
           <Typography variant="body" size="lg" className="text-gray-600">
             إليك نظرة عامة على حسابك ومشاريعك
@@ -322,40 +295,45 @@ export default function UserDashboard() {
               </EnhancedCard>
             </Link>
           ))}
-        </div>
-
-        {/* Invitation Code Analytics */}
+        </div>        {/* Invitation Code Analytics */}
         {invitationCode && (
-          <EnhancedCard variant="elevated" className="mb-8 p-6">        
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-              <div>
-                <div className="font-mono text-blue-800 mb-2">رمز الدعوة: {formatInvitationCode(invitationCode)}</div>
-                <div className="text-xs text-gray-700 mb-2">شارك هذا الرمز مع أصدقائك أو العملاء ليحصلوا على مزايا، وستحصل أنت على عمولة عند استخدامه.</div>
-                <div className="flex gap-6">
-                  <div className="text-center">
-                    <div className="font-bold text-lg text-blue-700">{inviteAnalytics?.visits ?? 0}</div>
-                    <div className="text-xs text-gray-500">زيارات عبر الرمز</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="font-bold text-lg text-green-700">{inviteAnalytics?.purchases ?? 0}</div>
-                    <div className="text-xs text-gray-500">عمليات شراء عبر الرمز</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="font-bold text-lg text-indigo-700">{conversionRate ?? 0}%</div>
-                    <div className="text-xs text-gray-500">معدل التحويل</div>
-                  </div>
-                </div>
+          <div className="bg-white rounded-xl shadow-sm border p-6 mb-8">
+            <Typography variant="subheading" size="xl" weight="semibold" className="text-gray-800 mb-4">
+              رمز الدعوة الخاص بك
+            </Typography>
+            <div className="font-mono text-blue-700 bg-blue-50 rounded-lg p-3 text-center text-lg mb-4">
+              {formatInvitationCode(invitationCode)}
+            </div>
+            <div className="text-sm text-gray-600 text-center mb-4">
+              شارك هذا الرمز مع أصدقائك أو العملاء ليحصلوا على مزايا، وستحصل أنت على عمولة عند استخدامه.
+            </div>
+            <div className="grid grid-cols-3 gap-4 mb-4">
+              <div className="text-center p-4 bg-blue-50 rounded-lg">
+                <div className="font-bold text-2xl text-blue-700">{inviteAnalytics?.visits ?? 0}</div>
+                <div className="text-sm text-blue-600">زيارات عبر الرمز</div>
               </div>
+              <div className="text-center p-4 bg-green-50 rounded-lg">
+                <div className="font-bold text-2xl text-green-700">{inviteAnalytics?.purchases ?? 0}</div>
+                <div className="text-sm text-green-600">عمليات شراء عبر الرمز</div>
+              </div>
+              <div className="text-center p-4 bg-purple-50 rounded-lg">
+                <div className="font-bold text-2xl text-purple-700">{conversionRate ?? 0}%</div>
+                <div className="text-sm text-purple-600">معدل التحويل</div>
+              </div>
+            </div>
+            <div className="text-center">
               <button
-                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 font-mono"
+                className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium"
                 onClick={() => {
                   if (invitationCode) {
                     navigator.clipboard.writeText(invitationCode);      
                   }
                 }}
-              >نسخ رمز الدعوة</button>
+              >
+                نسخ رمز الدعوة
+              </button>
             </div>
-          </EnhancedCard>
+          </div>
         )}
 
         {/* Quick Actions */}

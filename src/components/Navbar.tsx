@@ -4,9 +4,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from '@/hooks/useTranslation';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import type { Session } from '@supabase/auth-helpers-nextjs';
-import type { Database } from '@/types/database';
 import { 
   Menu, 
   X, 
@@ -28,10 +25,10 @@ import {
 import { Button, LogoutButton } from '@/components/ui';
 import { NotificationService } from '@/lib/notifications';
 import { CartIcon } from '@/components/cart/CartSidebar';
-import { useSession } from '@supabase/auth-helpers-react';
+import { getTempAuthUser, clearTempAuth } from '@/lib/temp-auth';
 
 interface NavbarProps {
-  session?: Session | null;
+  user?: any | null;
   accountType?: string | null;
 }
 
@@ -42,11 +39,9 @@ interface UserData {
   email: string;
 }
 
-export default function Navbar({ session, accountType }: NavbarProps) {
+export default function Navbar({ user, accountType }: NavbarProps) {
   const { t, locale } = useTranslation();
   const router = useRouter();
-  const supabase = createClientComponentClient<Database>();
-  const supabaseSession = useSession();
   const [userData, setUserData] = useState<UserData | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
@@ -58,37 +53,21 @@ export default function Navbar({ session, accountType }: NavbarProps) {
   const [showComingSoon, setShowComingSoon] = useState<string | null>(null);
   const [journeyOpen, setJourneyOpen] = useState(false);
   const journeyRef = useRef<HTMLDivElement>(null);
-
-  // Load user data if session exists
+  // Load user data from props (already passed from LayoutProvider)
   useEffect(() => {
-    // Always use Supabase Auth user ID as the source of truth
-    const authUser = supabaseSession?.user || session?.user;
-    if (authUser) {
+    if (user) {
       setUserData({
-        id: authUser.id,
-        name: authUser.user_metadata?.name || authUser.email || null,
-        account_type: accountType || authUser.user_metadata?.account_type || 'user',
-        email: authUser.email || '',
+        id: user.id,
+        name: user.name || user.email || null,
+        account_type: user.account_type || accountType || 'user',
+        email: user.email || '',
       });
-    } else if (session?.user?.email) {
-      // fallback: load from users table if needed
-      const loadUserData = async () => {
-        try {
-          const { data, error } = await supabase
-            .from('users')
-            .select('id, name, account_type, email')
-            .eq('email', session.user.email)
-            .single();
-          if (data && !error) {
-            setUserData(data);
-          }
-        } catch (error) {
-          console.error('Error loading user data:', error);
-        }
-      };
-      loadUserData();
+      console.log('✅ [Navbar] User data set:', user.email, user.account_type);
+    } else {
+      setUserData(null);
+      console.log('❌ [Navbar] No user data, clearing state');
     }
-  }, [session, supabase, supabaseSession, accountType]);
+  }, [user, accountType]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -119,30 +98,38 @@ export default function Navbar({ session, accountType }: NavbarProps) {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [journeyOpen]);
-
   // Fetch unread count and recent notifications
   useEffect(() => {
     if (!userData?.id) return;
+    
     let unsub: (() => void) | undefined;
+    
     const fetchNotifications = async () => {
-      const count = await NotificationService.getUnreadCount(userData.id);
-      setUnreadCount(count);
-      // Fetch recent notifications (limit 10)
-      const { data, error } = await supabase
-        .from('notifications')
-        .select('*')
-        .eq('user_id', userData.id)
-        .order('created_at', { ascending: false })
-        .limit(10);
-      if (!error && data) setNotifications(data);
+      try {
+        const count = await NotificationService.getUnreadCount(userData.id);
+        setUnreadCount(count);
+        
+        // Note: We'll need to update this when we have a proper notification API
+        // For now, we'll just set empty notifications
+        setNotifications([]);
+      } catch (error) {
+        console.error('Error fetching notifications:', error);
+      }
     };
+    
     fetchNotifications();
-    // Subscribe to real-time notifications
-    NotificationService.getInstance().subscribeToNotifications(userData.id, (notif) => {
-      setUnreadCount((c) => c + 1);
-      setNotifications((prev) => [notif, ...prev].slice(0, 10));
-    });
-    unsub = () => NotificationService.getInstance().unsubscribeFromNotifications(userData.id);
+    
+    // Subscribe to real-time notifications if available
+    try {
+      NotificationService.getInstance().subscribeToNotifications(userData.id, (notif) => {
+        setUnreadCount((c) => c + 1);
+        setNotifications((prev) => [notif, ...prev].slice(0, 10));
+      });
+      unsub = () => NotificationService.getInstance().unsubscribeFromNotifications(userData.id);
+    } catch (error) {
+      console.log('Notification service not available:', error);
+    }
+    
     return unsub;
   }, [userData?.id]);
 
@@ -253,11 +240,48 @@ export default function Navbar({ session, accountType }: NavbarProps) {
       icon: Settings
     }
   ];
-
   // Helper for links to unimplemented/placeholder pages
   const handleComingSoon = (label: string) => {
     setShowComingSoon(label);
     setTimeout(() => setShowComingSoon(null), 2000);
+  };
+
+  // Custom logout function using our temp auth system
+  const handleLogout = async () => {
+    try {
+      setLoading(true);
+      console.log('🚪 [Navbar] Starting logout process...');
+      
+      // Call our logout API
+      const response = await fetch('/api/auth/logout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      
+      if (response.ok) {
+        console.log('✅ [Navbar] Logout API successful');
+      } else {
+        console.warn('⚠️ [Navbar] Logout API failed, continuing with client-side cleanup');
+      }
+      
+      // Clear client-side auth state
+      clearTempAuth();
+      setUserData(null);
+      setIsMenuOpen(false);
+      setIsUserMenuOpen(false);
+      
+      // Redirect to login
+      router.push('/login');
+      console.log('✅ [Navbar] Logout complete, redirecting to login');
+    } catch (error) {
+      console.error('❌ [Navbar] Logout error:', error);
+      // Even if API fails, clear client state and redirect
+      clearTempAuth();
+      setUserData(null);
+      router.push('/login');
+    } finally {
+      setLoading(false);
+    }
   };
   return (
     <nav className="bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 text-white shadow-xl sticky top-0 z-50" dir="rtl">
@@ -441,20 +465,13 @@ export default function Navbar({ session, accountType }: NavbarProps) {
                 <Link href="/user/settings" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
                   <Settings className="w-5 h-5 text-blue-600" />
                   <span>الإعدادات</span>
-                </Link>
-                <button
-                  onClick={async () => {
-                    setLoading(true);
-                    await supabase.auth.signOut();
-                    setLoading(false);
-                    setUserData(null);
-                    setIsMenuOpen(false);
-                    router.push('/login');
-                  }}
-                  className="flex items-center gap-3 p-3 rounded-lg hover:bg-red-50 text-red-600 w-full text-right"
+                </Link>                <button
+                  onClick={handleLogout}
+                  disabled={loading}
+                  className="flex items-center gap-3 p-3 rounded-lg hover:bg-red-50 text-red-600 w-full text-right disabled:opacity-50"
                 >
                   <LogOut className="w-5 h-5" />
-                  <span>تسجيل الخروج</span>
+                  <span>{loading ? 'جاري تسجيل الخروج...' : 'تسجيل الخروج'}</span>
                 </button>
               </div>
             )}
@@ -613,18 +630,13 @@ export default function Navbar({ session, accountType }: NavbarProps) {
                       <Link href="/user/support" className="block px-4 py-2 hover:bg-gray-100 flex items-center gap-2"><Bell className="w-5 h-5" />الدعم الفني</Link>
                       <Link href="/user/orders/history" className="block px-4 py-2 hover:bg-gray-100 flex items-center gap-2"><Package className="w-5 h-5" />سجل الطلبات</Link>
                     </>
-                  )}
-                  <button
-                    onClick={async () => {
-                      setLoading(true);
-                      await supabase.auth.signOut();
-                      setLoading(false);
-                      setUserData(null);
-                      router.push('/login');
-                    }}
-                    className="w-full text-right px-4 py-2 text-red-600 hover:bg-gray-100 flex items-center gap-2 border-t mt-2"
+                  )}                  <button
+                    onClick={handleLogout}
+                    disabled={loading}
+                    className="w-full text-right px-4 py-2 text-red-600 hover:bg-gray-100 flex items-center gap-2 border-t mt-2 disabled:opacity-50"
                   >
-                    <LogOut className="w-5 h-5" />تسجيل الخروج
+                    <LogOut className="w-5 h-5" />
+                    {loading ? 'جاري تسجيل الخروج...' : 'تسجيل الخروج'}
                   </button>
                 </div>
               )}

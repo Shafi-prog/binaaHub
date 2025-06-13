@@ -1,7 +1,7 @@
 "use client";
 
 import ArabicSignupForm from '@/components/user/ArabicSignupForm';
-import { toast } from 'react-toastify';
+import toast from 'react-hot-toast';
 
 interface SignupData {
   name: string;
@@ -9,9 +9,10 @@ interface SignupData {
   password: string;
 }
 
-export default function SignupPage() {
-  const handleSignup = async (data: SignupData) => {
+export default function SignupPage() {  const handleSignup = async (data: SignupData) => {
     try {
+      console.log('🔄 Starting signup for:', data.email);
+      
       const response = await fetch('/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -19,18 +20,33 @@ export default function SignupPage() {
       });
 
       const result = await response.json();
-
-      if (result.success) {
-        toast.success('Signup successful!');
-        window.location.href = '/user/store/dashboard';
+      
+      console.log('📝 Signup response:', {
+        status: response.status,
+        success: result.success,
+        error: result.error,
+        message: result.message
+      });      if (result.success) {
+        if (result.requiresVerification) {
+          toast.success('تم إنشاء الحساب! يرجى التحقق من بريدك الإلكتروني لتفعيل الحساب.');
+          // Stay on signup page or redirect to verification page
+        } else {
+          toast.success('تم إنشاء الحساب بنجاح!');
+          const redirectUrl = result.redirectTo || '/user/dashboard';
+          window.location.href = redirectUrl;
+        }
       } else {
-        toast.error(`Signup failed: ${result.error}`);
+        // Show the actual error message from the API
+        const errorMessage = result.error || 'حدث خطأ غير متوقع';
+        console.log('ℹ️ Signup failed:', errorMessage); // Use console.log instead of console.error
+        toast.error(`فشل في إنشاء الحساب: ${errorMessage}`);
       }
     } catch (error: unknown) {
+      console.error('❌ Signup error:', error);
       if (error instanceof Error) {
-        toast.error(`An error occurred: ${error.message}`);
+        toast.error(`حدث خطأ: ${error.message}`);
       } else {
-        toast.error('An unknown error occurred.');
+        toast.error('حدث خطأ غير متوقع.');
       }
     }
   };

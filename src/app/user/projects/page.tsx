@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { User } from '@supabase/supabase-js';
 import Link from 'next/link';
-import { Card, LoadingSpinner, StatusBadge } from '@/components/ui';
+import { Card, LoadingSpinner, StatusBadge, EnhancedLoading } from '@/components/ui';
 import { verifyAuthWithRetry } from '@/lib/auth-recovery';
 import { getAllProjects } from '@/lib/api/dashboard';
 import { formatCurrency, formatDate, translateStatus } from '@/lib/utils';
@@ -78,12 +78,15 @@ export default function ProjectsPage() {
     const matchesStatus = statusFilter === 'all' || project.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
-
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <LoadingSpinner />
-      </div>
+      <EnhancedLoading 
+        title="جارٍ تحميل المشاريع..."
+        subtitle="يرجى الانتظار حتى نقوم بجلب بياناتك"
+        showLogo={true}
+        size="lg"
+        fullScreen={true}
+      />
     );
   }
 

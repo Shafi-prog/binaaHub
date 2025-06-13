@@ -6,9 +6,7 @@ export async function POST(request: NextRequest) {
   try {
     const { email, password } = await request.json();
 
-    console.log('🔐 [API] Login attempt for:', email);
-
-    // Create route handler client with proper cookie handling
+    console.log('🔐 [API] Login attempt for:', email);    // Create route handler client with proper cookie handling for Next.js 15+
     const supabase = createRouteHandlerClient({ cookies });
 
     // Authenticate user
@@ -25,9 +23,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log('✅ [API] Authentication successful for:', signInData.session.user.email);
-
-    // Get user data from database
+    console.log('✅ [API] Authentication successful for:', signInData.session.user.email);    // Get user data from database using the authenticated user's session
     const { data: fetchedUserData, error: fetchError } = await supabase
       .from('users')
       .select('account_type')
@@ -76,9 +72,7 @@ export async function POST(request: NextRequest) {
           { status: 500 }
         );
       }
-    }
-
-    // Determine redirect URL
+    }    // Determine redirect URL
     const redirectTo =
       userData.account_type === 'store'
         ? '/store/dashboard'
@@ -90,7 +84,7 @@ export async function POST(request: NextRequest) {
 
     console.log('🚀 [API] Redirect URL determined:', redirectTo);
 
-    // Return success with minimal data
+    // Set auth session cookie to prevent middleware conflicts
     const response = NextResponse.json({
       success: true,
       redirectTo,
@@ -100,7 +94,16 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    console.log('✅ [API] Login successful - Supabase handles session cookies automatically');
+    // Set cookie to indicate successful authentication to middleware
+    response.cookies.set('auth_session_active', 'true', {
+      path: '/',
+      maxAge: 60 * 60 * 24, // 24 hours
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax'
+    });
+
+    console.log('✅ [API] Login successful - Session cookies set');
 
     return response;
   } catch (error) {

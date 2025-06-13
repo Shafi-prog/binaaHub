@@ -19,7 +19,11 @@ import type { IconKey } from '@/components/icons/ClientIcon';
 
 function formatInvitationCode(code: string) {
   if (!code) return '';
-  return code.startsWith('BinnaHub - ') ? code : `BinnaHub - ${code}`;  
+  // Remove duplicate "BinnaHub" if it exists
+  if (code.startsWith('BinnaHub - BinnaHub-')) {
+    return code.replace('BinnaHub - BinnaHub-', 'BinnaHub-');
+  }
+  return code.startsWith('BinnaHub-') ? code : `BinnaHub-${code}`;
 }
 
 export default function UserDashboard() {
@@ -320,13 +324,12 @@ export default function UserDashboard() {
                 <div className="font-bold text-2xl text-purple-700">{conversionRate ?? 0}%</div>
                 <div className="text-sm text-purple-600">معدل التحويل</div>
               </div>
-            </div>
-            <div className="text-center">
+            </div>            <div className="text-center">
               <button
                 className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium"
                 onClick={() => {
                   if (invitationCode) {
-                    navigator.clipboard.writeText(invitationCode);      
+                    navigator.clipboard.writeText(formatInvitationCode(invitationCode));      
                   }
                 }}
               >

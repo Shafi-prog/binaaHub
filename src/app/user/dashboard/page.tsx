@@ -18,7 +18,6 @@ import { ClientIcon } from '@/components/icons';
 import type { IconKey } from '@/components/icons/ClientIcon';
 import AIExpenseTracker from '@/components/ai/AIExpenseTracker';
 import ConstructionProgressTracker from '@/components/ai/ConstructionProgressTracker';
-import AIConstructionCalculator from '@/components/ai/AIConstructionCalculator';
 import PDFBlueprintAnalyzer from '@/components/ai/PDFBlueprintAnalyzer';
 
 function formatInvitationCode(code: string) {
@@ -55,18 +54,9 @@ export default function UserDashboard() {
   const [showDebug, setShowDebug] = useState(false);
   const [headerInfo, setHeaderInfo] = useState<any>(null);
   const router = useRouter();
-
   // Invitation code analytics state
   const [invitationCode, setInvitationCode] = useState<string | null>(null);
   const [inviteAnalytics, setInviteAnalytics] = useState<{ visits: number; purchases: number } | null>(null);
-  
-  // Smooth scroll to AI sections
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
   // Check if this is a post-login redirect
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);      
@@ -222,24 +212,6 @@ export default function UserDashboard() {
       iconColor: 'text-blue-600 group-hover:text-blue-700',
       textColor: 'group-hover:text-blue-900',
       description: 'ابدأ مشروع بناء جديد'
-    },    { 
-      title: 'تحليل المخططات المعمارية', 
-      href: '#pdf-blueprint-analyzer', 
-      icon: 'design' as IconKey,
-      color: 'from-purple-50 to-purple-100 border-purple-100',
-      hoverColor: 'group-hover:from-purple-100 group-hover:to-purple-200 group-hover:border-purple-200',
-      iconColor: 'text-purple-600 group-hover:text-purple-700',
-      textColor: 'group-hover:text-purple-900',
-      description: 'تحليل ملفات PDF للمخططات وحساب التكاليف تلقائياً'
-    },    { 
-      title: 'تحليل تقدم البناء', 
-      href: '#construction-progress', 
-      icon: 'design' as IconKey,
-      color: 'from-green-50 to-green-100 border-green-100',
-      hoverColor: 'group-hover:from-green-100 group-hover:to-green-200 group-hover:border-green-200',
-      iconColor: 'text-green-600 group-hover:text-green-700',
-      textColor: 'group-hover:text-green-900',
-      description: 'تحليل صور الموقع بالذكاء الاصطناعي'
     },
     { 
       title: 'طلب خدمة تصميم', 
@@ -250,24 +222,6 @@ export default function UserDashboard() {
       iconColor: 'text-purple-600 group-hover:text-purple-700',
       textColor: 'group-hover:text-purple-900',
       description: 'خدمات التصميم المعماري'
-    },    { 
-      title: 'حاسبة التكاليف الذكية', 
-      href: '#construction-calculator', 
-      icon: 'calculator' as IconKey,
-      color: 'from-orange-50 to-orange-100 border-orange-100',
-      hoverColor: 'group-hover:from-orange-100 group-hover:to-orange-200 group-hover:border-orange-200',
-      iconColor: 'text-orange-600 group-hover:text-orange-700',
-      textColor: 'group-hover:text-orange-900',
-      description: 'احسب تكلفة مشروعك بدقة بالذكاء الاصطناعي'
-    },{ 
-      title: 'تتبع الإنفاق بالذكاء الاصطناعي', 
-      href: '#ai-expense-tracker', 
-      icon: 'ai' as IconKey,
-      color: 'from-purple-50 to-purple-100 border-purple-100',
-      hoverColor: 'group-hover:from-purple-100 group-hover:to-purple-200 group-hover:border-purple-200',
-      iconColor: 'text-purple-600 group-hover:text-purple-700',
-      textColor: 'group-hover:text-purple-900',
-      description: 'رفع الفواتير واستخراج البيانات تلقائياً'
     },
     { 
       title: 'إدارة الضمانات', 
@@ -292,7 +246,7 @@ export default function UserDashboard() {
     { 
       title: 'إدارة المشرفين', 
       href: '/user/supervisors', 
-      icon: 'ai' as IconKey,
+      icon: 'users' as IconKey,
       color: 'from-rose-50 to-rose-100 border-rose-100',
       hoverColor: 'group-hover:from-rose-100 group-hover:to-rose-200 group-hover:border-rose-200',
       iconColor: 'text-rose-600 group-hover:text-rose-700',
@@ -472,7 +426,7 @@ export default function UserDashboard() {
               </div>
             )}
           </div>
-        )}        {/* AI-Powered Features Section */}
+        )}        {/* Features Section with Free/Paid Tiers */}
         <div className="mb-8" id="ai-features">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center">
@@ -486,72 +440,112 @@ export default function UserDashboard() {
                 استخدم التقنيات المتقدمة لتتبع مصروفاتك وتقدم مشاريعك
               </Typography>
             </div>
-          </div>          <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
-            {/* AI Expense Tracker */}
-            <div id="ai-expense-tracker">
-              {user?.id && (
-                <AIExpenseTracker 
-                  userId={user.id}
-                  onExpenseAdded={(expense) => {
-                    console.log('New expense added:', expense);
-                    // Refresh dashboard stats if needed
-                  }}
-                />
-              )}
-            </div>
-
-            {/* Construction Progress Tracker */}
-            <div id="construction-progress">
-              {user?.id && (
-                <ConstructionProgressTracker
-                  userId={user.id}
-                  projectId={stats?.activeProjects > 0 ? 'project-1' : undefined}
-                />
-              )}
-            </div>
           </div>
 
-          {/* AI Construction Calculator - Full Width */}
-          <div className="mt-8" id="construction-calculator">
-            {user?.id && (
-              <AIConstructionCalculator userId={user.id} />
-            )}
+          {/* Free Tier Features */}
+          <div className="mb-8">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                مجاني
+              </span>
+              <Typography variant="subheading" size="lg" weight="semibold" className="text-gray-800">
+                الميزات المجانية
+              </Typography>
+            </div>
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+              {/* PDF Blueprint Analyzer - Free */}
+              <div id="pdf-blueprint-analyzer">
+                <PDFBlueprintAnalyzer />
+              </div>
+              
+              {/* Free tier placeholder */}
+              <div className="bg-white rounded-xl shadow-sm border p-6">
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <ClientIcon type="shield" size={32} className="text-green-600" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-800 mb-2">المزيد من الميزات المجانية قريباً</h3>
+                  <p className="text-gray-600 text-sm">سنضيف المزيد من الأدوات المجانية لمساعدتك في إدارة مشاريعك</p>
+                </div>
+              </div>
+            </div>
+          </div>          {/* Premium Tier Features */}
+          <div className="mb-8">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="bg-gradient-to-r from-purple-500 to-pink-600 text-white text-xs font-medium px-2.5 py-0.5 rounded-full">
+                مدفوع
+              </span>
+              <Typography variant="subheading" size="lg" weight="semibold" className="text-gray-800">
+                الميزات المتقدمة
+              </Typography>
+              <span className="text-sm text-gray-500">- ابتداءً من 29 ريال/شهر</span>
+            </div>
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+              {/* AI Expense Tracker - Premium */}
+              <div className="relative" id="ai-expense-tracker">
+                <div className="absolute top-2 right-2 z-20">
+                  <span className="bg-gradient-to-r from-purple-500 to-pink-600 text-white text-xs font-medium px-2 py-1 rounded-full shadow-lg">
+                    مدفوع
+                  </span>
+                </div>
+                <div className="relative">
+                  {user?.id && (
+                    <AIExpenseTracker 
+                      userId={user.id}
+                      onExpenseAdded={(expense) => {
+                        console.log('New expense added:', expense);
+                        // Refresh dashboard stats if needed
+                      }}
+                    />
+                  )}
+                  {/* Premium Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-purple-900/80 via-purple-900/40 to-transparent rounded-xl flex items-end justify-center p-4">
+                    <button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white py-3 px-4 rounded-lg font-medium text-sm hover:from-purple-700 hover:to-pink-700 transition-all shadow-lg hover:shadow-xl transform hover:scale-105">
+                      🚀 ترقية للنسخة المدفوعة - 29 ريال/شهر
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Construction Progress Tracker - Premium */}
+              <div className="relative" id="construction-progress">
+                <div className="absolute top-2 right-2 z-20">
+                  <span className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white text-xs font-medium px-2 py-1 rounded-full shadow-lg">
+                    مدفوع
+                  </span>
+                </div>
+                <div className="relative">
+                  {user?.id && (
+                    <ConstructionProgressTracker
+                      userId={user.id}
+                      projectId={stats?.activeProjects > 0 ? 'project-1' : undefined}
+                    />
+                  )}
+                  {/* Premium Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-blue-900/80 via-blue-900/40 to-transparent rounded-xl flex items-end justify-center p-4">
+                    <button className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 px-4 rounded-lg font-medium text-sm hover:from-blue-700 hover:to-indigo-700 transition-all shadow-lg hover:shadow-xl transform hover:scale-105">
+                      🏗️ ترقية للنسخة المدفوعة - 29 ريال/شهر
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>{/* Quick Actions */}
+        </div>        {/* Quick Actions */}
         <div className="bg-white rounded-xl shadow-sm border p-6 mb-8">
           <Typography variant="subheading" size="xl" weight="semibold" className="text-gray-800 mb-6">
             إجراءات سريعة
           </Typography>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {quickActions.map((action, index) => {
-              const isAnchorLink = action.href.startsWith('#');
-              
-              if (isAnchorLink) {
-                return (
-                  <button
-                    key={index}
-                    onClick={() => scrollToSection(action.href.substring(1))}
-                    className="block w-full text-left"
-                  >
-                    <div className={`bg-gradient-to-br ${action.color} rounded-lg p-4 text-center ${action.hoverColor} transition-all duration-300 border transform group-hover:scale-105 group-hover:shadow-md group`}>
-                      <ClientIcon type={action.icon} size={32} className={`mx-auto mb-3 ${action.iconColor}`} />
-                      <h3 className={`font-medium text-gray-800 text-sm mb-1 ${action.textColor}`}>{action.title}</h3>
-                      <p className={`text-xs text-gray-500 ${action.textColor}`}>{action.description}</p>
-                    </div>
-                  </button>
-                );
-              }
-
-              return (
-                <Link key={index} href={action.href} className="block group">
-                  <div className={`bg-gradient-to-br ${action.color} rounded-lg p-4 text-center ${action.hoverColor} transition-all duration-300 border transform group-hover:scale-105 group-hover:shadow-md`}>
-                    <ClientIcon type={action.icon} size={32} className={`mx-auto mb-3 ${action.iconColor}`} />
-                    <h3 className={`font-medium text-gray-800 text-sm mb-1 ${action.textColor}`}>{action.title}</h3>
-                    <p className={`text-xs text-gray-500 ${action.textColor}`}>{action.description}</p>
-                  </div>
-                </Link>
-              );
-            })}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {quickActions.map((action, index) => (
+              <Link key={index} href={action.href} className="block group">
+                <div className={`bg-gradient-to-br ${action.color} rounded-lg p-4 text-center ${action.hoverColor} transition-all duration-300 border transform group-hover:scale-105 group-hover:shadow-md`}>
+                  <ClientIcon type={action.icon} size={32} className={`mx-auto mb-3 ${action.iconColor}`} />
+                  <h3 className={`font-medium text-gray-800 text-sm mb-1 ${action.textColor}`}>{action.title}</h3>
+                  <p className={`text-xs text-gray-500 ${action.textColor}`}>{action.description}</p>
+                </div>
+              </Link>
+            ))}
           </div>
         </div>{/* Recent Activity */}
         <div className="bg-white rounded-xl shadow-sm border p-6">
@@ -589,27 +583,6 @@ export default function UserDashboard() {
               </div>
             ))}
           </div>        </div>
-      </div>
-
-      {/* AI-Powered Features Sections */}
-      <div className="max-w-7xl mx-auto px-6 space-y-8">
-        {/* PDF Blueprint Analyzer */}
-        <div id="pdf-blueprint-analyzer" className="scroll-mt-20">
-          <PDFBlueprintAnalyzer />
-        </div>        {/* AI Expense Tracker */}
-        <div id="ai-expense-tracker" className="scroll-mt-20">
-          <AIExpenseTracker userId={user?.id || ''} />
-        </div>
-
-        {/* Construction Progress Tracker */}
-        <div id="construction-progress" className="scroll-mt-20">
-          <ConstructionProgressTracker userId={user?.id || ''} />
-        </div>
-
-        {/* AI Construction Calculator */}
-        <div id="construction-calculator" className="scroll-mt-20">
-          <AIConstructionCalculator userId={user?.id || ''} />
-        </div>
       </div>
     </main>
   );

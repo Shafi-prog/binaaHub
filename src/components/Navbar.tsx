@@ -97,8 +97,7 @@ export default function Navbar({ user, accountType }: NavbarProps) {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [journeyOpen]);
-  // Fetch unread count and recent notifications
+  }, [journeyOpen]);  // Fetch unread count and recent notifications
   useEffect(() => {
     if (!userData?.id) return;
     
@@ -106,14 +105,27 @@ export default function Navbar({ user, accountType }: NavbarProps) {
     
     const fetchNotifications = async () => {
       try {
-        const count = await NotificationService.getUnreadCount(userData.id);
-        setUnreadCount(count);
+        if (!userData?.id) {
+          console.warn('fetchNotifications: No valid user ID');
+          return;
+        }
         
-        // Note: We'll need to update this when we have a proper notification API
+        // Use optional chaining and check if method exists
+        if (NotificationService && typeof NotificationService.getUnreadCount === 'function') {
+          const count = await NotificationService.getUnreadCount(userData.id);
+          setUnreadCount(count);
+        } else {
+          console.log('NotificationService.getUnreadCount not available, setting count to 0');
+          setUnreadCount(0);
+        }
+        
         // For now, we'll just set empty notifications
         setNotifications([]);
       } catch (error) {
         console.error('Error fetching notifications:', error);
+        // Set defaults to prevent UI issues
+        setUnreadCount(0);
+        setNotifications([]);
       }
     };
     
@@ -121,11 +133,16 @@ export default function Navbar({ user, accountType }: NavbarProps) {
     
     // Subscribe to real-time notifications if available
     try {
-      NotificationService.getInstance().subscribeToNotifications(userData.id, (notif) => {
-        setUnreadCount((c) => c + 1);
-        setNotifications((prev) => [notif, ...prev].slice(0, 10));
-      });
-      unsub = () => NotificationService.getInstance().unsubscribeFromNotifications(userData.id);
+      if (userData?.id && NotificationService && NotificationService.getInstance) {
+        const instance = NotificationService.getInstance();
+        if (instance && typeof instance.subscribeToNotifications === 'function') {
+          instance.subscribeToNotifications(userData.id, (notif) => {
+            setUnreadCount((c) => c + 1);
+            setNotifications((prev) => [notif, ...prev].slice(0, 10));
+          });
+          unsub = () => instance.unsubscribeFromNotifications(userData.id);
+        }
+      }
     } catch (error) {
       console.log('Notification service not available:', error);
     }
@@ -135,9 +152,15 @@ export default function Navbar({ user, accountType }: NavbarProps) {
 
   // Mark notification as read
   const handleMarkAsRead = async (id: string) => {
-    await NotificationService.markAsRead(id);
-    setNotifications((prev) => prev.map((n) => n.id === id ? { ...n, is_read: true } : n));
-    setUnreadCount((c) => Math.max(0, c - 1));
+    try {
+      if (NotificationService && typeof NotificationService.markAsRead === 'function') {
+        await NotificationService.markAsRead(id);
+      }
+      setNotifications((prev) => prev.map((n) => n.id === id ? { ...n, is_read: true } : n));
+      setUnreadCount((c) => Math.max(0, c - 1));
+    } catch (error) {
+      console.error('Error marking notification as read:', error);
+    }
   };
 
   const getDashboardRoute = () => {

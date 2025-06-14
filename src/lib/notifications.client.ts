@@ -2,13 +2,12 @@
 // React hook for notifications (client-only)
 import { useState, useEffect } from 'react';
 import { useUser } from '@supabase/auth-helpers-react';
-import { NotificationService } from './notifications';
+import { NotificationService, SimpleNotification } from './notifications';
 import { supabase } from './supabase';
-import type { Notification } from '@/types/dashboard';
 
 export function useNotifications() {
   const user = useUser();
-  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [notifications, setNotifications] = useState<SimpleNotification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [loading, setLoading] = useState(true);
 
@@ -53,41 +52,44 @@ export function useNotifications() {
       setUnreadCount((prev) => prev + 1);
     });
   };
-
   const markAsRead = async (notificationId: string) => {
-    const success = await NotificationService.markAsRead(notificationId);
-    if (success) {
+    try {
+      await NotificationService.markAsRead(notificationId);
       setNotifications((prev) =>
         prev.map((notif) =>
           notif.id === notificationId
-            ? { ...notif, is_read: true, read_at: new Date().toISOString() }
+            ? { ...notif, is_read: true }
             : notif
         )
       );
       setUnreadCount((prev) => Math.max(0, prev - 1));
+    } catch (error) {
+      console.error('Error marking notification as read:', error);
     }
   };
-
   const markAllAsRead = async () => {
     if (!user?.id) return;
-    const success = await NotificationService.markAllAsRead(user.id);
-    if (success) {
+    try {
+      await NotificationService.markAllAsRead(user.id);
       setNotifications((prev) =>
         prev.map((notif) => ({ ...notif, is_read: true, read_at: new Date().toISOString() }))
       );
       setUnreadCount(0);
+    } catch (error) {
+      console.error('Error marking all notifications as read:', error);
     }
   };
-
   const deleteNotification = async (notificationId: string) => {
-    const success = await NotificationService.deleteNotification(notificationId);
-    if (success) {
+    try {
+      await NotificationService.deleteNotification(notificationId);
       setNotifications((prev) => prev.filter((notif) => notif.id !== notificationId));
       // Update unread count if deleted notification was unread
       const deletedNotif = notifications.find((n) => n.id === notificationId);
       if (deletedNotif && !deletedNotif.is_read) {
         setUnreadCount((prev) => Math.max(0, prev - 1));
       }
+    } catch (error) {
+      console.error('Error deleting notification:', error);
     }
   };
 

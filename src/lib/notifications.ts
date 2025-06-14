@@ -1,11 +1,18 @@
-// Real-time notifications system
-import { supabase } from './supabase';
-import type { Notification } from '@/types/dashboard';
+// Simplified notification service compatible with Odoo integration
+export interface SimpleNotification {
+  id: string;
+  title: string;
+  message: string;
+  type: 'info' | 'success' | 'warning' | 'error';
+  is_read: boolean;
+  created_at: string;
+  user_id?: string;
+}
 
 export class NotificationService {
   private static instance: NotificationService;
-  private listeners: Map<string, (notification: Notification) => void> = new Map();
-  private subscription: any = null;
+  private listeners: Map<string, (notification: SimpleNotification) => void> = new Map();
+  private notifications: SimpleNotification[] = [];
 
   static getInstance(): NotificationService {
     if (!NotificationService.instance) {
@@ -14,58 +21,97 @@ export class NotificationService {
     return NotificationService.instance;
   }
 
-  // Subscribe to real-time notifications for a user
-  subscribeToNotifications(userId: string, callback: (notification: Notification) => void) {
+  // Subscribe to notifications for a user (simplified version)
+  subscribeToNotifications(userId: string, callback: (notification: SimpleNotification) => void) {
     this.listeners.set(userId, callback);
-
-    if (!this.subscription) {
-      this.subscription = supabase
-        .channel('notifications')
-        .on(
-          'postgres_changes',
-          {
-            event: 'INSERT',
-            schema: 'public',
-            table: 'notifications',
-            filter: `user_id=eq.${userId}`,
-          },
-          (payload: any) => {
-            const notification = payload.new as Notification;
-            const listener = this.listeners.get(userId);
-            if (listener) {
-              listener(notification);
-              this.showBrowserNotification(notification);
-            }
-          }
-        )
-        .subscribe();
-    }
+    // In a real implementation, this could connect to Odoo or another notification source
   }
 
   // Unsubscribe from notifications
   unsubscribeFromNotifications(userId: string) {
     this.listeners.delete(userId);
+  }
 
-    if (this.listeners.size === 0 && this.subscription) {
-      supabase.removeChannel(this.subscription);
-      this.subscription = null;
+  // Get unread count - simplified version
+  static async getUnreadCount(userId: string): Promise<number> {
+    try {
+      // For now, return 0 to prevent errors
+      // In the future, this could integrate with Odoo notifications
+      return 0;
+    } catch (error) {
+      console.error('Error getting unread count:', error);
+      return 0;
     }
   }
 
-  // Show browser notification
-  private showBrowserNotification(notification: Notification) {
-    if (Notification.permission === 'granted') {
-      new Notification(notification.title, {
-        body: notification.message,
-        icon: '/logo.png',
-        tag: notification.id,
-      });
+  // Get notifications for user
+  static async getNotifications(userId: string, limit: number = 50): Promise<SimpleNotification[]> {
+    try {
+      // Return empty array for now
+      // In the future, this could fetch from Odoo or local storage
+      return [];
+    } catch (error) {
+      console.error('Error getting notifications:', error);
+      return [];
+    }
+  }
+
+  // Mark notification as read
+  static async markAsRead(notificationId: string): Promise<void> {
+    try {
+      // For now, just log the action
+      console.log('Marking notification as read:', notificationId);
+      // In the future, this could update Odoo or local storage
+    } catch (error) {
+      console.error('Error marking notification as read:', error);
+    }
+  }
+
+  // Mark all notifications as read for a user
+  static async markAllAsRead(userId: string): Promise<void> {
+    try {
+      // For now, just log the action
+      console.log('Marking all notifications as read for user:', userId);
+      // In the future, this could update Odoo or local storage
+    } catch (error) {
+      console.error('Error marking all notifications as read:', error);
+    }
+  }
+
+  // Delete a notification
+  static async deleteNotification(notificationId: string): Promise<void> {
+    try {
+      // For now, just log the action
+      console.log('Deleting notification:', notificationId);
+      // In the future, this could delete from Odoo or local storage
+    } catch (error) {
+      console.error('Error deleting notification:', error);
+    }
+  }
+
+  // Create a new notification (simplified version)
+  static async createNotification(notification: Omit<SimpleNotification, 'id' | 'created_at'>): Promise<SimpleNotification | null> {
+    try {
+      const newNotification: SimpleNotification = {
+        ...notification,
+        id: Date.now().toString(),
+        created_at: new Date().toISOString(),
+      };
+
+      // In the future, this could save to Odoo or local storage
+      console.log('Creating notification:', newNotification);
+      
+      return newNotification;
+    } catch (error) {
+      console.error('Error creating notification:', error);
+      return null;
     }
   }
 
   // Request browser notification permission
   static async requestNotificationPermission(): Promise<boolean> {
     if (!('Notification' in window)) {
+      console.warn('This browser does not support desktop notifications');
       return false;
     }
 
@@ -81,210 +127,23 @@ export class NotificationService {
     return false;
   }
 
-  // Create a new notification
-  static async createNotification(
-    notification: Omit<Notification, 'id' | 'created_at' | 'updated_at'>
-  ): Promise<Notification | null> {
-    try {
-      // Validate required fields
-      if (!notification.user_id || !notification.title || !notification.message) {
-        console.error('[createNotification] Missing required fields:', {
-          user_id: notification.user_id,
-          title: notification.title,
-          message: notification.message
-        });
-        throw new Error('Missing required notification fields (user_id, title, message)');
-      }
-      // Map and filter fields to match DB schema
-      const dbNotification: any = {
-        user_id: notification.user_id,
-        title: notification.title,
-        message: notification.message,
-        notification_type: notification.type, // DB uses notification_type
-        is_read: notification.is_read ?? false,
-        link: notification.action_url ?? null, // DB uses link
-      };
-      // Remove undefined/null fields
-      Object.keys(dbNotification).forEach(
-        (k) => (dbNotification[k] === undefined ? delete dbNotification[k] : null)
-      );
-      console.log('[createNotification] Payload to insert:', dbNotification);
-      const { data, error } = await supabase
-        .from('notifications')
-        .insert([dbNotification])
-        .select()
-        .single();
-      if (error) {
-        console.error('[createNotification] Supabase error:', error, 'Payload:', dbNotification);
-        throw error;
-      }
-      return data;
-    } catch (error) {
-      console.error('Error creating notification:', error);
-      return null;
-    }
-  }
-
-  // Mark notification as read
-  static async markAsRead(notificationId: string): Promise<boolean> {
-    try {
-      const { error } = await supabase
-        .from('notifications')
-        .update({ is_read: true, read_at: new Date().toISOString() })
-        .eq('id', notificationId);
-
-      return !error;
-    } catch (error) {
-      console.error('Error marking notification as read:', error);
-      return false;
-    }
-  }
-
-  // Mark all notifications as read for a user
-  static async markAllAsRead(userId: string): Promise<boolean> {
-    try {
-      const { error } = await supabase
-        .from('notifications')
-        .update({ is_read: true, read_at: new Date().toISOString() })
-        .eq('user_id', userId)
-        .eq('is_read', false);
-
-      return !error;
-    } catch (error) {
-      console.error('Error marking all notifications as read:', error);
-      return false;
-    }
-  }
-
-  // Delete notification
-  static async deleteNotification(notificationId: string): Promise<boolean> {
-    try {
-      const { error } = await supabase.from('notifications').delete().eq('id', notificationId);
-
-      return !error;
-    } catch (error) {
-      console.error('Error deleting notification:', error);
-      return false;
-    }
-  }
-
-  // Get unread count
-  static async getUnreadCount(userId: string): Promise<number> {
-    try {
-      const { count, error } = await supabase
-        .from('notifications')
-        .select('*', { count: 'exact', head: true })
-        .eq('user_id', userId)
-        .eq('is_read', false);
-
-      if (error) throw error;
-      return count || 0;
-    } catch (error) {
-      console.error('Error getting unread count:', error);
-      return 0;
+  // Show browser notification
+  private showBrowserNotification(notification: SimpleNotification) {
+    if (Notification.permission === 'granted') {
+      new Notification(notification.title, {
+        body: notification.message,
+        icon: '/favicon.ico',
+        tag: notification.id,
+      });
     }
   }
 }
 
-// Corrected syntax errors and completed `NotificationTypes` enum and `createTypedNotification` helper function
+// Notification types for consistent usage across the application
 export const NotificationTypes = {
-  PROJECT_UPDATED: 'project_updated',
-  ORDER_STATUS_CHANGED: 'order_status_changed',
-  WARRANTY_EXPIRING: 'warranty_expiring',
-  PAYMENT_DUE: 'payment_due',
-  DELIVERY_SCHEDULED: 'delivery_scheduled',
-  SYSTEM_ANNOUNCEMENT: 'system_announcement',
-  PROMOTION: 'promotion',
   ERROR: 'error',
   SUCCESS: 'success',
+  WARNING: 'warning',
   INFO: 'info',
+  PROJECT_UPDATED: 'project_updated',
 } as const;
-
-// Helper function to create typed notifications
-export const createTypedNotification = {
-  projectUpdated: (userId: string, projectName: string, status: string) => {
-    return NotificationService.createNotification({
-      user_id: userId,
-      type: NotificationTypes.PROJECT_UPDATED,
-      title: 'تحديث حالة المشروع',
-      message: `تم تحديث حالة مشروع "${projectName}" إلى ${status}`,
-      data: { projectName, status },
-      is_read: false,
-      priority: 'normal',
-      channel: 'app',
-      sent_at: new Date().toISOString(),
-    });
-  },
-  orderStatusChanged: (userId: string, orderNumber: string, status: string) =>
-    NotificationService.createNotification({
-      user_id: userId,
-      type: NotificationTypes.ORDER_STATUS_CHANGED,
-      title: 'تغيير حالة الطلب',
-      message: `تم تغيير حالة الطلب رقم ${orderNumber} إلى ${status}`,
-      data: { orderNumber, status },
-      is_read: false,
-      priority: 'normal',
-      channel: 'app',
-      sent_at: new Date().toISOString(),
-    }),
-  warrantyExpiring: (userId: string, productName: string, daysLeft: number) =>
-    NotificationService.createNotification({
-      user_id: userId,
-      type: NotificationTypes.WARRANTY_EXPIRING,
-      title: 'انتهاء صلاحية الضمان قريباً',
-      message: `ضمان ${productName} سينتهي خلال ${daysLeft} يوم`,
-      data: { productName, daysLeft },
-      is_read: false,
-      priority: 'high',
-      channel: 'app',
-      sent_at: new Date().toISOString(),
-    }),
-  paymentDue: (userId: string, amount: number, dueDate: string) =>
-    NotificationService.createNotification({
-      user_id: userId,
-      type: NotificationTypes.PAYMENT_DUE,
-      title: 'استحقاق دفعة',
-      message: `لديك دفعة مستحقة بقيمة ${amount} ر.س بتاريخ ${dueDate}`,
-      data: { amount, dueDate },
-      is_read: false,
-      priority: 'high',
-      channel: 'app',
-      sent_at: new Date().toISOString(),
-    }),
-  deliveryScheduled: (userId: string, orderNumber: string, deliveryDate: string) =>
-    NotificationService.createNotification({
-      user_id: userId,
-      type: NotificationTypes.DELIVERY_SCHEDULED,
-      title: 'جدولة التسليم',
-      message: `تم جدولة تسليم الطلب رقم ${orderNumber} في ${deliveryDate}`,
-      data: { orderNumber, deliveryDate },
-      is_read: false,
-      priority: 'normal',
-      channel: 'app',
-      sent_at: new Date().toISOString(),
-    }),
-  systemAnnouncement: (userId: string, title: string, message: string) =>
-    NotificationService.createNotification({
-      user_id: userId,
-      type: NotificationTypes.SYSTEM_ANNOUNCEMENT,
-      title,
-      message,
-      data: {},
-      is_read: false,
-      priority: 'low',
-      channel: 'app',
-      sent_at: new Date().toISOString(),
-    }),
-  promotion: (userId: string, title: string, message: string, promotionData?: any) =>
-    NotificationService.createNotification({
-      user_id: userId,
-      type: NotificationTypes.PROMOTION,
-      title,
-      message,
-      data: promotionData || {},
-      is_read: false,
-      priority: 'low',
-      channel: 'app',
-      sent_at: new Date().toISOString(),
-    }),
-};

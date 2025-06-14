@@ -63,3 +63,21 @@ export function clearTempAuth(): void {
   document.cookie = 'temp_auth_user=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
   console.log('🧹 [clearTempAuth] Temp auth cookie cleared');
 }
+
+export function setTempAuthUser(user: TempAuthUser): void {
+  if (typeof window === 'undefined') return;
+  
+  try {
+    const userJson = JSON.stringify(user);
+    const encodedUser = encodeURIComponent(userJson);
+    
+    // Set cookie with 24 hour expiration
+    const expires = new Date();
+    expires.setTime(expires.getTime() + (24 * 60 * 60 * 1000));
+    
+    document.cookie = `temp_auth_user=${encodedUser}; path=/; expires=${expires.toUTCString()}`;
+    console.log('✅ [setTempAuthUser] Temp auth user set:', user.email);
+  } catch (error) {
+    console.error('❌ [setTempAuthUser] Error setting temp auth cookie:', error);
+  }
+}

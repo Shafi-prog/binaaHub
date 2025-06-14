@@ -13,6 +13,15 @@ import { StockAlerts } from '@/hooks/useStockMonitoring';
 import RealtimeOrderTracking from '@/components/store/RealtimeOrderTracking';
 import ERPStoreDashboard from '@/components/store/ERPStoreDashboard';
 import { verifyTempAuth, type TempAuthUser } from '@/lib/temp-auth';
+import { NotificationProvider } from '@/contexts/NotificationContext';
+import { ActivityFeed } from '@/components/store/ActivityFeed';
+import { SalesTrendsChart } from '@/components/store/SalesTrendsChart';
+import { usePermissions } from '@/hooks/usePermissions';
+import { InventoryWidget } from '@/components/store/InventoryWidget';
+import { SupplierManagementWidget } from '@/components/store/SupplierManagementWidget';
+import { PurchaseOrdersWidget } from '@/components/store/PurchaseOrdersWidget';
+import { AnalyticsWidget } from '@/components/store/AnalyticsWidget';
+import { CRMWidget } from '@/components/store/CRMWidget';
 
 interface StoreDashboardUser extends TempAuthUser {
   store_name?: string;
@@ -49,6 +58,7 @@ export default function StoreDashboard() {
   const [error, setError] = useState<string | null>(null);
   const [isHydrated, setIsHydrated] = useState(false);
   const router = useRouter();
+  const { hasPermission } = usePermissions();
 
   // Invitation code state
   const [invitationCode, setInvitationCode] = useState<string | null>(null);
@@ -313,15 +323,16 @@ export default function StoreDashboard() {
       color: 'from-red-50 to-red-100 border-red-100',
       hoverColor: 'group-hover:from-red-100 group-hover:to-red-200 group-hover:border-red-200',
       iconColor: 'text-red-600 group-hover:text-red-700',
-      textColor: 'group-hover:text-red-900',
-      description: 'ملخص الضرائب والرسوم'
+      textColor: 'group-hover:text-red-900',      description: 'ملخص الضرائب والرسوم'
     }
   ];
+
   return (
-    <SimpleLayout>
-      <div className="space-y-6">
-        {/* Welcome Header */}
-        <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-700 text-white rounded-xl shadow-lg p-6">
+    <NotificationProvider>
+      <SimpleLayout>
+        <div className="space-y-6">
+          {/* Welcome Header */}
+          <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-700 text-white rounded-xl shadow-lg p-6">
           <h1 className="text-2xl sm:text-3xl font-bold mb-2">
             مرحباً، {user?.store_name || user?.email?.split('@')[0] || 'المتجر'}! 🏪
           </h1>
@@ -502,11 +513,43 @@ export default function StoreDashboard() {
               ))
             )}
           </div>
-        </div>
+        </div>        {/* Activity Feed and Sales Trends */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Sales Trends Chart */}
+            {hasPermission('view_advanced_metrics') && (
+              <div className="bg-white rounded-xl shadow-sm border p-6">
+                <h2 className="text-xl font-semibold text-gray-800 mb-4">اتجاهات المبيعات</h2>
+                <SalesTrendsChart />
+              </div>
+            )}
 
-        {/* Real-time Order Tracking */}
-        {user?.id && <RealtimeOrderTracking userId={user.id} maxOrders={5} />}
+            {/* Activity Feed */}
+            {user?.id && (
+              <div className="bg-white rounded-xl shadow-sm border p-6">
+                <ActivityFeed storeId={user.id} />
+              </div>
+            )}
+          </div>
+
+          {/* Real-time Order Tracking */}
+          {user?.id && <RealtimeOrderTracking userId={user.id} maxOrders={5} />}
+
+          {/* Inventory Management */}
+          <InventoryWidget />
+
+          {/* Supplier Management (Open Source) */}
+          <SupplierManagementWidget />
+
+          {/* Purchase Orders (Open Source) */}
+          <PurchaseOrdersWidget />
+
+          {/* Analytics (Open Source) */}
+          <AnalyticsWidget />
+
+          {/* CRM (Open Source) */}
+          <CRMWidget />
       </div>
     </SimpleLayout>
+    </NotificationProvider>
   );
 }

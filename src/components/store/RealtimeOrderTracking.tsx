@@ -17,13 +17,13 @@ interface Order {
   id: string
   order_number: string
   customer_name: string
-  customer_email: string
-  total_amount: number
-  status: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled'
+  total: number
+  status: 'pending' | 'confirmed' | 'shipped' | 'delivered' | 'cancelled'
   created_at: string
   updated_at: string
   items_count: number
   payment_status: 'pending' | 'paid' | 'failed' | 'refunded'
+  items: any[] // JSONB array of order items
 }
 
 interface RealtimeOrderTrackingProps {
@@ -44,13 +44,11 @@ const RealtimeOrderTracking: React.FC<RealtimeOrderTrackingProps> = ({
   const [lastUpdate, setLastUpdate] = useState<Date>(new Date())
   const supabase = createClientComponentClient()
   const { notifyInfo, notifySuccess } = useNotificationActions()
-
   const getStatusIcon = (status: Order['status']) => {
     switch (status) {
       case 'pending':
         return <ClockIcon className="h-5 w-5 text-yellow-500" />
       case 'confirmed':
-      case 'processing':
         return <TruckIcon className="h-5 w-5 text-blue-500" />
       case 'shipped':
         return <TruckIcon className="h-5 w-5 text-purple-500" />
@@ -62,13 +60,11 @@ const RealtimeOrderTracking: React.FC<RealtimeOrderTrackingProps> = ({
         return <ClockIcon className="h-5 w-5 text-gray-500" />
     }
   }
-
   const getStatusColor = (status: Order['status']) => {
     switch (status) {
       case 'pending':
         return 'bg-yellow-100 text-yellow-800 border-yellow-200'
       case 'confirmed':
-      case 'processing':
         return 'bg-blue-100 text-blue-800 border-blue-200'
       case 'shipped':
         return 'bg-purple-100 text-purple-800 border-purple-200'
@@ -95,36 +91,38 @@ const RealtimeOrderTracking: React.FC<RealtimeOrderTrackingProps> = ({
         return 'text-gray-600'
     }
   }
-
   const fetchOrders = async () => {
     try {
       const { data, error } = await supabase
-        .from('orders')
+        .from('erp_orders')
         .select(`
           id,
           order_number,
           customer_name,
-          customer_email,
-          total_amount,
+          total,
           status,
           payment_status,
           created_at,
           updated_at,
-          order_items(count)
+          items
         `)
-        .eq('store_id', userId)
-        .order('created_at', { ascending: false })
-        .limit(maxOrders)
+        .order('created_at', { ascending: false })        .limit(maxOrders)
 
       if (error) {
         console.error('Error fetching orders:', error)
+        console.error('Error details:', {
+          message: error.message,
+          details: error.details,
+          hint: error.hint,
+          code: error.code
+        })
         return
       }
 
       // Transform data to include items count
       const transformedOrders = data?.map(order => ({
         ...order,
-        items_count: order.order_items?.[0]?.count || 0
+        items_count: Array.isArray(order.items) ? order.items.length : 0
       })) || []
 
       // Check for new orders
@@ -167,10 +165,9 @@ const RealtimeOrderTracking: React.FC<RealtimeOrderTrackingProps> = ({
       setLoading(false)
     }
   }
-
   useEffect(() => {
     fetchOrders()
-  }, [userId])
+  }, [])
 
   useEffect(() => {
     if (!autoRefresh) return
@@ -274,7 +271,7 @@ const RealtimeOrderTracking: React.FC<RealtimeOrderTrackingProps> = ({
                   </div>
                   <div>
                     <span className="text-gray-600">Amount: </span>
-                    <span className="font-medium">{formatCurrency(order.total_amount)}</span>
+                    <span className="font-medium">{formatCurrency(order.total)}</span>
                   </div>
                   <div>
                     <span className="text-gray-600">Payment: </span>

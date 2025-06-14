@@ -56,7 +56,7 @@ function ProjectDetailClient() {
   const params = useParams();
   const router = useRouter();
   // Fix: type projectId as string and handle undefined case
-  const projectId = Array.isArray(params.id) ? params.id[0] : params.id;
+  const projectId = params ? (Array.isArray(params.id) ? params.id[0] : params.id) : null;
   
   // Early return if projectId is undefined
   if (!projectId) {
@@ -249,15 +249,12 @@ function ProjectDetailClient() {
           message: `نصيحة للمرحلة الحالية: ${advice}`,
         });
         NotificationService.createNotification({
+          // Removed 'data', 'priority', 'channel', 'sent_at' as they are not part of SimpleNotification
           user_id: user?.id || '',
-          type: NotificationTypes.PROJECT_UPDATED,
+          type: NotificationTypes.SUCCESS,
           title: 'تقدم المشروع',
           message: `تم الانتقال إلى مرحلة: ${project.status}`,
-          data: { projectId: project.id, status: project.status },
           is_read: false,
-          priority: 'normal',
-          channel: 'app',
-          sent_at: new Date().toISOString(),
         });
       }
       setLastNotifiedStage(project.status);

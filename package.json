@@ -25,7 +25,15 @@
     "fix-import-lines": "node scripts/fix-import-lines.js",
     "fix-pages-syntax": "node scripts/fix-page-syntax.js",
     "fix-format-pages": "node scripts/fix-format-pages.js",
-    "refactor-pages": "node scripts/refactor-pages.js"
+    "refactor-pages": "node scripts/refactor-pages.js",
+    "odoo:setup": "setup-odoo.bat",
+    "odoo:login": "scripts\\setup-odoo-login.bat",
+    "odoo:start": "docker-compose -f docker-compose.odoo.yml up -d",
+    "odoo:stop": "docker-compose -f docker-compose.odoo.yml down",
+    "odoo:logs": "docker-compose -f docker-compose.odoo.yml logs -f",
+    "odoo:backup": "scripts\\backup-odoo.bat",
+    "odoo:migrate": "node scripts/migration/migrate-to-odoo.js",
+    "odoo:status": "docker-compose -f docker-compose.odoo.yml ps"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.4",
@@ -46,6 +54,7 @@
     "axios": "^1.9.0",
     "bcrypt": "^6.0.0",
     "bcryptjs": "^3.0.2",
+    "classnames": "^2.5.1",
     "clsx": "^2.1.1",
     "critters": "^0.0.23",
     "express": "^5.1.0",
@@ -58,6 +67,7 @@
     "jwt-simple": "^0.5.6",
     "leaflet": "^1.9.4",
     "lucide-react": "^0.511.0",
+    "mongodb": "^6.17.0",
     "next": "^15.3.3",
     "next-auth": "^4.24.11",
     "node-fetch": "^3.3.2",

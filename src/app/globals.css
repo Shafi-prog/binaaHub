@@ -320,3 +320,60 @@ html {
     transition-duration: 0.2s !important;
   }
 }
+
+/* RTL Support for Arabic */
+.rtl {
+  direction: rtl;
+  text-align: right;
+}
+
+.ltr {
+  direction: ltr;
+  text-align: left;
+}
+
+/* RTL-specific utilities */
+.rtl .space-x-reverse > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 1;
+}
+
+.rtl .divide-x-reverse > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-x-reverse: 1;
+}
+
+/* Arabic number formatting */
+.arabic-numbers {
+  font-variant-numeric: tabular-nums;
+  direction: ltr;
+  unicode-bidi: bidi-override;
+}
+
+/* Better Arabic text rendering */
+.arabic-text {
+  font-feature-settings: "liga" 1, "calt" 1, "kern" 1;
+  text-rendering: optimizeLegibility;
+}
+
+/* Store dashboard specific styles */
+.store-dashboard-card {
+  transition: all 0.2s ease-in-out;
+  border: 1px solid #e5e7eb;
+}
+
+.store-dashboard-card:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transform: translateY(-1px);
+}
+
+/* Status badge styles */
+.status-badge {
+  font-weight: 600;
+  letter-spacing: 0.025em;
+  transition: all 0.15s ease-in-out;
+}
+
+/* Arabic currency alignment */
+.currency-sar {
+  direction: ltr;
+  unicode-bidi: embed;
+}

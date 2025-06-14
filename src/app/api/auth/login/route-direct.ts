@@ -27,7 +27,9 @@ export async function POST(request: NextRequest) {
         autoRefreshToken: false,
         persistSession: false
       }
-    });    // First, try to authenticate with Supabase Auth
+    });
+
+    // First, try to authenticate with Supabase Auth
     const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -41,7 +43,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log('✅ [API] Authentication successful for:', authData.session.user.email);// Get user data from database using the authenticated user's session
+    console.log('✅ [API] Authentication successful for:', authData.session.user.email);
+
+    // Get user data from database using the authenticated user's session
     const { data: fetchedUserData, error: fetchError } = await supabase
       .from('users')
       .select('account_type')
@@ -56,7 +60,9 @@ export async function POST(request: NextRequest) {
       // If user exists in auth but not in users table, create a default record
       if (fetchError?.code === 'PGRST116') {
         // No rows returned
-        console.log('🔧 [API] Creating missing user record for:', email);        // Generate invitation code if not present
+        console.log('🔧 [API] Creating missing user record for:', email);
+
+        // Generate invitation code if not present
         const invitationCode = 'BinnaHub-' + Math.random().toString(36).substring(2, 10);
         const defaultUserData = {
           id: authData.session.user.id,
@@ -88,7 +94,9 @@ export async function POST(request: NextRequest) {
           { status: 500 }
         );
       }
-    }    // Determine redirect URL
+    }
+
+    // Determine redirect URL
     const redirectTo =
       userData.account_type === 'store'
         ? '/store/dashboard'
@@ -98,7 +106,9 @@ export async function POST(request: NextRequest) {
             ? '/dashboard/construction-data'
             : '/';
 
-    console.log('🚀 [API] Redirect URL determined:', redirectTo);    // Create response with user data
+    console.log('🚀 [API] Redirect URL determined:', redirectTo);
+
+    // Create response with user data
     const response = NextResponse.json({
       success: true,
       redirectTo,
@@ -111,7 +121,9 @@ export async function POST(request: NextRequest) {
         refresh_token: authData.session.refresh_token,
         expires_at: authData.session.expires_at,
       }
-    });    // Set secure cookies for session
+    });
+
+    // Set secure cookies for session
     response.cookies.set('sb-access-token', authData.session.access_token, {
       path: '/',
       maxAge: 60 * 60 * 24, // 24 hours
@@ -137,7 +149,7 @@ export async function POST(request: NextRequest) {
       sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
     });
 
-    // Add CORS headers for production
+    // Add production CORS headers
     if (process.env.NODE_ENV === 'production') {
       response.headers.set('Access-Control-Allow-Credentials', 'true');
       response.headers.set('Access-Control-Allow-Origin', process.env.NEXT_PUBLIC_APP_URL || '*');
@@ -161,7 +173,9 @@ export async function POST(request: NextRequest) {
     if (process.env.NODE_ENV === 'production') {
       errorResponse.headers.set('Access-Control-Allow-Credentials', 'true');
       errorResponse.headers.set('Access-Control-Allow-Origin', process.env.NEXT_PUBLIC_APP_URL || '*');
-    }    return errorResponse;
+    }
+
+    return errorResponse;
   }
 }
 

@@ -48,6 +48,25 @@ next-env.d.ts
 test-*.js
 test-*.mjs
 debug-*.js
+debug-*.mjs
+
+# Debug and test directories
+src/app/auth-debug/
+src/app/loading-demo/
+src/app/mobile-test/
+src/app/test-loading/
+
+# Temporary deployment and fix scripts
+deploy-*.ps1
+deploy-*.sh
+setup-*.ps1
+setup-*.sh
+pre-commit-*.ps1
+
+# Temporary issue and debug files
+CLEANUP_BEFORE_COMMIT.md
+SUPABASE_CONNECTION_ISSUE.md
+URGENT_VERCEL_FIX.md
 verify-*.js
 check-*.js
 create-*.js

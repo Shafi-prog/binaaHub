@@ -6,7 +6,11 @@ export async function POST(request: NextRequest) {
   try {
     const { email, password } = await request.json();
 
-    console.log('🔐 [API] Login attempt for:', email);    // Create route handler client with proper cookie handling for Next.js 15+
+    console.log('🔐 [API] Login attempt for:', email);
+    console.log('🌍 [API] Environment:', process.env.NODE_ENV);
+    console.log('🔗 [API] Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL);
+
+    // Create route handler client with proper cookie handling for Next.js 15+
     const supabase = createRouteHandlerClient({ cookies });
 
     // Authenticate user
@@ -23,7 +27,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log('✅ [API] Authentication successful for:', signInData.session.user.email);    // Get user data from database using the authenticated user's session
+    console.log('✅ [API] Authentication successful for:', signInData.session.user.email);// Get user data from database using the authenticated user's session
     const { data: fetchedUserData, error: fetchError } = await supabase
       .from('users')
       .select('account_type')
@@ -92,22 +96,41 @@ export async function POST(request: NextRequest) {
         email: signInData.session.user.email,
         account_type: userData.account_type,
       },
-    });
-
-    // Set cookie to indicate successful authentication to middleware
+    });    // Set cookie to indicate successful authentication to middleware
     response.cookies.set('auth_session_active', 'true', {
       path: '/',
       maxAge: 60 * 60 * 24, // 24 hours
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax'
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
     });
+
+    // Add CORS headers for production
+    if (process.env.NODE_ENV === 'production') {
+      response.headers.set('Access-Control-Allow-Credentials', 'true');
+      response.headers.set('Access-Control-Allow-Origin', process.env.NEXT_PUBLIC_APP_URL || '*');
+      response.headers.set('Access-Control-Allow-Methods', 'POST, OPTIONS');
+      response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    }
 
     console.log('✅ [API] Login successful - Session cookies set');
 
     return response;
   } catch (error) {
     console.error('❌ [API] Unexpected error:', error);
-    return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 });
+    console.error('❌ [API] Error stack:', error instanceof Error ? error.stack : 'No stack trace');
+    
+    const errorResponse = NextResponse.json(
+      { success: false, error: 'Internal server error', details: error instanceof Error ? error.message : 'Unknown error' }, 
+      { status: 500 }
+    );
+
+    // Add CORS headers for error responses too
+    if (process.env.NODE_ENV === 'production') {
+      errorResponse.headers.set('Access-Control-Allow-Credentials', 'true');
+      errorResponse.headers.set('Access-Control-Allow-Origin', process.env.NEXT_PUBLIC_APP_URL || '*');
+    }
+
+    return errorResponse;
   }
 }

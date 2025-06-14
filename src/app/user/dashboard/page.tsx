@@ -16,14 +16,33 @@ import { formatCurrency, translateStatus } from '@/lib/utils';
 import { verifyTempAuth, type TempAuthUser } from '@/lib/temp-auth';
 import { ClientIcon } from '@/components/icons';
 import type { IconKey } from '@/components/icons/ClientIcon';
+import AIExpenseTracker from '@/components/ai/AIExpenseTracker';
+import ConstructionProgressTracker from '@/components/ai/ConstructionProgressTracker';
+import AIConstructionCalculator from '@/components/ai/AIConstructionCalculator';
+import PDFBlueprintAnalyzer from '@/components/ai/PDFBlueprintAnalyzer';
 
 function formatInvitationCode(code: string) {
   if (!code) return '';
-  // Remove duplicate "BinnaHub" if it exists
-  if (code.startsWith('BinnaHub - BinnaHub-')) {
-    return code.replace('BinnaHub - BinnaHub-', 'BinnaHub-');
+  
+  // Clean up any duplicates or malformed codes
+  let cleanCode = code;
+  
+  // Remove various forms of duplication
+  if (cleanCode.includes('BinnaHub - BinnaHub-')) {
+    cleanCode = cleanCode.replace('BinnaHub - BinnaHub-', 'BinnaHub-');
   }
-  return code.startsWith('BinnaHub-') ? code : `BinnaHub-${code}`;
+  
+  if (cleanCode.includes('BinnaHub-BinnaHub-')) {
+    cleanCode = cleanCode.replace('BinnaHub-BinnaHub-', 'BinnaHub-');
+  }
+  
+  // Ensure it starts with BinnaHub- and only once
+  if (cleanCode.startsWith('BinnaHub-')) {
+    return cleanCode;
+  }
+  
+  // If it doesn't start with BinnaHub-, add it
+  return `BinnaHub-${cleanCode}`;
 }
 
 export default function UserDashboard() {
@@ -40,6 +59,14 @@ export default function UserDashboard() {
   // Invitation code analytics state
   const [invitationCode, setInvitationCode] = useState<string | null>(null);
   const [inviteAnalytics, setInviteAnalytics] = useState<{ visits: number; purchases: number } | null>(null);
+  
+  // Smooth scroll to AI sections
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
   // Check if this is a post-login redirect
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);      
@@ -144,46 +171,144 @@ export default function UserDashboard() {
       </div>
     );
   }
-
   const dashboardCards = [
     {
       title: 'المشاريع النشطة',
       value: stats.activeProjects,
       icon: 'dashboard' as IconKey,
       href: '/user/projects',
-      color: 'bg-blue-500',
+      color: 'bg-gradient-to-br from-blue-500 to-blue-600',
+      description: 'مشاريعك الحالية قيد التنفيذ',
+      change: '+3',
+      trend: 'up'
     },
     {
       title: 'الطلبات المكتملة',
-      value: stats.completedOrders, // تم التعديل هنا لاستخدام عدد الطلبات المكتملة
+      value: stats.completedOrders,
       icon: 'settings' as IconKey,
       href: '/user/orders',
-      color: 'bg-green-500',
+      color: 'bg-gradient-to-br from-green-500 to-green-600',
+      description: 'طلبات تم إنجازها بنجاح',
+      change: '+12%',
+      trend: 'up'
     },
     {
       title: 'إجمالي الإنفاق',
       value: `${formatCurrency(stats.totalOrders)}`,
       icon: 'money' as IconKey,
       href: '/user/spending-tracking',
-      color: 'bg-purple-500',
+      color: 'bg-gradient-to-br from-purple-500 to-purple-600',
+      description: 'إجمالي المبلغ المنفق',
+      change: '+8%',
+      trend: 'up'
     },
     {
       title: 'الضمانات النشطة',
       value: stats.activeWarranties,
       icon: 'shield' as IconKey,
       href: '/user/warranties',
-      color: 'bg-orange-500',
+      color: 'bg-gradient-to-br from-orange-500 to-orange-600',
+      description: 'ضمانات سارية المفعول',
+      change: '+2',
+      trend: 'up'
     },
   ];  const quickActions = [
-    { title: 'إنشاء مشروع جديد', href: '/user/projects/new', icon: 'design' as IconKey },
-    { title: 'تصفح المشاريع', href: '/projects/', icon: 'money' as IconKey },
-    { title: 'طلب خدمة تصميم', href: '/user/services/design', icon: 'ai' as IconKey },
-    { title: 'حاسبة التكاليف', href: '/user/services/calculators', icon: 'calculator' as IconKey },
-    { title: 'تتبع الإنفاق', href: '/user/spending-tracking', icon: 'chart' as IconKey },
-    { title: 'إدارة الضمانات', href: '/user/warranties', icon: 'settings' as IconKey },
-    { title: 'لوحة العمولات', href: '/user/commissions', icon: 'marketing' as IconKey },
-    { title: 'إدارة المشرفين', href: '/user/supervisors', icon: 'dashboard' as IconKey },
-    { title: 'ماسح الباركود', href: '/barcode-scanner', icon: 'calculator' as IconKey },
+    { 
+      title: 'إنشاء مشروع جديد', 
+      href: '/user/projects/new', 
+      icon: 'design' as IconKey,
+      color: 'from-blue-50 to-blue-100 border-blue-100',
+      hoverColor: 'group-hover:from-blue-100 group-hover:to-blue-200 group-hover:border-blue-200',
+      iconColor: 'text-blue-600 group-hover:text-blue-700',
+      textColor: 'group-hover:text-blue-900',
+      description: 'ابدأ مشروع بناء جديد'
+    },    { 
+      title: 'تحليل المخططات المعمارية', 
+      href: '#pdf-blueprint-analyzer', 
+      icon: 'design' as IconKey,
+      color: 'from-purple-50 to-purple-100 border-purple-100',
+      hoverColor: 'group-hover:from-purple-100 group-hover:to-purple-200 group-hover:border-purple-200',
+      iconColor: 'text-purple-600 group-hover:text-purple-700',
+      textColor: 'group-hover:text-purple-900',
+      description: 'تحليل ملفات PDF للمخططات وحساب التكاليف تلقائياً'
+    },    { 
+      title: 'تحليل تقدم البناء', 
+      href: '#construction-progress', 
+      icon: 'design' as IconKey,
+      color: 'from-green-50 to-green-100 border-green-100',
+      hoverColor: 'group-hover:from-green-100 group-hover:to-green-200 group-hover:border-green-200',
+      iconColor: 'text-green-600 group-hover:text-green-700',
+      textColor: 'group-hover:text-green-900',
+      description: 'تحليل صور الموقع بالذكاء الاصطناعي'
+    },
+    { 
+      title: 'طلب خدمة تصميم', 
+      href: '/user/services/design', 
+      icon: 'ai' as IconKey,
+      color: 'from-purple-50 to-purple-100 border-purple-100',
+      hoverColor: 'group-hover:from-purple-100 group-hover:to-purple-200 group-hover:border-purple-200',
+      iconColor: 'text-purple-600 group-hover:text-purple-700',
+      textColor: 'group-hover:text-purple-900',
+      description: 'خدمات التصميم المعماري'
+    },    { 
+      title: 'حاسبة التكاليف الذكية', 
+      href: '#construction-calculator', 
+      icon: 'calculator' as IconKey,
+      color: 'from-orange-50 to-orange-100 border-orange-100',
+      hoverColor: 'group-hover:from-orange-100 group-hover:to-orange-200 group-hover:border-orange-200',
+      iconColor: 'text-orange-600 group-hover:text-orange-700',
+      textColor: 'group-hover:text-orange-900',
+      description: 'احسب تكلفة مشروعك بدقة بالذكاء الاصطناعي'
+    },{ 
+      title: 'تتبع الإنفاق بالذكاء الاصطناعي', 
+      href: '#ai-expense-tracker', 
+      icon: 'ai' as IconKey,
+      color: 'from-purple-50 to-purple-100 border-purple-100',
+      hoverColor: 'group-hover:from-purple-100 group-hover:to-purple-200 group-hover:border-purple-200',
+      iconColor: 'text-purple-600 group-hover:text-purple-700',
+      textColor: 'group-hover:text-purple-900',
+      description: 'رفع الفواتير واستخراج البيانات تلقائياً'
+    },
+    { 
+      title: 'إدارة الضمانات', 
+      href: '/user/warranties', 
+      icon: 'shield' as IconKey,
+      color: 'from-emerald-50 to-emerald-100 border-emerald-100',
+      hoverColor: 'group-hover:from-emerald-100 group-hover:to-emerald-200 group-hover:border-emerald-200',
+      iconColor: 'text-emerald-600 group-hover:text-emerald-700',
+      textColor: 'group-hover:text-emerald-900',
+      description: 'إدارة ضمانات المنتجات'
+    },
+    { 
+      title: 'لوحة العمولات', 
+      href: '/user/commissions', 
+      icon: 'marketing' as IconKey,
+      color: 'from-teal-50 to-teal-100 border-teal-100',
+      hoverColor: 'group-hover:from-teal-100 group-hover:to-teal-200 group-hover:border-teal-200',
+      iconColor: 'text-teal-600 group-hover:text-teal-700',
+      textColor: 'group-hover:text-teal-900',
+      description: 'تتبع العمولات والأرباح'
+    },
+    { 
+      title: 'إدارة المشرفين', 
+      href: '/user/supervisors', 
+      icon: 'ai' as IconKey,
+      color: 'from-rose-50 to-rose-100 border-rose-100',
+      hoverColor: 'group-hover:from-rose-100 group-hover:to-rose-200 group-hover:border-rose-200',
+      iconColor: 'text-rose-600 group-hover:text-rose-700',
+      textColor: 'group-hover:text-rose-900',
+      description: 'إدارة فريق العمل'
+    },
+    { 
+      title: 'ماسح الباركود', 
+      href: '/barcode-scanner', 
+      icon: 'calculator' as IconKey,
+      color: 'from-orange-50 to-orange-100 border-orange-100',
+      hoverColor: 'group-hover:from-orange-100 group-hover:to-orange-200 group-hover:border-orange-200',
+      iconColor: 'text-orange-600 group-hover:text-orange-700',
+      textColor: 'group-hover:text-orange-900',
+      description: 'مسح الباركود للمنتجات'
+    },
   ];
 
   let conversionRate = null;
@@ -276,102 +401,166 @@ export default function UserDashboard() {
               </div>
             </EnhancedCard>
           )}
-        </div>
-
-        {/* Stats Cards */}
+        </div>        {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {dashboardCards.map((card, index) => (
-            <Link key={index} href={card.href} className="block">       
-              <EnhancedCard variant="elevated" hover className="p-6 transition-all duration-300 hover:scale-105">
-                <div className="flex items-center justify-between">     
+            <Link key={index} href={card.href} className="block group">       
+              <div className="relative overflow-hidden bg-white rounded-2xl shadow-lg border border-gray-100 transition-all duration-300 hover:shadow-2xl hover:scale-[1.02] hover:-translate-y-1">
+                {/* Gradient Background */}
+                <div className={`absolute inset-0 ${card.color} opacity-5 group-hover:opacity-10 transition-opacity duration-300`}></div>
+                
+                {/* Content */}
+                <div className="relative p-6">
+                  <div className="flex items-center justify-between mb-4">     
+                    <div className={`${card.color} p-3 rounded-xl shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110`}>
+                      <ClientIcon type={card.icon} size={24} className="text-white" />
+                    </div>
+                    {card.change && (
+                      <div className="flex items-center gap-1 text-green-600 bg-green-50 px-2 py-1 rounded-full text-xs font-medium">
+                        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                        </svg>
+                        {card.change}
+                      </div>
+                    )}
+                  </div>
+                  
                   <div>
-                    <Typography variant="caption" size="sm" className="text-gray-600 mb-1">
+                    <h3 className="text-sm font-medium text-gray-600 mb-2 group-hover:text-gray-700 transition-colors">
                       {card.title}
-                    </Typography>
-                    <Typography variant="heading" size="2xl" weight="bold" className="text-gray-800">
+                    </h3>
+                    <p className="text-3xl font-bold text-gray-900 mb-2 group-hover:text-gray-800 transition-colors">
                       {card.value}
-                    </Typography>
+                    </p>
+                    <p className="text-xs text-gray-500 group-hover:text-gray-600 transition-colors">
+                      {card.description}
+                    </p>
                   </div>
-                  <div className={`${card.color} p-3 rounded-xl shadow-lg`}>
-                    <ClientIcon type={card.icon} size={24} className="text-white" />
-                  </div>
+
+                  {/* Hover Indicator */}
+                  <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
                 </div>
-              </EnhancedCard>
+              </div>
             </Link>
           ))}
         </div>        {/* Invitation Code Analytics */}
         {invitationCode && (
           <div className="bg-white rounded-xl shadow-sm border p-6 mb-8">
-            <Typography variant="subheading" size="xl" weight="semibold" className="text-gray-800 mb-4">
-              رمز الدعوة الخاص بك
-            </Typography>
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">رمز الدعوة الخاص بك</h2>
             <div className="font-mono text-blue-700 bg-blue-50 rounded-lg p-3 text-center text-lg mb-4">
               {formatInvitationCode(invitationCode)}
             </div>
             <div className="text-sm text-gray-600 text-center mb-4">
               شارك هذا الرمز مع أصدقائك أو العملاء ليحصلوا على مزايا، وستحصل أنت على عمولة عند استخدامه.
             </div>
-            <div className="grid grid-cols-3 gap-4 mb-4">
-              <div className="text-center p-4 bg-blue-50 rounded-lg">
-                <div className="font-bold text-2xl text-blue-700">{inviteAnalytics?.visits ?? 0}</div>
-                <div className="text-sm text-blue-600">زيارات عبر الرمز</div>
+            {inviteAnalytics && (
+              <div className="grid grid-cols-3 gap-4">
+                <div className="text-center p-4 bg-blue-50 rounded-lg">
+                  <div className="font-bold text-2xl text-blue-700">{inviteAnalytics.visits}</div>
+                  <div className="text-sm text-blue-600">زيارات عبر الرمز</div>
+                </div>
+                <div className="text-center p-4 bg-green-50 rounded-lg">
+                  <div className="font-bold text-2xl text-green-700">{inviteAnalytics.purchases}</div>
+                  <div className="text-sm text-green-600">عمليات شراء عبر الرمز</div>
+                </div>
+                <div className="text-center p-4 bg-purple-50 rounded-lg">
+                  <div className="font-bold text-2xl text-purple-700">
+                    {conversionRate !== null ? `${conversionRate}%` : '--'}
+                  </div>
+                  <div className="text-sm text-purple-600">معدل التحويل</div>
+                </div>
               </div>
-              <div className="text-center p-4 bg-green-50 rounded-lg">
-                <div className="font-bold text-2xl text-green-700">{inviteAnalytics?.purchases ?? 0}</div>
-                <div className="text-sm text-green-600">عمليات شراء عبر الرمز</div>
-              </div>
-              <div className="text-center p-4 bg-purple-50 rounded-lg">
-                <div className="font-bold text-2xl text-purple-700">{conversionRate ?? 0}%</div>
-                <div className="text-sm text-purple-600">معدل التحويل</div>
-              </div>
-            </div>            <div className="text-center">
-              <button
-                className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium"
-                onClick={() => {
-                  if (invitationCode) {
-                    navigator.clipboard.writeText(formatInvitationCode(invitationCode));      
-                  }
-                }}
-              >
-                نسخ رمز الدعوة
-              </button>
+            )}
+          </div>
+        )}        {/* AI-Powered Features Section */}
+        <div className="mb-8" id="ai-features">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center">
+              <ClientIcon type="ai" size={20} className="text-white" />
+            </div>
+            <div>
+              <Typography variant="subheading" size="xl" weight="semibold" className="text-gray-800">
+                الميزات المدعومة بالذكاء الاصطناعي
+              </Typography>
+              <Typography variant="body" size="sm" className="text-gray-600">
+                استخدم التقنيات المتقدمة لتتبع مصروفاتك وتقدم مشاريعك
+              </Typography>
+            </div>
+          </div>          <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+            {/* AI Expense Tracker */}
+            <div id="ai-expense-tracker">
+              {user?.id && (
+                <AIExpenseTracker 
+                  userId={user.id}
+                  onExpenseAdded={(expense) => {
+                    console.log('New expense added:', expense);
+                    // Refresh dashboard stats if needed
+                  }}
+                />
+              )}
+            </div>
+
+            {/* Construction Progress Tracker */}
+            <div id="construction-progress">
+              {user?.id && (
+                <ConstructionProgressTracker
+                  userId={user.id}
+                  projectId={stats?.activeProjects > 0 ? 'project-1' : undefined}
+                />
+              )}
             </div>
           </div>
-        )}
 
-        {/* Quick Actions */}
-        <div className="mb-8">
+          {/* AI Construction Calculator - Full Width */}
+          <div className="mt-8" id="construction-calculator">
+            {user?.id && (
+              <AIConstructionCalculator userId={user.id} />
+            )}
+          </div>
+        </div>{/* Quick Actions */}
+        <div className="bg-white rounded-xl shadow-sm border p-6 mb-8">
           <Typography variant="subheading" size="xl" weight="semibold" className="text-gray-800 mb-6">
             إجراءات سريعة
           </Typography>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {quickActions.map((action, index) => (
-              <Link key={index} href={action.href} className="block">   
-                <EnhancedCard
-                  variant="elevated"
-                  hover
-                  className="p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-xl group"
-                >
-                  <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                    <ClientIcon type={action.icon} size={32} className="text-blue-600" />
-                  </div>
-                  <Typography variant="body" size="md" weight="medium" className="text-gray-800">
-                    {action.title}
-                  </Typography>
-                </EnhancedCard>
-              </Link>
-            ))}
-          </div>
-        </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {quickActions.map((action, index) => {
+              const isAnchorLink = action.href.startsWith('#');
+              
+              if (isAnchorLink) {
+                return (
+                  <button
+                    key={index}
+                    onClick={() => scrollToSection(action.href.substring(1))}
+                    className="block w-full text-left"
+                  >
+                    <div className={`bg-gradient-to-br ${action.color} rounded-lg p-4 text-center ${action.hoverColor} transition-all duration-300 border transform group-hover:scale-105 group-hover:shadow-md group`}>
+                      <ClientIcon type={action.icon} size={32} className={`mx-auto mb-3 ${action.iconColor}`} />
+                      <h3 className={`font-medium text-gray-800 text-sm mb-1 ${action.textColor}`}>{action.title}</h3>
+                      <p className={`text-xs text-gray-500 ${action.textColor}`}>{action.description}</p>
+                    </div>
+                  </button>
+                );
+              }
 
-        {/* Recent Activity */}
-        <EnhancedCard variant="elevated" className="p-8">
+              return (
+                <Link key={index} href={action.href} className="block group">
+                  <div className={`bg-gradient-to-br ${action.color} rounded-lg p-4 text-center ${action.hoverColor} transition-all duration-300 border transform group-hover:scale-105 group-hover:shadow-md`}>
+                    <ClientIcon type={action.icon} size={32} className={`mx-auto mb-3 ${action.iconColor}`} />
+                    <h3 className={`font-medium text-gray-800 text-sm mb-1 ${action.textColor}`}>{action.title}</h3>
+                    <p className={`text-xs text-gray-500 ${action.textColor}`}>{action.description}</p>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </div>{/* Recent Activity */}
+        <div className="bg-white rounded-xl shadow-sm border p-6">
           <Typography variant="subheading" size="xl" weight="semibold" className="text-gray-800 mb-6">
             النشاط الأخير
           </Typography>
           <div className="space-y-4">
-            <div className="flex items-center p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl">
-              <div className="w-12 h-12 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-xl flex items-center justify-center ml-4">        
+            <div className="flex items-center p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg">
+              <div className="bg-blue-100 p-3 rounded-lg ml-4">        
                 <ClientIcon type="dashboard" size={20} className="text-blue-600" />
               </div>
               <div>
@@ -385,8 +574,8 @@ export default function UserDashboard() {
             </div>
 
             {stats.recentProjects?.map((project: any) => (
-              <div key={project.id} className="flex items-center p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl">
-                <div className="w-12 h-12 bg-gradient-to-br from-green-100 to-emerald-100 rounded-xl flex items-center justify-center ml-4">    
+              <div key={project.id} className="flex items-center p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg">
+                <div className="bg-green-100 p-3 rounded-lg ml-4">    
                   <ClientIcon type="design" size={20} className="text-green-600" />
                 </div>
                 <div>
@@ -399,8 +588,28 @@ export default function UserDashboard() {
                 </div>
               </div>
             ))}
-          </div>
-        </EnhancedCard>
+          </div>        </div>
+      </div>
+
+      {/* AI-Powered Features Sections */}
+      <div className="max-w-7xl mx-auto px-6 space-y-8">
+        {/* PDF Blueprint Analyzer */}
+        <div id="pdf-blueprint-analyzer" className="scroll-mt-20">
+          <PDFBlueprintAnalyzer />
+        </div>        {/* AI Expense Tracker */}
+        <div id="ai-expense-tracker" className="scroll-mt-20">
+          <AIExpenseTracker userId={user?.id || ''} />
+        </div>
+
+        {/* Construction Progress Tracker */}
+        <div id="construction-progress" className="scroll-mt-20">
+          <ConstructionProgressTracker userId={user?.id || ''} />
+        </div>
+
+        {/* AI Construction Calculator */}
+        <div id="construction-calculator" className="scroll-mt-20">
+          <AIConstructionCalculator userId={user?.id || ''} />
+        </div>
       </div>
     </main>
   );

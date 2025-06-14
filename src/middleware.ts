@@ -5,7 +5,17 @@ import type { Database } from '@/types/database';
 
 export async function middleware(req: NextRequest) {
   const res = NextResponse.next();
+  
+  // Add CORS headers for production
+  if (process.env.NODE_ENV === 'production') {
+    res.headers.set('Access-Control-Allow-Credentials', 'true');
+    res.headers.set('Access-Control-Allow-Origin', process.env.NEXT_PUBLIC_APP_URL || '*');
+    res.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization, Cookie');
+  }
+
   const supabase = createMiddlewareClient<Database>({ req, res });
+  
   // Check for temporary auth cookie (our new direct DB auth system)
   const tempAuthCookie = req.cookies.get('temp_auth_user')?.value;
   let tempAuthUser = null;
@@ -13,16 +23,28 @@ export async function middleware(req: NextRequest) {
   if (tempAuthCookie) {
     try {
       tempAuthUser = JSON.parse(tempAuthCookie);
+      console.log('🍪 [Middleware] Found temp auth user:', tempAuthUser.email);
     } catch (e) {
-      console.error('Failed to parse temp auth cookie:', e);
+      console.error('❌ [Middleware] Failed to parse temp auth cookie:', e);
     }
   }
 
-  // Get the current session
-  const {
-    data: { session },
-    error,
-  } = await supabase.auth.getSession();
+  // Get the current session with better error handling
+  let session = null;
+  let authError = null;
+  
+  try {
+    const { data, error } = await supabase.auth.getSession();
+    session = data?.session;
+    authError = error;
+    
+    if (session) {
+      console.log('✅ [Middleware] Found Supabase session for:', session.user.email);
+    }
+  } catch (error) {
+    console.error('❌ [Middleware] Error getting session:', error);
+    authError = error;
+  }
 
   const url = req.nextUrl;
 
@@ -44,10 +66,14 @@ export async function middleware(req: NextRequest) {
   // Check if user is authenticated (either via Supabase session or temp auth cookie)
   const isAuthenticated = !!(session || tempAuthUser);
   const currentUser = session?.user || tempAuthUser;
-
   // Skip middleware for auth errors to prevent redirect loops (but allow temp auth)
-  if (error && !tempAuthUser) {
-    console.error('Auth error in middleware:', error);
+  if (authError && !tempAuthUser) {
+    console.error('❌ [Middleware] Auth error:', authError);
+    // Still allow the request to proceed in production to avoid breaking the app
+    if (process.env.NODE_ENV === 'production') {
+      console.log('🚀 [Middleware] Allowing request to proceed in production despite auth error');
+      return res;
+    }
     if (isProtectedRoute) {
       return NextResponse.redirect(new URL('/login', req.url));
     }

@@ -20,11 +20,26 @@ interface StoreDashboardUser extends TempAuthUser {
 
 function formatInvitationCode(code: string) {
   if (!code) return '';
-  // Remove duplicate "BinnaHub" if it exists
-  if (code.startsWith('BinnaHub - BinnaHub-')) {
-    return code.replace('BinnaHub - BinnaHub-', 'BinnaHub-');
+  
+  // Clean up any duplicates or malformed codes
+  let cleanCode = code;
+  
+  // Remove various forms of duplication
+  if (cleanCode.includes('BinnaHub - BinnaHub-')) {
+    cleanCode = cleanCode.replace('BinnaHub - BinnaHub-', 'BinnaHub-');
   }
-  return code.startsWith('BinnaHub-') ? code : `BinnaHub-${code}`;
+  
+  if (cleanCode.includes('BinnaHub-BinnaHub-')) {
+    cleanCode = cleanCode.replace('BinnaHub-BinnaHub-', 'BinnaHub-');
+  }
+  
+  // Ensure it starts with BinnaHub- and only once
+  if (cleanCode.startsWith('BinnaHub-')) {
+    return cleanCode;
+  }
+  
+  // If it doesn't start with BinnaHub-, add it
+  return `BinnaHub-${cleanCode}`;
 }
 
 export default function StoreDashboard() {

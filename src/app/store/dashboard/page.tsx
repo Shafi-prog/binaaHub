@@ -102,13 +102,18 @@ export default function StoreDashboard() {
     const loadDashboard = async () => {
       try {
         setLoading(true);
-        setError(null);        const authResult = await verifyTempAuth(5);
+        setError(null);        console.log('🔍 [Store Dashboard] Starting auth verification...');
+        const authResult = await verifyTempAuth(5);
+        
+        console.log('🔍 [Store Dashboard] Auth result:', authResult);
         
         if (!authResult?.user) {
+          console.log('❌ [Store Dashboard] No user found, redirecting to login');
           router.push('/login');
           return;
         }
 
+        console.log('✅ [Store Dashboard] User authenticated:', authResult.user.email);
         setUser(authResult.user);
         const dashboardStats = await getStoreDashboardStats(authResult.user.id);
         setStats(dashboardStats);

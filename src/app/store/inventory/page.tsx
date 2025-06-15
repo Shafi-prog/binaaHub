@@ -130,12 +130,18 @@ export default function AdvancedInventoryManagement() {
     try {
       setLoading(true);
 
-      // Get current user
+      // Get current user with debug logging
       const { data: { user: currentUser }, error: userError } = await supabase.auth.getUser();
+      
+      console.log('🔍 [Inventory] Auth check:', { currentUser, userError });
+      
       if (userError || !currentUser) {
+        console.log('❌ [Inventory] Auth failed, redirecting to login');
         router.push('/login');
         return;
       }
+      
+      console.log('✅ [Inventory] User authenticated:', currentUser.email);
       setUser(currentUser);
 
       // Load products with advanced info
@@ -145,7 +151,10 @@ export default function AdvancedInventoryManagement() {
         .eq('store_id', currentUser.id)
         .order('updated_at', { ascending: false });
 
-      if (!productsError) {
+      if (productsError) {
+        console.error('❌ [Inventory] Products error:', productsError);
+      } else {
+        console.log('✅ [Inventory] Products loaded:', productsData?.length || 0);
         setProducts(productsData || []);
       }
 

@@ -106,16 +106,21 @@ const RealtimeOrderTracking: React.FC<RealtimeOrderTrackingProps> = ({
           updated_at,
           items
         `)
-        .order('created_at', { ascending: false })        .limit(maxOrders)
+        .order('created_at', { ascending: false })
+        .limit(maxOrders)
 
-      if (error) {
-        console.error('Error fetching orders:', error)
+      if (error || !Array.isArray(data)) {
+        console.error('Error fetching orders:', error, 'Data:', data)
         console.error('Error details:', {
-          message: error.message,
-          details: error.details,
-          hint: error.hint,
-          code: error.code
+          message: error?.message,
+          details: error?.details,
+          hint: error?.hint,
+          code: error?.code
         })
+        notifyInfo(
+          'Order Fetch Failed',
+          error?.message || 'Unable to fetch orders. Please check your database schema and API keys.'
+        )
         return
       }
 

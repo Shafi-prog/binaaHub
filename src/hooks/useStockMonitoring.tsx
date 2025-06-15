@@ -42,9 +42,12 @@ export const useStockMonitoring = ({
         .lt('current_stock', 'min_stock_level')
         .gt('min_stock_level', 0) // Only check items with defined minimum levels
 
-      if (error) {
-        console.error('Error checking stock levels:', error)
-        notifyError('Stock Check Failed', 'Unable to check current stock levels')
+      if (error || !Array.isArray(products)) {
+        console.error('Error checking stock levels:', error, 'Products:', products)
+        notifyError(
+          'Stock Check Failed',
+          error?.message || 'Unable to check current stock levels. Please check your database schema and API keys.'
+        )
         return
       }
 

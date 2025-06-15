@@ -222,11 +222,10 @@ export default function AdvancedFinancialManagement() {
     }
   };
 
-  const filteredInvoices = invoices.filter(invoice => {
+  const filteredInvoices = invoices.filter((invoice: Invoice) => {
     const matchesSearch = invoice.clientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          invoice.number.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'all' || invoice.status === statusFilter;
-    
     return matchesSearch && matchesStatus;
   });
 
@@ -241,10 +240,10 @@ export default function AdvancedFinancialManagement() {
   ];
 
   const statusDistribution = [
-    { name: 'مدفوعة', value: invoices.filter(i => i.status === 'paid').length, color: '#10B981' },
-    { name: 'مرسلة', value: invoices.filter(i => i.status === 'sent').length, color: '#3B82F6' },
-    { name: 'متأخرة', value: invoices.filter(i => i.status === 'overdue').length, color: '#EF4444' },
-    { name: 'مسودة', value: invoices.filter(i => i.status === 'draft').length, color: '#6B7280' }
+    { name: 'مدفوعة', value: invoices.filter((i: Invoice) => i.status === 'paid').length, color: '#10B981' },
+    { name: 'مرسلة', value: invoices.filter((i: Invoice) => i.status === 'sent').length, color: '#3B82F6' },
+    { name: 'متأخرة', value: invoices.filter((i: Invoice) => i.status === 'overdue').length, color: '#EF4444' },
+    { name: 'مسودة', value: invoices.filter((i: Invoice) => i.status === 'draft').length, color: '#6B7280' }
   ];
 
   const generateZATCACompliantInvoice = (invoice: Invoice) => {

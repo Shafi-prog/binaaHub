@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, type Variants } from 'framer-motion'
 import { 
   Bars3Icon, 
   XMarkIcon,
@@ -58,11 +58,11 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({ children, title }) => {
     }
   }, [pathname, isMobile])
 
-  const sidebarVariants = {
+  const sidebarVariants: Variants = {
     open: {
       x: 0,
       transition: {
-        type: "spring",
+        type: "spring" as const,
         stiffness: 300,
         damping: 30
       }
@@ -70,7 +70,7 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({ children, title }) => {
     closed: {
       x: "-100%",
       transition: {
-        type: "spring",
+        type: "spring" as const,
         stiffness: 300,
         damping: 30
       }

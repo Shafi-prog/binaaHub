@@ -218,7 +218,6 @@ export default function ConstructionCategoriesPage() {
                 )}
                 <div className="flex items-center gap-4 text-xs text-gray-500">
                   <span>المستوى: {category.level}</span>
-                  <span>المنتجات: {category.product_count || 0}</span>
                   {!category.is_active && (
                     <span className="text-red-600">غير نشط</span>
                   )}

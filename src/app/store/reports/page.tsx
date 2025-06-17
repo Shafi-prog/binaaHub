@@ -31,12 +31,6 @@ interface ReportData {
     total_orders: number;
     average_order_value: number;
     growth_rate: number;
-    top_products: Array<{
-      id: string;
-      name: string;
-      sales_count: number;
-      revenue: number;
-    }>;
   };
   inventory_summary: {
     total_products: number;
@@ -114,14 +108,7 @@ export default function AdvancedReporting() {
           total_revenue: 285000,
           total_orders: 145,
           average_order_value: 1965.52,
-          growth_rate: 12.5,
-          top_products: [
-            { id: '1', name: 'خرسانة جاهزة - درجة 350', sales_count: 35, revenue: 98000 },
-            { id: '2', name: 'حديد تسليح 16مم', sales_count: 28, revenue: 84000 },
-            { id: '3', name: 'أنابيب PVC قطر 110مم', sales_count: 45, revenue: 38250 },
-            { id: '4', name: 'مضخة مياه 1 حصان', sales_count: 12, revenue: 40800 },
-            { id: '5', name: 'كابلات كهربائية 2.5مم', sales_count: 22, revenue: 23750 }
-          ]
+          growth_rate: 12.5
         },
         inventory_summary: {
           total_products: 156,
@@ -442,29 +429,6 @@ export default function AdvancedReporting() {
                       </div>
                     );
                   })}
-                </div>
-              </div>
-
-              {/* Top Products */}
-              <div className="bg-white rounded-lg p-6 shadow-sm border">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">أفضل المنتجات مبيعاً</h3>
-                <div className="space-y-4">
-                  {reportData.sales_summary.top_products.map((product, index) => (
-                    <div key={product.id} className="flex items-center justify-between">
-                      <div className="flex items-center">
-                        <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
-                          <span className="text-sm font-bold text-blue-600">{index + 1}</span>
-                        </div>
-                        <div>
-                          <div className="font-medium text-gray-900">{product.name}</div>
-                          <div className="text-sm text-gray-500">{product.sales_count} مبيعة</div>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <div className="font-medium text-gray-900">{formatCurrency(product.revenue)}</div>
-                      </div>
-                    </div>
-                  ))}
                 </div>
               </div>
             </div>

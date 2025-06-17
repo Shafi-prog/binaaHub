@@ -179,3 +179,12 @@ src/components/ProjectsDebugger.tsx
 !FIXES_COMPLETED_STATUS.md
 !README.md
 !CHANGELOG.md
+
+# medusa backend (development/local only)
+medusa-develop/
+
+# page backup files (temporary development files)
+**/page-new.tsx
+
+# temporary files
+.nextignore

@@ -7,7 +7,7 @@
     "fix:import-case": "node scripts/fix-import-case.js",
     "changelog": "node scripts/generate-changelog.js",
     "version": "npm run changelog && npm version patch",
-    "dev": "node server.js",
+    "dev": "next dev -p 3000",
     "dev:next": "next dev -p 3000",
     "dev:unified": "node server.js",
     "dev:medusa": "node start-with-medusa.js",

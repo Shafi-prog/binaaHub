@@ -5,14 +5,13 @@ import { useRouter } from 'next/navigation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { User } from '@supabase/supabase-js';
 import type { Database } from '@/types/database';
-import ExcelImportComponent from '@/components/ExcelImportComponent';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 
-export default function ExcelImportPage() {
+export default function RemovedProductImportPage() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -112,27 +111,11 @@ export default function ExcelImportPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="py-6">
-          <div className="flex items-center justify-between">
-            <Link href="/store/products">
-              <Button variant="secondary" className="mb-4">
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back to Products
-              </Button>
-            </Link>
-          </div>
-
-          <div className="mb-6">
-            <h1 className="text-3xl font-bold text-gray-900">Excel Import</h1>
-            <p className="mt-2 text-gray-600">
-              Import products in bulk using Excel or CSV files.
-            </p>
-          </div>
-
-          <ExcelImportComponent />
-        </div>
+    <div className="flex items-center justify-center min-h-screen">
+      <div className="text-center">
+        <h1 className="text-2xl font-bold text-red-700 mb-4">Product Import Moved</h1>
+        <p className="mb-2">Product import is now managed in the Medusa admin panel.</p>
+        <a href="http://localhost:9000/admin/products" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">Go to Medusa Products</a>
       </div>
     </div>
   );

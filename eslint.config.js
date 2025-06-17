@@ -16,7 +16,10 @@ export default [
         ecmaVersion: 2023,
         sourceType: 'module',
         ecmaFeatures: { jsx: true },
-        project: './tsconfig.json',
+        // Correct path to medusa package tsconfig
+        project: [
+          './packages/medusa/tsconfig.json',
+        ],
       },
       globals: {
         React: 'readonly',
@@ -71,7 +74,13 @@ export default [
     },
     settings: {
       react: { version: 'detect' },
-      'import/resolver': { typescript: { project: ['./tsconfig.json'] } },
+      'import/resolver': {
+        typescript: {
+          project: [
+            './packages/medusa/tsconfig.json',
+          ],
+        },
+      },
     },
   },
   {
@@ -110,6 +119,16 @@ export default [
       'CHANGELOG.md',
       'README.md',
       '*.md',
+      // Add more output/build folders for monorepo
+      'medusa-develop/packages/*/dist/**',
+      'medusa-develop/packages/*/build/**',
+      'medusa-develop/packages/*/out/**',
+      'medusa-develop/packages/*/coverage/**',
+      'medusa-develop/packages/*/lib/**',
+      'medusa-develop/packages/*/cjs/**',
+      'medusa-develop/packages/*/esm/**',
+      'medusa-develop/packages/*/types/**',
+      'medusa-develop/packages/*/node_modules/**',
     ],
   },
 ];

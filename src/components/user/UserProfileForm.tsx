@@ -116,7 +116,7 @@ export default function UserProfileForm({ user }: { user: any }) {
         // If the API requires query parameters like region/city, uncomment and adjust:
         // mode: 'cors', // Enable if CORS is needed
         // Example with query params:
-        // 'http://apina.address.gov.sa/NationalAddress/v3.1/maps/map-engine?region=riyadh&city=riyadh&subscription-key=Hussam@2020'
+        // 'http://apina.address.gov.sa/NationalAddress/v3.1/maps/map-engine?region=riyadh&city=riyadh&subscription-key=' + process.env.NEXT_PUBLIC_ADDRESS_API_KEY
       });
 
       if (!response.ok) {
@@ -139,7 +139,7 @@ export default function UserProfileForm({ user }: { user: any }) {
     } catch (err: any) {
       setError(err.message || 'حدث خطأ أثناء جلب الموقع من العنوان الوطني');
       // Fallback to opening the map in a new tab
-      window.open('http://apina.address.gov.sa/NationalAddress/v3.1/maps/map-engine?subscription-key=Hussam@2020', '_blank');
+      window.open(`http://apina.address.gov.sa/NationalAddress/v3.1/maps/map-engine?subscription-key=${process.env.NEXT_PUBLIC_ADDRESS_API_KEY}`, '_blank');
     } finally {
       setApiLoading(false);
     }
@@ -431,7 +431,7 @@ export default function UserProfileForm({ user }: { user: any }) {
           <Button
             type="button"
             variant="secondary"
-            onClick={() => window.open('http://apina.address.gov.sa/NationalAddress/v3.1/maps/map-engine?subscription-key=Hussam@2020', '_blank')}
+            onClick={() => window.open(`http://apina.address.gov.sa/NationalAddress/v3.1/maps/map-engine?subscription-key=${process.env.NEXT_PUBLIC_ADDRESS_API_KEY}`, '_blank')}
           >
             فتح خريطة العنوان الوطني
           </Button>

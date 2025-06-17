@@ -106,13 +106,11 @@ export default function UserProfileForm({ user }: { user: any }) {
   const handleNationalAddress = async () => {
     setApiLoading(true);
     setError(null);
-    setSuccess(null);
-
-    try {
+    setSuccess(null);    try {
       const response = await fetch('http://apina.address.gov.sa/NationalAddress/v3.1/maps/map-engine', {
         method: 'GET',
         headers: {
-          'Ocp-Apim-Subscription-Key': 'Hussam@2020',
+          'Ocp-Apim-Subscription-Key': process.env.NEXT_PUBLIC_ADDRESS_API_KEY || '',
           'Content-Type': 'application/json',
         },
         // If the API requires query parameters like region/city, uncomment and adjust:

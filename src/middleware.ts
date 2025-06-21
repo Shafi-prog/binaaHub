@@ -52,15 +52,15 @@ export async function middleware(req: NextRequest) {
   if (url.pathname === '/') {
     return res;
   }
-
   // Exclude these routes from auth/protected logic
-  const alwaysAllowRoutes = ['/login', '/signup', '/products/new'];
+  const alwaysAllowRoutes = ['/login', '/signup', '/products/new', '/store/storefront'];
   if (alwaysAllowRoutes.includes(url.pathname)) {
     return res;
   }
 
   // Define protected and auth routes
-  const isProtectedRoute = url.pathname.startsWith('/user/') || url.pathname.startsWith('/store/');
+  const isProtectedRoute = (url.pathname.startsWith('/user/') || url.pathname.startsWith('/store/')) && 
+                           !url.pathname.startsWith('/store/storefront');
   const isAuthRoute = url.pathname.startsWith('/login') || url.pathname.startsWith('/signup');
 
   // Check if user is authenticated (either via Supabase session or temp auth cookie)

@@ -37,3 +37,11 @@ export function CardTitle({ children, ...props }: CardProps) {
     </h3>
   );
 }
+
+export function CardDescription({ children, ...props }: CardProps) {
+  return (
+    <p {...props} className={`text-sm text-gray-500 ${props.className ?? ""}`}>
+      {children}
+    </p>
+  );
+}

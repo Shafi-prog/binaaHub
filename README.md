@@ -1,57 +1,124 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Binna Unified Platform
 
 ![Logo](public/logo.png)
 
----
+A unified construction management platform integrating **real Medusa Community Edition** for e-commerce functionality.
 
-## ✅ Fixes & Improvements
+## 🏗️ Architecture
 
-### ✅ Fix: Login redirect to user page
+The Binna platform is a **unified Next.js application** that integrates with:
 
-- تم حل مشكلة عدم الانتقال إلى صفحة المستخدم بعد تسجيل الدخول.
-- السبب كان: `router.replace()` لا يعمل دائمًا بشكل موثوق بعد تسجيل الدخول مباشرة.
-- الحل: استُخدم `window.location.href = ...` لضمان التوجيه المؤكد.
-- أيضًا تم تغيير المجلد من `src/app/(user)/profile` إلى `src/app/user/profile` لأن Next.js لا يتعامل بشكل جيد مع الأقواس أحيانًا.
-- وتم تحديث `middleware.ts` لإدراج المسارات الجديدة للمستخدم والمتجر.
+- **Real Medusa Backend** (localhost:9000) - Full Medusa Community Edition
+- **Medusa Storefront** (localhost:8000) - Customer-facing store
+- **Binna Platform** (localhost:3000) - Main application with proxy and unified interface
 
----
+## 🚀 Getting Started
 
-## Getting Started
+### Prerequisites
 
-...
+1. **Medusa Backend**: Ensure your real Medusa backend is running at `C:\Users\hp\Documents\medusa-develop`
+2. **Node.js**: Version 18 or higher
+3. **Database**: PostgreSQL for Medusa
+4. **Redis**: For Medusa caching
 
-## Getting Started
+### Environment Setup
 
-First, run the development server:
-
+1. Copy the environment template:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cp .env.unified.example .env.local
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Configure your environment variables:
+```env
+MEDUSA_BACKEND_URL=http://localhost:9000
+MEDUSA_STOREFRONT_URL=http://localhost:8000
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Development
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+#### Option 1: Unified Development (Recommended)
+Run both Medusa and Binna platform together:
+```bash
+npm run unified:dev
+```
 
-## Learn More
+#### Option 2: Separate Development
+1. Start Medusa backend (in separate terminal):
+```bash
+npm run medusa:dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+2. Start Binna platform:
+```bash
+npm run dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Production
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm run unified:start
+```
 
-## Deploy on Vercel
+## 🌐 Available Routes
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **🌐 Frontend**: http://localhost:3000
+- **🏪 Store Pages**: http://localhost:3000/store
+- **👤 User Dashboard**: http://localhost:3000/dashboard
+- **⚙️ Admin Panel**: http://localhost:3000/admin
+- **🔧 Medusa Admin Proxy**: http://localhost:3000/medusa-admin
+- **🛍️ Medusa Store Proxy**: http://localhost:3000/medusa-store
+- **📊 Medusa API Proxy**: http://localhost:3000/medusa-api
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-![Logo](public/logo.png)
+### Direct Access
+- **🔗 Medusa Backend**: http://localhost:9000
+- **🔗 Medusa Storefront**: http://localhost:8000
+
+## ✅ Features
+
+### ✅ Real Medusa Integration
+- ✅ Complete Medusa Community Edition backend
+- ✅ Real product management
+- ✅ Real order processing
+- ✅ Real customer management
+- ✅ Real payment processing
+- ✅ Proxy integration for unified experience
+
+### ✅ Construction Management
+- ✅ Project management
+- ✅ Construction progress tracking
+- ✅ Expense tracking
+- ✅ Supervisor management
+- ✅ Blueprint analysis
+- ✅ Warranty management
+
+### ✅ User Management
+- ✅ Supabase authentication
+- ✅ Role-based access control
+- ✅ User dashboards
+- ✅ Profile management
+
+## 🧹 Recent Changes
+
+### ✅ Cleanup Complete (June 22, 2025)
+- ❌ Removed all mock/old Medusa servers
+- ❌ Removed all Odoo integration code
+- ❌ Removed outdated scripts and files
+- ✅ Updated server.js for real Medusa proxy
+- ✅ Added unified development scripts
+- ✅ Clean environment configuration
+
+### ✅ Previous Fixes
+- ✅ Fixed login redirect to user page
+- ✅ Updated routing structure
+- ✅ Improved middleware configuration
+
+## 📚 Learn More
+
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Medusa Documentation](https://docs.medusajs.com)
+- [Supabase Documentation](https://supabase.com/docs)
+
+---
+
+**💡 Note**: This platform now uses **real Medusa Community Edition** instead of mock servers, providing full e-commerce functionality integrated with construction management features.

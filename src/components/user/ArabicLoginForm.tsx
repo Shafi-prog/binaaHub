@@ -7,12 +7,14 @@ export default function ArabicLoginForm({ onLogin }: { onLogin: (data: any) => v
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    onLogin({ email, password });
-    setLoading(false);
+    try {
+      await onLogin({ email, password });
+    } finally {
+      setLoading(false);
+    }
   };
   return (
     <form dir="rtl" className="max-w-md mx-auto bg-white rounded-xl shadow-lg p-4 sm:p-6 md:p-8 space-y-4 sm:space-y-6" onSubmit={handleSubmit}>

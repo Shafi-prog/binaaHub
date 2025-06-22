@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import ArabicLoginForm from '@/components/user/ArabicLoginForm';
 import toast from 'react-hot-toast';
@@ -8,50 +8,75 @@ interface LoginData {
   password: string;
 }
 
-export default function LoginPage() {
-  const handleLogin = async (data: LoginData) => {
+export default function LoginPage() {const handleLogin = async (data: LoginData) => {
     try {
       console.log('🔐 [Login] Starting login request for:', data.email);
       
-      const response = await fetch('/api/auth/login-db', {
+      // Validate input data
+      if (!data.email || !data.password) {
+        toast.error('يرجى إدخال البريد الإلكتروني وكلمة المرور');
+        return;
+      }
+
+      if (!data.email.includes('@')) {
+        toast.error('يرجى إدخال بريد إلكتروني صحيح');
+        return;
+      }
+      
+      // First try local authentication for development
+      let response = await fetch('/api/auth/local-login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
 
-      console.log('🔐 [Login] API response status:', response.status);
+      console.log('🔐 [Login] Local auth response status:', response.status);
+
+      // If local auth fails, try the main auth system
+      if (!response.ok) {
+        console.log('🔐 [Login] Local auth failed, trying main auth...');
+        response = await fetch('/api/auth/login-db', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+        console.log('🔐 [Login] Main auth response status:', response.status);
+      }
       
       const result = await response.json();
-      console.log('🔐 [Login] API response:', result);
-
-      if (result.success) {
+      console.log('🔐 [Login] API response:', result);      if (result.success) {
         toast.success('تم تسجيل الدخول بنجاح!');
         
         console.log('🔐 [Login] Cookies before redirect:', document.cookie);
+          // Determine redirect path
+        let redirectPath = '/user/dashboard/'; // Default for regular users
         
-        // Add a small delay to ensure cookies are set
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        if (result.user?.account_type === 'store') {
+          redirectPath = '/store/dashboard/';
+        }
         
-        console.log('🔐 [Login] Cookies after delay:', document.cookie);
+        // Use redirectTo from API if provided
+        if (result.redirectTo) {
+          redirectPath = result.redirectTo;
+        }
         
-        // Use the correct property from the API response
-        const redirectPath = result.redirectTo || (result.user?.account_type === 'store' ? '/store/dashboard' : '/user/dashboard');
-        
-        // Add a flag to indicate this is a post-login redirect
-        const urlWithFlag = `${redirectPath}?post_login=true`;
-        
-        console.log('🔄 [Login] Redirecting to:', urlWithFlag);
-        window.location.href = urlWithFlag;
+        console.log('� [Login] Redirecting to:', redirectPath);
+          // Add a delay then redirect
+        setTimeout(() => {
+          console.log('🔄 [Login] Redirecting now...');
+          window.location.href = redirectPath;
+        }, 1500);
       } else {
         console.error('🔐 [Login] Login failed:', result.error);
-        toast.error(`Login failed: ${result.error}`);
+        toast.error(result.error || 'فشل تسجيل الدخول');
       }
     } catch (error: unknown) {
       console.error('🔐 [Login] Exception:', error);
       if (error instanceof Error) {
-        toast.error(`An error occurred: ${error.message}`);
+        console.error('🔐 [Login] Error stack:', error.stack);
+        toast.error(`خطأ في الاتصال: ${error.message}`);
       } else {
-        toast.error('An unknown error occurred.');
+        toast.error('حدث خطأ غير معروف');
       }
     }
   };

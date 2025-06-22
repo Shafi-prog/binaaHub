@@ -55,11 +55,11 @@ export default function StorefrontPage() {
   useEffect(() => {
     fetchProducts();
   }, []);
-
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const response = await fetch(process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL + '/store/products');
+      // Use unified Medusa API at localhost:3000
+      const response = await fetch('/api/medusa/store/products');
       const data: ProductsResponse = await response.json();
       setProducts(data.products || []);
     } catch (error) {

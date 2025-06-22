@@ -15,8 +15,20 @@ export async function middleware(req: NextRequest) {
   }
 
   const supabase = createMiddlewareClient<Database>({ req, res });
+    // Check for local auth cookie (our new local auth system)
+  const localAuthCookie = req.cookies.get('user-session')?.value;
+  let localAuthUser = null;
   
-  // Check for temporary auth cookie (our new direct DB auth system)
+  if (localAuthCookie) {
+    try {
+      localAuthUser = JSON.parse(localAuthCookie);
+      console.log('🍪 [Middleware] Found local auth user:', localAuthUser.email);
+    } catch (e) {
+      console.error('❌ [Middleware] Failed to parse local auth cookie:', e);
+    }
+  }
+
+  // Check for temporary auth cookie (our legacy temp auth system)
   const tempAuthCookie = req.cookies.get('temp_auth_user')?.value;
   let tempAuthUser = null;
   
@@ -62,12 +74,10 @@ export async function middleware(req: NextRequest) {
   const isProtectedRoute = (url.pathname.startsWith('/user/') || url.pathname.startsWith('/store/')) && 
                            !url.pathname.startsWith('/store/storefront');
   const isAuthRoute = url.pathname.startsWith('/login') || url.pathname.startsWith('/signup');
-
-  // Check if user is authenticated (either via Supabase session or temp auth cookie)
-  const isAuthenticated = !!(session || tempAuthUser);
-  const currentUser = session?.user || tempAuthUser;
-  // Skip middleware for auth errors to prevent redirect loops (but allow temp auth)
-  if (authError && !tempAuthUser) {
+  // Check if user is authenticated (Supabase session, local auth, or temp auth cookie)
+  const isAuthenticated = !!(session || localAuthUser || tempAuthUser);
+  const currentUser = session?.user || localAuthUser || tempAuthUser;  // Skip middleware for auth errors to prevent redirect loops (but allow local/temp auth)
+  if (authError && !localAuthUser && !tempAuthUser) {
     console.error('❌ [Middleware] Auth error:', authError);
     // Still allow the request to proceed in production to avoid breaking the app
     if (process.env.NODE_ENV === 'production') {
@@ -87,9 +97,9 @@ export async function middleware(req: NextRequest) {
   // Force user/store to complete profile after login
   if (isProtectedRoute && isAuthenticated) {
     try {      if (url.pathname.startsWith('/user/') && url.pathname !== '/user/profile') {
-        // For temp auth users, we'll skip profile checks for now since we don't have full profile data
-        if (tempAuthUser) {
-          console.log('[MIDDLEWARE] Temp auth user accessing user route, allowing access');
+        // For local/temp auth users, we'll skip profile checks for now since we don't have full profile data
+        if (localAuthUser || tempAuthUser) {
+          console.log('[MIDDLEWARE] Local/temp auth user accessing user route, allowing access');
         } else if (session) {
           const { data: userProfile } = await supabase
             .from('users')
@@ -105,12 +115,10 @@ export async function middleware(req: NextRequest) {
             return NextResponse.redirect(redirectUrl);
           }
         }
-      }
-
-      if (url.pathname.startsWith('/store/') && url.pathname !== '/store/profile') {
-        // For temp auth users, we'll skip profile checks for now
-        if (tempAuthUser) {
-          console.log('[MIDDLEWARE] Temp auth user accessing store route, allowing access');  
+      }      if (url.pathname.startsWith('/store/') && url.pathname !== '/store/profile') {
+        // For local/temp auth users, we'll skip profile checks for now
+        if (localAuthUser || tempAuthUser) {
+          console.log('[MIDDLEWARE] Local/temp auth user accessing store route, allowing access');  
         } else if (session) {
           const { data: storeData, error: storeError } = await supabase
             .from('stores')

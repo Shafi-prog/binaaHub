@@ -6,25 +6,27 @@ export async function POST(request: NextRequest) {
   try {
     console.log('🚪 [API] Logout request received');
     
-    // Create route handler client
-    const supabase = createRouteHandlerClient({ cookies });
-
-    // Sign out from Supabase
-    const { error } = await supabase.auth.signOut();
-    
-    if (error) {
-      console.error('❌ [API] Logout error:', error.message);
-      return NextResponse.json(
-        { success: false, error: error.message },
-        { status: 400 }
-      );
-    }
-
     // Create response
     const response = NextResponse.json({
       success: true,
       message: 'تم تسجيل الخروج بنجاح'
-    });    // Clear auth session cookie
+    });
+
+    // Clear local session cookie
+    response.cookies.set('user-session', '', {
+      httpOnly: true,
+      secure: false, // Set to true in production
+      sameSite: 'lax',
+      maxAge: 0, // Expire immediately
+    });
+
+    // Also try to clear Supabase session if it exists
+    try {
+      const supabase = createRouteHandlerClient({ cookies });
+      await supabase.auth.signOut();
+    } catch (supabaseError) {
+      console.log('🚪 [API] Supabase logout skipped (expected in local auth)');
+    }// Clear auth session cookie
     response.cookies.set('auth_session_active', '', {
       path: '/',
       maxAge: 0,

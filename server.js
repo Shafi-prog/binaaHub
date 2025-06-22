@@ -1,61 +1,44 @@
 const { createServer } = require('http');
 const { parse } = require('url');
 const next = require('next');
-const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const dev = process.env.NODE_ENV !== 'production';
 const hostname = 'localhost';
 const port = 3000;
 
-// Odoo configuration
-const ODOO_URL = process.env.ODOO_URL || 'http://localhost:8069';
+// Medusa configuration
+const MEDUSA_BACKEND_URL = process.env.MEDUSA_BACKEND_URL || 'http://localhost:9000';
 
 // Initialize Next.js app
 const app = next({ dev, hostname, port });
 const handle = app.getRequestHandler();
 
-// Create Odoo proxy middleware
-const odooProxy = createProxyMiddleware({
-  target: ODOO_URL,
-  changeOrigin: true,
-  pathRewrite: {
-    '^/odoo': '', // Remove /odoo prefix when forwarding to Odoo
-  },
-  onError: (err, req, res) => {
-    console.error('Odoo proxy error:', err.message);
-    res.status(500).json({ error: 'Odoo service unavailable' });
-  },
-});
-
 app.prepare().then(() => {
   const server = createServer(async (req, res) => {
     try {
       const parsedUrl = parse(req.url, true);
-      const { pathname, query } = parsedUrl;
-
-      // Route Odoo Admin (iframe or redirect to Odoo backend)
-      if (pathname.startsWith('/odoo') || pathname.startsWith('/web')) {
-        odooProxy(req, res);
-        return;
-      }      // Route unified admin (your custom admin with Odoo integration)
-      if (pathname.startsWith('/admin') || pathname.startsWith('/store')) {
+      const { pathname, query } = parsedUrl;      // Route user shopping pages to integrated storefront within Binna
+      if (pathname.startsWith('/shop') || pathname.startsWith('/products') || pathname.startsWith('/cart') || pathname.startsWith('/account')) {
+        // Handle as regular Binna platform pages with integrated Medusa API
         await handle(req, res, parsedUrl);
         return;
       }
 
-      // Route API endpoints for Odoo integration
-      if (pathname.startsWith('/api/odoo')) {
+      // Redirect to Medusa admin backend for store management
+      if (pathname.startsWith('/store-admin') || pathname.startsWith('/admin')) {
+        // Redirect to Medusa admin backend (store admin at localhost:9000)
+        res.writeHead(302, { Location: `${MEDUSA_BACKEND_URL}/app${pathname.replace('/store-admin', '').replace('/admin', '')}` });
+        res.end();
+        return;
+      }
+
+      // Handle API calls that need to communicate with Medusa
+      if (pathname.startsWith('/api/medusa')) {
         await handle(req, res, parsedUrl);
         return;
       }
 
-      // Route Medusa API endpoints (legacy support)
-      if (pathname.startsWith('/api/medusa') || pathname.startsWith('/store') || pathname.startsWith('/admin/api')) {
-        await handle(req, res, parsedUrl);
-        return;
-      }
-
-      // Handle all other requests with Next.js
+      // Handle all other Binna platform requests (public pages, user dashboard, construction management, etc.)
       await handle(req, res, parsedUrl);
     } catch (err) {
       console.error('Error occurred handling', req.url, err);
@@ -63,20 +46,33 @@ app.prepare().then(() => {
       res.end('internal server error');
     }
   });
+  
   server.listen(port, (err) => {
-    if (err) throw err;
-    console.log(`🚀 Unified Binaa Platform ready on http://${hostname}:${port}`);
-    console.log('📋 Available routes:');
-    console.log('  🌐 Frontend: http://localhost:3000');
-    console.log('  🏪 Store: http://localhost:3000/store');
-    console.log('  🛒 Products: http://localhost:3000/products');
-    console.log('  👤 User Dashboard: http://localhost:3000/dashboard');
-    console.log('  ⚙️  Admin Panel: http://localhost:3000/admin');
-    console.log('  🔧 Odoo Backend: http://localhost:3000/odoo');
-    console.log('  📊 API: http://localhost:3000/api');
-    console.log('  🔐 Auth: http://localhost:3000/api/auth');
+    if (err) throw err;    console.log(`🚀 Binna Platform ready on http://${hostname}:${port}`);
+    console.log('📋 Clean & Integrated Architecture:');
     console.log('');
-    console.log('🔗 Direct Odoo access: http://localhost:8069');
-    console.log('💡 Best practice: Use unified frontend for customer-facing features');
+    console.log('🏛️  BINNA PLATFORM (localhost:3000) - All-in-One:');
+    console.log('  🌐 Homepage: http://localhost:3000');
+    console.log('  📋 About: http://localhost:3000/about');
+    console.log('  📞 Contact: http://localhost:3000/contact');
+    console.log('  🔐 Auth: http://localhost:3000/login');
+    console.log('  👤 User Dashboard: http://localhost:3000/dashboard');
+    console.log('  🏗️  Construction Management: http://localhost:3000/projects');
+    console.log('  �️  Shopping: http://localhost:3000/shop');
+    console.log('  📦 Products: http://localhost:3000/products');
+    console.log('  🛒 Cart: http://localhost:3000/cart');
+    console.log('  👤 Account: http://localhost:3000/account');
+    console.log('');
+    console.log('🏪 STORE ADMIN (Medusa Backend - localhost:9000):');
+    console.log('  ⚙️  Admin Panel: http://localhost:9000/app');
+    console.log('  📊 Dashboard: http://localhost:9000/app/dashboard');
+    console.log('  📦 Manage Products: http://localhost:9000/app/products');
+    console.log('  📋 Manage Orders: http://localhost:9000/app/orders');
+    console.log('  👥 Customers: http://localhost:9000/app/customers');
+    console.log('');
+    console.log('🔗 Quick Access from Binna:');
+    console.log('  🏪 /store-admin → http://localhost:9000/app (Store Management)');
+    console.log('');
+    console.log('💡 Simple & Integrated - Everything in one platform!');
   });
 });

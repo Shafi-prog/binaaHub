@@ -10,7 +10,7 @@ import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { verifyAuthWithRetry } from '@/lib/auth-recovery';
 import { getProjectById, updateProject, getSpendingByCategory, getRecentExpenses, deleteProject, getAllProjects } from '@/lib/api/dashboard';
 import type { ProjectData } from '@/types/project';
-import { StatCard } from '@/components/user/DashboardComponents';
+import { StatCard } from '@/components/users/DashboardComponents';
 import { DollarSign, TrendingUp, Calendar, FileText, BarChart2, CheckCircle, AlertTriangle } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import { getAllProjectStatuses, canProjectBeForSale } from '@/lib/project-utils';

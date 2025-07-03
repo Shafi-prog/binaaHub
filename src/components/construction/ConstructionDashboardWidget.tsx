@@ -34,13 +34,13 @@ export default function ConstructionDashboardWidget({ storeId }: ConstructionDas
 
   const loadStats = async () => {
     try {
-      const response = await fetch(`/api/construction-products/stats?store_id=${storeId}`);
+      const response = await fetch(`/api/products/construction/stats?store_id=${storeId}`);
       if (response.ok) {
         const data = await response.json();
         setStats(data);
       } else {
         // Fallback to basic stats calculation
-        const productsResponse = await fetch('/api/construction-products');
+        const productsResponse = await fetch('/api/products/construction');
         if (productsResponse.ok) {
           const productsData = await productsResponse.json();
           const products = productsData.products || [];
@@ -90,7 +90,7 @@ export default function ConstructionDashboardWidget({ storeId }: ConstructionDas
           <Package className="w-12 h-12 text-gray-300 mx-auto mb-3" />
           <p className="text-gray-500 mb-4">لا توجد منتجات بناء مضافة</p>
           <Link
-            href="/store/construction-products/new"
+            href="/store/products/construction/new"
             className="inline-flex items-center px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors"
           >
             <Plus className="w-4 h-4 ml-2" />
@@ -190,7 +190,7 @@ export default function ConstructionDashboardWidget({ storeId }: ConstructionDas
       {/* Quick Actions */}
       <div className="space-y-3">
         <Link
-          href="/store/construction-products"
+          href="/store/products/construction"
           className="w-full flex items-center justify-center px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors"
         >
           <Package className="w-4 h-4 ml-2" />
@@ -199,7 +199,7 @@ export default function ConstructionDashboardWidget({ storeId }: ConstructionDas
         
         <div className="grid grid-cols-2 gap-3">
           <Link
-            href="/store/construction-products/new"
+            href="/store/products/construction/new"
             className="flex items-center justify-center px-3 py-2 bg-white border border-orange-300 text-orange-700 rounded-lg hover:bg-orange-50 transition-colors"
           >
             <Plus className="w-4 h-4 ml-1" />
@@ -219,7 +219,7 @@ export default function ConstructionDashboardWidget({ storeId }: ConstructionDas
         </div>
         
         <Link
-          href="/store/construction-categories"
+          href="/store/categories/construction"
           className="w-full flex items-center justify-center px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors text-sm"
         >
           إدارة الفئات

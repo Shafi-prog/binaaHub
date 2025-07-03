@@ -97,7 +97,7 @@ export default function UnifiedBarcodeScanner({
       // Search construction products if mode allows
       if (mode === 'all' || mode === 'construction') {
         try {
-          const constructionResponse = await fetch(`/api/construction-products?barcode=${encodeURIComponent(barcode)}`);
+          const constructionResponse = await fetch(`/api/products/construction?barcode=${encodeURIComponent(barcode)}`);
           if (constructionResponse.ok) {
             const constructionData = await constructionResponse.json();
             if (constructionData.products && constructionData.products.length > 0) {

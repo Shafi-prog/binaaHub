@@ -59,7 +59,7 @@ export default function StorefrontPage() {
     try {
       setLoading(true);
       // Use unified Medusa API at localhost:3000
-      const response = await fetch('/api/medusa/store/products');
+      const response = await fetch('/api/store/products');
       const data: ProductsResponse = await response.json();
       setProducts(data.products || []);
     } catch (error) {

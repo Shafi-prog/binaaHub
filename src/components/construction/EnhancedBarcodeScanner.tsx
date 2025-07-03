@@ -42,7 +42,7 @@ export default function EnhancedBarcodeScanner({
 
     try {
       // Search in construction products first
-      const constructionResponse = await fetch(`/api/construction-products?barcode=${barcode}`);
+      const constructionResponse = await fetch(`/api/products/construction?barcode=${barcode}`);
       if (constructionResponse.ok) {
         const constructionData = await constructionResponse.json();
         if (constructionData.products && constructionData.products.length > 0) {

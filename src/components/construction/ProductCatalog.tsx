@@ -41,7 +41,7 @@ export const ConstructionProductCatalog: React.FC<ProductCatalogProps> = ({
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch(`/api/construction-categories?language=${language}&include_products_count=true`);
+      const response = await fetch(`/api/categories/construction?language=${language}&include_products_count=true`);
       const data = await response.json();
       if (data.success) {
         setCategories(data.categories);
@@ -63,7 +63,7 @@ export const ConstructionProductCatalog: React.FC<ProductCatalogProps> = ({
         ...(stockFilter && { stock_status: stockFilter })
       });
 
-      const response = await fetch(`/api/construction-products?${queryParams}`);
+      const response = await fetch(`/api/products/construction?${queryParams}`);
       const data = await response.json();
       
       if (data.success) {

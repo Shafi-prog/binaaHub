@@ -7,7 +7,7 @@ import { User } from '@supabase/supabase-js';
 import { verifyAuthWithRetry } from '@/lib/auth-recovery';
 import { Card, LoadingSpinner } from '../../../components/ui';
 import { MapPicker } from '../../../components/maps/MapPicker';
-import UserProfileForm from '@/components/user/UserProfileForm';
+import UserProfileForm from '@/components/users/UserProfileForm';
 import { toast } from 'react-hot-toast';
 
 interface Coordinates {

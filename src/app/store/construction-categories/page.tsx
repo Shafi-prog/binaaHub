@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Plus, Edit, Trash2, ChevronRight, Folder, FolderOpen } from 'lucide-react';
 import { Card, LoadingSpinner } from '@/components/ui';
-import SimpleLayout from '@/components/layouts/SimpleLayout';
+import SimpleLayout from '@/components/layout/SimpleLayout';
 import { verifyTempAuth } from '@/lib/temp-auth';
 import { ConstructionCategory } from '@/types/construction';
 

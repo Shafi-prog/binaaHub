@@ -86,7 +86,7 @@ export default function UserStorefront() {
       setLoading(true);
       
       // Fetch regions
-      const regionsResponse = await fetch('/api/medusa/store/regions');
+      const regionsResponse = await fetch('/api/store/regions');
       const regionsData = await regionsResponse.json();
       setRegions(regionsData.regions || []);
       
@@ -97,7 +97,7 @@ export default function UserStorefront() {
       }
 
       // Fetch products
-      const productsResponse = await fetch('/api/medusa/store/products?limit=50');
+      const productsResponse = await fetch('/api/store/products?limit=50');
       const productsData = await productsResponse.json();
       setProducts(productsData.products || []);
 

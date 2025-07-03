@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Plus, Package, Search, Filter, Scan, Edit, Trash2, Download } from 'lucide-react';
 import { Card, LoadingSpinner } from '@/components/ui';
-import SimpleLayout from '@/components/layouts/SimpleLayout';
+import SimpleLayout from '@/components/layout/SimpleLayout';
 import { verifyTempAuth } from '@/lib/temp-auth';
 import ProductCatalog from '@/components/construction/ProductCatalog';
 import BarcodeScanner from '@/components/barcode/BarcodeScanner';

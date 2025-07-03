@@ -1,6 +1,6 @@
 'use client';
 
-import ArabicLoginForm from '@/components/user/ArabicLoginForm';
+import ArabicLoginForm from '@/components/users/ArabicLoginForm';
 import toast from 'react-hot-toast';
 
 interface LoginData {

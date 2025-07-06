@@ -1,252 +1,149 @@
-'use client';
+'use client'
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  Plus, 
-  Package, 
-  ShoppingCart, 
-  Users, 
-  TrendingUp, 
-  BarChart3,
-  Settings,
-  Eye,
-  DollarSign,
-  ArrowRight
-} from 'lucide-react';
-import toast from 'react-hot-toast';
+import { useStore } from "../../../store/hooks/api/store-management"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Settings, Store, Users, Package, TrendingUp } from "lucide-react"
 
 export default function StoreAdminDashboard() {
-  const router = useRouter();
-  const [stats, setStats] = useState({
-    totalProducts: 0,
-    totalOrders: 0,
-    totalCustomers: 0,
-    totalRevenue: 0,
-    pendingOrders: 0,
-    lowStockItems: 0
-  });
+  const { data: store, isLoading, error } = useStore()
 
-  useEffect(() => {
-    // Mock data - replace with actual API calls
-    setStats({
-      totalProducts: 156,
-      totalOrders: 89,
-      totalCustomers: 234,
-      totalRevenue: 15750,
-      pendingOrders: 12,
-      lowStockItems: 8
-    });
-  }, []);
+  if (isLoading) {
+    return (
+      <div className="p-6 space-y-6">
+        <div className="animate-pulse">
+          <div className="h-8 bg-gray-200 rounded w-1/4 mb-4"></div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="h-32 bg-gray-200 rounded"></div>
+            ))}
+          </div>
+        </div>
+      </div>
+    )
+  }
 
-  const quickActions = [
-    { 
-      title: 'Add Product', 
-      description: 'Add new products to your store',
-      icon: <Package className="w-6 h-6" />,
-      href: '/store/add-product',
-      color: 'bg-blue-500'
-    },
-    { 
-      title: 'View Orders', 
-      description: 'Manage customer orders',
-      icon: <ShoppingCart className="w-6 h-6" />,
-      href: '/store/orders',
-      color: 'bg-green-500'
-    },
-    { 
-      title: 'Analytics', 
-      description: 'View store analytics',
-      icon: <BarChart3 className="w-6 h-6" />,
-      href: '/store/analytics',
-      color: 'bg-purple-500'
-    },
-    { 
-      title: 'Settings', 
-      description: 'Store configuration',
-      icon: <Settings className="w-6 h-6" />,
-      href: '/store/settings',
-      color: 'bg-gray-500'
-    }
-  ];
+  if (error) {
+    return (
+      <div className="p-6">
+        <div className="text-center text-red-600">
+          Error loading store data: {error.message}
+        </div>
+      </div>
+    )
+  }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Store Administration</h1>
-          <p className="text-gray-600">Manage your store operations and analytics</p>
+    <div className="p-6 space-y-6">
+      {/* Store Header */}
+      <div className="flex justify-between items-start">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Store Dashboard</h1>
+          <p className="text-muted-foreground">
+            Manage your store settings and overview
+          </p>
         </div>
+        <Button variant="outline" className="gap-2">
+          <Settings className="h-4 w-4" />
+          Store Settings
+        </Button>
+      </div>
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6 mb-8">
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">Products</p>
-                  <p className="text-2xl font-bold text-gray-900">{stats.totalProducts}</p>
-                </div>
-                <Package className="w-8 h-8 text-blue-500" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">Orders</p>
-                  <p className="text-2xl font-bold text-gray-900">{stats.totalOrders}</p>
-                </div>
-                <ShoppingCart className="w-8 h-8 text-green-500" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">Customers</p>
-                  <p className="text-2xl font-bold text-gray-900">{stats.totalCustomers}</p>
-                </div>
-                <Users className="w-8 h-8 text-purple-500" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">Revenue</p>
-                  <p className="text-2xl font-bold text-gray-900">${stats.totalRevenue}</p>
-                </div>
-                <DollarSign className="w-8 h-8 text-yellow-500" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">Pending</p>
-                  <p className="text-2xl font-bold text-gray-900">{stats.pendingOrders}</p>
-                </div>
-                <Badge variant="secondary" className="bg-orange-100 text-orange-800">
-                  Orders
-                </Badge>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">Low Stock</p>
-                  <p className="text-2xl font-bold text-gray-900">{stats.lowStockItems}</p>
-                </div>
-                <Badge variant="destructive">
-                  Items
-                </Badge>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Quick Actions */}
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle>Quick Actions</CardTitle>
-            <CardDescription>Common administrative tasks</CardDescription>
+      {/* Store Info Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Store Status</CardTitle>
+            <Store className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {quickActions.map((action, index) => (
-                <Card 
-                  key={index} 
-                  className="cursor-pointer hover:shadow-md transition-shadow"
-                  onClick={() => router.push(action.href)}
-                >
-                  <CardContent className="p-6">
-                    <div className={`w-12 h-12 rounded-lg ${action.color} flex items-center justify-center text-white mb-4`}>
-                      {action.icon}
-                    </div>
-                    <h3 className="font-semibold text-gray-900 mb-2">{action.title}</h3>
-                    <p className="text-sm text-gray-600 mb-3">{action.description}</p>
-                    <div className="flex items-center text-blue-600 text-sm font-medium">
-                      <span>Go to</span>
-                      <ArrowRight className="w-4 h-4 ml-1" />
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+            <div className="text-2xl font-bold">
+              <Badge variant={store?.metadata?.status === 'active' ? 'default' : 'secondary'}>
+                {store?.metadata?.status || 'Active'}
+              </Badge>
             </div>
+            <p className="text-xs text-muted-foreground">
+              Store operational status
+            </p>
           </CardContent>
         </Card>
 
-        {/* Recent Activity */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Recent Orders</CardTitle>
-              <CardDescription>Latest customer orders</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {[1, 2, 3].map((order) => (
-                  <div key={order} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                    <div>
-                      <p className="font-medium">Order #{1000 + order}</p>
-                      <p className="text-sm text-gray-600">Customer Name</p>
-                    </div>
-                    <div className="text-right">
-                      <p className="font-medium">${(Math.random() * 200 + 50).toFixed(2)}</p>
-                      <Badge variant="outline">Pending</Badge>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <Button variant="outline" className="w-full mt-4" onClick={() => router.push('/store/orders')}>
-                View All Orders
-              </Button>
-            </CardContent>
-          </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Products</CardTitle>
+            <Package className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">0</div>
+            <p className="text-xs text-muted-foreground">
+              Total products in store
+            </p>
+          </CardContent>
+        </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>Low Stock Alert</CardTitle>
-              <CardDescription>Products running low on inventory</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {['Product A', 'Product B', 'Product C'].map((product, index) => (
-                  <div key={index} className="flex items-center justify-between p-3 bg-red-50 rounded-lg">
-                    <div>
-                      <p className="font-medium">{product}</p>
-                      <p className="text-sm text-gray-600">SKU: PRD-{index + 1}</p>
-                    </div>
-                    <div className="text-right">
-                      <p className="font-medium text-red-600">{Math.floor(Math.random() * 5 + 1)} left</p>
-                      <Badge variant="destructive">Low Stock</Badge>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <Button variant="outline" className="w-full mt-4" onClick={() => router.push('/store/inventory')}>
-                Manage Inventory
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Customers</CardTitle>
+            <Users className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">0</div>
+            <p className="text-xs text-muted-foreground">
+              Registered customers
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Revenue</CardTitle>
+            <TrendingUp className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">$0</div>
+            <p className="text-xs text-muted-foreground">
+              Total revenue this month
+            </p>
+          </CardContent>
+        </Card>
       </div>
+
+      {/* Store Details */}
+      {store && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Store Information</CardTitle>
+            <CardDescription>
+              Basic information about your store
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="text-sm font-medium">Store Name</label>
+                <p className="text-sm text-muted-foreground">{store.name || 'Not set'}</p>
+              </div>
+              <div>
+                <label className="text-sm font-medium">Default Currency</label>
+                <p className="text-sm text-muted-foreground">{store.default_currency_code || 'USD'}</p>
+              </div>
+              <div>
+                <label className="text-sm font-medium">Created</label>
+                <p className="text-sm text-muted-foreground">
+                  {store.created_at ? new Date(store.created_at).toLocaleDateString() : 'Unknown'}
+                </p>
+              </div>
+              <div>
+                <label className="text-sm font-medium">Last Updated</label>
+                <p className="text-sm text-muted-foreground">
+                  {store.updated_at ? new Date(store.updated_at).toLocaleDateString() : 'Unknown'}
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
     </div>
-  );
+  )
 }

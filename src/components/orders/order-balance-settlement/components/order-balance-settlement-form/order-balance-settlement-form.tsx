@@ -93,7 +93,7 @@ export const OrderBalanceSettlementForm = ({
 
             handleSuccess()
           },
-          onError: (error) => {
+          onError: (error: Error) => {
             toast.error(error.message)
           },
         }
@@ -119,7 +119,7 @@ export const OrderBalanceSettlementForm = ({
 
             handleSuccess()
           },
-          onError: (error) => {
+          onError: (error: Error) => {
             toast.error(error.message)
           },
         }

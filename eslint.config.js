@@ -16,9 +16,9 @@ export default [
         ecmaVersion: 2023,
         sourceType: 'module',
         ecmaFeatures: { jsx: true },
-        // Correct path to medusa package tsconfig
+        // Correct path to project tsconfig
         project: [
-          './packages/medusa/tsconfig.json',
+          './tsconfig.json',
         ],
       },
       globals: {
@@ -77,7 +77,7 @@ export default [
       'import/resolver': {
         typescript: {
           project: [
-            './packages/medusa/tsconfig.json',
+            './tsconfig.json',
           ],
         },
       },

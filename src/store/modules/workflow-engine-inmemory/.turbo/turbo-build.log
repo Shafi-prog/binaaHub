@@ -1,0 +1,4 @@
+
+> @medusajs/workflow-engine-inmemory@2.8.4 resolve:aliases
+> tsc --showConfig -p tsconfig.json > tsconfig.resolved.json && tsc-alias -p tsconfig.resolved.json && rimraf tsconfig.resolved.json
+

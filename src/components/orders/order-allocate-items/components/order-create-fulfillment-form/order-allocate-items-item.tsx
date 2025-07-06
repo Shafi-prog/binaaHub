@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
-import { InventoryItemDTO, OrderLineItemDTO } from "@medusajs/types"
+import { InventoryItemDTO } from "@medusajs/types"
+import { OrderLineItemDTO } from "../../../../../lib/order-types"
 import {
   Component,
   ExclamationCircleSolid,
@@ -47,7 +48,7 @@ export function OrderAllocateItemsItem({
   })
 
   const hasInventoryKit =
-    !!variant?.inventory_items.length && variant?.inventory_items.length > 1
+    !!variant?.inventory_items?.length && variant.inventory_items.length > 1
 
   const { availableQuantity, inStockQuantity } = useMemo(() => {
     if (!variant || !locationId) {
@@ -55,7 +56,7 @@ export function OrderAllocateItemsItem({
     }
 
     const locationInventory = inventory[0]?.location_levels?.find(
-      (inv) => inv.location_id === locationId
+      (inv: any) => inv.location_id === locationId
     )
 
     if (!locationInventory) {
@@ -71,8 +72,8 @@ export function OrderAllocateItemsItem({
   const hasQuantityError =
     !hasInventoryKit &&
     availableQuantity &&
-    quantityField[`${item.id}-${item.variant?.inventory[0].id}`] &&
-    quantityField[`${item.id}-${item.variant?.inventory[0].id}`] >
+    quantityField[`${item.id}-${item.variant?.inventory?.[0]?.id}`] &&
+    Number(quantityField[`${item.id}-${item.variant?.inventory?.[0]?.id}`]) >
       availableQuantity
 
   const minValue = 0
@@ -132,13 +133,13 @@ export function OrderAllocateItemsItem({
                     {availableQuantity &&
                       !hasInventoryKit &&
                       quantityField[
-                        `${item.id}-${item.variant?.inventory[0].id}`
+                        `${item.id}-${item.variant?.inventory?.[0]?.id}`
                       ] && (
                         <span className="text-ui-fg-error txt-small ml-1">
                           -
                           {
                             quantityField[
-                              `${item.id}-${item.variant?.inventory[0].id}`
+                              `${item.id}-${item.variant?.inventory?.[0]?.id}`
                             ]
                           }
                         </span>
@@ -171,12 +172,12 @@ export function OrderAllocateItemsItem({
                 name={
                   hasInventoryKit
                     ? `quantity.${item.id}-`
-                    : `quantity.${item.id}-${item.variant?.inventory[0].id}`
+                    : `quantity.${item.id}-${item.variant?.inventory?.[0]?.id}`
                 }
                 rules={{
                   required: !hasInventoryKit,
-                  min: !hasInventoryKit && minValue,
-                  max: maxValue,
+                  min: !hasInventoryKit && minValue ? { value: minValue, message: "Value too low" } : undefined,
+                  max: maxValue ? { value: maxValue, message: "Value too high" } : undefined,
                 }}
                 render={({ field }) => {
                   return (
@@ -193,13 +194,16 @@ export function OrderAllocateItemsItem({
                                 ? null
                                 : Number(e.target.value)
 
-                            onQuantityChange(
-                              item.variant?.inventory[0],
-                              item,
-                              hasInventoryKit,
-                              val,
-                              true
-                            )
+                            const firstInventory = item.variant?.inventory?.[0]
+                            if (firstInventory) {
+                              onQuantityChange(
+                                firstInventory as any,
+                                item,
+                                hasInventoryKit,
+                                val,
+                                true
+                              )
+                            }
                           }}
                         />
                       </Form.Control>
@@ -233,9 +237,9 @@ export function OrderAllocateItemsItem({
       )}
 
       {isOpen &&
-        variant.inventory.map((i, ind) => {
-          const location = i.location_levels.find(
-            (l) => l.location_id === locationId
+        variant?.inventory?.map((i: any, ind: number) => {
+          const location = i.location_levels?.find(
+            (l: any) => l.location_id === locationId
           )
 
           const hasQuantityError =
@@ -252,7 +256,7 @@ export function OrderAllocateItemsItem({
                   <span className="text-ui-fg-subtle">{i.title}</span>
                   <span className="text-ui-fg-muted">
                     {t("orders.allocateItems.requires", {
-                      num: variant.inventory_items[ind].required_quantity,
+                      num: variant.inventory_items?.[ind]?.required_quantity || 1,
                     })}
                   </span>
                 </div>
@@ -333,7 +337,7 @@ export function OrderAllocateItemsItem({
                     />
                     /{" "}
                     {item.quantity *
-                      variant.inventory_items[ind].required_quantity}{" "}
+                      (variant?.inventory_items?.[ind]?.required_quantity || 1)}{" "}
                     {t("fields.qty")}
                   </div>
                 </div>

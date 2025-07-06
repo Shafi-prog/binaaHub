@@ -13,10 +13,10 @@ import { RowSelectionState } from "@tanstack/react-table"
 import { useCallback, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
-import { DataTable } from "../../../../../components/data-table"
-import * as hooks from "../../../../../components/data-table/helpers/sales-channels"
-import { useBatchRemoveSalesChannelsFromApiKey } from "../../../../../hooks/api/api-keys"
-import { useSalesChannels } from "../../../../../hooks/api/sales-channels"
+import { DataTable } from "../../../data-table"
+import * as hooks from "../../../data-table/helpers/sales-channels"
+import { useBatchRemoveSalesChannelsFromApiKey } from "../../../../hooks/api/api-keys"
+import { useSalesChannels } from "../../../../hooks/api/sales-channels"
 
 type ApiKeySalesChannelSectionProps = {
   apiKey: AdminApiKeyResponse["api_key"]
@@ -36,12 +36,15 @@ export const ApiKeySalesChannelSection = ({
     prefix: PREFIX,
   })
 
-  const { sales_channels, count, isPending } = useSalesChannels(
+  const { data, isPending } = useSalesChannels(
     { ...searchParams, publishable_key_id: apiKey.id },
     {
       placeholderData: keepPreviousData,
     }
   )
+
+  const sales_channels = data?.sales_channels || []
+  const count = data?.count || 0
 
   const columns = useColumns(apiKey.id)
   const filters = hooks.useSalesChannelTableFilters()
@@ -85,7 +88,7 @@ const useColumns = (id: string) => {
 
   const base = hooks.useSalesChannelTableColumns()
 
-  const { mutateAsync } = useBatchRemoveSalesChannelsFromApiKey(id)
+  const { mutateAsync } = useBatchRemoveSalesChannelsFromApiKey()
 
   const handleDelete = useCallback(
     async (salesChannel: HttpTypes.AdminSalesChannel) => {
@@ -102,7 +105,7 @@ const useColumns = (id: string) => {
         return
       }
 
-      await mutateAsync([salesChannel.id], {
+      await mutateAsync({ apiKeyId: id, salesChannelIds: [salesChannel.id] }, {
         onSuccess: () => {
           toast.success(
             t("apiKeyManagement.removeSalesChannel.successToast", {
@@ -156,7 +159,7 @@ const useCommands = (
   const { t } = useTranslation()
   const prompt = usePrompt()
 
-  const { mutateAsync } = useBatchRemoveSalesChannelsFromApiKey(id)
+  const { mutateAsync } = useBatchRemoveSalesChannelsFromApiKey()
 
   const handleRemove = useCallback(
     async (rowSelection: DataTableRowSelectionState) => {
@@ -175,7 +178,7 @@ const useCommands = (
         return
       }
 
-      await mutateAsync(keys, {
+      await mutateAsync({ apiKeyId: id, salesChannelIds: keys }, {
         onSuccess: () => {
           toast.success(
             t("apiKeyManagement.removeSalesChannel.successToastBatch", {

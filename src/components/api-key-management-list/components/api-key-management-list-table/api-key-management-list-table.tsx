@@ -2,9 +2,9 @@ import { Button, Container, Heading, Text } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
-import { _DataTable } from "../../../../../components/table/data-table"
-import { useApiKeys } from "../../../../../hooks/api/api-keys"
-import { useDataTable } from "../../../../../hooks/use-data-table"
+import { DataTable } from "../../../data-table"
+import { useApiKeys } from "../../../../hooks/api/api-keys"
+import { useDataTable } from "../../../../hooks/use-data-table"
 import { useApiKeyManagementTableColumns } from "./use-api-key-management-table-columns"
 import { useApiKeyManagementTableFilters } from "./use-api-key-management-table-filters"
 import { useApiKeyManagementTableQuery } from "./use-api-key-management-table-query"
@@ -29,9 +29,12 @@ export const ApiKeyManagementListTable = ({
       "id,title,redacted,token,type,created_at,updated_at,revoked_at,last_used_at,created_by,revoked_by",
   }
 
-  const { api_keys, count, isLoading, isError, error } = useApiKeys(query, {
+  const { data, isLoading, isError, error } = useApiKeys(query, {
     placeholderData: keepPreviousData,
   })
+
+  const api_keys = data?.api_keys || []
+  const count = data?.count || 0
 
   const filters = useApiKeyManagementTableFilters()
   const columns = useApiKeyManagementTableColumns()
@@ -41,7 +44,7 @@ export const ApiKeyManagementListTable = ({
     columns,
     count,
     enablePagination: true,
-    getRowId: (row) => row.id,
+    getRowId: (row: any) => row.id,
     pageSize: PAGE_SIZE,
   })
 
@@ -70,23 +73,16 @@ export const ApiKeyManagementListTable = ({
           </Button>
         </Link>
       </div>
-      <_DataTable
-        table={table}
+      <DataTable
+        data={api_keys || []}
         filters={filters}
-        columns={columns}
-        count={count}
-        pageSize={PAGE_SIZE}
-        orderBy={[
-          { key: "title", label: t("fields.title") },
-          { key: "created_at", label: t("fields.createdAt") },
-          { key: "updated_at", label: t("fields.updatedAt") },
-          { key: "revoked_at", label: t("fields.revokedAt") },
-        ]}
-        navigateTo={(row) => row.id}
-        pagination
-        search
-        queryObject={raw}
-        isLoading={isLoading}
+        columns={columns as any}
+        rowCount={count}
+        getRowId={(row: any) => row.id}
+        enablePagination
+        enableSearch
+        heading={t("api-keys")}
+        rowHref={(row: any) => `/settings/api-key-management/${row.id}`}
       />
     </Container>
   )

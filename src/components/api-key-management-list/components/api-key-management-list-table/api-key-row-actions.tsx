@@ -2,19 +2,19 @@ import { PencilSquare, SquareTwoStack, Trash, XCircle } from "@medusajs/icons"
 import { AdminApiKeyResponse } from "@medusajs/types"
 import { toast, usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
-import { ActionMenu } from "../../../../../components/common/action-menu"
+import { ActionMenu } from "../../../common/action-menu"
 import {
   useDeleteApiKey,
   useRevokeApiKey,
-} from "../../../../../hooks/api/api-keys"
+} from "../../../../hooks/api/api-keys"
 
 export const ApiKeyRowActions = ({
   apiKey,
 }: {
   apiKey: AdminApiKeyResponse["api_key"]
 }) => {
-  const { mutateAsync: revokeAsync } = useRevokeApiKey(apiKey.id)
-  const { mutateAsync: deleteAsync } = useDeleteApiKey(apiKey.id)
+  const { mutateAsync: revokeAsync } = useRevokeApiKey()
+  const { mutateAsync: deleteAsync } = useDeleteApiKey()
 
   const { t } = useTranslation()
   const prompt = usePrompt()
@@ -33,7 +33,7 @@ export const ApiKeyRowActions = ({
       return
     }
 
-    await deleteAsync(undefined, {
+    await deleteAsync(apiKey.id, {
       onSuccess: () => {
         toast.success(
           t("apiKeyManagement.delete.successToast", {
@@ -61,7 +61,7 @@ export const ApiKeyRowActions = ({
       return
     }
 
-    await revokeAsync(undefined, {
+    await revokeAsync(apiKey.id, {
       onSuccess: () => {
         toast.success(
           t("apiKeyManagement.revoke.successToast", {

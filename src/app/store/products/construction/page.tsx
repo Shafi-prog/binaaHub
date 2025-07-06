@@ -130,7 +130,7 @@ export default function ConstructionProductsPage() {
 
   const filteredProducts = products.filter(product => {
     const matchesSearch = searchTerm === '' || 
-      product.name_ar.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.name_ar?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       product.barcode?.includes(searchTerm) ||
       product.category_name?.toLowerCase().includes(searchTerm.toLowerCase());
     

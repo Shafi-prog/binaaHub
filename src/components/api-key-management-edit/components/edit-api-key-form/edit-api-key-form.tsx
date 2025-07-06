@@ -5,10 +5,10 @@ import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
 import { ApiKeyDTO } from "@medusajs/types"
-import { Form } from "../../../../../components/common/form"
-import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
-import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
-import { useUpdateApiKey } from "../../../../../hooks/api/api-keys"
+import { Form } from "../../../common/form"
+import { RouteDrawer, useRouteModal } from "../../../modals"
+import { KeyboundForm } from "../../../utilities/keybound-form"
+import { useUpdateApiKey } from "../../../../hooks/api/api-keys"
 
 type EditApiKeyFormProps = {
   apiKey: ApiKeyDTO

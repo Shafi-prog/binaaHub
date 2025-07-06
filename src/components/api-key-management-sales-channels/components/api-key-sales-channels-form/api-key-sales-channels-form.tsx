@@ -15,17 +15,17 @@ import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
-import { ConditionalTooltip } from "../../../../../components/common/conditional-tooltip"
-import { DataTable } from "../../../../../components/data-table"
-import * as hooks from "../../../../../components/data-table/helpers/sales-channels"
+import { ConditionalTooltip } from "../../../common/conditional-tooltip"
+import { DataTable } from "../../../data-table"
+import * as hooks from "../../../data-table/helpers/sales-channels"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/modals"
-import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
-import { VisuallyHidden } from "../../../../../components/utilities/visually-hidden"
-import { useBatchAddSalesChannelsToApiKey } from "../../../../../hooks/api/api-keys"
-import { useSalesChannels } from "../../../../../hooks/api/sales-channels"
+} from "../../../modals"
+import { KeyboundForm } from "../../../utilities/keybound-form"
+import { VisuallyHidden } from "../../../utilities/visually-hidden"
+import { useBatchAddSalesChannelsToApiKey } from "../../../../hooks/api/api-keys"
+import { useSalesChannels } from "../../../../hooks/api/sales-channels"
 
 type ApiKeySalesChannelFormProps = {
   apiKey: string
@@ -88,7 +88,7 @@ export const ApiKeySalesChannelsForm = ({
   }
 
   const handleSubmit = form.handleSubmit(async (values) => {
-    await mutateAsync(values.sales_channel_ids, {
+    await mutateAsync({ sales_channel_ids: values.sales_channel_ids }, {
       onSuccess: () => {
         toast.success(
           t("apiKeyManagement.salesChannels.successToast", {
@@ -98,7 +98,7 @@ export const ApiKeySalesChannelsForm = ({
 
         handleSuccess()
       },
-      onError: (err) => {
+      onError: (err: Error) => {
         toast.error(err.message)
       },
     })

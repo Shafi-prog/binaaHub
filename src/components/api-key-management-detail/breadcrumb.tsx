@@ -1,7 +1,7 @@
 import { HttpTypes } from "@medusajs/types"
 import { UIMatch } from "react-router-dom"
 
-import { useApiKey } from "../../../hooks/api"
+import { useApiKey } from "../../hooks/api/api-keys"
 
 type ApiKeyManagementDetailBreadcrumbProps =
   UIMatch<HttpTypes.AdminApiKeyResponse>

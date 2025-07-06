@@ -15,15 +15,15 @@ import { useNavigate } from "react-router-dom"
 import {
   Action,
   ActionMenu,
-} from "../../../../../components/common/action-menu"
-import { Skeleton } from "../../../../../components/common/skeleton"
-import { UserLink } from "../../../../../components/common/user-link"
+} from "../../../common/action-menu"
+import { Skeleton } from "../../../common/skeleton"
+import { UserLink } from "../../../common/user-link"
 import {
   useDeleteApiKey,
   useRevokeApiKey,
-} from "../../../../../hooks/api/api-keys"
-import { useUser } from "../../../../../hooks/api/users"
-import { useDate } from "../../../../../hooks/use-date"
+} from "../../../../hooks/api/api-keys"
+import { useUser } from "../../../../hooks/api/users"
+import { useDate } from "../../../../hooks/use-date"
 import {
   getApiKeyStatusProps,
   getApiKeyTypeProps,
@@ -40,8 +40,8 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
   const prompt = usePrompt()
   const { getFullDate } = useDate()
 
-  const { mutateAsync: revokeAsync } = useRevokeApiKey(apiKey.id)
-  const { mutateAsync: deleteAsync } = useDeleteApiKey(apiKey.id)
+  const { mutateAsync: revokeAsync } = useRevokeApiKey()
+  const { mutateAsync: deleteAsync } = useDeleteApiKey()
 
   const handleDelete = async () => {
     const res = await prompt({
@@ -57,7 +57,7 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
       return
     }
 
-    await deleteAsync(undefined, {
+    await deleteAsync(apiKey.id, {
       onSuccess: () => {
         toast.success(
           t("apiKeyManagement.delete.successToast", {
@@ -86,7 +86,7 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
       return
     }
 
-    await revokeAsync(undefined, {
+    await revokeAsync(apiKey.id, {
       onSuccess: () => {
         toast.success(
           t("apiKeyManagement.revoke.successToast", {

@@ -1,18 +1,36 @@
+import { createDataTableFilterHelper } from "@medusajs/ui"
+import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
-import { Filter } from "../../../../../components/table/data-table"
+import { useDataTableDateFilters } from "../../../data-table/helpers/general/use-data-table-date-filters"
+
+const filterHelper = createDataTableFilterHelper<any>()
 
 export const useApiKeyManagementTableFilters = () => {
   const { t } = useTranslation()
+  const dateFilters = useDataTableDateFilters()
 
-  let filters: Filter[] = []
-
-  const dateFilters: Filter[] = [
-    { label: t("fields.createdAt"), key: "created_at", type: "date" },
-    { label: t("fields.updatedAt"), key: "updated_at", type: "date" },
-    { label: t("fields.revokedAt"), key: "revoked_at", type: "date" },
-  ]
-
-  filters = [...filters, ...dateFilters]
-
-  return filters
+  return useMemo(
+    () => [
+      filterHelper.accessor("type", {
+        label: t("fields.type"),
+        type: "radio",
+        options: [
+          {
+            label: t("general.all"),
+            value: "",
+          },
+          {
+            label: "Publishable",
+            value: "publishable",
+          },
+          {
+            label: "Secret", 
+            value: "secret",
+          },
+        ],
+      }),
+      ...dateFilters,
+    ],
+    [t, dateFilters]
+  )
 }

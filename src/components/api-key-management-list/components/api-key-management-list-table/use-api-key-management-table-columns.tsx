@@ -4,9 +4,9 @@ import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 
-import { DateCell } from "../../../../../components/table/table-cells/common/date-cell"
-import { StatusCell } from "../../../../../components/table/table-cells/common/status-cell"
-import { TextCell } from "../../../../../components/table/table-cells/common/text-cell"
+import { DateCell } from "../../../table/table-cells/common/date-cell"
+import { StatusCell } from "../../../table/table-cells/common/status-cell"
+import { TextCell } from "../../../table/table-cells/common/text-cell"
 import {
   getApiKeyStatusProps,
   getApiKeyTypeProps,

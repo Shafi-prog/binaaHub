@@ -352,7 +352,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
               {language === 'ar' ? 'المخزون:' : 'Stock:'}
             </span>
             <span className="font-medium">
-              {product.current_stock} {product.unit_of_measure}
+              {product.current_stock || 0} {product.unit_of_measure}
             </span>
           </div>
           
@@ -364,7 +364,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
                 product.stock_status === 'low' ? 'bg-yellow-500' : 'bg-green-500'
               }`}
               style={{
-                width: `${Math.min((product.current_stock / (product.minimum_stock * 2)) * 100, 100)}%`
+                width: `${Math.min(((product.current_stock || 0) / ((product.minimum_stock || 1) * 2)) * 100, 100)}%`
               }}
             />
           </div>
@@ -376,7 +376,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             {language === 'ar' ? 'السعر:' : 'Price:'}
           </span>
           <span className="text-lg font-bold text-blue-600">
-            {formatPrice(product.selling_price, product.currency)}
+            {formatPrice(product.selling_price || 0, product.currency || 'SAR')}
           </span>
         </div>
 

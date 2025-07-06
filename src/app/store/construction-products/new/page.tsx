@@ -18,6 +18,7 @@ export default function NewConstructionProductPage() {
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
   const [showScanner, setShowScanner] = useState(false);
   const [formData, setFormData] = useState<ProductFormData>({
+    name: '',
     name_ar: '',
     category_id: '',
     price: 0,
@@ -89,7 +90,7 @@ export default function NewConstructionProductPage() {
   const validateForm = () => {
     const newErrors: any = {};
 
-    if (!formData.name_ar.trim()) {
+    if (!formData.name_ar?.trim()) {
       newErrors.name_ar = 'اسم المنتج مطلوب';
     }
 
@@ -97,19 +98,19 @@ export default function NewConstructionProductPage() {
       newErrors.category_id = 'فئة المنتج مطلوبة';
     }
 
-    if (formData.price <= 0) {
+    if ((formData.price || 0) <= 0) {
       newErrors.price = 'السعر يجب أن يكون أكبر من صفر';
     }
 
-    if (formData.cost < 0) {
+    if ((formData.cost || 0) < 0) {
       newErrors.cost = 'التكلفة لا يمكن أن تكون سالبة';
     }
 
-    if (formData.stock_quantity < 0) {
+    if ((formData.stock_quantity || 0) < 0) {
       newErrors.stock_quantity = 'كمية المخزون لا يمكن أن تكون سالبة';
     }
 
-    if (formData.min_stock_level < 0) {
+    if ((formData.min_stock_level || 0) < 0) {
       newErrors.min_stock_level = 'الحد الأدنى للمخزون لا يمكن أن يكون سالباً';
     }
 

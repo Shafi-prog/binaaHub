@@ -70,8 +70,8 @@ export const AddClaimItemsTable = ({
     if (q) {
       results = results.filter((i) => {
         return (
-          i.product_title.toLowerCase().includes(q.toLowerCase()) ||
-          i.variant_title.toLowerCase().includes(q.toLowerCase()) ||
+          (i.product_title?.toLowerCase() || '').includes(q.toLowerCase()) ||
+          (i.variant_title?.toLowerCase() || '').includes(q.toLowerCase()) ||
           i.variant_sku?.toLowerCase().includes(q.toLowerCase())
         )
       })
@@ -121,10 +121,10 @@ export const AddClaimItemsTable = ({
     columns: columns,
     count: queriedItems.length,
     enablePagination: true,
-    getRowId: (row) => row.id,
+    getRowId: (row: AdminOrderLineItem) => row.id,
     pageSize: PAGE_SIZE,
-    enableRowSelection: (row) => {
-      return getReturnableQuantity(row.original) > 0
+    enableRowSelection: (row: any) => {
+      return getReturnableQuantity(row.original || row) > 0
     },
     rowSelection: {
       state: rowSelection,
@@ -182,11 +182,11 @@ const sortItems = (
       aValue = a.variant_sku
       bValue = b.variant_sku
     } else if (field === "returnable_quantity") {
-      aValue = a.quantity - (a.returned_quantity || 0)
-      bValue = b.quantity - (b.returned_quantity || 0)
+      aValue = a.quantity - ((a as any).returned_quantity || 0)
+      bValue = b.quantity - ((b as any).returned_quantity || 0)
     } else if (field === "refundable_amount") {
-      aValue = a.refundable || 0
-      bValue = b.refundable || 0
+      aValue = (a as any).refundable || 0
+      bValue = (b as any).refundable || 0
     }
 
     if (aValue < bValue) {
@@ -250,32 +250,35 @@ const filterByNumber = (
       : { ...defaultOperators, eq: value }
 
   return items.filter((i) => {
-    const returnableQuantity = i.quantity - (i.returned_quantity || 0)
-    const refundableAmount = getStylizedAmount(i.refundable || 0, currency_code)
+    const returnableQuantity = i.quantity - ((i as any).returned_quantity || 0)
+    const refundableAmount = getStylizedAmount((i as any).refundable || 0, currency_code)
 
     const itemValue =
       field === "returnable_quantity" ? returnableQuantity : refundableAmount
 
+    // Convert to number for comparison
+    const numericValue = typeof itemValue === 'string' ? parseFloat(itemValue.replace(/[^0-9.-]/g, '')) : itemValue
+
     if (eq) {
-      return itemValue === eq
+      return numericValue === Number(eq)
     }
 
     let isValid = true
 
     if (gt) {
-      isValid = isValid && itemValue > gt
+      isValid = isValid && numericValue > Number(gt)
     }
 
     if (gte) {
-      isValid = isValid && itemValue >= gte
+      isValid = isValid && numericValue >= Number(gte)
     }
 
     if (lt) {
-      isValid = isValid && itemValue < lt
+      isValid = isValid && numericValue < Number(lt)
     }
 
     if (lte) {
-      isValid = isValid && itemValue <= lte
+      isValid = isValid && numericValue <= Number(lte)
     }
 
     return isValid

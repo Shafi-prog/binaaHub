@@ -93,10 +93,10 @@ export default function ConstructionCategoriesPage() {
 
   const openEditForm = (category: ConstructionCategory) => {
     setFormData({
-      name_ar: category.name_ar,
+      name_ar: category.name_ar || '',
       name_en: category.name_en || '',
       parent_id: category.parent_id || '',
-      sort_order: category.sort_order,
+      sort_order: category.sort_order || 0,
       is_active: category.is_active,
     });
     setEditingCategory(category);

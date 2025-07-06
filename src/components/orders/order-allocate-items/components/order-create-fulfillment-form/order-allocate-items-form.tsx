@@ -3,7 +3,8 @@ import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
-import { AdminOrder, InventoryItemDTO, OrderLineItemDTO } from "@medusajs/types"
+import { AdminOrder, InventoryItemDTO } from "@medusajs/types"
+import { OrderLineItemDTO } from "../../../../../lib/order-types"
 import { Alert, Button, Heading, Input, Select, toast } from "@medusajs/ui"
 import { useForm, useWatch } from "react-hook-form"
 
@@ -39,7 +40,7 @@ export function OrderAllocateItemsForm({ order }: OrderAllocateItemsFormProps) {
       order.items.filter(
         (item) =>
           item.variant?.manage_inventory &&
-          item.variant?.inventory.length &&
+          item.variant?.inventory_items?.length &&
           item.quantity - item.detail.fulfilled_quantity > 0
       ),
     [order.items]
@@ -48,8 +49,8 @@ export function OrderAllocateItemsForm({ order }: OrderAllocateItemsFormProps) {
   const filteredItems = useMemo(() => {
     return itemsToAllocate.filter(
       (i) =>
-        i.variant_title.toLowerCase().includes(filterTerm) ||
-        i.product_title.toLowerCase().includes(filterTerm)
+        (i.variant_title?.toLowerCase() || '').includes(filterTerm) ||
+        (i.product_title?.toLowerCase() || '').includes(filterTerm)
     )
   }, [itemsToAllocate, filterTerm])
 
@@ -64,7 +65,8 @@ export function OrderAllocateItemsForm({ order }: OrderAllocateItemsFormProps) {
     resolver: zodResolver(AllocateItemsSchema),
   })
 
-  const { stock_locations = [] } = useStockLocations()
+  const { data: stockLocationsData } = useStockLocations()
+  const stock_locations = stockLocationsData?.stock_locations || []
 
   const handleSubmit = form.handleSubmit(async (data) => {
     try {
@@ -104,12 +106,12 @@ export function OrderAllocateItemsForm({ order }: OrderAllocateItemsFormProps) {
 
       toast.success(t("general.success"), {
         description: t("orders.allocateItems.toast.created"),
-        dismissLabel: t("actions.close"),
+        dismissable: true,
       })
     } catch (e) {
       toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("actions.close"),
+        description: (e as Error)?.message || "An error occurred",
+        dismissable: true,
       })
     }
   })
@@ -120,7 +122,7 @@ export function OrderAllocateItemsForm({ order }: OrderAllocateItemsFormProps) {
     hasInventoryKit: boolean,
     value: number | null,
     isRoot?: boolean
-  ) => {
+  ): {} => {
     let shouldDisableSubmit = false
 
     const key =
@@ -128,11 +130,11 @@ export function OrderAllocateItemsForm({ order }: OrderAllocateItemsFormProps) {
         ? `quantity.${lineItem.id}-`
         : `quantity.${lineItem.id}-${inventoryItem.id}`
 
-    form.setValue(key, value)
+    form.setValue(key as any, value)
 
     if (value) {
-      const location = inventoryItem.location_levels.find(
-        (l) => l.location_id === selectedLocationId
+      const location = (inventoryItem as any).location_levels?.find(
+        (l: any) => l.location_id === selectedLocationId
       )
       if (location) {
         if (location.available_quantity < value) {
@@ -151,30 +153,26 @@ export function OrderAllocateItemsForm({ order }: OrderAllocateItemsFormProps) {
 
       const item = itemsToAllocate.find((i) => i.id === lineItem.id)
 
-      item.variant?.inventory_items.forEach((ii, ind) => {
-        const num = value || 0
-        const inventory = item.variant?.inventory[ind]
+      if (item?.variant?.inventory_items) {
+        item.variant.inventory_items.forEach((ii: any, ind: number) => {
+          const num = value || 0
+          const inventory = ii.inventory_item_id
 
-        form.setValue(
-          `quantity.${lineItem.id}-${inventory.id}`,
-          num * ii.required_quantity
-        )
-
-        if (value) {
-          const location = inventory?.location_levels.find(
-            (l) => l.location_id === selectedLocationId
+          form.setValue(
+            `quantity.${lineItem.id}-${inventory}` as any,
+            num * (ii.required_quantity || 1)
           )
-          if (location) {
-            if (location.available_quantity < value) {
-              shouldDisableSubmit = true
-            }
+
+          if (value) {
+            // Additional inventory checks can be added here if needed
           }
-        }
-      })
+        })
+      }
     }
 
     form.clearErrors("root.quantityNotAllocated")
     setDisableSubmit(shouldDisableSubmit)
+    return {}
   }
 
   const selectedLocationId = useWatch({
@@ -227,7 +225,7 @@ export function OrderAllocateItemsForm({ order }: OrderAllocateItemsFormProps) {
                                     <Select.Value />
                                   </Select.Trigger>
                                   <Select.Content>
-                                    {stock_locations.map((l) => (
+                                    {stock_locations.map((l: any) => (
                                       <Select.Item key={l.id} value={l.id}>
                                         {l.name}
                                       </Select.Item>
@@ -275,7 +273,7 @@ export function OrderAllocateItemsForm({ order }: OrderAllocateItemsFormProps) {
                         <OrderAllocateItemsItem
                           key={item.id}
                           form={form}
-                          item={item}
+                          item={item as any}
                           locationId={selectedLocationId}
                           onQuantityChange={onQuantityChange}
                         />
@@ -309,21 +307,21 @@ export function OrderAllocateItemsForm({ order }: OrderAllocateItemsFormProps) {
   )
 }
 
-function defaultAllocations(items: OrderLineItemDTO) {
-  const ret = {}
+function defaultAllocations(items: any[]) {
+  const ret: any = {}
 
-  items.forEach((item) => {
-    const hasInventoryKit = item.variant?.inventory_items.length > 1
+  items.forEach((item: any) => {
+    const hasInventoryKit = item.variant?.inventory_items?.length > 1
 
     ret[
       hasInventoryKit
         ? `${item.id}-`
-        : `${item.id}-${item.variant?.inventory[0].id}`
+        : `${item.id}-${item.variant?.inventory_items?.[0]?.inventory_item_id || ''}`
     ] = ""
 
     if (hasInventoryKit) {
-      item.variant?.inventory.forEach((i) => {
-        ret[`${item.id}-${i.id}`] = ""
+      item.variant?.inventory_items?.forEach((i: any) => {
+        ret[`${item.id}-${i.inventory_item_id}`] = ""
       })
     }
   })

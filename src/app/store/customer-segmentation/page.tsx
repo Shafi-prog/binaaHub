@@ -314,8 +314,8 @@ export default function CustomerSegmentation() {
                 Customers with high lifetime value and frequent purchases
               </p>
               <div className="text-xs">
-                <div>• Total spent > $1,000</div>
-                <div>• Orders > 5</div>
+                <div>• Total spent {'>'}  $1,000</div>
+                <div>• Orders {'>'} 5</div>
                 <div>• Last order within 6 months</div>
               </div>
             </div>
@@ -326,8 +326,8 @@ export default function CustomerSegmentation() {
                 Customers who added items but didn't complete purchase
               </p>
               <div className="text-xs">
-                <div>• Cart value > $50</div>
-                <div>• Last activity > 24 hours</div>
+                <div>• Cart value {'>'} $50</div>
+                <div>• Last activity {'>'} 24 hours</div>
                 <div>• No completed order</div>
               </div>
             </div>
@@ -338,9 +338,9 @@ export default function CustomerSegmentation() {
                 Previously active customers needing re-engagement
               </p>
               <div className="text-xs">
-                <div>• Previous orders > 2</div>
-                <div>• Last order > 6 months ago</div>
-                <div>• Email engagement > 0</div>
+                <div>• Previous orders {'>'} 2</div>
+                <div>• Last order {'>'} 6 months ago</div>
+                <div>• Email engagement {'>'} 0</div>
               </div>
             </div>
           </div>

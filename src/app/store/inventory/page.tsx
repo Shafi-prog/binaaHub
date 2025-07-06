@@ -1,18 +1,21 @@
-import { SingleColumnPage } from "../../../components/layout/pages"
-import { useExtension } from "../../../providers/extension-provider"
-import { InventoryListTable } from "./components/inventory-list-table"
+'use client';
 
-export const InventoryItemListTable = () => {
-  const { getWidgets } = useExtension()
+import React from 'react';
+import EnhancedInventoryManagement from '@/components/store/inventory/EnhancedInventoryManagement';
 
+export default function StoreInventoryPage() {
   return (
-    <SingleColumnPage
-      widgets={{
-        after: getWidgets("inventory_item.list.after"),
-        before: getWidgets("inventory_item.list.before"),
-      }}
-    >
-      <InventoryListTable />
-    </SingleColumnPage>
-  )
+    <div className="min-h-screen bg-gray-50">
+      <div className="bg-white shadow-sm border-b">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="py-4">
+            <h1 className="text-2xl font-bold text-gray-900">إدارة المخزون المتقدمة</h1>
+            <p className="text-gray-600">نظام إدارة المخزون الشامل مع التتبع المباشر والتحليلات</p>
+          </div>
+        </div>
+      </div>
+      
+      <EnhancedInventoryManagement />
+    </div>
+  );
 }

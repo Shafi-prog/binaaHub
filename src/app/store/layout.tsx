@@ -16,7 +16,14 @@ import {
   Search,
   Heart,
   Menu,
-  X
+  X,
+  Calculator,
+  Package2,
+  CreditCard,
+  TrendingUp,
+  Warehouse,
+  Shield,
+  Truck
 } from 'lucide-react';
 
 export default function StoreLayout({
@@ -41,10 +48,22 @@ export default function StoreLayout({
   const storeAdminNavItems = [
     { href: '/store/dashboard', label: 'Dashboard', icon: BarChart3 },
     { href: '/store/admin', label: 'Admin Panel', icon: Store },
+    { href: '/store/pos', label: 'Point of Sale', icon: CreditCard },
+    { href: '/store/pos/offline', label: 'Offline POS ✅', icon: Package2 },
     { href: '/store/products', label: 'Products', icon: Package },
+    { href: '/store/inventory', label: 'Inventory', icon: Warehouse },
     { href: '/store/orders', label: 'Orders', icon: ShoppingCart },
+    { href: '/store/delivery', label: 'Delivery', icon: Truck },
     { href: '/store/customers', label: 'Customers', icon: Users },
-    { href: '/store/analytics', label: 'Analytics', icon: BarChart3 },
+    { href: '/store/permissions', label: 'Permissions', icon: Shield },
+    { href: '/store/analytics', label: 'Market Analytics ✅', icon: TrendingUp },
+    { href: '/store/reports', label: 'Advanced Reports ✅', icon: BarChart3 },
+    { href: '/store/search', label: 'AI Search ✅', icon: Search },
+    { href: '/store/notifications', label: 'Notifications ✅', icon: Settings },
+    // Phase 2 Integration Features ✅
+    { href: '/store/payments', label: 'Payment Gateway ✅', icon: CreditCard },
+    { href: '/store/shipping', label: 'Shipping & Logistics ✅', icon: Truck },
+    { href: '/store/erp', label: 'ERP Integration ✅', icon: Package },
     { href: '/store/settings', label: 'Settings', icon: Settings },
   ];
 

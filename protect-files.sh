@@ -10,6 +10,7 @@ attrib +R "PLATFORM_FEATURES_ROADMAP.md"
 attrib +R "UNIFIED_PLATFORM_COMPLETE.md" 
 attrib +R "README.md"
 attrib +R "package.json"
+attrib +R "platform-progress\PLATFORM_FEATURES_ROADMAP.md"
 
 # Add git hooks to prevent accidental deletion
 cat > .git/hooks/pre-commit << 'EOF'
@@ -21,6 +22,7 @@ critical_files=(
     "UNIFIED_PLATFORM_COMPLETE.md"
     "README.md"
     "package.json"
+    "platform-progress/PLATFORM_FEATURES_ROADMAP.md"
 )
 
 for file in "${critical_files[@]}"; do
@@ -42,4 +44,5 @@ echo "   - PLATFORM_FEATURES_ROADMAP.md (read-only)"
 echo "   - UNIFIED_PLATFORM_COMPLETE.md (read-only)"
 echo "   - README.md (read-only)"
 echo "   - package.json (read-only)"
+echo "   - platform-progress/PLATFORM_FEATURES_ROADMAP.md (read-only)"
 echo "🔒 Git hooks added to prevent accidental deletion"

@@ -67,8 +67,10 @@
     "@medusajs/framework": "^2.8.4",
     "@medusajs/js-sdk": "^2.8.4",
     "@medusajs/medusa": "^2.8.4",
-    "@medusajs/medusa-js": "^6.1.10",
     "@medusajs/types": "^2.8.4",
+    "@mikro-orm/core": "^6.4.16",
+    "@mikro-orm/migrations": "^6.4.16",
+    "@mikro-orm/postgresql": "^6.4.16",
     "@radix-ui/react-dialog": "^1.1.14",
     "@radix-ui/react-switch": "^1.2.5",
     "@react-google-maps/api": "^2.20.6",
@@ -82,6 +84,7 @@
     "@zxing/browser": "^0.1.5",
     "@zxing/library": "^0.21.3",
     "autoprefixer": "^10.4.21",
+    "awilix": "^12.0.5",
     "axios": "^1.9.0",
     "bcrypt": "^6.0.0",
     "bcryptjs": "^3.0.2",
@@ -138,7 +141,7 @@
     "@babel/preset-typescript": "^7.27.1",
     "@next/eslint-plugin-next": "^15.3.1",
     "@supabase/supabase-js": "^2.50.0",
-    "@swc/core": "^1.11.29",
+    "@swc/core": "1.5.7",
     "@swc/helpers": "^0.5.17",
     "@testing-library/jest-dom": "^6.4.2",
     "@testing-library/react": "^15.0.7",
@@ -185,5 +188,8 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3",
     "webpack": "^5.99.7"
+  },
+  "overrides": {
+    "@swc/core": "1.5.7"
   }
 }

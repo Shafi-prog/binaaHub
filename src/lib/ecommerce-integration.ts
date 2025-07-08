@@ -1,6 +1,6 @@
 // @ts-nocheck
 // E-commerce integration utilities for BINNA platform
-import Medusa from '@medusajs/medusa-js';
+import Medusa from '@medusajs/js-sdk';
 import { createClient } from '@supabase/supabase-js'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!

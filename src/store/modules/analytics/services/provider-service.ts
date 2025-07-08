@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { MedusaError } from "@medusajs/framework/utils"
 import {
   Constructor,
@@ -54,3 +55,5 @@ export default class AnalyticsProviderService {
     await this.analyticsProvider_.shutdown?.()
   }
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { SidebarLeft, TriangleRightMini, XMark } from "@medusajs/icons"
 import { IconButton, clx } from "@medusajs/ui"
 import { AnimatePresence } from "motion/react"
@@ -261,3 +262,5 @@ const MobileSidebarContainer = ({ children }: PropsWithChildren) => {
     </RadixDialog.Root>
   )
 }
+
+

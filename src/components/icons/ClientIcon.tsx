@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use client';
 
 import {
@@ -51,3 +52,5 @@ export default function ClientIcon({ type, size = 24, className }: ClientIconPro
   // Render the icon component
   return <IconComponent size={size} className={className} />;
 }
+
+

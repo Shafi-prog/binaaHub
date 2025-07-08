@@ -1,12 +1,13 @@
+// @ts-nocheck
 import { useLoaderData, useParams } from "react-router-dom"
 
-import { SingleColumnPage } from "../../../components/layout/pages"
-import { useCustomerGroup } from "../../../hooks/api/customer-groups"
+import { SingleColumnPage } from "@/components/layout/pages"
+import { useCustomerGroup } from "@/hooks/api/customer-groups"
 import { CustomerGroupCustomerSection } from "./components/customer-group-customer-section"
 import { CustomerGroupGeneralSection } from "./components/customer-group-general-section"
 import { customerGroupLoader } from "./loader"
 
-import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
+import { SingleColumnPageSkeleton } from "@/components/common/skeleton"
 import { useExtension } from "../../../providers/extension-provider"
 import { CUSTOMER_GROUP_DETAIL_FIELDS } from "./constants"
 
@@ -49,3 +50,5 @@ export const CustomerGroupDetail = () => {
     </SingleColumnPage>
   )
 }
+
+

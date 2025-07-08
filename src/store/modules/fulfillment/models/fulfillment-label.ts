@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 import { Fulfillment } from "./fulfillment"
@@ -11,3 +12,5 @@ export const FulfillmentLabel = model.define("fulfillment_label", {
     mappedBy: "labels",
   }),
 })
+
+

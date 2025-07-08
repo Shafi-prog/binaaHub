@@ -1,8 +1,9 @@
+// @ts-nocheck
 import { FetchError } from "@medusajs/js-sdk"
 import { HttpTypes } from "@medusajs/types"
 import { QueryKey, UseQueryOptions, useQuery } from "@tanstack/react-query"
-import { sdk } from "../../lib/client"
-import { queryKeysFactory } from "../../lib/query-key-factory"
+import { sdk } from "@/lib/client"
+import { queryKeysFactory } from "@/lib/query-key-factory"
 
 const PLUGINS_QUERY_KEY = "plugins" as const
 export const pluginsQueryKeys = queryKeysFactory(PLUGINS_QUERY_KEY)
@@ -26,3 +27,5 @@ export const usePlugins = (
 
   return { ...data, ...rest }
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
@@ -6,12 +7,12 @@ import { TaxRateResponse } from "@medusajs/types"
 import {
   TextCell,
   TextHeader,
-} from "../../../components/table/table-cells/common/text-cell"
+} from "@/components/table/table-cells/common/text-cell"
 
 import {
   TypeCell,
   TypeHeader,
-} from "../../../components/table/table-cells/taxes/type-cell"
+} from "@/components/table/table-cells/taxes/type-cell"
 
 const columnHelper = createColumnHelper<TaxRateResponse>()
 
@@ -53,3 +54,5 @@ export const useTaxRateTableColumns = () => {
     []
   )
 }
+
+

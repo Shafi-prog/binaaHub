@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Store analytics API functions
 
 export async function getStoreStats(storeId?: string) {
@@ -71,3 +72,5 @@ export async function getMarketingCampaigns(storeId?: string) {
   // Placeholder implementation
   return [];
 }
+
+

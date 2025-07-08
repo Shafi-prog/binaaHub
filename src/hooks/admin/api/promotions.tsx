@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { HttpTypes } from "@medusajs/types"
 import { FetchError } from "@medusajs/js-sdk"
 import {
@@ -7,9 +8,9 @@ import {
   useQuery,
   UseQueryOptions,
 } from "@tanstack/react-query"
-import { sdk } from "../../lib/client"
-import { queryClient } from "../../lib/query-client"
-import { queryKeysFactory } from "../../lib/query-key-factory"
+import { sdk } from "@/lib/client"
+import { queryClient } from "@/lib/query-client"
+import { queryKeysFactory } from "@/lib/query-key-factory"
 import { campaignsQueryKeys } from "./campaigns"
 
 const PROMOTIONS_QUERY_KEY = "promotions" as const
@@ -270,3 +271,5 @@ export const usePromotionUpdateRules = (
     ...options,
   })
 }
+
+

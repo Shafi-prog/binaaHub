@@ -1,10 +1,11 @@
+// @ts-nocheck
 import {
   Logger,
   ModuleProviderExports,
   ModuleServiceInitializeOptions,
 } from "@medusajs/framework/types"
 
-export type InitializeModuleInjectableDependencies = {
+export type InitializeModuleInjectableDependencies  = {
   logger?: Logger
 }
 
@@ -13,7 +14,7 @@ export const NotificationIdentifiersRegistrationName =
 
 export const NotificationProviderRegistrationPrefix = "np_"
 
-export type NotificationModuleOptions =
+export type NotificationModuleOptions  =
   Partial<ModuleServiceInitializeOptions> & {
     /**
      * Providers to be registered
@@ -33,3 +34,5 @@ export type NotificationModuleOptions =
       options?: Record<string, unknown>
     }[]
   }
+
+

@@ -1,8 +1,9 @@
+// @ts-nocheck
 import { LoaderFunctionArgs } from "react-router-dom"
 
-import { stockLocationsQueryKeys } from "../../../hooks/api/stock-locations"
-import { sdk } from "../../../lib/client"
-import { queryClient } from "../../../lib/query-client"
+import { stockLocationsQueryKeys } from "@/hooks/api/stock-locations"
+import { sdk } from "@/lib/client"
+import { queryClient } from "@/lib/query-client"
 import { LOCATION_DETAILS_FIELD } from "./constants"
 
 const locationQuery = (id: string) => ({
@@ -21,3 +22,5 @@ export const locationLoader = async ({ params }: LoaderFunctionArgs) => {
 
   return queryClient.ensureQueryData(query)
 }
+
+

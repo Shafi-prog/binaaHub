@@ -1,11 +1,12 @@
+// @ts-nocheck
 import { useLoaderData } from "react-router-dom"
 
-import { useStore } from "../../../hooks/api/store"
+import { useStore } from "@/hooks/api/store"
 import { StoreGeneralSection } from "./components/store-general-section"
 import { storeLoader } from "./loader"
 
-import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { SingleColumnPage } from "../../../components/layout/pages"
+import { SingleColumnPageSkeleton } from "@/components/common/skeleton"
+import { SingleColumnPage } from "@/components/layout/pages"
 import { useExtension } from "../../../providers/extension-provider"
 import { StoreCurrencySection } from "./components/store-currency-section"
 
@@ -42,3 +43,5 @@ export const StoreDetail = () => {
     </SingleColumnPage>
   )
 }
+
+

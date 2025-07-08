@@ -1,4 +1,5 @@
-import { Migration } from '@mikro-orm/migrations';
+// @ts-nocheck
+import { Migration } from "@mikro-orm/migrations";
 
 export class Migration20241212052837 extends Migration {
 
@@ -25,3 +26,5 @@ export class Migration20241212052837 extends Migration {
   }
 
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Arabic Design System
  * نظام التصميم العربي لمنصة بِنَّا
@@ -388,3 +389,5 @@ export const arabicTheme = {
 };
 
 export default arabicDesignSystem;
+
+

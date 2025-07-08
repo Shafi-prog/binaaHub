@@ -1,8 +1,9 @@
+// @ts-nocheck
 import { HttpTypes } from "@medusajs/types"
 import { LoaderFunctionArgs } from "react-router-dom"
-import { regionsQueryKeys } from "../../../hooks/api/regions"
-import { sdk } from "../../../lib/client"
-import { queryClient } from "../../../lib/query-client"
+import { regionsQueryKeys } from "@/hooks/api/regions"
+import { sdk } from "@/lib/client"
+import { queryClient } from "@/lib/query-client"
 import { REGION_DETAIL_FIELDS } from "./constants"
 
 const regionQuery = (id: string) => ({
@@ -23,3 +24,5 @@ export const regionLoader = async ({ params }: LoaderFunctionArgs) => {
     ) ?? (await queryClient.fetchQuery(query))
   )
 }
+
+

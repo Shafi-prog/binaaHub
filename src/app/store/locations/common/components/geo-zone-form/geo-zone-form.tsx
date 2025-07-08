@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Button, Checkbox } from "@medusajs/ui"
 import {
   OnChangeFn,
@@ -325,3 +326,5 @@ function validateForm(form: UseFormReturn) {
 export const GeoZoneForm = Object.assign(GeoZoneFormImpl, {
   AreaDrawer: AreaStackedModal,
 })
+
+

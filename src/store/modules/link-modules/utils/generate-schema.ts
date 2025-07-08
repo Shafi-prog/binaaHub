@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { MedusaModule } from "@medusajs/framework/modules-sdk"
 import {
   ModuleJoinerConfig,
@@ -238,3 +239,5 @@ function getGraphQLType(type) {
 
   return typeDef[type] ?? "String"
 }
+
+

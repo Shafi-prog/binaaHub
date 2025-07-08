@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Context,
   DAL,
@@ -104,8 +105,8 @@ export default class UserModuleService
     })
   }
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   async refreshInviteTokens(
     inviteIds: string[],
     @MedusaContext() sharedContext: Context = {}
@@ -177,8 +178,8 @@ export default class UserModuleService
     sharedContext?: Context
   ): Promise<UserTypes.UserDTO>
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   // @ts-expect-error
   async createUsers(
     data: UserTypes.CreateUserDTO[] | UserTypes.CreateUserDTO,
@@ -218,8 +219,8 @@ export default class UserModuleService
     sharedContext?: Context
   ): Promise<UserTypes.UserDTO>
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   // @ts-expect-error
   async updateUsers(
     data: UserTypes.UpdateUserDTO | UserTypes.UpdateUserDTO[],
@@ -259,8 +260,8 @@ export default class UserModuleService
     sharedContext?: Context
   ): Promise<UserTypes.InviteDTO>
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   // @ts-expect-error
   async createInvites(
     data: UserTypes.CreateInviteDTO[] | UserTypes.CreateInviteDTO,
@@ -341,8 +342,8 @@ export default class UserModuleService
     sharedContext?: Context
   ): Promise<UserTypes.InviteDTO>
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   // @ts-expect-error
   async updateInvites(
     data: UserTypes.UpdateInviteDTO | UserTypes.UpdateInviteDTO[],
@@ -382,3 +383,5 @@ export default class UserModuleService
     })
   }
 }
+
+

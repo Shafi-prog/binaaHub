@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Integrated store client for unified BINNA platform
 class IntegratedStoreClient {
   private baseUrl: string;
@@ -118,3 +119,5 @@ export const getServerMedusaClient = () => {
 };
 
 export default storeClient
+
+

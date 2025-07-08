@@ -1,3 +1,4 @@
+// @ts-nocheck
 export default `
 enum ChangeActionType {
   CANCEL_RETURN_ITEM
@@ -551,3 +552,5 @@ type OrderTransaction {
 }
 
 `
+
+

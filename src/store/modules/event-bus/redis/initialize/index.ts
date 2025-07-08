@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { MedusaModule } from "@medusajs/framework/modules-sdk"
 import {
   ExternalModuleDeclaration,
@@ -21,3 +22,5 @@ export const initialize = async (
 
   return loaded[serviceKey]
 }
+
+

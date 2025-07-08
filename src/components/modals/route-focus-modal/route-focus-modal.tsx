@@ -1,3 +1,5 @@
+"use client"
+// @ts-nocheck
 import { FocusModal, clx } from "@medusajs/ui"
 import { PropsWithChildren, useEffect, useState } from "react"
 import { Path, useNavigate } from "react-router-dom"
@@ -102,3 +104,5 @@ export const RouteFocusModal = Object.assign(Root, {
   Close,
   Form,
 })
+
+

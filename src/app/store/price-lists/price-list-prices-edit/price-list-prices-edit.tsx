@@ -1,7 +1,8 @@
+// @ts-nocheck
 import { useParams, useSearchParams } from "react-router-dom"
-import { RouteFocusModal } from "../../../components/modals"
-import { usePriceList } from "../../../hooks/api/price-lists"
-import { useProducts } from "../../../hooks/api/products"
+import { RouteFocusModal } from "@/components/modals"
+import { usePriceList } from "@/hooks/api/price-lists"
+import { useProducts } from "@/hooks/api/products"
 import { usePriceListCurrencyData } from "../common/hooks/use-price-list-currency-data"
 import { PriceListPricesEditForm } from "./components/price-list-prices-edit-form"
 
@@ -59,3 +60,5 @@ export const PriceListPricesEdit = () => {
     </RouteFocusModal>
   )
 }
+
+

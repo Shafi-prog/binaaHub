@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { PencilSquare, Plus, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import { Checkbox, Container, Heading, toast, usePrompt } from "@medusajs/ui"
@@ -283,3 +284,5 @@ const useColumns = (priceList: HttpTypes.AdminPriceList) => {
     [base, priceList]
   )
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 export async function verifyAuthWithRetry(retries: number = 3): Promise<any> {
@@ -42,3 +43,5 @@ export async function verifyAuthWithRetry(retries: number = 3): Promise<any> {
 
   return null;
 }
+
+

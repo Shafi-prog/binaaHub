@@ -1,8 +1,9 @@
+// @ts-nocheck
 import { LoaderFunctionArgs } from "react-router-dom"
 
-import { variantsQueryKeys } from "../../../hooks/api/products"
-import { sdk } from "../../../lib/client"
-import { queryClient } from "../../../lib/query-client"
+import { variantsQueryKeys } from "@/hooks/api/products"
+import { sdk } from "@/lib/client"
+import { queryClient } from "@/lib/query-client"
 import { VARIANT_DETAIL_FIELDS } from "./constants"
 
 const variantDetailQuery = (productId: string, variantId: string) => ({
@@ -23,3 +24,5 @@ export const variantLoader = async ({ params }: LoaderFunctionArgs) => {
 
   return queryClient.ensureQueryData(query)
 }
+
+

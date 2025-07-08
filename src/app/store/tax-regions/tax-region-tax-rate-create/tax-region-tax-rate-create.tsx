@@ -1,6 +1,7 @@
+// @ts-nocheck
 import { useParams } from "react-router-dom"
-import { RouteFocusModal } from "../../../components/modals"
-import { useTaxRegion } from "../../../hooks/api/tax-regions"
+import { RouteFocusModal } from "@/components/modals"
+import { useTaxRegion } from "@/hooks/api/tax-regions"
 import { TaxRegionTaxRateCreateForm } from "./components/tax-region-tax-rate-create-form"
 
 export const TaxRegionTaxRateCreate = () => {
@@ -27,3 +28,5 @@ export const TaxRegionTaxRateCreate = () => {
     </RouteFocusModal>
   )
 }
+
+

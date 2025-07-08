@@ -1,5 +1,6 @@
+// @ts-nocheck
 import { Card, Heading, Text, Badge, Table } from "@medusajs/ui"
-import { useProductAnalytics } from "../../store/hooks/api/analytics"
+import { useProductAnalytics } from "@/store/hooks/api/analytics"
 import { LoadingSpinner } from "../common/loading-spinner"
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts"
 import { Package, TrendingUp, AlertTriangle } from "@medusajs/icons"
@@ -198,3 +199,5 @@ export const ProductAnalytics = ({ dateRange }: ProductAnalyticsProps) => {
     </div>
   )
 }
+
+

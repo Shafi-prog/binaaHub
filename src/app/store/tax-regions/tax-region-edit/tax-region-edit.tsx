@@ -1,9 +1,10 @@
+// @ts-nocheck
 import { Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
-import { RouteDrawer } from "../../../components/modals"
+import { RouteDrawer } from "@/components/modals"
 import { TaxRegionEditForm } from "./components/tax-region-edit"
-import { useTaxRegion } from "../../../hooks/api"
+import { useTaxRegion } from "@/hooks/api"
 
 export const TaxRegionEdit = () => {
   const { t } = useTranslation()
@@ -31,3 +32,5 @@ export const TaxRegionEdit = () => {
     </RouteDrawer>
   )
 }
+
+

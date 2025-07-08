@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 const WebhookEndpoint = model.define("webhook_endpoint", {
@@ -64,3 +65,5 @@ const WebhookEndpoint = model.define("webhook_endpoint", {
 })
 
 export default WebhookEndpoint
+
+

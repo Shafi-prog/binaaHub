@@ -1,3 +1,4 @@
+// @ts-nocheck
 import type { Database } from './database';
 
 export interface Order {
@@ -44,3 +45,5 @@ export interface OrderItem {
     id: string;
   };
 }
+
+

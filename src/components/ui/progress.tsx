@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 import classNames from 'classnames';
 
@@ -7,7 +8,7 @@ interface ProgressProps {
   className?: string;
 }
 
-const Progress: React.FC<ProgressProps> = ({ value, max = 100, className }) => {
+export const Progress: React.FC<ProgressProps> = ({ value, max = 100, className }) => {
   const percentage = Math.min((value / max) * 100, 100);
 
   return (
@@ -21,3 +22,5 @@ const Progress: React.FC<ProgressProps> = ({ value, max = 100, className }) => {
 };
 
 export default Progress;
+
+

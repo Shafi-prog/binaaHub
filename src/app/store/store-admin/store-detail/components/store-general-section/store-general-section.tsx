@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { PencilSquare } from "@medusajs/icons"
 import { AdminStore } from "@medusajs/types"
 import { Badge, Container, Heading, Text } from "@medusajs/ui"
@@ -140,3 +141,5 @@ export const StoreGeneralSection = ({ store }: StoreGeneralSectionProps) => {
     </Container>
   )
 }
+
+

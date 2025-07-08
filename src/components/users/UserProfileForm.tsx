@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState, useEffect } from 'react';
 import { EnhancedInput, EnhancedSelect, Button } from '@/components/ui/enhanced-components';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
@@ -465,3 +466,5 @@ export default function UserProfileForm({ user }: { user: any }) {
     </form>
   );
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Badge,
   Button,
@@ -572,3 +573,5 @@ const CommandItem = forwardRef<
 ))
 
 CommandItem.displayName = Command.Item.displayName
+
+

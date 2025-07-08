@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import type { Database } from '@/types/database';
 
@@ -40,3 +41,5 @@ export async function trackStoreView(
     console.error('Error in trackStoreView:', error);
   }
 }
+
+

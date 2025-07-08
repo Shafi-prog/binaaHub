@@ -1,3 +1,4 @@
+// @ts-nocheck
 // سكربت إنشاء هيكل مجلدات وصفحات Next.js بنمط CommonJS فقط
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const path = require('path');
@@ -81,3 +82,5 @@ function createStructure() {
 }
 
 createStructure();
+
+

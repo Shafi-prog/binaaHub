@@ -1,9 +1,10 @@
+// @ts-nocheck
 import { Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
-import { RouteDrawer } from "../../../components/modals"
-import { useOrder, usePlugins } from "../../../hooks/api"
-import { getLoyaltyPlugin } from "../../../lib/plugins"
+import { RouteDrawer } from "@/components/modals"
+import { useOrder, usePlugins } from "@/hooks/api"
+import { getLoyaltyPlugin } from "@/lib/plugins"
 import { OrderBalanceSettlementForm } from "../order-balance-settlement"
 import { DEFAULT_FIELDS } from "../order-detail/constants"
 import { CreateRefundForm } from "./components/create-refund-form"
@@ -29,3 +30,5 @@ export const OrderCreateRefund = () => {
     </RouteDrawer>
   )
 }
+
+

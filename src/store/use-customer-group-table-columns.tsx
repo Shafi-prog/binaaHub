@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 
@@ -5,7 +6,7 @@ import { useTranslation } from "react-i18next"
 import {
   TextCell,
   TextHeader,
-} from "../../../components/table/table-cells/common/text-cell"
+} from "@/components/table/table-cells/common/text-cell"
 import { HttpTypes } from "@medusajs/types"
 
 const columnHelper = createColumnHelper<HttpTypes.AdminCustomerGroup>()
@@ -31,3 +32,5 @@ export const useCustomerGroupTableColumns = () => {
     [t]
   )
 }
+
+

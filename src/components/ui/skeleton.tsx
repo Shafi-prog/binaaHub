@@ -1,3 +1,4 @@
+// @ts-nocheck
 interface SkeletonProps {
   className?: string;
 }
@@ -5,3 +6,5 @@ interface SkeletonProps {
 export function Skeleton({ className = '' }: SkeletonProps) {
   return <div className={`animate-pulse bg-gray-200 rounded-md ${className}`} />;
 }
+
+

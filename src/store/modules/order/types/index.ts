@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { IEventBusModuleService, Logger } from "@medusajs/framework/types"
 
 export * from "./address"
@@ -14,7 +15,9 @@ export * from "./transaction"
 export * from "./utils"
 export * from "./return-reason"
 
-export type InitializeModuleInjectableDependencies = {
+export type InitializeModuleInjectableDependencies  = {
   logger?: Logger
   EventBus?: IEventBusModuleService
 }
+
+

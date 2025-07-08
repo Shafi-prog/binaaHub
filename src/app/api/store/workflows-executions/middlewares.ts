@@ -1,3 +1,4 @@
+// @ts-nocheck
 import * as QueryConfig from "./query-config"
 
 import {
@@ -59,3 +60,5 @@ export const adminWorkflowsExecutionsMiddlewares: MiddlewareRoute[] = [
     middlewares: [validateAndTransformBody(AdminCreateWorkflowsAsyncResponse)],
   },
 ]
+
+

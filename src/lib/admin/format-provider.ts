@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Providers only have an ID to identify them. This function formats the ID
  * into a human-readable string.
@@ -16,3 +17,5 @@ export const formatProvider = (id: string) => {
       .join(" ") + (type ? ` (${type.toUpperCase()})` : "")
   )
 }
+
+

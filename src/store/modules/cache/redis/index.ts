@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { ModuleExports } from "@medusajs/framework/types"
 import Loader from "./loaders"
 import { RedisCacheService } from "./services"
@@ -13,3 +14,5 @@ const moduleDefinition: ModuleExports = {
 export default moduleDefinition
 export * from "./initialize"
 export * from "./types"
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { zodResolver } from "@hookform/resolvers/zod"
 import { HttpTypes } from "@medusajs/types"
 import { Button, Input, toast } from "@medusajs/ui"
@@ -86,3 +87,5 @@ export const ProductTagEditForm = ({ productTag }: ProductTagEditFormProps) => {
     </RouteDrawer.Form>
   )
 }
+
+

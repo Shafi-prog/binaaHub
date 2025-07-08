@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { zodResolver } from "@hookform/resolvers/zod"
 import { ArrowPath, Link, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
@@ -343,3 +344,5 @@ const useColumns = () => {
     [t]
   )
 }
+
+

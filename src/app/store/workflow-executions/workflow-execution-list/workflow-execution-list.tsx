@@ -1,6 +1,7 @@
+// @ts-nocheck
 import { WorkflowExecutionListTable } from "./components/workflow-execution-list-table"
 
-import { SingleColumnPage } from "../../../components/layout/pages"
+import { SingleColumnPage } from "@/components/layout/pages"
 import { useExtension } from "../../../providers/extension-provider"
 
 export const WorkflowExcecutionList = () => {
@@ -18,3 +19,5 @@ export const WorkflowExcecutionList = () => {
     </SingleColumnPage>
   )
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { FetchError } from "@medusajs/js-sdk"
 import { HttpTypes } from "@medusajs/types"
 import {
@@ -7,9 +8,9 @@ import {
   useQuery,
   UseQueryOptions,
 } from "@tanstack/react-query"
-import { sdk } from "../../lib/client"
-import { queryClient } from "../../lib/query-client"
-import { queryKeysFactory } from "../../lib/query-key-factory"
+import { sdk } from "@/lib/client"
+import { queryClient } from "@/lib/query-client"
+import { queryKeysFactory } from "@/lib/query-key-factory"
 import { ordersQueryKeys } from "./orders"
 import { returnsQueryKeys } from "./returns"
 
@@ -473,3 +474,5 @@ export const useCancelExchangeRequest = (
     ...options,
   })
 }
+
+

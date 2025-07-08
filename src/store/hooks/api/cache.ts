@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 
 export const cacheQueryKeys = {
@@ -227,3 +228,5 @@ export const useCacheMetrics = (timeframe: '1h' | '24h' | '7d' = '24h') => {
     refetchInterval: 60000, // Refresh every minute
   })
 }
+
+

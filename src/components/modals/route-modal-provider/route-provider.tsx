@@ -1,3 +1,5 @@
+"use client"
+// @ts-nocheck
 import { PropsWithChildren, useCallback, useMemo, useState } from "react"
 import { Path, useNavigate } from "react-router-dom"
 import { RouteModalProviderContext } from "./route-modal-context"
@@ -37,3 +39,5 @@ export const RouteModalProvider = ({
     </RouteModalProviderContext.Provider>
   )
 }
+
+

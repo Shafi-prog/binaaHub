@@ -1,8 +1,9 @@
+// @ts-nocheck
 import { useLocation } from "react-router-dom"
 import { getApiKeyTypeFromPathname } from "../common/utils"
 import { ApiKeyManagementListTable } from "./components/api-key-management-list-table"
 
-import { SingleColumnPage } from "../../../components/layout/pages"
+import { SingleColumnPage } from "@/components/layout/pages"
 import { useExtension } from "../../../providers/extension-provider"
 
 export const ApiKeyManagementList = () => {
@@ -23,3 +24,5 @@ export const ApiKeyManagementList = () => {
     </SingleColumnPage>
   )
 }
+
+

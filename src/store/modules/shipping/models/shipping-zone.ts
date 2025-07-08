@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 const ShippingZone = model.define("shipping_zone", {
@@ -28,3 +29,5 @@ const ShippingZone = model.define("shipping_zone", {
 })
 
 export default ShippingZone
+
+

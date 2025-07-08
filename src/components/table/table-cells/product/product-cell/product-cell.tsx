@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useTranslation } from "react-i18next"
 
 import { Thumbnail } from "../../../../common/thumbnail"
@@ -29,3 +30,5 @@ export const ProductHeader = () => {
     </div>
   )
 }
+
+

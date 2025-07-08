@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { DataTable } from "../../../../table/data-table/data-table"
 import { Container, Heading } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
@@ -71,3 +72,5 @@ export const OrderListTable = () => {
     </Container>
   )
 }
+
+

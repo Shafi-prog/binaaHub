@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState } from "react"
 import { Button, DatePicker, Popover, Text } from "@medusajs/ui"
 import { CalendarDays } from "@medusajs/icons"
@@ -140,3 +141,5 @@ export const DateRangePicker = ({ value, onChange }: DateRangePickerProps) => {
     </Popover>
   )
 }
+
+

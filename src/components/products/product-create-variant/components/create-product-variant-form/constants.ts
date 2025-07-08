@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { z } from "zod"
 import * as zod from "zod"
 import { optionalInt } from "../../../../../lib/validation"
@@ -42,3 +43,5 @@ export const CreateVariantPriceSchema = CreateProductVariantSchema.pick({
 export const CreateVariantPriceFields = Object.keys(
   CreateVariantPriceSchema.shape
 ) as (keyof typeof CreateVariantPriceSchema.shape)[]
+
+

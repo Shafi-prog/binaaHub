@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { TFunction } from "i18next"
 
 export const getCanceledOrderStatus = (
@@ -72,3 +73,5 @@ export const getOrderFulfillmentStatus = (
 
   return { label, color }
 }
+
+

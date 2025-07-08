@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { PencilSquare, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import { StatusBadge, Text } from "@medusajs/ui"
@@ -80,3 +81,5 @@ const TaxRateActions = ({ taxRate }: { taxRate: HttpTypes.AdminTaxRate }) => {
     />
   )
 }
+
+

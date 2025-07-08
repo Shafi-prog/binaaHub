@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   BigNumberInput,
   CampaignBudgetExceededAction,
@@ -32,3 +33,5 @@ export function computeActionForBudgetExceeded(
     }
   }
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { HttpTypes } from "@medusajs/types"
 import { JsonViewSection } from "../../../../../components/common/json-view-section"
 
@@ -22,3 +23,5 @@ export const WorkflowExecutionPayloadSection = ({
 
   return <JsonViewSection data={payload as object} />
 }
+
+

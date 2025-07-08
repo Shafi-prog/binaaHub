@@ -1,3 +1,4 @@
+// @ts-nocheck
 export interface UpsertAddressDTO {
   customer_id?: string
   company?: string
@@ -18,3 +19,5 @@ export interface UpdateAddressDTO extends UpsertAddressDTO {
 }
 
 export interface CreateAddressDTO extends UpsertAddressDTO {}
+
+

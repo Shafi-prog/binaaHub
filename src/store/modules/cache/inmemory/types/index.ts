@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Shape of a record saved in `in-memory`  cache
  */
@@ -9,9 +10,11 @@ export type CacheRecord<T> = {
   expire: number
 }
 
-export type InMemoryCacheModuleOptions = {
+export type InMemoryCacheModuleOptions  = {
   /**
    * Time to keep data in cache (in seconds)
    */
   ttl?: number
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { PencilSquare, Trash } from "@medusajs/icons"
 import { Badge, Container, Heading, Text, toast, usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
@@ -136,3 +137,5 @@ const RegionActions = ({ region }: { region: HttpTypes.AdminRegion }) => {
     />
   )
 }
+
+

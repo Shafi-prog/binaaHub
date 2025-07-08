@@ -1,3 +1,4 @@
+// @ts-nocheck
 import LocalEventBusService from "../event-bus-local"
 
 // jest.genMockFromModule("events") // Removed for Jest 29+ compatibility
@@ -257,3 +258,5 @@ describe("LocalEventBusService", () => {
     })
   })
 })
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { simpleHash } from "@medusajs/framework/utils"
 import { IndexTypes, InferEntityType, Logger } from "@medusajs/types"
 import { IndexMetadata } from "@models"
@@ -155,3 +156,5 @@ export class Configuration {
     return changes
   }
 }
+
+

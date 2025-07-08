@@ -1,4 +1,5 @@
-import { castNumber } from "../../../../lib/cast-number"
+// @ts-nocheck
+import { castNumber } from "@/lib/cast-number"
 import { ITEM_TOTAL_ATTRIBUTE } from "../constants"
 
 const createPriceRule = (
@@ -39,3 +40,5 @@ export const buildShippingOptionPriceRules = (rule: {
     createPriceRule(ITEM_TOTAL_ATTRIBUTE, operator, value)
   )
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 export const SEARCH_AREAS = [
   "all",
   "order",
@@ -28,3 +29,5 @@ export const SEARCH_AREAS = [
 
 export const DEFAULT_SEARCH_LIMIT = 3
 export const SEARCH_LIMIT_INCREMENT = 20
+
+

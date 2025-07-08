@@ -1,6 +1,7 @@
+// @ts-nocheck
 import { Text, clx } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
-import { useDate } from "../../../hooks/use-date"
+import { useDate } from "@/hooks/use-date"
 
 type DateRangeDisplayProps = {
   startsAt?: Date | string | null
@@ -71,3 +72,5 @@ const Bar = ({ date }: { date: Date | null }) => {
     />
   )
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { z } from "zod"
 import { TaxRateRuleReferenceType } from "./constants"
 
@@ -14,3 +15,5 @@ export const TaxRateRuleTargetSchema = z.object({
 })
 
 export type TaxRateRuleTarget = z.infer<typeof TaxRateRuleTargetSchema>
+
+

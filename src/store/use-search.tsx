@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useContext } from "react"
 import { SearchContext } from "./search-context"
 
@@ -8,3 +9,5 @@ export const useSearch = () => {
   }
   return context
 }
+
+

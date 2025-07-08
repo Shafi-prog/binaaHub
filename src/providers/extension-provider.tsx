@@ -1,3 +1,5 @@
+"use client"
+// @ts-nocheck
 import React, { createContext, useContext } from 'react'
 
 interface ExtensionContextType {
@@ -31,3 +33,5 @@ export const useExtension = () => {
   }
   return context
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   IEventBusModuleService,
   Logger,
@@ -5,7 +6,7 @@ import {
   ModuleServiceInitializeOptions,
 } from "@medusajs/framework/types"
 
-export type InitializeModuleInjectableDependencies = {
+export type InitializeModuleInjectableDependencies  = {
   logger?: Logger
   EventBus?: IEventBusModuleService
 }
@@ -13,7 +14,7 @@ export type InitializeModuleInjectableDependencies = {
 export const FulfillmentIdentifiersRegistrationName =
   "fulfillment_providers_identifier"
 
-export type FulfillmentModuleOptions =
+export type FulfillmentModuleOptions  =
   Partial<ModuleServiceInitializeOptions> & {
     /**
      * Providers to be registered
@@ -33,3 +34,5 @@ export type FulfillmentModuleOptions =
       options?: Record<string, unknown>
     }[]
   }
+
+

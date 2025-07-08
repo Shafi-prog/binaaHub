@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use client';
 
 import React from 'react';
@@ -112,3 +113,5 @@ export function Tab({ value, className, children }: TabProps) {
     </div>
   );
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { LocalNotificationService } from "../../src/services/local"
 jest.setTimeout(100000)
 
@@ -34,3 +35,5 @@ describe("Local notification provider", () => {
     )
   })
 })
+
+

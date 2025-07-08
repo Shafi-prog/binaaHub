@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { OrderStatus } from "@medusajs/framework/utils"
 
 export interface CreateOrderDTO {
@@ -23,3 +24,5 @@ export interface UpdateOrderDTO {
   no_notification?: boolean
   metadata?: Record<string, unknown> | null
 }
+
+

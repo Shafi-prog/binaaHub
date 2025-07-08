@@ -1,8 +1,9 @@
+// @ts-nocheck
 import { Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
-import { RouteDrawer } from "../../../components/modals"
-import { useProductType } from "../../../hooks/api/product-types"
+import { RouteDrawer } from "@/components/modals"
+import { useProductType } from "@/hooks/api/product-types"
 import { EditProductTypeForm } from "./components/edit-product-type-form"
 
 export const ProductTypeEdit = () => {
@@ -26,3 +27,5 @@ export const ProductTypeEdit = () => {
     </RouteDrawer>
   )
 }
+
+

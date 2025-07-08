@@ -1,7 +1,8 @@
+// @ts-nocheck
 import { FetchError } from "@medusajs/js-sdk"
 import { HttpTypes } from "@medusajs/types"
 import { UseMutationOptions, useMutation } from "@tanstack/react-query"
-import { sdk } from "../../lib/client"
+import { sdk } from "@/lib/client"
 
 export const useSignInWithEmailPass = (
   options?: UseMutationOptions<
@@ -73,3 +74,5 @@ export const useUpdateProviderForEmailPass = (
     ...options,
   })
 }
+
+

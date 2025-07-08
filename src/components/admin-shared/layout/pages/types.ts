@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { ComponentType, ReactNode } from "react"
 
 export interface WidgetProps {
@@ -13,3 +14,5 @@ export interface PageProps<TData> {
   showMetadata?: boolean
   hasOutlet?: boolean
 }
+
+

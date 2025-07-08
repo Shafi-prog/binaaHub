@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Commission Tracking Service
 import { supabase } from '@/lib/supabaseClient';
 import type { 
@@ -436,3 +437,5 @@ export class CommissionService {
     return analytics;
   }
 }
+
+

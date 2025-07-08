@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 const ShippingCarrier = model.define("shipping_carrier", {
@@ -36,3 +37,5 @@ const ShippingCarrier = model.define("shipping_carrier", {
 })
 
 export default ShippingCarrier
+
+

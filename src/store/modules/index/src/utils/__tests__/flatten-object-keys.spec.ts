@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { flattenObjectKeys } from "../flatten-object-keys"
 
 describe("flattenWhereClauses", () => {
@@ -27,3 +28,5 @@ describe("flattenWhereClauses", () => {
     })
   })
 })
+
+

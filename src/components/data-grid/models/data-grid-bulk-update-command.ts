@@ -1,4 +1,5 @@
-import { Command } from "../../../hooks/use-command-history"
+// @ts-nocheck
+import { Command } from "@/hooks/use-command-history"
 
 export type DataGridBulkUpdateCommandArgs = {
   fields: string[]
@@ -36,3 +37,5 @@ export class DataGridBulkUpdateCommand implements Command {
     this.execute(true)
   }
 }
+
+

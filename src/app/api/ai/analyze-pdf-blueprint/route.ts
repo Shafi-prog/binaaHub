@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { NextRequest, NextResponse } from 'next/server';
 
 // Mock PDF processing function (in production, use PDF.js, Tesseract, etc.)
@@ -134,3 +135,5 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
+

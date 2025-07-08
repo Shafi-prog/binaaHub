@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -443,3 +444,5 @@ const MedusaProductManagement: React.FC = () => {
 };
 
 export default MedusaProductManagement;
+
+

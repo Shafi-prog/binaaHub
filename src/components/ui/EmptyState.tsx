@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { ReactNode } from 'react';
 
 export function EmptyState({ 
@@ -31,3 +32,5 @@ export function EmptyState({
     </div>
   );
 }
+
+

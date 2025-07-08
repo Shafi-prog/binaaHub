@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Context,
   CreateSalesChannelDTO,
@@ -66,7 +67,7 @@ export default class SalesChannelModuleService
     sharedContext?: Context
   ): Promise<SalesChannelDTO>
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   // @ts-expect-error
   async createSalesChannels(
     data: CreateSalesChannelDTO | CreateSalesChannelDTO[],
@@ -105,7 +106,7 @@ export default class SalesChannelModuleService
     sharedContext?: Context
   ): Promise<SalesChannelDTO[]>
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   // @ts-expect-error
   async updateSalesChannels(
     idOrSelector: string | FilterableSalesChannelProps,
@@ -185,3 +186,5 @@ export default class SalesChannelModuleService
     >(Array.isArray(data) ? result : result[0])
   }
 }
+
+

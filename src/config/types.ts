@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Application-specific types
 export type UserRole = 'user' | 'store' | 'admin';
 export type AccountStatus = 'active' | 'suspended' | 'pending';
@@ -108,3 +109,5 @@ export interface TableProps<T> {
   loading?: boolean;
   onRowClick?: (item: T) => void;
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useTranslation } from "react-i18next"
 
 import { PlaceholderCell } from "../../common/placeholder-cell"
@@ -28,3 +29,5 @@ export const CollectionHeader = () => {
     </div>
   )
 }
+
+

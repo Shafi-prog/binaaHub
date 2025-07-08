@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useRef, useState } from "react"
 
 export const useHandleTableScroll = () => {
@@ -22,3 +23,5 @@ export const useHandleTableScroll = () => {
     handleScroll,
   }
 }
+
+

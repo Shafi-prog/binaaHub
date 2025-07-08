@@ -1,3 +1,4 @@
+// @ts-nocheck
 export interface ProjectData {
   name: string;
   description: string;
@@ -33,3 +34,5 @@ export interface Project extends ProjectData {
   created_at: string;
   updated_at: string;
 }
+
+

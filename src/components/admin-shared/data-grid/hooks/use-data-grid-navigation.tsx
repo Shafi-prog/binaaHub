@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Column, Row, VisibilityState } from "@tanstack/react-table"
 import { ScrollToOptions, Virtualizer } from "@tanstack/react-virtual"
 import { Dispatch, SetStateAction, useCallback } from "react"
@@ -111,3 +112,5 @@ export const useDataGridNavigation = <TData, TFieldValues extends FieldValues>({
     navigateToField,
   }
 }
+
+

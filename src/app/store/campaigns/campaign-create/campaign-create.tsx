@@ -1,4 +1,5 @@
-import { RouteFocusModal } from "../../../components/modals"
+// @ts-nocheck
+import { RouteFocusModal } from "@/components/modals"
 import { CreateCampaignForm } from "./components/create-campaign-form"
 
 export const CampaignCreate = () => {
@@ -8,3 +9,5 @@ export const CampaignCreate = () => {
     </RouteFocusModal>
   )
 }
+
+

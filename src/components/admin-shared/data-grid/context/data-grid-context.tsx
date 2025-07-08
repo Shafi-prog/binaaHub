@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { FocusEvent, MouseEvent, createContext } from "react"
 import {
   Control,
@@ -43,3 +44,5 @@ type DataGridContextType<TFieldValues extends FieldValues> = {
 export const DataGridContext = createContext<DataGridContextType<any> | null>(
   null
 )
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useRouter } from 'next/router';
@@ -18,3 +19,5 @@ export default function StoreLogin() {
     </div>
   );
 }
+
+

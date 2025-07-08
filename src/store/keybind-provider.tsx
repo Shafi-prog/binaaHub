@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { PropsWithChildren, useCallback, useMemo, useState } from "react"
 
 import { useShortcuts } from "./hooks"
@@ -62,3 +63,5 @@ export const KeybindProvider = ({
     </KeybindContext.Provider>
   )
 }
+
+

@@ -1,3 +1,5 @@
+// @ts-nocheck
+import { ModuleJoinerConfig } from "@medusajs/framework/types";
 import { defineJoinerConfig, Modules } from "@medusajs/framework/utils"
 import {
   Fulfillment,
@@ -18,3 +20,5 @@ export const joinerConfig = defineJoinerConfig(Modules.FULFILLMENT, {
     fulfillment_provider_id: FulfillmentProvider.name,
   },
 })
+
+

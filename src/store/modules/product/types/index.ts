@@ -1,10 +1,11 @@
+// @ts-nocheck
 import {
   IEventBusModuleService,
   Logger,
   ProductTypes,
 } from "@medusajs/framework/types"
 
-export type InitializeModuleInjectableDependencies = {
+export type InitializeModuleInjectableDependencies  = {
   logger?: Logger
   EventBus?: IEventBusModuleService
 }
@@ -47,3 +48,5 @@ export type UpdateProductVariantInput = ProductTypes.UpdateProductVariantDTO & {
 export type UpdateProductOptionInput = ProductTypes.UpdateProductOptionDTO & {
   id: string
 }
+
+

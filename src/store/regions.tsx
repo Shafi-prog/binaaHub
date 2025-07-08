@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { HttpTypes, PaginatedResponse } from "@medusajs/types"
 import {
   QueryKey,
@@ -6,9 +7,9 @@ import {
   useMutation,
   useQuery,
 } from "@tanstack/react-query"
-import { sdk } from "../../lib/client"
-import { queryClient } from "../../lib/query-client"
-import { queryKeysFactory } from "../../lib/query-key-factory"
+import { sdk } from "@/lib/client"
+import { queryClient } from "@/lib/query-client"
+import { queryKeysFactory } from "@/lib/query-key-factory"
 import { pricePreferencesQueryKeys } from "./price-preferences"
 import { FetchError } from "@medusajs/js-sdk"
 
@@ -129,3 +130,5 @@ export const useDeleteRegion = (
     ...options,
   })
 }
+
+

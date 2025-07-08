@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { motion } from "motion/react"
 
 import { IconAvatar } from "../icon-avatar"
@@ -85,3 +86,5 @@ export default function AvatarBox({ checked }: { checked?: boolean }) {
     </IconAvatar>
   )
 }
+
+

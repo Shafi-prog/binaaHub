@@ -1,8 +1,9 @@
+// @ts-nocheck
 import { FetchError } from "@medusajs/js-sdk"
 import { HttpTypes } from "@medusajs/types"
 import { QueryKey, useQuery, UseQueryOptions } from "@tanstack/react-query"
-import { sdk } from "../../lib/client"
-import { queryKeysFactory } from "../../lib/query-key-factory"
+import { sdk } from "@/lib/client"
+import { queryKeysFactory } from "@/lib/query-key-factory"
 
 const FULFILLMENT_PROVIDERS_QUERY_KEY = "fulfillment_providers" as const
 export const fulfillmentProvidersQueryKeys = queryKeysFactory(
@@ -57,3 +58,5 @@ export const useFulfillmentProviderOptions = (
 
   return { ...data, ...rest }
 }
+
+

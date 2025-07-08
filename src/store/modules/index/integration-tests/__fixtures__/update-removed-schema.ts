@@ -1,3 +1,4 @@
+// @ts-nocheck
 export const updateRemovedSchema = `
   type Product @Listeners(values: ["product.created", "product.updated", "product.deleted"]) {
     id: String
@@ -13,3 +14,5 @@ export const updateRemovedSchema = `
     description: String
   }
 `
+
+

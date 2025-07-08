@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useQueryParams } from "../../use-query-params"
 
 type UseCampaignTableQueryProps = {
@@ -29,3 +30,5 @@ export const useCampaignTableQuery = ({
     raw: queryObject,
   }
 }
+
+

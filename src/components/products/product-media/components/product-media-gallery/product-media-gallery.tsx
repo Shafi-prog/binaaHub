@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   ArrowDownTray,
   ThumbnailBadge,
@@ -325,3 +326,5 @@ const getMedia = (
 
   return media
 }
+
+

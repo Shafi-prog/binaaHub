@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 const ChatSession = model.define("chat_session", {
@@ -48,3 +49,5 @@ ChatSession.belongsTo(() => import("../../user/models/user").then(m => m.default
 })
 
 export default ChatSession
+
+

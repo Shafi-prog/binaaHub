@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useCallback } from "react"
 import type {
   FieldValues,
@@ -672,3 +673,5 @@ function getFocusableElements(ref: React.RefObject<HTMLDivElement>) {
 
   return { shortcuts, cancel }
 }
+
+

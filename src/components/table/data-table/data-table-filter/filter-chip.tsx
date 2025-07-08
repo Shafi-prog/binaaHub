@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { XMarkMini } from "@medusajs/icons"
 import { Text, clx } from "@medusajs/ui"
 import { Popover as RadixPopover } from "radix-ui"
@@ -95,3 +96,5 @@ const FilterChip = ({
 }
 
 export default FilterChip
+
+

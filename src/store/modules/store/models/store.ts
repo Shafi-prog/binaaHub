@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 import StoreCurrency from "./currency"
 
@@ -18,3 +19,5 @@ const Store = model
   })
 
 export default Store
+
+

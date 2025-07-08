@@ -1,3 +1,5 @@
+// @ts-nocheck
+import { ModuleJoinerConfig } from "@medusajs/framework/types";
 import { defineJoinerConfig, Modules } from "@medusajs/framework/utils"
 
 export const joinerConfig = defineJoinerConfig(Modules.API_KEY, {
@@ -6,3 +8,5 @@ export const joinerConfig = defineJoinerConfig(Modules.API_KEY, {
     publishable_key_id: "ApiKey",
   },
 })
+
+

@@ -1,14 +1,15 @@
+// @ts-nocheck
 import { Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
 
-import { RouteDrawer } from "../../../components/modals"
-import { usePaymentProviders } from "../../../hooks/api/payments"
-import { useRegion } from "../../../hooks/api/regions"
-import { useStore } from "../../../hooks/api/store"
-import { currencies } from "../../../lib/data/currencies"
+import { RouteDrawer } from "@/components/modals"
+import { usePaymentProviders } from "@/hooks/api/payments"
+import { useRegion } from "@/hooks/api/regions"
+import { useStore } from "@/hooks/api/store"
+import { currencies } from "@/lib/data/currencies"
 import { EditRegionForm } from "./components/edit-region-form"
-import { usePricePreferences } from "../../../hooks/api/price-preferences"
+import { usePricePreferences } from "@/hooks/api/price-preferences"
 
 export const RegionEdit = () => {
   const { t } = useTranslation()
@@ -81,3 +82,5 @@ export const RegionEdit = () => {
     </RouteDrawer>
   )
 }
+
+

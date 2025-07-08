@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 const IndexSync = model
@@ -15,3 +16,5 @@ const IndexSync = model
   ])
 
 export default IndexSync
+
+

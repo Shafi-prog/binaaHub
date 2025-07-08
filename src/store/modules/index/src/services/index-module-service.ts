@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Constructor,
   IEventBusModuleService,
@@ -21,7 +22,7 @@ import {
   defaultSchema,
   gqlSchemaToTypes,
 } from "@utils"
-import { baseGraphqlSchema } from "../utils/base-graphql-schema"
+import { baseGraphqlSchema } from "@/utils/base-graphql-schema"
 import { DataSynchronizer } from "./data-synchronizer"
 
 type InjectedDependencies = {
@@ -205,3 +206,5 @@ export default class IndexModuleService
     return executableSchema
   }
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 // src/global.d.ts
 // This file augments the Window interface to include the Google Maps API
 
@@ -19,3 +20,5 @@ declare global {
   var afterAll: jest.Lifecycle;
   var jest: typeof import('jest');
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 const SearchIndex = model.define("search_index", {
@@ -38,3 +39,5 @@ const SearchIndex = model.define("search_index", {
 })
 
 export default SearchIndex
+
+

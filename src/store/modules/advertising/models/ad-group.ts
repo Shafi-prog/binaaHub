@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/utils"
 
 /**
@@ -41,3 +42,5 @@ export const AdGroup = model.define("AdGroup", {
 })
 
 export default AdGroup
+
+

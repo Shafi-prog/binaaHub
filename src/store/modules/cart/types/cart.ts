@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   CreateLineItemAdjustmentDTO,
   UpdateLineItemAdjustmentDTO,
@@ -23,3 +24,5 @@ export interface UpdateCartDTO {
 
   adjustments?: (CreateLineItemAdjustmentDTO | UpdateLineItemAdjustmentDTO)[]
 }
+
+

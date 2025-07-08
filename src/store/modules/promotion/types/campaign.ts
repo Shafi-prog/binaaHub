@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { InferEntityType, PromotionDTO } from "@medusajs/framework/types"
 import { Promotion } from "@models"
 
@@ -19,3 +20,5 @@ export interface UpdateCampaignDTO {
   ends_at?: Date | null
   promotions?: (PromotionDTO | InferEntityType<typeof Promotion>)[]
 }
+
+

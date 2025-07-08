@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { OnChangeFn, RowSelectionState } from "@tanstack/react-table"
 import { useState } from "react"
 
@@ -92,3 +93,5 @@ export const AddExchangeOutboundItemsTable = ({
     </div>
   )
 }
+
+

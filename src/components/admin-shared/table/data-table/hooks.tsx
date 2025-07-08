@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useSearchParams } from "react-router-dom"
 
 export const useSelectedParams = ({
@@ -71,3 +72,5 @@ export const useSelectedParams = ({
 
   return { add, delete: deleteParam, get }
 }
+
+

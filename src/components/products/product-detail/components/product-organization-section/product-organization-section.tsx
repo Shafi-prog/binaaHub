@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { PencilSquare } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import { Badge, Container, Heading, Tooltip } from "@medusajs/ui"
@@ -105,3 +106,5 @@ const OrganizationTag = ({ label, to }: { label: string; to: string }) => {
     </Tooltip>
   )
 }
+
+

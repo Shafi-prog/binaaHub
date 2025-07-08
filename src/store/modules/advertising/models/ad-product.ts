@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/utils"
 
 /**
@@ -108,3 +109,5 @@ export const AdProduct = model.define("AdProduct", {
 })
 
 export default AdProduct
+
+

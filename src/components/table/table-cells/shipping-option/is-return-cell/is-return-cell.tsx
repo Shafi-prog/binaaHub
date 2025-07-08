@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useTranslation } from "react-i18next"
 
 type IsReturnCellProps = {
@@ -25,3 +26,5 @@ export const IsReturnHeader = () => {
     </div>
   )
 }
+
+

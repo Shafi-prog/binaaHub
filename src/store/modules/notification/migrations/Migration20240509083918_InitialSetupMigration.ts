@@ -1,6 +1,7 @@
-import { Migration } from "@mikro-orm/migrations"
+// @ts-nocheck
+import { Migration } from "@mikro-orm/migrations";
 
-export class Migration20240509083918_InitialSetupMigration extends Migration {
+export class Migration20240509083918_InitialSetupMigration extends Migration extends Migration {
   async up(): Promise<void> {
     this.addSql("drop table if exists notification")
     this.addSql("drop table if exists notification_provider")
@@ -27,3 +28,5 @@ export class Migration20240509083918_InitialSetupMigration extends Migration {
     )
   }
 }
+
+

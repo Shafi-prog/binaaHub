@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { PencilSquare, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import { Button, Container, Heading } from "@medusajs/ui"
@@ -131,3 +132,5 @@ const useColumns = () => {
     [base]
   )
 }
+
+

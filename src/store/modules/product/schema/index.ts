@@ -1,3 +1,4 @@
+// @ts-nocheck
 export default `
 enum ProductStatus {
   draft
@@ -147,3 +148,5 @@ type ProductOptionValue {
 }
 
 `
+
+

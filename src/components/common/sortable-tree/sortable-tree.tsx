@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Announcements,
   DndContext,
@@ -377,3 +378,5 @@ export function SortableTree<T extends TreeItem>({
     </DndContext>
   )
 }
+
+

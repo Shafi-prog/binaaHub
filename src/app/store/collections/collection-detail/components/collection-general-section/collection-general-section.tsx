@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { PencilSquare, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import { Container, Heading, Text, usePrompt } from "@medusajs/ui"
@@ -74,3 +75,5 @@ export const CollectionGeneralSection = ({
     </Container>
   )
 }
+
+

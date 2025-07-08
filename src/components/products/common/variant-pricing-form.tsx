@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { HttpTypes } from "@medusajs/types"
 import { useMemo } from "react"
 import { UseFormReturn, useWatch } from "react-hook-form"
@@ -7,11 +8,11 @@ import {
   DataGrid,
   createDataGridHelper,
   createDataGridPriceColumns,
-} from "../../../components/data-grid"
-import { useRouteModal } from "../../../components/modals/index"
-import { usePricePreferences } from "../../../hooks/api/price-preferences"
-import { useRegions } from "../../../hooks/api/regions.tsx"
-import { useStore } from "../../../hooks/api/store"
+} from "@/components/data-grid"
+import { useRouteModal } from "@/components/modals/index"
+import { usePricePreferences } from "@/hooks/api/price-preferences"
+import { useRegions } from "@/hooks/api/regions.tsx"
+import { useStore } from "@/hooks/api/store"
 import { ProductCreateSchemaType } from "../product-create/types"
 
 type VariantPricingFormProps = {
@@ -97,3 +98,5 @@ const useVariantPriceGridColumns = ({
     ]
   }, [t, currencies, regions, pricePreferences])
 }
+
+

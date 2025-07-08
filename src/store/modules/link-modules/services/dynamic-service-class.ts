@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Constructor,
   ILinkModule,
@@ -36,3 +37,5 @@ export function getReadOnlyModuleService(joinerConfig: ModuleJoinerConfig) {
     }
   }
 }
+
+

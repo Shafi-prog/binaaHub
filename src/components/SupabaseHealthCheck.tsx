@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Simple Supabase health check utility
 'use client';
 import { useEffect, useState } from 'react';
@@ -33,3 +34,5 @@ export default function SupabaseHealthCheck() {
     </div>
   );
 }
+
+

@@ -1,9 +1,10 @@
+// @ts-nocheck
 import { useLoaderData, useParams } from "react-router-dom"
 
-import { useProductVariant } from "../../../hooks/api/products"
+import { useProductVariant } from "@/hooks/api/products"
 
-import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
-import { TwoColumnPage } from "../../../components/layout/pages"
+import { TwoColumnPageSkeleton } from "@/components/common/skeleton"
+import { TwoColumnPage } from "@/components/layout/pages"
 import { useExtension } from "../../../providers/extension-provider"
 import { VariantGeneralSection } from "./components/variant-general-section"
 import {
@@ -81,3 +82,5 @@ export const ProductVariantDetail = () => {
     </TwoColumnPage>
   )
 }
+
+

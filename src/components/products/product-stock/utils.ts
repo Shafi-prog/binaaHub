@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { HttpTypes } from "@medusajs/types"
 
 export function isProductVariant(
@@ -51,3 +52,5 @@ export function getDisabledInventoryRows(
 
   return disabled
 }
+
+

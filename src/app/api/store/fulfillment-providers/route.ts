@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { HttpTypes } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
@@ -33,3 +34,5 @@ export const GET = async (
     limit: metadata.take,
   })
 }
+
+

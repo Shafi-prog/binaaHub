@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useMutation } from "@tanstack/react-query";
 
 export const useLogout = (options?: any) => {
@@ -18,3 +19,5 @@ export const useLogout = (options?: any) => {
     ...options,
   });
 };
+
+

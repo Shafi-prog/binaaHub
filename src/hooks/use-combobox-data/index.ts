@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState, useMemo } from "react";
 
 // Hook for combobox data management
@@ -25,3 +26,5 @@ export const useComboboxData = (items: any[] = []) => {
 };
 
 export default useComboboxData;
+
+

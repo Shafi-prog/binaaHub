@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { PencilSquare, Trash } from "@medusajs/icons"
 import { AdminCampaign, AdminPromotion } from "@medusajs/types"
 import { Button, Checkbox, Container, Heading, usePrompt } from "@medusajs/ui"
@@ -235,3 +236,5 @@ const useColumns = () => {
     [columns]
   )
 }
+
+

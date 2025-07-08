@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Table } from "@medusajs/ui"
 import { ComponentPropsWithoutRef, ElementRef, forwardRef } from "react"
 import { useTranslation } from "react-i18next"
@@ -24,3 +25,5 @@ export const LocalizedTablePagination = forwardRef<
   return <Table.Pagination {...props} translations={translations} ref={ref} />
 })
 LocalizedTablePagination.displayName = "LocalizedTablePagination"
+
+

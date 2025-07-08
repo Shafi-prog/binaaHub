@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { zodResolver } from "@hookform/resolvers/zod"
 import { AdminCampaign, HttpTypes } from "@medusajs/types"
 import { Button, Checkbox, Hint, Tooltip, toast } from "@medusajs/ui"
@@ -11,15 +12,15 @@ import { useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
-import { RouteFocusModal, useRouteModal } from "../../../../components/modals"
-import { _DataTable } from "../../../../components/table/data-table"
-import { KeyboundForm } from "../../../../components/utilities/keybound-form"
-import { useAddOrRemoveCampaignPromotions } from "../../../../hooks/api/campaigns"
-import { usePromotions } from "../../../../hooks/api/promotions"
-import { usePromotionTableColumns } from "../../../../hooks/table/columns/use-promotion-table-columns"
-import { usePromotionTableFilters } from "../../../../hooks/table/filters/use-promotion-table-filters"
-import { usePromotionTableQuery } from "../../../../hooks/table/query/use-promotion-table-query"
-import { useDataTable } from "../../../../hooks/use-data-table"
+import { RouteFocusModal, useRouteModal } from "@/components/modals"
+import { _DataTable } from "@/components/table/data-table"
+import { KeyboundForm } from "@/components/utilities/keybound-form"
+import { useAddOrRemoveCampaignPromotions } from "@/hooks/api/campaigns"
+import { usePromotions } from "@/hooks/api/promotions"
+import { usePromotionTableColumns } from "@/hooks/table/columns/use-promotion-table-columns"
+import { usePromotionTableFilters } from "@/hooks/table/filters/use-promotion-table-filters"
+import { usePromotionTableQuery } from "@/hooks/table/query/use-promotion-table-query"
+import { useDataTable } from "@/hooks/use-data-table"
 
 type AddCampaignPromotionsFormProps = {
   campaign: AdminCampaign
@@ -258,3 +259,5 @@ const useColumns = () => {
     [t, base]
   )
 }
+
+

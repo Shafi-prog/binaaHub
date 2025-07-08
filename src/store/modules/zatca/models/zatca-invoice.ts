@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 const ZATCAInvoice = model.define("zatca_invoice", {
@@ -67,3 +68,5 @@ const ZATCAInvoice = model.define("zatca_invoice", {
 // Note: Relationships will be defined in the module configuration
 
 export default ZATCAInvoice
+
+

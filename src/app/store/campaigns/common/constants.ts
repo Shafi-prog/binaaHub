@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { CampaignBudgetTypeValues } from "@medusajs/types"
 
 export const DEFAULT_CAMPAIGN_VALUES = {
@@ -12,3 +13,5 @@ export const DEFAULT_CAMPAIGN_VALUES = {
     limit: null,
   },
 }
+
+

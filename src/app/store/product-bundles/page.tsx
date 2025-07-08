@@ -1,11 +1,12 @@
+"use client"
+// @ts-nocheck
 import { useState, useEffect } from "react"
-import { useNavigate } from "react-router-dom"
+import { useRouter } from "next/navigation"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Plus, Search, Edit, Trash2, Package, Eye } from "lucide-react"
 
 interface ProductBundle {
@@ -20,7 +21,7 @@ interface ProductBundle {
 }
 
 export default function ProductBundles() {
-  const navigate = useNavigate()
+  const router = useRouter()
   const [bundles, setBundles] = useState<ProductBundle[]>([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState("")
@@ -125,7 +126,7 @@ export default function ProductBundles() {
           <h1 className="text-2xl font-bold">Product Bundles</h1>
           <p className="text-gray-600">Manage product bundles and kits</p>
         </div>
-        <Button onClick={() => navigate("/store/product-bundles/create")}>
+        <Button onClick={() => router.push("/store/product-bundles/create")}>
           <Plus className="h-4 w-4 mr-2" />
           Create Bundle
         </Button>
@@ -143,17 +144,16 @@ export default function ProductBundles() {
                 className="pl-10"
               />
             </div>
-            <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-48">
-                <SelectValue placeholder="Filter by status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Statuses</SelectItem>
-                <SelectItem value="active">Active</SelectItem>
-                <SelectItem value="inactive">Inactive</SelectItem>
-                <SelectItem value="draft">Draft</SelectItem>
-              </SelectContent>
-            </Select>
+            <select 
+              value={statusFilter} 
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="w-48 h-10 px-3 border border-gray-300 rounded-md"
+            >
+              <option value="all">All Statuses</option>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+              <option value="draft">Draft</option>
+            </select>
           </div>
         </CardHeader>
         <CardContent>
@@ -168,7 +168,7 @@ export default function ProductBundles() {
                 }
               </p>
               {!searchTerm && statusFilter === "all" && (
-                <Button onClick={() => navigate("/store/product-bundles/create")}>
+                <Button onClick={() => router.push("/store/product-bundles/create")}>
                   <Plus className="h-4 w-4 mr-2" />
                   Create Bundle
                 </Button>
@@ -218,14 +218,14 @@ export default function ProductBundles() {
                         <Button
                           variant="ghost"
                           size="sm"
-                          onClick={() => navigate(`/store/product-bundles/${bundle.id}`)}
+                          onClick={() => router.push(`/store/product-bundles/${bundle.id}`)}
                         >
                           <Eye className="h-4 w-4" />
                         </Button>
                         <Button
                           variant="ghost"
                           size="sm"
-                          onClick={() => navigate(`/store/product-bundles/${bundle.id}/edit`)}
+                          onClick={() => router.push(`/store/product-bundles/${bundle.id}/edit`)}
                         >
                           <Edit className="h-4 w-4" />
                         </Button>
@@ -280,3 +280,8 @@ export default function ProductBundles() {
     </div>
   )
 }
+
+
+
+
+

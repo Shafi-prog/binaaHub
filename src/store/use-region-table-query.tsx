@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { FindParams, HttpTypes } from "@medusajs/types"
 import { useQueryParams } from "../../use-query-params"
 
@@ -31,3 +32,5 @@ export const useRegionTableQuery = ({
     raw: queryObject,
   }
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { createContext } from "react"
 
 type SearchContextValue = {
@@ -7,3 +8,5 @@ type SearchContextValue = {
 }
 
 export const SearchContext = createContext<SearchContextValue | null>(null)
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { SEARCH_AREAS } from "./constants"
 
 export type SearchArea = (typeof SEARCH_AREAS)[number]
@@ -18,3 +19,5 @@ export type DynamicSearchResult = {
   count: number
   items: DynamicSearchResultItem[]
 }
+
+

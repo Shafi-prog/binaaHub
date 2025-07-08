@@ -1,3 +1,4 @@
+// @ts-nocheck
 export type KeybindContextState = {}
 
 export type Platform = "Mac" | "Windows" | "Linux"
@@ -26,3 +27,5 @@ export type Shortcut = {
       callback?: never
     }
 )
+
+

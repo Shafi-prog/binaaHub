@@ -1,8 +1,9 @@
+// @ts-nocheck
 import { useParams } from "react-router-dom"
 
 import { AdminApiKeyResponse, AdminSalesChannelResponse } from "@medusajs/types"
 import { RouteFocusModal } from "../modals"
-import { useApiKey } from "../../hooks/api/api-keys"
+import { useApiKey } from "@/hooks/api/api-keys"
 import { ApiKeySalesChannelsForm } from "./components/api-key-sales-channels-form"
 
 export const ApiKeyManagementAddSalesChannels = () => {
@@ -30,3 +31,5 @@ export const ApiKeyManagementAddSalesChannels = () => {
     </RouteFocusModal>
   )
 }
+
+

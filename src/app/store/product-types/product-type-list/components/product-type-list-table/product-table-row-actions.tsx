@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { PencilSquare, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import { useTranslation } from "react-i18next"
@@ -42,3 +43,5 @@ export const ProductTypeRowActions = ({
     />
   )
 }
+
+

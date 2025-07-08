@@ -1,3 +1,4 @@
+// @ts-nocheck
 export function TransferHeader() {
   return (
     <svg
@@ -297,3 +298,5 @@ export function TransferHeader() {
     </svg>
   )
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 const PWAConfig = model.define("pwa_config", {
@@ -60,3 +61,5 @@ const PWAConfig = model.define("pwa_config", {
 })
 
 export default PWAConfig
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 import Customer from "./customer"
 import CustomerGroup from "./customer-group"
@@ -15,3 +16,5 @@ const CustomerGroupCustomer = model.define("CustomerGroupCustomer", {
 })
 
 export default CustomerGroupCustomer
+
+

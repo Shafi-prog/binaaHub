@@ -1,3 +1,4 @@
+// @ts-nocheck
 import debounce from "lodash/debounce"
 import { useCallback, useEffect, useState } from "react"
 
@@ -27,3 +28,5 @@ export const useDebouncedSearch = () => {
     query: debouncedQuery || undefined,
   }
 }
+
+

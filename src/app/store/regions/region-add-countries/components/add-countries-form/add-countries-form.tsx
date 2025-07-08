@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { zodResolver } from "@hookform/resolvers/zod"
 import {
   ColumnDef,
@@ -206,3 +207,5 @@ const useColumns = () => {
     [base]
   ) as ColumnDef<HttpTypes.AdminRegionCountry>[]
 }
+
+

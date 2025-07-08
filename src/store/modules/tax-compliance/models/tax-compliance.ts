@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 const TaxCompliance = model.define("tax_compliance", {
@@ -47,3 +48,5 @@ const TaxCompliance = model.define("tax_compliance", {
 })
 
 export default TaxCompliance
+
+

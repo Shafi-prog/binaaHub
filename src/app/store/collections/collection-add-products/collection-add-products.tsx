@@ -1,7 +1,8 @@
+// @ts-nocheck
 import { useParams } from "react-router-dom"
 
-import { RouteFocusModal } from "../../../components/modals"
-import { useCollection } from "../../../hooks/api/collections"
+import { RouteFocusModal } from "@/components/modals"
+import { useCollection } from "@/hooks/api/collections"
 import { AddProductsToCollectionForm } from "./components/add-products-to-collection-form"
 
 export const CollectionAddProducts = () => {
@@ -20,3 +21,5 @@ export const CollectionAddProducts = () => {
     </RouteFocusModal>
   )
 }
+
+

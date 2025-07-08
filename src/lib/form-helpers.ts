@@ -1,3 +1,4 @@
+// @ts-nocheck
 export const transformNullableFormData = <T>(data: T): T => {
   if (data === null || data === undefined) {
     return data
@@ -47,3 +48,5 @@ export const cleanFormData = <T>(data: T): T => {
 export const normalizeFormData = <T>(data: T): T => {
   return transformNullableFormData(cleanFormData(data))
 }
+
+

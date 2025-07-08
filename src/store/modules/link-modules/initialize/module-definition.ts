@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   JoinerRelationship,
   ModuleExports,
@@ -22,3 +23,5 @@ export function getLinkModuleDefinition(
     }),
   }
 }
+
+

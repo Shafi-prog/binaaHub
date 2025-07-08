@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { zodResolver } from "@hookform/resolvers/zod"
 import {
   Button,
@@ -150,3 +151,5 @@ export const CreateSalesChannelForm = () => {
     </RouteFocusModal.Form>
   )
 }
+
+

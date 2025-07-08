@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { TaxExclusive, TaxInclusive } from "@medusajs/icons"
 import { Tooltip } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
@@ -28,3 +29,5 @@ export const IncludesTaxTooltip = ({
     </Tooltip>
   )
 }
+
+

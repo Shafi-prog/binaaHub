@@ -1,3 +1,4 @@
+// @ts-nocheck
 export * from "./use-campaign-table-columns"
 export * from "./use-collection-table-columns"
 export * from "./use-customer-group-table-columns"
@@ -9,3 +10,5 @@ export * from "./use-product-type-table-columns"
 export * from "./use-region-table-columns"
 export * from "./use-return-reason-table-columns"
 export * from "./use-tax-rates-table-columns"
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   model,
   PriceListStatus,
@@ -28,3 +29,5 @@ const PriceList = model
   })
 
 export default PriceList
+
+

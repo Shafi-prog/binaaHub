@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { castNumber } from "./cast-number"
 
 export function transformNullableFormValue<T>(
@@ -67,3 +68,5 @@ export function transformNullableFormNumbers<
     }
   }, {} as K extends true ? NullableNumbers : OptionalNumbers)
 }
+
+

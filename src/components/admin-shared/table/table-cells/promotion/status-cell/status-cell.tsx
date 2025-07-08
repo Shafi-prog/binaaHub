@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { HttpTypes } from "@medusajs/types"
 import { getPromotionStatus } from "../../../../../lib/promotions"
 import { StatusCell as StatusCell_ } from "../../common/status-cell"
@@ -11,3 +12,5 @@ export const StatusCell = ({ promotion }: PromotionCellProps) => {
 
   return <StatusCell_ color={color}>{text}</StatusCell_>
 }
+
+

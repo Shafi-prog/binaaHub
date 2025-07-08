@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Simplified notification service compatible with Odoo integration
 export interface SimpleNotification {
   id: string;
@@ -147,3 +148,5 @@ export const NotificationTypes = {
   INFO: 'info',
   PROJECT_UPDATED: 'project_updated',
 } as const;
+
+

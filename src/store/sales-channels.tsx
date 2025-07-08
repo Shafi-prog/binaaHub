@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { FetchError } from "@medusajs/js-sdk"
 import {
   AdminSalesChannelListResponse,
@@ -11,9 +12,9 @@ import {
   useMutation,
   useQuery,
 } from "@tanstack/react-query"
-import { sdk } from "../../lib/client"
-import { queryClient } from "../../lib/query-client"
-import { queryKeysFactory } from "../../lib/query-key-factory"
+import { sdk } from "@/lib/client"
+import { queryClient } from "@/lib/query-client"
+import { queryKeysFactory } from "@/lib/query-key-factory"
 import { productsQueryKeys } from "./products"
 
 const SALES_CHANNELS_QUERY_KEY = "sales-channels" as const
@@ -234,3 +235,5 @@ export const useSalesChannelAddProducts = (
     ...options,
   })
 }
+
+

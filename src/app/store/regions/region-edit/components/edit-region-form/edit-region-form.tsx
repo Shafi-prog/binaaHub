@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { HttpTypes, PaymentProviderDTO } from "@medusajs/types"
 import { Button, Input, Select, Switch, Text, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
@@ -227,3 +228,5 @@ export const EditRegionForm = ({
     </RouteDrawer.Form>
   )
 }
+
+

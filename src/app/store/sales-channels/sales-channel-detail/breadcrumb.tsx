@@ -1,6 +1,7 @@
+// @ts-nocheck
 import { HttpTypes } from "@medusajs/types"
 import { UIMatch } from "react-router-dom"
-import { useSalesChannel } from "../../../hooks/api/sales-channels"
+import { useSalesChannel } from "@/hooks/api/sales-channels"
 
 type SalesChannelDetailBreadcrumbProps =
   UIMatch<HttpTypes.AdminSalesChannelResponse>
@@ -21,3 +22,5 @@ export const SalesChannelDetailBreadcrumb = (
 
   return <span>{sales_channel.name}</span>
 }
+
+

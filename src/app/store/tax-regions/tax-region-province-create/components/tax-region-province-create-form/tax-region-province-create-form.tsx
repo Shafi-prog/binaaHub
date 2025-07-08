@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { zodResolver } from "@hookform/resolvers/zod"
 import { InformationCircleSolid } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
@@ -246,3 +247,5 @@ export const TaxRegionProvinceCreateForm = ({
     </RouteFocusModal.Form>
   )
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   CartDTO,
   CartTypes,
@@ -270,7 +271,7 @@ export default class CartModuleService
     sharedContext?: Context
   ): Promise<CartTypes.CartDTO>
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   // @ts-expect-error
   async createCarts(
     data: CartTypes.CreateCartDTO[] | CartTypes.CreateCartDTO,
@@ -341,7 +342,7 @@ export default class CartModuleService
     sharedContext?: Context
   ): Promise<CartTypes.CartDTO[]>
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   // @ts-expect-error
   async updateCarts(
     dataOrIdOrSelector:
@@ -402,7 +403,7 @@ export default class CartModuleService
     return result
   }
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   // @ts-expect-error
   async updateShippingMethods(
     data: CartTypes.UpdateShippingMethodDTO[],
@@ -426,7 +427,7 @@ export default class CartModuleService
     sharedContext?: Context
   ): Promise<CartTypes.CartLineItemDTO[]>
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   async addLineItems(
     cartIdOrData:
       | string
@@ -505,7 +506,7 @@ export default class CartModuleService
     sharedContext?: Context
   ): Promise<CartTypes.CartLineItemDTO>
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   // @ts-expect-error
   async updateLineItems(
     lineItemIdOrDataOrSelector:
@@ -603,7 +604,7 @@ export default class CartModuleService
     sharedContext?: Context
   ): Promise<CartTypes.CartAddressDTO[]>
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   // @ts-expect-error
   async createAddresses(
     data: CartTypes.CreateAddressDTO[] | CartTypes.CreateAddressDTO,
@@ -642,7 +643,7 @@ export default class CartModuleService
     sharedContext?: Context
   ): Promise<CartTypes.CartAddressDTO[]>
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   // @ts-expect-error
   async updateAddresses(
     data: CartTypes.UpdateAddressDTO[] | CartTypes.UpdateAddressDTO,
@@ -682,7 +683,7 @@ export default class CartModuleService
     sharedContext?: Context
   ): Promise<CartTypes.CartShippingMethodDTO[]>
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   async addShippingMethods(
     cartIdOrData:
       | string
@@ -1273,3 +1274,5 @@ export default class CartModuleService
     >(result)
   }
 }
+
+

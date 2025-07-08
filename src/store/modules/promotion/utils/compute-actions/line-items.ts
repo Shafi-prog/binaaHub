@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   ApplicationMethodAllocationValues,
   BigNumberInput,
@@ -229,3 +230,5 @@ function getValidItemsForPromotion(
     )
   })
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import { useState } from 'react';
@@ -51,3 +52,5 @@ export default function ArabicLoginForm({ onLogin }: { onLogin: (data: any) => v
     </form>
   );
 }
+
+

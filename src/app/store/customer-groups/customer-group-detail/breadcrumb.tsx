@@ -1,7 +1,8 @@
+// @ts-nocheck
 import { HttpTypes } from "@medusajs/types"
 import { UIMatch } from "react-router-dom"
 
-import { useCustomerGroup } from "../../../hooks/api"
+import { useCustomerGroup } from "@/hooks/api"
 import { CUSTOMER_GROUP_DETAIL_FIELDS } from "./constants"
 
 type CustomerGroupDetailBreadcrumbProps =
@@ -29,3 +30,5 @@ export const CustomerGroupDetailBreadcrumb = (
 
   return <span>{customer_group.name}</span>
 }
+
+

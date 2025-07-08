@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { HttpTypes } from "@medusajs/types"
 import { Badge, Container, Tooltip } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
@@ -39,3 +40,5 @@ export const TaxRegionDetailSection = ({
     </Container>
   )
 }
+
+

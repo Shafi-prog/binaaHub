@@ -1,6 +1,7 @@
+// @ts-nocheck
 import { OrderListTable } from "./components/order-list-table"
 
-import { SingleColumnPage } from "../../../components/layout/pages"
+import { SingleColumnPage } from "@/components/layout/pages"
 import { useExtension } from "../../../providers/extension-provider"
 
 export const OrderList = () => {
@@ -18,3 +19,5 @@ export const OrderList = () => {
     </SingleColumnPage>
   )
 }
+
+

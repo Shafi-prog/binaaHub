@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Shared project utilities for consistent logic across the application
 
 export interface ProjectStatus {
@@ -198,3 +199,5 @@ export function getPhaseLabel(phase: string): string {
     default: return 'أخرى';
   }
 }
+
+

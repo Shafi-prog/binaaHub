@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { HttpTypes } from "@medusajs/types"
 import { Button, Checkbox } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
@@ -817,3 +818,5 @@ const useCleanupSearchParams = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 }
+
+

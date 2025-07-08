@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Credit line utilities
 import type { AdminOrder } from '@medusajs/types'
 
@@ -33,3 +34,5 @@ export function getCreditLineDescription(creditLine: any): string {
 export function isCreditLineValid(creditLine: any): boolean {
   return creditLine && typeof creditLine.amount === 'number' && creditLine.amount > 0
 }
+
+

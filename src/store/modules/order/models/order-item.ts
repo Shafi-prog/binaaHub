@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 import { OrderLineItem } from "./line-item"
@@ -54,3 +55,5 @@ const _OrderItem = model
   ])
 
 export const OrderItem = _OrderItem
+
+

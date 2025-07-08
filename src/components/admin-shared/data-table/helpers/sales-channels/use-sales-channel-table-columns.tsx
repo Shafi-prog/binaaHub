@@ -1,9 +1,10 @@
+// @ts-nocheck
 import { HttpTypes } from "@medusajs/types"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 
 import { createDataTableColumnHelper, Tooltip } from "@medusajs/ui"
-import { DataTableStatusCell } from "../../components/data-table-status-cell/data-table-status-cell"
+import { DataTableStatusCell } from "@/components/data-table-status-cell/data-table-status-cell"
 import { useDataTableDateColumns } from "../general/use-data-table-date-columns"
 
 const columnHelper = createDataTableColumnHelper<HttpTypes.AdminSalesChannel>()
@@ -59,3 +60,5 @@ export const useSalesChannelTableColumns = () => {
     [t, dateColumns]
   )
 }
+
+

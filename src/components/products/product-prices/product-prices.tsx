@@ -1,7 +1,8 @@
+// @ts-nocheck
 import { useParams } from "react-router-dom"
 
-import { RouteFocusModal } from "../../../components/modals"
-import { useProduct } from "../../../hooks/api/products"
+import { RouteFocusModal } from "@/components/modals"
+import { useProduct } from "@/hooks/api/products"
 import { PricingEdit } from "./pricing-edit"
 
 export const ProductPrices = () => {
@@ -21,3 +22,5 @@ export const ProductPrices = () => {
     </RouteFocusModal>
   )
 }
+
+

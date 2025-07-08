@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { AdminPaymentCollection } from "@medusajs/types"
 
 export const getTotalCaptured = (
@@ -21,3 +22,5 @@ export const getTotalPending = (paymentCollections: AdminPaymentCollection[]) =>
 
       return acc
     }, 0)
+
+

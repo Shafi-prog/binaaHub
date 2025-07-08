@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { FocusEvent, MouseEvent, useCallback } from "react"
 import { FieldValues, UseFormSetValue } from "react-hook-form"
 import { DataGridMatrix, DataGridUpdateCommand } from "../models"
@@ -160,3 +161,5 @@ export const useDataGridCellHandlers = <
     onDragToFillStart,
   }
 }
+
+

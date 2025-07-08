@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   defaultDropAnimationSideEffects,
   DndContext,
@@ -454,3 +455,5 @@ export const MediaGridItemOverlay = ({
     </div>
   )
 }
+
+

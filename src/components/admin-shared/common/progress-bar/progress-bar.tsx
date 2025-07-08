@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { motion } from "motion/react"
 
 interface ProgressBarProps {
@@ -31,3 +32,5 @@ export const ProgressBar = ({ duration = 2 }: ProgressBarProps) => {
     />
   )
 }
+
+

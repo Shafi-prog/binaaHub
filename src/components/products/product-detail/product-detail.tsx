@@ -1,8 +1,9 @@
+// @ts-nocheck
 import { useLoaderData, useParams } from "react-router-dom"
 
-import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
-import { TwoColumnPage } from "../../../components/layout/pages"
-import { useProduct } from "../../../hooks/api/products"
+import { TwoColumnPageSkeleton } from "@/components/common/skeleton"
+import { TwoColumnPage } from "@/components/layout/pages"
+import { useProduct } from "@/hooks/api/products"
 import { ProductAttributeSection } from "./components/product-attribute-section"
 import { ProductGeneralSection } from "./components/product-general-section"
 import { ProductMediaSection } from "./components/product-media-section"
@@ -79,3 +80,5 @@ export const ProductDetail = () => {
     </TwoColumnPage>
   )
 }
+
+

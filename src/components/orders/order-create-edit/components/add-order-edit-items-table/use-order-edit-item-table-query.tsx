@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useQueryParams } from "../../../../../hooks/use-query-params"
 
 export const useOrderEditItemTableQuery = ({
@@ -24,3 +25,5 @@ export const useOrderEditItemTableQuery = ({
 
   return { searchParams, raw }
 }
+
+

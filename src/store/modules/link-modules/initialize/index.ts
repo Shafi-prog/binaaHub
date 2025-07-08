@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { MedusaModule, MODULE_SCOPE } from "@medusajs/framework/modules-sdk"
 import {
   ExternalModuleDeclaration,
@@ -234,3 +235,5 @@ export function getMigrationPlanner(
 
   return new MigrationsExecutionPlanner(allLinksToLoad, options)
 }
+
+

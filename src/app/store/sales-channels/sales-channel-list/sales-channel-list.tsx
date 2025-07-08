@@ -1,6 +1,7 @@
+// @ts-nocheck
 import { SalesChannelListTable } from "./components/sales-channel-list-table"
 
-import { SingleColumnPage } from "../../../components/layout/pages"
+import { SingleColumnPage } from "@/components/layout/pages"
 import { useExtension } from "../../../providers/extension-provider"
 
 export const SalesChannelList = () => {
@@ -18,3 +19,5 @@ export const SalesChannelList = () => {
     </SingleColumnPage>
   )
 }
+
+

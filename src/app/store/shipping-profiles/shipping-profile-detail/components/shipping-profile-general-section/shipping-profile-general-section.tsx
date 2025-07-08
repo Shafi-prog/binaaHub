@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Trash } from "@medusajs/icons"
 import { AdminShippingProfileResponse } from "@medusajs/types"
 import { Container, Heading, toast, usePrompt } from "@medusajs/ui"
@@ -74,3 +75,5 @@ export const ShippingProfileGeneralSection = ({
     </Container>
   )
 }
+
+

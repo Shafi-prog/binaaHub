@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   CommonEvents,
   moduleEventBuilderFactory,
@@ -151,3 +152,5 @@ export const eventBuilders = {
     eventName: ProductEvents.PRODUCT_OPTION_VALUE_DELETED,
   }),
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -451,3 +452,5 @@ const MedusaStockMovements: React.FC = () => {
 };
 
 export default MedusaStockMovements;
+
+

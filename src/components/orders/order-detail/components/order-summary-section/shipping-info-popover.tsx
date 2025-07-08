@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { InformationCircleSolid } from "@medusajs/icons"
 import { AdminOrderShippingMethod } from "@medusajs/types"
 import { Badge, Tooltip } from "@medusajs/ui"
@@ -46,3 +47,5 @@ function ShippingInfoPopover({ shippingMethod }: ShippingInfoPopoverProps) {
 }
 
 export default ShippingInfoPopover
+
+

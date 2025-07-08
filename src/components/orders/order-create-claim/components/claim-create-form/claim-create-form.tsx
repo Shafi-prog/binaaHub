@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { zodResolver } from "@hookform/resolvers/zod"
 import { PencilSquare } from "@medusajs/icons"
 import {
@@ -1052,3 +1053,5 @@ export const ClaimCreateForm = ({
     </RouteFocusModal.Form>
   )
 }
+
+

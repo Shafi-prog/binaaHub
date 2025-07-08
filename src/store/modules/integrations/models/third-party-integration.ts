@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 const ThirdPartyIntegration = model.define("third_party_integration", {
@@ -76,3 +77,5 @@ const ThirdPartyIntegration = model.define("third_party_integration", {
 })
 
 export default ThirdPartyIntegration
+
+

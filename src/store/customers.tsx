@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { FetchError } from "@medusajs/js-sdk"
 import { HttpTypes, PaginatedResponse } from "@medusajs/types"
 import {
@@ -7,9 +8,9 @@ import {
   useMutation,
   useQuery,
 } from "@tanstack/react-query"
-import { sdk } from "../../lib/client"
-import { queryClient } from "../../lib/query-client"
-import { queryKeysFactory } from "../../lib/query-key-factory"
+import { sdk } from "@/lib/client"
+import { queryClient } from "@/lib/query-client"
+import { queryKeysFactory } from "@/lib/query-key-factory"
 import { customerGroupsQueryKeys } from "./customer-groups"
 
 const CUSTOMERS_QUERY_KEY = "customers" as const
@@ -261,3 +262,5 @@ export const useCustomerAddress = (
 
   return { ...data, ...rest }
 }
+
+

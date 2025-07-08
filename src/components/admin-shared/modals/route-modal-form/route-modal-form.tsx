@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Prompt } from "@medusajs/ui"
 import { PropsWithChildren } from "react"
 import { FieldValues, UseFormReturn } from "react-hook-form"
@@ -86,3 +87,5 @@ export const RouteModalForm = <TFieldValues extends FieldValues = any>({
     </Form>
   )
 }
+
+

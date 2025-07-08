@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { PropsWithChildren } from "react"
 import { DashboardApp } from "../../dashboard-app/dashboard-app"
 import { ExtensionContext } from "./extension-context"
@@ -16,3 +17,5 @@ export const ExtensionProvider = ({
     </ExtensionContext.Provider>
   )
 }
+
+

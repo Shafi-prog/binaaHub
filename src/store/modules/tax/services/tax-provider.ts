@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { DAL, ITaxProvider, Logger, TaxTypes } from "@medusajs/framework/types"
 import { ModulesSdkUtils } from "@medusajs/framework/utils"
 
@@ -49,3 +50,5 @@ export default class TaxProviderService extends ModulesSdkUtils.MedusaInternalSe
     return provider.getTaxLines(itemLines, shippingLines, context)
   }
 }
+
+

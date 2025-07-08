@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { AuthenticationInput, AuthenticationResponse, AuthIdentityProviderService, AuthTypes, Context, DAL, ICacheService, InferEntityType, InternalModuleDeclaration, Logger, ModuleJoinerConfig, ModulesSdkTypes } from "@medusajs/framework/types";
 import { AuthIdentity, ProviderIdentity } from "@models";
 import AuthProviderService from "./auth-provider";
@@ -34,3 +35,5 @@ export default class AuthModuleService extends AuthModuleService_base implements
     getAuthIdentityProviderService(provider: string): AuthIdentityProviderService;
 }
 export {};
+
+

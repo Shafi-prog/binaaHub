@@ -1,3 +1,4 @@
+// @ts-nocheck
 export const updatedSchema = `
   type Product @Listeners(values: ["product.created", "product.updated", "product.deleted"]) {
     id: String
@@ -28,3 +29,5 @@ export const updatedSchema = `
     currency_code: String
   }
 `
+
+

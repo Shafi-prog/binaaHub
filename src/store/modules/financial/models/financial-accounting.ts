@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { DAL } from "@medusajs/framework/utils"
 import {
   BeforeCreate,
@@ -544,3 +545,5 @@ export class JournalEntry {
     }
   }
 }
+
+

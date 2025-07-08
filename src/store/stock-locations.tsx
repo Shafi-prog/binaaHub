@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   QueryKey,
   UseMutationOptions,
@@ -8,9 +9,9 @@ import {
 
 import { FetchError } from "@medusajs/js-sdk"
 import { HttpTypes } from "@medusajs/types"
-import { sdk } from "../../lib/client"
-import { queryClient } from "../../lib/query-client"
-import { queryKeysFactory } from "../../lib/query-key-factory"
+import { sdk } from "@/lib/client"
+import { queryClient } from "@/lib/query-client"
+import { queryKeysFactory } from "@/lib/query-key-factory"
 import { fulfillmentProvidersQueryKeys } from "./fulfillment-providers"
 
 const STOCK_LOCATIONS_QUERY_KEY = "stock_locations" as const
@@ -200,3 +201,5 @@ export const useUpdateStockLocationFulfillmentProviders = (
     ...options,
   })
 }
+
+

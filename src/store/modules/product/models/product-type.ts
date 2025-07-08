@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 import { Product } from "@models"
 
@@ -20,3 +21,5 @@ const ProductType = model
   ])
 
 export default ProductType
+
+

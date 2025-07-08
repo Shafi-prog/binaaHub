@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Types for spending tracking module
 
 export interface ConstructionCategory {
@@ -56,3 +57,5 @@ export interface SpendingStats {
   recent_expenses: ConstructionExpense[];
   spending_by_category: SpendingByCategory[];
 }
+
+

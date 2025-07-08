@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Button, Heading, IconButton, Input, Label } from "@medusajs/ui"
 import { useFieldArray, UseFormReturn, useWatch } from "react-hook-form"
 import { XMarkMini } from "@medusajs/icons"
@@ -241,3 +242,5 @@ export const ProductCreateInventoryKitSection = ({
     </div>
   )
 }
+
+

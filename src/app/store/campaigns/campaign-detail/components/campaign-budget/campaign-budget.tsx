@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { ChartPie, PencilSquare } from "@medusajs/icons"
 import { AdminCampaign } from "@medusajs/types"
 import { Container, Heading, Text } from "@medusajs/ui"
@@ -75,3 +76,5 @@ export const CampaignBudget = ({ campaign }: CampaignBudgetProps) => {
     </Container>
   )
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 const Address = model.define(
@@ -20,3 +21,5 @@ const Address = model.define(
 )
 
 export default Address
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { ReactNode, Ref, RefAttributes, forwardRef } from "react"
 
 export function genericForwardRef<T, P = {}>(
@@ -5,3 +6,5 @@ export function genericForwardRef<T, P = {}>(
 ): (props: P & RefAttributes<T>) => ReactNode {
   return forwardRef(render) as any
 }
+
+

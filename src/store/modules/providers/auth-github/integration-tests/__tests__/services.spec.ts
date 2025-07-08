@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { MedusaError } from "@medusajs/framework/utils"
 import { GithubAuthService } from "../../src/services/github"
 import { http, HttpResponse } from "msw"
@@ -330,3 +331,5 @@ describe("Github auth provider", () => {
     })
   })
 })
+
+

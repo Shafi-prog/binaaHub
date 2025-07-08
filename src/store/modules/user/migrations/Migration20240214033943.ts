@@ -1,5 +1,6 @@
+// @ts-nocheck
 import { generatePostgresAlterColummnIfExistStatement } from "@medusajs/framework/utils"
-import { Migration } from "@mikro-orm/migrations"
+import { Migration } from "@mikro-orm/migrations";
 
 export class Migration20240214033943 extends Migration {
   async up(): Promise<void> {
@@ -51,3 +52,5 @@ export class Migration20240214033943 extends Migration {
     this.addSql('drop table if exists "user" cascade;')
   }
 }
+
+

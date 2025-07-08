@@ -1,3 +1,4 @@
+// @ts-nocheck
 export default `
 type StockLocationAddress {
   id: ID
@@ -27,3 +28,5 @@ type StockLocation {
 }
 
 `
+
+

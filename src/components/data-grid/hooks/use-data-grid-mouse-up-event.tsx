@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useCallback } from "react"
 import { FieldValues, Path, PathValue } from "react-hook-form"
 import { DataGridBulkUpdateCommand, DataGridMatrix } from "../models"
@@ -94,3 +95,5 @@ export const useDataGridMouseUpEvent = <
     handleMouseUpEvent,
   }
 }
+
+

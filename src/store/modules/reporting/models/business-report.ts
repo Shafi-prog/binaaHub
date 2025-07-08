@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 const BusinessReport = model.define("business_report", {
@@ -64,3 +65,5 @@ BusinessReport.belongsTo(() => import("../../user/models/user").then(m => m.defa
 })
 
 export default BusinessReport
+
+

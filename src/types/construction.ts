@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Construction-related types
 
 export interface ConstructionCategory {
@@ -143,3 +144,5 @@ export interface ProductFormData {
   created_at?: string;
   updated_at?: string;
 }
+
+

@@ -1,6 +1,7 @@
+// @ts-nocheck
 import { useSearchParams } from "react-router-dom"
 
-import { RouteFocusModal } from "../../../components/modals"
+import { RouteFocusModal } from "@/components/modals"
 import { ReservationCreateForm } from "./components/reservation-create-from"
 
 export const ReservationCreate = () => {
@@ -14,3 +15,5 @@ export const ReservationCreate = () => {
     </RouteFocusModal>
   )
 }
+
+

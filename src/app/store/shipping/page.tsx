@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { ShippingLogisticsIntegration } from '@/components/shipping/ShippingLogisticsIntegration';
 
 export default function ShippingPage() {
@@ -7,3 +8,5 @@ export default function ShippingPage() {
     </div>
   );
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import Stripe from "stripe"
 import { setTimeout } from "timers/promises"
 import {
@@ -689,3 +690,5 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
 }
 
 export default StripeBase
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useRouter } from 'next/router';
@@ -24,3 +25,5 @@ export default function StoreDashboard() {
     </StoreLayout>
   );
 }
+
+

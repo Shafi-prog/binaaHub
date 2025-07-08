@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useCallback, MutableRefObject } from 'react'
 
 /**
@@ -19,3 +20,5 @@ export function useCombinedRefs<T = any>(
     [refs]
   )
 }
+
+

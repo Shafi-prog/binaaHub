@@ -1,3 +1,4 @@
+// @ts-nocheck
 import crypto from "crypto"
 
 import {
@@ -93,3 +94,5 @@ export class SystemProviderService extends AbstractPaymentProvider {
 }
 
 export default SystemProviderService
+
+

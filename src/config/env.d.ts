@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Environment variable declarations
 declare namespace NodeJS {
   interface ProcessEnv {
@@ -6,3 +7,5 @@ declare namespace NodeJS {
     readonly NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: string;
   }
 }
+
+

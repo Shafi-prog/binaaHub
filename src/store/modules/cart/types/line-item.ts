@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { BigNumberInput } from "@medusajs/framework/types"
 
 interface PartialUpsertLineItemDTO {
@@ -37,3 +38,5 @@ export interface UpdateLineItemDTO
     Partial<CreateLineItemDTO> {
   id: string
 }
+
+

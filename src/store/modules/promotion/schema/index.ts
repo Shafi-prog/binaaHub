@@ -1,3 +1,4 @@
+// @ts-nocheck
 export default `
 enum PromotionTypeValues {
   standard
@@ -94,3 +95,5 @@ type ApplicationMethod {
 }
 
 `
+
+

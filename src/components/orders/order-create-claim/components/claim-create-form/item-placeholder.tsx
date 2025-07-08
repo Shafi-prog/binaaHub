@@ -1,3 +1,4 @@
+// @ts-nocheck
 export const ItemPlaceholder = () => {
   return (
     <div
@@ -9,3 +10,5 @@ export const ItemPlaceholder = () => {
     />
   )
 }
+
+

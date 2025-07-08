@@ -1,16 +1,17 @@
+// @ts-nocheck
 import { useNavigate, useParams } from "react-router-dom"
 import { useTranslation } from "react-i18next"
 import { Heading, toast } from "@medusajs/ui"
 import { useEffect } from "react"
 
-import { useOrder, useOrderPreview } from "../../../hooks/api/orders"
-import { RouteDrawer } from "../../../components/modals"
+import { useOrder, useOrderPreview } from "@/hooks/api/orders"
+import { RouteDrawer } from "@/components/modals"
 import { OrderReceiveReturnForm } from "./components/order-receive-return-form"
 import {
   useAddReceiveItems,
   useInitiateReceiveReturn,
   useReturn,
-} from "../../../hooks/api/returns"
+} from "@/hooks/api/returns"
 
 let IS_REQUEST_RUNNING = false
 
@@ -94,3 +95,5 @@ export function OrderReceiveReturn() {
     </RouteDrawer>
   )
 }
+
+

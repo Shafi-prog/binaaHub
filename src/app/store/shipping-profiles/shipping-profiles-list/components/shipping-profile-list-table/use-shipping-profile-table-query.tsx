@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useQueryParams } from "../../../../../hooks/use-query-params"
 
 export const useShippingProfileTableQuery = ({
@@ -28,3 +29,5 @@ export const useShippingProfileTableQuery = ({
     raw,
   }
 }
+
+

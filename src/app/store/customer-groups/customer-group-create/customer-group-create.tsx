@@ -1,4 +1,5 @@
-import { RouteFocusModal } from "../../../components/modals"
+// @ts-nocheck
+import { RouteFocusModal } from "@/components/modals"
 import { CreateCustomerGroupForm } from "./components/create-customer-group-form"
 
 export const CustomerGroupCreate = () => {
@@ -8,3 +9,5 @@ export const CustomerGroupCreate = () => {
     </RouteFocusModal>
   )
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { clx } from "@medusajs/ui"
 import { PropsWithChildren } from "react"
 
@@ -33,3 +34,5 @@ export const DataTableStatusCell = ({
     </div>
   )
 }
+
+

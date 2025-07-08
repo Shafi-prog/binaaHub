@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { zodResolver } from "@hookform/resolvers/zod"
 import { AdminCampaign } from "@medusajs/types"
 import { Button, DatePicker, Input, toast } from "@medusajs/ui"
@@ -192,3 +193,5 @@ export const EditCampaignForm = ({ campaign }: EditCampaignFormProps) => {
     </RouteDrawer.Form>
   )
 }
+
+

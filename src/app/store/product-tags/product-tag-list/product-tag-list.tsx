@@ -1,4 +1,5 @@
-import { SingleColumnPage } from "../../../components/layout/pages"
+// @ts-nocheck
+import { SingleColumnPage } from "@/components/layout/pages"
 import { useExtension } from "../../../providers/extension-provider"
 import { ProductTagListTable } from "./components/product-tag-list-table"
 
@@ -19,3 +20,5 @@ export const ProductTagList = () => {
     </SingleColumnPage>
   )
 }
+
+

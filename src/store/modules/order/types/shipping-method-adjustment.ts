@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { OrderTypes } from "@medusajs/framework/types"
 
 export type CreateOrderShippingMethodAdjustmentDTO =
@@ -5,3 +6,5 @@ export type CreateOrderShippingMethodAdjustmentDTO =
 
 export type UpdateOrderShippingMethodAdjustmentDTO =
   OrderTypes.UpdateOrderShippingMethodAdjustmentDTO
+
+

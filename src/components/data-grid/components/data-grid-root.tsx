@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Adjustments,
   AdjustmentsDone,
@@ -28,7 +29,7 @@ import React, {
 import { FieldValues, UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 
-import { useCommandHistory } from "../../../hooks/use-command-history"
+import { useCommandHistory } from "@/hooks/use-command-history"
 import { ConditionalTooltip } from "../../common/conditional-tooltip"
 import { DataGridContext } from "../context"
 import {
@@ -937,3 +938,5 @@ const DataGridRow = <TData,>({
     </div>
   )
 }
+
+

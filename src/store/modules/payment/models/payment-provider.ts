@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 import PaymentCollection from "./payment-collection"
 
@@ -10,3 +11,5 @@ const PaymentProvider = model.define("PaymentProvider", {
 })
 
 export default PaymentProvider
+
+

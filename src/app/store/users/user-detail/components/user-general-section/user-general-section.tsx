@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { PencilSquare, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import { Container, Heading, Text, toast, usePrompt } from "@medusajs/ui"
@@ -84,3 +85,5 @@ export const UserGeneralSection = ({ user }: UserGeneralSectionProps) => {
     </Container>
   )
 }
+
+

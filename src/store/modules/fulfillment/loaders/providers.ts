@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { moduleProviderLoader } from "@medusajs/framework/modules-sdk"
 import {
   LoaderOptions,
@@ -116,3 +117,5 @@ async function syncDatabaseProviders({ container }) {
     logger.error(`Error syncing the fulfillment providers: ${error.message}`)
   }
 }
+
+

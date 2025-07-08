@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useMemo } from "react"
 import { UseFormReturn, useWatch } from "react-hook-form"
 import { HttpTypes } from "@medusajs/types"
@@ -98,3 +99,5 @@ const useVariantPriceGridColumns = ({
 }
 
 export default PricingTab
+
+

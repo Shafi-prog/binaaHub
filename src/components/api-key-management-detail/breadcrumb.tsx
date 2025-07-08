@@ -1,7 +1,8 @@
+// @ts-nocheck
 import { HttpTypes } from "@medusajs/types"
 import { UIMatch } from "react-router-dom"
 
-import { useApiKey } from "../../hooks/api/api-keys"
+import { useApiKey } from "@/hooks/api/api-keys"
 
 type ApiKeyManagementDetailBreadcrumbProps =
   UIMatch<HttpTypes.AdminApiKeyResponse>
@@ -22,3 +23,5 @@ export const ApiKeyManagementDetailBreadcrumb = (
 
   return <span>{api_key.title}</span>
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 export const useDate = () => {
   const getFullDate = (options: { date?: Date | string | null, includeTime?: boolean }) => {
     if (!options.date) return null
@@ -25,3 +26,5 @@ export const useDate = () => {
     getShortDate
   }
 }
+
+

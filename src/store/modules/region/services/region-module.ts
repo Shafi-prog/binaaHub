@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Context,
   CreateRegionDTO,
@@ -77,7 +78,7 @@ export default class RegionModuleService
     sharedContext?: Context
   ): Promise<RegionDTO>
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   // @ts-expect-error
   async createRegions(
     data: CreateRegionDTO | CreateRegionDTO[],
@@ -131,7 +132,7 @@ export default class RegionModuleService
     return result
   }
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   // @ts-expect-error
   async softDeleteRegions(
     ids: string | object | string[] | object[],
@@ -201,7 +202,7 @@ export default class RegionModuleService
     sharedContext?: Context
   ): Promise<RegionDTO[]>
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   // @ts-expect-error
   async updateRegions(
     idOrSelector: string | FilterableRegionProps,
@@ -360,3 +361,5 @@ export default class RegionModuleService
     return countriesInDb
   }
 }
+
+

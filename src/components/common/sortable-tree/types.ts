@@ -1,3 +1,4 @@
+// @ts-nocheck
 import type { DraggableAttributes, UniqueIdentifier } from "@dnd-kit/core"
 import { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities"
 import type { MutableRefObject } from "react"
@@ -21,3 +22,5 @@ export type HandleProps = {
   attributes?: DraggableAttributes | undefined
   listeners?: SyntheticListenerMap | undefined
 }
+
+

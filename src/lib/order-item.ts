@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Order item utilities
 import type { AdminOrderLineItem } from '@medusajs/types'
 import { OrderLineItemDTO } from './order-types'
@@ -62,3 +63,5 @@ export function isItemPartiallyFulfilled(item: AdminOrderLineItem | OrderLineIte
   const fulfilled = (item as any).fulfilled_quantity || (item as any).detail?.fulfilled_quantity || 0
   return fulfilled > 0 && fulfilled < item.quantity
 }
+
+

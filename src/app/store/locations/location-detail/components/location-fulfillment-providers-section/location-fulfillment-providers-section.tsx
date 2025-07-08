@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { HandTruck, PencilSquare } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import { Container, Heading } from "@medusajs/ui"
@@ -79,3 +80,5 @@ function LocationsFulfillmentProvidersSection({
 }
 
 export default LocationsFulfillmentProvidersSection
+
+

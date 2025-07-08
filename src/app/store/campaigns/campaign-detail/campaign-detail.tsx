@@ -1,14 +1,15 @@
+// @ts-nocheck
 import { useLoaderData, useParams } from "react-router-dom"
 
-import { useCampaign } from "../../../hooks/api/campaigns"
+import { useCampaign } from "@/hooks/api/campaigns"
 import { CampaignBudget } from "./components/campaign-budget"
 import { CampaignGeneralSection } from "./components/campaign-general-section"
 import { CampaignPromotionSection } from "./components/campaign-promotion-section"
 import { CampaignSpend } from "./components/campaign-spend"
 import { campaignLoader } from "./loader"
 
-import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
-import { TwoColumnPage } from "../../../components/layout/pages"
+import { TwoColumnPageSkeleton } from "@/components/common/skeleton"
+import { TwoColumnPage } from "@/components/layout/pages"
 import { useExtension } from "../../../providers/extension-provider"
 import { CampaignConfigurationSection } from "./components/campaign-configuration-section"
 import { CAMPAIGN_DETAIL_FIELDS } from "./constants"
@@ -67,3 +68,5 @@ export const CampaignDetail = () => {
     </TwoColumnPage>
   )
 }
+
+

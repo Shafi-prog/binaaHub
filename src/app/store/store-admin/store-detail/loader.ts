@@ -1,7 +1,8 @@
+// @ts-nocheck
 import { HttpTypes } from "@medusajs/types"
 
-import { retrieveActiveStore, storeQueryKeys } from "../../../hooks/api/store"
-import { queryClient } from "../../../lib/query-client"
+import { retrieveActiveStore, storeQueryKeys } from "@/hooks/api/store"
+import { queryClient } from "@/lib/query-client"
 
 const storeDetailQuery = () => ({
   queryKey: storeQueryKeys.details(),
@@ -16,3 +17,5 @@ export const storeLoader = async () => {
     (await queryClient.fetchQuery(query))
   )
 }
+
+

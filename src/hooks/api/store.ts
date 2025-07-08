@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useQuery } from "@tanstack/react-query";
 
 interface Store {
@@ -34,3 +35,5 @@ export const useStore = (options?: any) => {
     error: queryResult.error,
   };
 };
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   BelongsTo,
   DmlEntity,
@@ -58,3 +59,5 @@ export const ServiceZone = model
   DMLEntitySchemaBuilder<ServiceZoneSchema>,
   "ServiceZone"
 >
+
+

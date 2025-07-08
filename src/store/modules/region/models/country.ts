@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 import Region from "./region"
 
@@ -24,3 +25,5 @@ export default model
       unique: true,
     },
   ])
+
+

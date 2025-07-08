@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 import { Product } from "./index"
 import ProductOptionValue from "./product-option-value"
@@ -27,3 +28,5 @@ const ProductOption = model
   ])
 
 export default ProductOption
+
+

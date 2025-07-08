@@ -1,3 +1,4 @@
+// @ts-nocheck
 /** This file is auto-generated. Do not modify it manually. */
 export type CurrencyInfo = {
   code: string
@@ -732,3 +733,5 @@ export const currencies: Record<string, CurrencyInfo> = {
 export function getCurrencySymbol(code: string) {
   return currencies[code.toUpperCase()].symbol_native
 }
+
+

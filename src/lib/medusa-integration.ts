@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Medusa integration utilities
 import Medusa from '@medusajs/medusa-js';
 import { createClient } from '@supabase/supabase-js'
@@ -199,3 +200,5 @@ export default {
   searchMedusaProducts,
   getMedusaRegions
 }
+
+

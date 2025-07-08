@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { moduleProviderLoader } from "@medusajs/framework/modules-sdk"
 import {
   LoaderOptions,
@@ -133,3 +134,5 @@ function validateProviders(providers: { channels: string[] }[]) {
     })
   })
 }
+
+

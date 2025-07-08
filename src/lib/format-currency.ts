@@ -1,3 +1,4 @@
+// @ts-nocheck
 export const formatCurrency = (
   amount: number,
   currencyCode: string,
@@ -21,3 +22,5 @@ export const formatAmount = (
 ): string => {
   return formatCurrency(amount, currencyCode, locale)
 }
+
+

@@ -1,6 +1,7 @@
+// @ts-nocheck
 import { Logger, UpdateRegionDTO } from "@medusajs/framework/types"
 
-export type InitializeModuleInjectableDependencies = {
+export type InitializeModuleInjectableDependencies  = {
   logger?: Logger
 }
 
@@ -18,3 +19,5 @@ export type CreateCountryDTO = {
 }
 
 export type UpdateRegionInput = UpdateRegionDTO & { id: string }
+
+

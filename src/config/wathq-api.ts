@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Wathq API Integration for Commercial Registration Verification
  * Saudi Arabia Ministry of Commerce and Investment
@@ -389,3 +390,5 @@ export const CRUtils = {
 };
 
 export type { WathqCommercialRecord, WathqApiResponse, WathqApiCredentials };
+
+

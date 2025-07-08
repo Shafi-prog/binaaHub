@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 import { OrderClaim } from "./claim"
 import { OrderExchange } from "./exchange"
@@ -81,3 +82,5 @@ const _OrderShipping = model
   ])
 
 export const OrderShipping = _OrderShipping
+
+

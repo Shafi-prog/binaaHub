@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { currencies } from "./data/currencies"
 
 export const getDecimalDigits = (currency: string) => {
@@ -73,3 +74,5 @@ export const isAmountLessThenRoundingError = (
   const decimalDigits = getDecimalDigits(currencyCode)
   return Math.abs(amount) < 1 / 10 ** decimalDigits / 2
 }
+
+

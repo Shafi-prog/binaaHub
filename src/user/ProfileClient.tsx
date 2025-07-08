@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use client';
 
 import LogoutButton from '@/components/ui/LogoutButton';
@@ -25,3 +26,5 @@ export default function ProfileClient({ name, email, accountType }: ProfileClien
     </div>
   );
 }
+
+

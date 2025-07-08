@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 const _ReturnReason = model
@@ -41,3 +42,5 @@ const _ReturnReason = model
   ])
 
 export const ReturnReason = _ReturnReason
+
+

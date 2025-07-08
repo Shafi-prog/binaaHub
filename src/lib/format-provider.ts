@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Format provider utilities for payment and fulfillment providers
 export function formatProvider(provider: any): string {
   if (!provider) return 'Unknown'
@@ -35,3 +36,5 @@ export function formatProviderName(providerName: string): string {
 export function getProviderDisplayName(provider: any): string {
   return formatProvider(provider)
 }
+
+

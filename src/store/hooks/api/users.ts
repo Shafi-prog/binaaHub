@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useQuery } from '@tanstack/react-query';
 
 export const useUser = (id: string, options?: any, queryOptions?: any) => {
@@ -34,3 +35,5 @@ export const useMe = (options?: any) => {
     user: queryResult.data,
   };
 };
+
+

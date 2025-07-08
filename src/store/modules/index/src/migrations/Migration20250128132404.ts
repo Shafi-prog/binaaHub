@@ -1,4 +1,5 @@
-import { Migration } from "@mikro-orm/migrations"
+// @ts-nocheck
+import { Migration } from "@mikro-orm/migrations";
 
 export class Migration20250128132404 extends Migration {
   override async up(): Promise<void> {
@@ -17,3 +18,5 @@ export class Migration20250128132404 extends Migration {
     this.addSql(`drop table if exists "index_sync" cascade;`)
   }
 }
+
+

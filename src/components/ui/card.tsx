@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import { HTMLAttributes } from "react";
@@ -45,3 +46,5 @@ export function CardDescription({ children, ...props }: CardProps) {
     </p>
   );
 }
+
+

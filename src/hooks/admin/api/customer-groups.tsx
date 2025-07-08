@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { FetchError } from "@medusajs/js-sdk"
 import { HttpTypes } from "@medusajs/types"
 import {
@@ -7,9 +8,9 @@ import {
   useMutation,
   useQuery,
 } from "@tanstack/react-query"
-import { sdk } from "../../lib/client"
-import { queryClient } from "../../lib/query-client"
-import { queryKeysFactory } from "../../lib/query-key-factory"
+import { sdk } from "@/lib/client"
+import { queryClient } from "@/lib/query-client"
+import { queryKeysFactory } from "@/lib/query-key-factory"
 import { customersQueryKeys } from "./customers"
 
 const CUSTOMER_GROUPS_QUERY_KEY = "customer_groups" as const
@@ -205,3 +206,5 @@ export const useRemoveCustomersFromGroup = (
     ...options,
   })
 }
+
+

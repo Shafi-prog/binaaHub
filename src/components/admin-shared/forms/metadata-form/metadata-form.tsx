@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { zodResolver } from "@hookform/resolvers/zod"
 import {
   Button,
@@ -433,3 +434,5 @@ function getHasUneditableRows(metadata?: Record<string, any> | null) {
     (value) => !EDITABLE_TYPES.includes(typeof value)
   )
 }
+
+

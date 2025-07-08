@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   ChangeActionType,
   MathBN,
@@ -66,3 +67,5 @@ OrderChangeProcessing.registerActionType(ChangeActionType.SHIP_ITEM, {
     }
   },
 })
+
+

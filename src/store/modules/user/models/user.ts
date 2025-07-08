@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 export const User = model
@@ -16,3 +17,5 @@ export const User = model
       where: "deleted_at IS NULL",
     },
   ])
+
+

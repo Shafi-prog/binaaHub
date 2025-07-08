@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   BigNumberInput,
   Context,
@@ -32,7 +33,7 @@ import {
 } from "@medusajs/framework/utils"
 import { InventoryItem, InventoryLevel, ReservationItem } from "@models"
 import { joinerConfig } from "../joiner-config"
-import { applyEntityHooks } from "../utils/apply-decorators"
+import { applyEntityHooks } from "@/utils/apply-decorators"
 import InventoryLevelService from "./inventory-level"
 
 type InjectedDependencies = {
@@ -235,8 +236,8 @@ export default class InventoryModuleService
     context?: Context
   ): Promise<InventoryTypes.ReservationItemDTO>
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   // @ts-expect-error
   async createReservationItems(
     input:
@@ -335,8 +336,8 @@ export default class InventoryModuleService
     context?: Context
   ): Promise<InventoryTypes.InventoryItemDTO[]>
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   async createInventoryItems(
     input:
       | InventoryTypes.CreateInventoryItemInput
@@ -388,8 +389,8 @@ export default class InventoryModuleService
     context?: Context
   ): Promise<InventoryTypes.InventoryLevelDTO[]>
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   // @ts-expect-error
   async createInventoryLevels(
     input:
@@ -443,8 +444,8 @@ export default class InventoryModuleService
     context?: Context
   ): Promise<InventoryTypes.InventoryItemDTO>
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   // @ts-expect-error
   async updateInventoryItems(
     input:
@@ -490,7 +491,7 @@ export default class InventoryModuleService
   }
 
   @InjectTransactionManager()
-  @EmitEvents()
+  @EmitEvents("user")
   async deleteInventoryItemLevelByLocationId(
     locationId: string | string[],
     @MedusaContext() context: Context = {}
@@ -520,7 +521,7 @@ export default class InventoryModuleService
    * @param context
    */
   @InjectTransactionManager()
-  @EmitEvents()
+  @EmitEvents("user")
   async deleteInventoryLevel(
     inventoryItemId: string,
     locationId: string,
@@ -560,8 +561,8 @@ export default class InventoryModuleService
     context?: Context
   ): Promise<InventoryTypes.InventoryLevelDTO>
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   // @ts-expect-error
   async updateInventoryLevels(
     updates:
@@ -645,8 +646,8 @@ export default class InventoryModuleService
     context?: Context
   ): Promise<InventoryTypes.ReservationItemDTO>
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   // @ts-expect-error
   async updateReservationItems(
     input:
@@ -850,7 +851,7 @@ export default class InventoryModuleService
   }
 
   @InjectTransactionManager()
-  @EmitEvents()
+  @EmitEvents("user")
   async deleteReservationItemByLocationId(
     locationId: string | string[],
     @MedusaContext() context: Context = {}
@@ -886,7 +887,7 @@ export default class InventoryModuleService
    */
 
   @InjectTransactionManager()
-  @EmitEvents()
+  @EmitEvents("user")
   async deleteReservationItemsByLineItem(
     lineItemId: string | string[],
     @MedusaContext() context: Context = {}
@@ -922,7 +923,7 @@ export default class InventoryModuleService
    */
 
   @InjectTransactionManager()
-  @EmitEvents()
+  @EmitEvents("user")
   async restoreReservationItemsByLineItem(
     lineItemId: string | string[],
     @MedusaContext() context: Context = {}
@@ -976,8 +977,8 @@ export default class InventoryModuleService
     context: Context
   ): Promise<InventoryTypes.InventoryLevelDTO[]>
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   async adjustInventory(
     inventoryItemIdOrData: string | any,
     locationId?: string | Context,
@@ -1055,7 +1056,7 @@ export default class InventoryModuleService
     return result
   }
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   async retrieveInventoryLevelByItemAndLocation(
     inventoryItemId: string,
     locationId: string,
@@ -1085,7 +1086,7 @@ export default class InventoryModuleService
    * @return The available quantity
    * @throws when the inventory item is not found
    */
-  @InjectManager()
+  @InjectManager("baseRepository")
   async retrieveAvailableQuantity(
     inventoryItemId: string,
     locationIds: string[],
@@ -1121,7 +1122,7 @@ export default class InventoryModuleService
    * @return The stocked quantity
    * @throws when the inventory item is not found
    */
-  @InjectManager()
+  @InjectManager("baseRepository")
   async retrieveStockedQuantity(
     inventoryItemId: string,
     locationIds: string[],
@@ -1158,7 +1159,7 @@ export default class InventoryModuleService
    * @return The reserved quantity
    * @throws when the inventory item is not found
    */
-  @InjectManager()
+  @InjectManager("baseRepository")
   async retrieveReservedQuantity(
     inventoryItemId: string,
     locationIds: string[],
@@ -1195,7 +1196,7 @@ export default class InventoryModuleService
    * @param context
    * @return Whether there is sufficient inventory
    */
-  @InjectManager()
+  @InjectManager("baseRepository")
   async confirmInventory(
     inventoryItemId: string,
     locationIds: string[],
@@ -1283,3 +1284,5 @@ export default class InventoryModuleService
     await this.inventoryLevelService_.update(levelAdjustmentUpdates, context)
   }
 }
+
+

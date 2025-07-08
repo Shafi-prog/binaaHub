@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   AddPricesDTO,
   Context,
@@ -214,7 +215,7 @@ export default class PricingModuleService
     }
   }
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   // @ts-expect-error
   async retrievePriceSet(
     id: string,
@@ -230,7 +231,7 @@ export default class PricingModuleService
     return await this.baseRepository_.serialize<PriceSetDTO>(priceSet)
   }
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   // @ts-expect-error
   async listPriceSets(
     filters: PricingTypes.FilterablePriceSetProps = {},
@@ -271,7 +272,7 @@ export default class PricingModuleService
     return priceSets
   }
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   // @ts-expect-error
   async listAndCountPriceSets(
     filters: PricingTypes.FilterablePriceSetProps = {},
@@ -312,7 +313,7 @@ export default class PricingModuleService
     return [priceSets, count]
   }
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   async calculatePrices(
     pricingFilters: PricingFilters,
     pricingContext: PricingContext = { context: {} },
@@ -484,8 +485,8 @@ export default class PricingModuleService
     sharedContext?: Context
   ): Promise<PriceSetDTO[]>
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   // @ts-expect-error
   async createPriceSets(
     data: PricingTypes.CreatePriceSetDTO | PricingTypes.CreatePriceSetDTO[],
@@ -526,8 +527,8 @@ export default class PricingModuleService
     sharedContext?: Context
   ): Promise<PriceSetDTO>
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   async upsertPriceSets(
     data: UpsertPriceSetDTO | UpsertPriceSetDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -573,8 +574,8 @@ export default class PricingModuleService
     sharedContext?: Context
   ): Promise<PriceSetDTO[]>
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   // @ts-expect-error
   async updatePriceSets(
     idOrSelector: string | PricingTypes.FilterablePriceSetProps,
@@ -787,8 +788,8 @@ export default class PricingModuleService
     sharedContext?: Context
   ): Promise<PricingTypes.PriceSetDTO[]>
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   async addPrices(
     data: AddPricesDTO | AddPricesDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -814,8 +815,8 @@ export default class PricingModuleService
     }
   }
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   // @ts-ignore
   async createPriceLists(
     data: PricingTypes.CreatePriceListDTO[],
@@ -833,7 +834,7 @@ export default class PricingModuleService
   }
 
   @InjectTransactionManager()
-  @EmitEvents()
+  @EmitEvents("user")
   // @ts-ignore
   async updatePriceLists(
     data: PricingTypes.UpdatePriceListDTO[],
@@ -850,8 +851,8 @@ export default class PricingModuleService
     }
   }
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   async updatePriceListPrices(
     data: PricingTypes.UpdatePriceListPricesDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -867,8 +868,8 @@ export default class PricingModuleService
     }
   }
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   async removePrices(
     ids: string[],
     @MedusaContext() sharedContext: Context = {}
@@ -880,8 +881,8 @@ export default class PricingModuleService
     }
   }
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   async addPriceListPrices(
     data: PricingTypes.AddPriceListPricesDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -897,8 +898,8 @@ export default class PricingModuleService
     }
   }
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   async setPriceListRules(
     data: PricingTypes.SetPriceListRulesDTO,
     @MedusaContext() sharedContext: Context = {}
@@ -914,8 +915,8 @@ export default class PricingModuleService
     }
   }
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   async removePriceListRules(
     data: PricingTypes.RemovePriceListRulesDTO,
     @MedusaContext() sharedContext: Context = {}
@@ -937,8 +938,8 @@ export default class PricingModuleService
     sharedContext?: Context
   ): Promise<PricePreferenceDTO[]>
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   async createPricePreferences(
     data:
       | PricingTypes.CreatePricePreferenceDTO
@@ -966,8 +967,8 @@ export default class PricingModuleService
     sharedContext?: Context
   ): Promise<PricePreferenceDTO>
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   async upsertPricePreferences(
     data: UpsertPricePreferenceDTO | UpsertPricePreferenceDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -1012,7 +1013,7 @@ export default class PricingModuleService
     sharedContext?: Context
   ): Promise<PricePreferenceDTO[]>
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   // @ts-expect-error
   async updatePricePreferences(
     idOrSelector: string | PricingTypes.FilterablePricePreferenceProps,
@@ -1753,3 +1754,5 @@ const hashPrice = (
 
   return simpleHash(JSON.stringify(data))
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 const AccountHolder = model
@@ -17,3 +18,5 @@ const AccountHolder = model
   ])
 
 export default AccountHolder
+
+

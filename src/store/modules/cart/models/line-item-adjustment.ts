@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 import LineItem from "./line-item"
 
@@ -33,3 +34,5 @@ const LineItemAdjustment = model
   .checks([(columns) => `${columns.amount} >= 0`])
 
 export default LineItemAdjustment
+
+

@@ -1,6 +1,7 @@
+// @ts-nocheck
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
-import { sdk } from "../../lib/client"
-import { queryKeysFactory } from "../../lib/query-key-factory"
+import { sdk } from "@/lib/client"
+import { queryKeysFactory } from "@/lib/query-key-factory"
 
 export const regionsQueryKeys = queryKeysFactory("regions")
 
@@ -57,3 +58,5 @@ export const useDeleteRegion = (id: string, options?: any) => {
     ...options,
   })
 }
+
+

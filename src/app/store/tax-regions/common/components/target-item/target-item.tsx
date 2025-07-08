@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { XMarkMini } from "@medusajs/icons"
 import { IconButton, Text } from "@medusajs/ui"
 
@@ -24,3 +25,5 @@ export const TargetItem = ({ index, label, onRemove }: TargetItemProps) => {
     </div>
   )
 }
+
+

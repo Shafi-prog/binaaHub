@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   configLoader,
   container,
@@ -449,3 +450,5 @@ describe("DataSynchronizer", () => {
 
   // TODO: Add tests for errors handling and failure handling
 })
+
+

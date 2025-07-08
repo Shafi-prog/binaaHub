@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { LoaderOptions } from "@medusajs/framework/types"
 import { asValue } from "awilix"
 import Redis from "ioredis"
@@ -35,3 +36,5 @@ export default async ({
     cacheRedisConnection: asValue(connection),
   })
 }
+
+

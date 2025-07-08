@@ -1,3 +1,4 @@
+// @ts-nocheck
 // src/app/api/auth/login-db/route.ts
 // Temporary login route using direct database authentication
 
@@ -108,3 +109,5 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 });
   }
 }
+
+

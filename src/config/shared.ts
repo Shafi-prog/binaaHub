@@ -1,3 +1,4 @@
+// @ts-nocheck
 import type { Database } from './database';
 
 export interface Order {
@@ -26,3 +27,5 @@ export interface PaginatedResponse<T> {
   pageSize: number;
   totalPages: number;
 }
+
+

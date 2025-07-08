@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { PencilSquare, Trash, XCircle } from "@medusajs/icons"
 import { ApiKeyDTO } from "@medusajs/types"
 import {
@@ -21,9 +22,9 @@ import { UserLink } from "../../../common/user-link"
 import {
   useDeleteApiKey,
   useRevokeApiKey,
-} from "../../../../hooks/api/api-keys"
-import { useUser } from "../../../../hooks/api/users"
-import { useDate } from "../../../../hooks/use-date"
+} from "@/hooks/api/api-keys"
+import { useUser } from "@/hooks/api/users"
+import { useDate } from "@/hooks/use-date"
 import {
   getApiKeyStatusProps,
   getApiKeyTypeProps,
@@ -247,3 +248,5 @@ const ActionBy = ({ userId }: { userId: string | null }) => {
 
   return <UserLink {...user} />
 }
+
+

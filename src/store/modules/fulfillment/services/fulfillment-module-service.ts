@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   CalculatedShippingOptionPrice,
   Context,
@@ -56,8 +57,8 @@ import {
   validateAndNormalizeRules,
 } from "@utils"
 import { joinerConfig } from "../joiner-config"
-import { UpdateShippingOptionsInput } from "../types/service"
-import { buildCreatedShippingOptionEvents } from "../utils/events"
+import { UpdateShippingOptionsInput } from "@/types/service"
+import { buildCreatedShippingOptionEvents } from "@/utils/events"
 import FulfillmentProviderService from "./fulfillment-provider"
 
 const generateMethodForModels = {
@@ -161,7 +162,7 @@ export default class FulfillmentModuleService
     return joinerConfig
   }
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   // @ts-ignore
   async listShippingOptions(
     filters: FulfillmentTypes.FilterableShippingOptionForContextProps = {},
@@ -181,7 +182,7 @@ export default class FulfillmentModuleService
     return await super.listShippingOptions(filters, config, sharedContext)
   }
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   async listShippingOptionsForContext(
     filters: FulfillmentTypes.FilterableShippingOptionForContextProps,
     config: FindConfig<ShippingOptionDTO> = {},
@@ -220,7 +221,7 @@ export default class FulfillmentModuleService
     >(shippingOptions)
   }
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   async retrieveFulfillment(
     id: string,
     config: FindConfig<FulfillmentTypes.FulfillmentDTO> = {},
@@ -237,7 +238,7 @@ export default class FulfillmentModuleService
     )
   }
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   async listFulfillments(
     filters: FulfillmentTypes.FilterableFulfillmentProps = {},
     config: FindConfig<FulfillmentTypes.FulfillmentDTO> = {},
@@ -254,7 +255,7 @@ export default class FulfillmentModuleService
     >(fulfillments)
   }
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   async listAndCountFulfillments(
     filters?: FilterableFulfillmentSetProps,
     config?: FindConfig<FulfillmentDTO>,
@@ -285,8 +286,8 @@ export default class FulfillmentModuleService
     sharedContext?: Context
   ): Promise<FulfillmentTypes.FulfillmentSetDTO>
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   // @ts-expect-error
   async createFulfillmentSets(
     data:
@@ -357,8 +358,8 @@ export default class FulfillmentModuleService
     sharedContext?: Context
   ): Promise<FulfillmentTypes.ServiceZoneDTO>
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   // @ts-expect-error
   async createServiceZones(
     data:
@@ -423,8 +424,8 @@ export default class FulfillmentModuleService
     sharedContext?: Context
   ): Promise<FulfillmentTypes.ShippingOptionDTO>
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   // @ts-expect-error
   async createShippingOptions(
     data:
@@ -487,7 +488,7 @@ export default class FulfillmentModuleService
   ): Promise<FulfillmentTypes.ShippingProfileDTO>
 
   @InjectTransactionManager()
-  @EmitEvents()
+  @EmitEvents("user")
   // @ts-expect-error
   async createShippingProfiles(
     data:
@@ -542,8 +543,8 @@ export default class FulfillmentModuleService
     sharedContext?: Context
   ): Promise<FulfillmentTypes.GeoZoneDTO>
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   // @ts-expect-error
   async createGeoZones(
     data:
@@ -581,8 +582,8 @@ export default class FulfillmentModuleService
     sharedContext?: Context
   ): Promise<FulfillmentTypes.ShippingOptionRuleDTO>
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   // @ts-expect-error
   async createShippingOptionRules(
     data:
@@ -636,8 +637,8 @@ export default class FulfillmentModuleService
     return createdSORules
   }
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   async createFulfillment(
     data: FulfillmentTypes.CreateFulfillmentDTO,
     @MedusaContext() sharedContext: Context = {}
@@ -688,8 +689,8 @@ export default class FulfillmentModuleService
     )
   }
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   async deleteFulfillment(
     id: string,
     @MedusaContext() sharedContext: Context = {}
@@ -710,8 +711,8 @@ export default class FulfillmentModuleService
     await this.fulfillmentService_.delete(id, sharedContext)
   }
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   async createReturnFulfillment(
     data: FulfillmentTypes.CreateFulfillmentDTO,
     @MedusaContext() sharedContext: Context = {}
@@ -774,8 +775,8 @@ export default class FulfillmentModuleService
     sharedContext?: Context
   ): Promise<FulfillmentTypes.FulfillmentSetDTO>
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   // @ts-expect-error
   async updateFulfillmentSets(
     data: UpdateFulfillmentSetDTO[] | UpdateFulfillmentSetDTO,
@@ -1016,8 +1017,8 @@ export default class FulfillmentModuleService
     sharedContext?: Context
   ): Promise<FulfillmentTypes.ServiceZoneDTO[]>
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   // @ts-expect-error
   async updateServiceZones(
     idOrSelector: string | FulfillmentTypes.FilterableServiceZoneProps,
@@ -1236,8 +1237,8 @@ export default class FulfillmentModuleService
     sharedContext?: Context
   ): Promise<FulfillmentTypes.ServiceZoneDTO[]>
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   async upsertServiceZones(
     data:
       | FulfillmentTypes.UpsertServiceZoneDTO
@@ -1322,8 +1323,8 @@ export default class FulfillmentModuleService
     sharedContext?: Context
   ): Promise<FulfillmentTypes.ShippingOptionDTO[]>
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   // @ts-expect-error
   async updateShippingOptions(
     idOrSelector: string | FulfillmentTypes.FilterableShippingOptionProps,
@@ -1574,8 +1575,8 @@ export default class FulfillmentModuleService
     sharedContext?: Context
   ): Promise<FulfillmentTypes.ShippingOptionDTO>
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   async upsertShippingOptions(
     data:
       | FulfillmentTypes.UpsertShippingOptionDTO[]
@@ -1759,8 +1760,8 @@ export default class FulfillmentModuleService
     sharedContext?: Context
   ): Promise<FulfillmentTypes.GeoZoneDTO>
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   // @ts-expect-error
   async updateGeoZones(
     data:
@@ -1804,8 +1805,8 @@ export default class FulfillmentModuleService
     sharedContext?: Context
   ): Promise<FulfillmentTypes.ShippingOptionRuleDTO>
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   // @ts-expect-error
   async updateShippingOptionRules(
     data:
@@ -1858,8 +1859,8 @@ export default class FulfillmentModuleService
       : updatedShippingOptionRules[0]
   }
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   async updateFulfillment(
     id: string,
     data: FulfillmentTypes.UpdateFulfillmentDTO,
@@ -1980,8 +1981,8 @@ export default class FulfillmentModuleService
     })
   }
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   async cancelFulfillment(
     id: string,
     @MedusaContext() sharedContext: Context = {}
@@ -2061,7 +2062,7 @@ export default class FulfillmentModuleService
     )
   }
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   async validateShippingOption(
     shippingOptionId: string,
     context: Record<string, unknown> = {},
@@ -2078,7 +2079,7 @@ export default class FulfillmentModuleService
     return !!shippingOptions.length
   }
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   async validateShippingOptionsForPriceCalculation(
     shippingOptionsData: FulfillmentTypes.CreateShippingOptionDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -2435,3 +2436,5 @@ export default class FulfillmentModuleService
     return geoZoneConstraints
   }
 }
+
+

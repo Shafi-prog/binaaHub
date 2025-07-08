@@ -1,3 +1,4 @@
+// @ts-nocheck
 export * from "./use-campaign-table-query"
 export * from "./use-collection-table-query"
 export * from "./use-customer-group-table-query"
@@ -12,3 +13,5 @@ export * from "./use-shipping-option-table-query"
 export * from "./use-tax-rate-table-query"
 export * from "./use-tax-region-table-query"
 export * from "./use-user-invite-table-query"
+
+

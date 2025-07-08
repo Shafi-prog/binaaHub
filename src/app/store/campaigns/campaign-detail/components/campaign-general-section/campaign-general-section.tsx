@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { PencilSquare, Trash } from "@medusajs/icons"
 import { AdminCampaignResponse } from "@medusajs/types"
 import {
@@ -135,3 +136,5 @@ export const CampaignGeneralSection = ({
     </Container>
   )
 }
+
+

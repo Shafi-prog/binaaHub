@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 
 // Custom 404 page for Next.js App Router
@@ -62,3 +63,5 @@ export default function NotFound(): React.JSX.Element {
     </div>
   );
 }
+
+

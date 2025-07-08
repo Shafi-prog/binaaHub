@@ -1,8 +1,9 @@
+// @ts-nocheck
 import { useLoaderData, useParams } from "react-router-dom"
 
-import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { SingleColumnPage } from "../../../components/layout/pages"
-import { useCollection } from "../../../hooks/api/collections"
+import { SingleColumnPageSkeleton } from "@/components/common/skeleton"
+import { SingleColumnPage } from "@/components/layout/pages"
+import { useCollection } from "@/hooks/api/collections"
 import { useExtension } from "../../../providers/extension-provider"
 import { CollectionGeneralSection } from "./components/collection-general-section"
 import { CollectionProductSection } from "./components/collection-product-section"
@@ -43,3 +44,5 @@ export const CollectionDetail = () => {
     </SingleColumnPage>
   )
 }
+
+

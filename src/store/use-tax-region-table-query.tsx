@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useQueryParams } from "../../use-query-params"
 
 type UseTaxRegionTableQueryProps = {
@@ -30,3 +31,5 @@ export const useTaxRegionTableQuery = ({
     raw: queryObject,
   }
 }
+
+

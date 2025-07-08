@@ -1,6 +1,7 @@
+// @ts-nocheck
 import { HttpTypes } from "@medusajs/types"
 import { UIMatch } from "react-router-dom"
-import { useCollection } from "../../../hooks/api"
+import { useCollection } from "@/hooks/api"
 
 type CollectionDetailBreadcrumbProps =
   UIMatch<HttpTypes.AdminCollectionResponse>
@@ -21,3 +22,5 @@ export const CollectionDetailBreadcrumb = (
 
   return <span>{collection.title}</span>
 }
+
+

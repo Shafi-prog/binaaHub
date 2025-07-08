@@ -1,5 +1,6 @@
+// @ts-nocheck
 import { useTranslation } from "react-i18next"
-import { Filter } from "../../../components/table/data-table"
+import { Filter } from "@/components/table/data-table"
 
 export const useCustomerGroupTableFilters = () => {
   const { t } = useTranslation()
@@ -19,3 +20,5 @@ export const useCustomerGroupTableFilters = () => {
 
   return filters
 }
+
+

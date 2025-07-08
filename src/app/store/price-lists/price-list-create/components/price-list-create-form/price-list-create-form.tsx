@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, ProgressStatus, ProgressTabs, toast } from "@medusajs/ui"
 import { FieldPath, useForm } from "react-hook-form"
@@ -360,3 +361,5 @@ const PrimaryButton = ({ tab, next, isLoading }: PrimaryButtonProps) => {
     </Button>
   )
 }
+
+

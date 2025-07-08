@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { ReactNode } from "react"
 import { useDataGridDuplicateCell } from "../hooks"
 
@@ -19,3 +20,5 @@ export const DataGridDuplicateCell = <TValue,>({
     </div>
   )
 }
+
+

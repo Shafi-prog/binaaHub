@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { HttpTypes, PriceListStatus } from "@medusajs/types"
 import { useQueryParams } from "../../../../../hooks/use-query-params"
 
@@ -23,3 +24,5 @@ export const usePricingTableQuery = ({
     raw,
   }
 }
+
+

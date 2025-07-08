@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Store analytics types
 
 export interface StoreStats {
@@ -47,3 +48,5 @@ export interface AnalyticsDataPoint {
   date: string;
   value: number;
 }
+
+

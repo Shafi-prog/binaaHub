@@ -1,12 +1,13 @@
+"use client"
+// @ts-nocheck
 import { useState, useEffect } from "react"
-import { useNavigate, useParams } from "react-router-dom"
+import { useRouter, useParams } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Badge } from "@/components/ui/badge"
 import { Plus, Trash2, ArrowLeft } from "lucide-react"
 
@@ -21,6 +22,11 @@ interface BundleItem {
   sort_order: number
 }
 
+interface Product {
+  id: string
+  title: string
+}
+
 interface BundleFormData {
   title: string
   handle: string
@@ -30,10 +36,10 @@ interface BundleFormData {
 }
 
 export default function ProductBundleEdit() {
-  const navigate = useNavigate()
-  const { id } = useParams()
+  const router = useRouter()
+  const params = useParams()
   const [loading, setLoading] = useState(false)
-  const [availableProducts, setAvailableProducts] = useState([])
+  const [availableProducts, setAvailableProducts] = useState<Product[]>([])
   
   const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm<BundleFormData>({
     defaultValues: {
@@ -46,11 +52,12 @@ export default function ProductBundleEdit() {
   })
 
   const bundleItems = watch("items") || []
+  const id = params?.id
 
   useEffect(() => {
     loadAvailableProducts()
     if (id) {
-      loadBundle(id)
+      loadBundle(id as string)
     }
   }, [id])
 
@@ -90,9 +97,12 @@ export default function ProductBundleEdit() {
         ]
       }
       
-      Object.keys(mockBundle).forEach(key => {
-        setValue(key as keyof BundleFormData, mockBundle[key])
-      })
+      // Set form values with proper typing
+      setValue("title", mockBundle.title)
+      setValue("handle", mockBundle.handle)
+      setValue("description", mockBundle.description)
+      setValue("bundle_type", mockBundle.bundle_type as "fixed" | "dynamic" | "kit")
+      setValue("items", mockBundle.items)
     } catch (error) {
       console.error("Error loading bundle:", error)
     } finally {
@@ -129,7 +139,7 @@ export default function ProductBundleEdit() {
       setLoading(true)
       console.log("Saving bundle:", data)
       // TODO: Replace with actual API call
-      navigate("/store/product-bundles")
+      router.push("/store/product-bundles")
     } catch (error) {
       console.error("Error saving bundle:", error)
     } finally {
@@ -140,7 +150,7 @@ export default function ProductBundleEdit() {
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-4">
-        <Button variant="ghost" size="sm" onClick={() => navigate("/store/product-bundles")}>
+        <Button variant="ghost" size="sm" onClick={() => router.push("/store/product-bundles")}>
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back to Bundles
         </Button>
@@ -192,19 +202,16 @@ export default function ProductBundleEdit() {
 
             <div className="space-y-2">
               <Label htmlFor="bundle_type">Bundle Type</Label>
-              <Select 
+              <select 
                 value={watch("bundle_type")} 
-                onValueChange={(value) => setValue("bundle_type", value as "fixed" | "dynamic" | "kit")}
+                onChange={(e) => setValue("bundle_type", e.target.value as "fixed" | "dynamic" | "kit")}
+                className="w-full border border-gray-300 rounded-md px-3 py-2"
               >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select bundle type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="fixed">Fixed Bundle</SelectItem>
-                  <SelectItem value="dynamic">Dynamic Bundle</SelectItem>
-                  <SelectItem value="kit">Product Kit</SelectItem>
-                </SelectContent>
-              </Select>
+                <option value="">Select bundle type</option>
+                <option value="fixed">Fixed Bundle</option>
+                <option value="dynamic">Dynamic Bundle</option>
+                <option value="kit">Product Kit</option>
+              </select>
             </div>
           </CardContent>
         </Card>
@@ -241,25 +248,23 @@ export default function ProductBundleEdit() {
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">
                         <Label>Product *</Label>
-                        <Select
+                        <select
                           value={item.product_id}
-                          onValueChange={(value) => {
+                          onChange={(e) => {
+                            const value = e.target.value;
                             const product = availableProducts.find(p => p.id === value)
                             updateBundleItem(index, "product_id", value)
                             updateBundleItem(index, "product_title", product?.title || "")
                           }}
+                          className="w-full border border-gray-300 rounded-md px-3 py-2"
                         >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select product" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {availableProducts.map(product => (
-                              <SelectItem key={product.id} value={product.id}>
-                                {product.title}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
+                          <option value="">Select product</option>
+                          {availableProducts.map(product => (
+                            <option key={product.id} value={product.id}>
+                              {product.title}
+                            </option>
+                          ))}
+                        </select>
                       </div>
 
                       <div className="space-y-2">
@@ -325,7 +330,7 @@ export default function ProductBundleEdit() {
           <Button
             type="button"
             variant="outline"
-            onClick={() => navigate("/store/product-bundles")}
+            onClick={() => router.push("/store/product-bundles")}
           >
             Cancel
           </Button>

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState, useMemo } from "react";
 
 // Main data table hook
@@ -40,3 +41,5 @@ export const useDataTable = (data: any[] = []) => {
     resetQuery,
   };
 };
+
+

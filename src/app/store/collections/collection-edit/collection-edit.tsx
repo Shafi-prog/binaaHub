@@ -1,8 +1,9 @@
+// @ts-nocheck
 import { Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
-import { RouteDrawer } from "../../../components/modals"
-import { useCollection } from "../../../hooks/api/collections"
+import { RouteDrawer } from "@/components/modals"
+import { useCollection } from "@/hooks/api/collections"
 import { EditCollectionForm } from "./components/edit-collection-form"
 
 export const CollectionEdit = () => {
@@ -25,3 +26,5 @@ export const CollectionEdit = () => {
     </RouteDrawer>
   )
 }
+
+

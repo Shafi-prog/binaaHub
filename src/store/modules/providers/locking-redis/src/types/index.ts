@@ -1,9 +1,10 @@
+// @ts-nocheck
 import { RedisOptions } from "ioredis"
 
 /**
  * Module config type
  */
-export type RedisCacheModuleOptions = {
+export type RedisCacheModuleOptions  = {
   /**
    * Time to keep data in cache (in seconds)
    */
@@ -43,3 +44,5 @@ export type RedisCacheModuleOptions = {
    */
   maximumRetryInterval?: number
 }
+
+

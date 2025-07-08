@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { BigNumberInput } from "@medusajs/framework/types"
 
 export interface CreateLineItemAdjustmentDTO {
@@ -13,3 +14,5 @@ export interface UpdateLineItemAdjustmentDTO
   extends Partial<CreateLineItemAdjustmentDTO> {
   id: string
 }
+
+

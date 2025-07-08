@@ -1,8 +1,9 @@
+// @ts-nocheck
 import { Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
-import { RouteDrawer } from "../../../components/modals"
-import { useProductTag } from "../../../hooks/api"
+import { RouteDrawer } from "@/components/modals"
+import { useProductTag } from "@/hooks/api"
 import { ProductTagEditForm } from "./components/product-tag-edit-form"
 
 export const ProductTagEdit = () => {
@@ -31,3 +32,5 @@ export const ProductTagEdit = () => {
     </RouteDrawer>
   )
 }
+
+

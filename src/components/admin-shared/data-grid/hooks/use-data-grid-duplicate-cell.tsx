@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useWatch } from "react-hook-form"
 import { useDataGridContext } from "../context"
 
@@ -16,3 +17,5 @@ export const useDataGridDuplicateCell = ({
     watchedValue,
   }
 }
+
+

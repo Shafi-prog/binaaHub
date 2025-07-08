@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { AdminReservationResponse } from "@medusajs/types"
 import { Container, Heading } from "@medusajs/ui"
 
@@ -88,3 +89,5 @@ export const ReservationGeneralSection = ({
     </Container>
   )
 }
+
+

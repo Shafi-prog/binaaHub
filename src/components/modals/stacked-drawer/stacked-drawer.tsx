@@ -1,3 +1,5 @@
+"use client"
+// @ts-nocheck
 import { Drawer, clx } from "@medusajs/ui"
 import {
   ComponentPropsWithoutRef,
@@ -83,3 +85,5 @@ export const StackedDrawer = Object.assign(Root, {
   Description,
   Title,
 })
+
+

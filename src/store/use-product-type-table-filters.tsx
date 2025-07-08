@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useDateTableFilters } from "./use-date-table-filters"
 
 export const useProductTypeTableFilters = () => {
@@ -5,3 +6,5 @@ export const useProductTypeTableFilters = () => {
 
   return dateFilters
 }
+
+

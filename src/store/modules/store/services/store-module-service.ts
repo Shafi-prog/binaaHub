@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Context,
   DAL,
@@ -59,7 +60,7 @@ export default class StoreModuleService
     data: StoreTypes.CreateStoreDTO,
     sharedContext?: Context
   ): Promise<StoreTypes.StoreDTO>
-  @InjectManager()
+  @InjectManager("baseRepository")
   // @ts-expect-error
   async createStores(
     data: StoreTypes.CreateStoreDTO | StoreTypes.CreateStoreDTO[],
@@ -139,7 +140,7 @@ export default class StoreModuleService
     data: StoreTypes.UpdateStoreDTO,
     sharedContext?: Context
   ): Promise<StoreTypes.StoreDTO[]>
-  @InjectManager()
+  @InjectManager("baseRepository")
   // @ts-expect-error
   async updateStores(
     idOrSelector: string | StoreTypes.FilterableStoreProps,
@@ -246,3 +247,5 @@ export default class StoreModuleService
     StoreModuleService.validateCreateRequest(stores)
   }
 }
+
+

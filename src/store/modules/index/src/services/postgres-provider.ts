@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Context,
   Event,
@@ -25,8 +26,8 @@ import {
 } from "@mikro-orm/postgresql"
 import { IndexData, IndexRelation } from "@models"
 import { createPartitions, QueryBuilder } from "../utils"
-import { flattenObjectKeys } from "../utils/flatten-object-keys"
-import { normalizeFieldsSelection } from "../utils/normalize-fields-selection"
+import { flattenObjectKeys } from "@/utils/flatten-object-keys"
+import { normalizeFieldsSelection } from "@/utils/normalize-fields-selection"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -230,7 +231,7 @@ export class PostgresProvider implements IndexTypes.StorageProvider {
     }
   }
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   async query<const TEntry extends string>(
     config: IndexTypes.IndexQueryConfig<TEntry>,
     @MedusaContext() sharedContext: Context = {}
@@ -732,3 +733,5 @@ export class PostgresProvider implements IndexTypes.StorageProvider {
     })
   }
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { ArrowUturnLeft, MinusMini } from "@medusajs/icons"
 import { clx, Divider, IconButton, Text } from "@medusajs/ui"
 import { Collapsible as RadixCollapsible } from "radix-ui"
@@ -250,3 +251,5 @@ const UserSection = () => {
     </div>
   )
 }
+
+

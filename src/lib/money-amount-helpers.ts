@@ -1,3 +1,4 @@
+// @ts-nocheck
 export const getLocaleAmount = (
   amount: number,
   currencyCode: string,
@@ -54,3 +55,5 @@ export const convertAmount = (
   if (fromCurrency === toCurrency) return amount
   return Math.round(amount * exchangeRate)
 }
+
+

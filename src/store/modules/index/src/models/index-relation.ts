@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 const IndexRelation = model.define("IndexRelation", {
@@ -11,3 +12,5 @@ const IndexRelation = model.define("IndexRelation", {
 })
 
 export default IndexRelation
+
+

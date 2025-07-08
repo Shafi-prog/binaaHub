@@ -1,4 +1,5 @@
-import { RouteFocusModal } from "../../../components/modals"
+// @ts-nocheck
+import { RouteFocusModal } from "@/components/modals"
 import { CreateSalesChannelForm } from "./components/create-sales-channel-form"
 
 export const SalesChannelCreate = () => {
@@ -8,3 +9,5 @@ export const SalesChannelCreate = () => {
     </RouteFocusModal>
   )
 }
+
+

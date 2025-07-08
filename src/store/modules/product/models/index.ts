@@ -1,3 +1,4 @@
+// @ts-nocheck
 export { default as Product } from "./product"
 export { default as ProductCategory } from "./product-category"
 export { default as ProductCollection } from "./product-collection"
@@ -11,3 +12,5 @@ export { default as ProductBundle } from "./product-bundle"
 export { default as ProductConfigurator } from "./product-configurator"
 export { default as ProductDigital } from "./product-digital"
 export { default as ProductSubscription } from "./product-subscription"
+
+

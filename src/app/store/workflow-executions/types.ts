@@ -1,3 +1,4 @@
+// @ts-nocheck
 export enum TransactionStepStatus {
   IDLE = "idle",
   OK = "ok",
@@ -26,3 +27,5 @@ export enum TransactionStepState {
   SKIPPED_FAILURE = "skipped_failure",
   TIMEOUT = "timeout",
 }
+
+

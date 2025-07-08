@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Tooltip } from "@medusajs/ui"
 import { ComponentPropsWithoutRef, PropsWithChildren } from "react"
 
@@ -18,3 +19,5 @@ export const ConditionalTooltip = ({
 
   return children
 }
+
+

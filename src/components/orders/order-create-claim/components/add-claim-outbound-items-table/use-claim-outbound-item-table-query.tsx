@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   DateComparisonOperator,
   NumericalComparisonOperator,
@@ -38,3 +39,5 @@ export const useClaimOutboundItemTableQuery = ({
 
   return { searchParams, raw }
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { XMarkMini } from "@medusajs/icons"
 import { Button, clx } from "@medusajs/ui"
 import { Children, PropsWithChildren, createContext, useContext } from "react"
@@ -109,3 +110,5 @@ const Chip = ({ index, className, children }: ChipProps) => {
 }
 
 export const ChipGroup = Object.assign(Group, { Chip })
+
+

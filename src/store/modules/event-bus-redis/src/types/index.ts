@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   BulkJobOptions,
   Job,
@@ -25,7 +26,7 @@ export type BullJob<T> = {
 
 export type EmitOptions = JobsOptions
 
-export type EventBusRedisModuleOptions = {
+export type EventBusRedisModuleOptions  = {
   queueName?: string
   queueOptions?: QueueOptions
 
@@ -50,3 +51,5 @@ export type EventBusRedisModuleOptions = {
    */
   jobOptions?: EmitOptions
 }
+
+

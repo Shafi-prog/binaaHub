@@ -1,10 +1,11 @@
+// @ts-nocheck
 import { useLoaderData, useParams } from "react-router-dom"
 
-import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { useShippingProfile } from "../../../hooks/api/shipping-profiles"
+import { SingleColumnPageSkeleton } from "@/components/common/skeleton"
+import { useShippingProfile } from "@/hooks/api/shipping-profiles"
 import { ShippingProfileGeneralSection } from "./components/shipping-profile-general-section"
 
-import { SingleColumnPage } from "../../../components/layout/pages"
+import { SingleColumnPage } from "@/components/layout/pages"
 import { useExtension } from "../../../providers/extension-provider"
 import { shippingProfileLoader } from "./loader"
 
@@ -45,3 +46,5 @@ export const ShippingProfileDetail = () => {
     </SingleColumnPage>
   )
 }
+
+

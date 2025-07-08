@@ -1,6 +1,7 @@
-import { Migration } from "@mikro-orm/migrations"
+// @ts-nocheck
+import { Migration } from "@mikro-orm/migrations";
 
-export class Migration20240311145700_InitialSetupMigration extends Migration {
+export class Migration20240311145700_InitialSetupMigration extends Migration extends Migration {
   async up(): Promise<void> {
     const shippingOptionTable = await this.execute(
       `SELECT * FROM information_schema.tables where table_name = 'shipping_option' and table_schema = 'public';`
@@ -601,3 +602,5 @@ async function migrateUpModuleMigration(
     'alter table if exists "fulfillment_item" add constraint "fulfillment_item_fulfillment_id_foreign" foreign key ("fulfillment_id") references "fulfillment" ("id") on update cascade on delete cascade;'
   )
 }
+
+

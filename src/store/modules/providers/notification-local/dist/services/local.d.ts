@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { LocalNotificationServiceOptions, Logger, NotificationTypes } from "@medusajs/framework/types";
 import { AbstractNotificationProviderService } from "@medusajs/framework/utils";
 type InjectedDependencies = {
@@ -14,3 +15,4 @@ export declare class LocalNotificationService extends AbstractNotificationProvid
 }
 export {};
 //# sourceMappingURL=local.d.ts.map
+

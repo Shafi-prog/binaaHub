@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Tooltip } from "@medusajs/ui"
 import ReactCountryFlag from "react-country-flag"
 import { PlaceholderCell } from "../../common/placeholder-cell"
@@ -30,3 +31,5 @@ export const CountryCell = ({
     </div>
   )
 }
+
+

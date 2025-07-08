@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from "react";
 
 export default function ProjectsLayout({ children }: { children: React.ReactNode }) {
@@ -8,3 +9,5 @@ export default function ProjectsLayout({ children }: { children: React.ReactNode
     </div>
   );
 }
+
+

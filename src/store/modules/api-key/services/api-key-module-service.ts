@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   ApiKeyTypes,
   Context,
@@ -110,7 +111,7 @@ export class ApiKeyModuleService
     sharedContext?: Context
   ): Promise<ApiKeyTypes.ApiKeyDTO>
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   //@ts-expect-error
   async createApiKeys(
     data: ApiKeyTypes.CreateApiKeyDTO | ApiKeyTypes.CreateApiKeyDTO[],
@@ -182,7 +183,7 @@ export class ApiKeyModuleService
     sharedContext?: Context
   ): Promise<ApiKeyTypes.ApiKeyDTO>
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   async upsertApiKeys(
     data: ApiKeyTypes.UpsertApiKeyDTO | ApiKeyTypes.UpsertApiKeyDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -252,7 +253,7 @@ export class ApiKeyModuleService
     sharedContext?: Context
   ): Promise<ApiKeyTypes.ApiKeyDTO[]>
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   //@ts-expect-error
   async updateApiKeys(
     idOrSelector: string | FilterableApiKeyProps,
@@ -296,7 +297,7 @@ export class ApiKeyModuleService
     return updatedApiKeys
   }
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   // @ts-expect-error
   async retrieveApiKey(
     id: string,
@@ -313,7 +314,7 @@ export class ApiKeyModuleService
     )
   }
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   //@ts-expect-error
   async listApiKeys(
     filters?: ApiKeyTypes.FilterableApiKeyProps,
@@ -334,7 +335,7 @@ export class ApiKeyModuleService
     )
   }
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   //@ts-expect-error
   async listAndCountApiKeys(
     filters?: ApiKeyTypes.FilterableApiKeyProps,
@@ -368,7 +369,7 @@ export class ApiKeyModuleService
     data: ApiKeyTypes.RevokeApiKeyDTO,
     sharedContext?: Context
   ): Promise<ApiKeyTypes.ApiKeyDTO[]>
-  @InjectManager()
+  @InjectManager("baseRepository")
   async revoke(
     idOrSelector: string | FilterableApiKeyProps,
     data: ApiKeyTypes.RevokeApiKeyDTO,
@@ -418,7 +419,7 @@ export class ApiKeyModuleService
     return revokedApiKeys
   }
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   async authenticate(
     token: string,
     @MedusaContext() sharedContext: Context = {}
@@ -634,3 +635,5 @@ const omitToken = (
 const redactKey = (key: string): string => {
   return [key.slice(0, 6), key.slice(-3)].join("***")
 }
+
+

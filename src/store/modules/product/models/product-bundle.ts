@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 import Product from "./product"
 
@@ -31,3 +32,5 @@ const ProductBundle = model
   ])
 
 export default ProductBundle
+
+

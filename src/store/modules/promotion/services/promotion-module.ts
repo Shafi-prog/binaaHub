@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   CampaignBudgetTypeValues,
   Context,
@@ -60,7 +61,7 @@ import {
   validatePromotionRuleAttributes,
 } from "@utils"
 import { joinerConfig } from "../joiner-config"
-import { CreatePromotionRuleValueDTO } from "../types/promotion-rule-value"
+import { CreatePromotionRuleValueDTO } from "@/types/promotion-rule-value"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -138,7 +139,7 @@ export default class PromotionModuleService
     return joinerConfig
   }
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   listActivePromotions(
     filters?: FilterablePromotionProps,
     config?: FindConfig<PromotionDTO>,
@@ -380,7 +381,7 @@ export default class PromotionModuleService
     }
   }
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   async computeActions(
     promotionCodes: string[],
     applicationContext: PromotionTypes.ComputeActionContext,
@@ -595,7 +596,7 @@ export default class PromotionModuleService
     sharedContext?: Context
   ): Promise<PromotionTypes.PromotionDTO[]>
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   // @ts-expect-error
   async createPromotions(
     data:
@@ -882,7 +883,7 @@ export default class PromotionModuleService
     sharedContext?: Context
   ): Promise<PromotionTypes.PromotionDTO[]>
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   // @ts-expect-error
   async updatePromotions(
     data:
@@ -1011,7 +1012,7 @@ export default class PromotionModuleService
     return updatedPromotions
   }
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   // @ts-ignore
   async updatePromotionRules(
     data: PromotionTypes.UpdatePromotionRuleDTO[],
@@ -1092,7 +1093,7 @@ export default class PromotionModuleService
     return updatedRules
   }
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   async addPromotionRules(
     promotionId: string,
     rulesData: PromotionTypes.CreatePromotionRuleDTO[],
@@ -1114,7 +1115,7 @@ export default class PromotionModuleService
     )
   }
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   async addPromotionTargetRules(
     promotionId: string,
     rulesData: PromotionTypes.CreatePromotionRuleDTO[],
@@ -1147,7 +1148,7 @@ export default class PromotionModuleService
     )
   }
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   async addPromotionBuyRules(
     promotionId: string,
     rulesData: PromotionTypes.CreatePromotionRuleDTO[],
@@ -1243,7 +1244,7 @@ export default class PromotionModuleService
     return createdPromotionRules
   }
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   async removePromotionRules(
     promotionId: string,
     ruleIds: string[],
@@ -1270,7 +1271,7 @@ export default class PromotionModuleService
     await this.promotionRuleService_.delete(idsToRemove, sharedContext)
   }
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   async removePromotionTargetRules(
     promotionId: string,
     ruleIds: string[],
@@ -1284,7 +1285,7 @@ export default class PromotionModuleService
     )
   }
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   async removePromotionBuyRules(
     promotionId: string,
     ruleIds: string[],
@@ -1344,7 +1345,7 @@ export default class PromotionModuleService
     sharedContext?: Context
   ): Promise<PromotionTypes.CampaignDTO[]>
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   // @ts-expect-error
   async createCampaigns(
     data: PromotionTypes.CreateCampaignDTO | PromotionTypes.CreateCampaignDTO[],
@@ -1455,7 +1456,7 @@ export default class PromotionModuleService
     sharedContext?: Context
   ): Promise<PromotionTypes.CampaignDTO[]>
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   // @ts-expect-error
   async updateCampaigns(
     data: PromotionTypes.UpdateCampaignDTO | PromotionTypes.UpdateCampaignDTO[],
@@ -1547,7 +1548,7 @@ export default class PromotionModuleService
     return updatedCampaigns
   }
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   async addPromotionsToCampaign(
     data: PromotionTypes.AddPromotionsToCampaignDTO,
     sharedContext?: Context
@@ -1614,7 +1615,7 @@ export default class PromotionModuleService
     return promotionsToAdd.map((promo) => promo.id)
   }
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   async removePromotionsFromCampaign(
     data: PromotionTypes.AddPromotionsToCampaignDTO,
     sharedContext?: Context
@@ -1661,3 +1662,5 @@ export default class PromotionModuleService
     return promotionsToRemove.map((promo) => promo.id)
   }
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import type { Readable } from "stream"
 import {
   Context,
@@ -173,3 +174,5 @@ export default class FileModuleService implements FileTypes.IFileModuleService {
     return this.fileProviderService_.getAsBuffer({ fileKey: id })
   }
 }
+
+

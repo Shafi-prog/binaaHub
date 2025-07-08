@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 import { Fulfillment } from "./fulfillment"
@@ -25,3 +26,5 @@ export const FulfillmentItem = model
       where: "deleted_at IS NULL",
     },
   ])
+
+

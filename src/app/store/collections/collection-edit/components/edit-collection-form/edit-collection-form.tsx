@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, Input, Text } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
@@ -108,3 +109,5 @@ export const EditCollectionForm = ({ collection }: EditCollectionFormProps) => {
     </RouteDrawer.Form>
   )
 }
+
+

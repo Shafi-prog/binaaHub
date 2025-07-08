@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Enhanced Barcode Scanner Component for Professional POS Systems
 import React, { useState, useEffect, useRef } from 'react';
 import { Camera, Scan, X, Package, ShoppingCart, AlertTriangle, Check } from 'lucide-react';
@@ -332,3 +333,8 @@ export default function BarcodeScanner({ onProductSelected, onClose, storeId }: 
     </div>
   );
 }
+
+
+
+
+

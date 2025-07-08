@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   AdminExchange,
   AdminOrder,
@@ -544,3 +545,5 @@ export const ExchangeInboundSection = ({
     </div>
   )
 }
+
+

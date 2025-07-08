@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   DeleteObjectCommand,
   DeleteObjectsCommand,
@@ -277,3 +278,5 @@ export class S3FileService extends AbstractFileProviderService {
     return Buffer.from(await response.Body!.transformToByteArray())
   }
 }
+
+

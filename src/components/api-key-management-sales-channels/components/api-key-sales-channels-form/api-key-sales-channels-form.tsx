@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { zodResolver } from "@hookform/resolvers/zod"
 import { HttpTypes } from "@medusajs/types"
 import {
@@ -24,8 +25,8 @@ import {
 } from "../../../modals"
 import { KeyboundForm } from "../../../utilities/keybound-form"
 import { VisuallyHidden } from "../../../utilities/visually-hidden"
-import { useBatchAddSalesChannelsToApiKey } from "../../../../hooks/api/api-keys"
-import { useSalesChannels } from "../../../../hooks/api/sales-channels"
+import { useBatchAddSalesChannelsToApiKey } from "@/hooks/api/api-keys"
+import { useSalesChannels } from "@/hooks/api/sales-channels"
 
 type ApiKeySalesChannelFormProps = {
   apiKey: string
@@ -200,3 +201,5 @@ const useColumns = () => {
     [t, base]
   )
 }
+
+

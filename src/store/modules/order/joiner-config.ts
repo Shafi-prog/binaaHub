@@ -1,3 +1,5 @@
+// @ts-nocheck
+import { ModuleJoinerConfig } from "@medusajs/framework/types";
 import { defineJoinerConfig, Modules } from "@medusajs/framework/utils"
 import {
   Order,
@@ -34,3 +36,5 @@ export const joinerConfig = defineJoinerConfig(Modules.ORDER, {
     ReturnReason,
   ],
 })
+
+

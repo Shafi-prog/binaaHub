@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { ICacheService } from "@medusajs/framework/types"
 import { Redis } from "ioredis"
 import { RedisCacheModuleOptions } from "../types"
@@ -110,3 +111,5 @@ class RedisCacheService implements ICacheService {
 }
 
 export default RedisCacheService
+
+

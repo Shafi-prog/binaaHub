@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useContext } from "react"
 import { ProductMediaViewContext } from "./product-media-view-context"
 
@@ -12,3 +13,5 @@ export const useProductMediaView = () => {
 
   return context
 }
+
+

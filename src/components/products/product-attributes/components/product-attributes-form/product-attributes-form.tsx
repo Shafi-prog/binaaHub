@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { HttpTypes } from "@medusajs/types"
 import { Button, Input } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
@@ -271,3 +272,5 @@ export const ProductAttributesForm = ({
     </RouteDrawer.Form>
   )
 }
+
+

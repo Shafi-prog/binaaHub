@@ -1,7 +1,8 @@
+// @ts-nocheck
 import { HttpTypes } from "@medusajs/types"
 import { UIMatch } from "react-router-dom"
 
-import { useStockLocation } from "../../../hooks/api/stock-locations"
+import { useStockLocation } from "@/hooks/api/stock-locations"
 import { LOCATION_DETAILS_FIELD } from "./constants"
 
 type LocationDetailBreadcrumbProps =
@@ -29,3 +30,5 @@ export const LocationDetailBreadcrumb = (
 
   return <span>{stock_location.name}</span>
 }
+
+

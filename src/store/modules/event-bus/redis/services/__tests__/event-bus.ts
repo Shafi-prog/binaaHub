@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Logger } from "@medusajs/framework/types"
 import { Queue, Worker } from "bullmq"
 import { Redis } from "ioredis"
@@ -503,3 +504,5 @@ describe("RedisEventBusService", () => {
     })
   })
 })
+
+

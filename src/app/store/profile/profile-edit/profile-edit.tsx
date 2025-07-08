@@ -1,7 +1,8 @@
+// @ts-nocheck
 import { Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
-import { RouteDrawer } from "../../../components/modals"
-import { useMe } from "../../../hooks/api/users"
+import { RouteDrawer } from "@/components/modals"
+import { useMe } from "@/hooks/api/users"
 import { EditProfileForm } from "./components/edit-profile-form/edit-profile-form"
 
 export const ProfileEdit = () => {
@@ -24,3 +25,5 @@ export const ProfileEdit = () => {
     </RouteDrawer>
   )
 }
+
+

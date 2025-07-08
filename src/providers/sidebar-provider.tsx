@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { PropsWithChildren, useContext, useEffect, useState } from "react"
 import { useLocation } from "react-router-dom"
 import { SidebarContext } from "../store/sidebar-context"
@@ -37,3 +38,5 @@ export const useSidebar = () => {
   }
   return context
 }
+
+

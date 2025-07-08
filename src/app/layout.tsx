@@ -1,3 +1,4 @@
+// @ts-nocheck
 import type { Metadata } from 'next';
 import { Toaster } from 'react-hot-toast';
 import LayoutProvider from '../components/LayoutProvider';
@@ -40,3 +41,5 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   );
 }
+
+

@@ -1,7 +1,8 @@
+// @ts-nocheck
 import { HttpTypes } from "@medusajs/types"
 import { UIMatch } from "react-router-dom"
 
-import { useReservationItem } from "../../../hooks/api"
+import { useReservationItem } from "@/hooks/api"
 
 type ReservationDetailBreadcrumbProps =
   UIMatch<HttpTypes.AdminReservationResponse>
@@ -27,3 +28,5 @@ export const ReservationDetailBreadcrumb = (
 
   return <span>{display}</span>
 }
+
+

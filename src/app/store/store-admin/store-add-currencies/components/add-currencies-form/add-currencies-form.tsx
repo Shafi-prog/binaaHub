@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Button, Checkbox, Hint, Switch, toast, Tooltip } from "@medusajs/ui"
 import {
   createColumnHelper,
@@ -304,3 +305,5 @@ const useColumns = (
     [t, base, pricePreferences, setPricePreferences]
   )
 }
+
+

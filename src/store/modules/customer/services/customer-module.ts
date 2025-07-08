@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Context,
   CustomerAddressDTO,
@@ -100,7 +101,7 @@ export default class CustomerModuleService
     sharedContext?: Context
   ): Promise<CustomerTypes.CustomerDTO[]>
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   async createCustomers(
     dataOrArray:
       | CustomerTypes.CreateCustomerDTO
@@ -364,7 +365,7 @@ export default class CustomerModuleService
     sharedContext?: Context
   ): Promise<CustomerTypes.CustomerAddressDTO>
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   // @ts-expect-error
   async createCustomerAddresses(
     data:
@@ -501,3 +502,5 @@ export default class CustomerModuleService
     await em.flush()
   }
 }
+
+

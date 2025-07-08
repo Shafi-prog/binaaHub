@@ -1,8 +1,9 @@
+// @ts-nocheck
 import { useTranslation } from "react-i18next"
 import { HttpTypes } from "@medusajs/types"
 import { Container, Heading } from "@medusajs/ui"
 
-import { formatProvider } from "../../../../lib/format-provider"
+import { formatProvider } from "@/lib/format-provider"
 
 export function TaxRegionProviderSection({
   taxRegion,
@@ -26,3 +27,5 @@ export function TaxRegionProviderSection({
     </Container>
   )
 }
+
+

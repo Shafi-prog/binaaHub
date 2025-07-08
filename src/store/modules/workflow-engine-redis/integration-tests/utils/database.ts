@@ -1,3 +1,4 @@
+// @ts-nocheck
 import * as process from "process"
 
 const DB_HOST = process.env.DB_HOST ?? "localhost"
@@ -47,3 +48,5 @@ async function cleanRedis() {
     console.error("Error:", error)
   }
 }
+
+

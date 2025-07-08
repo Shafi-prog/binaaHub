@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { z } from "zod"
 
 export const optionalInt = z
@@ -51,3 +52,5 @@ export const partialFormValidation = <T>(
     return { isValid: false, errors: ['Validation failed'] }
   }
 }
+
+

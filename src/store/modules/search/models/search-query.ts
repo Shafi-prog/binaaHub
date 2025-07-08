@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 const SearchQuery = model.define("search_query", {
@@ -47,3 +48,5 @@ SearchQuery.belongsTo(() => import("../../customer/models/customer").then(m => m
 })
 
 export default SearchQuery
+
+

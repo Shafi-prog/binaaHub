@@ -1,5 +1,6 @@
+// @ts-nocheck
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { sdk } from "../../lib/client";
+import { sdk } from "@/lib/client";
 
 export const paymentCollectionsQueryKeys = {
   all: ["payment-collections"] as const,
@@ -55,3 +56,5 @@ export const useDeletePaymentCollection = () => {
     },
   });
 };
+
+

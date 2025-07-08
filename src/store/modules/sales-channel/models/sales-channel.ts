@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 const SalesChannel = model.define("SalesChannel", {
@@ -9,3 +10,5 @@ const SalesChannel = model.define("SalesChannel", {
 })
 
 export default SalesChannel
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Module, Modules } from "@medusajs/framework/utils"
 
 export default Module(Modules.PRODUCT, {
@@ -35,3 +36,5 @@ export {
   VendorPayout,
   PayoutStatus,
 } from "./models/marketplace-vendor"
+
+

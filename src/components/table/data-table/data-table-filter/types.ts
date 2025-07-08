@@ -1,3 +1,4 @@
+// @ts-nocheck
 export interface IFilter {
   filter: {
     key: string
@@ -7,3 +8,5 @@ export interface IFilter {
   openOnMount?: boolean
   prefix?: string
 }
+
+

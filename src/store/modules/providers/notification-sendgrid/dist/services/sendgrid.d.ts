@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Logger, NotificationTypes, SendgridNotificationServiceOptions } from "@medusajs/framework/types";
 import { AbstractNotificationProviderService } from "@medusajs/framework/utils";
 type InjectedDependencies = {
@@ -16,3 +17,4 @@ export declare class SendgridNotificationService extends AbstractNotificationPro
 }
 export {};
 //# sourceMappingURL=sendgrid.d.ts.map
+

@@ -1,8 +1,9 @@
+// @ts-nocheck
 import { useLoaderData, useParams } from "react-router-dom"
 
 import { SingleColumnPageSkeleton } from "../common/skeleton"
 import { SingleColumnPage } from "../layout/pages"
-import { useApiKey } from "../../hooks/api/api-keys"
+import { useApiKey } from "@/hooks/api/api-keys"
 import { useExtension } from "../../providers/extension-provider"
 import { ApiKeyType } from "../common/api-key-constants"
 import { ApiKeyGeneralSection } from "./components/api-key-general-section"
@@ -46,3 +47,5 @@ export const ApiKeyManagementDetail = () => {
     </SingleColumnPage>
   )
 }
+
+

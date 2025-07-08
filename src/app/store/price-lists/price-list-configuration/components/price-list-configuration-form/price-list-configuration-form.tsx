@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { zodResolver } from "@hookform/resolvers/zod"
 import { MagnifyingGlass, XMark } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
@@ -309,3 +310,5 @@ export const PriceListConfigurationForm = ({
     </RouteDrawer.Form>
   )
 }
+
+

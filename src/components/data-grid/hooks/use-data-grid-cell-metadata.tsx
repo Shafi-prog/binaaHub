@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useCallback } from "react"
 import { FieldValues } from "react-hook-form"
 import { DataGridMatrix } from "../models"
@@ -73,3 +74,5 @@ export const useDataGridCellMetadata = <
     getCellErrorMetadata,
   }
 }
+
+

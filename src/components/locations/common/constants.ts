@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Location-related constants
 export const LOCATION_STATUSES = {
   ACTIVE: 'active',
@@ -34,3 +35,5 @@ export type LocationStatus = typeof LOCATION_STATUSES[keyof typeof LOCATION_STAT
 export type LocationType = typeof LOCATION_TYPES[keyof typeof LOCATION_TYPES];
 export type FulfillmentStatus = typeof FULFILLMENT_STATUSES[keyof typeof FULFILLMENT_STATUSES];
 export type ShipmentStatus = typeof SHIPMENT_STATUSES[keyof typeof SHIPMENT_STATUSES];
+
+

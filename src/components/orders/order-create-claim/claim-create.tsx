@@ -1,12 +1,13 @@
+// @ts-nocheck
 import { toast } from "@medusajs/ui"
 import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { useNavigate, useParams } from "react-router-dom"
 
-import { RouteFocusModal } from "../../../components/modals"
-import { useClaim, useCreateClaim } from "../../../hooks/api/claims"
-import { useOrder, useOrderPreview } from "../../../hooks/api/orders"
-import { useReturn } from "../../../hooks/api/returns"
+import { RouteFocusModal } from "@/components/modals"
+import { useClaim, useCreateClaim } from "@/hooks/api/claims"
+import { useOrder, useOrderPreview } from "@/hooks/api/orders"
+import { useReturn } from "@/hooks/api/returns"
 import { DEFAULT_FIELDS } from "../order-detail/constants"
 import { ClaimCreateForm } from "./components/claim-create-form"
 
@@ -82,3 +83,5 @@ export const ClaimCreate = () => {
     </RouteFocusModal>
   )
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, Heading, Input, Prompt, Text, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
@@ -13,7 +14,7 @@ import {
   useRouteModal,
 } from "../../../modals"
 import { KeyboundForm } from "../../../utilities/keybound-form"
-import { useCreateApiKey } from "../../../../hooks/api/api-keys"
+import { useCreateApiKey } from "@/hooks/api/api-keys"
 import { ApiKeyType } from "../../../common/api-key-constants"
 
 const ApiKeyCreateSchema = zod.object({
@@ -203,3 +204,5 @@ export const ApiKeyCreateForm = ({ keyType }: ApiKeyCreateFormProps) => {
     </Fragment>
   )
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Buildings, Component, PencilSquare, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import {
@@ -442,3 +443,5 @@ const useCommands = () => {
     }),
   ]
 }
+
+

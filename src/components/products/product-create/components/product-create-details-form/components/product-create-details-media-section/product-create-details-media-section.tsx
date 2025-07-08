@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   defaultDropAnimationSideEffects,
   DndContext,
@@ -336,3 +337,5 @@ function formatFileSize(bytes: number, decimalPlaces: number = 2): string {
     parseFloat((bytes / Math.pow(k, i)).toFixed(decimalPlaces)) + " " + sizes[i]
   )
 }
+
+

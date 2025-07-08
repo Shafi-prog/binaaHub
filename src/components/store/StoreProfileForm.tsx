@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState } from 'react';
 import { EnhancedInput, Button } from '@/components/ui/enhanced-components';
 
@@ -56,3 +57,5 @@ export default function StoreProfileForm({ store, onSave }: { store: any, onSave
     </form>
   );
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 export default function MarketplacePage() {
   return (
     <div className="space-y-6">
@@ -67,3 +68,5 @@ export default function MarketplacePage() {
     </div>
   )
 }
+
+

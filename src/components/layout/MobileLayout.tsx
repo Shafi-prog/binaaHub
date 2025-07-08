@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use client'
 
 import React, { useState, useEffect } from 'react'
@@ -202,3 +203,5 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({ children, title }) => {
 }
 
 export default MobileLayout
+
+

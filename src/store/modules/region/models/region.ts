@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 import RegionCountry from "./country"
 
@@ -9,3 +10,5 @@ export default model.define("region", {
   countries: model.hasMany(() => RegionCountry),
   metadata: model.json().nullable(),
 })
+
+

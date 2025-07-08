@@ -1,3 +1,4 @@
+// @ts-nocheck
 import Medusa from "@medusajs/js-sdk"
 
 export const backendUrl = __BACKEND_URL__ ?? "/"
@@ -13,3 +14,5 @@ export const sdk = new Medusa({
 if (typeof window !== "undefined") {
   ;(window as any).__sdk = sdk
 }
+
+

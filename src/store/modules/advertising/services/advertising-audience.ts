@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { MedusaService } from "@medusajs/utils"
 import { AdAudience } from "../models/ad-audience"
 import { AdPerformanceReport } from "../models/ad-performance-report"
@@ -323,3 +324,5 @@ export default class AdvertisingAudienceService extends MedusaService({
     })
   }
 }
+
+

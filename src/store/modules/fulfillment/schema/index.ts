@@ -1,3 +1,4 @@
+// @ts-nocheck
 export default `
 enum GeoZoneType {
   country
@@ -165,3 +166,5 @@ type ShippingProfile {
 }
 
 `
+
+

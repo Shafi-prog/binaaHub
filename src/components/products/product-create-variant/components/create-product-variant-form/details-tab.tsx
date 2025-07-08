@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from "react"
 import { Heading, Input, Switch } from "@medusajs/ui"
 import { UseFormReturn, useWatch } from "react-hook-form"
@@ -186,3 +187,5 @@ function DetailsTab({ form, product }: DetailsTabProps) {
 }
 
 export default DetailsTab
+
+

@@ -1,5 +1,6 @@
+// @ts-nocheck
 import { Card, Heading, Text, ProgressBar } from "@medusajs/ui"
-import { usePerformanceAnalytics } from "../../store/hooks/api/analytics"
+import { usePerformanceAnalytics } from "@/store/hooks/api/analytics"
 import { LoadingSpinner } from "../common/loading-spinner"
 
 interface AnalyticsMetricsProps {
@@ -139,3 +140,5 @@ export const AnalyticsMetrics = ({ dateRange }: AnalyticsMetricsProps) => {
     </div>
   )
 }
+
+

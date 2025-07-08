@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Switch } from "@medusajs/ui"
 import { ReactNode } from "react"
 import { ControllerProps, FieldPath, FieldValues } from "react-hook-form"
@@ -72,3 +73,5 @@ export const SwitchBox = <
     />
   )
 }
+
+

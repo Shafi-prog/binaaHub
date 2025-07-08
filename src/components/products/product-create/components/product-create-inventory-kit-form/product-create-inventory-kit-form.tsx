@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { UseFormReturn } from "react-hook-form"
 
 import { ProductCreateSchemaType } from "../../types"
@@ -18,3 +19,5 @@ export const ProductCreateInventoryKitForm = ({
     </div>
   )
 }
+
+

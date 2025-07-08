@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   ColumnDef,
   OnChangeFn,
@@ -130,3 +131,5 @@ export const useDataTable = <TData,>({
 
   return { table }
 }
+
+

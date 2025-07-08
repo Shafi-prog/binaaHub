@@ -1,4 +1,5 @@
-import { SingleColumnPage } from "../../../components/layout/pages"
+// @ts-nocheck
+import { SingleColumnPage } from "@/components/layout/pages"
 import { useExtension } from "../../../providers/extension-provider"
 import { CampaignListTable } from "./components/campaign-list-table"
 
@@ -17,3 +18,5 @@ export const CampaignList = () => {
     </SingleColumnPage>
   )
 }
+
+

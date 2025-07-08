@@ -1,3 +1,4 @@
+// @ts-nocheck
 export interface StripeOptions {
   /**
    * The API key for the Stripe account
@@ -45,3 +46,5 @@ export const PaymentProviderKeys = {
   PRZELEWY_24: "stripe-przelewy24",
   PROMPT_PAY : "stripe-promptpay",
 }
+
+

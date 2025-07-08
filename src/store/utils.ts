@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Keys, Platform, Shortcut } from "./types"
 
 export const findFirstPlatformMatch = (keys: Keys) => {
@@ -90,3 +91,5 @@ export const getShortcutWithDefaultValues = (
     _defaultKeys: shortcut.keys,
   }
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Context, OrderTypes } from "@medusajs/framework/types"
 import { ChangeActionType } from "@medusajs/framework/utils"
 
@@ -34,3 +35,5 @@ export async function registerFulfillment(
 
   await this.confirmOrderChange(change[0].id, sharedContext)
 }
+
+

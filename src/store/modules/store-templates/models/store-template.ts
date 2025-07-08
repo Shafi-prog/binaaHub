@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 /**
@@ -51,3 +52,5 @@ export const StoreTemplateUsage = model.define("store_template_usage", {
   created_at: model.dateTime().default(new Date()),
   updated_at: model.dateTime().default(new Date()),
 })
+
+

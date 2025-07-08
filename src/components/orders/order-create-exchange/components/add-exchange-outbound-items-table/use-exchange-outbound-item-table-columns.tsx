@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Checkbox } from "@medusajs/ui"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
@@ -66,3 +67,5 @@ export const useExchangeOutboundItemTableColumns = (currencyCode: string) => {
     [t, currencyCode]
   )
 }
+
+

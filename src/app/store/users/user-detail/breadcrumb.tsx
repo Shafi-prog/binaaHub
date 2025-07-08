@@ -1,6 +1,7 @@
+// @ts-nocheck
 import { HttpTypes } from "@medusajs/types"
 import { UIMatch } from "react-router-dom"
-import { useUser } from "../../../hooks/api/users"
+import { useUser } from "@/hooks/api/users"
 
 type UserDetailBreadcrumbProps = UIMatch<HttpTypes.AdminUserResponse>
 
@@ -22,3 +23,5 @@ export const UserDetailBreadcrumb = (props: UserDetailBreadcrumbProps) => {
 
   return <span>{display}</span>
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use client';
 
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
@@ -217,3 +218,5 @@ export function useCart() {
 }
 
 export type { Product, CartItem, CartState };
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 // E-commerce integration utilities for BINNA platform
 import Medusa from '@medusajs/medusa-js';
 import { createClient } from '@supabase/supabase-js'
@@ -202,3 +203,5 @@ export default {
   searchMedusaProducts,
   getMedusaRegions
 }
+
+

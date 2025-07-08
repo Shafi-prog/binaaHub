@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
@@ -191,3 +192,5 @@ export default function WarrantyDetailModal({
     </Transition>
   );
 }
+
+

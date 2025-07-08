@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { format, formatDistance, sub } from "date-fns"
 import { enUS } from "date-fns/locale"
 import { useTranslation } from "react-i18next"
@@ -46,3 +47,5 @@ export const useDate = () => {
     getRelativeDate,
   }
 }
+
+

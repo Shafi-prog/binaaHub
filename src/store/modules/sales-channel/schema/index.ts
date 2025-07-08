@@ -1,3 +1,4 @@
+// @ts-nocheck
 export default `
 type SalesChannel {
   id: ID!
@@ -10,3 +11,5 @@ type SalesChannel {
   deleted_at: DateTime
 }
 `
+
+

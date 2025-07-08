@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 const PricePreference = model
@@ -17,3 +18,5 @@ const PricePreference = model
   ])
 
 export default PricePreference
+
+

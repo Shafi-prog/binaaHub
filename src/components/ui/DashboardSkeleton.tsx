@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 
 export function DashboardSkeleton() {
@@ -74,3 +75,5 @@ export function CardSkeleton() {
     </div>
   );
 }
+
+

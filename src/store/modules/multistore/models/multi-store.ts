@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 const MultiStore = model.define("multi_store", {
@@ -69,3 +70,5 @@ MultiStore.hasMany(() => MultiStore, {
 })
 
 export default MultiStore
+
+

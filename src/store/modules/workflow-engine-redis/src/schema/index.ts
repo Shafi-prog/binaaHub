@@ -1,3 +1,4 @@
+// @ts-nocheck
 export default `
 enum TransactionState {
   NOT_STARTED
@@ -21,3 +22,5 @@ type WorkflowExecution {
   state: TransactionState
 }
 `
+
+

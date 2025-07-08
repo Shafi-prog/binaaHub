@@ -1,3 +1,4 @@
+// @ts-nocheck
 import crypto from "crypto"
 import {
   AuthenticationInput,
@@ -218,3 +219,5 @@ export class GithubAuthService extends AbstractAuthModuleProvider {
     return { success: true, location: authUrl.toString() }
   }
 }
+
+

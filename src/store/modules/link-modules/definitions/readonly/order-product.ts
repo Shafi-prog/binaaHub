@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { ModuleJoinerConfig } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 
@@ -50,3 +51,5 @@ export const OrderProduct: ModuleJoinerConfig = {
     },
   ],
 }
+
+

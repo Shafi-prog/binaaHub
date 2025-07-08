@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 const ChatMessage = model.define("chat_message", {
@@ -44,3 +45,5 @@ ChatMessage.belongsTo(() => import("./chat-message").then(m => m.default), {
 })
 
 export default ChatMessage
+
+

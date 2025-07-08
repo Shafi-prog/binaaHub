@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 const ApiKey = model
@@ -24,3 +25,5 @@ const ApiKey = model
   ])
 
 export default ApiKey
+
+

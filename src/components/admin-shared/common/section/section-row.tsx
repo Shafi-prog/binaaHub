@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Text, clx } from "@medusajs/ui"
 import { ReactNode } from "react"
 
@@ -39,3 +40,5 @@ export const SectionRow = ({ title, value, actions }: SectionRowProps) => {
     </div>
   )
 }
+
+

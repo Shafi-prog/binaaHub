@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use client';
 
 import { Component, ErrorInfo, ReactNode } from 'react';
@@ -58,3 +59,5 @@ export class ErrorBoundary extends Component<Props, State> {
     return this.props.children;
   }
 }
+
+

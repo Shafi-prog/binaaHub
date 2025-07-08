@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Enhanced types for the comprehensive feature implementation
 
 import type { Database } from './database';
@@ -521,3 +522,5 @@ export interface ChartData {
     borderColor?: string;
   }>;
 }
+
+

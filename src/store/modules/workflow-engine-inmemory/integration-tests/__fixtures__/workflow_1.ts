@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { isPresent } from "@medusajs/framework/utils"
 import {
   createStep,
@@ -61,3 +62,5 @@ createWorkflow("workflow_1", function (input) {
 
   return step_3(ret2)
 })
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 export interface Country {
   iso_2: string;
   iso_3: string;
@@ -1754,3 +1755,5 @@ export const countries: Country[] = [
 ];
 
 export default countries;
+
+

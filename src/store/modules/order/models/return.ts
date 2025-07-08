@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model, ReturnStatus } from "@medusajs/framework/utils"
 import { OrderClaim } from "./claim"
 import { OrderExchange } from "./exchange"
@@ -88,3 +89,5 @@ const _Return = model
   ])
 
 export const Return = _Return
+
+

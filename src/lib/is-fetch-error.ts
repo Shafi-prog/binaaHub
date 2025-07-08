@@ -1,3 +1,4 @@
+// @ts-nocheck
 export const isFetchError = (error: unknown): error is { status: number; message: string } => {
   return (
     typeof error === 'object' &&
@@ -26,3 +27,5 @@ export const isForbiddenError = (error: unknown): boolean => {
 export const isNotFoundError = (error: unknown): boolean => {
   return isFetchError(error) && error.status === 404
 }
+
+

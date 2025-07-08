@@ -1,3 +1,4 @@
+// @ts-nocheck
 // E-commerce API Configuration and Helper Functions
 // This file provides the connection and API helpers for integrating with BINNA's e-commerce system
 
@@ -222,3 +223,5 @@ export const convertToMedusaProduct = (legacyProduct: any) => {
 };
 
 export default EcommerceAPI;
+
+

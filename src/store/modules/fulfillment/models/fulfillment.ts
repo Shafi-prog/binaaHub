@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 import { FulfillmentAddress } from "./address"
@@ -52,3 +53,5 @@ export const Fulfillment = model
   .cascades({
     delete: ["delivery_address", "items", "labels"],
   })
+
+

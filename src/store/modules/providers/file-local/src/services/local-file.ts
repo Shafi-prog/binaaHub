@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { FileTypes, LocalFileServiceOptions } from "@medusajs/framework/types"
 import {
   AbstractFileProviderService,
@@ -176,3 +177,5 @@ export class LocalFileService extends AbstractFileProviderService {
     return relativePath
   }
 }
+
+

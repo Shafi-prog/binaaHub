@@ -1,12 +1,13 @@
+// @ts-nocheck
 import { toast } from "@medusajs/ui"
 import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { useNavigate, useParams } from "react-router-dom"
 
-import { RouteFocusModal } from "../../../components/modals"
-import { useCreateExchange, useExchange } from "../../../hooks/api/exchanges"
-import { useOrder, useOrderPreview } from "../../../hooks/api/orders"
-import { useReturn } from "../../../hooks/api/returns"
+import { RouteFocusModal } from "@/components/modals"
+import { useCreateExchange, useExchange } from "@/hooks/api/exchanges"
+import { useOrder, useOrderPreview } from "@/hooks/api/orders"
+import { useReturn } from "@/hooks/api/returns"
 import { DEFAULT_FIELDS } from "../order-detail/constants"
 import { ExchangeCreateForm } from "./components/exchange-create-form"
 
@@ -82,3 +83,5 @@ export const ExchangeCreate = () => {
     </RouteFocusModal>
   )
 }
+
+

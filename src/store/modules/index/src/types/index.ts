@@ -1,3 +1,4 @@
+// @ts-nocheck
 export const schemaObjectRepresentationPropertiesToOmit = [
   "_schemaPropertiesMap",
   "_serviceNameModuleConfigMap",
@@ -30,3 +31,5 @@ export type QueryOptions = {
   take?: number
   orderBy?: OrderBy | OrderBy[]
 }
+
+

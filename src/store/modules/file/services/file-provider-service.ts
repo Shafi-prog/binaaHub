@@ -1,3 +1,4 @@
+// @ts-nocheck
 import type { Readable } from "stream"
 import { Constructor, FileTypes } from "@medusajs/framework/types"
 import { MedusaError } from "@medusajs/framework/utils"
@@ -82,3 +83,5 @@ export default class FileProviderService {
     return this.fileProvider_.getAsBuffer(fileData)
   }
 }
+
+

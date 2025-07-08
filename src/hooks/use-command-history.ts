@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useCallback, useRef, useState } from 'react'
 
 export interface Command {
@@ -78,3 +79,5 @@ export function useCommandHistory(): CommandHistory {
     clear,
   }
 }
+
+

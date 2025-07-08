@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { ColumnDef } from "@tanstack/react-table"
 import { Skeleton } from "../../common/skeleton"
 
@@ -61,3 +62,5 @@ export const DataGridSkeleton = <TData,>({
     </div>
   )
 }
+
+

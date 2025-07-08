@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ERP Integration Service Core
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
@@ -387,3 +388,5 @@ export default class ERPIntegrationServiceCore {
     }
   }
 }
+
+

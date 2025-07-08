@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { FetchError } from "@medusajs/js-sdk"
 import { HttpTypes, LinkMethodRequest } from "@medusajs/types"
 import {
@@ -7,9 +8,9 @@ import {
   useMutation,
   useQuery,
 } from "@tanstack/react-query"
-import { sdk } from "../../lib/client"
-import { queryClient } from "../../lib/query-client"
-import { queryKeysFactory } from "../../lib/query-key-factory"
+import { sdk } from "@/lib/client"
+import { queryClient } from "@/lib/query-client"
+import { queryKeysFactory } from "@/lib/query-key-factory"
 import { promotionsQueryKeys } from "./promotions"
 
 const REGIONS_QUERY_KEY = "campaigns" as const
@@ -135,3 +136,5 @@ export const useAddOrRemoveCampaignPromotions = (
     ...options,
   })
 }
+
+

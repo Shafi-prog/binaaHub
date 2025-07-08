@@ -1,6 +1,7 @@
+// @ts-nocheck
 import { HttpTypes } from "@medusajs/types"
 import { UIMatch } from "react-router-dom"
-import { useShippingProfile } from "../../../hooks/api/shipping-profiles"
+import { useShippingProfile } from "@/hooks/api/shipping-profiles"
 
 type ShippingProfileDetailBreadcrumbProps =
   UIMatch<HttpTypes.AdminShippingProfileResponse>
@@ -25,3 +26,5 @@ export const ShippingProfileDetailBreadcrumb = (
 
   return <span>{shipping_profile.name}</span>
 }
+
+

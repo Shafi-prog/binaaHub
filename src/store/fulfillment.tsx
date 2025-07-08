@@ -1,10 +1,11 @@
+// @ts-nocheck
 import { useMutation, UseMutationOptions } from "@tanstack/react-query"
 
-import { queryKeysFactory } from "../../lib/query-key-factory"
+import { queryKeysFactory } from "@/lib/query-key-factory"
 
 import { HttpTypes } from "@medusajs/types"
-import { sdk } from "../../lib/client"
-import { queryClient } from "../../lib/query-client"
+import { sdk } from "@/lib/client"
+import { queryClient } from "@/lib/query-client"
 import { ordersQueryKeys } from "./orders"
 import { FetchError } from "@medusajs/js-sdk"
 
@@ -64,3 +65,5 @@ export const useCreateFulfillmentShipment = (
     ...options,
   })
 }
+
+

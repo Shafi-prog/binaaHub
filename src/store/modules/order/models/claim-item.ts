@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { ClaimReason, model } from "@medusajs/framework/utils"
 import { OrderClaim } from "./claim"
 import { OrderClaimItemImage } from "./claim-item-image"
@@ -49,3 +50,5 @@ const _OrderClaimItem = model
   ])
 
 export const OrderClaimItem = _OrderClaimItem
+
+

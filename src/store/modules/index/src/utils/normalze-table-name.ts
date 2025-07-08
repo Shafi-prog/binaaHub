@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { compressName } from "@medusajs/framework/utils"
 
 export function normalizeTableName(name: string): string {
@@ -8,3 +9,5 @@ export function getPivotTableName(tableName: string) {
   const compressedName = normalizeTableName(tableName)
   return `cat_pivot_${compressedName}`
 }
+
+

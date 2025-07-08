@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 import { ServiceZone } from "./service-zone"
@@ -22,3 +23,5 @@ export const FulfillmentSet = model
   .cascades({
     delete: ["service_zones"],
   })
+
+

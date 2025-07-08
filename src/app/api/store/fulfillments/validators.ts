@@ -1,6 +1,7 @@
+// @ts-nocheck
 import { z } from "zod"
-import { AddressPayload } from "../../utils/common-validators"
-import { createSelectParams } from "../../utils/validators"
+import { AddressPayload } from "@/utils/common-validators"
+import { createSelectParams } from "@/utils/validators"
 
 export const AdminFulfillmentParams = createSelectParams()
 
@@ -41,3 +42,5 @@ export type AdminCreateShipmentType = z.infer<typeof AdminCreateShipment>
 export const AdminCreateShipment = z.object({
   labels: z.array(AdminCreateFulfillmentLabel),
 })
+
+

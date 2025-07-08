@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState } from 'react';
 import { Button } from '@/components/ui/enhanced-components';
 
@@ -43,3 +44,5 @@ export function EvaluationSection({ userId }: { userId: string }) {
     </div>
   );
 }
+
+

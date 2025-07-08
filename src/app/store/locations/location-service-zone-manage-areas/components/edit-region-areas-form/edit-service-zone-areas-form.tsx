@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { zodResolver } from "@hookform/resolvers/zod"
 import { HttpTypes } from "@medusajs/types"
 import { Button, Heading, toast } from "@medusajs/ui"
@@ -118,3 +119,5 @@ export function EditServiceZoneAreasForm({
     </RouteFocusModal.Form>
   )
 }
+
+

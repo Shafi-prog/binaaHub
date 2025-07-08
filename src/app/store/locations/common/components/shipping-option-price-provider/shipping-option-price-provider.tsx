@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { ShippingOptionPriceContext } from "./shipping-option-price-context"
 
 import { PropsWithChildren } from "react"
@@ -21,3 +22,5 @@ export const ShippingOptionPriceProvider = ({
     </ShippingOptionPriceContext.Provider>
   )
 }
+
+

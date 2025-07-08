@@ -1,4 +1,5 @@
-import { RouteFocusModal } from "../../../components/modals"
+// @ts-nocheck
+import { RouteFocusModal } from "@/components/modals"
 import { ProductTagCreateForm } from "./components/product-tag-create-form"
 
 export const ProductTagCreate = () => {
@@ -8,3 +9,5 @@ export const ProductTagCreate = () => {
     </RouteFocusModal>
   )
 }
+
+

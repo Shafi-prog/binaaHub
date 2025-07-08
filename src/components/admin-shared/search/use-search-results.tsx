@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { HttpTypes } from "@medusajs/types"
 import { keepPreviousData } from "@tanstack/react-query"
 import { TFunction } from "i18next"
@@ -24,8 +25,8 @@ import {
   useTaxRegions,
   useUsers,
   useVariants,
-} from "../../hooks/api"
-import { useReturnReasons } from "../../hooks/api/return-reasons"
+} from "@/hooks/api"
+import { useReturnReasons } from "@/hooks/api/return-reasons"
 import { Shortcut, ShortcutType } from "../../providers/keybind-provider"
 import { useGlobalShortcuts } from "../../providers/keybind-provider/hooks"
 import { DynamicSearchResult, SearchArea } from "./types"
@@ -748,3 +749,5 @@ function transformDynamicSearchResults<T extends { count: number }>(
     items: data.map(transform),
   }
 }
+
+

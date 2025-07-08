@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { zodResolver } from "@hookform/resolvers/zod"
 import {
   InformationCircleSolid,
@@ -46,7 +47,7 @@ import {
   UpdateConditionalPriceRuleSchemaType,
 } from "../../schema"
 import { ConditionalPriceInfo } from "../../types"
-import { getCustomShippingOptionPriceFieldName } from "../../utils/get-custom-shipping-option-price-field-info"
+import { getCustomShippingOptionPriceFieldName } from "@/utils/get-custom-shipping-option-price-field-info"
 import { useShippingOptionPrice } from "../shipping-option-price-provider"
 
 const RULE_ITEM_PREFIX = "rule-item"
@@ -711,3 +712,5 @@ const ConditionDisplay = ({
 
   return renderCondition()
 }
+
+

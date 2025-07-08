@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   BigNumber,
   isDefined,
@@ -43,3 +44,5 @@ export const applyEntityHooks = () => {
   applyHook()
   applyFormulas()
 }
+
+

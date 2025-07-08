@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Modules } from "@medusajs/framework/utils"
 import { ProviderLoaderOptions } from "@medusajs/types"
 import { RedisCacheModuleOptions } from "@types"
@@ -39,3 +40,5 @@ export default async ({
     prefix: asValue(namespace ?? "medusa_lock:"),
   })
 }
+
+

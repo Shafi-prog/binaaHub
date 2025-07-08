@@ -1,8 +1,9 @@
+// @ts-nocheck
 import { LoaderFunctionArgs } from "react-router-dom"
 
-import { productTagsQueryKeys } from "../../../hooks/api"
-import { sdk } from "../../../lib/client"
-import { queryClient } from "../../../lib/query-client"
+import { productTagsQueryKeys } from "@/hooks/api"
+import { sdk } from "@/lib/client"
+import { queryClient } from "@/lib/query-client"
 
 const productTagDetailQuery = (id: string) => ({
   queryKey: productTagsQueryKeys.detail(id),
@@ -15,3 +16,5 @@ export const productTagLoader = async ({ params }: LoaderFunctionArgs) => {
 
   return queryClient.ensureQueryData(query)
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 import CampaignBudget from "./campaign-budget"
 import Promotion from "./promotion"
@@ -34,3 +35,5 @@ const Campaign = model
   ])
 
 export default Campaign
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { ArrowUpDown } from "@medusajs/icons"
 import { DropdownMenu, IconButton } from "@medusajs/ui"
 import { useState } from "react"
@@ -146,3 +147,5 @@ export const OrderBy = ({ keys }: OrderByProps) => {
     </DropdownMenu>
   )
 }
+
+

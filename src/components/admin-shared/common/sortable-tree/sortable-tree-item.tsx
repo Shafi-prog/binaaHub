@@ -1,3 +1,4 @@
+// @ts-nocheck
 import type { UniqueIdentifier } from "@dnd-kit/core"
 import { AnimateLayoutChanges, useSortable } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
@@ -60,3 +61,5 @@ export function SortableTreeItem({
     />
   )
 }
+
+

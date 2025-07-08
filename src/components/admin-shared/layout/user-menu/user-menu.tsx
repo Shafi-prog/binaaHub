@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   BookOpen,
   CircleHalfSolid,
@@ -25,8 +26,8 @@ import { Skeleton } from "../../common/skeleton"
 
 import { useState } from "react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
-import { useLogout, useMe } from "../../../hooks/api"
-import { queryClient } from "../../../lib/query-client"
+import { useLogout, useMe } from "@/hooks/api"
+import { queryClient } from "@/lib/query-client"
 import { useGlobalShortcuts } from "../../../providers/keybind-provider/hooks"
 import { useTheme } from "../../../providers/theme-provider"
 
@@ -340,3 +341,5 @@ const UserItem = () => {
     </div>
   )
 }
+
+

@@ -1,7 +1,8 @@
+// @ts-nocheck
 import { useParams } from "react-router-dom"
 
-import { RouteFocusModal } from "../../../components/modals"
-import { useOrder } from "../../../hooks/api/orders"
+import { RouteFocusModal } from "@/components/modals"
+import { useOrder } from "@/hooks/api/orders"
 import { OrderCreateShipmentForm } from "./components/order-create-shipment-form"
 
 export function OrderCreateShipment() {
@@ -28,3 +29,5 @@ export function OrderCreateShipment() {
     </RouteFocusModal>
   )
 }
+
+

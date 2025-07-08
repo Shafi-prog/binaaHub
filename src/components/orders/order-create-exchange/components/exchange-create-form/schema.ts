@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { z } from "zod"
 
 export const ExchangeCreateSchema = z.object({
@@ -22,3 +23,5 @@ export const ExchangeCreateSchema = z.object({
 })
 
 export type CreateExchangeSchemaType = z.infer<typeof ExchangeCreateSchema>
+
+

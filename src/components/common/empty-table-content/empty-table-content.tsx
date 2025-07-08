@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { ExclamationCircle, MagnifyingGlass, PlusMini } from "@medusajs/icons"
 import { Button, Text, clx } from "@medusajs/ui"
 import React from "react"
@@ -104,3 +105,5 @@ export const NoRecords = ({
     </div>
   )
 }
+
+

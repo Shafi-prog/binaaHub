@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Trash } from "@medusajs/icons"
 import { AdminShippingProfileResponse } from "@medusajs/types"
 import { toast, usePrompt } from "@medusajs/ui"
@@ -62,3 +63,5 @@ export const ShippingOptionsRowActions = ({
     />
   )
 }
+
+

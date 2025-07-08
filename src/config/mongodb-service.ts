@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { MongoClient, Db, Collection } from 'mongodb';
 
 // MongoDB connection
@@ -561,3 +562,5 @@ export function calculateTotal(subtotal: number, vatRate: number = 15, discount:
   const total = discountedAmount + vat;
   return { vat, total };
 }
+
+

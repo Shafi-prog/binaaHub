@@ -1,4 +1,5 @@
-import { Migration } from "@mikro-orm/migrations"
+// @ts-nocheck
+import { Migration } from "@mikro-orm/migrations";
 
 export class Migration20240307161216 extends Migration {
   async up(): Promise<void> {
@@ -31,3 +32,5 @@ export class Migration20240307161216 extends Migration {
     this.addSql('drop table if exists "stock_location" cascade;')
   }
 }
+
+

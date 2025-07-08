@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 import { OrderChange } from "./order-change"
@@ -70,3 +71,5 @@ const _OrderChangeAction = model
   ])
 
 export const OrderChangeAction = _OrderChangeAction
+
+

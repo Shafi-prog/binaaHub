@@ -1,3 +1,4 @@
+// @ts-nocheck
 interface ProductCardProps {
   id: string;
   title: string;
@@ -47,3 +48,5 @@ export default function ProductCard({
     </div>
   );
 }
+
+

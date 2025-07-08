@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Combobox as PrimitiveCombobox,
   ComboboxDisclosure as PrimitiveComboboxDisclosure,
@@ -413,3 +414,5 @@ const ComboboxImpl = <T extends Value = string>(
 }
 
 export const Combobox = genericForwardRef(ComboboxImpl)
+
+

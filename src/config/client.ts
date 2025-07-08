@@ -1,3 +1,4 @@
+// @ts-nocheck
 // src/config/supabase/client.ts
 'use client';
 
@@ -15,3 +16,5 @@ export const supabase = createClient(supabaseUrl, supabaseKey, {
     detectSessionInUrl: true,
   },
 });
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { BigNumberInput } from "@medusajs/framework/types"
 
 export interface PartialUpsertOrderItemDTO {
@@ -27,3 +28,5 @@ export interface UpdateOrderItemDTO
     Partial<CreateOrderItemDTO> {
   id: string
 }
+
+

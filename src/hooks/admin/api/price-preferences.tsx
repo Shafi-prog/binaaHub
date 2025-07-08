@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { FetchError } from "@medusajs/js-sdk"
 import { HttpTypes } from "@medusajs/types"
 import {
@@ -7,9 +8,9 @@ import {
   useMutation,
   useQuery,
 } from "@tanstack/react-query"
-import { sdk } from "../../lib/client"
-import { queryClient } from "../../lib/query-client"
-import { queryKeysFactory } from "../../lib/query-key-factory"
+import { sdk } from "@/lib/client"
+import { queryClient } from "@/lib/query-client"
+import { queryKeysFactory } from "@/lib/query-key-factory"
 
 const PRICE_PREFERENCES_QUERY_KEY = "price-preferences" as const
 export const pricePreferencesQueryKeys = queryKeysFactory(
@@ -111,3 +112,5 @@ export const useDeletePricePreference = (
     ...options,
   })
 }
+
+

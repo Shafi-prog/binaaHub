@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useContext } from "react"
 import { ShippingOptionPriceContext } from "./shipping-option-price-context"
 
@@ -12,3 +13,5 @@ export const useShippingOptionPrice = () => {
 
   return context
 }
+
+

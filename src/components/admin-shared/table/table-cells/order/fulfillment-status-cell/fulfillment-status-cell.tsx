@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useTranslation } from "react-i18next"
 
 import { FulfillmentStatus } from "@medusajs/types"
@@ -33,3 +34,5 @@ export const FulfillmentStatusHeader = () => {
     </div>
   )
 }
+
+

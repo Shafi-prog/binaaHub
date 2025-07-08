@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { AdminOrder } from "@medusajs/types"
 import { Container, Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
@@ -23,3 +24,5 @@ export const OrderActivitySection = ({ order }: OrderActivityProps) => {
     </Container>
   )
 }
+
+

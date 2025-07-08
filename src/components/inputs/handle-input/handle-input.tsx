@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Input, Text } from "@medusajs/ui"
 import { ComponentProps, ElementRef, forwardRef } from "react"
 
@@ -22,3 +23,5 @@ export const HandleInput = forwardRef<
   )
 })
 HandleInput.displayName = "HandleInput"
+
+

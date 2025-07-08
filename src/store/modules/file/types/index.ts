@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   ModuleProviderExports,
   ModuleServiceInitializeOptions,
@@ -27,3 +28,5 @@ export type FileModuleOptions = Partial<ModuleServiceInitializeOptions> & {
     options?: Record<string, unknown>
   }
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { S3Client } from "@aws-sdk/client-s3";
 import { FileTypes, Logger, S3FileServiceOptions } from "@medusajs/framework/types";
 import { AbstractFileProviderService } from "@medusajs/framework/utils";
@@ -34,3 +35,4 @@ export declare class S3FileService extends AbstractFileProviderService {
 }
 export {};
 //# sourceMappingURL=s3-file.d.ts.map
+

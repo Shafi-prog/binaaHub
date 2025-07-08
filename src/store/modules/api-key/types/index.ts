@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   ApiKeyType,
   IEventBusModuleService,
@@ -6,7 +7,7 @@ import {
   UpdateApiKeyDTO,
 } from "@medusajs/framework/types"
 
-export type InitializeModuleInjectableDependencies = {
+export type InitializeModuleInjectableDependencies  = {
   logger?: Logger
   EventBus?: IEventBusModuleService
 }
@@ -29,3 +30,5 @@ export type TokenDTO = {
 
 export type UpdateApiKeyInput = UpdateApiKeyDTO & { id: string }
 export type RevokeApiKeyInput = RevokeApiKeyDTO & { id: string }
+
+

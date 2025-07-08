@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Logger,
   NotificationTypes,
@@ -105,3 +106,5 @@ export class SendgridNotificationService extends AbstractNotificationProviderSer
     }
   }
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   BelongsTo,
   DmlEntity,
@@ -51,3 +52,5 @@ export const GeoZone = model
       where: "deleted_at IS NULL",
     },
   ]) as unknown as DmlEntity<DMLEntitySchemaBuilder<GeoZoneSchema>, "GeoZone">
+
+

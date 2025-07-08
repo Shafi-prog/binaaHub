@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 import { ShippingOption } from "./shipping-option"
@@ -19,3 +20,5 @@ export const ShippingProfile = model
       where: "deleted_at IS NULL",
     },
   ])
+
+

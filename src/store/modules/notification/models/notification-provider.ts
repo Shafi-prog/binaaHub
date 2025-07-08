@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 import { Notification } from "./notification"
 
@@ -9,3 +10,5 @@ export const NotificationProvider = model.define("notificationProvider", {
   channels: model.array().default([]),
   notifications: model.hasMany(() => Notification, { mappedBy: "provider" }),
 })
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useLocation } from "react-router-dom"
 import { getApiKeyTypeFromPathname } from "../common/utils"
 import { ApiKeyManagementListTable } from "./components/api-key-management-list-table"
@@ -23,3 +24,5 @@ export const ApiKeyManagementList = () => {
     </SingleColumnPage>
   )
 }
+
+

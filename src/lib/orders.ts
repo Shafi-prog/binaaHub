@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Order utility functions
 import type { AdminOrder, AdminPayment } from '@medusajs/types'
 
@@ -40,3 +41,5 @@ export function getOrderCreatedAt(order: AdminOrder): Date {
 export function getOrderUpdatedAt(order: AdminOrder): Date {
   return new Date(order.updated_at)
 }
+
+

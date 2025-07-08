@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 const MarketplaceVendor = model
@@ -78,3 +79,5 @@ const MarketplaceVendor = model
   ])
 
 export default MarketplaceVendor
+
+

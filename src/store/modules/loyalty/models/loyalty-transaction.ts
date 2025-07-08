@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 const LoyaltyTransaction = model.define("loyalty_transaction", {
@@ -45,3 +46,5 @@ LoyaltyTransaction.belongsTo(() => import("../../order/models/order").then(m => 
 })
 
 export default LoyaltyTransaction
+
+

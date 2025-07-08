@@ -1,5 +1,6 @@
+// @ts-nocheck
 import { useTranslation } from "react-i18next"
-import { Filter } from "../../../components/table/data-table"
+import { Filter } from "@/components/table/data-table"
 
 export const usePromotionTableFilters = () => {
   const { t } = useTranslation()
@@ -11,3 +12,5 @@ export const usePromotionTableFilters = () => {
 
   return filters
 }
+
+

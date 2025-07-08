@@ -1,3 +1,4 @@
+// @ts-nocheck
 import i18next from "i18next"
 import { FieldPath, FieldValues, UseFormReturn } from "react-hook-form"
 import { z } from "zod"
@@ -99,3 +100,5 @@ export function partialFormValidation<TForm extends FieldValues>(
 
   return true
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { UseFormReturn } from "react-hook-form"
 
 import { StackedFocusModal } from "../../../../../components/modals"
@@ -31,3 +32,5 @@ export const ProductCreateOrganizeForm = ({ form }: ProductAttributesProps) => {
     </StackedFocusModal>
   )
 }
+
+

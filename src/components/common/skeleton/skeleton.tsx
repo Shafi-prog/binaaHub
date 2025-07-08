@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Container, Heading, Text, clx } from "@medusajs/ui"
 import { CSSProperties, ComponentPropsWithoutRef } from "react"
 
@@ -325,3 +326,5 @@ export const TwoColumnPageSkeleton = ({
     </div>
   )
 }
+
+

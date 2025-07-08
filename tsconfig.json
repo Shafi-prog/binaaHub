@@ -1,40 +1,26 @@
 {
   "extends": "./tsconfig.extends.json",
   "compilerOptions": {
-    "target": "ES2022",
+    "target": "es5",
     "lib": [
       "dom",
       "dom.iterable",
-      "esnext"
+      "es6"
     ],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": true,
-    "noEmit": true,
     "esModuleInterop": true,
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "types": [
-      "react",
-      "react-dom",
-      "node",
-      "@types/node"
-    ],
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "esnext",
+    "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
+    "noEmit": true,
     "jsx": "preserve",
-    "incremental": true,
-    "allowImportingTsExtensions": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
-    "forceConsistentCasingInFileNames": true,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "noFallthroughCasesInSwitch": true,
-    "baseUrl": "./",
+    "baseUrl": ".",
     "paths": {
       "@/*": [
         "src/*"
@@ -42,43 +28,44 @@
       "@/components/*": [
         "src/components/*"
       ],
-      "@/lib/*": [
-        "src/lib/*"
-      ],
-      "@/types/*": [
-        "src/types/*"
-      ],
-      "@/utils/*": [
-        "src/utils/*"
+      "@/store/*": [
+        "src/store/*"
       ],
       "@/hooks/*": [
         "src/hooks/*"
       ],
-      "@/app/*": [
-        "src/app/*"
+      "@/utils/*": [
+        "src/utils/*"
       ],
-      "@medusa/*": [
-        "medusa-develop/packages/admin/dashboard/src/*"
+      "@/types/*": [
+        "src/types/*"
+      ],
+      "@/lib/*": [
+        "src/lib/*"
+      ],
+      "@/analytics/*": [
+        "src/analytics/*"
+      ],
+      "@/auth/*": [
+        "src/auth/*"
       ]
-    }
+    },
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "include": [
+    "src/**/*",
     "src/**/*.ts",
     "src/**/*.tsx",
-    "src/**/*.js",
-    "src/**/*.jsx",
-    "src/**/*.json",
-    "src/**/*.d.ts",
-    "src/**/*.config.js",
-    "src/**/*.env",
     ".next/types/**/*.ts"
   ],
   "exclude": [
     "node_modules",
-    "dist",
     "build",
-    "out",
-    "src/**/*.test.ts",
-    "src/**/*.test.js"
+    "dist"
   ]
 }

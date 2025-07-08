@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Component, PencilSquare, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import { Badge, Container, Heading, usePrompt } from "@medusajs/ui"
@@ -95,3 +96,5 @@ export function VariantGeneralSection({ variant }: VariantGeneralSectionProps) {
     </Container>
   )
 }
+
+

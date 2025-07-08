@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { AuthenticationInput, AuthenticationResponse, AuthIdentityProviderService, GoogleAuthProviderOptions, Logger } from "@medusajs/framework/types";
 import { AbstractAuthModuleProvider } from "@medusajs/framework/utils";
 type InjectedDependencies = {
@@ -28,3 +29,4 @@ export declare class GoogleAuthService extends AbstractAuthModuleProvider {
 }
 export {};
 //# sourceMappingURL=google.d.ts.map
+

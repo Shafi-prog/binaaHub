@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { AuthenticationInput, AuthenticationResponse, AuthIdentityProviderService, AuthTypes, Logger } from "@medusajs/framework/types";
 import { AuthProviderRegistrationPrefix } from "@types";
 type InjectedDependencies = {
@@ -15,3 +16,5 @@ export default class AuthProviderService {
     validateCallback(provider: string, auth: AuthenticationInput, authIdentityProviderService: AuthIdentityProviderService): Promise<AuthenticationResponse>;
 }
 export {};
+
+

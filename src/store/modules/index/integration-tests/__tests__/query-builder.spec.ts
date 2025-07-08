@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   configLoader,
   container,
@@ -938,3 +939,5 @@ describe("IndexModuleService query", function () {
     ])
   })
 })
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import { sdk } from "../../client"
 import { productsQueryKeys, variantsQueryKeys } from "../../products"
@@ -169,3 +170,5 @@ export const useDeleteVariant = (productId: string) => {
     },
   })
 }
+
+

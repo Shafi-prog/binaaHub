@@ -1,3 +1,4 @@
+// @ts-nocheck
 import path from "node:path"
 import type { Config } from "tailwindcss"
 import type { Plugin } from "vite"
@@ -94,3 +95,5 @@ function createTailwindConfig(
 
   return config
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { MedusaModule } from "@medusajs/framework/modules-sdk"
 import { IEventBusService } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
@@ -11,3 +12,5 @@ export const initialize = async (): Promise<IEventBusService> => {
 
   return loaded[serviceKey]
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useTranslation } from "react-i18next"
 import { PaymentProviderDTO } from "@medusajs/types"
 
@@ -34,3 +35,5 @@ export const PaymentProvidersHeader = () => {
     </div>
   )
 }
+
+

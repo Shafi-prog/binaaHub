@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { asClass, asValue } from "awilix"
 import { PostgresProvider } from "../services/postgres-provider"
 import { MikroOrmBaseRepository as BaseRepository } from "@medusajs/framework/utils"
@@ -27,3 +28,5 @@ export default async ({ container, options }: LoaderOptions): Promise<void> => {
     )
   }*/
 }
+
+

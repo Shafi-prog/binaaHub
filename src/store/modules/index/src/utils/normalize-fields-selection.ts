@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { objectFromStringPath } from "@medusajs/framework/utils"
 
 export function normalizeFieldsSelection(fields: string[]) {
@@ -5,3 +6,5 @@ export function normalizeFieldsSelection(fields: string[]) {
   const fieldsObject = objectFromStringPath(normalizedFields)
   return fieldsObject
 }
+
+

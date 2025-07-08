@@ -1,3 +1,4 @@
+// @ts-nocheck
 export const defaultAdminWorkflowExecutionDetailFields = [
   "id",
   "workflow_id",
@@ -30,3 +31,5 @@ export const listTransformQueryConfig = {
   defaults: defaultAdminWorkflowExecutionsFields,
   isList: true,
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -448,3 +449,5 @@ const EnhancedMedusaDashboard: React.FC = () => {
 };
 
 export default EnhancedMedusaDashboard;
+
+

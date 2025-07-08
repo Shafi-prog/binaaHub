@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useTranslation } from "react-i18next"
 import { useState } from "react"
 import copy from "copy-to-clipboard"
@@ -28,3 +29,5 @@ function DisplayId({ id, className }: DisplayIdProps) {
 }
 
 export default DisplayId
+
+

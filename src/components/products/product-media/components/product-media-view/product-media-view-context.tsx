@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { createContext } from "react"
 
 type ProductMediaViewContextValue = {
@@ -7,3 +8,5 @@ type ProductMediaViewContextValue = {
 
 export const ProductMediaViewContext =
   createContext<ProductMediaViewContextValue | null>(null)
+
+

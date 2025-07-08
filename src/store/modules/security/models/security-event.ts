@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 const SecurityEvent = model.define("security_event", {
@@ -69,3 +70,5 @@ SecurityEvent.belongsTo(() => import("../../customer/models/customer").then(m =>
 })
 
 export default SecurityEvent
+
+

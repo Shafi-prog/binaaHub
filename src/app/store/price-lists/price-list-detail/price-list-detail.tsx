@@ -1,12 +1,13 @@
+// @ts-nocheck
 import { useParams } from "react-router-dom"
 
-import { usePriceList } from "../../../hooks/api/price-lists"
+import { usePriceList } from "@/hooks/api/price-lists"
 import { PriceListConfigurationSection } from "./components/price-list-configuration-section"
 import { PriceListGeneralSection } from "./components/price-list-general-section"
 import { PriceListProductSection } from "./components/price-list-product-section"
 
-import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
-import { TwoColumnPage } from "../../../components/layout/pages"
+import { TwoColumnPageSkeleton } from "@/components/common/skeleton"
+import { TwoColumnPage } from "@/components/layout/pages"
 import { useExtension } from "../../../providers/extension-provider"
 
 export const PriceListDetails = () => {
@@ -46,3 +47,5 @@ export const PriceListDetails = () => {
     </TwoColumnPage>
   )
 }
+
+

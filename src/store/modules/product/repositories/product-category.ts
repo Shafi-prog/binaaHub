@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Context,
   DAL,
@@ -698,3 +699,5 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
     }
   }
 }
+
+

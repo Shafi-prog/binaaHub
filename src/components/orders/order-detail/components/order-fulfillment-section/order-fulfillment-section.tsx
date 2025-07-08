@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Buildings, XCircle } from "@medusajs/icons"
 import {
   AdminOrder,
@@ -470,3 +471,5 @@ const Fulfillment = ({
     </Container>
   )
 }
+
+

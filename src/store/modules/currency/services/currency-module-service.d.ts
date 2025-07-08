@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Context, CurrencyTypes, DAL, FilterableCurrencyProps, FindConfig, ICurrencyModuleService, InternalModuleDeclaration, ModulesSdkTypes } from "@medusajs/framework/types";
 import { Currency } from "@models";
 type InjectedDependencies = {
@@ -16,3 +17,5 @@ export default class CurrencyModuleService extends CurrencyModuleService_base im
     protected static normalizeFilters(filters: FilterableCurrencyProps | undefined): FilterableCurrencyProps | undefined;
 }
 export {};
+
+

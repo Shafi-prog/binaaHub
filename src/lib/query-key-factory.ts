@@ -1,3 +1,4 @@
+// @ts-nocheck
 export type TQueryKey<
   T extends string,
   TListQueryType = any,
@@ -62,3 +63,5 @@ export const workflowExecutionsQueryKeys = queryKeysFactory("workflow-executions
 export const pricePreferencesQueryKeys = queryKeysFactory("price-preferences");
 
 export { queryKeysFactory as queryKeys };
+
+

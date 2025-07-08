@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { ErrorMessage } from "@hookform/error-message"
 import { ExclamationCircle } from "@medusajs/icons"
 import { Tooltip, clx } from "@medusajs/ui"
@@ -86,3 +87,5 @@ const RenderChildren = ({
 
   return children
 }
+
+

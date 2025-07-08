@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use client';
 
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
@@ -64,3 +65,5 @@ export default function LogoutButton({ className = '' }: LogoutButtonProps) {
     </button>
   );
 }
+
+

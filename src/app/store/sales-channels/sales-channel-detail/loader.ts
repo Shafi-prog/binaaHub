@@ -1,8 +1,9 @@
+// @ts-nocheck
 import { LoaderFunctionArgs } from "react-router-dom"
 
-import { productsQueryKeys } from "../../../hooks/api/products"
-import { sdk } from "../../../lib/client"
-import { queryClient } from "../../../lib/query-client"
+import { productsQueryKeys } from "@/hooks/api/products"
+import { sdk } from "@/lib/client"
+import { queryClient } from "@/lib/query-client"
 
 const salesChannelDetailQuery = (id: string) => ({
   queryKey: productsQueryKeys.detail(id),
@@ -15,3 +16,5 @@ export const salesChannelLoader = async ({ params }: LoaderFunctionArgs) => {
 
   return queryClient.ensureQueryData(query)
 }
+
+

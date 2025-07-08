@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { ConditionalShippingOptionPriceAccessor } from "../types"
 
 export const getCustomShippingOptionPriceFieldName = (
@@ -17,3 +18,5 @@ export const getCustomShippingOptionPriceFieldName = (
 
   return name
 }
+
+

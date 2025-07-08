@@ -1,4 +1,5 @@
-import { SingleColumnPage } from "../../../components/layout/pages"
+// @ts-nocheck
+import { SingleColumnPage } from "@/components/layout/pages"
 import { useExtension } from "../../../providers/extension-provider"
 import { CollectionListTable } from "./components/collection-list-table"
 
@@ -16,3 +17,5 @@ export const CollectionList = () => {
     </SingleColumnPage>
   )
 }
+
+

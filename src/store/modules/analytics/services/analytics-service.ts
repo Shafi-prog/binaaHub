@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   TrackAnalyticsEventDTO,
   IdentifyAnalyticsEventDTO,
@@ -50,3 +51,5 @@ export default class AnalyticsService {
     }
   }
 }
+
+

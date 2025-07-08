@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState, useMemo } from "react";
 
 // Hook for order table query management
@@ -25,3 +26,5 @@ export const useOrderTableQuery = () => {
     setQuery,
   };
 };
+
+

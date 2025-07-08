@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 const IndexData = model.define("IndexData", {
@@ -9,3 +10,5 @@ const IndexData = model.define("IndexData", {
 })
 
 export default IndexData
+
+

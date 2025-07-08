@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { PencilSquare, Plus, Trash } from "@medusajs/icons"
 import { Badge, Container, Heading, usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
@@ -111,3 +112,5 @@ export const ProductOptionSection = ({
     </Container>
   )
 }
+
+

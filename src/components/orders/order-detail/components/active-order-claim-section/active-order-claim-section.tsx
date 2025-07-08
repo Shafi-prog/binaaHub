@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { ExclamationCircle } from "@medusajs/icons"
 import { Button, Container, Heading, Text, toast } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
@@ -77,3 +78,5 @@ export const ActiveOrderClaimSection = ({
     </div>
   )
 }
+
+

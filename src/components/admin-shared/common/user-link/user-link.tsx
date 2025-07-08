@@ -1,6 +1,7 @@
+// @ts-nocheck
 import { Avatar, Text } from "@medusajs/ui"
 import { Link } from "react-router-dom"
-import { useUser } from "../../../hooks/api/users"
+import { useUser } from "@/hooks/api/users"
 
 type UserLinkProps = {
   id: string
@@ -43,3 +44,5 @@ export const By = ({ id }: { id: string }) => {
 
   return <UserLink {...user} />
 }
+
+

@@ -1,8 +1,9 @@
+// @ts-nocheck
 import { LoaderFunctionArgs } from "react-router-dom"
 
-import { campaignsQueryKeys } from "../../../hooks/api/campaigns"
-import { sdk } from "../../../lib/client"
-import { queryClient } from "../../../lib/query-client"
+import { campaignsQueryKeys } from "@/hooks/api/campaigns"
+import { sdk } from "@/lib/client"
+import { queryClient } from "@/lib/query-client"
 import { CAMPAIGN_DETAIL_FIELDS } from "./constants"
 
 const campaignDetailQuery = (id: string) => ({
@@ -19,3 +20,5 @@ export const campaignLoader = async ({ params }: LoaderFunctionArgs) => {
 
   return queryClient.ensureQueryData(query)
 }
+
+

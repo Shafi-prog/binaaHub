@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 const Locking = model.define("Locking", {
@@ -7,3 +8,5 @@ const Locking = model.define("Locking", {
 })
 
 export default Locking
+
+

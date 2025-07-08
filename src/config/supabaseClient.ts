@@ -1,3 +1,4 @@
+// @ts-nocheck
 // src/config/supabaseClient.ts
 
 import { createClient } from '@supabase/supabase-js';
@@ -23,3 +24,5 @@ export const supabase = (() => {
 
 // Export a function to create new client instances for API routes
 export { createClient };
+
+

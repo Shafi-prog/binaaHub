@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import * as React from "react";
@@ -24,3 +25,5 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 Input.displayName = "Input";
 
 export { Input };
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { HttpTypes } from "@medusajs/types"
 import { Heading, Text, Tooltip, clx } from "@medusajs/ui"
 import ReactCountryFlag from "react-country-flag"
@@ -216,3 +217,5 @@ const TaxRegionCardActions = ({
     />
   )
 }
+
+

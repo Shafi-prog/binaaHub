@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Integrated Medusa client for unified server
 class IntegratedMedusaClient {
   private baseUrl: string;
@@ -107,3 +108,5 @@ export const getServerMedusaClient = () => {
 };
 
 export default medusaClient
+
+

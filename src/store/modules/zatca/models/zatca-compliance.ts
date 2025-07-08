@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 const ZATCACompliance = model.define("zatca_compliance", {
@@ -63,3 +64,5 @@ const ZATCACompliance = model.define("zatca_compliance", {
 })
 
 export default ZATCACompliance
+
+

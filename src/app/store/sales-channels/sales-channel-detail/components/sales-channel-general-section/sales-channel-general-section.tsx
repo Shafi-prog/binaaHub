@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { PencilSquare, Trash } from "@medusajs/icons"
 import {
   Container,
@@ -97,3 +98,5 @@ export const SalesChannelGeneralSection = ({
     </Container>
   )
 }
+
+

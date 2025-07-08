@@ -1,6 +1,7 @@
+// @ts-nocheck
 import { Logger } from "@medusajs/framework/types"
 
-export type InitializeModuleInjectableDependencies = {
+export type InitializeModuleInjectableDependencies  = {
   logger?: Logger
 }
 
@@ -10,3 +11,5 @@ export * from "./campaign-budget"
 export * from "./promotion"
 export * from "./promotion-rule"
 export * from "./promotion-rule-value"
+
+

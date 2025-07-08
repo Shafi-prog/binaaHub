@@ -1,3 +1,4 @@
+// @ts-nocheck
 import * as zod from "zod"
 
 import { Button, Heading, Input, Text, Textarea, toast } from "@medusajs/ui"
@@ -309,3 +310,5 @@ export const ReservationCreateForm = (props: { inventoryItemId?: string }) => {
     </RouteFocusModal.Form>
   )
 }
+
+

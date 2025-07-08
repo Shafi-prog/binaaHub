@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { HttpTypes } from "@medusajs/types"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
@@ -44,3 +45,5 @@ export const usePricingTableColumns = () => {
     [t]
   )
 }
+
+

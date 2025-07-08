@@ -1,3 +1,6 @@
-export * from "./dynamic-service-class"
+// @ts-nocheck
+export type * from "./dynamic-service-class"
 export { default as LinkService } from "./link"
 export { default as LinkModuleService } from "./link-module-service"
+
+

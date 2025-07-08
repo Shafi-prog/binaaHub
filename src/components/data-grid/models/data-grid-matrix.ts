@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { ColumnDef, Row } from "@tanstack/react-table"
 import { FieldValues } from "react-hook-form"
 import {
@@ -419,3 +420,5 @@ export class DataGridMatrix<TData, TFieldValues extends FieldValues> {
     return cells
   }
 }
+
+

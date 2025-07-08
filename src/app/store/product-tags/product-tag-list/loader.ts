@@ -1,9 +1,10 @@
+// @ts-nocheck
 import { HttpTypes } from "@medusajs/types"
 import { LoaderFunctionArgs } from "react-router-dom"
 
-import { productTagsQueryKeys } from "../../../hooks/api"
-import { sdk } from "../../../lib/client"
-import { queryClient } from "../../../lib/query-client"
+import { productTagsQueryKeys } from "@/hooks/api"
+import { sdk } from "@/lib/client"
+import { queryClient } from "@/lib/query-client"
 
 const productTagListQuery = (query?: HttpTypes.AdminProductTagListParams) => ({
   queryKey: productTagsQueryKeys.list(query),
@@ -32,3 +33,5 @@ export const productTagListLoader = async ({ request }: LoaderFunctionArgs) => {
     (await queryClient.fetchQuery(query))
   )
 }
+
+

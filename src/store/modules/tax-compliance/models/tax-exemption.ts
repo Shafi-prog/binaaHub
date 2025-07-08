@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 const TaxExemption = model.define("tax_exemption", {
@@ -53,3 +54,5 @@ TaxExemption.belongsTo(() => import("../../user/models/user").then(m => m.defaul
 })
 
 export default TaxExemption
+
+

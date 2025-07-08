@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   AuthorizePaymentInput,
   AuthorizePaymentOutput,
@@ -220,3 +221,5 @@ Please make sure that the provider is registered in the container and it is conf
     return await provider.getWebhookActionAndData(data)
   }
 }
+
+

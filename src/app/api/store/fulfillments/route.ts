@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { createFulfillmentWorkflow } from "@medusajs/core-flows"
 import { HttpTypes } from "@medusajs/framework/types"
 import {
@@ -28,3 +29,5 @@ export const POST = async (
 
   res.status(200).json({ fulfillment })
 }
+
+

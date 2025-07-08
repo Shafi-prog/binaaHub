@@ -1,6 +1,7 @@
-import { Migration } from "@mikro-orm/migrations"
+// @ts-nocheck
+import { Migration } from "@mikro-orm/migrations";
 
-export class Migration20241009222919_InitialSetupMigration extends Migration {
+export class Migration20241009222919_InitialSetupMigration extends Migration extends Migration {
   async up(): Promise<void> {
     this.addSql(
       'create table if not exists "locking" ("id" text not null, "owner_id" text null, "expiration" timestamptz null, constraint "locking_pkey" primary key ("id"));'
@@ -11,3 +12,5 @@ export class Migration20241009222919_InitialSetupMigration extends Migration {
     this.addSql(`drop table "locking";`)
   }
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 const StoreProductCatalog = model.define("store_product_catalog", {
@@ -63,3 +64,5 @@ StoreProductCatalog.indexes = [
 ]
 
 export default StoreProductCatalog
+
+

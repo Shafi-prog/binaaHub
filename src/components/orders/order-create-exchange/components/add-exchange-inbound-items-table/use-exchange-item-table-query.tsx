@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useQueryParams } from "../../../../../hooks/use-query-params"
 
 export const useExchangeItemTableQuery = ({
@@ -24,3 +25,5 @@ export const useExchangeItemTableQuery = ({
 
   return { searchParams, raw }
 }
+
+

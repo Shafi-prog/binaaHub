@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { PosthogAnalyticsServiceOptions, Logger, ProviderIdentifyAnalyticsEventDTO, ProviderTrackAnalyticsEventDTO } from "@medusajs/framework/types";
 import { PostHog } from "posthog-node";
 import { AbstractAnalyticsProviderService } from "@medusajs/framework/utils";
@@ -16,3 +17,4 @@ export declare class PosthogAnalyticsService extends AbstractAnalyticsProviderSe
 }
 export {};
 //# sourceMappingURL=posthog-analytics.d.ts.map
+

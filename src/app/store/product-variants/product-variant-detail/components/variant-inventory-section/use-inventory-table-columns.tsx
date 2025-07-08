@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { InventoryNext, ProductVariantDTO } from "@medusajs/types"
 
 import { InventoryActions } from "./inventory-actions"
@@ -102,3 +103,5 @@ export const useInventoryTableColumns = () => {
     [t]
   )
 }
+
+

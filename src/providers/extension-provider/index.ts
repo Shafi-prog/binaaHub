@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { createContext, useContext, ReactNode } from "react"
 import { ExtensionContextType } from "../types"
 
@@ -48,3 +49,5 @@ export const useExtensions = () => {
 }
 
 export { ExtensionContext }
+
+

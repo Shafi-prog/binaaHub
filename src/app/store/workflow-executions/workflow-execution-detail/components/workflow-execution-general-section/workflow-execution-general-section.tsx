@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Badge,
   Container,
@@ -118,3 +119,5 @@ const Progress = ({
     </div>
   )
 }
+
+

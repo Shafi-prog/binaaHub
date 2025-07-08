@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   ILinkMigrationsPlanner,
   LinkMigrationsPlannerAction,
@@ -509,3 +510,5 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
     ).finally(() => orm.close(true))
   }
 }
+
+

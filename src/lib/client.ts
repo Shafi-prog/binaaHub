@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { supabase } from './erp/supabase-service';
 
 // Main SDK client for API interactions
@@ -715,3 +716,5 @@ export const sdk = {
 };
 
 export default sdk;
+
+

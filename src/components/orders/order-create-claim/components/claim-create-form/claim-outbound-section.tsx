@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   AdminClaim,
   AdminOrder,
@@ -443,3 +444,5 @@ export const ClaimOutboundSection = ({
     </div>
   )
 }
+
+

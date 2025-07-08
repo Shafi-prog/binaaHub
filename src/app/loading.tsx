@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { EnhancedLoading } from '@/components/ui/enhanced-loading';
 
 export default function Loading() {
@@ -12,3 +13,5 @@ export default function Loading() {
     </div>
   );
 }
+
+

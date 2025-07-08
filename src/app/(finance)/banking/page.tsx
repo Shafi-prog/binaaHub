@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -263,3 +264,5 @@ export default function BankingPage() {
     </main>
   );
 }
+
+

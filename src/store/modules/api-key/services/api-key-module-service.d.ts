@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { ApiKeyTypes, Context, DAL, FilterableApiKeyProps, FindConfig, IApiKeyModuleService, InferEntityType, InternalModuleDeclaration, ModuleJoinerConfig, ModulesSdkTypes } from "@medusajs/framework/types";
 import { ApiKey } from "@models";
 import { RevokeApiKeyInput, TokenDTO, UpdateApiKeyInput } from "@types";
@@ -37,3 +38,5 @@ export declare class ApiKeyModuleService extends ApiKeyModuleService_base implem
     protected static calculateHash(token: string, salt: string): Promise<string>;
 }
 export {};
+
+

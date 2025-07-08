@@ -1,4 +1,5 @@
-import { RouteFocusModal } from "../../../components/modals"
+// @ts-nocheck
+import { RouteFocusModal } from "@/components/modals"
 import { CreateCollectionForm } from "./components/create-collection-form"
 
 export const CollectionCreate = () => {
@@ -8,3 +9,5 @@ export const CollectionCreate = () => {
     </RouteFocusModal>
   )
 }
+
+

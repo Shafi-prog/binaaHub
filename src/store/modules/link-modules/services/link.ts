@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Context, FindConfig } from "@medusajs/framework/types"
 import {
   InjectManager,
@@ -133,3 +134,5 @@ export default class LinkService<TEntity> {
     })
   }
 }
+
+

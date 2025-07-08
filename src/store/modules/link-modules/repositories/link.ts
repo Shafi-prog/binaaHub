@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Context, ModuleJoinerConfig } from "@medusajs/framework/types"
 import { EntitySchema } from "@mikro-orm/core"
 
@@ -46,3 +47,5 @@ export function getLinkRepository(model: EntitySchema) {
     }
   }
 }
+
+

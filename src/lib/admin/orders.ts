@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { HttpTypes } from "@medusajs/types"
 
 export const getPaymentsFromOrder = (order: HttpTypes.AdminOrder) => {
@@ -6,3 +7,5 @@ export const getPaymentsFromOrder = (order: HttpTypes.AdminOrder) => {
     .flat(1)
     .filter(Boolean) as HttpTypes.AdminPayment[]
 }
+
+

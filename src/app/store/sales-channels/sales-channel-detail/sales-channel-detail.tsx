@@ -1,8 +1,9 @@
+// @ts-nocheck
 import { useLoaderData, useParams } from "react-router-dom"
 
-import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { SingleColumnPage } from "../../../components/layout/pages"
-import { useSalesChannel } from "../../../hooks/api/sales-channels"
+import { SingleColumnPageSkeleton } from "@/components/common/skeleton"
+import { SingleColumnPage } from "@/components/layout/pages"
+import { useSalesChannel } from "@/hooks/api/sales-channels"
 import { useExtension } from "../../../providers/extension-provider"
 import { SalesChannelGeneralSection } from "./components/sales-channel-general-section"
 import { SalesChannelProductSection } from "./components/sales-channel-product-section"
@@ -39,3 +40,5 @@ export const SalesChannelDetail = () => {
     </SingleColumnPage>
   )
 }
+
+

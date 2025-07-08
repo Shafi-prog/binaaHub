@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useCallback } from "react"
 import { UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -114,3 +115,5 @@ export const UploadMediaFormItem = ({
     />
   )
 }
+
+

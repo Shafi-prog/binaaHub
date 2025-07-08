@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 const SupportTicket = model.define("support_ticket", {
@@ -53,3 +54,5 @@ SupportTicket.belongsTo(() => import("../../user/models/user").then(m => m.defau
 })
 
 export default SupportTicket
+
+

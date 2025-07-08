@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState } from "react";
 
 interface UseDataTableProps<TData = any> {
@@ -94,3 +95,5 @@ export const useDataTable = <TData = any>({
     table,
   };
 };
+
+

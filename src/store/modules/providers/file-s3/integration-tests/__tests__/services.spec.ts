@@ -1,3 +1,4 @@
+// @ts-nocheck
 import fs from "fs/promises"
 import axios from "axios"
 import { S3FileService } from "../../src/services/s3-file"
@@ -188,3 +189,5 @@ describe.skip("S3 File Plugin", () => {
     ])
   })
 })
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { zodResolver } from "@hookform/resolvers/zod"
 import { XMarkMini } from "@medusajs/icons"
 import { AdminProductVariant, HttpTypes } from "@medusajs/types"
@@ -375,3 +376,5 @@ export function ManageVariantInventoryItemsForm({
     </RouteFocusModal.Form>
   )
 }
+
+

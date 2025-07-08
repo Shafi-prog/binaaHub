@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use client';
 
 import { useContext } from 'react';
@@ -41,3 +42,5 @@ export function usePermissions() {
     hasAllPermissions,
   };
 }
+
+

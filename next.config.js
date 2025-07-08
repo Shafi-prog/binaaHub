@@ -12,6 +12,33 @@ const nextConfig = {
       ],
     };
     
+    // Add fallbacks for Node.js modules to prevent CloudFlare sockets issues
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        'cloudflare:sockets': false,
+        'pg-native': false,
+        'pg': false,
+        'sqlite3': false,
+        'bindings': false,
+        'fs': false,
+        'path': false,
+        'crypto': false,
+      };
+    }
+    
+    // Externalize problematic packages that cause CloudFlare sockets import
+    config.externals = [
+      ...(config.externals || []),
+      'pg-cloudflare',
+      '@mikro-orm/postgresql',
+      '@medusajs/framework/utils',
+      '@medusajs/framework/http',
+      'sqlite3',
+      'sqlite',
+      'bindings',
+    ];
+    
     return config;
   },
   compiler: {

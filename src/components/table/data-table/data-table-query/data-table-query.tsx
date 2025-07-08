@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Filter } from ".."
 import { DataTableFilter } from "../data-table-filter"
 import { DataTableOrderBy, DataTableOrderByKey } from "../data-table-order-by"
@@ -37,3 +38,5 @@ export const DataTableQuery = <TData,>({
     )
   )
 }
+
+

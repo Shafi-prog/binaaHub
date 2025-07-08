@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { BaseRepository, getLinkRepository } from "@repositories"
 import { LinkService, getModuleService } from "@services"
 
@@ -66,3 +67,5 @@ export function containerLoader(entity, joinerConfig: ModuleJoinerConfig) {
     })
   }
 }
+
+

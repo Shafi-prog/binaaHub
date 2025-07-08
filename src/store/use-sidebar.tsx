@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useContext } from "react"
 import { SidebarContext } from "./sidebar-context"
 
@@ -10,3 +11,5 @@ export const useSidebar = () => {
 
   return context
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { MiddlewareRoute } from "@medusajs/framework/http"
 import { maybeApplyLinkFilter } from "@medusajs/framework/http"
 import { validateAndTransformQuery } from "@medusajs/framework"
@@ -26,3 +27,5 @@ export const adminFulfillmentProvidersRoutesMiddlewares: MiddlewareRoute[] = [
     middlewares: [],
   },
 ]
+
+

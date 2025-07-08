@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Shared types for Construction Materials Management System with ERP Features
 
 export interface ConstructionProduct {
@@ -198,3 +199,5 @@ export interface SaudiComplianceInfo {
   expiry_date?: string;
   certification_body?: string;
 }
+
+

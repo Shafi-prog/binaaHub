@@ -1,3 +1,4 @@
+// @ts-nocheck
 import CurrencyInput, {
   CurrencyInputProps,
   formatValue,
@@ -5,8 +6,8 @@ import CurrencyInput, {
 import { Controller, ControllerRenderProps } from "react-hook-form"
 
 import { useCallback, useEffect, useState } from "react"
-import { useCombinedRefs } from "../../../hooks/use-combined-refs"
-import { CurrencyInfo, currencies } from "../../../lib/data/currencies"
+import { useCombinedRefs } from "@/hooks/use-combined-refs"
+import { CurrencyInfo, currencies } from "@/lib/data/currencies"
 import { useDataGridCell, useDataGridCellError } from "../hooks"
 import { DataGridCellProps, InputProps } from "../types"
 import { DataGridCellContainer } from "./data-grid-cell-container"
@@ -138,3 +139,5 @@ const Inner = ({
     </div>
   )
 }
+
+

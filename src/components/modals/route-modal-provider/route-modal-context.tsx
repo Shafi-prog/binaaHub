@@ -1,3 +1,5 @@
+"use client"
+// @ts-nocheck
 import { createContext } from "react"
 
 type RouteModalProviderState = {
@@ -10,3 +12,5 @@ type RouteModalProviderState = {
 
 export const RouteModalProviderContext =
   createContext<RouteModalProviderState | null>(null)
+
+

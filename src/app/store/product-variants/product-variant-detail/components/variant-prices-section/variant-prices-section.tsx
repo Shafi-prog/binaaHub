@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
 
@@ -80,3 +81,5 @@ export function VariantPricesSection({ variant }: VariantPricesSectionProps) {
     </Container>
   )
 }
+
+

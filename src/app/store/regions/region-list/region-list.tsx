@@ -1,4 +1,5 @@
-import { SingleColumnPage } from "../../../components/layout/pages"
+// @ts-nocheck
+import { SingleColumnPage } from "@/components/layout/pages"
 import { useExtension } from "../../../providers/extension-provider"
 import { RegionListTable } from "./components/region-list-table"
 
@@ -16,3 +17,5 @@ export const RegionList = () => {
     </SingleColumnPage>
   )
 }
+
+

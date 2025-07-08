@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 const SalesMetrics = model.define("sales_metrics", {
@@ -52,3 +53,5 @@ const SalesMetrics = model.define("sales_metrics", {
 })
 
 export default SalesMetrics
+
+

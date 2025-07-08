@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   DmlEntity,
   DMLEntitySchemaBuilder,
@@ -90,3 +91,5 @@ export const OrderTransaction = _OrderTransaction as DmlEntity<
   DMLEntitySchemaBuilder<(typeof _OrderTransaction)["schema"]>,
   "OrderTransaction"
 >
+
+

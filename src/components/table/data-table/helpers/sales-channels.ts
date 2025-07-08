@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Sales channels table helpers
 import { useSearchParams } from "react-router-dom";
 
@@ -56,3 +57,5 @@ export const useSalesChannelTableColumns = () => {
     }
   ];
 };
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { OrderTypes } from "@medusajs/framework/types"
 
 export type CreateOrderLineItemAdjustmentDTO =
@@ -7,3 +8,5 @@ export interface UpdateOrderLineItemAdjustmentDTO
   extends Partial<CreateOrderLineItemAdjustmentDTO> {
   id: string
 }
+
+

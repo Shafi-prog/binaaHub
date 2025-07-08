@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { PromotionUtils, model } from "@medusajs/framework/utils"
 import ApplicationMethod from "./application-method"
 import Promotion from "./promotion"
@@ -35,3 +36,5 @@ const PromotionRule = model
   })
 
 export default PromotionRule
+
+

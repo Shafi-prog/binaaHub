@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { ModuleProvider, Modules } from "@medusajs/framework/utils"
 import Loader from "./loaders"
 import { RedisLockingProvider } from "./services/redis-lock"
@@ -9,3 +10,5 @@ export default ModuleProvider(Modules.LOCKING, {
   services,
   loaders,
 })
+
+

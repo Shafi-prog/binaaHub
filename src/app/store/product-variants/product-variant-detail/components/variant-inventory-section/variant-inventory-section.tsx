@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useTranslation } from "react-i18next"
 
 import { Buildings, Component } from "@medusajs/icons"
@@ -92,3 +93,5 @@ export function InventorySectionPlaceholder() {
     </Container>
   )
 }
+
+

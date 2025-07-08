@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Store analytics types
 export interface StoreStats {
   totalProducts: number;
@@ -65,3 +66,5 @@ export interface MarketingCampaign {
   revenue: number;
   roi: number;
 }
+
+

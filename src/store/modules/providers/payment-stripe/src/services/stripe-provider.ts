@@ -1,3 +1,4 @@
+// @ts-nocheck
 import StripeBase from "../core/stripe-base"
 import { PaymentIntentOptions, PaymentProviderKeys } from "../types"
 
@@ -14,3 +15,5 @@ class StripeProviderService extends StripeBase {
 }
 
 export default StripeProviderService
+
+

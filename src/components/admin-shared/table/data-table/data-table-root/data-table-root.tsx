@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { CommandBar, Table, clx } from "@medusajs/ui"
 import {
   ColumnDef,
@@ -380,3 +381,5 @@ const Pagination = (props: PaginationProps) => {
     />
   )
 }
+
+

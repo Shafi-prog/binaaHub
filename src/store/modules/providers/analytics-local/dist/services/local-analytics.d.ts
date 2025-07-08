@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { LocalAnalyticsServiceOptions, Logger, ProviderIdentifyAnalyticsEventDTO, ProviderTrackAnalyticsEventDTO } from "@medusajs/framework/types";
 import { AbstractAnalyticsProviderService } from "@medusajs/framework/utils";
 type InjectedDependencies = {
@@ -13,3 +14,4 @@ export declare class LocalAnalyticsService extends AbstractAnalyticsProviderServ
 }
 export {};
 //# sourceMappingURL=local-analytics.d.ts.map
+

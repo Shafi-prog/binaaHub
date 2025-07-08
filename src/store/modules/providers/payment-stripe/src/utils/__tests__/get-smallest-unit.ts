@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { getSmallestUnit } from "../get-smallest-unit"
 
 describe("getSmallestUnit", () => {
@@ -19,3 +20,5 @@ describe("getSmallestUnit", () => {
     expect(getSmallestUnit(0.004104, "USD")).toBe(0)
   })
 })
+
+

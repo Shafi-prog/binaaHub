@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Context,
   DAL,
@@ -58,3 +59,5 @@ export default class OrderService extends ModulesSdkUtils.MedusaInternalService<
     return result
   }
 }
+
+

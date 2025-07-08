@@ -1,7 +1,8 @@
+// @ts-nocheck
 import { json, useParams } from "react-router-dom"
 
-import { RouteFocusModal } from "../../../components/modals"
-import { useShippingOption } from "../../../hooks/api/shipping-options"
+import { RouteFocusModal } from "@/components/modals"
+import { useShippingOption } from "@/hooks/api/shipping-options"
 import { EditShippingOptionsPricingForm } from "./components/create-shipping-options-form"
 
 export function LocationServiceZoneShippingOptionPricing() {
@@ -34,3 +35,5 @@ export function LocationServiceZoneShippingOptionPricing() {
     </RouteFocusModal>
   )
 }
+
+

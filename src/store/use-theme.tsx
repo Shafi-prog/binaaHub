@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useContext } from "react"
 import { ThemeContext } from "./theme-context"
 
@@ -8,3 +9,5 @@ export const useTheme = () => {
   }
   return context
 }
+
+

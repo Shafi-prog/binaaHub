@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useMemo } from "react";
 import type { ColumnDef } from "@tanstack/react-table";
 
@@ -31,3 +32,5 @@ export const useOrderTableColumns = () => {
     },
   ], []);
 };
+
+

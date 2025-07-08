@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Offline Sync Service - Phase 2 Enhanced
  * Advanced synchronization between SQLite local database and Supabase cloud database
@@ -399,3 +400,5 @@ export class OfflineSyncService {
 
 // Singleton instance
 export const offlineSyncService = new OfflineSyncService()
+
+

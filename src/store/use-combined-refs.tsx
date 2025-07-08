@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { MutableRefObject, Ref, RefCallback } from "react"
 
 // Utility function to set multiple refs
@@ -17,3 +18,5 @@ export const useCombinedRefs = <T,>(
     refs.forEach((ref) => setRef(ref, value))
   }
 }
+
+

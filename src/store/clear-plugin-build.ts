@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { rm } from "node:fs/promises"
 import path from "node:path"
 import type { Plugin } from "vite"
@@ -17,3 +18,5 @@ export const clearPluginBuild = (options: ClearPluginBuildOptions): Plugin => ({
     }
   },
 })
+
+

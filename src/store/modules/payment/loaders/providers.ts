@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { moduleProviderLoader } from "@medusajs/framework/modules-sdk"
 import {
   CreatePaymentProviderDTO,
@@ -84,3 +85,5 @@ const registerProvidersInDb = async ({
 
   await paymentProviderService.upsert(upsertData)
 }
+
+

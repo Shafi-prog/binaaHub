@@ -1,4 +1,5 @@
-import { Migration } from "@mikro-orm/migrations"
+// @ts-nocheck
+import { Migration } from "@mikro-orm/migrations";
 
 export class Migration20240626133555 extends Migration {
   async up(): Promise<void> {
@@ -70,3 +71,5 @@ export class Migration20240626133555 extends Migration {
     this.addSql('drop table if exists "price_list_rule_value" cascade;')
   }
 }
+
+

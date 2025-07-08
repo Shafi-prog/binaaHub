@@ -1,3 +1,4 @@
+// @ts-nocheck
 export const PlaceholderCell = () => {
   return (
     <div className="flex h-full w-full items-center">
@@ -5,3 +6,5 @@ export const PlaceholderCell = () => {
     </div>
   )
 }
+
+

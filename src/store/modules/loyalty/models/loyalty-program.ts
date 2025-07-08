@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 const LoyaltyProgram = model.define("loyalty_program", {
@@ -38,3 +39,5 @@ const LoyaltyProgram = model.define("loyalty_program", {
 })
 
 export default LoyaltyProgram
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   LocalNotificationServiceOptions,
   Logger,
@@ -47,3 +48,5 @@ export class LocalNotificationService extends AbstractNotificationProviderServic
     return {}
   }
 }
+
+

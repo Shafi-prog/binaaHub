@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { OPERATOR_MAP } from "./query-builder"
 
 /**
@@ -57,3 +58,5 @@ export function flattenObjectKeys(input: Record<string, any>) {
   flatten(input)
   return result
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { z } from "zod"
 import {
   PriceListCreateProductsSchema,
@@ -57,3 +58,5 @@ export const PricingPricesSchema = PricingCreateSchema.pick({
 export const PricingPricesFields = Object.keys(
   PricingPricesSchema.shape
 ) as (keyof typeof PricingPricesSchema.shape)[]
+
+

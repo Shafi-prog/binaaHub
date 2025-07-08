@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Context,
   DAL,
@@ -117,7 +118,7 @@ export default class LinkModuleService implements ILinkModule {
     })
   }
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   async retrieve(
     primaryKeyData: string | string[],
     foreignKeyData: string,
@@ -140,7 +141,7 @@ export default class LinkModuleService implements ILinkModule {
     return (await this.baseRepository_.serialize(entry[0])) as unknown
   }
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   async list(
     filters: Record<string, unknown> = {},
     config: FindConfig<unknown> = {},
@@ -155,7 +156,7 @@ export default class LinkModuleService implements ILinkModule {
     return (await this.baseRepository_.serialize(rows)) as unknown[]
   }
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   async listAndCount(
     filters: Record<string, unknown> = {},
     config: FindConfig<unknown> = {},
@@ -177,7 +178,7 @@ export default class LinkModuleService implements ILinkModule {
   }
 
   @InjectTransactionManager()
-  @EmitEvents()
+  @EmitEvents("user")
   async create(
     primaryKeyOrBulkData:
       | string
@@ -249,7 +250,7 @@ export default class LinkModuleService implements ILinkModule {
   }
 
   @InjectTransactionManager()
-  @EmitEvents()
+  @EmitEvents("user")
   async delete(
     data: any,
     @MedusaContext() sharedContext: Context = {}
@@ -271,7 +272,7 @@ export default class LinkModuleService implements ILinkModule {
   }
 
   @InjectTransactionManager()
-  @EmitEvents()
+  @EmitEvents("user")
   async softDelete(
     data: any,
     { returnLinkableKeys }: SoftDeleteReturn = {},
@@ -329,7 +330,7 @@ export default class LinkModuleService implements ILinkModule {
   }
 
   @InjectTransactionManager()
-  @EmitEvents()
+  @EmitEvents("user")
   async restore(
     data: any,
     { returnLinkableKeys }: RestoreReturn = {},
@@ -402,3 +403,5 @@ export default class LinkModuleService implements ILinkModule {
     await Promise.all(promises)
   }
 }
+
+

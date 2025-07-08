@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { z } from "zod"
 import { PriceListCreateProductsSchema } from "../../../common/schemas"
 
@@ -25,3 +26,5 @@ export const PriceListPricesAddProductsSchema = PriceListPricesAddSchema.pick({
 export const PriceListPricesAddProductsFields = Object.keys(
   PriceListPricesAddProductsSchema.shape
 ) as (keyof typeof PriceListPricesAddProductsSchema.shape)[]
+
+

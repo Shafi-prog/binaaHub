@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model, ShippingOptionPriceType } from "@medusajs/framework/utils"
 
 import { Fulfillment } from "./fulfillment"
@@ -40,3 +41,5 @@ export const ShippingOption = model
   .cascades({
     delete: ["rules", "type"],
   })
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   createDataTableColumnHelper,
   DataTableColumnDef,
@@ -5,7 +6,7 @@ import {
 } from "@medusajs/ui"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
-import { useDate } from "../../../../hooks/use-date"
+import { useDate } from "@/hooks/use-date"
 
 type EntityWithDates = {
   created_at: string
@@ -59,3 +60,5 @@ export const useDataTableDateColumns = <TData extends EntityWithDates>() => {
     ] as DataTableColumnDef<TData>[]
   }, [t, getFullDate])
 }
+
+

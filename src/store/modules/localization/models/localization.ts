@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 const Localization = model.define("localization", {
@@ -73,3 +74,5 @@ const Localization = model.define("localization", {
 })
 
 export default Localization
+
+

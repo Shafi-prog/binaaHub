@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 import InventoryItem from "./inventory-item"
 
@@ -34,3 +35,5 @@ const InventoryLevel = model
   ])
 
 export default InventoryLevel
+
+

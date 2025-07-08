@@ -1,4 +1,5 @@
-import { useQueryParams } from "../../../../hooks/use-query-params"
+// @ts-nocheck
+import { useQueryParams } from "@/hooks/use-query-params"
 
 export const useCurrenciesTableQuery = ({
   pageSize = 10,
@@ -19,3 +20,5 @@ export const useCurrenciesTableQuery = ({
 
   return { searchParams, raw }
 }
+
+

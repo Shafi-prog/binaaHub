@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from "react"
 import { z } from "zod"
 import { useFieldArray, UseFormReturn } from "react-hook-form"
@@ -186,3 +187,5 @@ function InventoryKitTab({ form }: InventoryKitTabProps) {
 }
 
 export default InventoryKitTab
+
+

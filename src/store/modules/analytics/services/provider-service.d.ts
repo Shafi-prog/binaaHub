@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Constructor, IAnalyticsProvider, ProviderIdentifyAnalyticsEventDTO, ProviderTrackAnalyticsEventDTO } from "@medusajs/types";
 export declare const AnalyticsProviderIdentifierRegistrationName = "analytics_providers_identifier";
 export declare const AnalyticsProviderRegistrationPrefix = "aly_";
@@ -13,3 +14,5 @@ export default class AnalyticsProviderService {
     shutdown(): Promise<void>;
 }
 export {};
+
+

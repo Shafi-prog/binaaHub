@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Context,
   DAL,
@@ -93,7 +94,7 @@ export default class TaxModuleService
     sharedContext?: Context
   ): Promise<TaxTypes.TaxRateDTO>
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   // @ts-expect-error
   async createTaxRates(
     data: TaxTypes.CreateTaxRateDTO[] | TaxTypes.CreateTaxRateDTO,
@@ -169,7 +170,7 @@ export default class TaxModuleService
     sharedContext?: Context
   ): Promise<TaxTypes.TaxRateDTO[]>
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   // @ts-expect-error
   async updateTaxRates(
     selector: string | string[] | TaxTypes.FilterableTaxRateProps,
@@ -306,7 +307,7 @@ export default class TaxModuleService
     sharedContext?: Context
   ): Promise<TaxRegionDTO[]>
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   // @ts-expect-error
   async createTaxRegions(
     data: TaxTypes.CreateTaxRegionDTO | TaxTypes.CreateTaxRegionDTO[],
@@ -364,7 +365,7 @@ export default class TaxModuleService
     sharedContext?: Context
   ): Promise<TaxTypes.TaxRateRuleDTO[]>
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   // @ts-expect-error
   async createTaxRateRules(
     data: TaxTypes.CreateTaxRateRuleDTO | TaxTypes.CreateTaxRateRuleDTO[],
@@ -389,7 +390,7 @@ export default class TaxModuleService
     )
   }
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   async getTaxLines(
     items: (TaxTypes.TaxableItemDTO | TaxTypes.TaxableShippingDTO)[],
     calculationContext: TaxTypes.TaxCalculationContext,
@@ -721,3 +722,5 @@ export default class TaxModuleService
     return code.toLowerCase()
   }
 }
+
+

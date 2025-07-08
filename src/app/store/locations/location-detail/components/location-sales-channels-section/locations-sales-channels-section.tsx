@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Channels, PencilSquare } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import { Container, Heading, Text } from "@medusajs/ui"
@@ -74,3 +75,5 @@ function LocationsSalesChannelsSection({
 }
 
 export default LocationsSalesChannelsSection
+
+

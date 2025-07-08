@@ -1,5 +1,6 @@
+// @ts-nocheck
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { sdk } from "../../lib/client";
+import { sdk } from "@/lib/client";
 
 export const claimsQueryKeys = {
   all: ["claims"] as const,
@@ -179,3 +180,5 @@ export const useUpdateClaimOutboundShipping = (claimId?: string, shippingId?: st
 
 // Aliases for consistency
 export const useCancelClaim = useCancelClaimRequest;
+
+

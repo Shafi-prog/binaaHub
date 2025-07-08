@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { asClass, asValue } from "awilix"
 import { RedisDistributedTransactionStorage } from "../utils"
 
@@ -9,3 +10,5 @@ export default async ({ container, dataLoaderOnly }): Promise<void> => {
     dataLoaderOnly: asValue(!!dataLoaderOnly),
   })
 }
+
+

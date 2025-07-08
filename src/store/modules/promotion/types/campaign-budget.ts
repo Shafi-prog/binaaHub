@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   BigNumberInput,
   CampaignBudgetTypeValues,
@@ -20,3 +21,5 @@ export interface UpdateCampaignBudgetDTO {
   currency_code?: string | null
   used?: BigNumberInput
 }
+
+

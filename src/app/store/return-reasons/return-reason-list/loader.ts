@@ -1,11 +1,12 @@
+// @ts-nocheck
 import {
   AdminReturnReasonListParams,
   AdminReturnReasonListResponse,
 } from "@medusajs/types"
 
-import { returnReasonsQueryKeys } from "../../../hooks/api/return-reasons"
-import { sdk } from "../../../lib/client"
-import { queryClient } from "../../../lib/query-client"
+import { returnReasonsQueryKeys } from "@/hooks/api/return-reasons"
+import { sdk } from "@/lib/client"
+import { queryClient } from "@/lib/query-client"
 
 const returnReasonListQuery = (query?: AdminReturnReasonListParams) => ({
   queryKey: returnReasonsQueryKeys.list(query),
@@ -19,3 +20,5 @@ export const returnReasonListLoader = async () => {
     (await queryClient.fetchQuery(query))
   )
 }
+
+

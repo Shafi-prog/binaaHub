@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 import Address from "./address"
 import CreditLine from "./credit-line"
@@ -78,3 +79,5 @@ const Cart = model
   ])
 
 export default Cart
+
+

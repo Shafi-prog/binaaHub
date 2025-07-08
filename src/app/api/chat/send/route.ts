@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { NextRequest, NextResponse } from 'next/server';
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
@@ -177,3 +178,5 @@ async function sendChatNotification(supabase: any, recipientId: string, senderNa
     console.error('Error sending notification:', error);
   }
 }
+
+

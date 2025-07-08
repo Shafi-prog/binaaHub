@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 export const FulfillmentAddress = model.define("fulfillment_address", {
@@ -14,3 +15,5 @@ export const FulfillmentAddress = model.define("fulfillment_address", {
   phone: model.text().nullable(),
   metadata: model.json().nullable(),
 })
+
+

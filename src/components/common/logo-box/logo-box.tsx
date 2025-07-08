@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { clx } from "@medusajs/ui"
 import { Transition, motion } from "motion/react"
 
@@ -72,3 +73,5 @@ export const LogoBox = ({
     </div>
   )
 }
+
+

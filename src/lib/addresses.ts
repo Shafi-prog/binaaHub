@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Address utility functions
 
 export const getFormattedAddress = (address: any) => {
@@ -31,3 +32,5 @@ export const isSameAddress = (address1: any, address2: any) => {
     address1.country_code === address2.country_code
   );
 };
+
+

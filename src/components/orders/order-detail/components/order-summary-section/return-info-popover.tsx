@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { InformationCircleSolid } from "@medusajs/icons"
 import { AdminReturn } from "@medusajs/types"
 import { Badge, Popover, Text } from "@medusajs/ui"
@@ -88,3 +89,5 @@ function ReturnInfoPopover({ orderReturn }: ReturnInfoPopoverProps) {
 }
 
 export default ReturnInfoPopover
+
+

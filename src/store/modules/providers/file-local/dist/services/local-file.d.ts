@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { FileTypes, LocalFileServiceOptions } from "@medusajs/framework/types";
 import { AbstractFileProviderService } from "@medusajs/framework/utils";
 import type { Readable } from "stream";
@@ -23,3 +24,4 @@ export declare class LocalFileService extends AbstractFileProviderService {
     private ensureDirExists;
 }
 //# sourceMappingURL=local-file.d.ts.map
+

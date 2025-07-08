@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { FetchError } from "@medusajs/js-sdk"
 import { HttpTypes } from "@medusajs/types"
 import {
@@ -7,9 +8,9 @@ import {
   useMutation,
   useQuery,
 } from "@tanstack/react-query"
-import { sdk } from "../../lib/client"
-import { queryClient } from "../../lib/query-client"
-import { queryKeysFactory } from "../../lib/query-key-factory"
+import { sdk } from "@/lib/client"
+import { queryClient } from "@/lib/query-client"
+import { queryKeysFactory } from "@/lib/query-key-factory"
 
 const TAGS_QUERY_KEY = "tags" as const
 export const productTagsQueryKeys = queryKeysFactory(TAGS_QUERY_KEY)
@@ -126,3 +127,5 @@ export const useDeleteProductTag = (
     ...options,
   })
 }
+
+

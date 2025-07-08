@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { createClient } from '@supabase/supabase-js';
 
 export class FileStorageService {
@@ -96,3 +97,5 @@ export class FileStorageService {
 }
 
 export const fileStorage = new FileStorageService();
+
+

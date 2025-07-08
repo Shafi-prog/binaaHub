@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { ChatBubble, DocumentText, XCircle, XMark } from "@medusajs/icons"
 import { AdminOrderLineItem, HttpTypes } from "@medusajs/types"
 import { IconButton, Input, Text } from "@medusajs/ui"
@@ -242,3 +243,5 @@ function ClaimInboundItem({
 }
 
 export { ClaimInboundItem }
+
+

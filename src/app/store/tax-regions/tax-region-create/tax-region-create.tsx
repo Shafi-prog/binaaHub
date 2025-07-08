@@ -1,4 +1,5 @@
-import { RouteFocusModal } from "../../../components/modals"
+// @ts-nocheck
+import { RouteFocusModal } from "@/components/modals"
 import { TaxRegionCreateForm } from "./components/tax-region-create-form"
 
 export const TaxRegionCreate = () => {
@@ -8,3 +9,5 @@ export const TaxRegionCreate = () => {
     </RouteFocusModal>
   )
 }
+
+

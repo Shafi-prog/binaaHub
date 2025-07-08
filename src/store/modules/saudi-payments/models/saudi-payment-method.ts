@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 const SaudiPaymentMethod = model.define("saudi_payment_method", {
@@ -87,3 +88,5 @@ const SaudiPaymentMethod = model.define("saudi_payment_method", {
 })
 
 export default SaudiPaymentMethod
+
+

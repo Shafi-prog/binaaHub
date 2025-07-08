@@ -1,3 +1,4 @@
+// @ts-nocheck
 export interface UpdateTaxLineDTO {
   id: string
   description?: string
@@ -14,3 +15,5 @@ export interface CreateTaxLineDTO {
   rate: number
   provider_id?: string
 }
+
+

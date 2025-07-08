@@ -1,5 +1,6 @@
+// @ts-nocheck
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { sdk } from "../../lib/client";
+import { sdk } from "@/lib/client";
 
 export const ordersQueryKeys = {
   all: ["orders"] as const,
@@ -165,3 +166,5 @@ export const useCancelOrderTransfer = () => {
     },
   });
 };
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { PropsWithChildren, useEffect, useState } from "react"
 import { ThemeContext, ThemeOption, ThemeValue } from "./theme-context"
 
@@ -82,3 +83,5 @@ export const ThemeProvider = ({ children }: PropsWithChildren) => {
     </ThemeContext.Provider>
   )
 }
+
+

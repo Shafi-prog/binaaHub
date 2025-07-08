@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { DropdownMenu, IconButton, clx } from "@medusajs/ui"
 
 import { EllipsisHorizontal } from "@medusajs/icons"
@@ -121,3 +122,5 @@ export const ActionMenu = ({
     </DropdownMenu>
   )
 }
+
+

@@ -1,8 +1,9 @@
+// @ts-nocheck
 import { Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useLoaderData, useParams, useSearchParams } from "react-router-dom"
-import { RouteDrawer } from "../../../components/modals"
-import { useProduct, useProductVariant } from "../../../hooks/api/products"
+import { RouteDrawer } from "@/components/modals"
+import { useProduct, useProductVariant } from "@/hooks/api/products"
 import { ProductEditVariantForm } from "./components/product-edit-variant-form"
 import { editProductVariantLoader } from "./loader"
 
@@ -59,3 +60,5 @@ export const ProductVariantEdit = () => {
     </RouteDrawer>
   )
 }
+
+

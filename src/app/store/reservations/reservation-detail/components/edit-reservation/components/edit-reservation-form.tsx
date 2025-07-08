@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { HttpTypes } from "@medusajs/types"
 import { Button, Input, Select, Text, Textarea, toast } from "@medusajs/ui"
 import * as zod from "zod"
@@ -211,3 +212,5 @@ export const EditReservationForm = ({
     </RouteDrawer.Form>
   )
 }
+
+

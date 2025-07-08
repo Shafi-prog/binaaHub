@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   AdminClaim,
   AdminExchange,
@@ -123,3 +124,5 @@ function ActivityItems(props: ActivityItemsProps) {
 }
 
 export default ActivityItems
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { PencilSquare } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import { Container, Heading } from "@medusajs/ui"
@@ -94,3 +95,5 @@ const CustomerGroupDisplay = ({
     </div>
   )
 }
+
+

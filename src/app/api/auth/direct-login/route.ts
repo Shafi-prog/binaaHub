@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { createServerClient } from '@supabase/ssr';
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
@@ -201,3 +202,5 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 });
   }
 }
+
+

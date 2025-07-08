@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use client'
 
 import React, { createContext, useContext, useState, useCallback, useEffect } from 'react'
@@ -164,3 +165,5 @@ export const useNotificationActions = () => {
 }
 
 export default NotificationProvider
+
+

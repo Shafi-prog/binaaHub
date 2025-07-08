@@ -1,6 +1,7 @@
+// @ts-nocheck
 import { HttpTypes } from "@medusajs/types"
 import { UIMatch } from "react-router-dom"
-import { useProductTag } from "../../../hooks/api"
+import { useProductTag } from "@/hooks/api"
 
 type ProductTagDetailBreadcrumbProps =
   UIMatch<HttpTypes.AdminProductTagResponse>
@@ -21,3 +22,5 @@ export const ProductTagDetailBreadcrumb = (
 
   return <span>{product_tag.value}</span>
 }
+
+

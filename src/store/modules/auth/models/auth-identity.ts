@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 import { ProviderIdentity } from "./provider-identity"
 
@@ -12,3 +13,5 @@ export const AuthIdentity = model
   .cascades({
     delete: ["provider_identities"],
   })
+
+

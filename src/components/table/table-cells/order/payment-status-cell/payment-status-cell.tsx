@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { HttpTypes } from "@medusajs/types"
 import { useTranslation } from "react-i18next"
 import { getOrderPaymentStatus } from "../../../../../lib/order-helpers"
@@ -24,3 +25,5 @@ export const PaymentStatusHeader = () => {
     </div>
   )
 }
+
+

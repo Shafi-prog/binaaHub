@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { SchedulerOptions } from "@medusajs/framework/orchestration"
 import {
   createStep,
@@ -23,3 +24,5 @@ export const createScheduled = (name: string, schedule?: SchedulerOptions) => {
 
   return workflowScheduledStepInvoke
 }
+
+

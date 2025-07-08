@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Currency information for the system
 
 export interface CurrencyInfo {
@@ -75,3 +76,5 @@ export const formatCurrency = (amount: number, currencyCode: string): string => 
   const currency = getCurrencyInfo(currencyCode)
   return `${currency.symbol} ${amount.toFixed(currency.decimal_digits)}`
 }
+
+

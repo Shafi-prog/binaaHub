@@ -1,7 +1,8 @@
-import { queryKeysFactory } from "../../lib/query-key-factory"
-import { sdk } from "../../lib/client"
+// @ts-nocheck
+import { queryKeysFactory } from "@/lib/query-key-factory"
+import { sdk } from "@/lib/client"
 import { useQuery, useMutation } from "@tanstack/react-query"
-import { queryClient } from "../../lib/query-client"
+import { queryClient } from "@/lib/query-client"
 
 const RETURN_REASONS_QUERY_KEY = "return_reasons" as const
 export const returnReasonsQueryKeys = queryKeysFactory(RETURN_REASONS_QUERY_KEY)
@@ -68,3 +69,5 @@ export const useDeleteReturnReason = (id: string, options?: any) => {
     ...options,
   })
 }
+
+

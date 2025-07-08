@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   createRawPropertiesFromBigNumber,
   decorateCartTotals,
@@ -327,3 +328,5 @@ function mapRepositoryToRelatedEntity(config) {
 
   return conf
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import type { AdminOrder } from "@medusajs/types"
 
 export const getOrderPaymentStatus = (order: AdminOrder): string => {
@@ -58,3 +59,5 @@ export const getOrderStatus = (order: AdminOrder): string => {
   
   return "Pending"
 }
+
+

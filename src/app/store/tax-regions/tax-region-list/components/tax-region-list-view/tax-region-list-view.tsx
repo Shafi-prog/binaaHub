@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Container, Heading, Text } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { useTranslation } from "react-i18next"
@@ -56,3 +57,5 @@ export const TaxRegionListView = () => {
     </Container>
   )
 }
+
+

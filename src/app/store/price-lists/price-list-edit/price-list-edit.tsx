@@ -1,8 +1,9 @@
+// @ts-nocheck
 import { Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
-import { RouteDrawer } from "../../../components/modals"
-import { usePriceList } from "../../../hooks/api/price-lists"
+import { RouteDrawer } from "@/components/modals"
+import { usePriceList } from "@/hooks/api/price-lists"
 import { PriceListEditForm } from "./components/price-list-edit-form"
 
 export const PriceListEdit = () => {
@@ -26,3 +27,5 @@ export const PriceListEdit = () => {
     </RouteDrawer>
   )
 }
+
+

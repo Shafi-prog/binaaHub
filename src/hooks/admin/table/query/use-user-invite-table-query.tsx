@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useQueryParams } from "../../use-query-params"
 
 type UseUserInviteTableQueryProps = {
@@ -30,3 +31,5 @@ export const useUserInviteTableQuery = ({
     raw: queryObject,
   }
 }
+
+

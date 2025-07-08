@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, Input, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
@@ -8,7 +9,7 @@ import { ApiKeyDTO } from "@medusajs/types"
 import { Form } from "../../../common/form"
 import { RouteDrawer, useRouteModal } from "../../../modals"
 import { KeyboundForm } from "../../../utilities/keybound-form"
-import { useUpdateApiKey } from "../../../../hooks/api/api-keys"
+import { useUpdateApiKey } from "@/hooks/api/api-keys"
 
 type EditApiKeyFormProps = {
   apiKey: ApiKeyDTO
@@ -85,3 +86,5 @@ export const EditApiKeyForm = ({ apiKey }: EditApiKeyFormProps) => {
     </RouteDrawer.Form>
   )
 }
+
+

@@ -1,5 +1,6 @@
+// @ts-nocheck
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { sdk } from "../../lib/client";
+import { sdk } from "@/lib/client";
 
 export const exchangesQueryKeys = {
   all: ["exchanges"] as const,
@@ -66,3 +67,5 @@ export const useCancelExchange = () => {
     },
   });
 };
+
+

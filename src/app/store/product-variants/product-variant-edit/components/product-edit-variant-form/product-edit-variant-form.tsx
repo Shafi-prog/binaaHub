@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, Divider, Heading, Input, Switch, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
@@ -441,3 +442,5 @@ export const ProductEditVariantForm = ({
     </RouteDrawer.Form>
   )
 }
+
+

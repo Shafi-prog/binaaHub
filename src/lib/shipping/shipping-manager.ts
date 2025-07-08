@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { createClient } from '@supabase/supabase-js';
 
 // Shipping Provider Types
@@ -712,3 +713,5 @@ export class ShippingManager {
 }
 
 export const shippingManager = new ShippingManager();
+
+

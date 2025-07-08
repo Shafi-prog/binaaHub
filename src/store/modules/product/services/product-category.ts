@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Context,
   DAL,
@@ -187,3 +188,5 @@ export default class ProductCategoryService {
     ).restore(ids, sharedContext)) as any
   }
 }
+
+

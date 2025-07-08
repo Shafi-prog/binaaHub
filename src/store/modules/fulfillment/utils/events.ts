@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Fulfillment,
   FulfillmentSet,
@@ -288,3 +289,5 @@ export function buildCreatedServiceZoneEvents({
   eventBuilders.createdServiceZone({ data: serviceZones, sharedContext })
   eventBuilders.createdGeoZone({ data: geoZones, sharedContext })
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Container, Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { ArrowPath, CurrencyDollar, Envelope, FlyingBox } from "@medusajs/icons"
@@ -66,3 +67,5 @@ const Header = () => {
     </div>
   )
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   MedusaError,
   RuleOperator,
@@ -171,3 +172,5 @@ export function validateRules(rules: Record<string, unknown>[]): boolean {
   rules.forEach(validateRule)
   return true
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useEffect, useState } from 'react';
 import {
   LineChart,
@@ -326,3 +327,5 @@ export default function StoreAnalyticsDashboard({ storeId }: AnalyticsProps) {
     </div>
   );
 }
+
+

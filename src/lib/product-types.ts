@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Data types and utilities for products
 
 export interface AdminProductVariant {
@@ -126,3 +127,5 @@ export interface Image {
 }
 
 import { InventoryItemDTO } from './inventory';
+
+

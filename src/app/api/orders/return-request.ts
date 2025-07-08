@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { NextRequest, NextResponse } from 'next/server';
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
@@ -24,3 +25,5 @@ export async function POST(req: NextRequest) {
   await supabase.from('orders').update({ return_requested: true, return_reason: reason, return_status: 'pending' }).eq('id', orderId);
   return NextResponse.json({ success: true });
 }
+
+

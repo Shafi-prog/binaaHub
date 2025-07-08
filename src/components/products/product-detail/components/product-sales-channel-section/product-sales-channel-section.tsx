@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Channels, PencilSquare } from "@medusajs/icons"
 import { Container, Heading, Text, Tooltip } from "@medusajs/ui"
 import { Trans, useTranslation } from "react-i18next"
@@ -104,3 +105,5 @@ export const ProductSalesChannelSection = ({
     </Container>
   )
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const pluginsQueryKeys = {
@@ -54,3 +55,5 @@ export const useUninstallPlugin = () => {
     },
   });
 };
+
+

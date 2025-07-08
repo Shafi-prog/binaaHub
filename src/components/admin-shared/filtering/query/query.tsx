@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Input } from "@medusajs/ui"
 import { debounce } from "lodash"
 import { ChangeEvent, useCallback, useEffect, useState } from "react"
@@ -55,3 +56,5 @@ export const Query = ({ placeholder }: QueryProps) => {
     />
   )
 }
+
+

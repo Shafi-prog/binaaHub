@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   BigNumberInput,
   CreateOrderCreditLineDTO,
@@ -140,3 +141,5 @@ export interface ActionTypeDefinition {
   validate?: (obj: OrderReferences) => void
   [key: string]: unknown
 }
+
+

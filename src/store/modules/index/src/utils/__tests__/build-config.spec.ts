@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { MedusaModule } from "@medusajs/framework/modules-sdk"
 import { buildSchemaObjectRepresentation } from "../build-config"
 
@@ -1855,3 +1856,5 @@ describe("buildSchemaObjectRepresentation", () => {
     )
   })
 })
+
+

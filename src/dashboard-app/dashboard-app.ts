@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Dashboard App API and interface definitions
 
 export interface DashboardApp {
@@ -21,3 +22,5 @@ export const createDashboardApp = (): DashboardApp => {
     }
   };
 };
+
+

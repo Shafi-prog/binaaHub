@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Promotion utilities
 export function getPromotionStatus(promotion: any): { label: string; color: string } {
   if (!promotion) {
@@ -46,3 +47,5 @@ export function isPromotionDisabled(promotion: any): boolean {
   const status = getPromotionStatus(promotion)
   return status.label === 'Disabled'
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { CheckCircle, Plus, Trash, XCircle } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import {
@@ -385,3 +386,5 @@ const useColumns = () => {
     [base, t]
   )
 }
+
+

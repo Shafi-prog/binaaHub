@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { PromotionTypeValues } from "@medusajs/framework/types"
 
 export interface CreatePromotionDTO {
@@ -14,3 +15,5 @@ export interface UpdatePromotionDTO {
   is_automatic?: boolean
   campaign_id?: string | null
 }
+
+

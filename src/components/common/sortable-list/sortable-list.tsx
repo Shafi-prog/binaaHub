@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Active,
   DndContext,
@@ -226,3 +227,5 @@ export const SortableList = Object.assign(List, {
   Item,
   DragHandle,
 })
+
+

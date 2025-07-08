@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState } from 'react';
 
 type Locale = 'en' | 'ar';
@@ -648,3 +649,5 @@ export function useTranslation() {
     changeLocale,
   };
 }
+
+

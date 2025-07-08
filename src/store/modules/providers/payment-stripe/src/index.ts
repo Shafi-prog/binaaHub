@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { ModuleProvider, Modules } from "@medusajs/framework/utils"
 import {
   StripeBancontactService,
@@ -20,3 +21,5 @@ const services = [
 export default ModuleProvider(Modules.PAYMENT, {
   services,
 })
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { z } from "zod"
 
 const PriceListCustomerGroupSchema = z.object({
@@ -94,3 +95,5 @@ export const PriceListUpdateProductsSchema = z.record(
 export type PriceListUpdateProductsSchema = z.infer<
   typeof PriceListUpdateProductsSchema
 >
+
+

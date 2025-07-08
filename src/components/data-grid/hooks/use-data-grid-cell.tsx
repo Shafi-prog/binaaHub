@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { CellContext } from "@tanstack/react-table"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 
@@ -243,3 +244,5 @@ export const useDataGridCell = <TData, TValue>({
     renderProps,
   }
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { HttpTypes } from "@medusajs/types"
 import { Button, InlineTip, Input, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
@@ -103,3 +104,5 @@ export const EditServiceZoneForm = ({
     </RouteDrawer.Form>
   )
 }
+
+

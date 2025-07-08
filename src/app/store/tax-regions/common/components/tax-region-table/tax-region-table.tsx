@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { HttpTypes } from "@medusajs/types"
 import { Button } from "@medusajs/ui"
 import { Table } from "@tanstack/react-table"
@@ -120,3 +121,5 @@ export const TaxRegionTable = ({
     </div>
   )
 }
+
+

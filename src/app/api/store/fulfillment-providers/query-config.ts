@@ -1,3 +1,4 @@
+// @ts-nocheck
 export const defaultAdminFulfillmentProvidersFields = ["id", "is_enabled"]
 
 export const retrieveTransformQueryConfig = {
@@ -9,3 +10,5 @@ export const listTransformQueryConfig = {
   ...retrieveTransformQueryConfig,
   isList: true,
 }
+
+

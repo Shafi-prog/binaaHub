@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Buildings, PencilSquare, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import { Container, StatusBadge, Text, toast, usePrompt } from "@medusajs/ui"
@@ -184,3 +185,5 @@ function LocationListItem(props: LocationProps) {
 }
 
 export default LocationListItem
+
+

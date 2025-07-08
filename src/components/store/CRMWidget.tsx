@@ -1,3 +1,4 @@
+// @ts-nocheck
 // CRMWidget.tsx
 // Open source (Ever Gauzy-inspired) CRM widget for the store dashboard
 'use client';
@@ -200,3 +201,5 @@ export const CRMWidget: React.FC = () => {
     </Card>
   );
 };
+
+

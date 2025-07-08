@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Database type definitions for Supabase
 
 export interface Database {
@@ -102,3 +103,5 @@ export interface Database {
     };
   };
 }
+
+

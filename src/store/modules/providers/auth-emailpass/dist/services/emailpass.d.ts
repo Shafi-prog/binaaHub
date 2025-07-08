@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { AuthenticationInput, AuthenticationResponse, AuthIdentityProviderService, EmailPassAuthProviderOptions, Logger } from "@medusajs/framework/types";
 import { AbstractAuthModuleProvider } from "@medusajs/framework/utils";
 type InjectedDependencies = {
@@ -38,3 +39,4 @@ export declare class EmailPassAuthService extends AbstractAuthModuleProvider {
 }
 export {};
 //# sourceMappingURL=emailpass.d.ts.map
+

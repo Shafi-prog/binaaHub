@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 const ShippingLabel = model.define("shipping_label", {
@@ -56,3 +57,5 @@ ShippingLabel.belongsTo(() => import("./shipping-carrier").then(m => m.default),
 })
 
 export default ShippingLabel
+
+

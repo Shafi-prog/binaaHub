@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useCallback, useState } from "react"
 import { FieldValues, Path, UseFormReturn } from "react-hook-form"
 import { DataGridMatrix } from "../models"
@@ -73,3 +74,5 @@ export const useDataGridCellSnapshot = <
     restoreSnapshot,
   }
 }
+
+

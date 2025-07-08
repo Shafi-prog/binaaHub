@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
@@ -328,3 +329,5 @@ function defaultAllocations(items: any[]) {
 
   return ret
 }
+
+

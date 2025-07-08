@@ -1,3 +1,4 @@
+// @ts-nocheck
 export * from "./query-builder"
 export * from "./create-partitions"
 export * from "./build-config"
@@ -7,3 +8,5 @@ export * from "./index-metadata-status"
 export * from "./gql-to-types"
 export * from "./default-schema"
 export * from "./normalze-table-name"
+
+

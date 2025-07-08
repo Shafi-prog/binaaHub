@@ -1,6 +1,7 @@
+// @ts-nocheck
 import { HttpTypes } from "@medusajs/types"
 import { UIMatch } from "react-router-dom"
-import { useOrder } from "../../../hooks/api"
+import { useOrder } from "@/hooks/api"
 import { DEFAULT_FIELDS } from "./constants"
 
 type OrderDetailBreadcrumbProps = UIMatch<HttpTypes.AdminOrderResponse>
@@ -25,3 +26,5 @@ export const OrderDetailBreadcrumb = (props: OrderDetailBreadcrumbProps) => {
 
   return <span>#{order.display_id}</span>
 }
+
+

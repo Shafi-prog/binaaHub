@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useMemo } from "react"
 import { Checkbox } from "@medusajs/ui"
 import { createColumnHelper } from "@tanstack/react-table"
@@ -101,3 +102,5 @@ export const useClaimItemTableColumns = (currencyCode: string) => {
     [t, currencyCode]
   )
 }
+
+

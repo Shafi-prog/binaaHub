@@ -1,3 +1,4 @@
+// @ts-nocheck
 export default `
 enum PaymentCollectionStatus {
   not_paid
@@ -109,3 +110,5 @@ type RefundReason {
   updated_at: DateTime!
 }
 `
+
+

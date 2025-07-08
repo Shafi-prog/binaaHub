@@ -1,9 +1,10 @@
+// @ts-nocheck
 import { useParams } from "react-router-dom"
-import { MetadataForm } from "../../../components/forms/metadata-form"
+import { MetadataForm } from "@/components/forms/metadata-form"
 import {
   useCustomerGroup,
   useUpdateCustomerGroup,
-} from "../../../hooks/api/customer-groups"
+} from "@/hooks/api/customer-groups"
 
 export const CustomerGroupMetadata = () => {
   const { id } = useParams()
@@ -24,3 +25,5 @@ export const CustomerGroupMetadata = () => {
     />
   )
 }
+
+

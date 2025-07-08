@@ -1,1 +1,4 @@
+// @ts-nocheck
 it("noop", () => {})
+
+

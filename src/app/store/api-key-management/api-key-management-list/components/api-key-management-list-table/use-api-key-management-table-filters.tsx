@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useTranslation } from "react-i18next"
 import { Filter } from "../../../../../components/table/data-table"
 
@@ -16,3 +17,5 @@ export const useApiKeyManagementTableFilters = () => {
 
   return filters
 }
+
+

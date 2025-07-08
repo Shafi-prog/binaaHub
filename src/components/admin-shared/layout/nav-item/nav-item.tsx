@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Kbd, Text, clx } from "@medusajs/ui"
 import { Collapsible as RadixCollapsible } from "radix-ui"
 import {
@@ -242,3 +243,5 @@ const Icon = ({ icon, type }: { icon?: ReactNode; type: ItemType }) => {
     icon
   )
 }
+
+

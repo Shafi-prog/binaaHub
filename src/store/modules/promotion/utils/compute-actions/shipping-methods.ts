@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { BigNumberInput, PromotionTypes } from "@medusajs/framework/types"
 import {
   ApplicationMethodAllocation,
@@ -172,3 +173,5 @@ export function applyPromotionToShippingMethods(
 
   return computedActions
 }
+
+

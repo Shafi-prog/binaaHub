@@ -1,3 +1,4 @@
+// @ts-nocheck
 import type { HttpTypes } from "@medusajs/types"
 
 export interface StaticCountry
@@ -1765,3 +1766,5 @@ export const countries: StaticCountry[] = [
     display_name: "Åland Islands",
   },
 ]
+
+

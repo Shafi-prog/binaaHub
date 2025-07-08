@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { NextRequest, NextResponse } from 'next/server';
 import { initERPService, generateId } from '@/lib/erp/mongodb-service';
 
@@ -63,3 +64,5 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Tooltip } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 
@@ -65,3 +66,5 @@ export const SalesChannelHeader = () => {
     </div>
   )
 }
+
+

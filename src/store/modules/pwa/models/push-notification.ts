@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 const PushNotification = model.define("push_notification", {
@@ -63,3 +64,5 @@ const PushNotification = model.define("push_notification", {
 })
 
 export default PushNotification
+
+

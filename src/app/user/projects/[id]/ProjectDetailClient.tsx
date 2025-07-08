@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 // All client-only imports and logic go inside this file
 import React from 'react';

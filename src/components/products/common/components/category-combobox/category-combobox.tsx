@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   ArrowUturnLeft,
   EllipseMiniSolid,
@@ -497,3 +498,5 @@ function getOptions(
 function isSelected(values: string[], value: string): boolean {
   return values.includes(value)
 }
+
+

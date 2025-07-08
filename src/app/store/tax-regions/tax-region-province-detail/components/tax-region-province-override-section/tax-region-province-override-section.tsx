@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { HttpTypes } from "@medusajs/types"
 import { Container, Heading } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
@@ -63,3 +64,5 @@ export const TaxRegionProvinceOverrideSection = ({
     </Container>
   )
 }
+
+

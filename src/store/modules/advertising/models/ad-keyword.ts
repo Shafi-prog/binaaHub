@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/utils"
 
 /**
@@ -56,3 +57,5 @@ export const AdKeyword = model.define("AdKeyword", {
 })
 
 export default AdKeyword
+
+

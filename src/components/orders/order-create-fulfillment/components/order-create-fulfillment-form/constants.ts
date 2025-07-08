@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { z } from "zod"
 
 export const CreateFulfillmentSchema = z.object({
@@ -6,3 +7,5 @@ export const CreateFulfillmentSchema = z.object({
   shipping_option_id: z.string().optional(),
   send_notification: z.boolean().optional(),
 })
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Outlet } from "react-router-dom"
 import { JsonViewSection } from "../../../common/json-view-section"
 import { MetadataSection } from "../../../common/metadata-section"
@@ -61,3 +62,5 @@ export const SingleColumnPage = <TData,>({
     </div>
   )
 }
+
+

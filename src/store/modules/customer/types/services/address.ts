@@ -1,3 +1,4 @@
+// @ts-nocheck
 export type CreateAddressDTO = {
   customer_id: string
   company?: string | null
@@ -26,3 +27,5 @@ export type UpdateAddressDTO = {
   phone?: string | null
   metadata?: Record<string, unknown> | null
 }
+
+

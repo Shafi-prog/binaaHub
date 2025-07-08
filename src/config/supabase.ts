@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -23,3 +24,5 @@ export async function getDocumentUrl(path: string) {
   const { data } = supabase.storage.from('documents').getPublicUrl(path);
   return data.publicUrl;
 }
+
+

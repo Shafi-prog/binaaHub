@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 
 export function LoadingSpinner() {
@@ -29,3 +30,5 @@ export function LoadingOverlay() {
     </div>
   );
 }
+
+

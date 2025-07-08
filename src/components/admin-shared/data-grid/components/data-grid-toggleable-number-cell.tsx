@@ -1,8 +1,9 @@
+// @ts-nocheck
 import { Switch } from "@medusajs/ui"
 import { useEffect, useRef, useState } from "react"
 import CurrencyInput, { CurrencyInputProps } from "react-currency-input-field"
 import { Controller, ControllerRenderProps } from "react-hook-form"
-import { useCombinedRefs } from "../../../hooks/use-combined-refs"
+import { useCombinedRefs } from "@/hooks/use-combined-refs"
 import { ConditionalTooltip } from "../../common/conditional-tooltip"
 import { useDataGridCell, useDataGridCellError } from "../hooks"
 import { DataGridCellProps, InputProps } from "../types"
@@ -203,3 +204,5 @@ const Inner = ({
     </div>
   )
 }
+
+

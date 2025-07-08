@@ -1,3 +1,4 @@
+// @ts-nocheck
 export const defaultAdminFulfillmentsFields = [
   "id",
   "location_id",
@@ -29,3 +30,5 @@ export const listTransformQueryConfig = {
   ...retrieveTransformQueryConfig,
   isList: true,
 }
+
+

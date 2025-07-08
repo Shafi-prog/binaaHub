@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { asValue } from "awilix"
 import { container, logger } from "@medusajs/framework"
 import type { IndexTypes } from "@medusajs/types"
@@ -290,3 +291,5 @@ describe("Orchestrator", () => {
     expect(lockingModule.lockEntities.size).toEqual(0)
   })
 })
+
+

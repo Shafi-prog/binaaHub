@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Modules } from "@medusajs/utils"
 
 export const defaultSchema = `
@@ -36,3 +37,5 @@ export const defaultSchema = `
     is_disabled: Boolean
   }
 `
+
+

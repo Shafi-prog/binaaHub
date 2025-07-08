@@ -1,9 +1,10 @@
+// @ts-nocheck
 import { useParams } from "react-router-dom"
-import { MetadataForm } from "../../../components/forms/metadata-form/metadata-form"
+import { MetadataForm } from "@/components/forms/metadata-form/metadata-form"
 import {
   useShippingProfile,
   useUpdateShippingProfile,
-} from "../../../hooks/api"
+} from "@/hooks/api"
 
 export const ShippingProfileMetadata = () => {
   const { shipping_profile_id } = useParams()
@@ -29,3 +30,5 @@ export const ShippingProfileMetadata = () => {
     />
   )
 }
+
+

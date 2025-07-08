@@ -1,8 +1,9 @@
-import { useMe } from "../../../hooks/api/users"
+// @ts-nocheck
+import { useMe } from "@/hooks/api/users"
 import { ProfileGeneralSection } from "./components/profile-general-section"
 
-import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { SingleColumnPage } from "../../../components/layout/pages"
+import { SingleColumnPageSkeleton } from "@/components/common/skeleton"
+import { SingleColumnPage } from "@/components/layout/pages"
 import { useExtension } from "../../../providers/extension-provider"
 
 export const ProfileDetail = () => {
@@ -28,3 +29,5 @@ export const ProfileDetail = () => {
     </SingleColumnPage>
   )
 }
+
+

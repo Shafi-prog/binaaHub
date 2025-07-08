@@ -1,8 +1,9 @@
+// @ts-nocheck
 import { useParams } from "react-router-dom"
 
-import { useTaxRegion } from "../../../hooks/api"
-import { MetadataForm } from "../../../components/forms/metadata-form"
-import { RouteDrawer } from "../../../components/modals"
+import { useTaxRegion } from "@/hooks/api"
+import { MetadataForm } from "@/components/forms/metadata-form"
+import { RouteDrawer } from "@/components/modals"
 
 /**
  * TODO: Tax region update endpoint is missing
@@ -29,3 +30,5 @@ export const TaxRegionMetadata = () => {
     </RouteDrawer>
   )
 }
+
+

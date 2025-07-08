@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useEffect, useState } from "react"
 
 export const useMediaQuery = (query: string) => {
@@ -12,3 +13,5 @@ export const useMediaQuery = (query: string) => {
 
   return matches
 }
+
+

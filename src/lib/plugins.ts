@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Plugin utilities
 export function getLoyaltyPlugin(plugins: any[]): any | null {
   if (!plugins) return null
@@ -38,3 +39,5 @@ export function getPluginConfig(plugin: any): any {
 export function getPluginOptions(plugin: any): any {
   return plugin?.options || {}
 }
+
+

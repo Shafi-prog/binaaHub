@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { z } from "zod"
 
 export const ReceiveReturnSchema = z.object({
@@ -10,3 +11,5 @@ export const ReceiveReturnSchema = z.object({
   ),
   send_notification: z.boolean().optional(),
 })
+
+

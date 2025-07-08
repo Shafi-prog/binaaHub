@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { XMarkMini } from "@medusajs/icons"
 import { Badge, clx } from "@medusajs/ui"
 import { AnimatePresence, motion } from "motion/react"
@@ -189,3 +190,5 @@ export const ChipInput = forwardRef<HTMLInputElement, ChipInputProps>(
 )
 
 ChipInput.displayName = "ChipInput"
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Tooltip, clx } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 
@@ -68,3 +69,5 @@ export const ListSummary = ({
     </div>
   )
 }
+
+

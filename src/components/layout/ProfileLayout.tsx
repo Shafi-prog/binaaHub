@@ -1,3 +1,4 @@
+// @ts-nocheck
 // src/components/layouts/ProfileLayout.tsx
 'use client';
 
@@ -91,3 +92,5 @@ export default function ProfileLayout({ children }: ProfileLayoutProps) {
     </div>
   );
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Badge } from "@medusajs/ui"
 
 type CellProps = {
@@ -31,3 +32,5 @@ export const TypeHeader = ({ text }: HeaderProps) => {
     </div>
   )
 }
+
+

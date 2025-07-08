@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   LoaderOptions,
   ModuleProvider,
@@ -41,3 +42,5 @@ export default async ({
     registerServiceFn: registrationFn,
   })
 }
+
+

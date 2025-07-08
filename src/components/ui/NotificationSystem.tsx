@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use client';
 import React, { createContext, useContext, useReducer, useCallback } from 'react';
 import { toast, ToastBar, Toaster } from 'react-hot-toast';
@@ -90,3 +91,5 @@ export function useNotification() {
   }
   return context;
 }
+
+

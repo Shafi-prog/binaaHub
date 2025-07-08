@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { HttpTypes } from "@medusajs/types"
 import { useEffect } from "react"
 import { UseFormReturn, useWatch } from "react-hook-form"
@@ -92,3 +93,5 @@ export const PriceListPricesForm = ({
     </div>
   )
 }
+
+

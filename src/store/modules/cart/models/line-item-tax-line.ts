@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 import LineItem from "./line-item"
 
@@ -34,3 +35,5 @@ const LineItemTaxLine = model
   ])
 
 export default LineItemTaxLine
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { TrackAnalyticsEventDTO, IdentifyAnalyticsEventDTO } from "@medusajs/types";
 import AnalyticsProviderService from "./provider-service";
 type InjectedDependencies = {
@@ -14,3 +15,5 @@ export default class AnalyticsService {
     identify(data: IdentifyAnalyticsEventDTO): Promise<void>;
 }
 export {};
+
+

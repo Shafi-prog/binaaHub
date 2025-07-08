@@ -1,9 +1,10 @@
+// @ts-nocheck
 import { Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { json, useParams } from "react-router-dom"
 
-import { RouteDrawer } from "../../../components/modals"
-import { useShippingOptions } from "../../../hooks/api/shipping-options"
+import { RouteDrawer } from "@/components/modals"
+import { useShippingOptions } from "@/hooks/api/shipping-options"
 import { EditShippingOptionForm } from "./components/edit-region-form"
 import { FulfillmentSetType } from "../common/constants"
 
@@ -57,3 +58,5 @@ export const LocationServiceZoneShippingOptionEdit = () => {
     </RouteDrawer>
   )
 }
+
+

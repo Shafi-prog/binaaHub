@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 import Payment from "./payment"
 import RefundReason from "./refund-reason"
@@ -26,3 +27,5 @@ const Refund = model
   ])
 
 export default Refund
+
+

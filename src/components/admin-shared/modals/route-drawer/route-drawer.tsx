@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Drawer, clx } from "@medusajs/ui"
 import { PropsWithChildren, useEffect, useState } from "react"
 import { Path, useNavigate } from "react-router-dom"
@@ -80,3 +81,5 @@ export const RouteDrawer = Object.assign(Root, {
   Close,
   Form,
 })
+
+

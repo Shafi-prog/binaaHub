@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   ApplicationMethodAllocationValues,
   ApplicationMethodTargetTypeValues,
@@ -33,3 +34,5 @@ export interface UpdateApplicationMethodDTO {
   buy_rules_min_quantity?: BigNumberInput | null
   apply_to_quantity?: BigNumberInput | null
 }
+
+

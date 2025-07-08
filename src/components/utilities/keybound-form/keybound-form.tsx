@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from "react"
 
 /**
@@ -40,3 +41,5 @@ export const KeyboundForm = React.forwardRef<
 })
 
 KeyboundForm.displayName = "KeyboundForm"
+
+

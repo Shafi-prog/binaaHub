@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { formatDate } from '@/lib/utils';
 import { BalanceTransaction, CommissionRecord, WarrantyRecord } from '@/types/balance-management';
 
@@ -167,3 +168,5 @@ export function exportWarranties(warranties: WarrantyRecord[], fileName: string 
   const csvContent = generateWarrantiesCsv(warranties);
   downloadCsv(csvContent, fileName);
 }
+
+

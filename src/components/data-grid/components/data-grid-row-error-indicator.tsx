@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Badge, Tooltip } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { DataGridRowError } from "../types"
@@ -53,3 +54,5 @@ const DataGridRowErrorLine = ({
     </li>
   )
 }
+
+

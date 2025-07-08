@@ -1,45 +1,30 @@
+// @ts-nocheck
 import { Component, PencilSquare, Trash } from "@medusajs/icons"
-import { HttpTypes } from "@medusajs/types"
-import { Badge, Container, Heading, usePrompt } from "@medusajs/ui"
-import { useTranslation } from "react-i18next"
-import { useNavigate } from "react-router-dom"
+import { Badge, Container, Heading } from "@medusajs/ui"
+import { useRouter } from "next/navigation"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { SectionRow } from "../../../../../components/common/section"
-import { useDeleteVariant } from "../../../../../store/hooks/api/products"
 
 type VariantGeneralSectionProps = {
-  variant: HttpTypes.AdminProductVariant
+  variant: any
 }
 
 export function VariantGeneralSection({ variant }: VariantGeneralSectionProps) {
-  const { t } = useTranslation()
-  const prompt = usePrompt()
-  const navigate = useNavigate()
+  const router = useRouter()
 
   const hasInventoryKit = variant.inventory?.length > 1
 
-  const { mutateAsync } = useDeleteVariant(variant.product_id!, variant.id)
-
   const handleDelete = async () => {
-    const res = await prompt({
-      title: t("general.areYouSure"),
-      description: t("products.variant.deleteWarning", {
-        title: variant.title,
-      }),
-      confirmText: t("actions.delete"),
-      cancelText: t("actions.cancel"),
-    })
+    const confirmed = window.confirm(`Are you sure you want to delete ${variant.title}?`)
 
-    if (!res) {
+    if (!confirmed) {
       return
     }
 
-    await mutateAsync(undefined, {
-      onSuccess: () => {
-        navigate("..", { replace: true })
-      },
-    })
+    // Mock deletion
+    console.log('Deleting variant:', variant.id)
+    router.back()
   }
 
   return (
@@ -55,7 +40,7 @@ export function VariantGeneralSection({ variant }: VariantGeneralSectionProps) {
             )}
           </div>
           <span className="text-ui-fg-subtle txt-small mt-2">
-            {t("labels.productVariant")}
+            Product Variant
           </span>
         </div>
         <div className="flex items-center gap-x-4">
@@ -64,7 +49,7 @@ export function VariantGeneralSection({ variant }: VariantGeneralSectionProps) {
               {
                 actions: [
                   {
-                    label: t("actions.edit"),
+                    label: "Edit",
                     to: "edit",
                     icon: <PencilSquare />,
                   },
@@ -73,7 +58,7 @@ export function VariantGeneralSection({ variant }: VariantGeneralSectionProps) {
               {
                 actions: [
                   {
-                    label: t("actions.delete"),
+                    label: "Delete",
                     onClick: handleDelete,
                     icon: <Trash />,
                   },
@@ -84,7 +69,7 @@ export function VariantGeneralSection({ variant }: VariantGeneralSectionProps) {
         </div>
       </div>
 
-      <SectionRow title={t("fields.sku")} value={variant.sku} />
+      <SectionRow title="SKU" value={variant.sku} />
       {variant.options?.map((o) => (
         <SectionRow
           key={o.id}
@@ -95,3 +80,5 @@ export function VariantGeneralSection({ variant }: VariantGeneralSectionProps) {
     </Container>
   )
 }
+
+

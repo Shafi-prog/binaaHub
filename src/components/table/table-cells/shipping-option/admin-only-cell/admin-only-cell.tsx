@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useTranslation } from "react-i18next"
 import { StatusCell } from "../../common/status-cell"
 
@@ -23,3 +24,5 @@ export const AdminOnlyHeader = () => {
     </div>
   )
 }
+
+

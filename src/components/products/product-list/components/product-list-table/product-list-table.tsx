@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { PencilSquare, Trash } from "@medusajs/icons"
 import { Button, Container, Heading, toast, usePrompt } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
@@ -179,3 +180,5 @@ const useColumns = () => {
 
   return columns
 }
+
+

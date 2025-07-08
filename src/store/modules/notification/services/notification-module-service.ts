@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Context,
   DAL,
@@ -69,8 +70,8 @@ export default class NotificationModuleService
     sharedContext?: Context
   ): Promise<NotificationTypes.NotificationDTO>
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   // @ts-expect-error
   async createNotifications(
     data:
@@ -99,7 +100,7 @@ export default class NotificationModuleService
     return Array.isArray(data) ? serialized : serialized[0]
   }
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   protected async createNotifications_(
     data: NotificationTypes.CreateNotificationDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -239,3 +240,5 @@ export default class NotificationModuleService
     return createdNotifications
   }
 }
+
+

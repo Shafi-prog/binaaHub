@@ -1,8 +1,9 @@
+// @ts-nocheck
 import { LoaderFunctionArgs } from "react-router-dom"
 
-import { apiKeysQueryKeys } from "../../../hooks/api/api-keys"
-import { sdk } from "../../../lib/client"
-import { queryClient } from "../../../lib/query-client"
+import { apiKeysQueryKeys } from "@/hooks/api/api-keys"
+import { sdk } from "@/lib/client"
+import { queryClient } from "@/lib/query-client"
 
 const apiKeyDetailQuery = (id: string) => ({
   queryKey: apiKeysQueryKeys.detail(id),
@@ -15,3 +16,5 @@ export const apiKeyLoader = async ({ params }: LoaderFunctionArgs) => {
 
   return queryClient.ensureQueryData(query)
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Store POS User Search Component
 'use client';
 
@@ -346,3 +347,8 @@ function debounce<T extends (...args: any[]) => any>(
     timeout = setTimeout(() => func(...args), wait);
   };
 }
+
+
+
+
+

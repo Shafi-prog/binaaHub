@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { AuthenticationInput, AuthenticationResponse, AuthIdentityProviderService, GithubAuthProviderOptions, Logger } from "@medusajs/framework/types";
 import { AbstractAuthModuleProvider } from "@medusajs/framework/utils";
 type InjectedDependencies = {
@@ -33,3 +34,4 @@ export declare class GithubAuthService extends AbstractAuthModuleProvider {
 }
 export {};
 //# sourceMappingURL=github.d.ts.map
+

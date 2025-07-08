@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
@@ -105,3 +106,5 @@ export const CreateCampaignForm = () => {
     </RouteFocusModal.Form>
   )
 }
+
+

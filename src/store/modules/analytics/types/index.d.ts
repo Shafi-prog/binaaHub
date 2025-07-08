@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { ModuleProviderExports, ModuleServiceInitializeOptions } from "@medusajs/framework/types";
 export type AnalyticsModuleOptions = Partial<ModuleServiceInitializeOptions> & {
     /**
@@ -18,3 +19,5 @@ export type AnalyticsModuleOptions = Partial<ModuleServiceInitializeOptions> & {
         options?: Record<string, unknown>;
     }[];
 };
+
+

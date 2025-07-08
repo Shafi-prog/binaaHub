@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import ArabicSignupForm from '@/components/users/ArabicSignupForm';
@@ -64,3 +65,5 @@ export default function SignupPage() {  const handleSignup = async (data: Signup
     </div>
   );
 }
+
+

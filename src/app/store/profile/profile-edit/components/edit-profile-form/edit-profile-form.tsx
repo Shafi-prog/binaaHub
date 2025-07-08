@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, Input, Select, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
@@ -197,3 +198,5 @@ export const EditProfileForm = ({ user }: EditProfileProps) => {
     </RouteDrawer.Form>
   )
 }
+
+

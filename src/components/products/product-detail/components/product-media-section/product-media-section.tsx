@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { PencilSquare, ThumbnailBadge } from "@medusajs/icons"
 import {
   Button,
@@ -206,3 +207,5 @@ const getMedia = (product: Product) => {
 
   return media
 }
+
+

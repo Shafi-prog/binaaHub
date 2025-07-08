@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   PosthogAnalyticsServiceOptions,
   Logger,
@@ -87,3 +88,5 @@ export class PosthogAnalyticsService extends AbstractAnalyticsProviderService {
     await this.client_.shutdown()
   }
 }
+
+

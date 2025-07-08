@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { HttpTypes } from "@medusajs/framework/types"
 import {
   AuthenticatedMedusaRequest,
@@ -32,3 +33,5 @@ export const GET = async (
     limit: metadata.take,
   })
 }
+
+

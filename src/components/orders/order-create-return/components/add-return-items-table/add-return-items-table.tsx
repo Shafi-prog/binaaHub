@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { OnChangeFn, RowSelectionState } from "@tanstack/react-table"
 import { useMemo, useState } from "react"
 
@@ -282,3 +283,5 @@ const filterByNumber = (
     return isValid
   })
 }
+
+

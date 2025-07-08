@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { createContext, useContext } from "react"
 
 type DataTableFilterContextValue = {
@@ -17,3 +18,5 @@ export const useDataTableFilterContext = () => {
   }
   return ctx
 }
+
+

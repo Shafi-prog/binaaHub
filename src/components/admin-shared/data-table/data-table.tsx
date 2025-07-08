@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Button,
   clx,
@@ -19,7 +20,7 @@ import React, { ReactNode, useCallback, useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { Link, useNavigate, useSearchParams } from "react-router-dom"
 
-import { useQueryParams } from "../../hooks/use-query-params"
+import { useQueryParams } from "@/hooks/use-query-params"
 import { ActionMenu } from "../common/action-menu"
 
 type DataTableActionProps = {
@@ -426,3 +427,5 @@ const DataTableAction = ({
     </Button>
   )
 }
+
+

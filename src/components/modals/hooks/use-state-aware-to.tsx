@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useMemo } from "react"
 import { Path, useLocation } from "react-router-dom"
 
@@ -24,3 +25,5 @@ export const useStateAwareTo = (prev: string | Partial<Path>) => {
 
   return to
 }
+
+

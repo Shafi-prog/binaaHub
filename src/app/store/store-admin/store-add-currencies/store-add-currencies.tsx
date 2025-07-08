@@ -1,6 +1,7 @@
-import { RouteFocusModal } from "../../../components/modals"
-import { usePricePreferences } from "../../../hooks/api/price-preferences"
-import { useStore } from "../../../hooks/api/store"
+// @ts-nocheck
+import { RouteFocusModal } from "@/components/modals"
+import { usePricePreferences } from "@/hooks/api/price-preferences"
+import { useStore } from "@/hooks/api/store"
 import { AddCurrenciesForm } from "./components/add-currencies-form/add-currencies-form"
 
 export const StoreAddCurrencies = () => {
@@ -40,3 +41,5 @@ export const StoreAddCurrencies = () => {
     </RouteFocusModal>
   )
 }
+
+

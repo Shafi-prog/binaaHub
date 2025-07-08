@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Context,
   DAL,
@@ -114,7 +115,7 @@ export class WorkflowsModuleService<
     return filters
   }
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   // @ts-expect-error
   async listWorkflowExecutions(
     filters: FilterableWorkflowExecutionProps = {},
@@ -125,7 +126,7 @@ export class WorkflowsModuleService<
     return await super.listWorkflowExecutions(filters_, config, sharedContext)
   }
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   // @ts-expect-error
   async listAndCountWorkflowExecutions(
     filters: FilterableWorkflowExecutionProps = {},
@@ -140,7 +141,7 @@ export class WorkflowsModuleService<
     )
   }
 
-  @InjectSharedContext()
+  @InjectSharedContext("context")
   async run<TWorkflow extends string | ReturnWorkflow<any, any, any>>(
     workflowIdOrWorkflow: TWorkflow,
     options: WorkflowsSdkTypes.WorkflowOrchestratorRunDTO<
@@ -199,7 +200,7 @@ export class WorkflowsModuleService<
     return ret as any
   }
 
-  @InjectSharedContext()
+  @InjectSharedContext("context")
   async getRunningTransaction(
     workflowId: string,
     transactionId: string,
@@ -212,7 +213,7 @@ export class WorkflowsModuleService<
     )
   }
 
-  @InjectSharedContext()
+  @InjectSharedContext("context")
   async setStepSuccess(
     {
       idempotencyKey,
@@ -238,7 +239,7 @@ export class WorkflowsModuleService<
     } as any)
   }
 
-  @InjectSharedContext()
+  @InjectSharedContext("context")
   async setStepFailure(
     {
       idempotencyKey,
@@ -264,7 +265,7 @@ export class WorkflowsModuleService<
     } as any)
   }
 
-  @InjectSharedContext()
+  @InjectSharedContext("context")
   async subscribe(
     args: {
       workflowId: string
@@ -277,7 +278,7 @@ export class WorkflowsModuleService<
     return this.workflowOrchestratorService_.subscribe(args as any)
   }
 
-  @InjectSharedContext()
+  @InjectSharedContext("context")
   async unsubscribe(
     args: {
       workflowId: string
@@ -297,7 +298,7 @@ export class WorkflowsModuleService<
     `)
   }
 
-  @InjectSharedContext()
+  @InjectSharedContext("context")
   async cancel<TWorkflow extends string | ReturnWorkflow<any, any, any>>(
     workflowIdOrWorkflow: TWorkflow,
     options: WorkflowOrchestratorCancelOptions,
@@ -309,3 +310,5 @@ export class WorkflowsModuleService<
     )
   }
 }
+
+

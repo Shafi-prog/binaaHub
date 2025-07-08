@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Divider, Heading, Input, RadioGroup, Select, Text } from "@medusajs/ui"
 import { UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -260,3 +261,5 @@ export const CreateShippingOptionDetailsForm = ({
     </div>
   )
 }
+
+

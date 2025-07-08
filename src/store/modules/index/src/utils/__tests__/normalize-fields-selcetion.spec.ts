@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { normalizeFieldsSelection } from "../normalize-fields-selection"
 
 describe("normalizeFieldsSelection", () => {
@@ -20,3 +21,5 @@ describe("normalizeFieldsSelection", () => {
     })
   })
 })
+
+

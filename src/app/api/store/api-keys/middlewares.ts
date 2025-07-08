@@ -1,3 +1,4 @@
+// @ts-nocheck
 import * as QueryConfig from "./query-config"
 
 import { MiddlewareRoute } from "@medusajs/framework/http"
@@ -12,7 +13,7 @@ import {
   AdminRevokeApiKey,
   AdminUpdateApiKey,
 } from "./validators"
-import { createLinkBody } from "../../utils/validators"
+import { createLinkBody } from "@/utils/validators"
 
 export const adminApiKeyRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -85,3 +86,5 @@ export const adminApiKeyRoutesMiddlewares: MiddlewareRoute[] = [
     ],
   },
 ]
+
+

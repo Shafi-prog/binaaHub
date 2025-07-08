@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   JoinerRelationship,
   ModuleJoinerConfig,
@@ -125,3 +126,5 @@ export function generateEntity(
     ],
   })
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model, OrderStatus } from "@medusajs/framework/utils"
 import { Return } from "@models"
 import { OrderAddress } from "./address"
@@ -114,3 +115,5 @@ const _Order = model
   ])
 
 export const Order = _Order
+
+

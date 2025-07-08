@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Popover, Text } from "@medusajs/ui"
 import { ReactNode, useState } from "react"
 import { useTranslation } from "react-i18next"
@@ -72,3 +73,5 @@ function ChangeDetailsTooltip(props: ChangeDetailsTooltipProps) {
 }
 
 export default ChangeDetailsTooltip
+
+

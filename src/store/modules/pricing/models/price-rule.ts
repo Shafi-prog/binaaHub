@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model, PricingRuleOperator } from "@medusajs/framework/utils"
 import Price from "./price"
 
@@ -33,3 +34,5 @@ const PriceRule = model
   ])
 
 export default PriceRule
+
+

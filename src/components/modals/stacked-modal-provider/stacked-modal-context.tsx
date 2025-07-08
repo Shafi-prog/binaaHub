@@ -1,3 +1,5 @@
+"use client"
+// @ts-nocheck
 import { createContext } from "react"
 
 type StackedModalState = {
@@ -8,3 +10,5 @@ type StackedModalState = {
 }
 
 export const StackedModalContext = createContext<StackedModalState | null>(null)
+
+

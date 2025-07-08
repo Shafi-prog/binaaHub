@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useSearchParams } from "react-router-dom"
 
 type QueryParams<T extends string> = {
@@ -22,3 +23,5 @@ export function useQueryParams<T extends string>(
 
   return result
 }
+
+

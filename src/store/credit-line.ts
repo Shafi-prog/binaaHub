@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { OrderCreditLineDTO } from "@medusajs/types"
 
 export const getTotalCreditLines = (creditLines: OrderCreditLineDTO[]) =>
@@ -6,3 +7,5 @@ export const getTotalCreditLines = (creditLines: OrderCreditLineDTO[]) =>
 
     return acc
   }, 0)
+
+

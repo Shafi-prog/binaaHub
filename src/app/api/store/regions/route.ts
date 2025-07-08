@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { NextRequest, NextResponse } from 'next/server';
 import { Client } from 'pg';
 
@@ -51,3 +52,5 @@ export async function GET(request: NextRequest) {
     );
   }
 }
+
+

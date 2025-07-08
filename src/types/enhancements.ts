@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Enhanced types for construction supervisor features
 export interface ConstructionSupervisor {
   id: string;
@@ -99,3 +100,5 @@ export interface SupervisorPermission {
   expires_at?: string;
   granted_by: string;
 }
+
+

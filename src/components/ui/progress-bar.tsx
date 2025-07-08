@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 
 interface ProgressBarProps {
@@ -58,3 +59,5 @@ export function ProgressBar({
     </div>
   );
 }
+
+

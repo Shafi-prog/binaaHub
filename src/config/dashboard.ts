@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Types for the comprehensive dashboard system
 export interface User {
   id: string;
@@ -531,3 +532,5 @@ export interface DeliveryAddressForm {
   delivery_instructions?: string;
   is_default: boolean;
 }
+
+

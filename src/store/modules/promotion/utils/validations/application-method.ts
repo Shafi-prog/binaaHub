@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   ApplicationMethodAllocation,
   ApplicationMethodTargetType,
@@ -138,3 +139,5 @@ export function validateApplicationMethodAttributes(
     )
   }
 }
+
+

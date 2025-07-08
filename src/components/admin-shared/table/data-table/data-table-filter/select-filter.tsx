@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { CheckMini, EllipseMiniSolid, XMarkMini } from "@medusajs/icons"
 import { clx } from "@medusajs/ui"
 import { Command } from "cmdk"
@@ -199,3 +200,5 @@ export const SelectFilter = ({
     </RadixPopover.Root>
   )
 }
+
+

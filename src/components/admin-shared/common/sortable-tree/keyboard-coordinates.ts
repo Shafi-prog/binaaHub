@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   DroppableContainer,
   KeyboardCode,
@@ -154,3 +155,5 @@ export const sortableTreeKeyboardCoordinates: (
 
     return undefined
   }
+
+

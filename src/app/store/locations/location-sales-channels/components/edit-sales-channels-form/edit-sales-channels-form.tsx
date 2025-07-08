@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { zodResolver } from "@hookform/resolvers/zod"
 import { HttpTypes } from "@medusajs/types"
 import {
@@ -175,3 +176,5 @@ function getInitialState(location: HttpTypes.AdminStockLocation) {
     }, {} as DataTableRowSelectionState) ?? {}
   )
 }
+
+

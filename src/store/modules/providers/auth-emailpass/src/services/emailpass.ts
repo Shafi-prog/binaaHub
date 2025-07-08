@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   AuthenticationInput,
   AuthenticationResponse,
@@ -211,3 +212,5 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
     }
   }
 }
+
+

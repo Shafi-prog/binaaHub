@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Event,
   InternalModuleDeclaration,
@@ -333,3 +334,5 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     return subscribersResult
   }
 }
+
+

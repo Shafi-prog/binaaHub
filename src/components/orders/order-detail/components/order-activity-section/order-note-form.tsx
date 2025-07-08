@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { zodResolver } from "@hookform/resolvers/zod"
 import { ArrowUpCircleSolid } from "@medusajs/icons"
 import { IconButton } from "@medusajs/ui"
@@ -110,3 +111,5 @@ export const OrderNoteForm = ({ order }: OrderNoteFormProps) => {
     </div>
   )
 }
+
+

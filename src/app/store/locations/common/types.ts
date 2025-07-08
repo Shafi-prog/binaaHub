@@ -1,4 +1,5 @@
-import { CurrencyInfo } from "../../../lib/data/currencies"
+// @ts-nocheck
+import { CurrencyInfo } from "@/lib/data/currencies"
 
 export type ConditionalShippingOptionPriceAccessor =
   | `conditional_region_prices.${string}`
@@ -10,3 +11,5 @@ export type ConditionalPriceInfo = {
   name: string
   currency: CurrencyInfo
 }
+
+

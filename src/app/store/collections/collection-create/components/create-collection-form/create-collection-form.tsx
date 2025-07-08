@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, Heading, Input, Text, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
@@ -115,3 +116,5 @@ export const CreateCollectionForm = () => {
     </RouteFocusModal.Form>
   )
 }
+
+

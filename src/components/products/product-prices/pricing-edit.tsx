@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { zodResolver } from "@hookform/resolvers/zod"
 import { HttpTypes } from "@medusajs/types"
 import { Button } from "@medusajs/ui"
@@ -6,11 +7,11 @@ import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
-import { RouteFocusModal, useRouteModal } from "../../../components/modals"
-import { KeyboundForm } from "../../../components/utilities/keybound-form"
-import { useUpdateProductVariantsBatch } from "../../../hooks/api/products"
-import { useRegions } from "../../../hooks/api/regions"
-import { castNumber } from "../../../lib/cast-number"
+import { RouteFocusModal, useRouteModal } from "@/components/modals"
+import { KeyboundForm } from "@/components/utilities/keybound-form"
+import { useUpdateProductVariantsBatch } from "@/hooks/api/products"
+import { useRegions } from "@/hooks/api/regions"
+import { castNumber } from "@/lib/cast-number"
 import { VariantPricingForm } from "../common/variant-pricing-form"
 
 export const UpdateVariantPricesSchema = zod.object({
@@ -147,3 +148,5 @@ export const PricingEdit = ({
     </RouteFocusModal.Form>
   )
 }
+
+

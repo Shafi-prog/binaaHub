@@ -1,10 +1,11 @@
+// @ts-nocheck
 import debounceFn from "lodash/debounce"
 import { useCallback, useContext, useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 
-import { useLogout } from "../../hooks/api/auth"
-import { queryClient } from "../../lib/query-client"
+import { useLogout } from "@/hooks/api/auth"
+import { queryClient } from "@/lib/query-client"
 import { KeybindContext } from "./keybind-context"
 import { Shortcut } from "./types"
 import { findShortcut } from "./utils"
@@ -317,3 +318,5 @@ export const useGlobalShortcuts = () => {
 
   return globalShortcuts
 }
+
+

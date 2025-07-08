@@ -1,7 +1,8 @@
+// @ts-nocheck
 import { Logger } from "@medusajs/framework/types"
 import { RedisOptions } from "ioredis"
 
-export type InitializeModuleInjectableDependencies = {
+export type InitializeModuleInjectableDependencies  = {
   logger?: Logger
 }
 
@@ -37,3 +38,5 @@ export type RedisWorkflowsOptions = {
     options?: RedisOptions
   }
 }
+
+

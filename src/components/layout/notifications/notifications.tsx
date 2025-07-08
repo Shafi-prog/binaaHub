@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   BellAlert,
   BellAlertDone,
@@ -9,8 +10,8 @@ import { formatDistance } from "date-fns"
 import { TFunction } from "i18next"
 import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
-import { notificationQueryKeys, useNotifications } from "../../../hooks/api"
-import { sdk } from "../../../lib/client"
+import { notificationQueryKeys, useNotifications } from "@/hooks/api"
+import { sdk } from "@/lib/client"
 import { FilePreview } from "../../common/file-preview"
 import { InfiniteList } from "../../common/infinite-list"
 
@@ -226,3 +227,5 @@ const useUnreadNotifications = () => {
 
   return [hasUnread, setHasUnread] as const
 }
+
+

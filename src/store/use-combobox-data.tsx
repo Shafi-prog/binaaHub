@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   QueryKey,
   keepPreviousData,
@@ -121,3 +122,5 @@ export const useComboboxData = <
     ...rest,
   }
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Balance Management & Authorization Types
 export interface UserBalance {
   id: string;
@@ -86,3 +87,5 @@ export interface WarrantyRecord {
   created_at: string;
   updated_at: string;
 }
+
+

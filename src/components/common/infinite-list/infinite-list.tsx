@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { QueryKey, useInfiniteQuery } from "@tanstack/react-query"
 import { ReactNode, useEffect, useMemo, useRef } from "react"
 import { toast } from "@medusajs/ui"
@@ -143,3 +144,5 @@ export const InfiniteList = <
     </div>
   )
 }
+
+

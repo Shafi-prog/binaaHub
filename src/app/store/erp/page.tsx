@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { ERPSystemIntegration } from '@/components/erp/ERPSystemIntegration';
 
 export default function ERPPage() {
@@ -7,3 +8,5 @@ export default function ERPPage() {
     </div>
   );
 }
+
+

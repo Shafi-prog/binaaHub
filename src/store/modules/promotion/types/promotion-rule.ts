@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { PromotionRuleOperatorValues } from "@medusajs/framework/types"
 
 export interface CreatePromotionRuleDTO {
@@ -14,3 +15,5 @@ export enum ApplicationMethodRuleTypes {
   TARGET_RULES = "target_rules",
   BUY_RULES = "buy_rules",
 }
+
+

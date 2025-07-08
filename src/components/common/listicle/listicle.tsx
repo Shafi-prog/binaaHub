@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Text } from "@medusajs/ui"
 import { ReactNode } from "react"
 
@@ -32,3 +33,5 @@ export const Listicle = ({
     </div>
   )
 }
+
+

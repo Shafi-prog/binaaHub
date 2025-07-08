@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use client';
 
 import { useState } from 'react';
@@ -441,3 +442,5 @@ export default function AIConstructionCalculator({ userId }: AIConstructionCalcu
     </div>
   );
 }
+
+

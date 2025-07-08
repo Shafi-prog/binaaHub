@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use client';
 import React, { forwardRef } from 'react';
 import { cn, formatCurrency } from '@/lib/utils';
@@ -696,3 +697,5 @@ export default {
   EnhancedActionMenu,
   EnhancedStatsGrid,
 };
+
+

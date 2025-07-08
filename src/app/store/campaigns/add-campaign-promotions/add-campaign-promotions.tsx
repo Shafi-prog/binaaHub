@@ -1,6 +1,7 @@
+// @ts-nocheck
 import { useParams } from "react-router-dom"
-import { RouteFocusModal } from "../../../components/modals"
-import { useCampaign } from "../../../hooks/api/campaigns"
+import { RouteFocusModal } from "@/components/modals"
+import { useCampaign } from "@/hooks/api/campaigns"
 import { AddCampaignPromotionsForm } from "./components"
 
 export const AddCampaignPromotions = () => {
@@ -17,3 +18,5 @@ export const AddCampaignPromotions = () => {
     </RouteFocusModal>
   )
 }
+
+

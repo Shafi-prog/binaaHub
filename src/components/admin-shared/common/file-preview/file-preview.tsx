@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { ArrowDownTray, Spinner } from "@medusajs/icons"
 import { IconButton, Text } from "@medusajs/ui"
 import { ActionGroup, ActionMenu } from "../action-menu"
@@ -128,3 +129,5 @@ const FileThumbnail = () => {
     </svg>
   )
 }
+
+

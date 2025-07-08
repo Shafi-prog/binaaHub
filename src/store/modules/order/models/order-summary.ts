@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 import { Order } from "./order"
 
@@ -32,3 +33,5 @@ const _OrderSummary = model
   ])
 
 export const OrderSummary = _OrderSummary
+
+

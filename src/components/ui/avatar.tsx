@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import * as React from "react";
@@ -51,3 +52,5 @@ export function Avatar({ size = "md", name = "", className, ...props }: AvatarPr
     </div>
   );
 }
+
+

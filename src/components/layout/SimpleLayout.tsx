@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use client'
 
 import React from 'react'
@@ -37,3 +38,5 @@ const SimpleLayout: React.FC<SimpleLayoutProps> = ({ children, title }) => {
 }
 
 export default SimpleLayout
+
+

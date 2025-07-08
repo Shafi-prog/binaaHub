@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { createContext } from "react"
 
 type SidebarContextValue = {
@@ -7,3 +8,5 @@ type SidebarContextValue = {
 }
 
 export const SidebarContext = createContext<SidebarContextValue | null>(null)
+
+

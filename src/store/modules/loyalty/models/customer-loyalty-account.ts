@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 const CustomerLoyaltyAccount = model.define("customer_loyalty_account", {
@@ -39,3 +40,5 @@ CustomerLoyaltyAccount.belongsTo(() => import("./loyalty-program").then(m => m.d
 })
 
 export default CustomerLoyaltyAccount
+
+

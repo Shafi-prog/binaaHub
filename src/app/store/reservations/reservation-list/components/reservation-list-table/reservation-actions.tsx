@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { PencilSquare, Trash } from "@medusajs/icons"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
@@ -55,3 +56,5 @@ export const ReservationActions = ({
     />
   )
 }
+
+

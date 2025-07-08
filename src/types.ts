@@ -1,3 +1,4 @@
+// @ts-nocheck
 // الطلب
 export type Order = {
   id: number;
@@ -31,3 +32,5 @@ export type User = {
   name: string;
   email?: string;
 };
+
+

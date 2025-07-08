@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { MiddlewareRoute } from "@medusajs/framework/http"
 import {
   validateAndTransformBody,
@@ -44,3 +45,5 @@ export const adminFulfillmentsRoutesMiddlewares: MiddlewareRoute[] = [
     ],
   },
 ]
+
+

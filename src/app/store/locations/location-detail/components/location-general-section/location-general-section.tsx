@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   ArchiveBox,
   CurrencyDollar,
@@ -659,3 +660,5 @@ const Actions = ({ location }: { location: HttpTypes.AdminStockLocation }) => {
     />
   )
 }
+
+

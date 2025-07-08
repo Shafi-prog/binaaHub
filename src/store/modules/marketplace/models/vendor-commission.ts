@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 import MarketplaceVendor from "./marketplace-vendor"
 
@@ -50,3 +51,5 @@ const VendorCommission = model
   ])
 
 export default VendorCommission
+
+

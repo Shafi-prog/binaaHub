@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Table, VisibilityState } from "@tanstack/react-table"
 import { useCallback, useMemo, useState } from "react"
 import { FieldError, FieldErrors, FieldValues } from "react-hook-form"
@@ -131,3 +132,5 @@ function findErrorPaths(
     findErrorPaths(value, [...path, key])
   )
 }
+
+

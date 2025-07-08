@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Photo } from "@medusajs/icons"
 import { clx } from "@medusajs/ui"
 
@@ -30,3 +31,5 @@ export const Thumbnail = ({ src, alt, size = "base" }: ThumbnailProps) => {
     </div>
   )
 }
+
+

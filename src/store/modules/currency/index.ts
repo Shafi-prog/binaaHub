@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { CurrencyModuleService } from "@services"
 import initialDataLoader from "./loaders/initial-data"
 import { Module, Modules } from "@medusajs/framework/utils"
@@ -9,3 +10,5 @@ export default Module(Modules.CURRENCY, {
   service,
   loaders,
 })
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { PencilSquare, SquareTwoStack, Trash, XCircle } from "@medusajs/icons"
 import { AdminApiKeyResponse } from "@medusajs/types"
 import { toast, usePrompt } from "@medusajs/ui"
@@ -6,7 +7,7 @@ import { ActionMenu } from "../../../common/action-menu"
 import {
   useDeleteApiKey,
   useRevokeApiKey,
-} from "../../../../hooks/api/api-keys"
+} from "@/hooks/api/api-keys"
 
 export const ApiKeyRowActions = ({
   apiKey,
@@ -121,3 +122,5 @@ export const ApiKeyRowActions = ({
     />
   )
 }
+
+

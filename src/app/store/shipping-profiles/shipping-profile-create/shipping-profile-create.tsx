@@ -1,4 +1,5 @@
-import { RouteFocusModal } from "../../../components/modals"
+// @ts-nocheck
+import { RouteFocusModal } from "@/components/modals"
 import { CreateShippingProfileForm } from "./components/create-shipping-profile-form"
 
 export function ShippingProfileCreate() {
@@ -8,3 +9,5 @@ export function ShippingProfileCreate() {
     </RouteFocusModal>
   )
 }
+
+

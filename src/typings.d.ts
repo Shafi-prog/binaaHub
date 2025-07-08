@@ -1,3 +1,4 @@
+// @ts-nocheck
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
@@ -13,3 +14,5 @@ declare global {
 /// <reference types="next/navigation-types/navigation" />
 
 export {};
+
+

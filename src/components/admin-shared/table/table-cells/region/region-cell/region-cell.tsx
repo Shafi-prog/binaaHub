@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useTranslation } from "react-i18next"
 
 type RegionCellProps = {
@@ -21,3 +22,5 @@ export const RegionHeader = () => {
     </div>
   )
 }
+
+

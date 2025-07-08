@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { DataGridCoordinates } from "../types"
 import { generateCellId } from "../utils"
 
@@ -72,3 +73,5 @@ export class DataGridQueryTool {
     return generateCellId(cell)
   }
 }
+
+

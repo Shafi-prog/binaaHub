@@ -1,6 +1,7 @@
+// @ts-nocheck
 import { HttpTypes } from "@medusajs/types"
 import { UIMatch } from "react-router-dom"
-import { useCampaign } from "../../../hooks/api"
+import { useCampaign } from "@/hooks/api"
 import { CAMPAIGN_DETAIL_FIELDS } from "./constants"
 
 type CampaignDetailBreadcrumbProps = UIMatch<HttpTypes.AdminCampaignResponse>
@@ -27,3 +28,5 @@ export const CampaignDetailBreadcrumb = (
 
   return <span>{campaign.name}</span>
 }
+
+

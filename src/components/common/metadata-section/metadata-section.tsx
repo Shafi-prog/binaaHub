@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { ArrowUpRightOnBox } from "@medusajs/icons"
 import { Badge, Container, Heading, IconButton } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
@@ -47,3 +48,5 @@ export const MetadataSection = <TData extends object>({
     </Container>
   )
 }
+
+

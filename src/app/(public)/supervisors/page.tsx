@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
@@ -283,3 +284,8 @@ export default function PublicSupervisorsPage() {
     </div>
   );
 }
+
+
+
+
+

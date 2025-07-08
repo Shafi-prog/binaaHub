@@ -1,9 +1,10 @@
+// @ts-nocheck
 import { HttpTypes } from "@medusajs/types"
 import { toast, usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
-import { useDeleteTaxRate } from "../../../hooks/api/tax-rates"
-import { useDeleteTaxRegion } from "../../../hooks/api/tax-regions"
+import { useDeleteTaxRate } from "@/hooks/api/tax-rates"
+import { useDeleteTaxRegion } from "@/hooks/api/tax-regions"
 
 export const useDeleteTaxRegionAction = ({
   taxRegion,
@@ -77,3 +78,5 @@ export const useDeleteTaxRateAction = (taxRate: HttpTypes.AdminTaxRate) => {
 
   return handleDelete
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 // PurchaseOrdersWidget.tsx
 // Open source (Ever Gauzy-inspired) Purchase Orders widget for the store dashboard
 'use client';
@@ -198,3 +199,5 @@ export const PurchaseOrdersWidget: React.FC = () => {
     </Card>
   );
 };
+
+

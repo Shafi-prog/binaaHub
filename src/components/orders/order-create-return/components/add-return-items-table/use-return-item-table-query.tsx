@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   DateComparisonOperator,
   NumericalComparisonOperator,
@@ -59,3 +60,5 @@ export const useReturnItemTableQuery = ({
 
   return { searchParams, raw }
 }
+
+

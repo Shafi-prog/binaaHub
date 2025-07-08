@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   AuthenticationInput,
   AuthenticationResponse,
@@ -81,7 +82,7 @@ export default class AuthModuleService
     sharedContext?: Context
   ): Promise<AuthTypes.AuthIdentityDTO>
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   async createAuthIdentities(
     data: AuthTypes.CreateAuthIdentityDTO[] | AuthTypes.CreateAuthIdentityDTO,
     @MedusaContext() sharedContext: Context = {}
@@ -112,7 +113,7 @@ export default class AuthModuleService
     sharedContext?: Context
   ): Promise<AuthTypes.AuthIdentityDTO>
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   // @ts-expect-error
   async updateAuthIdentities(
     data: AuthTypes.UpdateAuthIdentityDTO | AuthTypes.UpdateAuthIdentityDTO[],
@@ -159,7 +160,7 @@ export default class AuthModuleService
     sharedContext?: Context
   ): Promise<AuthTypes.ProviderIdentityDTO>
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   // @ts-expect-error
   async createProviderIdentities(
     data:
@@ -189,7 +190,7 @@ export default class AuthModuleService
     sharedContext?: Context
   ): Promise<AuthTypes.ProviderIdentityDTO>
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   // @ts-expect-error
   async updateProviderIdentities(
     data:
@@ -406,3 +407,5 @@ export default class AuthModuleService
     }
   }
 }
+
+

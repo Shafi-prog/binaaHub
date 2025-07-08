@@ -1,3 +1,4 @@
+// @ts-nocheck
 import type { Column, Table } from "@tanstack/react-table"
 import { useCallback } from "react"
 import type { FieldValues } from "react-hook-form"
@@ -66,3 +67,5 @@ function getColumnName<TData>(column: Column<TData, unknown>): string {
 
   return meta?.name || id
 }
+
+

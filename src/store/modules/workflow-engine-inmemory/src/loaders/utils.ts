@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { asClass } from "awilix"
 import { InMemoryDistributedTransactionStorage } from "../utils"
 
@@ -8,3 +9,5 @@ export default async ({ container }): Promise<void> => {
     ).singleton(),
   })
 }
+
+

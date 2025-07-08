@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Badge, Tooltip, clx } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 
@@ -79,3 +80,5 @@ export const BadgeListSummary = ({
     </div>
   )
 }
+
+

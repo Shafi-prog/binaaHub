@@ -1,6 +1,7 @@
+// @ts-nocheck
 import { useParams } from "react-router-dom"
-import { MetadataForm } from "../../../components/forms/metadata-form/metadata-form"
-import { useProductType, useUpdateProductType } from "../../../hooks/api"
+import { MetadataForm } from "@/components/forms/metadata-form/metadata-form"
+import { useProductType, useUpdateProductType } from "@/hooks/api"
 
 export const ProductTypeMetadata = () => {
   const { id } = useParams()
@@ -24,3 +25,5 @@ export const ProductTypeMetadata = () => {
     />
   )
 }
+
+

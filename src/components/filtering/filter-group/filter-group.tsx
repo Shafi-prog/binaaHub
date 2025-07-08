@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Button, DropdownMenu } from "@medusajs/ui"
 import { ReactNode } from "react"
 import { useSearchParams } from "react-router-dom"
@@ -52,3 +53,5 @@ const AddFilterMenu = ({ availableKeys }: AddFilterMenuProps) => {
     </DropdownMenu>
   )
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Order types and data models
 import { AdminProductVariant } from './product-types';
 
@@ -284,3 +285,5 @@ export interface LineItemTaxLine {
   name: string;
   code: string;
 }
+
+

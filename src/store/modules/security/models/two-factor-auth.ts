@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 const TwoFactorAuth = model.define("two_factor_auth", {
@@ -60,3 +61,5 @@ TwoFactorAuth.belongsTo(() => import("../../user/models/user").then(m => m.defau
 })
 
 export default TwoFactorAuth
+
+

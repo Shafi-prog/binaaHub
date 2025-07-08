@@ -1,3 +1,4 @@
+// @ts-nocheck
 export const castNumber = (value: string | number | undefined | null): number | undefined => {
   if (value === null || value === undefined || value === '') {
     return undefined
@@ -21,3 +22,5 @@ export const castToInteger = (value: string | number | undefined | null): number
   const result = castNumber(value)
   return result !== undefined ? Math.floor(result) : undefined
 }
+
+

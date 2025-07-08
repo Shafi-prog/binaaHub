@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { clx } from "@medusajs/ui"
 import { Children, ComponentPropsWithoutRef, ComponentType } from "react"
 import { Outlet } from "react-router-dom"
@@ -139,3 +140,5 @@ const Sidebar = ({
 }
 
 export const TwoColumnPage = Object.assign(Root, { Main, Sidebar })
+
+

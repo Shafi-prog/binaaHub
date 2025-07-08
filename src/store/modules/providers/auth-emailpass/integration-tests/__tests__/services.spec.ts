@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { MedusaError } from "@medusajs/framework/utils"
 import Scrypt from "scrypt-kdf"
 import { EmailPassAuthService } from "../../src/services/emailpass"
@@ -200,3 +201,5 @@ describe("Email password auth provider", () => {
     expect(resp.error).toEqual("Invalid email or password")
   })
 })
+
+

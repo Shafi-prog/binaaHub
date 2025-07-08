@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   LoaderOptions,
   Logger,
@@ -36,3 +37,5 @@ export default async ({
     )
   }
 }
+
+

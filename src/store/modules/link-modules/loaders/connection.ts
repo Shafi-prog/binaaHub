@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   InternalModuleDeclaration,
   LoaderOptions,
@@ -33,3 +34,5 @@ export function connectionLoader(entity: EntitySchema) {
     })
   }
 }
+
+

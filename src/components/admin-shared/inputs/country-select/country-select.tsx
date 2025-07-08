@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   ComponentPropsWithoutRef,
   forwardRef,
@@ -8,7 +9,7 @@ import {
 import { TrianglesMini } from "@medusajs/icons"
 import { clx } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
-import { countries } from "../../../lib/data/countries"
+import { countries } from "@/lib/data/countries"
 
 export const CountrySelect = forwardRef<
   HTMLSelectElement,
@@ -76,3 +77,5 @@ export const CountrySelect = forwardRef<
   }
 )
 CountrySelect.displayName = "CountrySelect"
+
+

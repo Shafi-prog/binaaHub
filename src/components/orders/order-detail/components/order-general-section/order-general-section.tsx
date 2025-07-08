@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { XCircle } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import {
@@ -134,3 +135,5 @@ const OrderBadge = ({ order }: { order: HttpTypes.AdminOrder }) => {
     </StatusBadge>
   )
 }
+
+

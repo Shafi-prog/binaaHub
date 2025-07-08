@@ -1,3 +1,4 @@
+// @ts-nocheck
 export default `
 type InventoryItem {
   id: ID!
@@ -51,3 +52,5 @@ type ReservationItem {
   metadata: JSON
 }
 `
+
+

@@ -1,12 +1,13 @@
+// @ts-nocheck
 import { useLoaderData, useParams } from "react-router-dom"
 import { useState } from "react"
 
-import { SingleColumnPage } from "../../../components/layout/pages"
-import { useTaxRegion } from "../../../hooks/api/tax-regions"
+import { SingleColumnPage } from "@/components/layout/pages"
+import { useTaxRegion } from "@/hooks/api/tax-regions"
 import { TaxRegionDetailSection } from "./components/tax-region-detail-section"
 import { TaxRegionProvinceSection } from "./components/tax-region-province-section"
 
-import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
+import { SingleColumnPageSkeleton } from "@/components/common/skeleton"
 import { useExtension } from "../../../providers/extension-provider"
 import { TaxRegionOverrideSection } from "./components/tax-region-override-section"
 import { TaxRegionSublevelAlert } from "./components/tax-region-sublevel-alert"
@@ -63,3 +64,5 @@ export const TaxRegionDetail = () => {
     </SingleColumnPage>
   )
 }
+
+

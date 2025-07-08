@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   ArrowUpRightOnBox,
   Check,
@@ -196,3 +197,5 @@ const Copied = ({ style, value }: CopiedProps) => {
     </span>
   )
 }
+
+

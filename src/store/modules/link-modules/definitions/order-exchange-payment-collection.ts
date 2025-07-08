@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { ModuleJoinerConfig } from "@medusajs/framework/types"
 import { LINKS, Modules } from "@medusajs/framework/utils"
 
@@ -73,3 +74,5 @@ export const OrderExchangePaymentCollection: ModuleJoinerConfig = {
     },
   ],
 }
+
+

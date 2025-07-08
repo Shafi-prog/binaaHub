@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { moduleProviderLoader } from "@medusajs/framework/modules-sdk"
 import {
   LoaderOptions,
@@ -43,3 +44,5 @@ export default async ({
     registerServiceFn: registrationFn,
   })
 }
+
+

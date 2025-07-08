@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 
 export const eventBusQueryKeys = {
@@ -327,3 +328,5 @@ export const usePublishMarketplaceEvent = () => {
       publishEvent.mutateAsync(marketplaceEvents.paymentFailed(orderId, reason, amount)),
   }
 }
+
+

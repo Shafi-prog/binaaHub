@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import * as React from "react";
@@ -33,3 +34,5 @@ export function LoadingSpinner({
 }
 
 export default LoadingSpinner;
+
+

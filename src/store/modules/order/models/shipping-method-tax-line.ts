@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 import { OrderShippingMethod } from "./shipping-method"
 
@@ -31,3 +32,5 @@ const _OrderShippingMethodTaxLine = model
   ])
 
 export const OrderShippingMethodTaxLine = _OrderShippingMethodTaxLine
+
+

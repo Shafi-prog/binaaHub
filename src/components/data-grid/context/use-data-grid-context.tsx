@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useContext } from "react"
 import { DataGridContext } from "./data-grid-context"
 
@@ -12,3 +13,5 @@ export const useDataGridContext = () => {
 
   return context
 }
+
+

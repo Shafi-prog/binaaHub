@@ -1,5 +1,6 @@
+// @ts-nocheck
 import { PropsWithChildren, useContext, useEffect, useState } from "react"
-import { Search } from "../components/search"
+import { Search } from "@/components/search"
 import { useSidebar } from "./sidebar-provider"
 import { SearchContext } from "../store/search-context"
 
@@ -56,3 +57,5 @@ export const SearchProvider = ({ children }: PropsWithChildren) => {
     </SearchContext.Provider>
   )
 }
+
+

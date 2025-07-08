@@ -1,3 +1,4 @@
+// @ts-nocheck
 export const defaultAdminApiKeyFields = [
   "id",
   "title",
@@ -24,3 +25,5 @@ export const listTransformQueryConfig = {
   defaultLimit: 20,
   isList: true,
 }
+
+

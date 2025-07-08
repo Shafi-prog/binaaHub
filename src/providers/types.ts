@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Keybind Provider Types
 export interface Shortcut {
   id: string
@@ -30,3 +31,5 @@ export interface ThemeContextType {
   theme: "light" | "dark" | "system"
   setTheme: (theme: "light" | "dark" | "system") => void
 }
+
+

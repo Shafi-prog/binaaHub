@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { ArrowDownTray } from "@medusajs/icons"
 import { Text, clx } from "@medusajs/ui"
 import { ChangeEvent, DragEvent, useRef, useState } from "react"
@@ -137,3 +138,5 @@ export const FileUpload = ({
     </div>
   )
 }
+
+

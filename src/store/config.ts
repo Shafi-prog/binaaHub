@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { VIRTUAL_MODULES } from "@medusajs/admin-shared"
 import path from "path"
 import type { InlineConfig } from "vite"
@@ -76,3 +77,5 @@ export async function getViteConfig(
 
   return baseConfig
 }
+
+

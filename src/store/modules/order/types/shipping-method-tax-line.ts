@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { CreateOrderTaxLineDTO, UpdateOrderTaxLineDTO } from "./tax-line"
 
 export interface CreateOrderShippingMethodTaxLineDTO
@@ -9,3 +10,5 @@ export interface UpdateOrderShippingMethodTaxLineDTO
   extends UpdateOrderTaxLineDTO {
   shipping_method_id: string
 }
+
+

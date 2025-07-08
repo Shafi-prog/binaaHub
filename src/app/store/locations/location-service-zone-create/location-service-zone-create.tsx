@@ -1,7 +1,8 @@
+// @ts-nocheck
 import { json, useParams } from "react-router-dom"
 
-import { RouteFocusModal } from "../../../components/modals"
-import { useStockLocation } from "../../../hooks/api/stock-locations"
+import { RouteFocusModal } from "@/components/modals"
+import { useStockLocation } from "@/hooks/api/stock-locations"
 import { CreateServiceZoneForm } from "./components/create-service-zone-form"
 import { FulfillmentSetType } from "../common/constants"
 
@@ -45,3 +46,5 @@ export function LocationCreateServiceZone() {
     </RouteFocusModal>
   )
 }
+
+

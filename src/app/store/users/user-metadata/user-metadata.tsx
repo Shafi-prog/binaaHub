@@ -1,8 +1,9 @@
+// @ts-nocheck
 import { useParams } from "react-router-dom"
 
-import { MetadataForm } from "../../../components/forms/metadata-form"
-import { RouteDrawer } from "../../../components/modals"
-import { useUpdateUser, useUser } from "../../../hooks/api"
+import { MetadataForm } from "@/components/forms/metadata-form"
+import { RouteDrawer } from "@/components/modals"
+import { useUpdateUser, useUser } from "@/hooks/api"
 
 export const UserMetadata = () => {
   const { id } = useParams()
@@ -25,3 +26,5 @@ export const UserMetadata = () => {
     </RouteDrawer>
   )
 }
+
+

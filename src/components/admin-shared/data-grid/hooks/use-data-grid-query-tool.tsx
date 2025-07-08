@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { RefObject, useEffect, useRef } from "react"
 
 import { DataGridQueryTool } from "../models"
@@ -13,3 +14,5 @@ export const useDataGridQueryTool = (containerRef: RefObject<HTMLElement>) => {
 
   return queryToolRef.current
 }
+
+

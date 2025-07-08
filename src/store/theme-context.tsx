@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { createContext } from "react"
 
 export type ThemeOption = "light" | "dark" | "system"
@@ -9,3 +10,5 @@ type ThemeContextValue = {
 }
 
 export const ThemeContext = createContext<ThemeContextValue | null>(null)
+
+

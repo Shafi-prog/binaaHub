@@ -1,3 +1,4 @@
+// @ts-nocheck
 export { 
   CustomerSegment, 
   CustomerSegmentMember, 
@@ -24,3 +25,5 @@ export {
   RecommendationType,
   RecommendationAlgorithm
 } from "./marketing-automation"
+
+

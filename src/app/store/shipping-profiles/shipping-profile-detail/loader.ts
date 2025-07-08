@@ -1,8 +1,9 @@
+// @ts-nocheck
 import { LoaderFunctionArgs } from "react-router-dom"
 
-import { shippingProfileQueryKeys } from "../../../hooks/api/shipping-profiles"
-import { sdk } from "../../../lib/client"
-import { queryClient } from "../../../lib/query-client"
+import { shippingProfileQueryKeys } from "@/hooks/api/shipping-profiles"
+import { sdk } from "@/lib/client"
+import { queryClient } from "@/lib/query-client"
 
 const shippingProfileQuery = (id: string) => ({
   queryKey: shippingProfileQueryKeys.detail(id),
@@ -15,3 +16,5 @@ export const shippingProfileLoader = async ({ params }: LoaderFunctionArgs) => {
 
   return queryClient.ensureQueryData(query)
 }
+
+

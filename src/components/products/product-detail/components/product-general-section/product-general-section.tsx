@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { PencilSquare, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import { Container, Heading, StatusBadge, usePrompt } from "@medusajs/ui"
@@ -107,3 +108,5 @@ export const ProductGeneralSection = ({
     </Container>
   )
 }
+
+

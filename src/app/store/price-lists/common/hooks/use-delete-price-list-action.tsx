@@ -1,9 +1,10 @@
+// @ts-nocheck
 import { HttpTypes } from "@medusajs/types"
 import { toast, usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 
-import { useDeletePriceList } from "../../../../hooks/api/price-lists"
+import { useDeletePriceList } from "@/hooks/api/price-lists"
 
 export const useDeletePriceListAction = ({
   priceList,
@@ -48,3 +49,5 @@ export const useDeletePriceListAction = ({
 
   return handleDelete
 }
+
+

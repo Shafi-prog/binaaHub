@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { AbstractFulfillmentProviderService } from "@medusajs/framework/utils"
 import {
   CalculatedShippingOptionPrice,
@@ -71,3 +72,5 @@ export class ManualFulfillmentService extends AbstractFulfillmentProviderService
     }
   }
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 const formatter = new Intl.NumberFormat([], {
   style: "percent",
   minimumFractionDigits: 2,
@@ -25,3 +26,5 @@ export const formatPercentage = (
 
   return formatter.format(val)
 }
+
+

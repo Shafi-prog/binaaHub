@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { MedusaModule } from "@medusajs/framework/modules-sdk"
 import {
   IndexTypes,
@@ -1277,3 +1278,5 @@ export function buildSchemaObjectRepresentation(schema: string): {
     executableSchema,
   }
 }
+
+

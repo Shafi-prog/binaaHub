@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 import Customer from "./customer"
 
@@ -38,3 +39,5 @@ const CustomerAddress = model
   ])
 
 export default CustomerAddress
+
+

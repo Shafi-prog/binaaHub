@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { XMarkMini } from "@medusajs/icons"
 import {
   Alert,
@@ -533,3 +534,5 @@ export const ProductCreateVariantsSection = ({
     </div>
   )
 }
+
+

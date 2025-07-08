@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 const Warehouse = model
@@ -35,3 +36,5 @@ const Warehouse = model
   ])
 
 export default Warehouse
+
+

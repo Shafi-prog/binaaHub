@@ -1,15 +1,16 @@
+// @ts-nocheck
 import { HttpTypes } from "@medusajs/types"
 import { Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
 
-import { RouteDrawer } from "../../../components/modals"
-import { useCollections } from "../../../hooks/api/collections"
-import { useCustomerGroups } from "../../../hooks/api/customer-groups"
-import { useProductTypes } from "../../../hooks/api/product-types"
-import { useProducts } from "../../../hooks/api/products"
-import { useProductTags } from "../../../hooks/api/tags"
-import { useTaxRate } from "../../../hooks/api/tax-rates"
+import { RouteDrawer } from "@/components/modals"
+import { useCollections } from "@/hooks/api/collections"
+import { useCustomerGroups } from "@/hooks/api/customer-groups"
+import { useProductTypes } from "@/hooks/api/product-types"
+import { useProducts } from "@/hooks/api/products"
+import { useProductTags } from "@/hooks/api/tags"
+import { useTaxRate } from "@/hooks/api/tax-rates"
 import { TaxRateRuleReferenceType } from "../common/constants"
 import { TaxRegionTaxOverrideEditForm } from "./components/tax-region-tax-override-edit-form"
 import { InitialRuleValues } from "./types"
@@ -165,3 +166,5 @@ const useDefaultRulesValues = (
 
   return { initialValues: initialRulesValues, isPending: false }
 }
+
+

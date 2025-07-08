@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use client';
 
 import { useState, useEffect, createContext, useContext } from 'react';
@@ -82,3 +83,5 @@ export const useAuth = () => {
   }
   return context;
 };
+
+

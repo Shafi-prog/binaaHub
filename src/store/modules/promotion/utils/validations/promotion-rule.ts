@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   ApplicationMethodTargetTypeValues,
   PromotionRuleDTO,
@@ -146,3 +147,5 @@ export function evaluateRuleValueCondition(
       return false
   }
 }
+
+

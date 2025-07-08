@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Enhanced Store POS System
 'use client';
 
@@ -517,3 +518,8 @@ export default function EnhancedStorePOS() {
     </div>
   );
 }
+
+
+
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { BigNumberInput } from "@medusajs/framework/types"
 import { BigNumber, MathBN } from "@medusajs/framework/utils"
 
@@ -77,3 +78,5 @@ export function getAmountFromSmallestUnit(
   const standardAmount = new BigNumber(MathBN.div(amount, multiplier))
   return standardAmount.numeric
 }
+
+

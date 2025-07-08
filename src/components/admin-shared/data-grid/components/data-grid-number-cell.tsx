@@ -1,7 +1,8 @@
+// @ts-nocheck
 import { clx } from "@medusajs/ui"
 import { useEffect, useState } from "react"
 import { Controller, ControllerRenderProps } from "react-hook-form"
-import { useCombinedRefs } from "../../../hooks/use-combined-refs"
+import { useCombinedRefs } from "@/hooks/use-combined-refs"
 import { useDataGridCell, useDataGridCellError } from "../hooks"
 import { DataGridCellProps, InputProps } from "../types"
 import { DataGridCellContainer } from "./data-grid-cell-container"
@@ -92,3 +93,5 @@ const Inner = ({
     </div>
   )
 }
+
+

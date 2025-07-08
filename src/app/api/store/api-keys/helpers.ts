@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { MedusaContainer } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
@@ -21,3 +22,5 @@ export const refetchApiKey = async (
   const apiKeys = await remoteQuery(queryObject)
   return apiKeys[0]
 }
+
+

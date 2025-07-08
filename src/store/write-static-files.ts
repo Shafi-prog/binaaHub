@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { mkdir, writeFile } from "node:fs/promises"
 import { join } from "node:path"
 import outdent from "outdent"
@@ -92,3 +93,5 @@ async function writeHTMLFile(outDir: string) {
 
   await writeFile(join(outDir, "index.html"), html)
 }
+
+

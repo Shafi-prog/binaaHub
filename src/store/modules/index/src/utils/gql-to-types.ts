@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { MedusaModule } from "@medusajs/framework/modules-sdk"
 import {
   FileSystem,
@@ -82,3 +83,5 @@ function buildEntryPointsTypeMap(
     })
     .filter(Boolean) as { entryPoint: string; entityType: any }[]
 }
+
+

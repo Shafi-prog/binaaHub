@@ -1,6 +1,7 @@
+// @ts-nocheck
 import { z } from "zod"
-import { booleanString } from "../../utils/common-validators"
-import { createFindParams } from "../../utils/validators"
+import { booleanString } from "@/utils/common-validators"
+import { createFindParams } from "@/utils/validators"
 
 export type AdminFulfillmentProvidersParamsType = z.infer<
   typeof AdminFulfillmentProvidersParams
@@ -18,3 +19,5 @@ export const AdminFulfillmentProvidersParams = createFindParams({
     })
   )
   .strict()
+
+

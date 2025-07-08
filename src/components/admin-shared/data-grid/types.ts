@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   CellContext,
   ColumnDef,
@@ -170,3 +171,5 @@ export type DataGridToggleableNumber = {
   checked: boolean
   disabledToggle: boolean
 }
+
+

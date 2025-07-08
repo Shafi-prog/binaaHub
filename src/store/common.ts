@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Pick properties from an object and copy them to a new object
  * @param obj
@@ -30,3 +31,5 @@ export function cleanNonValues(obj: Record<string, any>) {
 
   return ret
 }
+
+

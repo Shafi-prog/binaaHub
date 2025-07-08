@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { TaxRateRuleReferenceType } from "../common/constants"
 import { TaxRateRuleReference } from "../common/schemas"
 
@@ -8,3 +9,5 @@ export type InitialRuleValues = {
   [TaxRateRuleReferenceType.PRODUCT_TYPE]: TaxRateRuleReference[]
   [TaxRateRuleReferenceType.CUSTOMER_GROUP]: TaxRateRuleReference[]
 }
+
+

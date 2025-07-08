@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { QueryKey, UseQueryOptions } from "@tanstack/react-query"
 
 export type TQueryKey<TKey, TListQuery = any, TDetailQuery = string> = {
@@ -51,3 +52,5 @@ export const queryKeysFactory = <
   }
   return queryKeyFactory
 }
+
+

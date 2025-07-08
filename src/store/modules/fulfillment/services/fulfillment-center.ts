@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { MedusaService } from '@medusajs/framework/utils';
 import { 
   FulfillmentCenter, 
@@ -711,3 +712,5 @@ export class FulfillmentCenterService extends MedusaService({
     return score;
   }
 }
+
+

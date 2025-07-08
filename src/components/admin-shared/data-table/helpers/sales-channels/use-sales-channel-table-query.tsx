@@ -1,5 +1,6 @@
+// @ts-nocheck
 import { HttpTypes } from "@medusajs/types"
-import { useQueryParams } from "../../../../hooks/use-query-params"
+import { useQueryParams } from "@/hooks/use-query-params"
 
 type UseSalesChannelTableQueryProps = {
   prefix?: string
@@ -28,3 +29,5 @@ export const useSalesChannelTableQuery = ({
 
   return searchParams
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { CellContext } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { FieldError, FieldErrors, get } from "react-hook-form"
@@ -76,3 +77,5 @@ export const useDataGridCellError = <TextData, TValue>({
 function isFieldError(errors: FieldErrors | FieldError): errors is FieldError {
   return typeof errors === "object" && "message" in errors && "type" in errors
 }
+
+

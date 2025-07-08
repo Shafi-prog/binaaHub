@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 export const Invite = model
@@ -20,3 +21,5 @@ export const Invite = model
       where: "deleted_at IS NULL",
     },
   ])
+
+

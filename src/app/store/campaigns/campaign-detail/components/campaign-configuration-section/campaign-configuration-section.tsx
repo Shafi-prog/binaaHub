@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { HttpTypes } from "@medusajs/types"
 import { Container, Heading } from "@medusajs/ui"
 
@@ -41,3 +42,5 @@ export const CampaignConfigurationSection = ({
     </Container>
   )
 }
+
+

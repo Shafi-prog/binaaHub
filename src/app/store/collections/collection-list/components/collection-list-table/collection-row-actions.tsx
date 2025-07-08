@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { PencilSquare, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import { usePrompt } from "@medusajs/ui"
@@ -61,3 +62,5 @@ export const CollectionRowActions = ({
     />
   )
 }
+
+

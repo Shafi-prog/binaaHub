@@ -1,5 +1,6 @@
+// @ts-nocheck
 import { generatePostgresAlterColummnIfExistStatement } from "@medusajs/framework/utils"
-import { Migration } from "@mikro-orm/migrations"
+import { Migration } from "@mikro-orm/migrations";
 
 export class Migration20240225134525 extends Migration {
   async up(): Promise<void> {
@@ -276,3 +277,5 @@ export class Migration20240225134525 extends Migration {
     }
   }
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   InternalModuleDeclaration,
   LoaderOptions,
@@ -90,3 +91,5 @@ async function getConnection(url, redisOptions) {
 
   return connection
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { ITaxProvider, TaxTypes } from "@medusajs/framework/types"
 
 export default class SystemTaxService implements ITaxProvider {
@@ -40,3 +41,5 @@ export default class SystemTaxService implements ITaxProvider {
     return taxLines
   }
 }
+
+

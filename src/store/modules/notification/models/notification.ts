@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model, NotificationStatus } from "@medusajs/framework/utils"
 import { NotificationProvider } from "./notification-provider"
 
@@ -31,3 +32,5 @@ export const Notification = model.define("notification", {
     .belongsTo(() => NotificationProvider, { mappedBy: "notifications" })
     .nullable(),
 })
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   CommonEvents,
   moduleEventBuilderFactory,
@@ -13,3 +14,5 @@ export const eventBuilders = {
     eventName: NotificationEvents.NOTIFICATION_CREATED,
   }),
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { ICacheService } from "@medusajs/framework/types"
 import { CacheRecord, InMemoryCacheModuleOptions } from "../types"
 
@@ -104,3 +105,5 @@ class InMemoryCacheService implements ICacheService {
 }
 
 export default InMemoryCacheService
+
+

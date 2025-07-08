@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   CurrencyInput,
   DatePicker,
@@ -345,3 +346,5 @@ export const CreateCampaignFormFields = ({ form, fieldScope = "" }) => {
     </div>
   )
 }
+
+

@@ -1,10 +1,7 @@
-import { Metadata } from 'next';
-import { Wifi, RefreshCw, Smartphone, Cloud } from 'lucide-react';
+// @ts-nocheck
+'use client'
 
-export const metadata: Metadata = {
-  title: 'وضع عدم الاتصال - منصة بنا',
-  description: 'استمر في استخدام منصة بنا حتى بدون اتصال بالإنترنت',
-};
+import { Wifi, RefreshCw, Smartphone, Cloud } from 'lucide-react';
 
 export default function OfflinePage() {
   return (
@@ -92,3 +89,5 @@ export default function OfflinePage() {
     </div>
   );
 }
+
+

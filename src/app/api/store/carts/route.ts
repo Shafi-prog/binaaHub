@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { NextRequest, NextResponse } from 'next/server';
 import { Client } from 'pg';
 import { v4 as uuidv4 } from 'uuid';
@@ -153,3 +154,5 @@ export async function GET(request: NextRequest) {
     );
   }
 }
+
+

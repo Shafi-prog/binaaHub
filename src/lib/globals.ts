@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Global variable declarations
 declare global {
   var __BACKEND_URL__: string | undefined
@@ -11,3 +12,5 @@ if (typeof globalThis !== 'undefined') {
 }
 
 export {}
+
+

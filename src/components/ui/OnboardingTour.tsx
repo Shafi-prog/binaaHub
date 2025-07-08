@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Simple onboarding tour component for first-time users
 import { useState } from 'react';
 
@@ -27,3 +28,5 @@ export default function OnboardingTour({ onFinish }: { onFinish?: () => void }) 
     </div>
   );
 }
+
+

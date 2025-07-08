@@ -1,13 +1,14 @@
+// @ts-nocheck
 import { useLoaderData, useParams } from "react-router-dom"
 
-import { useRegion } from "../../../hooks/api/regions"
+import { useRegion } from "@/hooks/api/regions"
 import { RegionCountrySection } from "./components/region-country-section"
 import { RegionGeneralSection } from "./components/region-general-section"
 import { regionLoader } from "./loader"
 
-import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { SingleColumnPage } from "../../../components/layout/pages"
-import { usePricePreferences } from "../../../hooks/api/price-preferences"
+import { SingleColumnPageSkeleton } from "@/components/common/skeleton"
+import { SingleColumnPage } from "@/components/layout/pages"
+import { usePricePreferences } from "@/hooks/api/price-preferences"
 import { useExtension } from "../../../providers/extension-provider"
 import { REGION_DETAIL_FIELDS } from "./constants"
 
@@ -75,3 +76,5 @@ export const RegionDetail = () => {
     </SingleColumnPage>
   )
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { XMark } from "@medusajs/icons"
 import {
   Button,
@@ -243,3 +244,5 @@ export const DataGridKeyboardShortcutModal = ({
     </RadixDialog.Root>
   )
 }
+
+

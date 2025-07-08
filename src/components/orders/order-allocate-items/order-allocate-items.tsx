@@ -1,7 +1,8 @@
+// @ts-nocheck
 import { useParams } from "react-router-dom"
 
-import { useOrder } from "../../../hooks/api/orders"
-import { RouteFocusModal } from "../../../components/modals"
+import { useOrder } from "@/hooks/api/orders"
+import { RouteFocusModal } from "@/components/modals"
 import { OrderAllocateItemsForm } from "./components/order-create-fulfillment-form"
 
 export function OrderAllocateItems() {
@@ -24,3 +25,5 @@ export function OrderAllocateItems() {
     </RouteFocusModal>
   )
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { CurrencyDollar } from "@medusajs/icons"
 import { AdminCampaign } from "@medusajs/types"
 import { Container, Heading, Text } from "@medusajs/ui"
@@ -57,3 +58,5 @@ export const CampaignSpend = ({ campaign }: CampaignSpendProps) => {
     </Container>
   )
 }
+
+

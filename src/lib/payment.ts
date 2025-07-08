@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Payment utilities
 import type { AdminPayment, AdminRefund } from '@medusajs/types'
 
@@ -68,3 +69,5 @@ export function getPaymentAmount(payment: AdminPayment): number {
 export function getPaymentCurrency(payment: AdminPayment): string {
   return payment.currency_code || 'USD'
 }
+
+

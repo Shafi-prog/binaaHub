@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { PlusMini, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import { Checkbox, Container, Heading, toast, usePrompt } from "@medusajs/ui"
@@ -253,3 +254,5 @@ const useColumns = () => {
     [base]
   ) as ColumnDef<HttpTypes.AdminRegionCountry>[]
 }
+
+

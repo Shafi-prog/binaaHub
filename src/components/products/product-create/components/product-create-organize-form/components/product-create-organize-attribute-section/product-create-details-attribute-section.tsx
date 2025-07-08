@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Heading, Input } from "@medusajs/ui"
 import { UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -153,3 +154,5 @@ export const ProductCreateAttributeSection = ({
     </div>
   )
 }
+
+

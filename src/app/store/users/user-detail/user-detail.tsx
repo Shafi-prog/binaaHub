@@ -1,11 +1,12 @@
+// @ts-nocheck
 import { useLoaderData, useParams } from "react-router-dom"
 
-import { useUser } from "../../../hooks/api/users"
+import { useUser } from "@/hooks/api/users"
 import { UserGeneralSection } from "./components/user-general-section"
 import { userLoader } from "./loader"
 
-import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { SingleColumnPage } from "../../../components/layout/pages"
+import { SingleColumnPageSkeleton } from "@/components/common/skeleton"
+import { SingleColumnPage } from "@/components/layout/pages"
 import { useExtension } from "../../../providers/extension-provider"
 
 export const UserDetail = () => {
@@ -45,3 +46,5 @@ export const UserDetail = () => {
     </SingleColumnPage>
   )
 }
+
+

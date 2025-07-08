@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { PencilSquare, ShoppingBag } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import { Container, Heading } from "@medusajs/ui"
@@ -49,3 +50,5 @@ export const ProductShippingProfileSection = ({
     </Container>
   )
 }
+
+

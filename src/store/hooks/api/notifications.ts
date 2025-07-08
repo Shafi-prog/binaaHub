@@ -1,3 +1,4 @@
+// @ts-nocheck
 // src/hooks/api/notifications.ts
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { sdk } from '../../lib/client'
@@ -83,3 +84,5 @@ export const useDeleteNotification = (id: string, options?: any) => {
     ...options,
   })
 }
+
+

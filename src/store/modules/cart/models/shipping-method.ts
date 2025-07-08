@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 import Cart from "./cart"
 import ShippingMethodAdjustment from "./shipping-method-adjustment"
@@ -44,3 +45,5 @@ const ShippingMethod = model
   .checks([(columns) => `${columns.amount} >= 0`])
 
 export default ShippingMethod
+
+

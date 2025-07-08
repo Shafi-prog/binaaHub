@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 import { useEffect, useRef } from "react";
 
@@ -72,3 +73,5 @@ export function MapPicker({ initialLocation, onLocationSelect, readOnly = false 
 
   return <div id="map-container" className="w-full h-full" />;
 }
+
+

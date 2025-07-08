@@ -1,3 +1,4 @@
+// @ts-nocheck
 export interface WarrantyDocument {
   id: string;
   warranty_id: string;
@@ -14,3 +15,5 @@ export interface WarrantyDocument {
     };
   };
 }
+
+

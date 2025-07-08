@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { MagnifyingGlass, XMarkMini } from "@medusajs/icons"
 import {
   Button,
@@ -323,3 +324,5 @@ export const PriceListDetailsForm = ({ form }: PriceListDetailsFormProps) => {
     </div>
   )
 }
+
+

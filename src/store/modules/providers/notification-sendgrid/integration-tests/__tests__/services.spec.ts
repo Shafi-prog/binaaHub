@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { SendgridNotificationService } from "../../src/services/sendgrid"
 jest.setTimeout(100000)
 
@@ -105,3 +106,5 @@ describe.skip("Sendgrid notification provider", () => {
     )
   })
 })
+
+

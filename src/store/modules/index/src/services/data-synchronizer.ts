@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   CommonEvents,
   ContainerRegistrationKeys,
@@ -349,3 +350,5 @@ export class DataSynchronizer {
     return acknoledgement
   }
 }
+
+

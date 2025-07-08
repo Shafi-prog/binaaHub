@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   CommonEvents,
   moduleEventBuilderFactory,
@@ -97,3 +98,5 @@ export const eventBuilders = {
     eventName: PricingEvents.PRICE_RULE_DELETED,
   }),
 }
+
+

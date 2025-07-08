@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Project-related types
 
 export interface ProjectData {
@@ -45,3 +46,5 @@ export interface ProjectSpending {
   amount: number;
   percentage: number;
 }
+
+

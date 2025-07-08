@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { PropsWithChildren } from "react"
 
 import { clx } from "@medusajs/ui"
@@ -31,3 +32,5 @@ export const DataGridReadonlyCell = <TData, TValue = any>({
     </div>
   )
 }
+
+

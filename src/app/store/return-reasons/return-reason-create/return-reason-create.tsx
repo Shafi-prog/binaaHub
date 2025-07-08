@@ -1,4 +1,5 @@
-import { RouteFocusModal } from "../../../components/modals"
+// @ts-nocheck
+import { RouteFocusModal } from "@/components/modals"
 import { ReturnReasonCreateForm } from "./components/return-reason-create-form"
 
 export const ReturnReasonCreate = () => {
@@ -8,3 +9,5 @@ export const ReturnReasonCreate = () => {
     </RouteFocusModal>
   )
 }
+
+

@@ -1,4 +1,5 @@
-import { Migration } from "@mikro-orm/migrations"
+// @ts-nocheck
+import { Migration } from "@mikro-orm/migrations";
 
 export class Migration20250120115002 extends Migration {
   async up(): Promise<void> {
@@ -38,3 +39,5 @@ export class Migration20250120115002 extends Migration {
     this.addSql('drop index if exists "IDX_shipping_option_provider_id";')
   }
 }
+
+

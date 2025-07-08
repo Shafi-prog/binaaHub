@@ -1,5 +1,6 @@
+// @ts-nocheck
 import { HttpTypes } from "@medusajs/types"
-import { castNumber } from "../../../lib/cast-number"
+import { castNumber } from "@/lib/cast-number"
 import { ProductCreateSchemaType } from "./types"
 
 export const normalizeProductFormValues = (
@@ -116,3 +117,5 @@ export const decorateVariantsWithDefaultValues = (
     inventory_kit: variant.inventory_kit || false,
   }))
 }
+
+

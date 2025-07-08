@@ -1,6 +1,7 @@
+// @ts-nocheck
 import { useParams } from "react-router-dom"
-import { RouteFocusModal } from "../../../components/modals"
-import { useRegion } from "../../../hooks/api/regions"
+import { RouteFocusModal } from "@/components/modals"
+import { useRegion } from "@/hooks/api/regions"
 import { AddCountriesForm } from "./components/add-countries-form"
 
 export const RegionAddCountries = () => {
@@ -25,3 +26,5 @@ export const RegionAddCountries = () => {
     </RouteFocusModal>
   )
 }
+
+

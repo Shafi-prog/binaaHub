@@ -1,3 +1,5 @@
+"use client"
+// @ts-nocheck
 import { FocusModal, clx } from "@medusajs/ui"
 import {
   ComponentPropsWithoutRef,
@@ -96,3 +98,5 @@ export const StackedFocusModal = Object.assign(Root, {
   Description,
   Title,
 })
+
+

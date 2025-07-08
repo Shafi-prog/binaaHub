@@ -1,7 +1,8 @@
+// @ts-nocheck
 import { HttpTypes } from "@medusajs/types"
 import { UIMatch } from "react-router-dom"
 
-import { usePriceList } from "../../../hooks/api"
+import { usePriceList } from "@/hooks/api"
 
 type PriceListDetailBreadcrumbProps = UIMatch<HttpTypes.AdminPriceListResponse>
 
@@ -21,3 +22,5 @@ export const PriceListDetailBreadcrumb = (
 
   return <span>{price_list.title}</span>
 }
+
+

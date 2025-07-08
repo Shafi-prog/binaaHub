@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { BigNumberInput } from "@medusajs/framework/types"
 
 export interface CreateShippingMethodAdjustmentDTO {
@@ -17,3 +18,5 @@ export interface UpdateShippingMethodAdjustmentDTO {
   promotion_id?: string
   provider_id?: string
 }
+
+

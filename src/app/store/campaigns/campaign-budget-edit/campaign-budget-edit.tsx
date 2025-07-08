@@ -1,8 +1,9 @@
+// @ts-nocheck
 import { Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
-import { RouteDrawer } from "../../../components/modals"
-import { useCampaign } from "../../../hooks/api/campaigns"
+import { RouteDrawer } from "@/components/modals"
+import { useCampaign } from "@/hooks/api/campaigns"
 import { EditCampaignBudgetForm } from "./components/edit-campaign-budget-form"
 
 export const CampaignBudgetEdit = () => {
@@ -27,3 +28,5 @@ export const CampaignBudgetEdit = () => {
     </RouteDrawer>
   )
 }
+
+

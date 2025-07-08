@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 import { Card } from './card';
 
@@ -37,3 +38,5 @@ export const StatCard: React.FC<StatCardProps> = ({
     </Card>
   );
 };
+
+

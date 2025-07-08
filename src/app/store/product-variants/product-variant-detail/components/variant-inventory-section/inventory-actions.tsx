@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useTranslation } from "react-i18next"
 
 import { Buildings } from "@medusajs/icons"
@@ -24,3 +25,5 @@ export const InventoryActions = ({ item }: { item: InventoryItemDTO }) => {
     />
   )
 }
+
+

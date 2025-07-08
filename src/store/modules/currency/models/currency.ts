@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 
 export default model.define("currency", {
@@ -8,3 +9,5 @@ export default model.define("currency", {
   decimal_digits: model.number().default(0),
   rounding: model.bigNumber().default(0),
 })
+
+

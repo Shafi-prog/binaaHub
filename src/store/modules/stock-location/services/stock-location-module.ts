@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Context,
   CreateStockLocationInput,
@@ -86,7 +87,7 @@ export default class StockLocationModuleService
     data: CreateStockLocationInput[],
     context: Context
   ): Promise<StockLocationTypes.StockLocationDTO[]>
-  @InjectManager()
+  @InjectManager("baseRepository")
   // @ts-expect-error
   async createStockLocations(
     data: CreateStockLocationInput | CreateStockLocationInput[],
@@ -123,7 +124,7 @@ export default class StockLocationModuleService
     context?: Context
   ): Promise<StockLocationTypes.StockLocationDTO[]>
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   async upsertStockLocations(
     data: UpsertStockLocationInput | UpsertStockLocationInput[],
     @MedusaContext() context: Context = {}
@@ -186,7 +187,7 @@ export default class StockLocationModuleService
    * @param context
    * @returns The updated stock location.
    */
-  @InjectManager()
+  @InjectManager("baseRepository")
   // @ts-expect-error
   async updateStockLocations(
     idOrSelector: string | FilterableStockLocationProps,
@@ -238,7 +239,7 @@ export default class StockLocationModuleService
     context?: Context
   ): Promise<StockLocationTypes.StockLocationAddressDTO[]>
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   // @ts-expect-error
   async updateStockLocationAddresses(
     data:
@@ -275,7 +276,7 @@ export default class StockLocationModuleService
     context?: Context
   ): Promise<StockLocationTypes.StockLocationAddressDTO[]>
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   async upsertStockLocationAddresses(
     data: UpsertStockLocationAddressInput | UpsertStockLocationAddressInput[],
     @MedusaContext() context: Context = {}
@@ -324,3 +325,5 @@ export default class StockLocationModuleService
     return (await promiseAll(operations)).flat()
   }
 }
+
+

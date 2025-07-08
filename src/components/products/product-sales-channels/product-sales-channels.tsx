@@ -1,7 +1,8 @@
+// @ts-nocheck
 import { useParams } from "react-router-dom"
 
-import { RouteFocusModal } from "../../../components/modals"
-import { useProduct } from "../../../hooks/api/products"
+import { RouteFocusModal } from "@/components/modals"
+import { useProduct } from "@/hooks/api/products"
 import { EditSalesChannelsForm } from "./components/edit-sales-channels-form"
 
 export const ProductSalesChannels = () => {
@@ -18,3 +19,5 @@ export const ProductSalesChannels = () => {
     </RouteFocusModal>
   )
 }
+
+

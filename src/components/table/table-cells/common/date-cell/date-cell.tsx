@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Tooltip } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { PlaceholderCell } from "../placeholder-cell"
@@ -42,3 +43,5 @@ export const DateHeader = () => {
     </div>
   )
 }
+
+

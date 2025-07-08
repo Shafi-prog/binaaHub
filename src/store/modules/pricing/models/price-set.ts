@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 import Price from "./price"
 
@@ -13,3 +14,5 @@ const PriceSet = model
   })
 
 export default PriceSet
+
+

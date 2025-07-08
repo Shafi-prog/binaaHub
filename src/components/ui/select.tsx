@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 
 export interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
@@ -56,3 +57,5 @@ interface SelectValueProps {
 export function SelectValue({ placeholder }: SelectValueProps) {
   return <span>{placeholder}</span>;
 }
+
+

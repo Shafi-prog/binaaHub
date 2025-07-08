@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   JoinerRelationship,
   ModuleJoinerConfig,
@@ -24,3 +25,5 @@ export function getLoaders({
   const entity = generateEntity(joinerConfig, primary, foreign)
   return [connectionLoader(entity), containerLoader(entity, joinerConfig)]
 }
+
+

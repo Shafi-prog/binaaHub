@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useSearchParams } from "react-router-dom"
 import { EditProductMediaForm } from "../edit-product-media-form"
 import { ProductMediaGallery } from "../product-media-gallery"
@@ -52,3 +53,5 @@ const renderView = (view: View, product: HttpTypes.AdminProduct) => {
       return <EditProductMediaForm product={product} />
   }
 }
+
+

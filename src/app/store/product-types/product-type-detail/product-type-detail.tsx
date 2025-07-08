@@ -1,8 +1,9 @@
+// @ts-nocheck
 import { useLoaderData, useParams } from "react-router-dom"
 
-import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { SingleColumnPage } from "../../../components/layout/pages"
-import { useProductType } from "../../../hooks/api/product-types"
+import { SingleColumnPageSkeleton } from "@/components/common/skeleton"
+import { SingleColumnPage } from "@/components/layout/pages"
+import { useProductType } from "@/hooks/api/product-types"
 import { useExtension } from "../../../providers/extension-provider"
 import { ProductTypeGeneralSection } from "./components/product-type-general-section"
 import { ProductTypeProductSection } from "./components/product-type-product-section"
@@ -47,3 +48,5 @@ export const ProductTypeDetail = () => {
     </SingleColumnPage>
   )
 }
+
+

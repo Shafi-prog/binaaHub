@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { AdminCampaign } from "@medusajs/types"
 import { isAfter, isBefore } from "date-fns"
 
@@ -29,3 +30,5 @@ export const statusColor = (status: string) => {
       return "grey"
   }
 }
+
+

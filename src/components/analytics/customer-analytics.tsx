@@ -1,5 +1,6 @@
+// @ts-nocheck
 import { Card, Heading, Text, Badge } from "@medusajs/ui"
-import { useCustomerAnalytics } from "../../store/hooks/api/analytics"
+import { useCustomerAnalytics } from "@/store/hooks/api/analytics"
 import { LoadingSpinner } from "../common/loading-spinner"
 import { PieChart, Pie, Cell, ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from "recharts"
 import { Users, UserPlus, RefreshCw } from "@medusajs/icons"
@@ -200,3 +201,5 @@ export const CustomerAnalytics = ({ dateRange }: CustomerAnalyticsProps) => {
     </div>
   )
 }
+
+

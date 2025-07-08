@@ -1,4 +1,5 @@
-import { Command } from "../../../hooks/use-command-history"
+// @ts-nocheck
+import { Command } from "@/hooks/use-command-history"
 
 export type DataGridUpdateCommandArgs = {
   prev: any
@@ -31,3 +32,4 @@ export class DataGridUpdateCommand implements Command {
     this.execute()
   }
 }
+

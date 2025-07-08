@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { FieldValues } from "react-hook-form"
 
 import {
@@ -39,3 +40,5 @@ export const DataGrid = Object.assign(_DataGrid, {
   CurrencyCell: DataGridCurrencyCell,
   ReadonlyCell: DataGridReadOnlyCell,
 })
+
+

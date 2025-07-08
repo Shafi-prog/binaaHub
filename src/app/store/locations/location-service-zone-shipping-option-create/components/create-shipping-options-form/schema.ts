@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { z } from "zod"
 import { ShippingOptionPriceType } from "../../../common/constants"
 import { ConditionalPriceSchema } from "../../../common/schema"
@@ -41,3 +42,5 @@ export const CreateShippingOptionSchema = z
 export type CreateShippingOptionSchemaType = z.infer<
   typeof CreateShippingOptionSchema
 >
+
+

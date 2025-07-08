@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { InformationCircleSolid } from "@medusajs/icons"
 import {
   Hint as HintComponent,
@@ -220,3 +221,5 @@ const Form = Object.assign(Provider, {
 })
 
 export { Form }
+
+

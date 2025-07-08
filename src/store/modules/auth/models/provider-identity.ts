@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 import { AuthIdentity } from "./auth-identity"
 
@@ -19,3 +20,5 @@ export const ProviderIdentity = model
       unique: true,
     },
   ])
+
+

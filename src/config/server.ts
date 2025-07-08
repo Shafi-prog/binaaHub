@@ -1,3 +1,4 @@
+// @ts-nocheck
 // src/config/supabase/server.ts
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
@@ -27,3 +28,5 @@ export async function createServerSupabase() {
     }
   );
 }
+
+

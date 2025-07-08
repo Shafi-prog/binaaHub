@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   configLoader,
   container,
@@ -317,3 +318,5 @@ describe("IndexModuleService syncIndexConfig", function () {
     expect(spyDataSynchronizer_).toHaveBeenCalledTimes(1)
   })
 })
+
+

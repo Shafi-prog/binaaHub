@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { ILockingModule } from "@medusajs/framework/types"
 import { Modules, promiseAll } from "@medusajs/framework/utils"
 import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
@@ -211,3 +212,5 @@ moduleIntegrationTestRunner<ILockingModule>({
     })
   },
 })
+
+

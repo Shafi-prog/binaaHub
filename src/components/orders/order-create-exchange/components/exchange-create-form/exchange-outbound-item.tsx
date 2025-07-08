@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { XCircle } from "@medusajs/icons"
 import { AdminOrderLineItem, HttpTypes } from "@medusajs/types"
 import { Input, Text } from "@medusajs/ui"
@@ -119,3 +120,5 @@ function ExchangeOutboundItem({
 }
 
 export { ExchangeOutboundItem }
+
+

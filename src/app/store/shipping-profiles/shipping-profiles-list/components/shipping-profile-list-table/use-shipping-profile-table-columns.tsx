@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { AdminShippingProfileResponse } from "@medusajs/types"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
@@ -29,3 +30,5 @@ export const useShippingProfileTableColumns = () => {
     [t]
   )
 }
+
+

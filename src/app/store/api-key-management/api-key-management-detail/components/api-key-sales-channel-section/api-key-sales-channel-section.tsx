@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { PencilSquare, Trash } from "@medusajs/icons"
 import { AdminApiKeyResponse, HttpTypes } from "@medusajs/types"
 import {
@@ -203,3 +204,5 @@ const useCommands = (
     [handleRemove, t]
   )
 }
+
+

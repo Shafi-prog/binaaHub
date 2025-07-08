@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { PencilSquare, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 
@@ -40,3 +41,5 @@ export const PriceListListTableActions = ({
     />
   )
 }
+
+

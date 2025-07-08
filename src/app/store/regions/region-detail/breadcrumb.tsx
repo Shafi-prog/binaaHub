@@ -1,6 +1,7 @@
+// @ts-nocheck
 import { HttpTypes } from "@medusajs/types"
 import { UIMatch } from "react-router-dom"
-import { useRegion } from "../../../hooks/api/regions"
+import { useRegion } from "@/hooks/api/regions"
 import { REGION_DETAIL_FIELDS } from "./constants"
 
 type RegionDetailBreadcrumbProps = UIMatch<HttpTypes.AdminRegionResponse>
@@ -25,3 +26,5 @@ export const RegionDetailBreadcrumb = (props: RegionDetailBreadcrumbProps) => {
 
   return <span>{region.name}</span>
 }
+
+

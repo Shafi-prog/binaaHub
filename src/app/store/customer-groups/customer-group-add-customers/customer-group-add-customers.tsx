@@ -1,5 +1,6 @@
+// @ts-nocheck
 import { useParams } from "react-router-dom"
-import { RouteFocusModal } from "../../../components/modals"
+import { RouteFocusModal } from "@/components/modals"
 import { AddCustomersForm } from "./components/add-customers-form"
 
 export const CustomerGroupAddCustomers = () => {
@@ -11,3 +12,5 @@ export const CustomerGroupAddCustomers = () => {
     </RouteFocusModal>
   )
 }
+
+

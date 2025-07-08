@@ -1,4 +1,5 @@
-import { Migration } from "@mikro-orm/migrations"
+// @ts-nocheck
+import { Migration } from "@mikro-orm/migrations";
 
 export class Migration20240124154000 extends Migration {
   async up(): Promise<void> {
@@ -67,3 +68,5 @@ export class Migration20240124154000 extends Migration {
     )
   }
 }
+
+

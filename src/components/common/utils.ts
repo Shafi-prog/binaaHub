@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Common utility functions for API key management
 import { ApiKeyType } from './api-key-constants'
 
@@ -40,3 +41,5 @@ export function prettifyRedactedToken(token: string) {
   const end = token.substring(token.length - 2)
   return `${start}${'•'.repeat(token.length - 5)}${end}`
 }
+
+

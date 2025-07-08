@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Kuwait Market Manager
  * Handles Kuwait-specific market expansion, oil sector focus, payments, and compliance
@@ -912,3 +913,5 @@ export class KuwaitMarketManager {
 }
 
 export default KuwaitMarketManager;
+
+

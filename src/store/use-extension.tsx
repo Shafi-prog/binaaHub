@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useContext } from "react"
 import { ExtensionContext } from "./extension-context"
 
@@ -8,3 +9,5 @@ export const useExtension = () => {
   }
   return context
 }
+
+

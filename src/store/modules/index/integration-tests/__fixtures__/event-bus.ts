@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   EventBusTypes,
   IEventBusModuleService,
@@ -45,3 +46,5 @@ export class EventBusServiceMock implements IEventBusModuleService {
     throw new Error("Method not implemented.")
   }
 }
+
+

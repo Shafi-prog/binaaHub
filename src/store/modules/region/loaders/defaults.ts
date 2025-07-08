@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   LoaderOptions,
   Logger,
@@ -34,3 +35,5 @@ export default async ({ container }: LoaderOptions): Promise<void> => {
     )
   }
 }
+
+

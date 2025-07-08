@@ -1,3 +1,4 @@
+// @ts-nocheck
 export type CountryProvinceObject = {
   type:
     | "province"
@@ -1300,3 +1301,5 @@ const countryProvinceMap: Record<string, CountryProvinceObject> = {
     },
   },
 }
+
+

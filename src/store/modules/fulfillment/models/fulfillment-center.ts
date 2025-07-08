@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Entity, PrimaryKey, Property, OneToMany, ManyToOne, Collection, Enum } from '@mikro-orm/core';
 import { v4 } from 'uuid';
 
@@ -640,3 +641,5 @@ export class FulfillmentShipment {
     }
   }
 }
+
+

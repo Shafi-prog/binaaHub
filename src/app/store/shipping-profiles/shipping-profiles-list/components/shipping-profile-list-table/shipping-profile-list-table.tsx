@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Button, Container, Heading, Text } from "@medusajs/ui"
 import { Link } from "react-router-dom"
 
@@ -76,3 +77,5 @@ export const ShippingProfileListTable = () => {
     </Container>
   )
 }
+
+

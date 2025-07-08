@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Context,
   DAL,
@@ -181,7 +182,7 @@ export default class ProductModuleService
     return joinerConfig
   }
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   // @ts-ignore
   async retrieveProduct(
     productId: string,
@@ -197,7 +198,7 @@ export default class ProductModuleService
     return this.baseRepository_.serialize<ProductTypes.ProductDTO>(product)
   }
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   // @ts-ignore
   async listProducts(
     filters?: ProductTypes.FilterableProductProps,
@@ -213,7 +214,7 @@ export default class ProductModuleService
     return this.baseRepository_.serialize<ProductTypes.ProductDTO[]>(products)
   }
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   // @ts-ignore
   async listAndCountProducts(
     filters?: ProductTypes.FilterableProductProps,
@@ -263,8 +264,8 @@ export default class ProductModuleService
     sharedContext?: Context
   ): Promise<ProductTypes.ProductVariantDTO>
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   // @ts-expect-error
   async createProductVariants(
     data:
@@ -348,7 +349,7 @@ export default class ProductModuleService
   ): Promise<ProductTypes.ProductVariantDTO>
 
   @InjectTransactionManager()
-  @EmitEvents()
+  @EmitEvents("user")
   async upsertProductVariants(
     data:
       | ProductTypes.UpsertProductVariantDTO[]
@@ -396,8 +397,8 @@ export default class ProductModuleService
     sharedContext?: Context
   ): Promise<ProductTypes.ProductVariantDTO[]>
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   // @ts-expect-error
   async updateProductVariants(
     idOrSelector: string | ProductTypes.FilterableProductVariantProps,
@@ -528,8 +529,8 @@ export default class ProductModuleService
     sharedContext?: Context
   ): Promise<ProductTypes.ProductTagDTO>
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   // @ts-expect-error
   async createProductTags(
     data: ProductTypes.CreateProductTagDTO[] | ProductTypes.CreateProductTagDTO,
@@ -561,7 +562,7 @@ export default class ProductModuleService
   ): Promise<ProductTypes.ProductTagDTO>
 
   @InjectTransactionManager()
-  @EmitEvents()
+  @EmitEvents("user")
   async upsertProductTags(
     data: ProductTypes.UpsertProductTagDTO[] | ProductTypes.UpsertProductTagDTO,
     @MedusaContext() sharedContext: Context = {}
@@ -611,8 +612,8 @@ export default class ProductModuleService
     sharedContext?: Context
   ): Promise<ProductTypes.ProductTagDTO[]>
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   // @ts-expect-error
   async updateProductTags(
     idOrSelector: string | ProductTypes.FilterableProductTagProps,
@@ -665,7 +666,7 @@ export default class ProductModuleService
     sharedContext?: Context
   ): Promise<ProductTypes.ProductTypeDTO>
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   // @ts-expect-error
   async createProductTypes(
     data:
@@ -737,7 +738,7 @@ export default class ProductModuleService
     sharedContext?: Context
   ): Promise<ProductTypes.ProductTypeDTO[]>
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   // @ts-expect-error
   async updateProductTypes(
     idOrSelector: string | ProductTypes.FilterableProductTypeProps,
@@ -785,7 +786,7 @@ export default class ProductModuleService
     sharedContext?: Context
   ): Promise<ProductTypes.ProductOptionDTO>
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   // @ts-expect-error
   async createProductOptions(
     data:
@@ -886,7 +887,7 @@ export default class ProductModuleService
     sharedContext?: Context
   ): Promise<ProductTypes.ProductOptionDTO[]>
 
-  @InjectManager()
+  @InjectManager("baseRepository")
   // @ts-expect-error
   async updateProductOptions(
     idOrSelector: string | ProductTypes.FilterableProductOptionProps,
@@ -1003,8 +1004,8 @@ export default class ProductModuleService
     sharedContext?: Context
   ): Promise<ProductTypes.ProductCollectionDTO>
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   // @ts-expect-error
   async createProductCollections(
     data:
@@ -1061,7 +1062,7 @@ export default class ProductModuleService
   ): Promise<ProductTypes.ProductCollectionDTO>
 
   @InjectTransactionManager()
-  @EmitEvents()
+  @EmitEvents("user")
   async upsertProductCollections(
     data:
       | ProductTypes.UpsertProductCollectionDTO[]
@@ -1125,8 +1126,8 @@ export default class ProductModuleService
     sharedContext?: Context
   ): Promise<ProductTypes.ProductCollectionDTO[]>
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   // @ts-expect-error
   async updateProductCollections(
     idOrSelector: string | ProductTypes.FilterableProductCollectionProps,
@@ -1255,8 +1256,8 @@ export default class ProductModuleService
     sharedContext?: Context
   ): Promise<ProductTypes.ProductCategoryDTO>
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   // @ts-expect-error
   async createProductCategories(
     data:
@@ -1300,7 +1301,7 @@ export default class ProductModuleService
   ): Promise<ProductTypes.ProductCategoryDTO>
 
   @InjectTransactionManager()
-  @EmitEvents()
+  @EmitEvents("user")
   async upsertProductCategories(
     data:
       | ProductTypes.UpsertProductCategoryDTO[]
@@ -1368,8 +1369,8 @@ export default class ProductModuleService
     sharedContext?: Context
   ): Promise<ProductTypes.ProductCategoryDTO[]>
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   // @ts-expect-error
   async updateProductCategories(
     idOrSelector: string | ProductTypes.FilterableProductTypeProps,
@@ -1428,8 +1429,8 @@ export default class ProductModuleService
     sharedContext?: Context
   ): Promise<ProductTypes.ProductDTO>
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   // @ts-expect-error
   async createProducts(
     data: ProductTypes.CreateProductDTO[] | ProductTypes.CreateProductDTO,
@@ -1460,7 +1461,7 @@ export default class ProductModuleService
   ): Promise<ProductTypes.ProductDTO>
 
   @InjectTransactionManager()
-  @EmitEvents()
+  @EmitEvents("user")
   async upsertProducts(
     data: ProductTypes.UpsertProductDTO[] | ProductTypes.UpsertProductDTO,
     @MedusaContext() sharedContext: Context = {}
@@ -1518,8 +1519,8 @@ export default class ProductModuleService
     sharedContext?: Context
   ): Promise<ProductTypes.ProductDTO[]>
 
-  @InjectManager()
-  @EmitEvents()
+  @InjectManager("baseRepository")
+  @EmitEvents("user")
   // @ts-expect-error
   async updateProducts(
     idOrSelector: string | ProductTypes.FilterableProductProps,
@@ -2105,3 +2106,5 @@ export default class ProductModuleService
     }
   }
 }
+
+

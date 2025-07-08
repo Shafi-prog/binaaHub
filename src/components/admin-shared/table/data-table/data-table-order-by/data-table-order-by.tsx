@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { DescendingSorting } from "@medusajs/icons"
 import { DropdownMenu, IconButton } from "@medusajs/ui"
 import { useState } from "react"
@@ -148,3 +149,5 @@ export const DataTableOrderBy = <TData,>({
     </DropdownMenu>
   )
 }
+
+

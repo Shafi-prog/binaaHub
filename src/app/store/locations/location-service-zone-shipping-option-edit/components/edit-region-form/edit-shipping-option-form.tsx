@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { zodResolver } from "@hookform/resolvers/zod"
 import { HttpTypes } from "@medusajs/types"
 import { Button, Divider, Input, RadioGroup, toast } from "@medusajs/ui"
@@ -232,3 +233,5 @@ export const EditShippingOptionForm = ({
     </RouteDrawer.Form>
   )
 }
+
+

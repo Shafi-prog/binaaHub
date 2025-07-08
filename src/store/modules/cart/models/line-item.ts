@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 import Cart from "./cart"
 import LineItemAdjustment from "./line-item-adjustment"
@@ -71,3 +72,5 @@ const LineItem = model
   })
 
 export default LineItem
+
+

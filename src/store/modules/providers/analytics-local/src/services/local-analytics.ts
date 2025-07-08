@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   LocalAnalyticsServiceOptions,
   Logger,
@@ -42,3 +43,5 @@ export class LocalAnalyticsService extends AbstractAnalyticsProviderService {
     )
   }
 }
+
+

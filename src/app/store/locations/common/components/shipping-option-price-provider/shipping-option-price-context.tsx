@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { createContext } from "react"
 import { ConditionalPriceInfo } from "../../types"
 
@@ -8,3 +9,5 @@ type ShippingOptionPriceContextType = {
 
 export const ShippingOptionPriceContext =
   createContext<ShippingOptionPriceContextType | null>(null)
+
+

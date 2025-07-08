@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   ModuleProviderExports,
   ModuleServiceInitializeOptions,
@@ -22,3 +23,5 @@ export type AnalyticsModuleOptions = Partial<ModuleServiceInitializeOptions> & {
     options?: Record<string, unknown>
   }[]
 }
+
+

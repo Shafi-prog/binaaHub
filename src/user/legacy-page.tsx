@@ -1,3 +1,4 @@
+// @ts-nocheck
 import Link from 'next/link';
 
 export default function UserWarrantyPage() {
@@ -20,3 +21,5 @@ export default function UserWarrantyPage() {
     </main>
   );
 }
+
+

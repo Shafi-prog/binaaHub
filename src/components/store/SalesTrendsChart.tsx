@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use client';
 
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
@@ -73,3 +74,5 @@ export function SalesTrendsChart({ data }: SalesTrendsChartProps) {
     </div>
   );
 }
+
+

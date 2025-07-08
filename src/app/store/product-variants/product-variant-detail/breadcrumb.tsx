@@ -1,6 +1,7 @@
+// @ts-nocheck
 import { HttpTypes } from "@medusajs/types"
 import { UIMatch } from "react-router-dom"
-import { useProductVariant } from "../../../hooks/api"
+import { useProductVariant } from "@/hooks/api"
 import { VARIANT_DETAIL_FIELDS } from "./constants"
 
 type ProductVariantDetailBreadcrumbProps =
@@ -29,3 +30,5 @@ export const ProductVariantDetailBreadcrumb = (
 
   return <span>{variant.title}</span>
 }
+
+

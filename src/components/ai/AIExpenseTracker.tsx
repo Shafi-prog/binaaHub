@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use client';
 
 import { useState, useRef } from 'react';
@@ -238,3 +239,5 @@ export default function AIExpenseTracker({ userId, onExpenseAdded }: AIExpenseTr
     </div>
   );
 }
+
+

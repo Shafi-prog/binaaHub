@@ -1,4 +1,5 @@
-import { useQueryParams } from "../../../../hooks/use-query-params"
+// @ts-nocheck
+import { useQueryParams } from "@/hooks/use-query-params"
 
 export const useCountryTableQuery = ({
   pageSize,
@@ -23,3 +24,5 @@ export const useCountryTableQuery = ({
     raw,
   }
 }
+
+

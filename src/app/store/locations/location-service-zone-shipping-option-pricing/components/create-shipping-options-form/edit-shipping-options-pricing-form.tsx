@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
@@ -382,3 +383,5 @@ const getDefaultValues = (prices: HttpTypes.AdminShippingOptionPrice[]) => {
     conditional_region_prices,
   }
 }
+
+

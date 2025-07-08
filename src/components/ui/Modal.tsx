@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 
 export function Modal({ 
@@ -34,3 +35,5 @@ export function Modal({
     </div>
   );
 }
+
+

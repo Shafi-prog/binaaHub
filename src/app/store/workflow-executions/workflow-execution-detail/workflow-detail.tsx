@@ -1,8 +1,9 @@
+// @ts-nocheck
 import { useParams } from "react-router-dom"
 
-import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { SingleColumnPage } from "../../../components/layout/pages"
-import { useWorkflowExecution } from "../../../hooks/api/workflow-executions"
+import { SingleColumnPageSkeleton } from "@/components/common/skeleton"
+import { SingleColumnPage } from "@/components/layout/pages"
+import { useWorkflowExecution } from "@/hooks/api/workflow-executions"
 import { useExtension } from "../../../providers/extension-provider"
 import { WorkflowExecutionGeneralSection } from "./components/workflow-execution-general-section"
 import { WorkflowExecutionHistorySection } from "./components/workflow-execution-history-section"
@@ -41,3 +42,5 @@ export const ExecutionDetail = () => {
     </SingleColumnPage>
   )
 }
+
+

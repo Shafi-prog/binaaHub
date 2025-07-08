@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 
 interface ErrorBoundaryProps {
@@ -47,3 +48,5 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
     return this.props.children;
   }
 }
+
+

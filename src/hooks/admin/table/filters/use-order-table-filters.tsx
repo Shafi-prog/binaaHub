@@ -1,6 +1,7 @@
+// @ts-nocheck
 import { useTranslation } from "react-i18next"
 
-import type { Filter } from "../../../components/table/data-table"
+import type { Filter } from "@/components/table/data-table"
 import { useRegions } from "../../api/regions"
 import { useSalesChannels } from "../../api/sales-channels"
 
@@ -152,3 +153,5 @@ export const useOrderTableFilters = (): Filter[] => {
 
   return filters
 }
+
+

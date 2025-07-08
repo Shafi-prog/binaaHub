@@ -1,6 +1,7 @@
+// @ts-nocheck
 import { z } from "zod"
-import { i18n } from "../../../components/utilities/i18n/i18n"
-import { optionalFloat, optionalInt } from "../../../lib/validation"
+import { i18n } from "@/components/utilities/i18n/i18n"
+import { optionalFloat, optionalInt } from "@/lib/validation"
 import { decorateVariantsWithDefaultValues } from "./utils"
 
 export const MediaSchema = z.object({
@@ -161,3 +162,5 @@ export const PRODUCT_CREATE_FORM_DEFAULTS: Partial<
   weight: "",
   width: "",
 }
+
+

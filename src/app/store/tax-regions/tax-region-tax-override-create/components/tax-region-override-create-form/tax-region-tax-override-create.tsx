@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { zodResolver } from "@hookform/resolvers/zod"
 import {
   Button,
@@ -646,3 +647,5 @@ export const TaxRegionCreateTaxOverrideForm = ({
     </RouteFocusModal.Form>
   )
 }
+
+

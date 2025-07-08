@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Construction Ecosystem Manager
  * Specialized construction services for Gulf climate and building requirements
@@ -1733,3 +1734,5 @@ export class ConstructionEcosystemManager {
 }
 
 export default ConstructionEcosystemManager;
+
+

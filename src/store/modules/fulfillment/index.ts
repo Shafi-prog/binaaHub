@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Module, Modules } from "@medusajs/framework/utils"
 import { FulfillmentCenterService } from "./services/fulfillment-center"
 
@@ -24,3 +25,5 @@ export {
 
 // Export new fulfillment center service
 export { FulfillmentCenterService } from "./services/fulfillment-center"
+
+

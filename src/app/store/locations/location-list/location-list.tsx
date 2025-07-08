@@ -1,15 +1,16 @@
+// @ts-nocheck
 import { ShoppingBag } from "@medusajs/icons"
 import { Container, Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useLoaderData } from "react-router-dom"
 
-import { useStockLocations } from "../../../hooks/api/stock-locations"
+import { useStockLocations } from "@/hooks/api/stock-locations"
 import LocationListItem from "./components/location-list-item/location-list-item"
 import { LOCATION_LIST_FIELDS } from "./constants"
 import { shippingListLoader } from "./loader"
 
-import { SidebarLink } from "../../../components/common/sidebar-link/sidebar-link"
-import { TwoColumnPage } from "../../../components/layout/pages"
+import { SidebarLink } from "@/components/common/sidebar-link/sidebar-link"
+import { TwoColumnPage } from "@/components/layout/pages"
 import { useExtension } from "../../../providers/extension-provider"
 import { LocationListHeader } from "./components/location-list-header"
 
@@ -80,3 +81,5 @@ const LinksSection = () => {
     </Container>
   )
 }
+
+

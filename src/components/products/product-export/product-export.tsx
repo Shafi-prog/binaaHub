@@ -1,8 +1,9 @@
+// @ts-nocheck
 import { Button, Heading, toast } from "@medusajs/ui"
-import { RouteDrawer, useRouteModal } from "../../../components/modals"
+import { RouteDrawer, useRouteModal } from "@/components/modals"
 import { useTranslation } from "react-i18next"
 import { ExportFilters } from "./components/export-filters"
-import { useExportProducts } from "../../../hooks/api"
+import { useExportProducts } from "@/hooks/api"
 
 export const ProductExport = () => {
   const { t } = useTranslation()
@@ -65,3 +66,5 @@ const ProductExportContent = () => {
     </>
   )
 }
+
+

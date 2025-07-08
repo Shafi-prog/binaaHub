@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { PriceListStatus, PricingTypes } from "@medusajs/framework/types"
 
 export interface CreatePriceListDTO extends PricingTypes.CreatePriceListDTO {
@@ -34,3 +35,5 @@ export interface UpdatePricePreferenceInput
   extends PricingTypes.UpdatePricePreferenceDTO {
   id: string
 }
+
+

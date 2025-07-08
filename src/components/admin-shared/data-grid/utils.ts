@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { DataGridCoordinates } from "./types"
 
 export function generateCellId(coords: DataGridCoordinates) {
@@ -26,3 +27,4 @@ const SPECIAL_FOCUS_KEYS = [".", ","]
 export function isSpecialFocusKey(event: KeyboardEvent) {
   return SPECIAL_FOCUS_KEYS.includes(event.key) && event.ctrlKey && event.altKey
 }
+

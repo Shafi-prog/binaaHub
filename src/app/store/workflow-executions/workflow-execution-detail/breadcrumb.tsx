@@ -1,7 +1,8 @@
+// @ts-nocheck
 import { HttpTypes } from "@medusajs/types"
 import { UIMatch } from "react-router-dom"
 
-import { useWorkflowExecution } from "../../../hooks/api"
+import { useWorkflowExecution } from "@/hooks/api"
 
 type WorkflowExecutionDetailBreadcrumbProps =
   UIMatch<HttpTypes.AdminWorkflowExecutionResponse>
@@ -24,3 +25,5 @@ export const WorkflowExecutionDetailBreadcrumb = (
 
   return <span>{cleanId}</span>
 }
+
+

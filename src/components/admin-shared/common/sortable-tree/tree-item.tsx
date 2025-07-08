@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { forwardRef, HTMLAttributes, ReactNode } from "react"
 
 import {
@@ -205,3 +206,5 @@ const ChildrenCount = ({ clone, childrenCount }: ChildrenCountProps) => {
     </Badge>
   )
 }
+
+

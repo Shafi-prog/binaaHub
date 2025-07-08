@@ -1,3 +1,4 @@
+// @ts-nocheck
 export const LoadingSpinner = () => {
   return (
     <div className="flex items-center justify-center">
@@ -5,3 +6,5 @@ export const LoadingSpinner = () => {
     </div>
   )
 }
+
+

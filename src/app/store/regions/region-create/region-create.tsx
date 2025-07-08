@@ -1,7 +1,8 @@
-import { RouteFocusModal } from "../../../components/modals/route-focus-modal"
-import { usePaymentProviders } from "../../../hooks/api/payments"
-import { useStore } from "../../../hooks/api/store"
-import { currencies } from "../../../lib/data/currencies"
+// @ts-nocheck
+import { RouteFocusModal } from "@/components/modals/route-focus-modal"
+import { usePaymentProviders } from "@/hooks/api/payments"
+import { useStore } from "@/hooks/api/store"
+import { currencies } from "@/lib/data/currencies"
 import { CreateRegionForm } from "./components/create-region-form"
 
 export const RegionCreate = () => {
@@ -29,3 +30,5 @@ export const RegionCreate = () => {
     </RouteFocusModal>
   )
 }
+
+

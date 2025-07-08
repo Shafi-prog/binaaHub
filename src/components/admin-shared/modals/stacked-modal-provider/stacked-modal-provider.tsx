@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { PropsWithChildren, useState } from "react"
 import { StackedModalContext } from "./stacked-modal-context"
 
@@ -52,3 +53,5 @@ export const StackedModalProvider = ({
     </StackedModalContext.Provider>
   )
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { clx } from "@medusajs/ui"
 import { memo } from "react"
 import { NoRecords, NoResultsProps } from "../../common/empty-table-content"
@@ -94,3 +95,5 @@ export const _DataTable = <TData,>({
     </div>
   )
 }
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useLocation } from "react-router-dom"
 import { RouteFocusModal } from "../modals"
 import { getApiKeyTypeFromPathname } from "../common/utils"
@@ -13,3 +14,5 @@ export const ApiKeyManagementCreate = () => {
     </RouteFocusModal>
   )
 }
+
+

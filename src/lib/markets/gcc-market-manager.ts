@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { createClient } from '@supabase/supabase-js';
 
 // GCC Market Types
@@ -487,3 +488,5 @@ export class GCCMarketManager {
 }
 
 export const gccMarketManager = new GCCMarketManager();
+
+

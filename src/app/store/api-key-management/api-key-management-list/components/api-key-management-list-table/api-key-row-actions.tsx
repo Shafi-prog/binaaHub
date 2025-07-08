@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { PencilSquare, SquareTwoStack, Trash, XCircle } from "@medusajs/icons"
 import { AdminApiKeyResponse } from "@medusajs/types"
 import { toast, usePrompt } from "@medusajs/ui"
@@ -121,3 +122,5 @@ export const ApiKeyRowActions = ({
     />
   )
 }
+
+

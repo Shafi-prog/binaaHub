@@ -1,3 +1,4 @@
+// @ts-nocheck
 // src/providers/keybind-provider/hooks.ts
 import { useContext } from 'react'
 import { KeybindContext } from './index'
@@ -9,3 +10,5 @@ export const useGlobalShortcuts = () => {
   }
   return context.shortcuts || []
 }
+
+

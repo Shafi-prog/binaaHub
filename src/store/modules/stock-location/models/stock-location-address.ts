@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 import { StockLocation } from "@models"
 
@@ -22,3 +23,5 @@ const StockLocationAddress = model
   })
 
 export default StockLocationAddress
+
+

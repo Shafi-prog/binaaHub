@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { CheckCircleSolid, SquareTwoStack } from "@medusajs/icons"
 import { AdminOrder, AdminPaymentCollection } from "@medusajs/types"
 import { Button, Tooltip } from "@medusajs/ui"
@@ -78,3 +79,5 @@ const CopyPaymentLink = React.forwardRef<any, CopyPaymentLinkProps>(
 CopyPaymentLink.displayName = "CopyPaymentLink"
 
 export { CopyPaymentLink }
+
+

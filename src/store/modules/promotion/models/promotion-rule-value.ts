@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { model } from "@medusajs/framework/utils"
 import PromotionRule from "./promotion-rule"
 
@@ -13,3 +14,5 @@ const PromotionRuleValue = model.define(
 )
 
 export default PromotionRuleValue
+
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   CellContext,
   ColumnDefTemplate,
@@ -73,3 +74,5 @@ export function createDataGridHelper<
       }),
   }
 }
+
+

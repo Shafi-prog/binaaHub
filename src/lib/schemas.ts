@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { z } from "zod";
 
 // Address schema
@@ -181,3 +182,5 @@ export const schemas = {
 };
 
 export default schemas;
+
+

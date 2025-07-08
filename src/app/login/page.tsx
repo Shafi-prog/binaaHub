@@ -53,6 +53,17 @@ export default function LoginPage() {
             body: JSON.stringify(data),
           });
           console.log('🔐 [Login] Main auth response status:', response.status);
+          
+          // If main auth fails, try fallback authentication
+          if (!response.ok) {
+            console.log('🔐 [Login] Main auth failed, trying fallback...');
+            response = await fetch('/api/auth/fallback-login', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(data),
+            });
+            console.log('🔐 [Login] Fallback auth response status:', response.status);
+          }
         }
       }
       

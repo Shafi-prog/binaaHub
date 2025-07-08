@@ -16,14 +16,32 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check environment variables
+    // Check environment variables - try different possible names
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    const supabaseAnonKey = 
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 
+      process.env.SUPABASE_ANON_KEY ||
+      process.env.NEXT_PUBLIC_SUPABASE_KEY;
+
+    console.log('🔍 [SIMPLE-LOGIN] Environment check:', {
+      hasUrl: !!supabaseUrl,
+      hasAnonKey: !!supabaseAnonKey,
+      urlPreview: supabaseUrl?.substring(0, 30) + '...'
+    });
 
     if (!supabaseUrl || !supabaseAnonKey) {
       console.error('❌ [SIMPLE-LOGIN] Missing Supabase environment variables');
+      console.error('❌ [SIMPLE-LOGIN] Available env vars:', Object.keys(process.env).filter(k => k.includes('SUPABASE')));
       return NextResponse.json(
-        { success: false, error: 'Server configuration error' },
+        { 
+          success: false, 
+          error: 'Server configuration error',
+          details: {
+            hasUrl: !!supabaseUrl,
+            hasAnonKey: !!supabaseAnonKey,
+            availableSupabaseEnvs: Object.keys(process.env).filter(k => k.includes('SUPABASE'))
+          }
+        },
         { status: 500 }
       );
     }

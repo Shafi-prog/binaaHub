@@ -37,7 +37,7 @@ import {
   Filter,
   MoreVertical
 } from 'lucide-react';
-import { Textarea } from '@/components/ui/textarea';
+import { Textarea } from '@/components/ui';
 
 interface Permission {
   id: string;

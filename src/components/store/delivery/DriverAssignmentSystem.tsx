@@ -42,7 +42,7 @@ import {
   Route,
   DollarSign
 } from 'lucide-react';
-import { Textarea } from '@/components/ui/textarea';
+import { Textarea } from '@/components/ui';
 
 interface Driver {
   id: string;

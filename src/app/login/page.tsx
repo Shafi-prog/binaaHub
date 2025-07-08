@@ -25,24 +25,35 @@ export default function LoginPage() {
         return;
       }
       
-      // First try local authentication for development
-      let response = await fetch('/api/auth/local-login', {
+      // Try simple authentication first (most likely to work in production)
+      let response = await fetch('/api/auth/simple-login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
 
-      console.log('🔐 [Login] Local auth response status:', response.status);
+      console.log('🔐 [Login] Simple auth response status:', response.status);
 
-      // If local auth fails, try the main auth system
+      // If simple auth fails, try local authentication for development
       if (!response.ok) {
-        console.log('🔐 [Login] Local auth failed, trying main auth...');
-        response = await fetch('/api/auth/login-db', {
+        console.log('🔐 [Login] Simple auth failed, trying local auth...');
+        response = await fetch('/api/auth/local-login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data),
         });
-        console.log('🔐 [Login] Main auth response status:', response.status);
+        console.log('🔐 [Login] Local auth response status:', response.status);
+
+        // If local auth fails, try the main auth system
+        if (!response.ok) {
+          console.log('🔐 [Login] Local auth failed, trying main auth...');
+          response = await fetch('/api/auth/login-db', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+          });
+          console.log('🔐 [Login] Main auth response status:', response.status);
+        }
       }
       
       const result = await response.json();

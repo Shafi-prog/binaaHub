@@ -1,0 +1,100 @@
+{
+  "compilerOptions": {
+    // Basic Configuration
+    "target": "es2022",
+    "lib": ["dom", "dom.iterable", "es2022"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "preserve",
+    "incremental": true,
+    
+    // Path Configuration - DDD Aligned
+    "baseUrl": ".",
+    "paths": {
+      // Shared components and utilities
+      "@/*": ["src/*"],
+      "@/shared/*": ["src/shared/*"],
+      "@/components/*": ["src/shared/components/*"],
+      "@/ui/*": ["src/shared/components/ui/*"],
+      "@/hooks/*": ["src/shared/hooks/*"],
+      "@/utils/*": ["src/shared/utils/*"],
+      "@/types/*": ["src/shared/types/*"],
+      "@/lib/*": ["src/shared/lib/*"],
+      "@/constants/*": ["src/shared/constants/*"],
+      "@/services/*": ["src/shared/services/*"],
+      
+      // Domain-specific paths
+      "@/domains/*": ["src/domains/*"],
+      "@/marketplace/*": ["src/domains/marketplace/*"],
+      "@/stores/*": ["src/domains/stores/*"],
+      "@/construction/*": ["src/domains/construction/*"],
+      "@/admin/*": ["src/domains/admin/*"],
+      "@/users/*": ["src/domains/users/*"],
+      "@/payments/*": ["src/domains/payments/*"],
+      "@/logistics/*": ["src/domains/logistics/*"],
+      
+      // Standalone SaaS products
+      "@/standalone/*": ["src/standalone/*"],
+      "@/pos/*": ["src/standalone/pos/*"],
+      "@/inventory/*": ["src/standalone/inventory/*"],
+      "@/accounting/*": ["src/standalone/accounting/*"],
+      "@/crm/*": ["src/standalone/crm/*"],
+      "@/analytics/*": ["src/standalone/analytics/*"],
+      
+      // Configuration and assets
+      "@/config/*": ["src/config/*"],
+      "@/assets/*": ["public/assets/*"],
+      "@/styles/*": ["src/styles/*"]
+    },
+    
+    // Performance & Build Optimization
+    "declaration": false,
+    "sourceMap": true,
+    "removeComments": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitReturns": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUncheckedIndexedAccess": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.js",
+    "**/*.jsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    ".next",
+    "dist",
+    "build",
+    "out",
+    "coverage",
+    "**/*.spec.ts",
+    "**/*.test.ts",
+    "**/*.spec.tsx",
+    "**/*.test.tsx",
+    "backups/**/*",
+    "docs/archive/**/*",
+    "scripts/archive/**/*"
+  ],
+  "ts-node": {
+    "compilerOptions": {
+      "module": "CommonJS"
+    }
+  }
+}

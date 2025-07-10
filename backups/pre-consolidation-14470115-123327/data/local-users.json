@@ -1,0 +1,23 @@
+[
+  {
+    "id": "1",
+    "email": "admin@binna.com",
+    "passwordHash": "$2b$10$uB9LpDMpi8KReAtVFAgOQ.ah3JYQraKk5hToCqAasfTJ7Sq8.OKRm",
+    "name": "Admin User",
+    "account_type": "store"
+  },
+  {
+    "id": "2",
+    "email": "user@binna.com",
+    "passwordHash": "$2b$10$qub33aIZnZrRXPcjG10km.3Xl6gmM7N9BkgZzv9KJsGs0yEVqQOhC",
+    "name": "Regular User",
+    "account_type": "user"
+  },
+  {
+    "id": "3",
+    "email": "test@test.com",
+    "passwordHash": "$2b$10$6bFFxNpIyW64NQgtlQuP5eacXroC8HzflJiB9yHYJMwcodZYhFT9G",
+    "name": "Test User",
+    "account_type": "user"
+  }
+]

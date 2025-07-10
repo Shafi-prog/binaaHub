@@ -1,0 +1,82 @@
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "noEmit": true,
+    "incremental": true,
+    "module": "esnext",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ],
+      "@/shared/*": [
+        "src/shared/*"
+      ],
+      "@/components/*": [
+        "src/shared/components/*",
+        "components/*"
+      ],
+      "@/ui/*": [
+        "src/shared/components/ui/*"
+      ],
+      "@/hooks/*": [
+        "src/shared/hooks/*"
+      ],
+      "@/utils/*": [
+        "src/shared/utils/*"
+      ],
+      "@/types/*": [
+        "src/shared/types/*"
+      ],
+      "@/lib/*": [
+        "src/shared/lib/*",
+        "src/lib/*"
+      ],
+      "@/constants/*": [
+        "src/shared/constants/*"
+      ],
+      "@/services/*": [
+        "src/shared/services/*"
+      ],
+      "@/domains/*": [
+        "src/domains/*"
+      ]
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "include": [
+    "next-env.d.ts",
+    ".next/types/**/*.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules",
+    "backups/**/*",
+    "temp/**/*",
+    "**/*.backup.*",
+    "**/backup-*/**/*",
+    ".next",
+    "out",
+    "build",
+    "dist",
+    "**/node_modules"
+  ]
+}

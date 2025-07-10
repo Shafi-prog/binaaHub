@@ -1,0 +1,49 @@
+{
+  "name": "binna-pos",
+  "version": "1.0.0",
+  "description": "BinnaPOS - Saudi Arabia's Leading Point of Sale System (OnyxPro Competitor)",
+  "main": "app/page.tsx",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3001",
+    "build": "next build",
+    "start": "next start -p 3001",
+    "lint": "next lint",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "next": "^15.3.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "@medusajs/medusa": "^1.20.0",
+    "@medusajs/inventory": "^1.11.0",
+    "@types/node": "^20.10.0",
+    "@types/react": "^18.2.45",
+    "@types/react-dom": "^18.2.18",
+    "typescript": "^5.3.0",
+    "tailwindcss": "^3.4.0",
+    "postcss": "^8.4.32",
+    "autoprefixer": "^10.4.16"
+  },
+  "keywords": [
+    "pos",
+    "point-of-sale",
+    "saudi-arabia",
+    "retail",
+    "payment",
+    "inventory",
+    "zatca",
+    "mada",
+    "stc-pay"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BinnaCodes/binna-pos.git"
+  },
+  "author": "Binna Platform <support@binna.sa>",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}

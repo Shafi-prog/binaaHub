@@ -1,0 +1,87 @@
+{
+  "summary": {
+    "total": 8,
+    "passed": 5,
+    "failed": 3,
+    "skipped": 0,
+    "successRate": 62.5,
+    "totalDuration": 26225
+  },
+  "environment": "dev",
+  "baseUrl": "http://localhost:3000",
+  "parallel": false,
+  "timestamp": "2025-07-09T02:27:18.846Z",
+  "suites": {
+    "marketplace": {
+      "passed": 5,
+      "failed": 3,
+      "total": 8
+    }
+  },
+  "details": [
+    {
+      "name": "user-registration-and-login",
+      "suite": "marketplace",
+      "duration": 2152,
+      "status": "failed",
+      "error": "Test failed: user-registration-and-login",
+      "timestamp": "2025-07-09T02:26:54.714Z"
+    },
+    {
+      "name": "product-search-and-discovery",
+      "suite": "marketplace",
+      "duration": 4057,
+      "status": "passed",
+      "error": null,
+      "timestamp": "2025-07-09T02:26:58.772Z"
+    },
+    {
+      "name": "shopping-cart-functionality",
+      "suite": "marketplace",
+      "duration": 1367,
+      "status": "failed",
+      "error": "Test failed: shopping-cart-functionality",
+      "timestamp": "2025-07-09T02:27:00.140Z"
+    },
+    {
+      "name": "checkout-process",
+      "suite": "marketplace",
+      "duration": 3720,
+      "status": "passed",
+      "error": null,
+      "timestamp": "2025-07-09T02:27:03.861Z"
+    },
+    {
+      "name": "order-tracking",
+      "suite": "marketplace",
+      "duration": 4225,
+      "status": "passed",
+      "error": null,
+      "timestamp": "2025-07-09T02:27:08.087Z"
+    },
+    {
+      "name": "vendor-onboarding",
+      "suite": "marketplace",
+      "duration": 4980,
+      "status": "passed",
+      "error": null,
+      "timestamp": "2025-07-09T02:27:13.067Z"
+    },
+    {
+      "name": "vendor-dashboard",
+      "suite": "marketplace",
+      "duration": 2253,
+      "status": "passed",
+      "error": null,
+      "timestamp": "2025-07-09T02:27:15.321Z"
+    },
+    {
+      "name": "payment-processing",
+      "suite": "marketplace",
+      "duration": 3471,
+      "status": "failed",
+      "error": "Test failed: payment-processing",
+      "timestamp": "2025-07-09T02:27:18.794Z"
+    }
+  ]
+}

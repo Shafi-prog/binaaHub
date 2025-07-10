@@ -1,0 +1,20 @@
+{
+  "extends": "../../../_tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "baseUrl": "./src",
+    "outDir": "./dist",
+    "paths": {
+      "@models": ["./models"],
+      "@services": ["./services"],
+      "@repositories": ["./repositories"],
+      "@types": ["./types"],
+      "@utils": ["./utils"]
+    }
+  },
+  "include": ["src"],
+  "references": [
+    { "path": "../../core/framework" },
+    { "path": "../../core/utils" }
+  ]
+}

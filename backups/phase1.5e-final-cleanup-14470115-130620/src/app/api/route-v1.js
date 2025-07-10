@@ -1,0 +1,23 @@
+(()=>{var e={};e.id=2525,e.ids=[2525],e.modules={3295:e=>{"use strict";e.exports=require("next/dist/server/app-render/after-task-async-storage.external.js")},10846:e=>{"use strict";e.exports=require("next/dist/compiled/next-server/app-page.runtime.prod.js")},11997:e=>{"use strict";e.exports=require("punycode")},20631:(e,t,r)=>{"use strict";r.a(e,async(e,s)=>{try{r.r(t),r.d(t,{patchFetch:()=>u,routeModule:()=>p,serverHooks:()=>m,workAsyncStorage:()=>d,workUnitAsyncStorage:()=>l});var a=r(96559),o=r(48088),n=r(37719),i=r(46767),c=e([i]);i=(c.then?(await c)():c)[0];let p=new a.AppRouteRouteModule({definition:{kind:o.RouteKind.APP_ROUTE,page:"/api/admin/customers/route",pathname:"/api/admin/customers",filename:"route",bundlePath:"app/api/admin/customers/route"},resolvedPagePath:"C:\\Users\\hp\\BinnaCodes\\binna\\src\\app\\api\\admin\\customers\\route.ts",nextConfigOutput:"",userland:i}),{workAsyncStorage:d,workUnitAsyncStorage:l,serverHooks:m}=p;function u(){return(0,n.patchFetch)({workAsyncStorage:d,workUnitAsyncStorage:l})}s()}catch(e){s(e)}})},27910:e=>{"use strict";e.exports=require("stream")},29294:e=>{"use strict";e.exports=require("next/dist/server/app-render/work-async-storage.external.js")},34631:e=>{"use strict";e.exports=require("tls")},39727:()=>{},44870:e=>{"use strict";e.exports=require("next/dist/compiled/next-server/app-route.runtime.prod.js")},46767:(e,t,r)=>{"use strict";r.a(e,async(e,s)=>{try{r.r(t),r.d(t,{GET:()=>u,POST:()=>p});var a=r(32190),o=r(39398),n=r(64939),i=e([n]);async function c(){let e=new n.Client({connectionString:process.env.DATABASE_URL});return await e.connect(),e}async function u(e){try{let{searchParams:t}=new URL(e.url),r=t.get("limit")||"20",s=t.get("offset")||"0",o=t.get("search")||"",n=await c(),i="",u=[r,s];o&&(i="WHERE c.email ILIKE $3 OR c.first_name ILIKE $3 OR c.last_name ILIKE $3",u.push(`%${o}%`));let p=`      SELECT 
+        c.id,
+        c.email,
+        c.first_name,
+        c.last_name,
+        c.phone,
+        c.has_account,
+        c.created_at,
+        c.updated_at,
+        c.metadata,
+        COUNT(DISTINCT o.id) as order_count
+      FROM customer c
+      LEFT JOIN "order" o ON c.id = o.customer_id
+      ${i}
+      GROUP BY c.id, c.email, c.first_name, c.last_name, c.phone, c.has_account, c.created_at, c.updated_at, c.metadata
+      ORDER BY c.created_at DESC
+      LIMIT $1 OFFSET $2
+    `,d=o?`SELECT COUNT(*) as total FROM customer c ${i.replace("$3","$1")}`:"SELECT COUNT(*) as total FROM customer",[l,m]=await Promise.all([n.query(p,u),n.query(d,o?[o]:[])]);await n.end();let h=l.rows.map(e=>({...e,order_count:parseInt(e.order_count)||0,total_spent:0})),x=parseInt(m.rows[0].total);return a.NextResponse.json({customers:h,count:x,limit:parseInt(r),offset:parseInt(s),has_more:parseInt(s)+parseInt(r)<x})}catch(e){return a.NextResponse.json({error:"Failed to fetch customers"},{status:500})}}async function p(e){try{let t=await e.json(),r=await c(),{email:s,first_name:o,last_name:n,phone:i,has_account:u=!1,metadata:p={}}=t;if((await r.query("SELECT id FROM customer WHERE email = $1",[s])).rows.length>0)return await r.end(),a.NextResponse.json({error:"Customer with this email already exists"},{status:400});let d=`
+      INSERT INTO customer (
+        email, first_name, last_name, phone, has_account, metadata, created_at, updated_at
+      ) VALUES ($1, $2, $3, $4, $5, $6, NOW(), NOW())
+      RETURNING *
+    `,l=await r.query(d,[s,o,n,i,u,JSON.stringify(p)]);await r.end();let m=l.rows[0];return a.NextResponse.json({customer:m,message:"Customer created successfully"},{status:201})}catch(e){return a.NextResponse.json({error:"Failed to create customer"},{status:500})}}n=(i.then?(await i)():i)[0],(0,o.createClient)("https://lqhopwohuddhapkhhikf.supabase.co",process.env.SUPABASE_SERVICE_ROLE_KEY),s()}catch(e){s(e)}})},47990:()=>{},51906:e=>{function t(e){var t=Error("Cannot find module '"+e+"'");throw t.code="MODULE_NOT_FOUND",t}t.keys=()=>[],t.resolve=t,t.id=51906,e.exports=t},55511:e=>{"use strict";e.exports=require("crypto")},55591:e=>{"use strict";e.exports=require("https")},63033:e=>{"use strict";e.exports=require("next/dist/server/app-render/work-unit-async-storage.external.js")},64939:e=>{"use strict";e.exports=import("pg")},74075:e=>{"use strict";e.exports=require("zlib")},78335:()=>{},79428:e=>{"use strict";e.exports=require("buffer")},79551:e=>{"use strict";e.exports=require("url")},81630:e=>{"use strict";e.exports=require("http")},91645:e=>{"use strict";e.exports=require("net")},94735:e=>{"use strict";e.exports=require("events")},96487:()=>{}};var t=require("../../../../webpack-runtime.js");t.C(e);var r=e=>t(t.s=e),s=t.X(0,[4243,580,9398],()=>r(20631));module.exports=s})();

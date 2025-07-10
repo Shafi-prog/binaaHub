@@ -1,0 +1,20 @@
+(()=>{var e={};e.id=997,e.ids=[997],e.modules={3295:e=>{"use strict";e.exports=require("next/dist/server/app-render/after-task-async-storage.external.js")},10846:e=>{"use strict";e.exports=require("next/dist/compiled/next-server/app-page.runtime.prod.js")},11997:e=>{"use strict";e.exports=require("punycode")},27910:e=>{"use strict";e.exports=require("stream")},29294:e=>{"use strict";e.exports=require("next/dist/server/app-render/work-async-storage.external.js")},34631:e=>{"use strict";e.exports=require("tls")},39727:()=>{},44870:e=>{"use strict";e.exports=require("next/dist/compiled/next-server/app-route.runtime.prod.js")},47990:()=>{},51906:e=>{function t(e){var t=Error("Cannot find module '"+e+"'");throw t.code="MODULE_NOT_FOUND",t}t.keys=()=>[],t.resolve=t,t.id=51906,e.exports=t},55511:e=>{"use strict";e.exports=require("crypto")},55591:e=>{"use strict";e.exports=require("https")},63033:e=>{"use strict";e.exports=require("next/dist/server/app-render/work-unit-async-storage.external.js")},64939:e=>{"use strict";e.exports=import("pg")},72589:(e,t,r)=>{"use strict";r.a(e,async(e,s)=>{try{r.r(t),r.d(t,{GET:()=>c});var a=r(32190),o=r(39398),i=r(64939),n=e([i]);async function u(){let e=new i.Client({connectionString:process.env.DATABASE_URL});return await e.connect(),e}async function c(e){try{let{searchParams:t}=new URL(e.url),r=t.get("limit")||"20",s=t.get("offset")||"0",o=t.get("status"),i=await u(),n="",c=[r,s];o&&(n="WHERE o.status = $3",c.push(o));let p=`
+      SELECT 
+        o.id,
+        o.status,
+        o.currency_code,
+        o.created_at,
+        o.updated_at,
+        o.metadata,
+        c.email as customer_email,
+        c.first_name as customer_first_name,
+        c.last_name as customer_last_name,
+        COUNT(DISTINCT oi.id) as item_count
+      FROM "order" o
+      LEFT JOIN customer c ON o.customer_id = c.id
+      LEFT JOIN order_item oi ON o.id = oi.order_id
+      ${n}
+      GROUP BY o.id, o.status, o.currency_code, o.created_at, o.updated_at, o.metadata, c.email, c.first_name, c.last_name
+      ORDER BY o.created_at DESC
+      LIMIT $1 OFFSET $2
+    `,d=o?`SELECT COUNT(*) as total FROM "order" o ${n.replace("$3","$1")}`:'SELECT COUNT(*) as total FROM "order"',[m,l]=await Promise.all([i.query(p,c),i.query(d,o?[o]:[])]);await i.end();let _=m.rows.map(e=>({...e,total:0,item_count:parseInt(e.item_count)||0,customer:{email:e.customer_email,first_name:e.customer_first_name,last_name:e.customer_last_name}})),x=parseInt(l.rows[0].total);return a.NextResponse.json({orders:_,count:x,limit:parseInt(r),offset:parseInt(s),has_more:parseInt(s)+parseInt(r)<x})}catch(e){return a.NextResponse.json({error:"Failed to fetch orders"},{status:500})}}i=(n.then?(await n)():n)[0],(0,o.createClient)("https://lqhopwohuddhapkhhikf.supabase.co",process.env.SUPABASE_SERVICE_ROLE_KEY),s()}catch(e){s(e)}})},73111:(e,t,r)=>{"use strict";r.a(e,async(e,s)=>{try{r.r(t),r.d(t,{patchFetch:()=>c,routeModule:()=>p,serverHooks:()=>l,workAsyncStorage:()=>d,workUnitAsyncStorage:()=>m});var a=r(96559),o=r(48088),i=r(37719),n=r(72589),u=e([n]);n=(u.then?(await u)():u)[0];let p=new a.AppRouteRouteModule({definition:{kind:o.RouteKind.APP_ROUTE,page:"/api/admin/orders/route",pathname:"/api/admin/orders",filename:"route",bundlePath:"app/api/admin/orders/route"},resolvedPagePath:"C:\\Users\\hp\\BinnaCodes\\binna\\src\\app\\api\\admin\\orders\\route.ts",nextConfigOutput:"",userland:n}),{workAsyncStorage:d,workUnitAsyncStorage:m,serverHooks:l}=p;function c(){return(0,i.patchFetch)({workAsyncStorage:d,workUnitAsyncStorage:m})}s()}catch(e){s(e)}})},74075:e=>{"use strict";e.exports=require("zlib")},78335:()=>{},79428:e=>{"use strict";e.exports=require("buffer")},79551:e=>{"use strict";e.exports=require("url")},81630:e=>{"use strict";e.exports=require("http")},91645:e=>{"use strict";e.exports=require("net")},94735:e=>{"use strict";e.exports=require("events")},96487:()=>{}};var t=require("../../../../webpack-runtime.js");t.C(e);var r=e=>t(t.s=e),s=t.X(0,[4243,580,9398],()=>r(73111));module.exports=s})();

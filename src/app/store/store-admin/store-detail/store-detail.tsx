@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { useLoaderData } from "react-router-dom"
 
-import { useStore } from "@/hooks/api/store"
+import { useStore } from "@/domains/shared/hooks/api/store"
 import { StoreGeneralSection } from "./components/store-general-section"
 import { storeLoader } from "./loader"
 

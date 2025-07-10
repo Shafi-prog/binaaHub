@@ -1,1 +1,0 @@
-This folder contains the legacy backend folder (idurar-erp-crm) that was present in the root of the BINNA project before the final cleanup. It is preserved here for historical reference and can be restored if needed.

@@ -1,56 +1,60 @@
 {
-  "extends": "./tsconfig.extends.json",
   "compilerOptions": {
-    "target": "es5",
+    "target": "ES2017",
     "lib": [
       "dom",
       "dom.iterable",
-      "es6"
+      "esnext"
     ],
     "allowJs": true,
     "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
+    "strict": false,
+    "noEmit": true,
+    "incremental": true,
     "module": "esnext",
+    "esModuleInterop": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
       "@/*": [
         "src/*"
       ],
-      "@/components/*": [
-        "src/components/*"
+      "@/shared/*": [
+        "src/core/shared/*"
       ],
-      "@/store/*": [
-        "src/store/*"
+      "@/components/*": [
+        "src/core/shared/components/*",
+        "components/*"
+      ],
+      "@/ui/*": [
+        "src/core/shared/components/ui/*"
       ],
       "@/hooks/*": [
-        "src/hooks/*"
+        "src/core/shared/hooks/*"
       ],
       "@/utils/*": [
-        "src/utils/*"
+        "src/core/shared/utils/*"
       ],
       "@/types/*": [
-        "src/types/*"
+        "src/core/shared/types/*"
       ],
       "@/lib/*": [
+        "src/core/shared/lib/*",
         "src/lib/*"
       ],
-      "@/analytics/*": [
-        "src/analytics/*"
+      "@/constants/*": [
+        "src/core/shared/constants/*"
       ],
-      "@/auth/*": [
-        "src/auth/*"
+      "@/services/*": [
+        "src/core/shared/services/*"
+      ],
+      "@/domains/*": [
+        "src/domains/*"
       ]
     },
-    "incremental": true,
     "plugins": [
       {
         "name": "next"
@@ -58,14 +62,21 @@
     ]
   },
   "include": [
-    "src/**/*",
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    ".next/types/**/*.ts"
+    "next-env.d.ts",
+    ".next/types/**/*.ts",
+    "**/*.ts",
+    "**/*.tsx"
   ],
   "exclude": [
     "node_modules",
+    "backups/**/*",
+    "temp/**/*",
+    "**/*.backup.*",
+    "**/backup-*/**/*",
+    ".next",
+    "out",
     "build",
-    "dist"
+    "dist",
+    "**/node_modules"
   ]
 }

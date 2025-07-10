@@ -1,0 +1,18 @@
+PHASE 1.5: EMERGENCY DEDUPLICATION REPORT
+Generated: 07/10/2025 11:22:46
+
+BEFORE:
+- Components folders: 755
+- Services folders: 348
+- Models folders: 229
+
+AFTER:
+- components folders: 724 - services folders: 300 - models folders: 202 - api folders: 45
+
+ACTIONS TAKEN:
+- Created backup: backups/emergency-deduplication-backup-14470115-111921
+- Created content backup: backups/duplicate-content-backup-14470115-111921
+- Removed 0 duplicate folders
+- Cleaned up empty directories
+
+STATUS: ❌ PHASE 1.5 INCOMPLETE - MANUAL REVIEW NEEDED

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { cn } from "@/domains/shared/utils";
+import { cn } from "@/core/shared/utils";
 
 export interface SheetProps extends React.HTMLAttributes<HTMLDivElement> {
   open?: boolean;

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
 import Navbar from './Navbar';
 import { CartProvider } from '../../../contexts/CartContext';
@@ -26,10 +26,10 @@ export default function LayoutProvider({ children }: LayoutProviderProps) {
     return <>{children}</>;
   }
 
-  const handleTourComplete = () => {
+  const handleTourComplete = useCallback(() => {
     setShowTour(false);
     localStorage.setItem('hasSeenOnboardingTour', 'true');
-  };
+  }, []);
 
   useEffect(() => {
     // Only show onboarding tour if not seen before and not on excluded pages

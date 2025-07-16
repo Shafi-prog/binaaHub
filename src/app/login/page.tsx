@@ -5,7 +5,9 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import { TempUser } from '@/domains/shared/services/temp-auth';
+import { TempUser } from '@/core/shared/services/auth';
+import { Button, EnhancedCard, Typography } from '@/core/shared/components/ui/enhanced-components';
+import { User, Store } from 'lucide-react';
 
 export default function DirectLoginPage() {
   const router = useRouter();
@@ -25,6 +27,8 @@ export default function DirectLoginPage() {
   }, []);
 
   const handleLogin = (userType: 'user' | 'store') => {
+    console.log(`🔐 Login attempted for userType: ${userType}`);
+    
     // Create mock user based on type
     const mockUser: TempUser = userType === 'store' 
       ? {
@@ -44,102 +48,90 @@ export default function DirectLoginPage() {
           isAuthenticated: true
         };
 
+    console.log(`👤 Created user:`, mockUser);
+
     // Store in sessionStorage for persistence
     sessionStorage.setItem('temp_user', JSON.stringify(mockUser));
     sessionStorage.setItem('temp_auth_timestamp', Date.now().toString());
+    
+    // Set a minimal cookie for middleware authentication
+    // Only store the fields needed for routing and auth
+    const cookiePayload = {
+      email: mockUser.email,
+      type: mockUser.type,
+      account_type: mockUser.type, // for middleware compatibility
+      isAuthenticated: true
+    };
+    document.cookie = `temp_auth_user=${encodeURIComponent(JSON.stringify(cookiePayload))}; path=/; max-age=86400; SameSite=Strict`;
+    
+    console.log(`💾 Stored user in sessionStorage and cookies`);
 
-    // Redirect to appropriate dashboard
-    if (userType === 'store') {
-      router.push('/store/dashboard');
-    } else {
-      router.push('/user/dashboard');
-    }
+    // Determine the correct redirect route
+    const dashboardRoute = userType === 'store' ? '/store/dashboard' : '/user/dashboard';
+    console.log(`🚀 Redirecting ${userType} to: ${dashboardRoute}`);
+    
+    // Force immediate redirect
+    window.location.href = dashboardRoute;
   };
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      background: 'linear-gradient(135deg, rgb(239 246 255) 0%, rgb(255 255 255) 50%, rgb(199 210 254) 100%)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: '16px',
-      fontFamily: 'system-ui, -apple-system, sans-serif'
-    }}>
-      <div style={{
-        background: 'white',
-        borderRadius: '16px',
-        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
-        padding: '32px',
-        width: '100%',
-        maxWidth: '400px'
-      }}>
-        <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-          <h1 style={{
-            fontSize: '28px',
-            fontWeight: 'bold',
-            color: 'rgb(17 24 39)',
-            margin: '0 0 8px 0'
-          }}>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-100 flex items-center justify-center p-4" dir="rtl">
+      <EnhancedCard variant="elevated" className="w-full max-w-md shadow-2xl">
+        <div className="text-center mb-8">
+          <Typography variant="heading" size="3xl" weight="bold" className="text-gray-900 mb-2">
             مرحباً بك في بِنّا
-          </h1>
-          <p style={{ color: 'rgb(75 85 99)', margin: '0' }}>
+          </Typography>
+          <Typography variant="body" size="lg" className="text-gray-600">
             اختر نوع الحساب للدخول مباشرة
-          </p>
+          </Typography>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        <div className="space-y-4">
+          {/* Store Admin Login Button */}
           <button
-            onClick={() => handleLogin('store')}
-            style={{
-              width: '100%',
-              fontWeight: '600',
-              padding: '16px 24px',
-              borderRadius: '12px',
-              border: 'none',
-              cursor: 'pointer',
-              background: 'linear-gradient(135deg, rgb(37 99 235) 0%, rgb(29 78 216) 100%)',
-              color: 'white',
-              fontSize: '16px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '12px'
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              console.log('🏪 Store button clicked!');
+              handleLogin('store');
+            }}
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-6 px-8 rounded-xl text-xl border-none outline-none"
+            style={{ 
+              zIndex: 9999,
+              position: 'relative',
+              display: 'block',
+              width: '100%'
             }}
           >
-            <span>🏪</span>
-            <span>دخول كمدير متجر</span>
+            🏪 دخول كمدير متجر
           </button>
 
+          {/* User Login Button */}
           <button
-            onClick={() => handleLogin('user')}
-            style={{
-              width: '100%',
-              fontWeight: '600',
-              padding: '16px 24px',
-              borderRadius: '12px',
-              border: 'none',
-              cursor: 'pointer',
-              background: 'linear-gradient(135deg, rgb(34 197 94) 0%, rgb(21 128 61) 100%)',
-              color: 'white',
-              fontSize: '16px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '12px'
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              console.log('👤 User button clicked!');
+              handleLogin('user');
+            }}
+            className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-6 px-8 rounded-xl text-xl border-none outline-none"
+            style={{ 
+              zIndex: 9999,
+              position: 'relative',
+              display: 'block',
+              width: '100%'
             }}
           >
-            <span>👤</span>
-            <span>دخول كمستخدم</span>
+            👤 دخول كمستخدم
           </button>
         </div>
 
-        <div style={{ textAlign: 'center', marginTop: '32px' }}>
-          <p style={{ color: 'rgb(107 114 128)', fontSize: '14px' }}>
+        <div className="text-center mt-8">
+          <Typography variant="caption" size="sm" className="text-gray-500">
             تم إلغاء متطلبات كلمة المرور لسهولة اختبار الميزات
-          </p>
+          </Typography>
         </div>
-      </div>
+      </EnhancedCard>
     </div>
   );
 }

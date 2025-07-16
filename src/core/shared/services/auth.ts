@@ -302,6 +302,10 @@ export const verifyTempAuth = (maxAgeHours: number = 24) => {
   return currentUser ? { user: currentUser } : null;
 };
 
+export const getTempAuthUser = () => {
+  return tempAuthService.getCurrentUser();
+};
+
 export const clearTempAuth = () => {
   tempAuthService.logout();
 };

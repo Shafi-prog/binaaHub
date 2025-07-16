@@ -3,11 +3,11 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { LoadingSpinner } from '@/domains/shared/components/ui';
-import { Typography, EnhancedCard, Button } from '@/domains/shared/components/ui/enhanced-components';
+import { LoadingSpinner } from '@/core/shared/components/ui';
+import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/enhanced-components';
 import { Shield, Calendar, Box, Tag, Clock, CreditCard, File, Settings, BarChart3, MessageCircle, Store, User as UserIcon, LogOut, Home, Folder, Mail, BookOpen } from 'lucide-react';
-import { verifyTempAuth } from '@/domains/shared/services/temp-auth';
-import { quickLogout } from '@/domains/shared/services/logout';
+import { verifyTempAuth } from '@/core/shared/services/auth';
+import { quickLogout } from '@/core/shared/services/logout';
 
 interface DashboardStats {
   activeWarranties: number;

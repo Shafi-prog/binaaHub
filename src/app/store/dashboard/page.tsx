@@ -1,49 +1,77 @@
 'use client';
 
-// Force dynamic rendering for this page to avoid SSG issues with auth context
-
-
 import { useState, useEffect } from 'react';
-import { ExternalLink, BarChart3, TrendingUp, Package, ShoppingCart, Users, Layers, Settings, AlertTriangle } from 'lucide-react';
-
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { ExternalLink, BarChart3, Package, ShoppingCart, Users, Layers, Settings, AlertTriangle, Store, LogOut } from 'lucide-react';
 
 export const dynamic = 'force-dynamic'
-// Force dynamic rendering to avoid SSG auth context issues
+
+const storeDashboardStats = [
+  {
+    title: 'المنتجات النشطة',
+    value: 48,
+    icon: <Package className="w-6 h-6" />,
+    href: '/store/products',
+    color: 'bg-blue-500',
+  },
+  {
+    title: 'الطلبات الجديدة',
+    value: 12,
+    icon: <ShoppingCart className="w-6 h-6" />,
+    href: '/store/orders',
+    color: 'bg-green-500',
+  },
+  {
+    title: 'العملاء المسجلين',
+    value: 156,
+    icon: <Users className="w-6 h-6" />,
+    href: '/store/customers',
+    color: 'bg-purple-500',
+  },
+  {
+    title: 'المبيعات اليوم',
+    value: '12,450 ر.س',
+    icon: <BarChart3 className="w-6 h-6" />,
+    href: '/store/analytics',
+    color: 'bg-orange-500',
+  },
+];
 
 const medusaFeatures = [
   {
-    name: 'Products',
-    description: 'Manage your product catalog, variants, and categories',
+    name: 'إدارة المنتجات',
+    description: 'إدارة كتالوج المنتجات والفئات والمتغيرات',
     icon: <Package className="w-8 h-8 text-blue-600 mb-2" />,
     link: '/store/products',
   },
   {
-    name: 'Orders',
-    description: 'View and process customer orders',
+    name: 'الطلبات',
+    description: 'عرض ومعالجة طلبات العملاء',
     icon: <ShoppingCart className="w-8 h-8 text-orange-600 mb-2" />,
     link: '/store/orders',
   },
   {
-    name: 'Inventory',
-    description: 'Track and manage inventory across locations',
+    name: 'المخزون',
+    description: 'تتبع وإدارة المخزون عبر المواقع',
     icon: <Layers className="w-8 h-8 text-green-600 mb-2" />,
     link: '/store/inventory',
   },
   {
-    name: 'Customers',
-    description: 'Manage customer accounts and details',
+    name: 'العملاء',
+    description: 'إدارة حسابات العملاء وتفاصيلهم',
     icon: <Users className="w-8 h-8 text-purple-600 mb-2" />,
     link: '/store/customers',
   },
   {
-    name: 'Analytics',
-    description: 'View sales, revenue, and performance analytics',
+    name: 'التحليلات',
+    description: 'عرض المبيعات والإيرادات وتحليلات الأداء',
     icon: <BarChart3 className="w-8 h-8 text-cyan-600 mb-2" />,
     link: '/store/analytics',
   },
   {
-    name: 'Settings',
-    description: 'Configure store, regions, taxes, and more',
+    name: 'الإعدادات',
+    description: 'تكوين المتجر والمناطق والضرائب والمزيد',
     icon: <Settings className="w-8 h-8 text-gray-600 mb-2" />,
     link: '/store/settings',
   },
@@ -51,8 +79,13 @@ const medusaFeatures = [
 
 export default function StoreDashboardPage() {
   const [medusaRunning, setMedusaRunning] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
+    // Debug: Check if Arabic fonts are available
+    console.log('📝 Available fonts:', document.fonts?.size);
+    console.log('🌏 Arabic text test: مرحباً');
+    
     // Check if Medusa admin is running
     fetch('http://localhost:9000/admin', { 
       method: 'HEAD',
@@ -70,76 +103,159 @@ export default function StoreDashboardPage() {
     window.open('/store/medusa-develop', '_blank');
   };
 
+  const handleLogout = () => {
+    // Clear all authentication data
+    if (typeof window !== 'undefined') {
+      sessionStorage.clear();
+      localStorage.clear();
+      // Remove all cookies
+      document.cookie.split(';').forEach(cookie => {
+        const eqPos = cookie.indexOf('=');
+        const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+        document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;';
+      });
+    }
+    // Redirect to login page
+    router.push('/login');
+  };
+
   return (
-    <div className="container mx-auto p-6 flex flex-col md:flex-row gap-8">
-      {/* Sidebar */}
-      <aside className="w-full md:w-64 mb-8 md:mb-0 md:mr-8">
-        <div className="bg-white rounded-lg shadow p-4 sticky top-8">
-          <h2 className="text-lg font-bold mb-4">Admin Panel</h2>
-          <ul className="space-y-2">
-            <li><a href="/store/dashboard" className="text-blue-700 hover:underline">Dashboard</a></li>
-            <li><a href="/store/pos" className="text-blue-700 hover:underline">Point of Sale</a></li>
-            <li><a href="/store/products" className="text-blue-700 hover:underline">Products</a></li>
-            <li><a href="/store/inventory" className="text-blue-700 hover:underline">Inventory</a></li>
-            <li><a href="/store/orders" className="text-blue-700 hover:underline">Orders</a></li>
-            <li><a href="/store/customers" className="text-blue-700 hover:underline">Customers</a></li>
-            <li><a href="/store/analytics" className="text-blue-700 hover:underline">Market Analytics</a></li>
-            <li><a href="/store/reports" className="text-blue-700 hover:underline">Advanced Reports</a></li>
-            <li><a href="/store/ai-search" className="text-blue-700 hover:underline">AI Search</a></li>
-            <li><a href="/store/notifications" className="text-blue-700 hover:underline">Notifications</a></li>
-            <li><a href="/store/payments" className="text-blue-700 hover:underline">Payment Gateway</a></li>
-            <li><a href="/store/shipping" className="text-blue-700 hover:underline">Shipping & Logistics</a></li>
-            <li><a href="/store/erp" className="text-blue-700 hover:underline">ERP Integration</a></li>
-            <li><a href="/store/settings" className="text-blue-700 hover:underline">Settings</a></li>
-          </ul>
-        </div>
-      </aside>
-      {/* Main Content */}
-      <main className="flex-1">
-        <div className="flex justify-between items-center mb-6">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">Store Dashboard</h1>
-            <p className="text-gray-600">Access all Medusa Commerce features from one place</p>
+    <div className="p-6 font-tajawal text-right" dir="rtl" style={{ fontFamily: "'Tajawal', 'Cairo', 'Arial Unicode MS', 'Tahoma', sans-serif" }}>
+      {/* Arabic Font Test */}
+      <div className="mb-4 p-3 bg-yellow-100 border border-yellow-300 rounded-lg">
+        <p className="text-sm">
+          <strong>Arabic Font Test:</strong> 
+          <span style={{ fontFamily: "'Tajawal', 'Cairo', 'Arial Unicode MS', 'Tahoma', sans-serif", fontSize: '16px' }}>
+            مرحباً بك في لوحة تحكم المتجر - اختبار الخط العربي
+          </span>
+        </p>
+        <p className="text-xs text-gray-600 mt-1">
+          If you see squares or English instead of Arabic, the font is not loading properly.
+        </p>
+      </div>
+
+      {/* Logout Button */}
+      <div className="mb-4 flex justify-between items-center">
+        <div></div>
+        <button 
+          onClick={handleLogout}
+          className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm font-tajawal"
+        >
+          <LogOut className="w-4 h-4" />
+          <span style={{ fontFamily: "'Tajawal', 'Cairo', 'Arial Unicode MS', sans-serif" }}>تسجيل الخروج</span>
+        </button>
+      </div>
+
+      {/* Success Message */}
+      <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+        <div className="flex items-center gap-3">
+          <Store className="w-5 h-5 text-green-600" />
+          <div className="flex-1">
+            <h3 className="font-semibold text-green-800 mb-1 font-tajawal" style={{ fontFamily: "'Tajawal', 'Cairo', 'Arial Unicode MS', sans-serif" }}>
+              مرحباً بك في لوحة تحكم المتجر!
+            </h3>
+            <p className="text-sm text-green-700 font-tajawal" style={{ fontFamily: "'Tajawal', 'Cairo', 'Arial Unicode MS', sans-serif" }}>
+              إدارة متجرك ومنتجاتك وطلباتك من مكان واحد
+            </p>
           </div>
-          <div className="flex gap-2">
-            <button onClick={() => openMedusa('http://localhost:9000/admin')} className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50" disabled={!medusaRunning}>
+          <div className="mr-auto">
+            <button 
+              onClick={() => openMedusa('http://localhost:9000/admin')} 
+              className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 text-sm" 
+              disabled={!medusaRunning}
+            >
               <ExternalLink className="w-4 h-4" />
-              Open Medusa Admin
+              فتح Medusa Admin
             </button>
           </div>
         </div>
+      </div>
 
-        {!medusaRunning && (
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 mb-6 flex items-center gap-4">
+      {/* Medusa Status Alert */}
+      {!medusaRunning && (
+        <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+          <div className="flex items-center gap-4">
             <AlertTriangle className="w-6 h-6 text-yellow-600" />
-            <div>
-              <h3 className="text-lg font-semibold text-yellow-800 mb-1">Medusa Admin Not Running</h3>
-              <p className="text-yellow-700 mb-2">Start the Medusa server to access all features. <button onClick={startMedusaServer} className="underline text-blue-700">Start Medusa Server</button></p>
-              <button onClick={() => window.open('/store/medusa-develop/README.md', '_blank')} className="border border-gray-300 px-3 py-1 rounded hover:bg-gray-50 text-sm">View Setup Guide</button>
+            <div className="flex-1">
+              <h3 className="font-semibold text-yellow-800 mb-1">
+                خادم Medusa غير متصل
+              </h3>
+              <p className="text-sm text-yellow-700 mb-3">
+                ابدأ خادم Medusa للوصول إلى جميع الميزات
+              </p>
+              <div className="flex gap-2">
+                <button onClick={startMedusaServer} className="px-3 py-1 bg-yellow-600 text-white rounded hover:bg-yellow-700 text-sm">
+                  تشغيل الخادم
+                </button>
+                <button onClick={() => window.open('/store/medusa-develop/README.md', '_blank')} className="px-3 py-1 border border-yellow-300 text-yellow-800 rounded hover:bg-yellow-100 text-sm">
+                  دليل الإعداد
+                </button>
+              </div>
             </div>
           </div>
-        )}
+        </div>
+      )}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-center">
+      {/* Header */}
+      <div className="mb-8 arabic-text">
+        <h1 className="text-3xl font-bold text-gray-800 mb-3 font-tajawal" style={{ fontFamily: "'Tajawal', 'Cairo', 'Arial Unicode MS', sans-serif" }}>
+          لوحة تحكم المتجر 🏪
+        </h1>
+        <p className="text-lg text-gray-600 font-tajawal" style={{ fontFamily: "'Tajawal', 'Cairo', 'Arial Unicode MS', sans-serif" }}>
+          إليك نظرة عامة على أداء متجرك ونشاطه
+        </p>
+      </div>
+
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        {storeDashboardStats.map((card, index) => (
+          <Link key={index} href={card.href} className="block">
+            <div className="p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow">
+              <div className="flex items-center justify-between">
+                <div className="arabic-text">
+                  <p className="text-sm text-gray-600 mb-1">{card.title}</p>
+                  <p className="text-2xl font-bold text-gray-800 arabic-numbers">{card.value}</p>
+                </div>
+                <div className={`${card.color} p-3 rounded-xl shadow-lg`}>
+                  <div className="text-white">{card.icon}</div>
+                </div>
+              </div>
+            </div>
+          </Link>
+        ))}
+      </div>
+
+      {/* Medusa Features */}
+      <div className="mb-8 arabic-text">
+        <h2 className="text-xl font-semibold text-gray-800 mb-6">
+          ميزات إدارة المتجر
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {medusaFeatures.map((feature) => (
             <div
               key={feature.name}
-              className={
-                'border rounded-lg p-6 bg-white flex flex-col items-start hover:bg-gray-50 transition cursor-pointer mx-auto w-full max-w-xs'
-              }
+              className="cursor-pointer p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow group"
               onClick={() => openMedusa(feature.link)}
-              tabIndex={0}
             >
-              {feature.icon}
-              <h4 className="font-medium text-lg mb-1">{feature.name}</h4>
-              <p className="text-sm text-gray-600 mb-2">{feature.description}</p>
-              <span className="text-xs text-blue-700 flex items-center gap-1">
-                <ExternalLink className="w-3 h-3 inline" /> Go to {feature.name}
-              </span>
+              <div className="flex flex-col items-start arabic-text">
+                <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  {feature.icon}
+                </div>
+                <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                  {feature.name}
+                </h3>
+                <p className="text-sm text-gray-600 mb-4">
+                  {feature.description}
+                </p>
+                <div className="flex items-center gap-1 text-blue-600 text-sm font-medium">
+                  <ExternalLink className="w-4 h-4" />
+                  <span>الانتقال إلى {feature.name}</span>
+                </div>
+              </div>
             </div>
           ))}
         </div>
-      </main>
+      </div>
     </div>
   );
 }

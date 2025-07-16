@@ -1,9 +1,9 @@
 // @ts-nocheck
 import type { Metadata } from 'next';
 import { Toaster } from 'react-hot-toast';
-import LayoutProvider from '../domains/shared/components/LayoutProvider';
-import PWARegister from '../domains/shared/components/pwa/PWARegister';
-import ErrorHandler from '../components/ErrorHandler';
+import LayoutProvider from '../core/shared/components/LayoutProvider';
+import PWARegister from '../core/shared/components/PWARegister';
+import ErrorHandler from '../core/shared/components/ErrorHandler';
 import './globals.css';
 
 export const metadata: Metadata = {

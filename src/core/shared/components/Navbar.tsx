@@ -4,7 +4,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useTranslation } from '@/domains/shared/hooks/useTranslation';
+import { useTranslation } from '@/core/shared/hooks/useTranslation';
 import { 
   Menu, 
   X, 
@@ -21,12 +21,12 @@ import {
   Home,
   Package,
   DollarSign,
-  Calendar
+  Calendar,
+  ShoppingCart
 } from 'lucide-react';
-import { Typography, EnhancedCard, Button } from '@/domains/shared/components/ui/enhanced-components';
-import { NotificationService } from '@/domains/shared/services/notifications';
-import { CartIcon } from '../../../../components/cart/CartSidebar';
-import { getTempAuthUser, clearTempAuth } from '@/domains/shared/services/temp-auth';
+import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/enhanced-components';
+import { NotificationService } from '@/core/shared/services/notifications';
+import { getTempAuthUser, clearTempAuth } from '@/core/shared/services/auth';
 
 interface NavbarProps {
   user?: any | null;
@@ -375,7 +375,7 @@ export default function Navbar({ user, accountType }: NavbarProps) {
           <div className="flex items-center gap-2">
             {/* Cart Icon for stores */}
             {userData?.account_type === 'store' && (
-              <CartIcon onClick={() => {}} className="text-white" />
+              <ShoppingCart className="text-white w-5 h-5" />
             )}
             
             {/* Notifications */}
@@ -545,7 +545,7 @@ export default function Navbar({ user, accountType }: NavbarProps) {
           <div className="flex items-center gap-2">
             {/* Cart Icon for stores */}
             {userData?.account_type === 'store' && (
-              <CartIcon onClick={() => {}} className="text-white" />
+              <ShoppingCart className="text-white w-5 h-5" />
             )}
             
             {/* Notifications */}

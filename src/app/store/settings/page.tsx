@@ -1,11 +1,9 @@
 // @ts-nocheck
 'use client'
 
-
 // Force dynamic rendering to avoid SSG auth context issues
 import { useState, useEffect } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/domains/shared/components/ui/card"
-import { Button } from "@/domains/shared/components/ui/button"
+import { Button, EnhancedCard, Typography } from "@/core/shared/components/ui/enhanced-components"
 import { Settings } from "lucide-react"
 
 
@@ -66,59 +64,87 @@ export default function StoreSettings() {
   }
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-6 space-y-6 font-tajawal" dir="rtl">
       <div className="flex justify-between items-start">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Store Settings</h1>
-          <p className="text-muted-foreground">
-            Manage your store configuration and preferences
-          </p>
+          <Typography variant="heading" size="3xl" weight="bold" className="text-gray-900 mb-2">
+            إعدادات المتجر
+          </Typography>
+          <Typography variant="body" size="lg" className="text-gray-600">
+            إدارة تكوين متجرك وتفضيلاته
+          </Typography>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Settings className="h-5 w-5" />
-              General Settings
-            </CardTitle>
-            <CardDescription>
-              Basic store information and configuration
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div>
-              <label className="text-sm font-medium">Store Name</label>
-              <p className="text-lg">{store?.name || 'Binna Store'}</p>
+        <EnhancedCard variant="elevated">
+          <div className="p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <Settings className="h-6 w-6 text-blue-600" />
+              <Typography variant="subheading" size="xl" weight="semibold" className="text-gray-900">
+                الإعدادات العامة
+              </Typography>
             </div>
-            <div>
-              <label className="text-sm font-medium">Default Currency</label>
-              <p className="text-lg">{store?.default_currency_code || 'USD'}</p>
+            <Typography variant="body" size="sm" className="text-gray-600 mb-6">
+              معلومات المتجر الأساسية والتكوين
+            </Typography>
+            
+            <div className="space-y-4">
+              <div>
+                <Typography variant="caption" size="sm" className="text-gray-700 font-medium">
+                  اسم المتجر
+                </Typography>
+                <Typography variant="body" size="lg" className="text-gray-900">
+                  {store?.name || 'متجر بِنّا'}
+                </Typography>
+              </div>
+              <div>
+                <Typography variant="caption" size="sm" className="text-gray-700 font-medium">
+                  العملة الافتراضية
+                </Typography>
+                <Typography variant="body" size="lg" className="text-gray-900">
+                  {store?.default_currency_code || 'ر.س (SAR)'}
+                </Typography>
+              </div>
+              <Button className="w-full" variant="primary">
+                تعديل إعدادات المتجر
+              </Button>
             </div>
-            <Button className="w-full">Edit Store Settings</Button>
-          </CardContent>
-        </Card>
+          </div>
+        </EnhancedCard>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Store Status</CardTitle>
-            <CardDescription>
-              Current store operational status
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div>
-              <label className="text-sm font-medium">Status</label>
-              <p className="text-lg text-green-600">Active</p>
+        <EnhancedCard variant="elevated">
+          <div className="p-6">
+            <Typography variant="subheading" size="xl" weight="semibold" className="text-gray-900 mb-2">
+              حالة المتجر
+            </Typography>
+            <Typography variant="body" size="sm" className="text-gray-600 mb-6">
+              حالة المتجر التشغيلية الحالية
+            </Typography>
+            
+            <div className="space-y-4">
+              <div>
+                <Typography variant="caption" size="sm" className="text-gray-700 font-medium">
+                  الحالة
+                </Typography>
+                <Typography variant="body" size="lg" className="text-green-600 font-semibold">
+                  نشط
+                </Typography>
+              </div>
+              <div>
+                <Typography variant="caption" size="sm" className="text-gray-700 font-medium">
+                  تاريخ الإنشاء
+                </Typography>
+                <Typography variant="body" size="lg" className="text-gray-900">
+                  {store?.created_at ? new Date(store.created_at).toLocaleDateString('ar-SA') : 'غير متوفر'}
+                </Typography>
+              </div>
+              <Button variant="outline" className="w-full">
+                عرض تحليلات المتجر
+              </Button>
             </div>
-            <div>
-              <label className="text-sm font-medium">Created</label>
-              <p className="text-lg">{store?.created_at ? new Date(store.created_at).toLocaleDateString() : 'N/A'}</p>
-            </div>
-            <Button variant="outline" className="w-full">View Store Analytics</Button>
-          </CardContent>
-        </Card>
+          </div>
+        </EnhancedCard>
       </div>
     </div>
   )

@@ -121,3 +121,83 @@ export const Button: React.FC<ButtonProps> = ({
     </button>
   );
 };
+
+// Tabs component
+interface TabsProps {
+  defaultValue?: string;
+  className?: string;
+  children: React.ReactNode;
+}
+
+export const Tabs: React.FC<TabsProps> = ({ defaultValue, className = '', children }) => {
+  return (
+    <div className={`${className}`}>
+      {children}
+    </div>
+  );
+};
+
+interface TabsListProps {
+  className?: string;
+  children: React.ReactNode;
+}
+
+export const TabsList: React.FC<TabsListProps> = ({ className = '', children }) => {
+  return (
+    <div className={`flex space-x-1 ${className}`}>
+      {children}
+    </div>
+  );
+};
+
+interface TabsTriggerProps {
+  value: string;
+  className?: string;
+  children: React.ReactNode;
+}
+
+export const TabsTrigger: React.FC<TabsTriggerProps> = ({ value, className = '', children }) => {
+  return (
+    <button className={`px-4 py-2 rounded-md ${className}`}>
+      {children}
+    </button>
+  );
+};
+
+interface TabsContentProps {
+  value: string;
+  className?: string;
+  children: React.ReactNode;
+}
+
+export const TabsContent: React.FC<TabsContentProps> = ({ value, className = '', children }) => {
+  return (
+    <div className={`mt-4 ${className}`}>
+      {children}
+    </div>
+  );
+};
+
+// Progress component
+interface ProgressProps {
+  value: number;
+  className?: string;
+}
+
+export const Progress: React.FC<ProgressProps> = ({ value, className = '' }) => {
+  return (
+    <div className={`w-full bg-gray-200 rounded-full h-2 ${className}`}>
+      <div 
+        className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+        style={{ width: `${Math.min(100, Math.max(0, value))}%` }}
+      />
+    </div>
+  );
+};
+
+// LoadingSpinner component
+export const LoadingSpinner: React.FC<{ className?: string }> = ({ className = '' }) => {
+  return (
+    <div className={`animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 ${className}`} />
+  );
+};

@@ -131,6 +131,40 @@
 
 ---
 
+## 🔧 **TYPESCRIPT & BUILD HEALTH**
+
+### **📋 Health Check Commands:**
+```bash
+# Type checking (no compilation)
+npx tsc --noEmit
+
+# Build verification
+npm run build
+
+# Development server test
+npm run dev
+```
+
+### **🎯 Success Criteria:**
+- **Zero TypeScript errors** - All type issues resolved
+- **Successful build** - No build failures or warnings
+- **Clean development server** - No runtime errors on startup
+- **Proper imports** - All module imports working correctly
+
+### **🔍 Common Issues to Check:**
+- Missing type definitions
+- Incorrect import paths
+- Unused variables/imports
+- Type mismatches
+- Missing dependencies
+
+### **⚠️ Pre-Development Rule:**
+- **ALWAYS run these checks** before starting new development
+- **Fix all issues** before proceeding with features
+- **Document any major type changes** in this plan
+
+---
+
 ## 🏆 RECENT ACHIEVEMENTS
 - **✅ Enhanced Security Middleware** - Comprehensive security headers and rate limiting.
 - **✅ Created Missing API Endpoints** - Order tracking and vendor dashboard APIs.
@@ -154,21 +188,277 @@
 
 ---
 
-## 📈 SUCCESS METRICS
+## � **PLATFORM STRUCTURE & PAGE INVENTORY**
 
-### 📊 Key Performance Indicators
-- **User Adoption** - Monthly active users across all products
-- **Revenue Growth** - Monthly recurring revenue (MRR)
-- **Market Share** - Percentage of Saudi e-commerce market
-- **Customer Satisfaction** - Net Promoter Score (NPS)
-- **Product Performance** - Individual product success metrics
-- **Integration Success** - Cross-product usage rates
+### **🎯 3-Part Platform Architecture**
 
-### 🎯 Target Milestones
-- **Month 6:** 1,000 active stores using standalone products
-- **Month 12:** 10,000 active stores and marketplace launch
-- **Month 18:** 50,000 active users and construction focus
-- **Month 24:** Market leadership in Saudi Arabia
+#### **👥 USER (BUYERS) SECTION:**
+**Registered Users:**
+- Full access to all platform features
+- Personal dashboard and profile management
+- Project management and selling capabilities
+- AI calculators and construction tools
+- Order history and tracking
+
+**Unregistered Users:**
+- View and browse all products
+- Compare and filter products
+- Use free construction calculators
+- View project showcases
+- Access public resources
+
+**📋 User Pages Inventory (TO BE COUNTED):**
+- [ ] User Dashboard
+- [ ] User Profile
+- [ ] User Projects
+- [ ] User Orders
+- [ ] User Calculators
+- [ ] User Favorites/Wishlist
+- [ ] User Settings
+- [ ] User Support/Help
+
+#### **🏪 STORE SECTION:**
+**Store Admin Features:**
+- Store dashboard and analytics
+- Product management system
+- Order management and fulfillment
+- Customer management
+- Financial reporting
+- Inventory control
+
+**📋 Store Pages Inventory (TO BE COUNTED):**
+- [ ] Store Dashboard
+- [ ] Product Management
+- [ ] Order Management
+- [ ] Customer Management
+- [ ] Financial Reports
+- [ ] Inventory Control
+- [ ] Store Settings
+- [ ] Store Analytics
+
+#### **🌐 PUBLIC SECTION:**
+**Public-Facing Pages:**
+- Landing page and homepage
+- Product catalog and marketplace
+- Store directory and listings
+- Public calculators and tools
+- Project showcase gallery
+- About and contact pages
+
+**📋 Public Pages Inventory (TO BE COUNTED):**
+- [ ] Landing Page
+- [ ] Product Catalog
+- [ ] Store Directory
+- [ ] Public Calculators
+- [ ] Project Showcase
+- [ ] About Pages
+- [ ] Contact/Support
+- [ ] Legal Pages
+
+### **🤖 AI Calculators Status**
+- **STATUS:** Missing from current commit
+- **ACTION:** Search previous commits for AI calculator implementations
+- **LOCATION:** Expected in user section for registered users, public section for free tools
+- **FEATURES:** Construction calculators, cost estimators, material calculators
+
+### **🔄 Marketplace API Sync Plan**
+- **Backend (Store Admin):** Product management, inventory updates, order processing
+- **Frontend (Marketplace):** Real-time product display, availability, pricing
+- **API Endpoints:** Product sync, inventory sync, order sync, pricing sync
+- **Integration:** Real-time updates between store backend and marketplace frontend
+
+### **💰 Project Selling Feature**
+- **User Flow:** Complete project → List for sale → Marketplace integration
+- **Features:** Project gallery, pricing, licensing, buyer-seller communication
+- **Integration:** Connect to marketplace for project listings and sales
+
+---
+
+## 🔍 **PLATFORM STRUCTURE AUDIT RESULTS**
+
+### **📊 Current Structure Analysis:**
+
+#### **✅ Well-Organized Sections:**
+1. **`src/domains/`** - **8 domains** with clear boundaries:
+   - `admin/` - Admin functionality
+   - `construction/` - Construction-specific features
+   - `logistics/` - Logistics and delivery
+   - `marketplace/` - Marketplace core features
+   - `payments/` - Payment processing
+   - `shared/` - Shared domain resources
+   - `stores/` - Store management
+   - `users/` - User management
+
+2. **`src/products/`** - **11 standalone products**:
+   - `analytics/` - Business analytics
+   - `binna-books/` - Accounting system
+   - `binna-pay/` - Payment gateway
+   - `binna-pos/` - Point of sale
+   - `binna-stock/` - Inventory management
+   - `books/` - Additional accounting
+   - `crm/` - Customer relationship management
+   - `dashboard/` - Dashboard components
+   - `dashboard-app/` - Dashboard application
+   - `pos/` - Additional POS system
+   - `stock/` - Additional inventory system
+
+#### **🚨 CRITICAL ISSUES IDENTIFIED:**
+
+### **🔴 SEVERE DUPLICATION PROBLEMS:**
+
+#### **1. Component Explosion in `src/core/shared/components/`:**
+- **TOTAL FILES:** 1,000+ individual component files
+- **VERSIONING CHAOS:** Files like `index-v1.ts` through `index-v345.ts`
+- **DUPLICATE SYSTEMS:** Multiple versions of same components
+- **NAMING VIOLATIONS:** Non-professional prefixes still exist
+
+#### **2. Product Duplication:**
+- **POS Systems:** `binna-pos/`, `pos/` (duplicate POS implementations)
+- **Inventory Systems:** `binna-stock/`, `stock/` (duplicate inventory systems)
+- **Books/Accounting:** `binna-books/`, `books/` (duplicate accounting systems)
+- **Dashboard Systems:** `dashboard/`, `dashboard-app/` (duplicate dashboards)
+
+#### **3. App Structure Issues:**
+- **Store Pages:** 50+ pages in `src/app/store/` 
+- **User Pages:** 12+ pages in `src/app/user/`
+- **API Routes:** 50+ individual API files in `src/app/api/`
+
+### **📋 PAGE COUNT INVENTORY:**
+
+#### **👥 USER SECTION (12 pages):**
+- `building-advice/` - Building consultation
+- `chat/` - User chat system
+- `dashboard/` - Main user dashboard
+- `layout/` - User layout components
+- `pages/` - General user pages
+- `payment/` - Payment processing
+- `payment-channels/` - Payment methods
+- `profile/` - User profile management
+- `projects/` - Project management
+- `projects-marketplace/` - Project selling
+- `services/` - User services
+- `stores-browse/` - Store browsing
+
+#### **🏪 STORE SECTION (50+ pages):**
+- `admin/` - Store administration
+- `analytics/` - Store analytics
+- `api-key-management/` - API key management
+- `barcode-scanner/` - Barcode scanning
+- `campaigns/` - Marketing campaigns
+- `categories/` - Product categories
+- `collections/` - Product collections
+- `construction-products/` - Construction-specific products
+- `currency-region/` - Currency and region settings
+- `customer-groups/` - Customer segmentation
+- `customer-segmentation/` - Advanced segmentation
+- `customers/` - Customer management
+- `dashboard/` - Store dashboard
+- `delivery/` - Delivery management
+- `email-campaigns/` - Email marketing
+- `erp/` - ERP integration
+- `financial-management/` - Financial tools
+- `inventory/` - Inventory management
+- `locations/` - Store locations
+- `marketplace/` - Marketplace integration
+- `marketplace-vendors/` - Vendor management
+- `notifications/` - Notification system
+- `order-management/` - Order processing
+- `orders/` - Order tracking
+- `payments/` - Payment processing
+- `permissions/` - Role management
+- `pos/` - Point of sale
+- `price-lists/` - Pricing management
+- `pricing/` - Dynamic pricing
+- `product-bundles/` - Bundle management
+- `product-tags/` - Product tagging
+- `product-types/` - Product categorization
+- `product-variants/` - Product variations
+- `products/` - Product management
+- `profile/` - Store profile
+- `promotions/` - Promotional campaigns
+- `regions/` - Geographic regions
+- `reports/` - Business reports
+- `reservations/` - Reservation system
+- `return-reasons/` - Return management
+- `sales-channels/` - Sales channel management
+- `settings/` - Store settings
+- `shipping/` - Shipping management
+- `shipping-profiles/` - Shipping configurations
+- `storefront/` - Storefront customization
+- `tax-regions/` - Tax management
+- `users/` - User management
+- `warehouses/` - Warehouse management
+- `workflow-executions/` - Workflow automation
+
+#### **🌐 PUBLIC SECTION (6 pages):**
+- `auth/` - Public authentication
+- `construction-data/` - Construction data
+- `forum/` - Community forum
+- `marketplace/` - Public marketplace
+- `material-prices/` - Material pricing
+- `supervisors/` - Supervisor services
+
+### **🚨 IMMEDIATE CLEANUP PRIORITIES:**
+
+#### **🔴 CRITICAL ACTIONS NEEDED:**
+
+1. **Component Deduplication:**
+   - **Target:** `src/core/shared/components/` (1,000+ files)
+   - **Action:** Merge versioned files (v1, v2, v3, etc.)
+   - **Goal:** Reduce from 1,000+ to ~100 essential components
+
+2. **Product Consolidation:**
+   - **Merge:** `binna-pos/` + `pos/` → Single POS system
+   - **Merge:** `binna-stock/` + `stock/` → Single inventory system
+   - **Merge:** `binna-books/` + `books/` → Single accounting system
+   - **Merge:** `dashboard/` + `dashboard-app/` → Single dashboard
+
+3. **Store Page Optimization:**
+   - **Current:** 50+ store pages
+   - **Target:** ~20 essential store pages
+   - **Action:** Merge related functionality
+
+4. **API Consolidation:**
+   - **Current:** 50+ individual API files
+   - **Target:** ~15 organized API modules
+   - **Action:** Group related endpoints
+
+### **⚠️ DUPLICATION RULES:**
+- **NO MORE VERSIONED FILES** - Remove all v1, v2, v3 suffixes
+- **NO MORE DUPLICATE PRODUCTS** - One implementation per product
+- **NO MORE REDUNDANT PAGES** - Merge similar functionality
+- **NO MORE SCATTERED APIS** - Group related endpoints
+
+---
+
+## 🧹 **DEDUPLICATION & CLEANUP PLAN**
+
+### **🔍 Audit Areas:**
+- **Primary Target:** `src/core/shared/components/` (1,415+ files)
+- **Secondary Target:** `src/core/shared/services/` (Business services)
+- **Tertiary Target:** `src/core/shared/utils/` (Utility functions)
+
+### **📋 Cleanup Tasks:**
+1. **Component Deduplication:**
+   - Review similar components for merge opportunities
+   - Remove unused/orphaned components
+   - Consolidate duplicate functionality
+
+2. **Service Optimization:**
+   - Merge similar business services
+   - Remove redundant service implementations
+   - Optimize service dependencies
+
+3. **Utility Consolidation:**
+   - Merge similar utility functions
+   - Remove unused utilities
+   - Standardize utility patterns
+
+### **⚠️ Critical Rules:**
+- **MAINTAIN DDD STRUCTURE** - Respect domain boundaries
+- **PRESERVE FUNCTIONALITY** - Don't break existing features
+- **DOCUMENT CHANGES** - Track all modifications
+- **TEST THOROUGHLY** - Ensure no regressions
 
 ---
 
@@ -179,6 +469,43 @@
 2. **✅ Resolve security vulnerabilities** - Enhanced middleware with comprehensive security headers, CSP, HSTS, and rate limiting
 3. **🔄 Prepare for soft launch** - Beta user recruitment in progress, monitoring setup enhanced
 4. **🔄 Finalize launch preparations** - Addressing remaining Phase 6 pre-launch tasks
+
+### 🚨 **CRITICAL MISSING PRIORITIES TO ADD:**
+
+#### **📋 TypeScript & Build Health**
+- **🔴 PRIORITY:** Run `npx tsc --noEmit` to check for type errors
+- **🔴 PRIORITY:** Run `npm run build` to ensure build success
+- **🔴 PRIORITY:** Fix any TypeScript errors before proceeding
+
+#### **🧹 Deduplication & Cleanup**
+- **🔴 PRIORITY:** Audit `src/core/shared/components/` for duplicate/unused components
+- **🔴 PRIORITY:** Remove redundant files in shared directories
+- **🔴 PRIORITY:** Merge similar functionality across shared components
+
+#### **📊 Page Count Inventory**
+- **🔴 PRIORITY:** Count and list all user pages (user dashboard, profile, projects, etc.)
+- **🔴 PRIORITY:** Count and list all store pages (store dashboard, products, orders, etc.)
+- **🔴 PRIORITY:** Count and list all public pages (landing, catalog, calculators, etc.)
+
+#### **🤖 AI Calculators Restoration**
+- **🔴 PRIORITY:** Search previous commits for AI calculator implementations
+- **🔴 PRIORITY:** Restore missing AI calculators from backup commits
+- **🔴 PRIORITY:** Document AI calculator locations and usage
+
+#### **🔄 Marketplace API Sync**
+- **🔴 PRIORITY:** Implement API sync between store admin backend and marketplace frontend
+- **🔴 PRIORITY:** Ensure marketplace shows what stores are selling
+- **🔴 PRIORITY:** Create product sync endpoints for real-time updates
+
+#### **💰 Project Selling Feature**
+- **🔴 PRIORITY:** Implement feature for users to sell completed projects
+- **🔴 PRIORITY:** Create project marketplace integration
+- **🔴 PRIORITY:** Add project listing and selling workflow
+
+#### **🎯 3-Part Platform Structure**
+- **🔴 PRIORITY:** User (buyers) - registered users access all features, unregistered can view/compare/calculate
+- **🔴 PRIORITY:** Store - all store features with redundancy checking
+- **🔴 PRIORITY:** Public - all public pages working properly
 
 ### 📋 Current Week Actions (Phase 6 Pre-Launch)
 1. **✅ Fix identified issues** - UAT failures reduced from 3 to 1 (shopping cart), security vulnerabilities addressed

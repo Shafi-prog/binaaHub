@@ -1,56 +1,55 @@
-// @ts-nocheck
-"use client";
-
 import * as React from "react";
-import { cn } from "@/domains/shared/utils";
+import { cn } from "@/lib/utils";
 
 interface AvatarProps extends React.HTMLAttributes<HTMLDivElement> {
-  size?: "sm" | "md" | "lg";
-  name?: string;
+  className?: string;
 }
 
-function getInitials(name: string) {
-  return name
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .toUpperCase()
-    .slice(0, 2);
+interface AvatarImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
+  className?: string;
 }
 
-function getRandomColor(name: string) {
-  let hash = 0;
-  for (let i = 0; i < name.length; i++) {
-    hash = name.charCodeAt(i) + ((hash << 5) - hash);
-  }
-  const hue = hash % 360;
-  return `hsl(${hue}, 65%, 65%)`;
+interface AvatarFallbackProps extends React.HTMLAttributes<HTMLDivElement> {
+  className?: string;
 }
 
-export function Avatar({ size = "md", name = "", className, ...props }: AvatarProps) {
-  const sizeClasses = {
-    sm: "w-8 h-8 text-xs",
-    md: "w-10 h-10 text-sm",
-    lg: "w-12 h-12 text-base",
-  };
-
-  return (
+const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(
+  ({ className, ...props }, ref) => (
     <div
+      ref={ref}
       className={cn(
-        "relative inline-flex items-center justify-center rounded-full bg-gray-100 font-semibold text-gray-900",
-        sizeClasses[size],
+        "relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full",
         className
       )}
-      style={name ? { backgroundColor: getRandomColor(name) } : undefined}
       {...props}
-    >
-      {name ? (
-        <span className="text-white">{getInitials(name)}</span>
-      ) : (
-        <span className="text-gray-500">??</span>
+    />
+  )
+);
+Avatar.displayName = "Avatar";
+
+const AvatarImage = React.forwardRef<HTMLImageElement, AvatarImageProps>(
+  ({ className, ...props }, ref) => (
+    <img
+      ref={ref}
+      className={cn("aspect-square h-full w-full", className)}
+      {...props}
+    />
+  )
+);
+AvatarImage.displayName = "AvatarImage";
+
+const AvatarFallback = React.forwardRef<HTMLDivElement, AvatarFallbackProps>(
+  ({ className, ...props }, ref) => (
+    <div
+      ref={ref}
+      className={cn(
+        "flex h-full w-full items-center justify-center rounded-full bg-gray-100 text-gray-600 text-sm",
+        className
       )}
-    </div>
-  );
-}
+      {...props}
+    />
+  )
+);
+AvatarFallback.displayName = "AvatarFallback";
 
-
+export { Avatar, AvatarImage, AvatarFallback };

@@ -1,5 +1,39 @@
 # 🚀 BINNA PLATFORM
-**Saudi Arabia's Leading Marketplace & #### **🎯 3-Part Platform Structure**
+**Global Marketplace Connecting Stores to Buyers Worldwide**
+
+## 🌍 **PLATFORM VISION**
+
+**BINNA is a worldwide e-commerce platform that connects stores to buyers globally, with specialized focus on construction and retail markets.**
+
+### **👥 THREE USER TYPES:**
+
+#### **🔐 REGISTERED USERS (Full Access)**
+- **Personal Dashboards** - Complete user profiles with purchase history
+- **Project Management** - Construction project tracking and calculators  
+- **Expense Tracking** - Comprehensive spending analysis and budgeting
+- **Warranties Management** - Digital warranty tracking and claims
+- **Shopping Features** - Advanced cart, wishlists, and recommendations
+- **Project Marketplace** - Sell completed projects to other users
+
+#### **🏪 STORE OWNERS (Business Management)**
+- **Complete E-commerce Solution** - Powered by Medusa.js (MIT Licensed)
+- **Advanced POS Systems** - Touch-friendly Arabic interfaces
+- **Inventory Management** - Multi-location stock tracking with AI forecasting
+- **Customer Relationship Management** - Advanced CRM and segmentation
+- **Financial Management** - ZATCA-compliant accounting and reporting
+- **Marketing Tools** - Email campaigns, promotions, and analytics
+- **Order Management** - Fulfillment, returns, and customer service
+
+#### **🌐 UNREGISTERED VISITORS (Free Access)**
+- **Construction Calculators** - Free building cost estimation tools
+- **Product Browsing** - View products and services without registration
+- **Price Comparison** - Compare prices across different stores
+- **Material Prices** - Live construction material pricing
+- **Educational Content** - Building guides and supervisor directories
+
+---
+
+## 🎯 **3-Part Platform Structure**
 - **PRIORITY:** User (buyers) - registered users access all features, unregistered can view/compare/calculate
 - **PRIORITY:** Store - all store features with redundancy checking
 - **PRIORITY:** Public - all public pages working properly

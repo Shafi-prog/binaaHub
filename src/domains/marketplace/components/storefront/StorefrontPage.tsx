@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Search, ShoppingCart, User, Menu, Star, Filter, Heart } from 'lucide-react';
 import { useAuth } from '@/shared/hooks/use-auth';
-import { LoadingSpinner } from '@/shared/components/ui/loading';
+import { LoadingSpinner } from '@/core/shared/components/ui/loading';
 
 interface Product {
   id: string;

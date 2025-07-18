@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Typography, EnhancedCard, Button } from '@/domains/shared/components/ui/enhanced-components';
+import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/enhanced-components';
 import { useRouter } from 'next/navigation';
 import { Calendar, BarChart3, Users, FileText, Settings, Bookmark, Store } from 'lucide-react';
 

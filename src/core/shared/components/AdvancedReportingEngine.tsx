@@ -1,7 +1,7 @@
 // Advanced Reporting Engine
 import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/domains/shared/components/ui/card';
-import { Button } from '@/domains/shared/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
+import { Button } from '@/core/shared/components/ui/button';
 
 export function AdvancedReportingEngine() {
   const [reportType, setReportType] = useState('sales');

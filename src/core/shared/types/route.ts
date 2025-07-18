@@ -1,8 +1,9 @@
-// File: C:\Users\hp\BinnaCodes\binna\src\app\api\activate-invite\route.ts
-import * as entry from '../../../../../src/app/api/activate-invite/route.js'
-import type { NextRequest } from 'next/server.js'
+// File: C:\Users\hp\BinnaCodes\binna\src\app\api\auth\logout\route.ts
+import * as entry from '@/app/api/auth/logout/route'
+import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
+import type { NextRequest } from 'next/server'
 
-type TEntry = typeof import('../../../../../src/app/api/activate-invite/route.js')
+type TEntry = typeof import('@/app/api/auth/logout/route')
 
 type SegmentParams<T extends Object = any> = T extends Record<string, any>
   ? { [K in keyof T]: T[K] extends string ? string | string[] | undefined : never }

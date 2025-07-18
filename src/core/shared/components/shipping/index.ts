@@ -1,1 +1,1 @@
-export { ShippingLogisticsIntegration, default } from './ShippingLogisticsIntegration';
+export { default as ShippingLogisticsIntegration, default } from './ShippingLogisticsIntegration';

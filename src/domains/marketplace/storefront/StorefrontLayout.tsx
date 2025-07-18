@@ -1,6 +1,6 @@
 import React from 'react';
-import { Header } from '../../../shared/components/ui/Header';
-import { Footer } from '../../../shared/components/ui/Footer';
+import { Header } from '../../../core/shared/components/ui/Header';
+import { Footer } from '../../../core/shared/components/ui/Footer';
 import { SearchBar } from '../search/SearchBar';
 import { CategoryNav } from './CategoryNav';
 

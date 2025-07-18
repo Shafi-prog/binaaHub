@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Card } from '@/shared/components/ui/card';
 import { Button } from '@/shared/components/ui/button';
-import { Input } from '@/shared/components/ui/input';
-import { Select } from '@/shared/components/ui/select';
+import { EnhancedInput, EnhancedSelect } from '@/core/shared/components/ui/enhanced-components';
 
 interface VendorOnboardingData {
   businessName: string;
@@ -74,21 +73,21 @@ export function VendorOnboarding() {
         return (
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Business Information</h3>
-            <Input
+            <EnhancedInput
               label="Business Name (Arabic)"
               value={formData.businessName}
               onChange={(e) => setFormData({ ...formData, businessName: e.target.value })}
               placeholder="اسم الشركة"
               required
             />
-            <Input
+            <EnhancedInput
               label="Contact Person"
               value={formData.contactPerson}
               onChange={(e) => setFormData({ ...formData, contactPerson: e.target.value })}
               placeholder="اسم الشخص المسؤول"
               required
             />
-            <Input
+            <EnhancedInput
               label="Email Address"
               type="email"
               value={formData.email}
@@ -96,7 +95,7 @@ export function VendorOnboarding() {
               placeholder="email@example.com"
               required
             />
-            <Input
+            <EnhancedInput
               label="Phone Number"
               value={formData.phone}
               onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
@@ -110,24 +109,24 @@ export function VendorOnboarding() {
         return (
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Legal Documentation</h3>
-            <Input
+            <EnhancedInput
               label="Commercial Registration Number"
               value={formData.commercialRegistration}
               onChange={(e) => setFormData({ ...formData, commercialRegistration: e.target.value })}
               placeholder="1010XXXXXX"
               required
             />
-            <Input
+            <EnhancedInput
               label="Tax Number (VAT)"
               value={formData.taxNumber}
               onChange={(e) => setFormData({ ...formData, taxNumber: e.target.value })}
               placeholder="30XXXXXXXXX"
               required
             />
-            <Select
+            <EnhancedSelect
               label="Business Type"
               value={formData.businessType}
-              onChange={(value) => setFormData({ ...formData, businessType: value })}
+              onChange={(e) => setFormData({ ...formData, businessType: e.target.value })}
               options={[
                 { value: 'retail', label: 'Retail Store' },
                 { value: 'wholesale', label: 'Wholesale' },
@@ -144,14 +143,14 @@ export function VendorOnboarding() {
         return (
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Address & Banking</h3>
-            <Input
+            <EnhancedInput
               label="Business Address"
               value={formData.address}
               onChange={(e) => setFormData({ ...formData, address: e.target.value })}
               placeholder="Full business address"
               required
             />
-            <Input
+            <EnhancedInput
               label="Bank Account (IBAN)"
               value={formData.bankAccount}
               onChange={(e) => setFormData({ ...formData, bankAccount: e.target.value })}

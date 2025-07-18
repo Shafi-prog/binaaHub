@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { LoadingSpinner } from '@/core/shared/components/ui';
 import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/enhanced-components';
-import { Shield, Calendar, Box, Tag, Clock, CreditCard, File, Settings, BarChart3, MessageCircle, Store, User as UserIcon, LogOut, Home, Folder, Mail, BookOpen } from 'lucide-react';
+import { Shield, Calendar, Box, Tag, Clock, CreditCard, File, Settings, BarChart3, MessageCircle, Store, User as UserIcon, LogOut, Home, Folder, Mail, BookOpen, Bot } from 'lucide-react';
 import { verifyTempAuth } from '@/core/shared/services/auth';
 import { quickLogout } from '@/core/shared/services/logout';
 
@@ -123,6 +123,8 @@ export default function UserDashboard() {
     { title: 'مركز البناء الرئيسي', href: '/user/projects/new', icon: <Calendar className="w-6 h-6" /> },
     { title: 'مشاريعي', href: '/user/projects/list', icon: <Box className="w-6 h-6" /> },
     { title: 'حاسبة التكاليف', href: '/user/projects/calculator', icon: <BarChart3 className="w-6 h-6" /> },
+    { title: 'الحاسبة المتقدمة', href: '/user/calculator', icon: <BarChart3 className="w-6 h-6" /> },
+    { title: 'المساعد الذكي', href: '/user/ai-assistant', icon: <Bot className="w-6 h-6" /> },
     { title: 'دليل الموردين', href: '/user/projects/suppliers', icon: <CreditCard className="w-6 h-6" /> },
     { title: 'المذكرة', href: '/user/projects/notebook', icon: <Shield className="w-6 h-6" /> },
     { title: 'الإعدادات', href: '/user/projects/settings', icon: <Settings className="w-6 h-6" /> },

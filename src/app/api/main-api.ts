@@ -79,9 +79,7 @@ export class UnifiedAPILayer {
     
     // Role-based access
     if (route.role) {
-      middlewares.push(async (request: NextRequest) => {
-        return await requireRole(request as AuthenticatedRequest, route.role!);
-      });
+      middlewares.push(requireRole(route.role));
     }
     
     return middlewares;

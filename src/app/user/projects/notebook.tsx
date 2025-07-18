@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Typography, EnhancedCard, Button } from '@/domains/shared/components/ui/enhanced-components';
+import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/enhanced-components';
 import { Plus } from 'lucide-react';
 
 export default function NotebookPage() {

@@ -155,3 +155,6 @@ export function TableLoading() {
 }
 
 export default EnhancedLoading;
+
+// Simple LoadingSpinner alias for backward compatibility
+export const LoadingSpinner = EnhancedLoading;

@@ -1,10 +1,10 @@
 "use client"
 import { useState, useEffect } from "react";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/domains/shared/components/ui/table";
-import { Button } from "@/domains/shared/components/ui/button";
-import { Input } from "@/domains/shared/components/ui/input";
-import { Badge } from "@/domains/shared/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/domains/shared/components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/core/shared/components/ui/table";
+import { Button } from "@/core/shared/components/ui/button";
+import { Input } from "@/core/shared/components/ui/input";
+import { Badge } from "@/core/shared/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/core/shared/components/ui/card";
 import { Search, Plus, Edit, Trash2 } from "lucide-react";
 
 interface Product {

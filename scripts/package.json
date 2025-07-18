@@ -1,0 +1,15 @@
+{
+  "name": "user-dashboard-scripts",
+  "version": "1.0.0",
+  "description": "Scripts to check and validate user dashboard integration",
+  "scripts": {
+    "check-user-pages": "node scripts/check-user-pages-integration.js",
+    "validate-dashboard": "node scripts/validate-user-dashboard.js",
+    "auto-fix-dashboard": "node scripts/auto-fix-user-dashboard.js",
+    "dashboard-report": "npm run check-user-pages && npm run validate-dashboard",
+    "fix-and-validate": "npm run auto-fix-dashboard && npm run validate-dashboard"
+  },
+  "devDependencies": {
+    "glob": "^10.3.10"
+  }
+}

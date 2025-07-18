@@ -1,1 +1,1 @@
-export { PaymentGatewayIntegration, default } from './PaymentGatewayIntegration';
+export { default as PaymentGatewayIntegration, default } from './PaymentGatewayIntegration';

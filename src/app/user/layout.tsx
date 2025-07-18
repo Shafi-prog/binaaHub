@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { Button } from '@/domains/shared/components/ui/button';
+import { Button } from '@/core/shared/components/ui/button';
 import { 
   User,
   BarChart3,

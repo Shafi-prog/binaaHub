@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { Button as BaseButton } from './button';
+import { ChevronDown } from 'lucide-react';
+
+// Utility function (simplified version of cn)
+const cn = (...classes: (string | undefined)[]) => {
+  return classes.filter(Boolean).join(' ');
+};
 
 // Typography component
 interface TypographyProps {
-  variant?: 'heading' | 'subheading' | 'body' | 'caption';
+  variant?: 'heading' | 'subheading' | 'body' | 'caption' | 'label';
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl';
   weight?: 'normal' | 'medium' | 'semibold' | 'bold';
   className?: string;
@@ -22,7 +28,8 @@ export const Typography: React.FC<TypographyProps> = ({
     heading: 'font-bold',
     subheading: 'font-semibold',
     body: 'font-normal',
-    caption: 'font-normal text-gray-600'
+    caption: 'font-normal text-gray-600',
+    label: 'font-medium text-gray-700'
   };
   
   const sizeClasses = {
@@ -121,3 +128,167 @@ export const Button: React.FC<ButtonProps> = ({
     </button>
   );
 };
+
+// Enhanced Input Component
+export const EnhancedInput = forwardRef<
+  HTMLInputElement,
+  {
+    label?: string;
+    error?: string;
+    hint?: string;
+    leftIcon?: React.ReactNode;
+    rightIcon?: React.ReactNode;
+    variant?: 'default' | 'filled' | 'outlined';
+    size?: 'sm' | 'md' | 'lg';
+    className?: string;
+  } & React.InputHTMLAttributes<HTMLInputElement>
+>(({ 
+  label, 
+  error, 
+  hint, 
+  leftIcon, 
+  rightIcon, 
+  variant = 'default' as const,
+  size = 'md' as const,
+  className = '',
+  ...props 
+}, ref) => {
+  const variantClasses = {
+    default: 'border border-gray-300 bg-white focus:border-blue-500',
+    filled: 'border-0 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-blue-500',
+    outlined: 'border-2 border-gray-300 bg-transparent focus:border-blue-500',
+  };
+  const sizeClasses: Record<'sm' | 'md' | 'lg', string> = {
+    sm: 'px-3 py-2 text-sm min-h-[40px]',
+    md: 'px-4 py-3 text-base min-h-[48px]',
+    lg: 'px-5 py-4 text-lg min-h-[56px]',
+  };
+
+  return (
+    <div className="space-y-2">
+      {label && (
+        <Typography variant="label" size="sm" className="block">
+          {label}
+        </Typography>
+      )}
+      <div className="relative">
+        {leftIcon && (
+          <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+            {leftIcon}
+          </div>
+        )}
+        <input
+          ref={ref}
+          className={cn(
+            'font-tajawal w-full rounded-lg transition-all duration-200',
+            'focus:outline-none focus:ring-0',
+            variantClasses[variant],
+            sizeClasses[size as keyof typeof sizeClasses],
+            leftIcon && 'pr-10',
+            rightIcon && 'pl-10',
+            error && 'border-red-300 focus:border-red-500 focus:ring-red-500',
+            className
+          )}
+          {...props}
+        />
+        {rightIcon && (
+          <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+            {rightIcon}
+          </div>
+        )}
+      </div>
+      {error && (
+        <Typography variant="caption" size="sm" className="text-red-600">
+          {error}
+        </Typography>
+      )}
+      {hint && !error && (
+        <Typography variant="caption" size="sm" className="text-gray-500">
+          {hint}
+        </Typography>
+      )}
+    </div>
+  );
+});
+
+EnhancedInput.displayName = 'EnhancedInput';
+
+// Enhanced Select Component
+export const EnhancedSelect = forwardRef<
+  HTMLSelectElement,
+  {
+    label?: string;
+    error?: string;
+    hint?: string;
+    placeholder?: string;
+    options: Array<{ value: string; label: string; disabled?: boolean }>;
+    size?: 'sm' | 'md' | 'lg';
+    className?: string;
+    dir?: 'rtl' | 'ltr';
+    'aria-label'?: string;
+  } & React.SelectHTMLAttributes<HTMLSelectElement>
+>(({ 
+  label, 
+  error, 
+  hint, 
+  placeholder,
+  options,
+  size = 'md',
+  className = '',
+  dir = 'rtl',
+  'aria-label': ariaLabel,
+  ...props 
+}, ref) => {
+  const sizeClasses = {
+    sm: 'px-3 py-2 text-sm',
+    md: 'px-4 py-3 text-base',
+    lg: 'px-5 py-4 text-lg',
+  };
+
+  return (
+    <div className="space-y-2" dir={dir}>
+      {label && (
+        <Typography variant="label" size="sm" className="block">
+          {label}
+        </Typography>
+      )}
+      <div className="relative">
+        <select
+          ref={ref}
+          className={cn(
+            'font-tajawal w-full rounded-lg border border-gray-300 bg-white',
+            'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500',
+            'transition-all duration-200 appearance-none',
+            sizeClasses[size as keyof typeof sizeClasses],
+            error && 'border-red-300 focus:border-red-500 focus:ring-red-500',
+            className
+          )}
+          aria-label={ariaLabel || label}
+          {...props}
+        >
+          {placeholder && (
+            <option value="" disabled hidden>{placeholder}</option>
+          )}
+          {options.map((option) => (
+            <option key={option.value} value={option.value} disabled={option.disabled}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+        <ChevronDown className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 pointer-events-none" />
+      </div>
+      {error && (
+        <Typography variant="caption" size="sm" className="text-red-600">
+          {error}
+        </Typography>
+      )}
+      {hint && !error && (
+        <Typography variant="caption" size="sm" className="text-gray-500">
+          {hint}
+        </Typography>
+      )}
+    </div>
+  );
+});
+
+EnhancedSelect.displayName = 'EnhancedSelect';

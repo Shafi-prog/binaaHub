@@ -9,6 +9,8 @@ export interface StatCardProps {
   className?: string;
   color?: string;
   subtitle?: string;
+  trend?: string;
+  trendDirection?: 'up' | 'down' | 'neutral';
 }
 
 export const StatCard: React.FC<StatCardProps> = ({ 
@@ -17,7 +19,9 @@ export const StatCard: React.FC<StatCardProps> = ({
   icon,
   className = '',
   color,
-  subtitle
+  subtitle,
+  trend,
+  trendDirection
 }) => {
   return (
     <Card className={`p-6 ${className}`}>
@@ -27,6 +31,15 @@ export const StatCard: React.FC<StatCardProps> = ({
           <p className="mt-2 text-3xl font-semibold">{value}</p>
           {subtitle && (
             <p className="mt-1 text-xs text-gray-500">{subtitle}</p>
+          )}
+          {trend && (
+            <p className={`mt-1 text-xs ${
+              trendDirection === 'up' ? 'text-green-600' : 
+              trendDirection === 'down' ? 'text-red-600' : 
+              'text-gray-500'
+            }`}>
+              {trend}
+            </p>
           )}
         </div>
         {icon && (

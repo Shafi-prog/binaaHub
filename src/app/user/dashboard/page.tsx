@@ -4,7 +4,34 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/enhanced-components';
-import { Shield, Calendar, Box, Tag, Clock, CreditCard, File, Settings, BarChart3, MessageCircle, Store, User as UserIcon, LogOut, Home, Folder, Mail, BookOpen } from 'lucide-react';
+import { 
+  Calendar, 
+  Wallet, 
+  FolderOpen, 
+  CheckCircle, 
+  TrendingUp, 
+  TrendingDown,
+  Lightbulb,
+  Star, 
+  Trophy, 
+  Users, 
+  Brain, 
+  Shield, 
+  Box, 
+  Bot, 
+  Calculator, 
+  Gift,
+  Crown,
+  Home,
+  Folder,
+  UserIcon,
+  Settings,
+  Store,
+  LogOut,
+  File,
+  Trash2,
+  BarChart3
+} from 'lucide-react';
 
 export const dynamic = 'force-dynamic'
 
@@ -13,6 +40,30 @@ interface DashboardStats {
   activeProjects: number;
   totalOrders: number;
   totalInvoices: number;
+  loyaltyPoints: number;
+  currentLevel: number;
+  communityPosts: number;
+  monthlySpent: number;
+  balanceAmount: number;
+  aiInsights: number;
+}
+
+interface QuickInsight {
+  id: string;
+  title: string;
+  description: string;
+  type: 'saving' | 'trend' | 'alert' | 'opportunity';
+  impact: number;
+  confidence: number;
+}
+
+interface CommunityHighlight {
+  id: string;
+  author: string;
+  content: string;
+  likes: number;
+  type: 'showcase' | 'tip' | 'question';
+  timeAgo: string;
 }
 
 export default function UserDashboardPage() {
@@ -22,7 +73,13 @@ export default function UserDashboardPage() {
     activeWarranties: 8,
     activeProjects: 3,
     totalOrders: 24,
-    totalInvoices: 6
+    totalInvoices: 6,
+    loyaltyPoints: 12450,
+    currentLevel: 8,
+    communityPosts: 15,
+    monthlySpent: 23500,
+    balanceAmount: 8750,
+    aiInsights: 12
   });
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<any>(null);
@@ -35,6 +92,42 @@ export default function UserDashboardPage() {
     note: ''
   });
   const [costs, setCosts] = useState<any[]>([]);
+  const [quickInsights, setQuickInsights] = useState<QuickInsight[]>([
+    {
+      id: 'INS001',
+      title: 'توفير في أسعار الأسمنت',
+      description: 'يمكنك توفير 8,500 ر.س بالتبديل لمورد بديل',
+      type: 'saving',
+      impact: 8500,
+      confidence: 92
+    },
+    {
+      id: 'INS002', 
+      title: 'انخفاض أسعار الحديد',
+      description: 'أسعار الحديد متوقعة للانخفاض 8% الشهر القادم',
+      type: 'trend',
+      impact: 0,
+      confidence: 78
+    }
+  ]);
+  const [communityHighlights, setCommunityHighlights] = useState<CommunityHighlight[]>([
+    {
+      id: 'COM001',
+      author: 'محمد البناء',
+      content: 'انتهيت من مشروع فيلا سكنية في الرياض باستخدام أحدث تقنيات العزل',
+      likes: 45,
+      type: 'showcase',
+      timeAgo: 'منذ 3 ساعات'
+    },
+    {
+      id: 'COM002',
+      author: 'سارة المعمارية', 
+      content: 'نصيحة: تأكد من غسل الرمل جيداً قبل استخدامه في الخرسانة',
+      likes: 32,
+      type: 'tip',
+      timeAgo: 'منذ 5 ساعات'
+    }
+  ]);
   const router = useRouter();
 
   useEffect(() => {
@@ -100,52 +193,103 @@ export default function UserDashboardPage() {
 
   const dashboardCards = [
     {
+      title: 'نقاط الولاء',
+      value: stats.loyaltyPoints.toLocaleString(),
+      subtitle: `مستوى ${stats.currentLevel}`,
+      icon: <Trophy className="w-6 h-6" />,
+      href: '/user/gamification',
+      color: 'bg-gradient-to-r from-yellow-500 to-yellow-600',
+      textColor: 'text-yellow-600'
+    },
+    {
+      title: 'الرصيد المتاح',
+      value: `${stats.balanceAmount.toLocaleString()} ر.س`,
+      subtitle: 'جاهز للاستخدام',
+      icon: <Wallet className="w-6 h-6" />,
+      href: '/user/balance',
+      color: 'bg-gradient-to-r from-green-500 to-green-600',
+      textColor: 'text-green-600'
+    },
+    {
+      title: 'الرؤى الذكية',
+      value: stats.aiInsights,
+      subtitle: 'توصية جديدة',
+      icon: <Brain className="w-6 h-6" />,
+      href: '/user/smart-insights',
+      color: 'bg-gradient-to-r from-purple-500 to-purple-600',
+      textColor: 'text-purple-600'
+    },
+    {
+      title: 'المجتمع',
+      value: stats.communityPosts,
+      subtitle: 'منشورات هذا الشهر',
+      icon: <Users className="w-6 h-6" />,
+      href: '/user/social-community',
+      color: 'bg-gradient-to-r from-blue-500 to-blue-600',
+      textColor: 'text-blue-600'
+    },
+    {
       title: 'المشاريع النشطة',
       value: stats.activeProjects,
+      subtitle: 'قيد التنفيذ',
       icon: <Calendar className="w-6 h-6" />,
       href: '/user/projects/list',
-      color: 'bg-blue-500',
+      color: 'bg-gradient-to-r from-indigo-500 to-indigo-600',
+      textColor: 'text-indigo-600'
     },
     {
       title: 'الضمانات النشطة',
       value: stats.activeWarranties,
+      subtitle: 'سارية المفعول',
       icon: <Shield className="w-6 h-6" />,
       href: '/user/warranties',
-      color: 'bg-green-500',
+      color: 'bg-gradient-to-r from-teal-500 to-teal-600',
+      textColor: 'text-teal-600'
     },
     {
       title: 'إجمالي الطلبات',
       value: stats.totalOrders,
+      subtitle: 'طلب مكتمل',
       icon: <Box className="w-6 h-6" />,
       href: '/user/orders',
-      color: 'bg-purple-500',
+      color: 'bg-gradient-to-r from-orange-500 to-orange-600',
+      textColor: 'text-orange-600'
     },
     {
-      title: 'الفواتير المستلمة',
-      value: stats.totalInvoices,
-      icon: <File className="w-6 h-6" />,
-      href: '/user/invoices',
-      color: 'bg-orange-500',
-    },
+      title: 'الإنفاق الشهري',
+      value: `${stats.monthlySpent.toLocaleString()} ر.س`,
+      subtitle: 'هذا الشهر',
+      icon: <TrendingUp className="w-6 h-6" />,
+      href: '/user/expenses',
+      color: 'bg-gradient-to-r from-red-500 to-red-600',
+      textColor: 'text-red-600'
+    }
   ];
 
   const quickActions = [
-    { title: 'مركز البناء الرئيسي', href: '/user/projects/new', icon: <Calendar className="w-6 h-6" /> },
-    { title: 'مشاريعي', href: '/user/projects/list', icon: <Box className="w-6 h-6" /> },
-    { title: 'حاسبة التكاليف', href: '/user/projects/calculator', icon: <BarChart3 className="w-6 h-6" /> },
-    { title: 'دليل الموردين', href: '/user/projects/suppliers', icon: <CreditCard className="w-6 h-6" /> },
-    { title: 'المذكرة', href: '/user/projects/notebook', icon: <Shield className="w-6 h-6" /> },
-    { title: 'الإعدادات', href: '/user/projects/settings', icon: <Settings className="w-6 h-6" /> },
+    { title: 'المساعد الذكي', href: '/user/ai-assistant', icon: <Bot className="w-6 h-6" />, color: 'from-purple-50 to-purple-100', textColor: 'text-purple-700' },
+    { title: 'حاسبة التكاليف', href: '/user/projects/calculator', icon: <Calculator className="w-6 h-6" />, color: 'from-blue-50 to-blue-100', textColor: 'text-blue-700' },
+    { title: 'مركز المكافآت', href: '/user/gamification', icon: <Gift className="w-6 h-6" />, color: 'from-yellow-50 to-yellow-100', textColor: 'text-yellow-700' },
+    { title: 'إدارة الرصيد', href: '/user/balance', icon: <Wallet className="w-6 h-6" />, color: 'from-green-50 to-green-100', textColor: 'text-green-700' },
+    { title: 'مجتمع البناء', href: '/user/social-community', icon: <Users className="w-6 h-6" />, color: 'from-indigo-50 to-indigo-100', textColor: 'text-indigo-700' },
+    { title: 'الرؤى الذكية', href: '/user/smart-insights', icon: <Lightbulb className="w-6 h-6" />, color: 'from-amber-50 to-amber-100', textColor: 'text-amber-700' },
+    { title: 'إدارة الضمانات', href: '/user/warranties', icon: <Shield className="w-6 h-6" />, color: 'from-teal-50 to-teal-100', textColor: 'text-teal-700' },
+    { title: 'خطط الاشتراك', href: '/user/subscriptions', icon: <Crown className="w-6 h-6" />, color: 'from-rose-50 to-rose-100', textColor: 'text-rose-700' },
+    { title: 'إعدادات الحساب', href: '/user/settings', icon: <Settings className="w-6 h-6" />, color: 'from-gray-50 to-gray-100', textColor: 'text-gray-700' }
   ];
 
   const userPanelLinks = [
     { label: 'لوحة التحكم', href: '/user/dashboard', icon: <Home className="w-5 h-5" /> },
     { label: 'مشاريعي', href: '/user/projects/list', icon: <Folder className="w-5 h-5" /> },
+    { label: 'المساعد الذكي', href: '/user/ai-assistant', icon: <Bot className="w-5 h-5" /> },
+    { label: 'مجتمع البناء', href: '/user/social-community', icon: <Users className="w-5 h-5" /> },
+    { label: 'مركز المكافآت', href: '/user/gamification', icon: <Trophy className="w-5 h-5" /> },
+    { label: 'الرؤى الذكية', href: '/user/smart-insights', icon: <Brain className="w-5 h-5" /> },
+    { label: 'إدارة الرصيد', href: '/user/balance', icon: <Wallet className="w-5 h-5" /> },
+    { label: 'خطط الاشتراك', href: '/user/subscriptions', icon: <Crown className="w-5 h-5" /> },
+    { label: 'إدارة الضمانات', href: '/user/warranties', icon: <Shield className="w-5 h-5" /> },
     { label: 'الملف الشخصي', href: '/user/profile', icon: <UserIcon className="w-5 h-5" /> },
-    { label: 'الرسائل', href: '/user/messages', icon: <Mail className="w-5 h-5" /> },
     { label: 'تصفح المتاجر', href: '/stores', icon: <Store className="w-5 h-5" /> },
-    { label: 'رحلة البناء', href: '/user/building-advice', icon: <BookOpen className="w-5 h-5" /> },
-    { label: 'المدفوعات', href: '/user/payments', icon: <CreditCard className="w-5 h-5" /> },
     { label: 'الإعدادات', href: '/user/settings', icon: <Settings className="w-5 h-5" /> },
     { label: 'تسجيل الخروج', action: 'logout', icon: <LogOut className="w-5 h-5 text-red-600" />, danger: true },
   ];
@@ -263,6 +407,112 @@ export default function UserDashboardPage() {
             ))}
           </div>
         </EnhancedCard>
+
+        {/* Community Highlights & AI Insights */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+          {/* Community Highlights */}
+          <EnhancedCard variant="elevated" className="bg-white/80 backdrop-blur-sm">
+            <div className="mb-6">
+              <Typography variant="subheading" size="xl" weight="semibold" className="text-gray-800 mb-2 flex items-center gap-2">
+                <Users className="w-5 h-5 text-indigo-600" />
+                أبرز المجتمع 👥
+              </Typography>
+              <Typography variant="body" size="sm" className="text-gray-600">
+                احدث الأنشطة والإحصائيات
+              </Typography>
+            </div>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-600">الأعضاء النشطون</span>
+                <span className="text-lg font-bold text-indigo-600">15,420</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-600">مشاريع مشتركة</span>
+                <span className="text-lg font-bold text-blue-600">2,340</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-600">نصائح هذا الأسبوع</span>
+                <span className="text-lg font-bold text-green-600">156</span>
+              </div>
+              <div className="border-t pt-4">
+                <Link href="/user/social-community" className="text-indigo-600 hover:text-indigo-700 text-sm font-medium">
+                  انضم للمحادثة ←
+                </Link>
+              </div>
+            </div>
+          </EnhancedCard>
+
+          {/* AI Insights */}
+          <EnhancedCard variant="elevated" className="bg-white/80 backdrop-blur-sm">
+            <div className="mb-6">
+              <Typography variant="subheading" size="xl" weight="semibold" className="text-gray-800 mb-2 flex items-center gap-2">
+                <Brain className="w-5 h-5 text-purple-600" />
+                الرؤى الذكية 🧠
+              </Typography>
+              <Typography variant="body" size="sm" className="text-gray-600">
+                توصيات مخصصة لك
+              </Typography>
+            </div>
+            <div className="space-y-4">
+              <div className="bg-purple-50 rounded-lg p-4">
+                <div className="flex items-start gap-3">
+                  <TrendingDown className="w-5 h-5 text-purple-600 mt-0.5" />
+                  <div>
+                    <p className="text-sm font-medium text-purple-800">توفير محتمل</p>
+                    <p className="text-xs text-purple-600">يمكنك توفير 15% من تكاليف المواد</p>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-4">
+                <div className="flex items-start gap-3">
+                  <Lightbulb className="w-5 h-5 text-blue-600 mt-0.5" />
+                  <div>
+                    <p className="text-sm font-medium text-blue-800">توصية ذكية</p>
+                    <p className="text-xs text-blue-600">الوقت المثالي لبدء مشروع الأسقف</p>
+                  </div>
+                </div>
+              </div>
+              <div className="border-t pt-4">
+                <Link href="/user/smart-insights" className="text-purple-600 hover:text-purple-700 text-sm font-medium">
+                  عرض جميع الرؤى ←
+                </Link>
+              </div>
+            </div>
+          </EnhancedCard>
+
+          {/* Gamification Progress */}
+          <EnhancedCard variant="elevated" className="bg-white/80 backdrop-blur-sm">
+            <div className="mb-6">
+              <Typography variant="subheading" size="xl" weight="semibold" className="text-gray-800 mb-2 flex items-center gap-2">
+                <Trophy className="w-5 h-5 text-yellow-600" />
+                مركز المكافآت 🏆
+              </Typography>
+              <Typography variant="body" size="sm" className="text-gray-600">
+                تقدمك ومكافآتك
+              </Typography>
+            </div>
+            <div className="space-y-4">
+              <div className="text-center">
+                <div className="w-20 h-20 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <Crown className="w-10 h-10 text-white" />
+                </div>
+                <Typography variant="body" weight="bold" className="text-gray-800">المستوى الذهبي</Typography>
+                <Typography variant="caption" size="sm" className="text-gray-600">12,450 نقطة</Typography>
+              </div>
+              <div className="bg-gray-200 rounded-full h-2">
+                <div className="bg-gradient-to-r from-yellow-400 to-orange-500 h-2 rounded-full" style={{ width: '75%' }}></div>
+              </div>
+              <div className="text-center">
+                <Typography variant="caption" size="xs" className="text-gray-600">2,550 نقطة للمستوى التالي</Typography>
+              </div>
+              <div className="border-t pt-4">
+                <Link href="/user/gamification" className="text-yellow-600 hover:text-yellow-700 text-sm font-medium">
+                  عرض المكافآت ←
+                </Link>
+              </div>
+            </div>
+          </EnhancedCard>
+        </div>
 
         {/* Cost Management Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">

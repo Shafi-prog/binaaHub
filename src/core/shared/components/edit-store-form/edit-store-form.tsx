@@ -1,10 +1,10 @@
 "use client"
 
 import { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/domains/shared/components/ui/card"
-import { Button } from "@/domains/shared/components/ui/button"
-import { Input } from "@/domains/shared/components/ui/input"
-import { Label } from "@/domains/shared/components/ui/label"
+import { Card, CardContent, CardHeader, CardTitle } from "@/core/shared/components/ui/card"
+import { Button } from "@/core/shared/components/ui/button"
+import { Input } from "@/core/shared/components/ui/input"
+import { Label } from "@/core/shared/components/ui/label"
 
 interface StoreFormData {
   name: string

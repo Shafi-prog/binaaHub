@@ -3,8 +3,8 @@
 
 import { useState, useRef } from 'react';
 import { ClientIcon } from '@/components/icons';
-import { Button } from '@/domains/shared/components/ui/enhanced-components';
-import { LoadingSpinner } from '@/domains/shared/components/ui';
+import { Button } from '@/core/shared/components/ui/enhanced-components';
+import { LoadingSpinner } from '@/core/shared/components/ui/LoadingSpinner';
 
 interface ExpenseData {
   vendor: string;

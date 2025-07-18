@@ -1,7 +1,7 @@
 // Cart Sidebar Component
 import React, { useState } from 'react';
-import { Button } from '@/domains/shared/components/ui/button';
-import { Badge } from '@/domains/shared/components/ui/badge';
+import { Button } from '@/core/shared/components/ui/button';
+import { Badge } from '@/core/shared/components/ui/badge';
 
 interface CartItem {
   id: string;

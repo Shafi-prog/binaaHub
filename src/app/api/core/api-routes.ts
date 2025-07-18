@@ -1,6 +1,6 @@
 // Example API routes for the Binna platform
 import { NextRequest } from 'next/server';
-import { apiLayer, APIResponse, createHandler } from './unified-api';
+import { unifiedAPI, ApiResponse, apiLayer, APIResponse, createHandler } from './unified-api';
 import { commonSchemas } from './middleware/validation';
 import { AuthenticatedRequest } from './middleware/auth';
 

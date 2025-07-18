@@ -1,7 +1,7 @@
 // Driver Assignment System
 import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/domains/shared/components/ui/card';
-import { Button } from '@/domains/shared/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
+import { Button } from '@/core/shared/components/ui/button';
 
 export function DriverAssignmentSystem() {
   const [drivers] = useState([

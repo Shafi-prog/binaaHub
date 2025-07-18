@@ -5,7 +5,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import { TempUser } from '@/domains/shared/services/temp-auth';
+import { TempUser } from '@/core/shared/services/temp-auth';
 
 export default function DirectLoginPage() {
   const router = useRouter();

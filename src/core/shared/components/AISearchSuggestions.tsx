@@ -3,7 +3,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { Search, TrendingUp, Clock, Star, ArrowRight } from 'lucide-react';
-import { supabase } from '@/domains/shared/services/supabase/client';
+import { supabase } from '@/core/shared/services/supabase/client';
 
 interface SearchSuggestion {
   id: string;

@@ -1,8 +1,8 @@
 // Dashboard Components
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/domains/shared/components/ui/card';
-import { Badge } from '@/domains/shared/components/ui/badge';
-import { Button } from '@/domains/shared/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
+import { Badge } from '@/core/shared/components/ui/badge';
+import { Button } from '@/core/shared/components/ui/button';
 import { LucideIcon, FolderOpen, Activity, Users, DollarSign, TrendingUp, AlertCircle } from 'lucide-react';
 
 interface StatCardProps {

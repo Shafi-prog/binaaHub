@@ -2,7 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
-import { ExcelImportService } from '@/domains/shared/services/excel-import';
+import { ExcelImportService } from '@/core/shared/services/excel-import';
 
 export async function GET(request: NextRequest) {
   try {

@@ -3,8 +3,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { Users, MapPin, Phone, Mail, UserCheck, MessageCircle, Clock } from 'lucide-react';
-import { Card, CardContent, Button } from '@/domains/shared/components/ui';
-import { useTranslation } from '@/domains/shared/hooks/useTranslation';
+import { Card, CardContent, Button } from '@/core/shared/components/ui';
+import { useTranslation } from '@/core/shared/hooks/useTranslation';
 import SupervisorRequests from '@/components/SupervisorRequests';
 
 interface Supervisor {

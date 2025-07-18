@@ -4,7 +4,7 @@
 
 // Force dynamic rendering to avoid SSG auth context issues
 import { SingleColumnPage } from "@/components/layout/pages"
-import { CustomerListTable } from "./components/customer-list-table"
+import { CustomerListTable } from "@/core/shared/components/customer-list-table"
 
 
 export const dynamic = 'force-dynamic'

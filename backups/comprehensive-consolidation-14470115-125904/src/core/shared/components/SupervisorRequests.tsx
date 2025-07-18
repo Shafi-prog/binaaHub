@@ -1,12 +1,12 @@
 // @ts-nocheck
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/domains/shared/components/ui/card';
-import { Button } from '@/domains/shared/components/ui/button';
-import { Badge } from '@/domains/shared/components/ui/badge';
-import { LoadingSpinner } from '@/domains/shared/components/ui/loading-spinner';
-import { Input, Textarea, Select, Modal, EmptyState } from '@/domains/shared/components/ui';
-import { useTranslation } from '@/domains/shared/hooks/useTranslation';
-import { formatCurrency, formatDate } from '@/domains/shared/utils';
+import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
+import { Button } from '@/core/shared/components/ui/button';
+import { Badge } from '@/core/shared/components/ui/badge';
+import { LoadingSpinner } from '@/core/shared/components/ui/loading-spinner';
+import { Input, Textarea, Select, Modal, EmptyState } from '@/core/shared/components/ui';
+import { useTranslation } from '@/core/shared/hooks/useTranslation';
+import { formatCurrency, formatDate } from '@/core/shared/utils';
 
 interface SupervisorRequest {
   id: string;

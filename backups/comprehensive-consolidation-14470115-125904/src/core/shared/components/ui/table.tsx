@@ -1,5 +1,5 @@
 import React from 'react';
-import { cn } from '@/domains/shared/utils';
+import { cn } from '@/core/shared/utils';
 
 const Table = React.forwardRef<
   HTMLTableElement,

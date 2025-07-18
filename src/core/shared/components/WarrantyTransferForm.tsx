@@ -1,8 +1,8 @@
 // @ts-nocheck
 import React, { useState } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { Card } from '@/domains/shared/components/ui';
-import type { Database } from '@/domains/shared/types/database';
+import { Card } from '@/core/shared/components/ui';
+import type { Database } from '@/core/shared/types/database';
 
 interface WarrantyTransferFormProps {
   warrantyId: string;

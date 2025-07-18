@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Card } from '@/domains/shared/components/ui';
+import { Card } from '@/core/shared/components/ui';
 import {
   BarChart,
   Bar,

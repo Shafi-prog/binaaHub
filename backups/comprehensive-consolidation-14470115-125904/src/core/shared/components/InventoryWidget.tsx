@@ -3,8 +3,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { LoadingSpinner } from '@/domains/shared/components/ui';
-import { usePermissions } from '@/domains/shared/hooks/usePermissions';
+import { LoadingSpinner } from '@/core/shared/components/ui';
+import { usePermissions } from '@/core/shared/hooks/usePermissions';
 import { useState as useToastState } from 'react';
 
 // Simple toast component for feedback

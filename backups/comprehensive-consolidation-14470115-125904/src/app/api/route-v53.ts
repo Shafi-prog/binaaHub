@@ -2,7 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
-import { fatoorahService } from '@/domains/shared/services/fatoorah-service';
+import { fatoorahService } from '@/core/shared/services/fatoorah-service';
 
 // POST /api/fatoorah/create-payment
 export async function POST(request: NextRequest) {

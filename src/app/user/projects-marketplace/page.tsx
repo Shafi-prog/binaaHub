@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { supabase } from '@/domains/shared/utils/supabase/client';
+import { supabase } from '@/core/shared/utils/supabase/client';
 import { 
   Search, 
   Filter, 

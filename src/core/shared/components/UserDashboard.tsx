@@ -2,13 +2,13 @@
 import { useState, useEffect } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import Link from 'next/link';
-import type { Database } from '@/domains/shared/types/database';
-import { Card } from '@/domains/shared/components/ui/card';
-import { StatCard } from '@/domains/shared/components/ui/StatCard';
-import { LoadingSpinner } from '@/domains/shared/components/ui/loading-spinner';
+import type { Database } from '@/core/shared/types/database';
+import { Card } from '@/core/shared/components/ui/card';
+import { StatCard } from '@/core/shared/components/ui/StatCard';
+import LoadingSpinner from '@/core/shared/components/ui/loading-spinner';
 import { Shield, Calendar, Box, Tag, Clock, CreditCard, File } from 'lucide-react';
-import { isProjectActive, getStatusLabel, getProgressFromStatus, getProjectTypeLabel } from '@/domains/shared/services/project-utils';
-import { getUserDashboardStats, type UserDashboardStats } from '@/domains/shared/services/api/user-dashboard';
+import { isProjectActive, getStatusLabel, getProgressFromStatus, getProjectTypeLabel } from '@/core/shared/services/project-utils';
+import { getUserDashboardStats, type UserDashboardStats } from '@/core/shared/services/api/user-dashboard';
 
 export default function UserDashboard() {
   const [stats, setStats] = useState<UserDashboardStats | null>(null);

@@ -2,8 +2,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Card } from '@/domains/shared/components/ui';
-import { supabaseERPService } from '@/domains/shared/services/erp/supabase-service';
+import { Card } from '@/core/shared/components/ui';
+import { supabaseERPService } from '@/core/shared/services/erp/supabase-service';
 import {
   BarChart,
   Bar,

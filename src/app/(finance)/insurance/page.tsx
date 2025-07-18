@@ -4,8 +4,9 @@
 import { useState, useEffect } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/navigation';
-import { Card, LoadingSpinner } from '@/domains/shared/components/ui';
-import { verifyAuthWithRetry } from '@/domains/shared/services/auth-recovery';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
+import { Button } from '@/core/shared/components/ui/button';
+import LoadingSpinner from '@/core/shared/components/ui/loading-spinner';
 import { Shield, Home, Car, Heart, Building2, Factory } from 'lucide-react';
 
 

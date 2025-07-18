@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { EnhancedInput, Button } from '@/domains/shared/components/ui/enhanced-components';
+import { EnhancedInput, Button } from '@/core/shared/components/ui/enhanced-components';
 import toast from 'react-hot-toast';
 import { createClient } from '@supabase/supabase-js';
 

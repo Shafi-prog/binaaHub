@@ -15,7 +15,7 @@ import {
   Pie,
   Cell,
 } from 'recharts';
-import { Card } from '@/domains/shared/components/ui';
+import { Card } from '@/core/shared/components/ui';
 import { ClientIcon } from '@/components/icons';
 import {
   getStoreStats,
@@ -23,7 +23,7 @@ import {
   getRevenueByProduct,
   getCustomerSegments,
   getMarketingCampaigns,
-} from '@/domains/shared/services/api/store-analytics';
+} from '@/core/shared/services/api/store-analytics';
 import type {
   StoreStats,
   StoreAnalytics,
@@ -31,8 +31,8 @@ import type {
   CustomerSegment,
   MarketingCampaign,
   AnalyticsDataPoint,
-} from '@/domains/shared/types/store-analytics';
-import { formatCurrency } from '@/domains/shared/utils';
+} from '@/core/shared/types/store-analytics';
+import { formatCurrency } from '@/core/shared/utils';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 

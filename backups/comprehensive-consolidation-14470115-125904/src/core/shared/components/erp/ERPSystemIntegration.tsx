@@ -7,7 +7,7 @@ import {
   ERPSystem, 
   SyncRequest, 
   SyncResult 
-} from '@/domains/shared/services/erp/erp-integration-manager';
+} from '@/core/shared/services/erp/erp-integration-manager';
 import { 
   Database, 
   RefreshCw, 

@@ -1,7 +1,7 @@
 // @ts-nocheck
 'use client';
 
-import LogoutButton from '@/domains/shared/components/ui/LogoutButton';
+import LogoutButton from '@/core/shared/components/ui/LogoutButton';
 
 export type ProfileClientProps = {
   name: string;

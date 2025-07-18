@@ -2,7 +2,7 @@
 "use client";
 
 import { useState } from 'react';
-import { EnhancedInput, Button } from '@/domains/shared/components/ui/enhanced-components';
+import { EnhancedInput, Button } from '@/core/shared/components/ui/enhanced-components';
 
 export default function ArabicLoginForm({ onLogin }: { onLogin: (data: any) => void }) {
   const [email, setEmail] = useState('');

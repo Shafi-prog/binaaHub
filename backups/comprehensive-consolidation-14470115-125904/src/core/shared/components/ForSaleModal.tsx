@@ -1,9 +1,9 @@
 // ForSaleModal Component
 import React, { useState } from 'react';
-import { Modal } from '@/domains/shared/components/ui/Modal';
-import { Button } from '@/domains/shared/components/ui/button';
-import { Input } from '@/domains/shared/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle } from '@/domains/shared/components/ui/card';
+import { Modal } from '@/core/shared/components/ui/Modal';
+import { Button } from '@/core/shared/components/ui/button';
+import { Input } from '@/core/shared/components/ui/input';
+import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
 
 interface ForSaleModalProps {
   isOpen: boolean;

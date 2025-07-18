@@ -4,9 +4,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { Card, LoadingSpinner } from '@/domains/shared/components/ui';
-import { formatCurrency } from '@/domains/shared/utils';
-import ERPIntegrationServiceCore from '@/domains/shared/services/erp-integration/service';
+import { Card, LoadingSpinner } from '@/core/shared/components/ui';
+import { formatCurrency } from '@/core/shared/utils';
+import ERPIntegrationServiceCore from '@/core/shared/services/erp-integration/service';
 import {
   ShoppingCart,
   Plus,

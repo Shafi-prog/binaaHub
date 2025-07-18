@@ -2,7 +2,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Card } from '@/domains/shared/components/ui';
+import { Card } from '@/core/shared/components/ui';
 import { MapPin, TrendingDown, TrendingUp, DollarSign } from 'lucide-react';
 
 

@@ -4,7 +4,7 @@
 import { ReactNode } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { cn } from '@/domains/shared/utils'
+import { cn } from '@/core/shared/utils'
 import {
   LayoutDashboard,
   Store,

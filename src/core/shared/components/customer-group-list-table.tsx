@@ -12,7 +12,7 @@ import { useCallback, useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 
-import { DataTable } from "@/domains/shared/components/ui/data-table"
+import { DataTable } from "@/core/shared/components/ui/data-table"
 import { useDataTableDateFilters } from "@/components/data-table/helpers/general/use-data-table-date-filters"
 import { SingleColumnPage } from "@/components/layout/pages"
 import {

@@ -1,5 +1,13 @@
 // @ts-nocheck
-// Re-export orders from the main API hooks
-export * from "@/domains/shared/hooks/api/orders";
+import { NextRequest, NextResponse } from 'next/server';
+
+export async function GET(request: NextRequest) {
+  return NextResponse.json({ orders: [] });
+}
+
+export async function POST(request: NextRequest) {
+  const body = await request.json();
+  return NextResponse.json({ success: true, order: body });
+}
 
 

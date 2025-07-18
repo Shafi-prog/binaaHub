@@ -1,11 +1,11 @@
 // @ts-nocheck
 import React, { useState, useEffect } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { Card, LoadingSpinner } from '@/domains/shared/components/ui';
-import type { Database } from '@/domains/shared/types/database';
+import { Card, LoadingSpinner } from '@/core/shared/components/ui';
+import type { Database } from '@/core/shared/types/database';
 import { File, Trash2, Upload, Download, Eye } from 'lucide-react';
 
-import type { WarrantyDocument } from '@/domains/shared/types/warranty';
+import type { WarrantyDocument } from '@/core/shared/types/warranty';
 
 interface WarrantyDocsProps {
   warrantyId: string;

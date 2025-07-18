@@ -7,10 +7,10 @@ import {
   CardContent, 
   CardHeader, 
   CardTitle 
-} from '@/domains/shared/components/ui/card';
-import { Button } from '@/domains/shared/components/ui/button';
-import { Input } from '@/domains/shared/components/ui/input';
-import { Badge } from '@/domains/shared/components/ui/badge';
+} from '@/core/shared/components/ui/card';
+import { Button } from '@/core/shared/components/ui/button';
+import { Input } from '@/core/shared/components/ui/input';
+import { Badge } from '@/core/shared/components/ui/badge';
 import { 
   BarChart, 
   Bar, 

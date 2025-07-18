@@ -2,12 +2,12 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/domains/shared/components/ui/card'
-import { Button } from '@/domains/shared/components/ui/button'
-import { Badge } from '@/domains/shared/components/ui/badge'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/domains/shared/components/ui/tabs'
-import { Progress } from '@/domains/shared/components/ui/progress'
-import { Input } from '@/domains/shared/components/ui/input'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/core/shared/components/ui/card'
+import { Button } from '@/core/shared/components/ui/button'
+import { Badge } from '@/core/shared/components/ui/badge'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/core/shared/components/ui/tabs'
+import { Progress } from '@/core/shared/components/ui/progress'
+import { Input } from '@/core/shared/components/ui/input'
 import { 
 
   Hammer, 
@@ -26,7 +26,7 @@ import {
 } from 'lucide-react'
 
 // Force dynamic rendering to avoid SSG auth context issues
-import { ConstructionEcosystemManager } from '@/domains/shared/services/construction/construction-ecosystem-manager'
+import { ConstructionEcosystemManager } from '@/core/shared/services/construction/construction-ecosystem-manager'
 
 
 export const dynamic = 'force-dynamic'

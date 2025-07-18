@@ -21,10 +21,10 @@ import {
   Eye,
   RefreshCw
 } from 'lucide-react';
-import { Card } from '@/domains/shared/components/ui/card';
-import { Button } from '@/domains/shared/components/ui/button';
-import { Input } from '@/domains/shared/components/ui/input';
-import { Badge } from '@/domains/shared/components/ui/badge';
+import { Card } from '@/core/shared/components/ui/card';
+import { Button } from '@/core/shared/components/ui/button';
+import { Input } from '@/core/shared/components/ui/input';
+import { Badge } from '@/core/shared/components/ui/badge';
 import { toast } from 'react-hot-toast';
 
 interface Product {

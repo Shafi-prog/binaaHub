@@ -2,7 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
-import { SupervisorService } from '@/domains/shared/services/supervisor-service';
+import { SupervisorService } from '@/core/shared/services/supervisor-service';
 
 export async function POST(request: NextRequest) {
   try {

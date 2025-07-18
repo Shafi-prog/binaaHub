@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from 'react';
 import { MapPin, TrendingUp, TrendingDown, DollarSign, Calendar, BarChart3, Filter, Download } from 'lucide-react';
-import { supabase } from '@/domains/shared/services/supabase/client';
+import { supabase } from '@/core/shared/services/supabase/client';
 
 interface CityPrice {
   city: string;

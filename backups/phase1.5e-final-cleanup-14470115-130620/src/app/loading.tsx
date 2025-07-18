@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { EnhancedLoading } from '@/domains/shared/components/ui/enhanced-loading';
+import { EnhancedLoading } from '@/core/shared/components/ui/enhanced-loading';
 
 export default function Loading() {
   return (

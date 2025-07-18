@@ -1,7 +1,7 @@
 // @ts-nocheck
 'use client';
 import React, { forwardRef } from 'react';
-import { cn, formatCurrency } from '@/domains/shared/utils';
+import { cn, formatCurrency } from '@/core/shared/utils';
 import { ChevronDown, Search, Filter, SortAsc, Eye, Edit, Trash2, Plus } from 'lucide-react';
 
 // Enhanced Typography Components

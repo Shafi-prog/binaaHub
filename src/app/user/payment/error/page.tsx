@@ -5,8 +5,8 @@ import React, { useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { XCircle, RefreshCw, ArrowRight, AlertTriangle, CreditCard } from 'lucide-react';
-import { Card } from '@/domains/shared/components/ui/card';
-import { Button } from '@/domains/shared/components/ui/button';
+import { Card } from '@/core/shared/components/ui/card';
+import { Button } from '@/core/shared/components/ui/button';
 
 
 export const dynamic = 'force-dynamic'

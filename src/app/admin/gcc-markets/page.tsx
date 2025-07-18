@@ -2,11 +2,11 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/domains/shared/components/ui/card'
-import { Button } from '@/domains/shared/components/ui/button'
-import { Badge } from '@/domains/shared/components/ui/badge'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/domains/shared/components/ui/tabs'
-import { Progress } from '@/domains/shared/components/ui/progress'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/core/shared/components/ui/card'
+import { Button } from '@/core/shared/components/ui/button'
+import { Badge } from '@/core/shared/components/ui/badge'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/core/shared/components/ui/tabs'
+import { Progress } from '@/core/shared/components/ui/progress'
 import { 
 
   MapPin, 
@@ -22,10 +22,10 @@ import {
 } from 'lucide-react'
 
 // Force dynamic rendering to avoid SSG auth context issues
-import { GCCMarketManager } from '@/domains/shared/services/markets/gcc-market-manager'
-import { UAEMarketManager } from '@/domains/shared/services/markets/uae-market-manager'
-import { KuwaitMarketManager } from '@/domains/shared/services/markets/kuwait-market-manager'
-import { QatarMarketManager } from '@/domains/shared/services/markets/qatar-market-manager'
+import { GCCMarketManager } from '@/core/shared/services/markets/gcc-market-manager'
+import { UAEMarketManager } from '@/core/shared/services/markets/uae-market-manager'
+import { KuwaitMarketManager } from '@/core/shared/services/markets/kuwait-market-manager'
+import { QatarMarketManager } from '@/core/shared/services/markets/qatar-market-manager'
 
 
 export const dynamic = 'force-dynamic'

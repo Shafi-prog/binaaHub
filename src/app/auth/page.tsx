@@ -14,7 +14,7 @@ export default function AuthPage() {
         
         if (authResult?.user) {
           // User is authenticated, redirect to appropriate dashboard
-          if (authResult.user.role === 'store') {
+          if (authResult.user.role === 'store_owner' || authResult.user.role === 'store_admin') {
             router.replace('/store/dashboard');
           } else {
             router.replace('/user/dashboard');

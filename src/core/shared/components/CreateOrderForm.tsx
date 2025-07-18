@@ -2,10 +2,10 @@
 import { useState, useEffect } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/navigation';
-import type { Database } from '@/domains/shared/types/database';
-import { Card, LoadingSpinner } from '@/domains/shared/components/ui';
-import { formatCurrency } from '@/domains/shared/utils';
-import { EnhancedInput, EnhancedSelect, Button } from '@/domains/shared/components/ui/enhanced-components';
+import type { Database } from '@/core/shared/types/database';
+import { Card, LoadingSpinner } from '@/core/shared/components/ui';
+import { formatCurrency } from '@/core/shared/utils';
+import { EnhancedInput, EnhancedSelect, Button } from '@/core/shared/components/ui/enhanced-components';
 
 interface ProjectOption {
   id: string;

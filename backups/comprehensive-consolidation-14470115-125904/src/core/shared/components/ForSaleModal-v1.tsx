@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { EnhancedModal, Typography, Button } from '@/domains/shared/components/ui/enhanced-components';
+import { EnhancedModal, Typography, Button } from '@/core/shared/components/ui/enhanced-components';
 import { ClientIcon } from '@/components/icons';
 import { toast } from 'react-hot-toast';
 

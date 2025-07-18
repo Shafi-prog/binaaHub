@@ -4,10 +4,10 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Card, LoadingSpinner } from '@/domains/shared/components/ui';
+import { Card, LoadingSpinner } from '@/core/shared/components/ui';
 import { ClientIcon } from '@/components/icons';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
-import { usePermissions } from '@/domains/shared/hooks/usePermissions';
+import { usePermissions } from '@/core/shared/hooks/usePermissions';
 import { useState as useToastState } from 'react';
 
 interface AnalyticsData {

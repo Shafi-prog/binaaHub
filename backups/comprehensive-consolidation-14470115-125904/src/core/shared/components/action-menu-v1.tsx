@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from '@/domains/shared/components/ui/button';
+import { Button } from '@/core/shared/components/ui/button';
 import { MoreHorizontal } from 'lucide-react';
 
 interface ActionMenuProps {

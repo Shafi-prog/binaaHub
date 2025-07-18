@@ -2,11 +2,11 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/domains/shared/components/ui/card';
-import { Button } from '@/domains/shared/components/ui/button';
-import { Input } from '@/domains/shared/components/ui/input';
-import { Badge } from '@/domains/shared/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/domains/shared/components/ui/tabs';
+import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
+import { Button } from '@/core/shared/components/ui/button';
+import { Input } from '@/core/shared/components/ui/input';
+import { Badge } from '@/core/shared/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/core/shared/components/ui/tabs';
 import {
   Dialog,
   DialogContent,
@@ -15,15 +15,15 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/domains/shared/components/ui/dialog';
+} from '@/core/shared/components/ui/dialog';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/domains/shared/components/ui/select';
-import { Label } from '@/domains/shared/components/ui/label';
+} from '@/core/shared/components/ui/select';
+import { Label } from '@/core/shared/components/ui/label';
 import { 
   Truck, 
   MapPin, 
@@ -42,7 +42,7 @@ import {
   Route,
   DollarSign
 } from 'lucide-react';
-import { Textarea } from '@/domains/shared/components/ui';
+import { Textarea } from '@/core/shared/components/ui';
 
 interface Driver {
   id: string;

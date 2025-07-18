@@ -2,10 +2,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/domains/shared/components/ui/card';
-import { Badge } from '@/domains/shared/components/ui/badge';
-import { Button } from '@/domains/shared/components/ui/button';
-import { Input } from '@/domains/shared/components/ui/input';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
+import { Badge } from '@/core/shared/components/ui/badge';
+import { Button } from '@/core/shared/components/ui/button';
+import { Input } from '@/core/shared/components/ui/input';
 import { ShoppingCart, Search, Filter, Star, Package, Truck, Shield } from 'lucide-react';
 import { toast } from 'sonner';
 

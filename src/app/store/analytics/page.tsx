@@ -2,7 +2,7 @@
 import { Metadata } from 'next';
 import MarketAnalytics from '@/components/analytics/MarketAnalytics';
 import CityPriceTracking from '@/components/pricing/CityPriceTracking';
-import AdvancedReportingEngine from '@/domains/stores/components/reporting/AdvancedReportingEngine';
+import { AdvancedReportingEngine } from '@/core/shared/components/AdvancedReportingEngine';
 
 export const metadata: Metadata = {
   title: 'تحليلات منصة بنا المتقدمة - التحليلات والتقارير الذكية',

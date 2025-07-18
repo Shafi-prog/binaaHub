@@ -5,9 +5,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { Search, User, Phone, MapPin, Package, Clock, DollarSign } from 'lucide-react';
-import { Card } from '@/domains/shared/components/ui/card';
-import { Input } from '@/domains/shared/components/ui/input';
-import { Button } from '@/domains/shared/components/ui/button';
+import { Card } from '@/core/shared/components/ui/card';
+import { Input } from '@/core/shared/components/ui/input';
+import { Button } from '@/core/shared/components/ui/button';
 
 interface CustomerSearchResult {
   id: string;

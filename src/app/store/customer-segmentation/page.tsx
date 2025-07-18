@@ -4,10 +4,10 @@
 
 // Force dynamic rendering to avoid SSG auth context issues
 import { useState } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/domains/shared/components/ui/card"
-import { Button } from "@/domains/shared/components/ui/button"
-import { Badge } from "@/domains/shared/components/ui/badge"
-import { Input } from "@/domains/shared/components/ui/input"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/core/shared/components/ui/card"
+import { Button } from "@/core/shared/components/ui/button"
+import { Badge } from "@/core/shared/components/ui/badge"
+import { Input } from "@/core/shared/components/ui/input"
 import { Plus, Search, Edit, Trash2, Users, Target, TrendingUp, Filter } from "lucide-react"
 import Link from "next/link"
 

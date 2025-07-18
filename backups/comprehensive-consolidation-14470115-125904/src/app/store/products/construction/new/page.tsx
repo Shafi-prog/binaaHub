@@ -7,11 +7,11 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Save, Scan, Camera, Plus, X } from 'lucide-react';
-import { Card, LoadingSpinner } from '@/domains/shared/components/ui';
+import { Card, LoadingSpinner } from '@/core/shared/components/ui';
 import SimpleLayout from '@/components/layout/SimpleLayout';
-import { verifyTempAuth } from '@/domains/shared/services/temp-auth';
+import { verifyTempAuth } from '@/core/shared/services/temp-auth';
 import BarcodeScanner from '@/components/barcode/BarcodeScanner';
-import { ConstructionCategory, Supplier, ProductFormData } from '@/domains/shared/types/construction';
+import { ConstructionCategory, Supplier, ProductFormData } from '@/core/shared/types/construction';
 
 
 export const dynamic = 'force-dynamic'

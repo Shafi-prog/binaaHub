@@ -5,14 +5,14 @@ import { useState, useEffect } from "react"
 import { useParams } from "next/navigation"
 import { TwoColumnPageSkeleton } from "@/components/common/skeleton"
 import { TwoColumnPage } from "@/components/layout/pages"
-import { VariantGeneralSection } from "./components/variant-general-section"
+import { VariantGeneralSection } from "@/core/shared/components/variant-general-section"
 import {
   InventorySectionPlaceholder,
   VariantInventorySection,
-} from "./components/variant-inventory-section"
+} from "@/core/shared/components/variant-inventory-section"
 
 // Force dynamic rendering to avoid SSG auth context issues
-import { VariantPricesSection } from "./components/variant-prices-section"
+import { VariantPricesSection } from "@/core/shared/components/variant-prices-section"
 
 
 export const dynamic = 'force-dynamic'

@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Card, LoadingSpinner, Button } from '@/domains/shared/components/ui';
+import { Card, LoadingSpinner, Button } from '@/core/shared/components/ui';
 import { 
   Settings, 
   FileText, 
@@ -21,8 +21,8 @@ import {
   Filter,
   Tag
 } from 'lucide-react';
-import { ProjectOrderSettings, ProjectOrderTemplate, UserOrderPreferences } from '@/domains/shared/types/project-settings';
-import { ProjectOrderSettingsAPI, ProjectOrderTemplatesAPI, UserOrderPreferencesAPI } from '@/domains/shared/services/api/project-settings';
+import { ProjectOrderSettings, ProjectOrderTemplate, UserOrderPreferences } from '@/core/shared/types/project-settings';
+import { ProjectOrderSettingsAPI, ProjectOrderTemplatesAPI, UserOrderPreferencesAPI } from '@/core/shared/services/api/project-settings';
 import { toast } from 'react-hot-toast';
 
 interface ProjectOrderCustomizationProps {

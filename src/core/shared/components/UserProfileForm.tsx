@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { useState, useEffect } from 'react';
-import { EnhancedInput, EnhancedSelect, Button } from '@/domains/shared/components/ui/enhanced-components';
+import { EnhancedInput, EnhancedSelect, Button } from '@/core/shared/components/ui/enhanced-components';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 const TRADES = [

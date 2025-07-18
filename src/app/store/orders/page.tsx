@@ -3,7 +3,7 @@
 
 
 // Force dynamic rendering to avoid SSG auth context issues
-import { OrderListTable } from "./components/order-list-table"
+import { OrderListTable } from "@/core/shared/components/order-list-table"
 import { SingleColumnPage } from "@/components/layout/pages"
 
 

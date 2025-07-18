@@ -2,7 +2,7 @@
 'use client';
 
 import React from 'react';
-import { cn } from '@/domains/shared/utils';
+import { cn } from '@/core/shared/utils';
 
 interface TabsProps {
   defaultValue?: string;

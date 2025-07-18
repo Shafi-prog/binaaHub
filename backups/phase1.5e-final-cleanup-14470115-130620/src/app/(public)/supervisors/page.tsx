@@ -1,9 +1,9 @@
 // @ts-nocheck
 import React from 'react';
 import Link from 'next/link';
-import { Card, CardContent } from '@/domains/shared/components/ui/card';
-import { Button } from '@/domains/shared/components/ui/button';
-import { Badge } from '@/domains/shared/components/ui/badge';
+import { Card, CardContent } from '@/core/shared/components/ui/card';
+import { Button } from '@/core/shared/components/ui/button';
+import { Badge } from '@/core/shared/components/ui/badge';
 import { Star, MapPin, Phone, Mail, CheckCircle, Clock, User } from 'lucide-react';
 
 interface Supervisor {

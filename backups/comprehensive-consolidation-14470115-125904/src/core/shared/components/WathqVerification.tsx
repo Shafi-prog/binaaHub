@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { createWathqService, CRUtils, type WathqCommercialRecord } from '@/domains/shared/services/wathq-api';
+import { createWathqService, CRUtils, type WathqCommercialRecord } from '@/core/shared/services/wathq-api';
 import { 
   Shield, 
   CheckCircle, 

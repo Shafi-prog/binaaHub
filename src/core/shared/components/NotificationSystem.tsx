@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import type { Database } from '@/domains/shared/types/database';
+import type { Database } from '@/core/shared/types/database';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Bell, Check, Info, AlertTriangle, X } from 'lucide-react';
 import * as ReactDOM from 'react-dom';

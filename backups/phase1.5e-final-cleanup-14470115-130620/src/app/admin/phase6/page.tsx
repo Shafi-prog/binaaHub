@@ -2,11 +2,11 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/domains/shared/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/domains/shared/components/ui/tabs';
-import { Badge } from '@/domains/shared/components/ui/badge';
-import { Button } from '@/domains/shared/components/ui/button';
-import { Progress } from '@/domains/shared/components/ui/progress';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/core/shared/components/ui/tabs';
+import { Badge } from '@/core/shared/components/ui/badge';
+import { Button } from '@/core/shared/components/ui/button';
+import { Progress } from '@/core/shared/components/ui/progress';
 import { 
   Brain, 
   Bot, 

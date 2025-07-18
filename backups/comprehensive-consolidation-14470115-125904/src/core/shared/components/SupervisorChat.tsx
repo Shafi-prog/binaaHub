@@ -1,13 +1,13 @@
 // @ts-nocheck
 import React, { useState, useEffect, useRef } from 'react';
-import { Card, CardContent } from '@/domains/shared/components/ui/card';
-import { Button } from '@/domains/shared/components/ui/button';
-import { Input } from '@/domains/shared/components/ui/input';
-import { Avatar } from '@/domains/shared/components/ui/avatar';
-import { Badge } from '@/domains/shared/components/ui/badge';
-import { LoadingSpinner } from '@/domains/shared/components/ui/loading-spinner';
-import { useTranslation } from '@/domains/shared/hooks/useTranslation';
-import { formatDate } from '@/domains/shared/utils';
+import { Card, CardContent } from '@/core/shared/components/ui/card';
+import { Button } from '@/core/shared/components/ui/button';
+import { Input } from '@/core/shared/components/ui/input';
+import { Avatar } from '@/core/shared/components/ui/avatar';
+import { Badge } from '@/core/shared/components/ui/badge';
+import { LoadingSpinner } from '@/core/shared/components/ui/loading-spinner';
+import { useTranslation } from '@/core/shared/hooks/useTranslation';
+import { formatDate } from '@/core/shared/utils';
 
 interface Message {
   id: string;

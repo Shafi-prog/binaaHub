@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { NextRequest, NextResponse } from 'next/server';
-import { initERPService } from '@/domains/shared/services/erp/mongodb-service';
+import { initERPService } from '@/core/shared/services/erp/mongodb-service';
 
 export async function GET(request: NextRequest) {
   try {

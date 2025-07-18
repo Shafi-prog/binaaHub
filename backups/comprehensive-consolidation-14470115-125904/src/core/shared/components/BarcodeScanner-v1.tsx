@@ -2,9 +2,9 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Button } from '@/domains/shared/components/ui';
+import { Button } from '@/core/shared/components/ui';
 import { Scan, Upload, Search, ShoppingBag, Plus, Info } from 'lucide-react';
-import { useTranslation } from '@/domains/shared/hooks/useTranslation';
+import { useTranslation } from '@/core/shared/hooks/useTranslation';
 import { exportToCSV } from '@/utilities/data-export';
 
 // Types for barcode scanner functionality

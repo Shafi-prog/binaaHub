@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { tempAuthService, type TempUser } from '@/domains/shared/services/temp-auth';
+import { tempAuthService, type TempUser } from '@/core/shared/services/temp-auth';
 
 interface AuthContextType {
   user: TempUser | null;

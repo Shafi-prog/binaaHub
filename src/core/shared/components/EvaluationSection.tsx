@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { useState } from 'react';
-import { Button } from '@/domains/shared/components/ui/enhanced-components';
+import { Button } from '@/core/shared/components/ui/enhanced-components';
 
 export function EvaluationSection({ userId }: { userId: string }) {
   // Placeholder for fetching evaluations

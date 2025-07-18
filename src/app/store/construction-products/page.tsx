@@ -5,14 +5,14 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Plus, Package, Search, Filter, ScanLine, Edit, Trash2, Download } from 'lucide-react';
-import { Card, LoadingSpinner } from '@/domains/shared/components/ui';
+import { Card, LoadingSpinner } from '@/core/shared/components/ui';
 import SimpleLayout from '@/components/layout/SimpleLayout';
 
 // Force dynamic rendering for this page to avoid SSG issues with auth context
-import { verifyTempAuth } from '@/domains/shared/services/temp-auth';
+import { verifyTempAuth } from '@/core/shared/services/temp-auth';
 import ProductCatalog from '@/components/construction/ProductCatalog';
 import BarcodeScanner from '@/components/barcode/BarcodeScanner';
-import { ConstructionProduct, ConstructionCategory } from '@/domains/shared/types/construction';
+import { ConstructionProduct, ConstructionCategory } from '@/core/shared/types/construction';
 
 
 export const dynamic = 'force-dynamic'

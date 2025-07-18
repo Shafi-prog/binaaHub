@@ -4,8 +4,8 @@
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { Card, LoadingSpinner, StatusBadge } from '@/domains/shared/components/ui';
-import { verifyAuthWithRetry } from '@/domains/shared/services/auth-recovery';
+import { Card, LoadingSpinner, StatusBadge } from '@/core/shared/components/ui';
+import { verifyAuthWithRetry } from '@/core/shared/services/auth-recovery';
 import {
   Shield,
   Calendar,

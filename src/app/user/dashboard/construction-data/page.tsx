@@ -4,8 +4,9 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { LoadingSpinner } from '@/domains/shared/components/ui/LoadingSpinner';
-import { Typography, EnhancedCard, Button, EnhancedBadge } from '@/domains/shared/components/ui/enhanced-components';
+import LoadingSpinner from '@/core/shared/components/ui/loading-spinner';
+import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/enhanced-components';
+import { Badge } from '@/core/shared/components/ui/badge';
 import { ClientIcon } from '@/components/icons';
 import type { IconKey } from '@/components/icons/ClientIcon';
 import Link from 'next/link';
@@ -254,9 +255,9 @@ export default function ConstructionDataDashboard() {
                     <Typography variant="body" size="md" weight="medium" className="text-gray-800">
                       {project.name}
                     </Typography>
-                    <EnhancedBadge variant={project.status === 'active' ? 'success' : 'neutral'} size="sm">
+                    <Badge variant={project.status === 'active' ? 'success' : 'neutral'} size="sm">
                       {project.status === 'active' ? 'نشط' : 'مكتمل'}
-                    </EnhancedBadge>
+                    </Badge>
                   </div>
                 </div>
               ))

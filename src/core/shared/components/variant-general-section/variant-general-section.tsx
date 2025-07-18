@@ -3,8 +3,8 @@ import { Component, PencilSquare, Trash } from "@medusajs/icons"
 import { Badge, Container, Heading } from "@medusajs/ui"
 import { useRouter } from "next/navigation"
 
-import { ActionMenu } from "../../../../../../components/common/action-menu"
-import { SectionRow } from "../../../../../../components/common/section"
+import { ActionMenu } from "@/core/shared/components/common/action-menu"
+import { SectionRow } from "@/core/shared/components/common/section"
 
 type VariantGeneralSectionProps = {
   variant: any

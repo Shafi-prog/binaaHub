@@ -3,8 +3,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { Card, LoadingSpinner } from '@/domains/shared/components/ui';
-import { formatCurrency } from '@/domains/shared/utils';
+import { Card } from '@/core/shared/components/ui/card';
+import LoadingSpinner from '@/core/shared/components/ui/loading-spinner';
+import { formatCurrency } from '@/core/shared/utils';
 import { 
   BarChart3, 
   Users, 

@@ -22,7 +22,7 @@
  * @since Phase 7 Missing Features Implementation
  */
 
-import { Database } from '@/domains/shared/types/supabase';
+import { Database } from '@/core/shared/types/supabase';
 
 // Core Types
 export interface Lead {

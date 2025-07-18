@@ -3,7 +3,7 @@
 
 import React, { useState } from 'react';
 import { useCart } from '@/contexts/CartContext';
-import { formatCurrency } from '@/domains/shared/utils';
+import { formatCurrency } from '@/core/shared/utils';
 import { Trash2, Plus, Minus, ShoppingCart, X } from 'lucide-react';
 
 interface CartSidebarProps {

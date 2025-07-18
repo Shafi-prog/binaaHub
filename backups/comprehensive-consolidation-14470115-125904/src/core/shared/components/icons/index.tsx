@@ -1,5 +1,5 @@
 // Re-export the existing ClientIcon component from the shared components
-export { default as ClientIcon } from '@/domains/shared/components/icons/ClientIcon';
+export { default as ClientIcon } from '@/core/shared/components/icons/ClientIcon';
 
 // Additional icon exports for convenience
 import React from 'react';

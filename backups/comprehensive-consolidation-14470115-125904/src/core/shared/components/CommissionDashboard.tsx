@@ -12,9 +12,9 @@ import {
   Plus,
   RefreshCw
 } from 'lucide-react'
-import { Card, CardContent, Button, Input, Badge, LoadingSpinner, EmptyState, Modal, Select } from '@/domains/shared/components/ui'
-import { useTranslation } from '@/domains/shared/hooks/useTranslation'
-import { formatDate, formatCurrency } from '@/domains/shared/utils'
+import { Card, CardContent, Button, Input, Badge, LoadingSpinner, EmptyState, Modal, Select } from '@/core/shared/components/ui'
+import { useTranslation } from '@/core/shared/hooks/useTranslation'
+import { formatDate, formatCurrency } from '@/core/shared/utils'
 
 interface CommissionDashboard {
   totalEarnings: number

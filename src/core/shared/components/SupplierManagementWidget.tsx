@@ -4,9 +4,9 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Card, LoadingSpinner } from '@/domains/shared/components/ui';
+import { Card, LoadingSpinner } from '@/core/shared/components/ui';
 import { ClientIcon } from '@/components/icons';
-import { usePermissions } from '@/domains/shared/hooks/usePermissions';
+import { usePermissions } from '@/core/shared/hooks/usePermissions';
 import { useState as useToastState } from 'react';
 
 function Toast({ message, onClose }: { message: string; onClose: () => void }) {

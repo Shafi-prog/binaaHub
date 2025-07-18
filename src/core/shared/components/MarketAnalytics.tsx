@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from 'react';
 import { TrendingUp, TrendingDown, BarChart3, MapPin, DollarSign, Users, Zap, Download, Share2 } from 'lucide-react';
-import { supabase } from '@/domains/shared/services/supabase/client';
+import { supabase } from '@/core/shared/services/supabase/client';
 
 interface MarketData {
   region: string;

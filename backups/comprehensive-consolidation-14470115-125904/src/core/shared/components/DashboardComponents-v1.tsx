@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { Card } from '@/domains/shared/components/ui';
-import { UserDashboardStats } from '@/domains/shared/services/api/user-dashboard';
-import { formatCurrency } from '@/domains/shared/utils';
+import { Card } from '@/core/shared/components/ui';
+import { UserDashboardStats } from '@/core/shared/services/api/user-dashboard';
+import { formatCurrency } from '@/core/shared/utils';
 import Link from 'next/link';
 
 type StatCardProps = {

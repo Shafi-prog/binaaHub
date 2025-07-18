@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { createClient } from '@supabase/supabase-js';
-import { syncUserWithMedusa } from '@/domains/shared/services/medusa-integration';
+import { syncUserWithMedusa } from '@/core/shared/services/medusa-integration';
 
 export async function POST(request: NextRequest) {
   try {

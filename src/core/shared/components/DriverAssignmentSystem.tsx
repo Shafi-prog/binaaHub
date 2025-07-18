@@ -1,3 +1,5 @@
+// @ts-nocheck
+"use client";
 // Driver Assignment System
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';

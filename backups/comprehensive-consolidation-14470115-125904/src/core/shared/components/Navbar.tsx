@@ -4,7 +4,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useTranslation } from '@/domains/shared/hooks/useTranslation';
+import { useTranslation } from '@/core/shared/hooks/useTranslation';
 import { 
   Menu, 
   X, 
@@ -23,10 +23,10 @@ import {
   DollarSign,
   Calendar
 } from 'lucide-react';
-import { Typography, EnhancedCard, Button } from '@/domains/shared/components/ui/enhanced-components';
-import { NotificationService } from '@/domains/shared/services/notifications';
+import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/enhanced-components';
+import { NotificationService } from '@/core/shared/services/notifications';
 import { CartIcon } from '../../../../components/cart/CartSidebar';
-import { getTempAuthUser, clearTempAuth } from '@/domains/shared/services/temp-auth';
+import { getTempAuthUser, clearTempAuth } from '@/core/shared/services/temp-auth';
 
 interface NavbarProps {
   user?: any | null;

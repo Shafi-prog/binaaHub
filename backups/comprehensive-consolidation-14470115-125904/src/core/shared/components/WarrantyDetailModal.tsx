@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/navigation';
-import type { Database } from '@/domains/shared/types/database';
-import { Card, LoadingSpinner } from '@/domains/shared/components/ui';
+import type { Database } from '@/core/shared/types/database';
+import { Card, LoadingSpinner } from '@/core/shared/components/ui';
 import {
   Shield,
   CheckCircle,

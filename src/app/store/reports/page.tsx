@@ -5,7 +5,7 @@
  */
 
 import { Metadata } from 'next'
-import AdvancedReportingEngine from '@/domains/stores/components/reporting/AdvancedReportingEngine'
+import { AdvancedReportingEngine } from '@/core/shared/components/AdvancedReportingEngine'
 
 export const metadata: Metadata = {
   title: 'التقارير المتقدمة - بنا',

@@ -8,7 +8,7 @@ import {
   ShippingRequest, 
   ShippingRate, 
   TrackingInfo 
-} from '@/domains/shared/services/shipping/shipping-manager';
+} from '@/core/shared/services/shipping/shipping-manager';
 import { 
   Truck, 
   Package, 

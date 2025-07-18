@@ -7,15 +7,15 @@
 'use client'
 
 import React, { useState, useEffect, useMemo } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/domains/shared/components/ui/card'
-import { Button } from '@/domains/shared/components/ui/button'
-import { Input } from '@/domains/shared/components/ui/input'
-import { Badge } from '@/domains/shared/components/ui/badge'
-import { Alert, AlertDescription } from '@/domains/shared/components/ui/alert'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/domains/shared/components/ui/tabs'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/domains/shared/components/ui/select'
-import { ScrollArea } from '@/domains/shared/components/ui/scroll-area'
-import { Separator } from '@/domains/shared/components/ui/separator'
+import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card'
+import { Button } from '@/core/shared/components/ui/button'
+import { Input } from '@/core/shared/components/ui/input'
+import { Badge } from '@/core/shared/components/ui/badge'
+import { Alert, AlertDescription } from '@/core/shared/components/ui/alert'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/core/shared/components/ui/tabs'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/core/shared/components/ui/select'
+import { ScrollArea } from '@/core/shared/components/ui/scroll-area'
+import { Separator } from '@/core/shared/components/ui/separator'
 import { 
   BarChart3, 
   LineChart, 

@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect } from 'react'
 import { Shield, Plus, Search, Calendar, Clock, CheckCircle, XCircle, AlertTriangle } from 'lucide-react'
-import { Card, CardContent, Button, Input, Modal, Select } from '@/domains/shared/components/ui'
+import { Card, CardContent, Button, Input, Modal, Select } from '@/core/shared/components/ui'
 
 interface Warranty {
   id: string

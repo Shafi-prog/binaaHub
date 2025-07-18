@@ -3,8 +3,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { Card, LoadingSpinner } from '@/domains/shared/components/ui';
-import { formatCurrency } from '@/domains/shared/utils';
+import { Card, LoadingSpinner } from '@/core/shared/components/ui';
+import { formatCurrency } from '@/core/shared/utils';
 import Link from 'next/link';
 import { 
   Package, 

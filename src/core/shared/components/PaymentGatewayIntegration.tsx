@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { paymentGatewayManager, PaymentGateway, PaymentRequest, PaymentResponse } from '@/domains/shared/services/payments/payment-gateway-manager';
+import { paymentGatewayManager, PaymentGateway, PaymentRequest, PaymentResponse } from '@/core/shared/services/payments/payment-gateway-manager';
 import { 
   CreditCard, 
   Wallet, 

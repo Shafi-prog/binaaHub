@@ -5,8 +5,8 @@ import { useEffect, useState } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import Link from 'next/link';
 import { User } from '@supabase/supabase-js';
-import { Card, LoadingSpinner, EmptyState } from '@/domains/shared/components/ui';
-import { formatDate } from '@/domains/shared/utils';
+import { Card, LoadingSpinner, EmptyState } from '@/core/shared/components/ui';
+import { formatDate } from '@/core/shared/utils';
 import { ClientIcon } from '@/components/icons';
 
 

@@ -2,7 +2,7 @@
 "use client";
 
 import { useState } from 'react';
-import { EnhancedInput, Button } from '@/domains/shared/components/ui/enhanced-components';
+import { EnhancedInput, Button } from '@/core/shared/components/ui/enhanced-components';
 import toast from 'react-hot-toast';
 import Link from 'next/link';
 

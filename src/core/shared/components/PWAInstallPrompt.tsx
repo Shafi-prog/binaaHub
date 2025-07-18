@@ -7,10 +7,10 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/domains/shared/components/ui/card'
-import { Button } from '@/domains/shared/components/ui/button'
-import { Badge } from '@/domains/shared/components/ui/badge'
-import { Alert, AlertDescription } from '@/domains/shared/components/ui/alert'
+import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card'
+import { Button } from '@/core/shared/components/ui/button'
+import { Badge } from '@/core/shared/components/ui/badge'
+import { Alert, AlertDescription } from '@/core/shared/components/ui/alert'
 import { 
   Smartphone, 
   Download, 
@@ -25,7 +25,7 @@ import {
   Zap
 } from 'lucide-react'
 import { toast } from 'sonner'
-import { usePWA } from '@/domains/shared/services/pwa/pwa-manager'
+import { usePWA } from '@/core/shared/services/pwa/pwa-manager'
 
 export default function PWAInstallPrompt() {
   const {

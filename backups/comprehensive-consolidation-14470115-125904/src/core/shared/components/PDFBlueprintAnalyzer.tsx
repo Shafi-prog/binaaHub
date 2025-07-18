@@ -1,8 +1,8 @@
 // @ts-nocheck
 import React, { useState, useRef, useCallback } from 'react';
 import { Upload, FileText, Brain, Calculator, Download, Loader, AlertCircle, CheckCircle, Eye, Edit3 } from 'lucide-react';
-import { Button } from '@/domains/shared/components/ui/button';
-import { Card } from '@/domains/shared/components/ui/card';
+import { Button } from '@/core/shared/components/ui/button';
+import { Card } from '@/core/shared/components/ui/card';
 
 interface ExtractedData {
   rooms: Array<{

@@ -2,7 +2,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { performLogout } from '@/domains/shared/services/logout';
+import { performLogout } from '@/core/shared/services/logout';
 
 export const dynamic = 'force-dynamic'
 

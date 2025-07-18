@@ -1,7 +1,7 @@
 // @ts-nocheck
 import React, { useState, useEffect } from 'react';
 import { Search, Plus, Filter, BarChart3, Package, AlertTriangle, Eye } from 'lucide-react';
-import { ConstructionProduct, ConstructionCategory } from '@/domains/shared/types/construction';
+import { ConstructionProduct, ConstructionCategory } from '@/core/shared/types/construction';
 
 interface ProductCatalogProps {
   language?: 'ar' | 'en';

@@ -4,7 +4,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Package, Scan, Plus, TrendingUp, AlertTriangle, Activity } from 'lucide-react';
-import { Card } from '@/domains/shared/components/ui';
+import { Card } from '@/core/shared/components/ui';
 
 interface ConstructionStats {
   totalProducts: number;

@@ -88,7 +88,7 @@ export default function LoginPage() {
         account_type: mockUser.type,
         isAuthenticated: true
       };
-      document.cookie = `temp_auth_user=${encodeURIComponent(JSON.stringify(cookiePayload))}; path=/; max-age=86400; SameSite=Strict`;
+      document.cookie = `temp_auth_user=${encodeURIComponent(JSON.stringify(cookiePayload))}; path=/; max-age=86400; SameSite=Lax`;
 
       // Redirect to appropriate dashboard
       const dashboardRoute = formData.userType === 'store' ? '/store/dashboard' : '/user/dashboard';
@@ -130,7 +130,7 @@ export default function LoginPage() {
       account_type: mockUser.type,
       isAuthenticated: true
     };
-    document.cookie = `temp_auth_user=${encodeURIComponent(JSON.stringify(cookiePayload))}; path=/; max-age=86400; SameSite=Strict`;
+    document.cookie = `temp_auth_user=${encodeURIComponent(JSON.stringify(cookiePayload))}; path=/; max-age=86400; SameSite=Lax`;
 
     const dashboardRoute = userType === 'store' ? '/store/dashboard' : '/user/dashboard';
     window.location.href = dashboardRoute;

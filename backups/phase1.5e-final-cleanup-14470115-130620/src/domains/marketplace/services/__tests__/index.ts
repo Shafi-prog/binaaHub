@@ -1,4 +1,0 @@
-// @ts-nocheck
-it("noop", () => {})
-
-

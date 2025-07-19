@@ -43,12 +43,12 @@ const CITIES = {
 };
 
 const COUNTRY_CODES = [
-  { value: '+966', label: '🇸🇦 +966' },
-  { value: '+971', label: '🇦🇪 +971' },
-  { value: '+974', label: '🇶🇦 +974' },
-  { value: '+973', label: '🇧َ +973' },
-  { value: '+965', label: '🇰🇼 +965' },
-  { value: '+968', label: '🇴🇲 +968' },
+  { value: '+966', label: '🇸🇦 السعودية +966', country: 'Saudi Arabia' },
+  { value: '+971', label: '🇦🇪 الإمارات +971', country: 'UAE' },
+  { value: '+974', label: '🇶🇦 قطر +974', country: 'Qatar' },
+  { value: '+973', label: '🇧🇭 البحرين +973', country: 'Bahrain' },
+  { value: '+965', label: '🇰🇼 الكويت +965', country: 'Kuwait' },
+  { value: '+968', label: '🇴🇲 عمان +968', country: 'Oman' },
 ];
 
 export default function UserProfileForm({ user }: { user: any }) {
@@ -89,6 +89,10 @@ export default function UserProfileForm({ user }: { user: any }) {
         .then(({ data }) => {
           if (data?.invitation_code) setInvitationCode(data.invitation_code);
         });
+    } else {
+      // For temp users, generate a temp invitation code
+      const tempCode = `BinnaHub-TEMP-${Math.random().toString(36).substr(2, 5).toUpperCase()}`;
+      setInvitationCode(tempCode);
     }
   }, [user]);
 
@@ -176,50 +180,114 @@ export default function UserProfileForm({ user }: { user: any }) {
     e.preventDefault();
     setError(null);
     setSuccess(null);
+    
+    // Validate name
     if (!name.trim()) {
       setError('يرجى إدخال الاسم');
       return;
     }
+    
+    // Validate email
     if (!email.trim() || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
       setError('يرجى إدخال بريد إلكتروني صحيح');
       return;
     }
+    
+    // Validate phone
     if (!phone.trim() || phone.length < 8) {
       setError('يرجى إدخال رقم هاتف صحيح');
       return;
     }
+    
+    // Enhanced phone validation
+    const cleanPhone = phone.replace(/\D/g, '');
+    const phoneValidation = validatePhone(cleanPhone, countryCode);
+    if (!phoneValidation.valid) {
+      setError(phoneValidation.error);
+      return;
+    }
+    
+    // Validate role
     if (!role) {
       setError('يرجى اختيار الدور');
       return;
     }
+    
+    // Validate trades for workers
     if (role === 'worker' && trades.length === 0) {
       setError('يرجى اختيار تخصص واحد على الأقل');
       return;
     }
+    
+    // Validate location
     if (!region || !city) {
       setError('يرجى تحديد المنطقة والمدينة');
       return;
     }
+    
     setSaving(true);
     try {
+      // Helper function to get cookie value
+      const getCookie = (name: string) => {
+        if (typeof document === 'undefined') return null;
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop()?.split(';').shift();
+        return null;
+      };
+      
+      // Helper function to set cookie value
+      const setCookie = (name: string, value: string) => {
+        if (typeof document === 'undefined') return;
+        document.cookie = `${name}=${encodeURIComponent(value)}; path=/; max-age=86400; SameSite=Strict`;
+      };
+      
+      // Check if this is a temp user
+      const tempAuthCookie = getCookie('temp_auth_user');
+      if (tempAuthCookie) {
+        // For temp users, update the cookie and show success
+        const currentTempUser = JSON.parse(decodeURIComponent(tempAuthCookie));
+        const updatedTempUser = {
+          ...currentTempUser,
+          name,
+          email,
+          country_code: countryCode,
+          phone: cleanPhone,
+          role,
+          region,
+          city,
+          neighborhood,
+          updated_at: new Date().toISOString(),
+        };
+        setCookie('temp_auth_user', JSON.stringify(updatedTempUser));
+        setSuccess('تم حفظ التغييرات مؤقتاً (سيتم حفظها نهائياً عند إنشاء حساب)');
+        setSaving(false);
+        return;
+      }
+
+      // For Supabase users, proceed with database operations
       const { data: { user: authUser } } = await supabase.auth.getUser();
       if (!authUser) throw new Error('يرجى تسجيل الدخول');
+      
+      // Update email if changed
       if (authUser.email !== email) {
         const { error: emailErr } = await supabase.auth.updateUser({ email });
         if (emailErr) throw emailErr;
       }
-      // Save to users table instead of user_profiles
+      
+      // Save to users table
       const userUpdateData = {
         name,
         email,
         country_code: countryCode,
-        phone,
+        phone: cleanPhone, // Save cleaned phone number
         role,
         region,
         city,
         neighborhood,
-        // Only include fields that exist in your users table schema
+        updated_at: new Date().toISOString(),
       };
+      
       const { error: userError } = await supabase
         .from('users')
         .update(userUpdateData)
@@ -234,7 +302,7 @@ export default function UserProfileForm({ user }: { user: any }) {
           .upsert({
             user_id: authUser.id,
             full_name: name,
-            phone: phone,
+            phone: `${countryCode}${cleanPhone}`, // Save full phone number
             email: email,
             area: city,
             is_available: true,
@@ -243,12 +311,64 @@ export default function UserProfileForm({ user }: { user: any }) {
           }, { onConflict: 'user_id' });
         if (supervisorError) throw supervisorError;
       }
+      
       setSuccess('تم حفظ التغييرات بنجاح');
     } catch (e: any) {
       setError(e.message || 'حدث خطأ أثناء الحفظ');
     } finally {
       setSaving(false);
     }
+  };
+
+  // Phone validation function
+  const validatePhone = (phone: string, countryCode: string) => {
+    const rules: { [key: string]: { pattern: RegExp; length: number; name: string } } = {
+      '+966': { pattern: /^5\d{8}$/, length: 9, name: 'السعودية' },
+      '+971': { pattern: /^[45236789]\d{8}$/, length: 9, name: 'الإمارات' },
+      '+974': { pattern: /^[3567]\d{7}$/, length: 8, name: 'قطر' },
+      '+973': { pattern: /^[36]\d{7}$/, length: 8, name: 'البحرين' },
+      '+965': { pattern: /^[569]\d{7}$/, length: 8, name: 'الكويت' },
+      '+968': { pattern: /^[79]\d{7}$/, length: 8, name: 'عمان' },
+    };
+
+    const rule = rules[countryCode];
+    if (!rule) {
+      return { valid: false, error: 'رمز الدولة غير مدعوم' };
+    }
+
+    if (phone.length !== rule.length) {
+      return {
+        valid: false,
+        error: `رقم الهاتف يجب أن يتكون من ${rule.length} أرقام للدولة ${rule.name}`,
+      };
+    }
+
+    if (!rule.pattern.test(phone)) {
+      let hint = '';
+      switch (countryCode) {
+        case '+966':
+          hint = 'يجب أن يبدأ برقم 5';
+          break;
+        case '+971':
+          hint = 'يجب أن يبدأ برقم 4، 5، 2، 3، 6، 7، 8، أو 9';
+          break;
+        case '+974':
+          hint = 'يجب أن يبدأ برقم 3، 5، 6، أو 7';
+          break;
+        case '+973':
+          hint = 'يجب أن يبدأ برقم 3 أو 6';
+          break;
+        case '+965':
+          hint = 'يجب أن يبدأ برقم 5، 6، أو 9';
+          break;
+        case '+968':
+          hint = 'يجب أن يبدأ برقم 7 أو 9';
+          break;
+      }
+      return { valid: false, error: `رقم الهاتف غير صحيح للدولة ${rule.name}. ${hint}` };
+    }
+
+    return { valid: true, error: null };
   };
 
   return (
@@ -300,27 +420,33 @@ export default function UserProfileForm({ user }: { user: any }) {
           )}
         </div>
         <div className="flex gap-2 items-end">
-          <select
-            className="border rounded px-2 py-2 text-sm bg-gray-50"
-            value={countryCode}
-            onChange={e => setCountryCode(e.target.value)}
-            style={{ minWidth: 90 }}
-            required
-          >
-            {COUNTRY_CODES.map(c => (
-              <option key={c.value} value={c.value}>{c.label}</option>
-            ))}
-          </select>
-          <EnhancedInput
-            label="رقم الجوال"
-            value={phone}
-            onChange={e => setPhone(e.target.value)}
-            placeholder="أدخل رقم الجوال بدون صفر"
-            type="tel"
-            required
-            disabled={phoneVerificationStep === 'verified'}
-            style={{ direction: 'ltr' }}
-          />
+          <div className="flex flex-col">
+            <label className="block text-sm font-medium text-gray-700 mb-1">رمز الدولة</label>
+            <select
+              className="border rounded-lg px-3 py-2 text-sm bg-white border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              value={countryCode}
+              onChange={e => setCountryCode(e.target.value)}
+              style={{ minWidth: 140 }}
+              required
+            >
+              {COUNTRY_CODES.map(c => (
+                <option key={c.value} value={c.value}>{c.label}</option>
+              ))}
+            </select>
+          </div>
+          <div className="flex-1">
+            <EnhancedInput
+              label="رقم الجوال"
+              value={phone}
+              onChange={e => setPhone(e.target.value)}
+              placeholder="5xxxxxxxx"
+              type="tel"
+              required
+              disabled={phoneVerificationStep === 'verified'}
+              style={{ direction: 'ltr', textAlign: 'right' }}
+            />
+            <p className="text-xs text-gray-500 mt-1">أدخل الرقم بدون الصفر الأول (مثال: 512345678)</p>
+          </div>
           {phoneVerificationStep === 'idle' && (
             <Button type="button" variant="secondary" onClick={handleVerifyPhone}>
               تحقق من رقم الجوال
@@ -328,19 +454,38 @@ export default function UserProfileForm({ user }: { user: any }) {
           )}
           {phoneVerificationStep === 'sent' && (
             <>
-              <EnhancedInput
-                label="رمز التحقق"
-                value={phoneCode}
-                onChange={e => setPhoneCode(e.target.value)}
-                placeholder="أدخل رمز التحقق"
-              />
+              <div className="flex-1">
+                <EnhancedInput
+                  label="رمز التحقق"
+                  value={phoneCode}
+                  onChange={e => setPhoneCode(e.target.value)}
+                  placeholder="أدخل الرمز المرسل"
+                />
+              </div>
               <Button type="button" variant="primary" onClick={handleConfirmPhoneCode}>
                 تأكيد
               </Button>
             </>
           )}
           {phoneVerificationStep === 'verified' && (
-            <span className="text-green-600 font-bold">تم التحقق</span>
+            <div className="flex items-center px-3 py-2 bg-green-100 text-green-700 rounded-lg">
+              <span className="text-sm font-medium">✓ تم التحقق</span>
+            </div>
+          )}
+        </div>
+        <div className="mt-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+          <p className="text-sm text-blue-700">
+            <strong>رقم الجوال الكامل:</strong> <span className="font-mono">{countryCode} {phone}</span>
+          </p>
+          <p className="text-xs text-blue-600 mt-1">
+            تأكد من صحة رقم الجوال لتلقي رسائل التحقق والإشعارات
+          </p>
+          {phone && (
+            <div className="mt-2 text-xs">
+              <span className="inline-block px-2 py-1 bg-blue-100 text-blue-800 rounded">
+                الدولة: {COUNTRY_CODES.find(c => c.value === countryCode)?.country || 'غير محدد'}
+              </span>
+            </div>
           )}
         </div>
       </div>

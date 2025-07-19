@@ -61,7 +61,7 @@ export default function DirectLoginPage() {
       account_type: mockUser.type, // for middleware compatibility
       isAuthenticated: true
     };
-    document.cookie = `temp_auth_user=${encodeURIComponent(JSON.stringify(cookiePayload))}; path=/; max-age=86400; SameSite=Strict`;
+    document.cookie = `temp_auth_user=${encodeURIComponent(JSON.stringify(cookiePayload))}; path=/; max-age=86400; SameSite=Lax`;
 
     console.log(`💾 Stored user in sessionStorage and cookies`);
 

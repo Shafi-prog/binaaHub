@@ -11,7 +11,7 @@ import { getProjectById, updateProject as updateProjectAPI } from '@/core/shared
 import { NotificationService, NotificationTypes } from '@/core/shared/services/notifications';
 import { useNotification } from '@/core/shared/components/ui/NotificationSystem';
 import { Card } from '@/core/shared/components/ui/card';
-import LoadingSpinner from '@/core/shared/components/ui/loading-spinner';
+import { LoadingSpinner } from '@/core/shared/components/ui/loading-spinner';
 import { formatCurrency, formatDate, translateStatus, calculateProjectProgress } from '@/core/shared/utils';
 import { MapPicker } from '@/components/maps/MapPicker';
 import ProjectIntegrationTabs from '@/domains/users/components/ProjectIntegrationTabs';

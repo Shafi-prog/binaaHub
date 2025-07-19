@@ -4,7 +4,7 @@
 import React, { useState, useEffect } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { Card } from '@/core/shared/components/ui/card';
-import LoadingSpinner from '@/core/shared/components/ui/loading-spinner';
+import { LoadingSpinner } from '@/core/shared/components/ui/loading-spinner';
 import { MapPin, Calendar, DollarSign, Home, Phone, Star } from 'lucide-react';
 import Link from 'next/link';
 

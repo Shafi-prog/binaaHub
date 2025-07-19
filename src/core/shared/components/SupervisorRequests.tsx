@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
 import { Button } from '@/core/shared/components/ui/button';
 import { Badge } from '@/core/shared/components/ui/badge';
-import LoadingSpinner from '@/core/shared/components/ui/loading-spinner';
+import { LoadingSpinner } from '@/core/shared/components/ui/loading-spinner';
 import { Input, Textarea, Select, Modal, EmptyState } from '@/core/shared/components/ui';
 import { useTranslation } from '@/core/shared/hooks/useTranslation';
 import { formatCurrency, formatDate } from '@/core/shared/utils';

@@ -16,7 +16,7 @@ import { Card, CardContent } from '@/core/shared/components/ui/card';
 import { Button } from '@/core/shared/components/ui/button';
 import { Input } from '@/core/shared/components/ui/input';
 import { Badge } from '@/core/shared/components/ui/badge';
-import LoadingSpinner from '@/core/shared/components/ui/loading-spinner';
+import { LoadingSpinner } from '@/core/shared/components/ui/loading-spinner';
 import { useTranslation } from '@/core/shared/hooks/useTranslation'
 import { formatDate, formatCurrency } from '@/core/shared/utils'
 

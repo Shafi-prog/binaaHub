@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import LoadingSpinner from '@/core/shared/components/ui/loading-spinner';
+import { LoadingSpinner } from '@/core/shared/components/ui/loading-spinner';
 import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/enhanced-components';
 import { Shield, Calendar, Box, Tag, Clock, CreditCard, File, Settings, BarChart3, MessageCircle, Store, User as UserIcon, LogOut, Home, Folder, Mail, BookOpen, Bot } from 'lucide-react';
 import { verifyTempAuth } from '@/core/shared/services/auth';

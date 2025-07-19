@@ -4,7 +4,7 @@
 import { useState } from 'react';
 import { ClientIcon } from '@/components/icons';
 import { Button } from '@/core/shared/components/ui/enhanced-components';
-import LoadingSpinner from '@/core/shared/components/ui/loading-spinner';
+import { LoadingSpinner } from '@/core/shared/components/ui/loading-spinner';
 
 interface ProjectSpecs {
   projectType: string;

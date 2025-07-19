@@ -1,23 +1,21 @@
 // @ts-nocheck
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { EnhancedInput, Button } from '@/core/shared/components/ui/enhanced-components';
 import toast from 'react-hot-toast';
 import { createClient } from '@supabase/supabase-js';
 
-
 export const dynamic = 'force-dynamic'
 // Force dynamic rendering to avoid SSG auth context issues
-
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-export default function ResetPasswordConfirmPage() {
+function ResetPasswordConfirmContent() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -132,4 +130,24 @@ export default function ResetPasswordConfirmPage() {
   );
 }
 
+// Loading component for Suspense fallback
+function ResetPasswordConfirmLoading() {
+  return (
+    <div className="min-h-screen bg-gray-50 font-tajawal flex items-center justify-center p-4" dir="rtl">
+      <div className="bg-white rounded-lg shadow-xl p-8 text-center max-w-md w-full">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+        <h1 className="text-xl font-semibold text-gray-800 mb-2">جاري التحميل...</h1>
+        <p className="text-gray-600">يرجى الانتظار</p>
+      </div>
+    </div>
+  );
+}
 
+// Main component wrapped with Suspense
+export default function ResetPasswordConfirmPage() {
+  return (
+    <Suspense fallback={<ResetPasswordConfirmLoading />}>
+      <ResetPasswordConfirmContent />
+    </Suspense>
+  );
+}

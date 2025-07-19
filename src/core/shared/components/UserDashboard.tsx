@@ -5,7 +5,7 @@ import Link from 'next/link';
 import type { Database } from '@/core/shared/types/database';
 import { Card } from '@/core/shared/components/ui/card';
 import { StatCard } from '@/core/shared/components/ui/StatCard';
-import LoadingSpinner from '@/core/shared/components/ui/loading-spinner';
+import { LoadingSpinner } from '@/core/shared/components/ui/loading-spinner';
 import { Shield, Calendar, Box, Tag, Clock, CreditCard, File } from 'lucide-react';
 import { isProjectActive, getStatusLabel, getProgressFromStatus, getProjectTypeLabel } from '@/core/shared/services/project-utils';
 import { getUserDashboardStats, type UserDashboardStats } from '@/core/shared/services/api/user-dashboard';

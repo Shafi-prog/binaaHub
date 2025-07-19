@@ -1,6 +1,5 @@
 // @ts-nocheck
 "use client";
-
 import * as React from "react";
 import { cn } from "@/core/shared/utils";
 
@@ -34,5 +33,3 @@ export function LoadingSpinner({
 }
 
 export default LoadingSpinner;
-
-

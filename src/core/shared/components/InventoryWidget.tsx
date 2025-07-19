@@ -3,7 +3,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import LoadingSpinner from '@/core/shared/components/ui/loading-spinner';
+import { LoadingSpinner } from '@/core/shared/components/ui/loading-spinner';
 import { usePermissions } from '@/core/shared/hooks/usePermissions';
 import { useState as useToastState } from 'react';
 

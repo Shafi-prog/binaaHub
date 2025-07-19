@@ -1,19 +1,17 @@
 // @ts-nocheck
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { XCircle, RefreshCw, ArrowRight, AlertTriangle, CreditCard } from 'lucide-react';
 import { Card } from '@/core/shared/components/ui/card';
 import { Button } from '@/core/shared/components/ui/button';
 
-
 export const dynamic = 'force-dynamic'
 // Force dynamic rendering to avoid SSG auth context issues
 
-
-export default function PaymentErrorPage() {
+function PaymentErrorContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [errorInfo, setErrorInfo] = useState<{
@@ -163,7 +161,24 @@ export default function PaymentErrorPage() {
   );
 }
 
+// Loading component for Suspense fallback
+function PaymentErrorLoading() {
+  return (
+    <div className="min-h-screen bg-gray-50 font-tajawal flex items-center justify-center p-4" dir="rtl">
+      <Card className="max-w-md w-full p-8 text-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+        <h1 className="text-xl font-semibold text-gray-800 mb-2">جاري التحميل...</h1>
+        <p className="text-gray-600">يرجى الانتظار</p>
+      </Card>
+    </div>
+  );
+}
 
-
-
-
+// Main component wrapped with Suspense
+export default function PaymentErrorPage() {
+  return (
+    <Suspense fallback={<PaymentErrorLoading />}>
+      <PaymentErrorContent />
+    </Suspense>
+  );
+}

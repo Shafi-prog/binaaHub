@@ -1,63 +1,93 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/enhanced-components';
+import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
+import { Badge } from '@/core/shared/components/ui/badge';
+import { Progress } from '@/core/shared/components/ui/progress';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, BarChart3, FileText, Users, DollarSign, Share2, Plus } from 'lucide-react';
+import { ProjectTrackingService } from '@/core/services/projectTrackingService';
+import { Project, ProjectSummary } from '@/core/shared/types/types';
+import { 
+  ArrowLeft, 
+  BarChart3, 
+  FileText, 
+  Users, 
+  DollarSign, 
+  Share2, 
+  Plus, 
+  Eye, 
+  Calculator,
+  Home,
+  Calendar,
+  TrendingUp,
+  AlertTriangle
+} from 'lucide-react';
 
 export default function ProjectsListPage() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState('all');
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [projectSummaries, setProjectSummaries] = useState<{ [key: string]: ProjectSummary }>({});
+  const [loading, setLoading] = useState(true);
   
   const tabs = [
     { id: 'all', label: 'كل المشاريع' },
-    { id: 'shared', label: 'مشاركة' },
-    { id: 'not-shared', label: 'غير مشتركة' },
-    { id: 'my-projects', label: 'مشاريعي ملكي' },
+    { id: 'planning', label: 'تخطيط' },
+    { id: 'in-progress', label: 'جاري التنفيذ' },
+    { id: 'completed', label: 'مكتملة' },
   ];
 
-  const projects = [
-    {
-      id: '1',
-      name: 'حساب',
-      progress: 100,
-      estimated: 250000,
-      paid: 180000,
-      skeleton: 120000,
-      finishing: 60000,
-      remaining: 70000
-    },
-    {
-      id: '2', 
-      name: 'مقرن',
-      progress: 75,
-      estimated: 180000,
-      paid: 135000,
-      skeleton: 90000,
-      finishing: 45000,
-      remaining: 45000
-    },
-    {
-      id: '3',
-      name: 'مشروع عمارة خالتي',
-      progress: 45,
-      estimated: 500000,
-      paid: 225000,
-      skeleton: 150000,
-      finishing: 75000,
-      remaining: 275000
-    },
-    {
-      id: '4',
-      name: 'بناء',
-      progress: 30,
-      estimated: 300000,
-      paid: 90000,
-      skeleton: 60000,
-      finishing: 30000,
-      remaining: 210000
+  useEffect(() => {
+    loadProjects();
+  }, []);
+
+  const loadProjects = async () => {
+    try {
+      setLoading(true);
+      const projectsData = await ProjectTrackingService.getProjects();
+      setProjects(projectsData);
+
+      // Load summaries for each project
+      const summaries: { [key: string]: ProjectSummary } = {};
+      for (const project of projectsData) {
+        const summary = await ProjectTrackingService.calculateProjectSummary(project.id);
+        if (summary) {
+          summaries[project.id] = summary;
+        }
+      }
+      setProjectSummaries(summaries);
+    } catch (error) {
+      console.error('Error loading projects:', error);
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
+
+  const getFilteredProjects = () => {
+    if (activeTab === 'all') return projects;
+    return projects.filter(project => project.status === activeTab);
+  };
+
+  const getStatusBadgeVariant = (status: string) => {
+    switch (status) {
+      case 'completed': return 'default';
+      case 'in-progress': return 'secondary';
+      case 'planning': return 'outline';
+      case 'on-hold': return 'destructive';
+      default: return 'outline';
+    }
+  };
+
+  const getStatusLabel = (status: string) => {
+    switch (status) {
+      case 'planning': return 'تخطيط';
+      case 'in-progress': return 'جاري التنفيذ';
+      case 'completed': return 'مكتمل';
+      case 'on-hold': return 'متوقف';
+      default: return status;
+    }
+  };
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-indigo-50/20 font-tajawal">
@@ -112,67 +142,96 @@ export default function ProjectsListPage() {
 
         {/* Projects Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects.map((project) => (
-            <EnhancedCard key={project.id} variant="elevated" hover className="p-6 cursor-pointer">
-              <div className="flex justify-between items-start mb-4">
-                <Typography variant="subheading" size="lg" weight="semibold" className="text-gray-800">
-                  {project.name}
-                </Typography>
-                <button 
-                  className="text-blue-600 hover:text-blue-700"
-                  onClick={() => router.push(`/user/projects/${project.id}`)}
-                >
-                  <FileText className="w-5 h-5" />
-                </button>
-              </div>
+          {getFilteredProjects().map((project) => {
+            const summary = projectSummaries[project.id];
+            
+            return (
+              <EnhancedCard key={project.id} variant="elevated" hover className="p-6 cursor-pointer">
+                <div className="flex justify-between items-start mb-4">
+                  <div>
+                    <Typography variant="subheading" size="lg" weight="semibold" className="text-gray-800">
+                      {project.name}
+                    </Typography>
+                    <p className="text-sm text-gray-600 mt-1">{project.description}</p>
+                    <div className="flex items-center gap-2 mt-2">
+                      <Home className="w-4 h-4 text-gray-500" />
+                      <span className="text-sm text-gray-600">{project.area} متر مربع</span>
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-end gap-2">
+                    <Badge variant={getStatusBadgeVariant(project.status)}>
+                      {getStatusLabel(project.status)}
+                    </Badge>
+                    <button 
+                      className="text-blue-600 hover:text-blue-700"
+                      onClick={() => router.push(`/user/projects/${project.id}`)}
+                    >
+                      <FileText className="w-5 h-5" />
+                    </button>
+                  </div>
+                </div>
 
-              {/* Progress Bar */}
-              <div className="mb-4">
-                <div className="flex justify-between text-sm mb-1">
-                  <span>التقدم</span>
-                  <span>{project.progress}%</span>
+                {/* Progress Bar */}
+                <div className="mb-4">
+                  <div className="flex justify-between text-sm mb-1">
+                    <span>التقدم</span>
+                    <span>{summary ? summary.completionPercentage : project.progress}%</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div 
+                      className="bg-blue-600 h-2 rounded-full" 
+                      style={{ width: `${summary ? summary.completionPercentage : project.progress}%` }}
+                    ></div>
+                  </div>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div 
-                    className="bg-blue-600 h-2 rounded-full" 
-                    style={{ width: `${project.progress}%` }}
-                  ></div>
-                </div>
-              </div>
 
-              {/* Financial Details */}
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-gray-600">المقدرة:</span>
-                  <span className="font-medium">{project.estimated.toLocaleString()} ر.س</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">المدفوعات:</span>
-                  <span className="font-medium">{project.paid.toLocaleString()} ر.س</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">العظم:</span>
-                  <span className="font-medium">{project.skeleton.toLocaleString()} ر.س</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">التشطيب:</span>
-                  <span className="font-medium">{project.finishing.toLocaleString()} ر.س</span>
-                </div>
-                <div className="flex justify-between border-t pt-2">
-                  <span className="text-gray-600">متبقي:</span>
-                  <span className="font-bold text-red-600">{project.remaining.toLocaleString()} ر.س</span>
-                </div>
-              </div>
+                {/* Financial Details */}
+                {summary ? (
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">المقدر:</span>
+                      <span className="font-medium">{summary.totalEstimatedCost.toLocaleString()} ر.س</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">المنفق:</span>
+                      <span className="font-medium text-green-600">{summary.totalSpentCost.toLocaleString()} ر.س</span>
+                    </div>
+                    <div className="flex justify-between border-t pt-2">
+                      <span className="text-gray-600">متبقي:</span>
+                      <span className="font-bold text-orange-600">{summary.remainingCost.toLocaleString()} ر.س</span>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="space-y-2 text-sm">
+                    <div className="text-center text-gray-500 py-4">
+                      لا توجد تقديرات محفوظة
+                    </div>
+                  </div>
+                )}
 
-              {/* Share Button */}
-              <div className="mt-4 pt-4 border-t">
-                <button className="w-full bg-blue-50 text-blue-600 py-2 px-4 rounded-lg hover:bg-blue-100 transition-colors flex items-center justify-center gap-2">
-                  <Share2 className="w-4 h-4" />
-                  مشاركة
-                </button>
-              </div>
-            </EnhancedCard>
-          ))}
+                {/* Action Buttons */}
+                <div className="mt-4 pt-4 border-t flex gap-2">
+                  <Button
+                    size="sm"
+                    onClick={() => router.push(`/user/projects/${project.id}`)}
+                    className="flex-1 flex items-center gap-1"
+                  >
+                    <Eye className="w-3 h-3" />
+                    عرض
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => router.push(`/user/comprehensive-construction-calculator?projectId=${project.id}`)}
+                    className="flex items-center gap-1"
+                  >
+                    <Calculator className="w-3 h-3" />
+                    حاسبة
+                  </Button>
+                </div>
+              </EnhancedCard>
+            );
+          })}
         </div>
       </div>
     </main>

@@ -45,14 +45,14 @@ export default function StoreAdminDashboard() {
 
   const quickActions = [
     { 
-      title: 'Add Product', 
-      description: 'Add new products to your store',
+      title: 'إضافة منتج', 
+      description: 'إضافة منتجات جديدة إلى متجرك',
       icon: <Package className="w-6 h-6" />,
       href: '/store/add-product',
       color: 'bg-blue-500'
     },
     { 
-      title: 'View Orders', 
+      title: 'عرض الطلبات', 
       description: 'Manage customer orders',
       icon: <ShoppingCart className="w-6 h-6" />,
       href: '/store/orders',
@@ -60,13 +60,13 @@ export default function StoreAdminDashboard() {
     },
     { 
       title: 'Analytics', 
-      description: 'View store analytics',
+      description: 'عرض تحليلات المتجر',
       icon: <BarChart3 className="w-6 h-6" />,
       href: '/store/analytics',
       color: 'bg-purple-500'
     },
     { 
-      title: 'Settings', 
+      title: 'الإعدادات', 
       description: 'Store configuration',
       icon: <Settings className="w-6 h-6" />,
       href: '/store/settings',

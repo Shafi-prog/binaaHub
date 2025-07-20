@@ -37,7 +37,7 @@ export default function PriceListCreatePage() {
               onChange={(e) => setDescription(e.target.value)}
               rows={4}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter description"
+              placeholder='أدخل الوصف'
             />
           </div>
           <div className="flex gap-4">

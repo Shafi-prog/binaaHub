@@ -330,7 +330,7 @@ export default function CurrencyRegionManagementPage() {
                             size="sm"
                           />
                           <Badge variant={currency.is_active ? 'default' : 'secondary'}>
-                            {currency.is_active ? 'Active' : 'Inactive'}
+                            {currency.is_active ? 'نشط' : 'غير نشط'}
                           </Badge>
                         </div>
                       </TableCell>
@@ -458,7 +458,7 @@ export default function CurrencyRegionManagementPage() {
                       {region.name}
                     </CardTitle>
                     <Badge variant={region.is_active ? 'default' : 'secondary'}>
-                      {region.is_active ? 'Active' : 'Inactive'}
+                      {region.is_active ? 'نشط' : 'غير نشط'}
                     </Badge>
                   </div>
                 </CardHeader>

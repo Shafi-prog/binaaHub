@@ -1,6 +1,6 @@
-// @ts-nocheck
-"use client";
-import * as React from "react";
+'use client';
+
+import Link from 'next/link';
 import { useState } from "react";
 import { cn } from "@/core/shared/utils";
 import { 
@@ -28,7 +28,8 @@ import {
   ExternalLink,
   Filter,
   ChevronDown,
-  SlidersHorizontal
+  SlidersHorizontal,
+  Calendar
 } from "lucide-react";
 
 interface PriceData {
@@ -78,7 +79,15 @@ const mockPriceData: PriceData[] = [
   { product: "Coffee Kg", category: "Food", price: 25, change: +5.2, store: "Coffee Masters", city: "Manama", lastUpdated: "1 hour ago" },
 ];
 
-const userFeatures = [
+interface Feature {
+  icon: React.ReactElement;
+  title: string;
+  description: string;
+  color: string;
+  link?: string;
+}
+
+const userFeatures: Feature[] = [
   {
     icon: <Search className="w-6 h-6" />,
     title: "البحث الذكي",
@@ -129,7 +138,7 @@ const userFeatures = [
   }
 ];
 
-const storeFeatures = [
+const storeFeatures: Feature[] = [
   {
     icon: <Store className="w-6 h-6" />,
     title: "إدارة المتجر",
@@ -477,25 +486,41 @@ export default function MainLandingPage() {
           {/* Tab Content */}
           <div className="p-6">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {(selectedTab === 'users' ? userFeatures : storeFeatures).map((feature, index) => (
-                <div
-                  key={index}
-                  className="group p-6 rounded-xl border border-gray-100 hover:border-blue-200 hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-white to-gray-50"
-                >
-                  <div className={cn(
-                    "w-12 h-12 rounded-xl bg-gradient-to-r mb-4 flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300",
-                    feature.color
-                  )}>
-                    {feature.icon}
+              {(selectedTab === 'users' ? userFeatures : storeFeatures).map((feature, index) => {
+                const FeatureCard = (
+                  <div
+                    key={index}
+                    className="group p-6 rounded-xl border border-gray-100 hover:border-blue-200 hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-white to-gray-50 cursor-pointer"
+                  >
+                    <div className={cn(
+                      "w-12 h-12 rounded-xl bg-gradient-to-r mb-4 flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300",
+                      feature.color
+                    )}>
+                      {feature.icon}
+                    </div>
+                    <h3 className="text-lg font-semibold text-gray-800 mb-2 group-hover:text-blue-600 transition-colors">
+                      {feature.title}
+                    </h3>
+                    <p className="text-gray-600 text-sm leading-relaxed">
+                      {feature.description}
+                    </p>
+                    {feature.link && (
+                      <div className="mt-3 flex items-center text-blue-600 text-sm group-hover:text-blue-700">
+                        <span>استكشف المزيد</span>
+                        <ExternalLink className="w-4 h-4 mr-1" />
+                      </div>
+                    )}
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-800 mb-2 group-hover:text-blue-600 transition-colors">
-                    {feature.title}
-                  </h3>
-                  <p className="text-gray-600 text-sm leading-relaxed">
-                    {feature.description}
-                  </p>
-                </div>
-              ))}
+                );
+
+                return feature.link ? (
+                  <Link key={index} href={feature.link} className="block">
+                    {FeatureCard}
+                  </Link>
+                ) : (
+                  FeatureCard
+                );
+              })}
             </div>
           </div>
         </div>
@@ -529,6 +554,164 @@ export default function MainLandingPage() {
               <span className="text-2xl font-bold">99.9%</span>
             </div>
             <p className="text-orange-100">نسبة الرضا</p>
+          </div>
+        </div>
+
+        {/* Featured Projects Marketplace */}
+        <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+          <div className="p-6 border-b border-gray-100">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
+                  <Store className="w-6 h-6 text-blue-600" />
+                  مشاريع مميزة للبيع
+                </h2>
+                <p className="text-gray-600">اكتشف المشاريع المكتملة المعروضة للبيع من المطورين</p>
+              </div>
+              <Link 
+                href="/user/projects-marketplace"
+                className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                <span>عرض الكل</span>
+                <ExternalLink className="w-4 h-4" />
+              </Link>
+            </div>
+          </div>
+          
+          <div className="p-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {/* Sample Featured Projects */}
+              {[
+                {
+                  id: '1',
+                  name: 'فيلا عصرية - حي الملك فهد',
+                  location: 'الرياض',
+                  price: 850000,
+                  totalCost: 650000,
+                  profitPercentage: 30.8,
+                  area: 400,
+                  rooms: 5,
+                  image: '/api/placeholder/300/200',
+                  completionDate: '2024-01-15',
+                  features: ['حديقة خاصة', 'مسبح', 'مرآب']
+                },
+                {
+                  id: '2', 
+                  name: 'شقة فاخرة - برج الأعمال',
+                  location: 'جدة',
+                  price: 520000,
+                  totalCost: 420000,
+                  profitPercentage: 23.8,
+                  area: 180,
+                  rooms: 3,
+                  image: '/api/placeholder/300/200',
+                  completionDate: '2024-02-20',
+                  features: ['إطلالة بحرية', 'أمن 24/7', 'جيم']
+                },
+                {
+                  id: '3',
+                  name: 'مجمع تجاري صغير',
+                  location: 'الدمام',
+                  price: 1200000,
+                  totalCost: 950000,
+                  profitPercentage: 26.3,
+                  area: 600,
+                  rooms: 8,
+                  image: '/api/placeholder/300/200',
+                  completionDate: '2024-03-10',
+                  features: ['موقف سيارات', 'مصعد', 'أمن']
+                }
+              ].map((project) => (
+                <div key={project.id} className="group bg-gray-50 rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 border border-gray-100">
+                  {/* Project Image */}
+                  <div className="relative h-48 bg-gradient-to-br from-blue-100 to-purple-100 overflow-hidden">
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="text-center text-gray-500">
+                        <Package className="w-12 h-12 mx-auto mb-2 opacity-50" />
+                        <p className="text-sm">صورة المشروع</p>
+                      </div>
+                    </div>
+                    <div className="absolute top-3 right-3 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-medium">
+                      للبيع
+                    </div>
+                    <div className="absolute bottom-3 left-3 bg-black bg-opacity-50 text-white px-2 py-1 rounded text-xs">
+                      {project.area} م²
+                    </div>
+                  </div>
+                  
+                  {/* Project Info */}
+                  <div className="p-4">
+                    <h3 className="font-semibold text-gray-800 mb-2 group-hover:text-blue-600 transition-colors">
+                      {project.name}
+                    </h3>
+                    
+                    <div className="space-y-2 text-sm text-gray-600 mb-3">
+                      <div className="flex items-center gap-2">
+                        <MapPin className="w-4 h-4" />
+                        <span>{project.location}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Calendar className="w-4 h-4" />
+                        <span>اكتمل: {new Date(project.completionDate).toLocaleDateString('ar')}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Package className="w-4 h-4" />
+                        <span>{project.rooms} غرف</span>
+                      </div>
+                    </div>
+                    
+                    {/* Features */}
+                    <div className="flex flex-wrap gap-1 mb-3">
+                      {project.features.slice(0, 2).map((feature, idx) => (
+                        <span key={idx} className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs">
+                          {feature}
+                        </span>
+                      ))}
+                      {project.features.length > 2 && (
+                        <span className="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs">
+                          +{project.features.length - 2}
+                        </span>
+                      )}
+                    </div>
+                    
+                    {/* Price */}
+                    <div className="flex items-center justify-between">
+                      <div className="text-right">
+                        <div className="text-lg font-bold text-green-600">
+                          {project.price.toLocaleString()} ر.س
+                        </div>
+                        <div className="text-xs text-gray-500">
+                          {Math.round(project.price / project.area).toLocaleString()} ر.س/م²
+                        </div>
+                        {/* Profit Information */}
+                        <div className="text-xs text-blue-600 mt-1">
+                          ربح {project.profitPercentage.toFixed(1)}% • تكلفة {project.totalCost.toLocaleString()} ر.س
+                        </div>
+                      </div>
+                      <Link
+                        href={`/user/projects-marketplace/${project.id}`}
+                        className="bg-blue-600 text-white px-3 py-2 rounded-lg text-sm hover:bg-blue-700 transition-colors flex items-center gap-1"
+                      >
+                        <span>عرض</span>
+                        <ExternalLink className="w-3 h-3" />
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            
+            {/* Browse All Link */}
+            <div className="text-center mt-6">
+              <Link
+                href="/user/projects-marketplace"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-medium hover:shadow-lg transition-all duration-200"
+              >
+                <Store className="w-5 h-5" />
+                <span>تصفح جميع المشاريع</span>
+                <ExternalLink className="w-4 h-4" />
+              </Link>
+            </div>
           </div>
         </div>
 

@@ -20,10 +20,141 @@ export type Warranty = {
 
 // المشروع
 export type Project = {
-  id: number;
+  id: string;
   name: string;
   stage: string;
   progress: number;
+  createdAt: string;
+  updatedAt: string;
+  description?: string;
+  area: number;
+  projectType: string;
+  floorCount: number;
+  roomCount: number;
+  estimations?: ProjectEstimation;
+  purchases?: ProjectPurchase[];
+  status: 'planning' | 'in-progress' | 'completed' | 'on-hold';
+  location?: string;
+  startDate?: string;
+  endDate?: string;
+  images?: ProjectImage[];
+  publicDisplay?: ProjectPublicSettings;
+};
+
+// صور المشروع
+export type ProjectImage = {
+  id: string;
+  projectId: string;
+  url: string;
+  caption?: string;
+  phaseId?: string; // مرحلة البناء
+  stepId?: string; // خطوة محددة في المرحلة
+  uploadedAt: string;
+  type: 'progress' | 'milestone' | 'documentation' | 'showcase';
+  isPublic: boolean;
+};
+
+// إعدادات العرض العام للمشروع
+export type ProjectPublicSettings = {
+  isPublic: boolean;
+  showLocation: boolean;
+  showTimeline: boolean;
+  showImages: boolean;
+  hideCosts: boolean; // إخفاء التكاليف دائماً للعرض العام
+  description?: string; // وصف للعرض العام
+};
+
+// تقديرات المشروع
+export type ProjectEstimation = {
+  id: string;
+  projectId: string;
+  calculatorType: string; // 'comprehensive' | 'individual' | 'company-bulk'
+  createdAt: string;
+  materials: MaterialEstimation[];
+  lighting?: LightingEstimation[];
+  totalCost: number;
+  phases: {
+    foundation: number;
+    structure: number;
+    finishing: number;
+    electrical: number;
+    plumbing: number;
+  };
+};
+
+// تقدير المواد
+export type MaterialEstimation = {
+  materialId: string;
+  materialName: string;
+  materialNameEn: string;
+  category: string;
+  estimatedQuantity: number;
+  unit: string;
+  pricePerUnit: number;
+  totalCost: number;
+  specifications: string[];
+  suppliers: string[];
+  priority: 'high' | 'medium' | 'low';
+  phase: 'foundation' | 'structure' | 'finishing' | 'electrical' | 'plumbing';
+};
+
+// تقدير الإضاءة
+export type LightingEstimation = {
+  roomName: string;
+  roomType: string;
+  area: number;
+  requiredLux: number;
+  fixtures: {
+    type: string;
+    quantity: number;
+    pricePerUnit: number;
+    totalCost: number;
+  }[];
+  totalCost: number;
+};
+
+// مشتريات المشروع
+export type ProjectPurchase = {
+  id: string;
+  projectId: string;
+  materialId: string;
+  materialName: string;
+  purchasedQuantity: number;
+  unit: string;
+  pricePerUnit: number;
+  totalCost: number;
+  purchaseDate: string;
+  supplier: string;
+  receiptNumber?: string;
+  status: 'ordered' | 'received' | 'installed' | 'returned';
+  notes?: string;
+};
+
+// ملخص حالة المشروع
+export type ProjectSummary = {
+  projectId: string;
+  totalEstimatedCost: number;
+  totalSpentCost: number;
+  remainingCost: number;
+  completionPercentage: number;
+  materialProgress: {
+    [category: string]: {
+      estimatedQuantity: number;
+      purchasedQuantity: number;
+      installedQuantity: number;
+      remainingQuantity: number;
+      estimatedCost: number;
+      spentCost: number;
+      remainingCost: number;
+    };
+  };
+  phaseProgress: {
+    foundation: { estimated: number; spent: number; completion: number };
+    structure: { estimated: number; spent: number; completion: number };
+    finishing: { estimated: number; spent: number; completion: number };
+    electrical: { estimated: number; spent: number; completion: number };
+    plumbing: { estimated: number; spent: number; completion: number };
+  };
 };
 
 // المستخدم

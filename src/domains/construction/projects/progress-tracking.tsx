@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,6 +9,7 @@ import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
+import ProjectCompletionPopup from '@/core/shared/components/ProjectCompletionPopup';
 import { 
   CheckCircle, 
   Clock, 
@@ -168,10 +169,55 @@ export default function ProgressTracking() {
     achievements: ''
   });
 
+  // Completion popup state
+  const [showCompletionPopup, setShowCompletionPopup] = useState(false);
+  const [previousProgress, setPreviousProgress] = useState(0);
+
+  // Mock project data for the popup
+  const mockProject = {
+    id: 'current-project',
+    name: 'مشروع فيلا الأحلام',
+    location: 'الرياض - حي الملك فهد',
+    startDate: '2024-01-15',
+    progress: 100,
+    status: 'completed' as const,
+    images: [],
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    stage: 'تشطيبات نهائية',
+    area: 400,
+    projectType: 'فيلا سكنية',
+    floorCount: 2,
+    roomCount: 5,
+    estimations: {
+      id: 'est-1',
+      projectId: 'current-project',
+      calculatorType: 'comprehensive',
+      createdAt: new Date().toISOString(),
+      materials: [],
+      totalCost: 450000, // 450,000 SAR total cost
+      phases: {
+        foundation: 90000,
+        structure: 180000,
+        finishing: 120000,
+        electrical: 35000,
+        plumbing: 25000
+      }
+    }
+  };
+
   const overallProgress = tasks.reduce((sum, task) => sum + task.progress, 0) / tasks.length;
   const completedTasks = tasks.filter(task => task.status === 'completed').length;
   const delayedTasks = tasks.filter(task => task.status === 'delayed').length;
   const activeTasks = tasks.filter(task => task.status === 'in-progress').length;
+
+  // Check for project completion and show popup
+  useEffect(() => {
+    if (overallProgress >= 100 && previousProgress < 100) {
+      setShowCompletionPopup(true);
+    }
+    setPreviousProgress(overallProgress);
+  }, [overallProgress, previousProgress]);
 
   const getStatusColor = (status: Task['status']) => {
     switch (status) {
@@ -182,6 +228,29 @@ export default function ProgressTracking() {
       case 'not-started': return 'bg-gray-100 text-gray-800';
       default: return 'bg-gray-100 text-gray-800';
     }
+  };
+
+  // Completion popup handlers
+  const handleSellProject = (saleData: { 
+    sale_price: number; 
+    sale_description: string; 
+    for_sale: boolean;
+    profit_percentage?: number;
+    total_cost?: number;
+  }) => {
+    console.log('Project marked for sale:', saleData);
+    console.log(`Total Cost: ${saleData.total_cost?.toLocaleString()} SAR`);
+    console.log(`Sale Price: ${saleData.sale_price.toLocaleString()} SAR`);
+    console.log(`Profit Percentage: ${saleData.profit_percentage}%`);
+    console.log(`Net Profit: ${saleData.sale_price - (saleData.total_cost || 0) - (saleData.sale_price * 0.05)} SAR`);
+    // Here you would integrate with your project API to update the project
+    // Example: await updateProject(mockProject.id, { ...saleData });
+  };
+
+  const handleKeepPrivate = () => {
+    console.log('Project kept as showcase only');
+    // Here you would update the project to be public but not for sale
+    // Example: await updateProject(mockProject.id, { publicDisplay: { isPublic: true, hideCosts: true } });
   };
 
   const getStatusIcon = (status: Task['status']) => {
@@ -228,6 +297,17 @@ export default function ProgressTracking() {
       <div className="mb-6">
         <h1 className="text-3xl font-bold mb-2">Progress Tracking</h1>
         <p className="text-gray-600">Real-time monitoring of construction project progress</p>
+        
+        {/* Test Button for Completion Popup */}
+        <div className="mt-4">
+          <Button 
+            onClick={() => setShowCompletionPopup(true)}
+            variant="outline"
+            className="text-sm"
+          >
+            🧪 Test Completion Popup
+          </Button>
+        </div>
       </div>
 
       {/* Progress Overview */}
@@ -520,6 +600,15 @@ export default function ProgressTracking() {
           </Card>
         </TabsContent>
       </Tabs>
+
+      {/* Project Completion Popup */}
+      <ProjectCompletionPopup
+        project={mockProject}
+        isOpen={showCompletionPopup}
+        onClose={() => setShowCompletionPopup(false)}
+        onSellProject={handleSellProject}
+        onKeepPrivate={handleKeepPrivate}
+      />
     </div>
   );
 }

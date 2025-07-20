@@ -1,0 +1,5256 @@
+{
+  "timestamp": "2025-07-19T23:49:24.515Z",
+  "summary": {
+    "totalErrors": 401,
+    "totalEnglishTexts": 28,
+    "totalMissingTranslations": 173,
+    "totalComponentIssues": 149
+  },
+  "errors": [
+    {
+      "file": "src\\app\\store\\admin\\page.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\admin\\store-management.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\analytics\\page.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\api-key-management\\api-key-management-create\\api-key-management-create.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\api-key-management\\api-key-management-create\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\api-key-management\\api-key-management-detail\\api-key-management-detail.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\api-key-management\\api-key-management-detail\\breadcrumb.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\api-key-management\\api-key-management-detail\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\api-key-management\\api-key-management-detail\\loader.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\api-key-management\\api-key-management-edit\\api-key-management-edit.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\api-key-management\\api-key-management-edit\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\api-key-management\\api-key-management-list\\api-key-management-list.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\api-key-management\\api-key-management-list\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\api-key-management\\api-key-management-sales-channels\\api-key-management-sales-channels.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\api-key-management\\api-key-management-sales-channels\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\api-key-management\\common\\constants.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\api-key-management\\common\\utils.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\barcode-scanner\\page.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\barcode-scanner\\page.tsx",
+      "line": 37,
+      "type": "Console Error",
+      "content": "console.error('Error getting session:', sessionError);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\barcode-scanner\\page.tsx",
+      "line": 50,
+      "type": "Console Error",
+      "content": "console.error('Error loading user:', err);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\campaigns\\add-campaign-promotions\\add-campaign-promotions.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\campaigns\\add-campaign-promotions\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\campaigns\\campaign-budget-edit\\campaign-budget-edit.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\campaigns\\campaign-budget-edit\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\campaigns\\campaign-configuration\\campaign-configuration.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\campaigns\\campaign-configuration\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\campaigns\\campaign-create\\campaign-create.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\campaigns\\campaign-create\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\campaigns\\campaign-detail\\breadcrumb.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\campaigns\\campaign-detail\\campaign-detail.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\campaigns\\campaign-detail\\constants.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\campaigns\\campaign-detail\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\campaigns\\campaign-detail\\loader.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\campaigns\\campaign-edit\\campaign-edit.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\campaigns\\campaign-edit\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\campaigns\\campaign-list\\campaign-list.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\campaigns\\campaign-list\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\campaigns\\common\\constants.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\campaigns\\page.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\cash-registers\\page.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\cash-registers\\page.tsx",
+      "line": 125,
+      "type": "Console Error",
+      "content": "console.error('Error loading cash registers:', error);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\cash-registers\\page.tsx",
+      "line": 143,
+      "type": "Console Error",
+      "content": "console.error('Error loading sessions:', error);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\cash-registers\\page.tsx",
+      "line": 159,
+      "type": "Console Error",
+      "content": "console.error('Error loading transactions:', error);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\cash-registers\\page.tsx",
+      "line": 232,
+      "type": "Console Error",
+      "content": "console.error('Error opening cash register:', error);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\cash-registers\\page.tsx",
+      "line": 296,
+      "type": "Console Error",
+      "content": "console.error('Error closing cash register:', error);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\cash-registers\\page.tsx",
+      "line": 356,
+      "type": "Console Error",
+      "content": "console.error('Error adding cash:', error);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\cash-registers\\page.tsx",
+      "line": 421,
+      "type": "Console Error",
+      "content": "console.error('Error withdrawing cash:', error);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\categories\\construction\\page.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\categories\\construction\\page.tsx",
+      "line": 55,
+      "type": "Console Error",
+      "content": "console.error('Error loading page:', error);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\categories\\construction\\page.tsx",
+      "line": 73,
+      "type": "Console Error",
+      "content": "console.error('Error loading categories:', error);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\categories\\construction\\page.tsx",
+      "line": 156,
+      "type": "Console Error",
+      "content": "console.error('Error saving category:', error);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\categories\\construction\\page.tsx",
+      "line": 181,
+      "type": "Console Error",
+      "content": "console.error('Error deleting category:', error);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\collections\\collection-add-products\\collection-add-products.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\collections\\collection-add-products\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\collections\\collection-create\\collection-create.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\collections\\collection-create\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\collections\\collection-detail\\breadcrumb.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\collections\\collection-detail\\collection-detail.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\collections\\collection-detail\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\collections\\collection-detail\\loader.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\collections\\collection-edit\\collection-edit.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\collections\\collection-edit\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\collections\\collection-list\\collection-list.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\collections\\collection-list\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\collections\\collection-metadata\\collection-metadata.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\collections\\collection-metadata\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\collections\\page.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\construction-products\\new\\page.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\construction-products\\new\\page.tsx",
+      "line": 56,
+      "type": "Console Error",
+      "content": "console.error('Error loading page:', error);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\construction-products\\new\\page.tsx",
+      "line": 64,
+      "type": "Console Error",
+      "content": "console.error('Error in loadPage:', error);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\construction-products\\new\\page.tsx",
+      "line": 91,
+      "type": "Console Error",
+      "content": "console.error('Error loading data:', error);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\construction-products\\new\\page.tsx",
+      "line": 170,
+      "type": "Console Error",
+      "content": "console.error('Error creating product:', error);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\construction-products\\page.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\construction-products\\page.tsx",
+      "line": 44,
+      "type": "Console Error",
+      "content": "console.error('Error loading page:', error);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\construction-products\\page.tsx",
+      "line": 52,
+      "type": "Console Error",
+      "content": "console.error('Error in loadPage:', error);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\construction-products\\page.tsx",
+      "line": 74,
+      "type": "Console Error",
+      "content": "console.error('Error loading data:', error);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\construction-products\\page.tsx",
+      "line": 92,
+      "type": "Console Error",
+      "content": "console.error('Error searching by barcode:', error);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\construction-products\\page.tsx",
+      "line": 112,
+      "type": "Console Error",
+      "content": "console.error('Error deleting product:', error);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\currency-region\\page.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\customer-groups\\customer-group-add-customers\\customer-group-add-customers.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\customer-groups\\customer-group-add-customers\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\customer-groups\\customer-group-create\\customer-group-create.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\customer-groups\\customer-group-create\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\customer-groups\\customer-group-detail\\breadcrumb.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\customer-groups\\customer-group-detail\\constants.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\customer-groups\\customer-group-detail\\customer-group-detail.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\customer-groups\\customer-group-detail\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\customer-groups\\customer-group-detail\\loader.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\customer-groups\\customer-group-edit\\customer-group-edit.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\customer-groups\\customer-group-edit\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\customer-groups\\customer-group-list\\customer-group-list.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\customer-groups\\customer-group-list\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\customer-groups\\customer-group-metadata\\customer-metadata.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\customer-groups\\customer-group-metadata\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\customer-groups\\page.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\customer-segmentation\\page.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\customers\\page.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\delivery\\page.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\email-campaigns\\page.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\erp\\page.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 132,
+      "type": "Console Error",
+      "content": "console.error('Error loading expenses:', error);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 155,
+      "type": "Console Error",
+      "content": "console.error('Error loading categories:', error);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 170,
+      "type": "Console Error",
+      "content": "console.error('Error creating default categories:', error);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 184,
+      "type": "Console Error",
+      "content": "console.error('Error loading employees:', error);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 275,
+      "type": "Console Error",
+      "content": "console.error('Error saving expense:', error);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\financial-management\\page.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\home\\home.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\home\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\inventory\\page.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\invite\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\invite\\invite.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\invite\\invite.tsx",
+      "line": 36,
+      "type": "TODO/FIXME",
+      "content": "// TODO: Update to V2 format",
+      "severity": "low"
+    },
+    {
+      "file": "src\\app\\store\\layout\\StoreLayout.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\layout.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\locations\\common\\constants.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\locations\\common\\schema.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\locations\\common\\types.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\locations\\location-create\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\locations\\location-create\\location-create.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\locations\\location-detail\\breadcrumb.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\locations\\location-detail\\constants.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\locations\\location-detail\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\locations\\location-detail\\loader.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\locations\\location-detail\\location-detail.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\locations\\location-edit\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\locations\\location-edit\\location-edit.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\locations\\location-fulfillment-providers\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\locations\\location-fulfillment-providers\\location-fulfillment-providers.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\locations\\location-list\\constants.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\locations\\location-list\\constants.ts",
+      "line": 2,
+      "type": "TODO/FIXME",
+      "content": "// TODO: change this when RQ is fixed (address is not joined when *address)",
+      "severity": "low"
+    },
+    {
+      "file": "src\\app\\store\\locations\\location-list\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\locations\\location-list\\loader.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\locations\\location-list\\loader.tsx",
+      "line": 16,
+      "type": "TODO/FIXME",
+      "content": "// TODO: change this when RQ is fixed",
+      "severity": "low"
+    },
+    {
+      "file": "src\\app\\store\\locations\\location-list\\location-list.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\locations\\location-sales-channels\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\locations\\location-sales-channels\\location-sales-channels.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\locations\\location-service-zone-create\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\locations\\location-service-zone-create\\location-service-zone-create.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\locations\\location-service-zone-edit\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\locations\\location-service-zone-edit\\location-service-zone-edit.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\locations\\location-service-zone-manage-areas\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\locations\\location-service-zone-manage-areas\\location-service-zone-manage-areas.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\locations\\location-service-zone-shipping-option-create\\constants.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\locations\\location-service-zone-shipping-option-create\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\locations\\location-service-zone-shipping-option-create\\location-service-zone-shipping-option-create.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\locations\\location-service-zone-shipping-option-edit\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\locations\\location-service-zone-shipping-option-edit\\location-service-zone-shipping-option-edit.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\locations\\location-service-zone-shipping-option-pricing\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\locations\\location-service-zone-shipping-option-pricing\\location-service-zone-shipping-option-pricing.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\login\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\marketplace\\page.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\marketplace\\page.tsx",
+      "line": 111,
+      "type": "Console Error",
+      "content": "console.error('Error fetching data:', error);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\marketplace-vendors\\page.tsx",
+      "line": 2,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\marketplace-vendors\\page.tsx",
+      "line": 53,
+      "type": "TODO/FIXME",
+      "content": "// TODO: Replace with actual API call",
+      "severity": "low"
+    },
+    {
+      "file": "src\\app\\store\\marketplace-vendors\\page.tsx",
+      "line": 130,
+      "type": "Console Error",
+      "content": "console.error(\"Error loading vendors:\", error)",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\marketplace-vendors\\page.tsx",
+      "line": 168,
+      "type": "TODO/FIXME",
+      "content": "// TODO: Replace with actual API call",
+      "severity": "low"
+    },
+    {
+      "file": "src\\app\\store\\marketplace-vendors\\page.tsx",
+      "line": 175,
+      "type": "Console Error",
+      "content": "console.error(\"Error approving vendor:\", error)",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\marketplace-vendors\\page.tsx",
+      "line": 182,
+      "type": "TODO/FIXME",
+      "content": "// TODO: Replace with actual API call",
+      "severity": "low"
+    },
+    {
+      "file": "src\\app\\store\\marketplace-vendors\\page.tsx",
+      "line": 189,
+      "type": "Console Error",
+      "content": "console.error(\"Error rejecting vendor:\", error)",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\marketplace-vendors\\page.tsx",
+      "line": 197,
+      "type": "TODO/FIXME",
+      "content": "// TODO: Replace with actual API call",
+      "severity": "low"
+    },
+    {
+      "file": "src\\app\\store\\marketplace-vendors\\page.tsx",
+      "line": 204,
+      "type": "Console Error",
+      "content": "console.error(\"Error suspending vendor:\", error)",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\no-match\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\no-match\\no-match.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\no-match\\no-match.tsx",
+      "line": 7,
+      "type": "TODO/FIXME",
+      "content": "// TODO: Add 404 page",
+      "severity": "low"
+    },
+    {
+      "file": "src\\app\\store\\notifications\\page.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\order-management\\page.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\orders\\page.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\payments\\page.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\permissions\\page.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\pos\\offline\\page.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\pos\\page.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\pos\\page.tsx",
+      "line": 55,
+      "type": "Console Error",
+      "content": "console.error('POS Error Boundary caught an error:', error, errorInfo);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\pos\\page.tsx",
+      "line": 207,
+      "type": "Console Error",
+      "content": "console.error('Error initializing POS data:', error);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\pos\\page.tsx",
+      "line": 218,
+      "type": "Console Error",
+      "content": "console.error('Unhandled promise rejection in POS:', event.reason);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\pos\\page.tsx",
+      "line": 241,
+      "type": "Console Error",
+      "content": "console.error('Error loading products:', error);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\pos\\page.tsx",
+      "line": 256,
+      "type": "Console Error",
+      "content": "console.error('Error loading customers:', error);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\pos\\page.tsx",
+      "line": 271,
+      "type": "Console Error",
+      "content": "console.error('Error loading suspended sales:', error);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\pos\\page.tsx",
+      "line": 294,
+      "type": "Console Error",
+      "content": "console.error('Error handling barcode input:', error);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\pos\\page.tsx",
+      "line": 463,
+      "type": "Console Error",
+      "content": "console.error('Error refreshing suspended sales after suspending:', refreshError);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\pos\\page.tsx",
+      "line": 468,
+      "type": "Console Error",
+      "content": "console.error('Error suspending sale:', error);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\pos\\page.tsx",
+      "line": 496,
+      "type": "Console Error",
+      "content": "console.error('Error refreshing suspended sales after resuming:', refreshError);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\pos\\page.tsx",
+      "line": 503,
+      "type": "Console Error",
+      "content": "console.error('Error resuming sale:', error);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\pos\\page.tsx",
+      "line": 565,
+      "type": "Console Error",
+      "content": "console.error('Error updating inventory for product:', item.product.id, inventoryError);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\pos\\page.tsx",
+      "line": 578,
+      "type": "Console Error",
+      "content": "console.error('Error refreshing products after sale:', refreshError);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\pos\\page.tsx",
+      "line": 583,
+      "type": "Console Error",
+      "content": "console.error('Error processing sale:', error);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\pos\\page.tsx",
+      "line": 622,
+      "type": "Console Error",
+      "content": "console.error('Error refreshing customers after adding new customer:', refreshError);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\pos\\page.tsx",
+      "line": 629,
+      "type": "Console Error",
+      "content": "console.error('Error adding customer:', error);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\price-lists\\common\\constants.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\price-lists\\common\\schemas.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\price-lists\\common\\utils.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\price-lists\\price-list-configuration\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\price-lists\\price-list-configuration\\price-list-configuration.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\price-lists\\price-list-create\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\price-lists\\price-list-create\\price-list-create.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\price-lists\\price-list-detail\\breadcrumb.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\price-lists\\price-list-detail\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\price-lists\\price-list-detail\\loader.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\price-lists\\price-list-detail\\price-list-detail.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\price-lists\\price-list-edit\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\price-lists\\price-list-edit\\price-list-edit.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\price-lists\\price-list-list\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\price-lists\\price-list-list\\price-list-list.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\price-lists\\price-list-prices-add\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\price-lists\\price-list-prices-add\\price-list-prices-add.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\price-lists\\price-list-prices-edit\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\price-lists\\price-list-prices-edit\\price-list-prices-edit.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\pricing\\create\\page.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\pricing\\page.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\product-bundles\\create\\page.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\product-bundles\\page.tsx",
+      "line": 2,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\product-bundles\\page.tsx",
+      "line": 42,
+      "type": "TODO/FIXME",
+      "content": "// TODO: Replace with actual API call",
+      "severity": "low"
+    },
+    {
+      "file": "src\\app\\store\\product-bundles\\page.tsx",
+      "line": 77,
+      "type": "Console Error",
+      "content": "console.error(\"Error loading bundles:\", error)",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\product-bundles\\page.tsx",
+      "line": 111,
+      "type": "TODO/FIXME",
+      "content": "// TODO: Replace with actual API call",
+      "severity": "low"
+    },
+    {
+      "file": "src\\app\\store\\product-bundles\\page.tsx",
+      "line": 114,
+      "type": "Console Error",
+      "content": "console.error(\"Error deleting bundle:\", error)",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\product-tags\\product-tag-create\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\product-tags\\product-tag-create\\product-tag-create.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\product-tags\\product-tag-detail\\breadcrumb.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\product-tags\\product-tag-detail\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\product-tags\\product-tag-detail\\loader.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\product-tags\\product-tag-detail\\product-tag-detail.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\product-tags\\product-tag-edit\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\product-tags\\product-tag-edit\\product-tag-edit.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\product-tags\\product-tag-list\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\product-tags\\product-tag-list\\loader.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\product-tags\\product-tag-list\\product-tag-list.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\product-types\\product-type-create\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\product-types\\product-type-create\\product-type-create.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\product-types\\product-type-detail\\breadcrumb.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\product-types\\product-type-detail\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\product-types\\product-type-detail\\loader.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\product-types\\product-type-detail\\product-type-detail.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\product-types\\product-type-edit\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\product-types\\product-type-edit\\product-type-edit.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\product-types\\product-type-list\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\product-types\\product-type-list\\product-type-list.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\product-types\\product-type-metadata\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\product-types\\product-type-metadata\\product-type-metadata.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\product-variants\\constants.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\product-variants\\loader.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\product-variants\\page.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\product-variants\\product-variant-detail\\breadcrumb.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\product-variants\\product-variant-detail\\constants.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\product-variants\\product-variant-detail\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\product-variants\\product-variant-detail\\loader.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\product-variants\\product-variant-detail\\product-variant-detail.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\product-variants\\product-variant-edit\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\product-variants\\product-variant-edit\\loader.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\product-variants\\product-variant-edit\\product-variant-edit.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\product-variants\\product-variant-manage-inventory-items\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\product-variants\\product-variant-manage-inventory-items\\product-variant-manage-inventory-items.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\product-variants\\product-variant-metadata\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\product-variants\\product-variant-metadata\\product-variant-metadata.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\profile\\profile-detail\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\profile\\profile-detail\\profile-detail.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\profile\\profile-edit\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\profile\\profile-edit\\profile-edit.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\promotions\\page.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\purchase-orders\\page.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\purchase-orders\\page.tsx",
+      "line": 105,
+      "type": "Console Error",
+      "content": "console.error('Error loading purchase orders:', error);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\purchase-orders\\page.tsx",
+      "line": 122,
+      "type": "Console Error",
+      "content": "console.error('Error loading suppliers:', error);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\purchase-orders\\page.tsx",
+      "line": 295,
+      "type": "Console Error",
+      "content": "console.error('Error saving purchase order:', error);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\regions\\common\\constants.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\regions\\region-add-countries\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\regions\\region-add-countries\\region-add-countries.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\regions\\region-create\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\regions\\region-create\\region-create.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\regions\\region-detail\\breadcrumb.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\regions\\region-detail\\constants.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\regions\\region-detail\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\regions\\region-detail\\loader.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\regions\\region-detail\\region-detail.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\regions\\region-edit\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\regions\\region-edit\\region-edit.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\regions\\region-list\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\regions\\region-list\\region-list.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\regions\\region-metadata\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\regions\\region-metadata\\region-metadata.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\reports\\page.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\reservations\\reservation-create\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\reservations\\reservation-create\\reservation-create.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\reservations\\reservation-detail\\breadcrumb.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\reservations\\reservation-detail\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\reservations\\reservation-detail\\loader.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\reservations\\reservation-detail\\reservation-detail.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\reservations\\reservation-list\\constants.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\reservations\\reservation-list\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\reservations\\reservation-list\\reservation-list.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\reservations\\reservation-metadata\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\reservations\\reservation-metadata\\reservation-metadata.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\reset-password\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\reset-password\\reset-password.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\return-reasons\\return-reason-create\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\return-reasons\\return-reason-create\\return-reason-create.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\return-reasons\\return-reason-edit\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\return-reasons\\return-reason-edit\\return-reason-edit.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\return-reasons\\return-reason-list\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\return-reasons\\return-reason-list\\loader.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\return-reasons\\return-reason-list\\return-reason-list.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\sales-channels\\sales-channel-add-products\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\sales-channels\\sales-channel-add-products\\sales-channel-add-products.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\sales-channels\\sales-channel-create\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\sales-channels\\sales-channel-create\\sales-channel-create.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\sales-channels\\sales-channel-detail\\breadcrumb.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\sales-channels\\sales-channel-detail\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\sales-channels\\sales-channel-detail\\loader.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\sales-channels\\sales-channel-detail\\sales-channel-detail.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\sales-channels\\sales-channel-edit\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\sales-channels\\sales-channel-edit\\sales-channel-edit.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\sales-channels\\sales-channel-list\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\sales-channels\\sales-channel-list\\sales-channel-list.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\sales-channels\\sales-channel-metadata\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\sales-channels\\sales-channel-metadata\\sales-channel-metadata.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\search\\page.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\settings\\page.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\shipping\\page.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\shipping-profiles\\shipping-profile-create\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\shipping-profiles\\shipping-profile-create\\shipping-profile-create.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\shipping-profiles\\shipping-profile-detail\\breadcrumb.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\shipping-profiles\\shipping-profile-detail\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\shipping-profiles\\shipping-profile-detail\\loader.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\shipping-profiles\\shipping-profile-detail\\shipping-profile-detail.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\shipping-profiles\\shipping-profile-metadata\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\shipping-profiles\\shipping-profile-metadata\\shipping-profile-metadata.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\shipping-profiles\\shipping-profiles-list\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\shipping-profiles\\shipping-profiles-list\\shipping-profile-list.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\store-admin\\store-add-currencies\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\store-admin\\store-add-currencies\\store-add-currencies.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\store-admin\\store-detail\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\store-admin\\store-detail\\loader.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\store-admin\\store-detail\\store-detail.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\store-admin\\store-edit\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\store-admin\\store-edit\\store-edit.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\store-admin\\store-metadata\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\store-admin\\store-metadata\\store-metadata.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\storefront\\page.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\storefront\\page.tsx",
+      "line": 73,
+      "type": "Console Error",
+      "content": "console.error('Error fetching products:', error);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\suppliers\\page.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\suppliers\\page.tsx",
+      "line": 80,
+      "type": "Console Error",
+      "content": "console.error('Error loading suppliers:', error);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\suppliers\\page.tsx",
+      "line": 130,
+      "type": "Console Error",
+      "content": "console.error('Error saving supplier:', error);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\suppliers\\page.tsx",
+      "line": 168,
+      "type": "Console Error",
+      "content": "console.error('Error deleting supplier:', error);",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\tax-regions\\common\\constants.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\tax-regions\\common\\hooks.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\tax-regions\\common\\schemas.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\tax-regions\\common\\utils.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\tax-regions\\tax-region-create\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\tax-regions\\tax-region-create\\tax-region-create.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\tax-regions\\tax-region-detail\\breadcrumb.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\tax-regions\\tax-region-detail\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\tax-regions\\tax-region-detail\\loader.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\tax-regions\\tax-region-detail\\tax-region-detail.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\tax-regions\\tax-region-detail\\tax-region-provider-section\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\tax-regions\\tax-region-detail\\tax-region-provider-section\\tax-region-provider-section.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\tax-regions\\tax-region-edit\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\tax-regions\\tax-region-edit\\tax-region-edit.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\tax-regions\\tax-region-list\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\tax-regions\\tax-region-list\\tax-region-list.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\tax-regions\\tax-region-metadata\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\tax-regions\\tax-region-metadata\\tax-region-metadata.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\tax-regions\\tax-region-metadata\\tax-region-metadata.tsx",
+      "line": 9,
+      "type": "TODO/FIXME",
+      "content": "* TODO: Tax region update endpoint is missing",
+      "severity": "low"
+    },
+    {
+      "file": "src\\app\\store\\tax-regions\\tax-region-province-create\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\tax-regions\\tax-region-province-create\\tax-region-province-create.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\tax-regions\\tax-region-province-detail\\breadcrumb.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\tax-regions\\tax-region-province-detail\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\tax-regions\\tax-region-province-detail\\loader.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\tax-regions\\tax-region-province-detail\\tax-region-detail.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\tax-regions\\tax-region-tax-override-create\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\tax-regions\\tax-region-tax-override-create\\tax-region-tax-override-create.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\tax-regions\\tax-region-tax-override-edit\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\tax-regions\\tax-region-tax-override-edit\\tax-region-tax-override-edit.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\tax-regions\\tax-region-tax-override-edit\\types.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\tax-regions\\tax-region-tax-rate-create\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\tax-regions\\tax-region-tax-rate-create\\tax-region-tax-rate-create.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\tax-regions\\tax-region-tax-rate-edit\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\tax-regions\\tax-region-tax-rate-edit\\tax-region-edit.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\users\\user-detail\\breadcrumb.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\users\\user-detail\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\users\\user-detail\\loader.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\users\\user-detail\\user-detail.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\users\\user-edit\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\users\\user-edit\\user-edit.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\users\\user-invite\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\users\\user-invite\\user-invite.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\users\\user-list\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\users\\user-list\\user-list.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\users\\user-metadata\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\users\\user-metadata\\user-metadata.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\warehouses\\page.tsx",
+      "line": 2,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\warehouses\\page.tsx",
+      "line": 52,
+      "type": "TODO/FIXME",
+      "content": "// TODO: Replace with actual API call",
+      "severity": "low"
+    },
+    {
+      "file": "src\\app\\store\\warehouses\\page.tsx",
+      "line": 108,
+      "type": "Console Error",
+      "content": "console.error(\"Error loading warehouses:\", error)",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\warehouses\\page.tsx",
+      "line": 151,
+      "type": "TODO/FIXME",
+      "content": "// TODO: Replace with actual API call",
+      "severity": "low"
+    },
+    {
+      "file": "src\\app\\store\\warehouses\\page.tsx",
+      "line": 154,
+      "type": "Console Error",
+      "content": "console.error(\"Error deleting warehouse:\", error)",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\workflow-executions\\constants.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\workflow-executions\\types.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\workflow-executions\\utils.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\workflow-executions\\workflow-execution-detail\\breadcrumb.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\workflow-executions\\workflow-execution-detail\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\workflow-executions\\workflow-execution-detail\\loader.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\workflow-executions\\workflow-execution-detail\\workflow-detail.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\workflow-executions\\workflow-execution-list\\index.ts",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\workflow-executions\\workflow-execution-list\\workflow-execution-list.tsx",
+      "line": 1,
+      "type": "TypeScript Suppression",
+      "content": "// @ts-nocheck",
+      "severity": "medium"
+    }
+  ],
+  "englishTexts": [
+    {
+      "file": "src\\app\\store\\admin\\page.tsx",
+      "line": 48,
+      "englishText": "'Add Product'",
+      "context": "title: 'Add Product',",
+      "priority": "high"
+    },
+    {
+      "file": "src\\app\\store\\admin\\page.tsx",
+      "line": 49,
+      "englishText": "'Add new products to your store'",
+      "context": "description: 'Add new products to your store',",
+      "priority": "high"
+    },
+    {
+      "file": "src\\app\\store\\admin\\page.tsx",
+      "line": 55,
+      "englishText": "'View Orders'",
+      "context": "title: 'View Orders',",
+      "priority": "high"
+    },
+    {
+      "file": "src\\app\\store\\admin\\page.tsx",
+      "line": 63,
+      "englishText": "'View store analytics'",
+      "context": "description: 'View store analytics',",
+      "priority": "high"
+    },
+    {
+      "file": "src\\app\\store\\admin\\page.tsx",
+      "line": 69,
+      "englishText": "'Settings'",
+      "context": "title: 'Settings',",
+      "priority": "high"
+    },
+    {
+      "file": "src\\app\\store\\currency-region\\page.tsx",
+      "line": 227,
+      "englishText": "USD",
+      "context": "placeholder=\"USD\"",
+      "priority": "medium",
+      "type": "placeholder"
+    },
+    {
+      "file": "src\\app\\store\\currency-region\\page.tsx",
+      "line": 248,
+      "englishText": "US Dollar",
+      "context": "placeholder=\"US Dollar\"",
+      "priority": "medium",
+      "type": "placeholder"
+    },
+    {
+      "file": "src\\app\\store\\currency-region\\page.tsx",
+      "line": 394,
+      "englishText": "North America",
+      "context": "placeholder=\"North America\"",
+      "priority": "medium",
+      "type": "placeholder"
+    },
+    {
+      "file": "src\\app\\store\\customer-segmentation\\page.tsx",
+      "line": 97,
+      "englishText": "'Previously active customers who haven\\'",
+      "context": "description: 'Previously active customers who haven\\'t ordered in 6 months',",
+      "priority": "high"
+    },
+    {
+      "file": "src\\app\\store\\customer-segmentation\\page.tsx",
+      "line": 229,
+      "englishText": "\"Search segments...\"",
+      "context": "placeholder=\"Search segments...\"",
+      "priority": "high"
+    },
+    {
+      "file": "src\\app\\store\\email-campaigns\\page.tsx",
+      "line": 233,
+      "englishText": "\"Search campaigns...\"",
+      "context": "placeholder=\"Search campaigns...\"",
+      "priority": "high"
+    },
+    {
+      "file": "src\\app\\store\\financial-management\\page.tsx",
+      "line": 298,
+      "englishText": "\"Search invoices...\"",
+      "context": "placeholder=\"Search invoices...\"",
+      "priority": "high"
+    },
+    {
+      "file": "src\\app\\store\\layout.tsx",
+      "line": 72,
+      "englishText": "'Browse Products'",
+      "context": "{ href: '/store/marketplace', label: 'Browse Products', icon: Search },",
+      "priority": "high"
+    },
+    {
+      "file": "src\\app\\store\\layout.tsx",
+      "line": 111,
+      "englishText": "'Settings'",
+      "context": "{ href: '/store/settings', label: 'Settings', icon: Settings },",
+      "priority": "high"
+    },
+    {
+      "file": "src\\app\\store\\marketplace\\page.tsx",
+      "line": 192,
+      "englishText": "'Added to wishlist'",
+      "context": "toast.success('Added to wishlist');",
+      "priority": "high"
+    },
+    {
+      "file": "src\\app\\store\\marketplace\\page.tsx",
+      "line": 300,
+      "englishText": "\"Search products...\"",
+      "context": "placeholder=\"Search products...\"",
+      "priority": "high"
+    },
+    {
+      "file": "src\\app\\store\\marketplace-vendors\\page.tsx",
+      "line": 297,
+      "englishText": "\"Search vendors...\"",
+      "context": "placeholder=\"Search vendors...\"",
+      "priority": "high"
+    },
+    {
+      "file": "src\\app\\store\\marketplace-vendors\\page.tsx",
+      "line": 305,
+      "englishText": "\"Filter by status\"",
+      "context": "<SelectValue placeholder=\"Filter by status\" />",
+      "priority": "high"
+    },
+    {
+      "file": "src\\app\\store\\marketplace-vendors\\page.tsx",
+      "line": 305,
+      "englishText": "Filter by status",
+      "context": "<SelectValue placeholder=\"Filter by status\" />",
+      "priority": "medium",
+      "type": "placeholder"
+    },
+    {
+      "file": "src\\app\\store\\pricing\\create\\page.tsx",
+      "line": 27,
+      "englishText": "Enter price list name",
+      "context": "placeholder=\"Enter price list name\"",
+      "priority": "medium",
+      "type": "placeholder"
+    },
+    {
+      "file": "src\\app\\store\\pricing\\create\\page.tsx",
+      "line": 40,
+      "englishText": "Enter description",
+      "context": "placeholder=\"Enter description\"",
+      "priority": "medium",
+      "type": "placeholder"
+    },
+    {
+      "file": "src\\app\\store\\pricing\\page.tsx",
+      "line": 157,
+      "englishText": "\"Search price lists...\"",
+      "context": "placeholder=\"Search price lists...\"",
+      "priority": "high"
+    },
+    {
+      "file": "src\\app\\store\\product-bundles\\page.tsx",
+      "line": 146,
+      "englishText": "\"Search bundles...\"",
+      "context": "placeholder=\"Search bundles...\"",
+      "priority": "high"
+    },
+    {
+      "file": "src\\app\\store\\product-bundles\\page.tsx",
+      "line": 172,
+      "englishText": "\"Create your first product bundle to get started\"",
+      "context": ": \"Create your first product bundle to get started\"",
+      "priority": "high"
+    },
+    {
+      "file": "src\\app\\store\\promotions\\page.tsx",
+      "line": 162,
+      "englishText": "\"Search promotions...\"",
+      "context": "placeholder=\"Search promotions...\"",
+      "priority": "high"
+    },
+    {
+      "file": "src\\app\\store\\storefront\\page.tsx",
+      "line": 176,
+      "englishText": "\"Search products...\"",
+      "context": "placeholder=\"Search products...\"",
+      "priority": "high"
+    },
+    {
+      "file": "src\\app\\store\\warehouses\\page.tsx",
+      "line": 249,
+      "englishText": "\"Search warehouses...\"",
+      "context": "placeholder=\"Search warehouses...\"",
+      "priority": "high"
+    },
+    {
+      "file": "src\\app\\store\\warehouses\\page.tsx",
+      "line": 276,
+      "englishText": "\"Create your first warehouse to get started\"",
+      "context": ": \"Create your first warehouse to get started\"",
+      "priority": "high"
+    }
+  ],
+  "missingTranslations": [
+    {
+      "file": "src\\app\\store\\admin\\page.tsx",
+      "line": 81,
+      "content": "<h1 className=\"text-3xl font-bold text-gray-900 mb-2\">Store Administration</h1>",
+      "context": "<h1 className=\"text-3xl font-bold text-gray-900 mb-2\">Store Administration</h1>"
+    },
+    {
+      "file": "src\\app\\store\\admin\\page.tsx",
+      "line": 82,
+      "content": "<p className=\"text-gray-600\">Manage your store operations and analytics</p>",
+      "context": "<p className=\"text-gray-600\">Manage your store operations and analytics</p>"
+    },
+    {
+      "file": "src\\app\\store\\admin\\page.tsx",
+      "line": 138,
+      "content": "<p className=\"text-xs text-muted-foreground\">Active customers</p>",
+      "context": "<p className=\"text-xs text-muted-foreground\">Active customers</p>"
+    },
+    {
+      "file": "src\\app\\store\\admin\\page.tsx",
+      "line": 145,
+      "content": "<h2 className=\"text-xl font-semibold text-gray-900 mb-4\">Quick Actions</h2>",
+      "context": "<h2 className=\"text-xl font-semibold text-gray-900 mb-4\">Quick Actions</h2>"
+    },
+    {
+      "file": "src\\app\\store\\admin\\page.tsx",
+      "line": 154,
+      "content": "<h3 className=\"font-semibold text-gray-900 mb-2\">{action.title}</h3>",
+      "context": "<h3 className=\"font-semibold text-gray-900 mb-2\">{action.title}</h3>"
+    },
+    {
+      "file": "src\\app\\store\\admin\\page.tsx",
+      "line": 155,
+      "content": "<p className=\"text-sm text-gray-600 mb-3\">{action.description}</p>",
+      "context": "<p className=\"text-sm text-gray-600 mb-3\">{action.description}</p>"
+    },
+    {
+      "file": "src\\app\\store\\admin\\page.tsx",
+      "line": 177,
+      "content": "<p className=\"font-medium\">#ORD-001</p>",
+      "context": "<p className=\"font-medium\">#ORD-001</p>"
+    },
+    {
+      "file": "src\\app\\store\\admin\\page.tsx",
+      "line": 178,
+      "content": "<p className=\"text-sm text-gray-600\">Customer A</p>",
+      "context": "<p className=\"text-sm text-gray-600\">Customer A</p>"
+    },
+    {
+      "file": "src\\app\\store\\admin\\page.tsx",
+      "line": 187,
+      "content": "<p className=\"font-medium\">#ORD-002</p>",
+      "context": "<p className=\"font-medium\">#ORD-002</p>"
+    },
+    {
+      "file": "src\\app\\store\\admin\\page.tsx",
+      "line": 188,
+      "content": "<p className=\"text-sm text-gray-600\">Customer B</p>",
+      "context": "<p className=\"text-sm text-gray-600\">Customer B</p>"
+    },
+    {
+      "file": "src\\app\\store\\admin\\page.tsx",
+      "line": 212,
+      "content": "<p className=\"font-medium\">Low Stock Items</p>",
+      "context": "<p className=\"font-medium\">Low Stock Items</p>"
+    },
+    {
+      "file": "src\\app\\store\\admin\\page.tsx",
+      "line": 213,
+      "content": "<p className=\"text-sm text-gray-600\">{stats.lowStockItems} products</p>",
+      "context": "<p className=\"text-sm text-gray-600\">{stats.lowStockItems} products</p>"
+    },
+    {
+      "file": "src\\app\\store\\admin\\page.tsx",
+      "line": 220,
+      "content": "<p className=\"font-medium\">Categories</p>",
+      "context": "<p className=\"font-medium\">Categories</p>"
+    },
+    {
+      "file": "src\\app\\store\\admin\\page.tsx",
+      "line": 221,
+      "content": "<p className=\"text-sm text-gray-600\">8 active categories</p>",
+      "context": "<p className=\"text-sm text-gray-600\">8 active categories</p>"
+    },
+    {
+      "file": "src\\app\\store\\api-key-management\\api-key-management-detail\\breadcrumb.tsx",
+      "line": 24,
+      "content": "<span>{api_key.title}</span>",
+      "context": "return <span>{api_key.title}</span>"
+    },
+    {
+      "file": "src\\app\\store\\barcode-scanner\\page.tsx",
+      "line": 71,
+      "content": "<h2 className=\"text-xl font-semibold text-red-800 mb-2\">Error</h2>",
+      "context": "<Card className=\"p-6 max-w-md w-full text-center bg-red-50 border-red-200\">          <h2 className=\"text-xl font-semibold text-red-800 mb-2\">Error</h2>"
+    },
+    {
+      "file": "src\\app\\store\\barcode-scanner\\page.tsx",
+      "line": 72,
+      "content": "<p className=\"text-red-600 mb-4\">{error}</p>",
+      "context": "<p className=\"text-red-600 mb-4\">{error}</p>"
+    },
+    {
+      "file": "src\\app\\store\\barcode-scanner\\page.tsx",
+      "line": 87,
+      "content": "<h2 className=\"text-xl font-semibold mb-2\">Authentication Required</h2>",
+      "context": "<h2 className=\"text-xl font-semibold mb-2\">Authentication Required</h2>          <p className=\"text-gray-600 mb-4\">"
+    },
+    {
+      "file": "src\\app\\store\\barcode-scanner\\page.tsx",
+      "line": 114,
+      "content": "<h1 className=\"text-3xl font-bold text-gray-900\">Barcode Scanner</h1>",
+      "context": "<h1 className=\"text-3xl font-bold text-gray-900\">Barcode Scanner</h1>"
+    },
+    {
+      "file": "src\\app\\store\\campaigns\\campaign-detail\\breadcrumb.tsx",
+      "line": 29,
+      "content": "<span>{campaign.name}</span>",
+      "context": "return <span>{campaign.name}</span>"
+    },
+    {
+      "file": "src\\app\\store\\campaigns\\page.tsx",
+      "line": 16,
+      "content": "<h1 className=\"text-2xl font-bold\">Campaigns</h1>",
+      "context": "<h1 className=\"text-2xl font-bold\">Campaigns</h1>"
+    },
+    {
+      "file": "src\\app\\store\\campaigns\\page.tsx",
+      "line": 20,
+      "content": "<p className=\"text-gray-600\">Campaign management coming soon...</p>",
+      "context": "<p className=\"text-gray-600\">Campaign management coming soon...</p>"
+    },
+    {
+      "file": "src\\app\\store\\cash-registers\\page.tsx",
+      "line": 510,
+      "content": "<span className=\"font-medium\">{register.register_name}</span>",
+      "context": "<span className=\"font-medium\">{register.register_name}</span>"
+    },
+    {
+      "file": "src\\app\\store\\cash-registers\\page.tsx",
+      "line": 514,
+      "content": "<p className=\"text-sm text-gray-600 mb-2\">{register.location_name}</p>",
+      "context": "<p className=\"text-sm text-gray-600 mb-2\">{register.location_name}</p>"
+    },
+    {
+      "file": "src\\app\\store\\cash-registers\\page.tsx",
+      "line": 556,
+      "content": "<span>{selectedRegister.register_name}</span>",
+      "context": "<span>{selectedRegister.register_name}</span>"
+    },
+    {
+      "file": "src\\app\\store\\cash-registers\\page.tsx",
+      "line": 854,
+      "content": "<p className=\"text-xs text-gray-500\">{transaction.description}</p>",
+      "context": "<p className=\"text-xs text-gray-500\">{transaction.description}</p>"
+    },
+    {
+      "file": "src\\app\\store\\cash-registers\\page.tsx",
+      "line": 867,
+      "content": "<p className=\"text-xs text-gray-500\">{transaction.payment_method}</p>",
+      "context": "<p className=\"text-xs text-gray-500\">{transaction.payment_method}</p>"
+    },
+    {
+      "file": "src\\app\\store\\categories\\construction\\page.tsx",
+      "line": 221,
+      "content": "<h3 className=\"font-medium text-gray-900\">{category.name_ar}</h3>",
+      "context": "<h3 className=\"font-medium text-gray-900\">{category.name_ar}</h3>"
+    },
+    {
+      "file": "src\\app\\store\\categories\\construction\\page.tsx",
+      "line": 223,
+      "content": "<p className=\"text-sm text-gray-500\">{category.name_en}</p>",
+      "context": "<p className=\"text-sm text-gray-500\">{category.name_en}</p>"
+    },
+    {
+      "file": "src\\app\\store\\categories\\construction\\page.tsx",
+      "line": 315,
+      "content": "<p className=\"text-2xl font-bold text-gray-900\">{categories.length}</p>",
+      "context": "<p className=\"text-2xl font-bold text-gray-900\">{categories.length}</p>"
+    },
+    {
+      "file": "src\\app\\store\\categories\\construction\\page.tsx",
+      "line": 414,
+      "content": "<p className=\"text-red-500 text-sm mt-1\">{errors.name_ar}</p>",
+      "context": "<p className=\"text-red-500 text-sm mt-1\">{errors.name_ar}</p>"
+    },
+    {
+      "file": "src\\app\\store\\collections\\collection-detail\\breadcrumb.tsx",
+      "line": 23,
+      "content": "<span>{collection.title}</span>",
+      "context": "return <span>{collection.title}</span>"
+    },
+    {
+      "file": "src\\app\\store\\collections\\page.tsx",
+      "line": 16,
+      "content": "<h1 className=\"text-2xl font-bold\">Collections</h1>",
+      "context": "<h1 className=\"text-2xl font-bold\">Collections</h1>"
+    },
+    {
+      "file": "src\\app\\store\\collections\\page.tsx",
+      "line": 20,
+      "content": "<p className=\"text-gray-600\">Collection management coming soon...</p>",
+      "context": "<p className=\"text-gray-600\">Collection management coming soon...</p>"
+    },
+    {
+      "file": "src\\app\\store\\construction-products\\new\\page.tsx",
+      "line": 236,
+      "content": "<p className=\"text-red-500 text-sm mt-1\">{errors.name_ar}</p>",
+      "context": "<p className=\"text-red-500 text-sm mt-1\">{errors.name_ar}</p>"
+    },
+    {
+      "file": "src\\app\\store\\construction-products\\new\\page.tsx",
+      "line": 292,
+      "content": "<p className=\"text-red-500 text-sm mt-1\">{errors.category_id}</p>",
+      "context": "<p className=\"text-red-500 text-sm mt-1\">{errors.category_id}</p>"
+    },
+    {
+      "file": "src\\app\\store\\construction-products\\new\\page.tsx",
+      "line": 333,
+      "content": "<p className=\"text-red-500 text-sm mt-1\">{errors.barcode}</p>",
+      "context": "<p className=\"text-red-500 text-sm mt-1\">{errors.barcode}</p>"
+    },
+    {
+      "file": "src\\app\\store\\construction-products\\new\\page.tsx",
+      "line": 358,
+      "content": "<p className=\"text-red-500 text-sm mt-1\">{errors.price}</p>",
+      "context": "<p className=\"text-red-500 text-sm mt-1\">{errors.price}</p>"
+    },
+    {
+      "file": "src\\app\\store\\construction-products\\new\\page.tsx",
+      "line": 377,
+      "content": "<p className=\"text-red-500 text-sm mt-1\">{errors.cost}</p>",
+      "context": "<p className=\"text-red-500 text-sm mt-1\">{errors.cost}</p>"
+    },
+    {
+      "file": "src\\app\\store\\construction-products\\new\\page.tsx",
+      "line": 395,
+      "content": "<p className=\"text-red-500 text-sm mt-1\">{errors.stock_quantity}</p>",
+      "context": "<p className=\"text-red-500 text-sm mt-1\">{errors.stock_quantity}</p>"
+    },
+    {
+      "file": "src\\app\\store\\construction-products\\new\\page.tsx",
+      "line": 413,
+      "content": "<p className=\"text-red-500 text-sm mt-1\">{errors.min_stock_level}</p>",
+      "context": "<p className=\"text-red-500 text-sm mt-1\">{errors.min_stock_level}</p>"
+    },
+    {
+      "file": "src\\app\\store\\construction-products\\page.tsx",
+      "line": 213,
+      "content": "<p className=\"text-2xl font-bold text-gray-900\">{products.length}</p>",
+      "context": "<p className=\"text-2xl font-bold text-gray-900\">{products.length}</p>"
+    },
+    {
+      "file": "src\\app\\store\\construction-products\\page.tsx",
+      "line": 246,
+      "content": "<p className=\"text-2xl font-bold text-purple-600\">{categories.length}</p>",
+      "context": "<p className=\"text-2xl font-bold text-purple-600\">{categories.length}</p>"
+    },
+    {
+      "file": "src\\app\\store\\construction-products\\page.tsx",
+      "line": 290,
+      "content": "<h3 className=\"font-semibold text-gray-900 mb-2\">{product.name_ar}</h3>",
+      "context": "<h3 className=\"font-semibold text-gray-900 mb-2\">{product.name_ar}</h3>"
+    },
+    {
+      "file": "src\\app\\store\\construction-products\\page.tsx",
+      "line": 291,
+      "content": "<p className=\"text-sm text-gray-600 mb-2\">{product.category_name}</p>",
+      "context": "<p className=\"text-sm text-gray-600 mb-2\">{product.category_name}</p>"
+    },
+    {
+      "file": "src\\app\\store\\construction-products\\page.tsx",
+      "line": 348,
+      "content": "<span className=\"text-sm text-gray-900\">{product.supplier_name}</span>",
+      "context": "<span className=\"text-sm text-gray-900\">{product.supplier_name}</span>"
+    },
+    {
+      "file": "src\\app\\store\\currency-region\\page.tsx",
+      "line": 201,
+      "content": "<h2 className=\"text-xl font-semibold\">Supported Currencies</h2>",
+      "context": "<h2 className=\"text-xl font-semibold\">Supported Currencies</h2>"
+    },
+    {
+      "file": "src\\app\\store\\currency-region\\page.tsx",
+      "line": 202,
+      "content": "<p className=\"text-gray-600\">Manage currencies accepted in your store</p>",
+      "context": "<p className=\"text-gray-600\">Manage currencies accepted in your store</p>"
+    },
+    {
+      "file": "src\\app\\store\\currency-region\\page.tsx",
+      "line": 369,
+      "content": "<h2 className=\"text-xl font-semibold\">Sales Regions</h2>",
+      "context": "<h2 className=\"text-xl font-semibold\">Sales Regions</h2>"
+    },
+    {
+      "file": "src\\app\\store\\currency-region\\page.tsx",
+      "line": 370,
+      "content": "<p className=\"text-gray-600\">Define regions for localized pricing and tax rates</p>",
+      "context": "<p className=\"text-gray-600\">Define regions for localized pricing and tax rates</p>"
+    },
+    {
+      "file": "src\\app\\store\\currency-region\\page.tsx",
+      "line": 467,
+      "content": "<span className=\"text-sm text-gray-500\">Currency:</span>",
+      "context": "<span className=\"text-sm text-gray-500\">Currency:</span>"
+    },
+    {
+      "file": "src\\app\\store\\currency-region\\page.tsx",
+      "line": 468,
+      "content": "<span className=\"font-medium\">{region.currency_code}</span>",
+      "context": "<span className=\"font-medium\">{region.currency_code}</span>"
+    },
+    {
+      "file": "src\\app\\store\\currency-region\\page.tsx",
+      "line": 471,
+      "content": "<span className=\"text-sm text-gray-500\">Tax Rate:</span>",
+      "context": "<span className=\"text-sm text-gray-500\">Tax Rate:</span>"
+    },
+    {
+      "file": "src\\app\\store\\currency-region\\page.tsx",
+      "line": 472,
+      "content": "<span className=\"font-medium\">{region.tax_rate}%</span>",
+      "context": "<span className=\"font-medium\">{region.tax_rate}%</span>"
+    },
+    {
+      "file": "src\\app\\store\\currency-region\\page.tsx",
+      "line": 475,
+      "content": "<span className=\"text-sm text-gray-500\">Countries:</span>",
+      "context": "<span className=\"text-sm text-gray-500\">Countries:</span>"
+    },
+    {
+      "file": "src\\app\\store\\currency-region\\page.tsx",
+      "line": 476,
+      "content": "<span className=\"font-medium\">{region.countries.length}</span>",
+      "context": "<span className=\"font-medium\">{region.countries.length}</span>"
+    },
+    {
+      "file": "src\\app\\store\\currency-region\\page.tsx",
+      "line": 512,
+      "content": "<span className=\"text-2xl\">{country.flag}</span>",
+      "context": "<span className=\"text-2xl\">{country.flag}</span>"
+    },
+    {
+      "file": "src\\app\\store\\customer-groups\\customer-group-detail\\breadcrumb.tsx",
+      "line": 31,
+      "content": "<span>{customer_group.name}</span>",
+      "context": "return <span>{customer_group.name}</span>"
+    },
+    {
+      "file": "src\\app\\store\\customer-groups\\page.tsx",
+      "line": 17,
+      "content": "<h1 className=\"text-2xl font-bold\">Customer Groups</h1>",
+      "context": "<h1 className=\"text-2xl font-bold\">Customer Groups</h1>"
+    },
+    {
+      "file": "src\\app\\store\\customer-groups\\page.tsx",
+      "line": 21,
+      "content": "<p className=\"text-gray-600\">Customer groups management coming soon...</p>",
+      "context": "<p className=\"text-gray-600\">Customer groups management coming soon...</p>"
+    },
+    {
+      "file": "src\\app\\store\\customer-segmentation\\page.tsx",
+      "line": 150,
+      "content": "<h1 className=\"text-3xl font-bold tracking-tight\">Customer Segmentation</h1>",
+      "context": "<h1 className=\"text-3xl font-bold tracking-tight\">Customer Segmentation</h1>"
+    },
+    {
+      "file": "src\\app\\store\\customer-segmentation\\page.tsx",
+      "line": 318,
+      "content": "<h3 className=\"font-medium mb-2\">High-Value Customers</h3>",
+      "context": "<h3 className=\"font-medium mb-2\">High-Value Customers</h3>"
+    },
+    {
+      "file": "src\\app\\store\\customer-segmentation\\page.tsx",
+      "line": 330,
+      "content": "<h3 className=\"font-medium mb-2\">Cart Abandoners</h3>",
+      "context": "<h3 className=\"font-medium mb-2\">Cart Abandoners</h3>"
+    },
+    {
+      "file": "src\\app\\store\\customer-segmentation\\page.tsx",
+      "line": 342,
+      "content": "<h3 className=\"font-medium mb-2\">Win-Back Targets</h3>",
+      "context": "<h3 className=\"font-medium mb-2\">Win-Back Targets</h3>"
+    },
+    {
+      "file": "src\\app\\store\\dashboard\\page.tsx",
+      "line": 254,
+      "content": "<p className=\"text-sm text-gray-600 mb-1\">{card.title}</p>",
+      "context": "<p className=\"text-sm text-gray-600 mb-1\">{card.title}</p>"
+    },
+    {
+      "file": "src\\app\\store\\dashboard\\page.tsx",
+      "line": 255,
+      "content": "<p className=\"text-2xl font-bold text-gray-800 arabic-numbers\">{card.value}</p>",
+      "context": "<p className=\"text-2xl font-bold text-gray-800 arabic-numbers\">{card.value}</p>"
+    },
+    {
+      "file": "src\\app\\store\\email-campaigns\\page.tsx",
+      "line": 156,
+      "content": "<h1 className=\"text-3xl font-bold tracking-tight\">Email Campaigns</h1>",
+      "context": "<h1 className=\"text-3xl font-bold tracking-tight\">Email Campaigns</h1>"
+    },
+    {
+      "file": "src\\app\\store\\email-campaigns\\page.tsx",
+      "line": 346,
+      "content": "<h3 className=\"font-medium mb-2\">Welcome Series</h3>",
+      "context": "<h3 className=\"font-medium mb-2\">Welcome Series</h3>"
+    },
+    {
+      "file": "src\\app\\store\\email-campaigns\\page.tsx",
+      "line": 358,
+      "content": "<h3 className=\"font-medium mb-2\">Abandoned Cart</h3>",
+      "context": "<h3 className=\"font-medium mb-2\">Abandoned Cart</h3>"
+    },
+    {
+      "file": "src\\app\\store\\email-campaigns\\page.tsx",
+      "line": 370,
+      "content": "<h3 className=\"font-medium mb-2\">Win-Back</h3>",
+      "context": "<h3 className=\"font-medium mb-2\">Win-Back</h3>"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 497,
+      "content": "<span className=\"font-medium text-sm\">{expense.title}</span>",
+      "context": "<span className=\"font-medium text-sm\">{expense.title}</span>"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 500,
+      "content": "<p className=\"text-xs text-gray-600 mb-1\">{expense.category?.name_ar}</p>",
+      "context": "<p className=\"text-xs text-gray-600 mb-1\">{expense.category?.name_ar}</p>"
+    },
+    {
+      "file": "src\\app\\store\\financial-management\\page.tsx",
+      "line": 142,
+      "content": "<h1 className=\"text-3xl font-bold tracking-tight\">Financial Management</h1>",
+      "context": "<h1 className=\"text-3xl font-bold tracking-tight\">Financial Management</h1>"
+    },
+    {
+      "file": "src\\app\\store\\financial-management\\page.tsx",
+      "line": 392,
+      "content": "<span className=\"text-sm\">Create Invoice</span>",
+      "context": "<span className=\"text-sm\">Create Invoice</span>"
+    },
+    {
+      "file": "src\\app\\store\\financial-management\\page.tsx",
+      "line": 397,
+      "content": "<span className=\"text-sm\">Record Payment</span>",
+      "context": "<span className=\"text-sm\">Record Payment</span>"
+    },
+    {
+      "file": "src\\app\\store\\financial-management\\page.tsx",
+      "line": 402,
+      "content": "<span className=\"text-sm\">Chart of Accounts</span>",
+      "context": "<span className=\"text-sm\">Chart of Accounts</span>"
+    },
+    {
+      "file": "src\\app\\store\\financial-management\\page.tsx",
+      "line": 407,
+      "content": "<span className=\"text-sm\">P&L Report</span>",
+      "context": "<span className=\"text-sm\">P&L Report</span>"
+    },
+    {
+      "file": "src\\app\\store\\financial-management\\page.tsx",
+      "line": 412,
+      "content": "<span className=\"text-sm\">Balance Sheet</span>",
+      "context": "<span className=\"text-sm\">Balance Sheet</span>"
+    },
+    {
+      "file": "src\\app\\store\\financial-management\\page.tsx",
+      "line": 417,
+      "content": "<span className=\"text-sm\">Cash Flow</span>",
+      "context": "<span className=\"text-sm\">Cash Flow</span>"
+    },
+    {
+      "file": "src\\app\\store\\locations\\location-detail\\breadcrumb.tsx",
+      "line": 31,
+      "content": "<span>{stock_location.name}</span>",
+      "context": "return <span>{stock_location.name}</span>"
+    },
+    {
+      "file": "src\\app\\store\\marketplace\\page.tsx",
+      "line": 247,
+      "content": "<h1 className=\"text-3xl font-bold text-gray-900\">Binna Store</h1>",
+      "context": "<h1 className=\"text-3xl font-bold text-gray-900\">Binna Store</h1>"
+    },
+    {
+      "file": "src\\app\\store\\marketplace\\page.tsx",
+      "line": 248,
+      "content": "<p className=\"text-gray-600\">Construction materials and equipment marketplace</p>",
+      "context": "<p className=\"text-gray-600\">Construction materials and equipment marketplace</p>"
+    },
+    {
+      "file": "src\\app\\store\\marketplace\\page.tsx",
+      "line": 349,
+      "content": "<span>{product.variants.length} variant(s) available</span>",
+      "context": "<span>{product.variants.length} variant(s) available</span>"
+    },
+    {
+      "file": "src\\app\\store\\marketplace\\page.tsx",
+      "line": 361,
+      "content": "<p className=\"font-medium text-sm\">{variant.title}</p>",
+      "context": "<p className=\"font-medium text-sm\">{variant.title}</p>"
+    },
+    {
+      "file": "src\\app\\store\\marketplace\\page.tsx",
+      "line": 362,
+      "content": "<p className=\"text-xs text-gray-600\">SKU: {variant.sku}</p>",
+      "context": "<p className=\"text-xs text-gray-600\">SKU: {variant.sku}</p>"
+    },
+    {
+      "file": "src\\app\\store\\marketplace\\page.tsx",
+      "line": 370,
+      "content": "<span>{variant.inventory_quantity} in stock</span>",
+      "context": "<span>{variant.inventory_quantity} in stock</span>"
+    },
+    {
+      "file": "src\\app\\store\\marketplace\\page.tsx",
+      "line": 428,
+      "content": "<h3 className=\"text-lg font-medium text-gray-900 mb-2\">No products found</h3>",
+      "context": "<h3 className=\"text-lg font-medium text-gray-900 mb-2\">No products found</h3>"
+    },
+    {
+      "file": "src\\app\\store\\marketplace\\page.tsx",
+      "line": 442,
+      "content": "<p className=\"font-medium\">Cart Summary</p>",
+      "context": "<p className=\"font-medium\">Cart Summary</p>"
+    },
+    {
+      "file": "src\\app\\store\\marketplace-vendors\\page.tsx",
+      "line": 231,
+      "content": "<h1 className=\"text-2xl font-bold\">Marketplace Vendors</h1>",
+      "context": "<h1 className=\"text-2xl font-bold\">Marketplace Vendors</h1>"
+    },
+    {
+      "file": "src\\app\\store\\marketplace-vendors\\page.tsx",
+      "line": 232,
+      "content": "<p className=\"text-gray-600\">Manage vendor registrations and performance</p>",
+      "context": "<p className=\"text-gray-600\">Manage vendor registrations and performance</p>"
+    },
+    {
+      "file": "src\\app\\store\\marketplace-vendors\\page.tsx",
+      "line": 247,
+      "content": "<p className=\"text-sm font-medium text-gray-600\">Total Vendors</p>",
+      "context": "<p className=\"text-sm font-medium text-gray-600\">Total Vendors</p>"
+    },
+    {
+      "file": "src\\app\\store\\marketplace-vendors\\page.tsx",
+      "line": 248,
+      "content": "<p className=\"text-2xl font-bold\">{totalStats.totalVendors}</p>",
+      "context": "<p className=\"text-2xl font-bold\">{totalStats.totalVendors}</p>"
+    },
+    {
+      "file": "src\\app\\store\\marketplace-vendors\\page.tsx",
+      "line": 259,
+      "content": "<p className=\"text-sm font-medium text-gray-600\">Active Vendors</p>",
+      "context": "<p className=\"text-sm font-medium text-gray-600\">Active Vendors</p>"
+    },
+    {
+      "file": "src\\app\\store\\marketplace-vendors\\page.tsx",
+      "line": 260,
+      "content": "<p className=\"text-2xl font-bold\">{totalStats.activeVendors}</p>",
+      "context": "<p className=\"text-2xl font-bold\">{totalStats.activeVendors}</p>"
+    },
+    {
+      "file": "src\\app\\store\\marketplace-vendors\\page.tsx",
+      "line": 271,
+      "content": "<p className=\"text-sm font-medium text-gray-600\">Total Sales</p>",
+      "context": "<p className=\"text-sm font-medium text-gray-600\">Total Sales</p>"
+    },
+    {
+      "file": "src\\app\\store\\marketplace-vendors\\page.tsx",
+      "line": 272,
+      "content": "<p className=\"text-2xl font-bold\">{formatCurrency(totalStats.totalSales)}</p>",
+      "context": "<p className=\"text-2xl font-bold\">{formatCurrency(totalStats.totalSales)}</p>"
+    },
+    {
+      "file": "src\\app\\store\\marketplace-vendors\\page.tsx",
+      "line": 283,
+      "content": "<p className=\"text-sm font-medium text-gray-600\">Commission Earned</p>",
+      "context": "<p className=\"text-sm font-medium text-gray-600\">Commission Earned</p>"
+    },
+    {
+      "file": "src\\app\\store\\marketplace-vendors\\page.tsx",
+      "line": 284,
+      "content": "<p className=\"text-2xl font-bold\">{formatCurrency(totalStats.totalCommission)}</p>",
+      "context": "<p className=\"text-2xl font-bold\">{formatCurrency(totalStats.totalCommission)}</p>"
+    },
+    {
+      "file": "src\\app\\store\\marketplace-vendors\\page.tsx",
+      "line": 321,
+      "content": "<h3 className=\"text-lg font-medium text-gray-900 mb-2\">No vendors found</h3>",
+      "context": "<h3 className=\"text-lg font-medium text-gray-900 mb-2\">No vendors found</h3>"
+    },
+    {
+      "file": "src\\app\\store\\notifications\\page.tsx",
+      "line": 60,
+      "content": "<span className=\"font-semibold text-green-600\">BinnaHub Technology</span>",
+      "context": "نظام الإشعارات المتقدم مدعوم من <span className=\"font-semibold text-green-600\">BinnaHub Technology</span>"
+    },
+    {
+      "file": "src\\app\\store\\order-management\\page.tsx",
+      "line": 211,
+      "content": "<h1 className=\"text-3xl font-bold tracking-tight\">Advanced Order Management</h1>",
+      "context": "<h1 className=\"text-3xl font-bold tracking-tight\">Advanced Order Management</h1>"
+    },
+    {
+      "file": "src\\app\\store\\pos\\offline\\page.tsx",
+      "line": 27,
+      "content": "<h3 className=\"font-semibold text-blue-900 mb-2\">Product Catalog</h3>",
+      "context": "<h3 className=\"font-semibold text-blue-900 mb-2\">Product Catalog</h3>"
+    },
+    {
+      "file": "src\\app\\store\\pos\\offline\\page.tsx",
+      "line": 28,
+      "content": "<p className=\"text-blue-700 text-sm\">Manage and browse products offline</p>",
+      "context": "<p className=\"text-blue-700 text-sm\">Manage and browse products offline</p>"
+    },
+    {
+      "file": "src\\app\\store\\pos\\offline\\page.tsx",
+      "line": 31,
+      "content": "<h3 className=\"font-semibold text-green-900 mb-2\">Transaction Processing</h3>",
+      "context": "<h3 className=\"font-semibold text-green-900 mb-2\">Transaction Processing</h3>"
+    },
+    {
+      "file": "src\\app\\store\\pos\\offline\\page.tsx",
+      "line": 32,
+      "content": "<p className=\"text-green-700 text-sm\">Process sales without internet</p>",
+      "context": "<p className=\"text-green-700 text-sm\">Process sales without internet</p>"
+    },
+    {
+      "file": "src\\app\\store\\pos\\offline\\page.tsx",
+      "line": 35,
+      "content": "<h3 className=\"font-semibold text-purple-900 mb-2\">Data Sync</h3>",
+      "context": "<h3 className=\"font-semibold text-purple-900 mb-2\">Data Sync</h3>"
+    },
+    {
+      "file": "src\\app\\store\\pos\\offline\\page.tsx",
+      "line": 36,
+      "content": "<p className=\"text-purple-700 text-sm\">Sync when connection is restored</p>",
+      "context": "<p className=\"text-purple-700 text-sm\">Sync when connection is restored</p>"
+    },
+    {
+      "file": "src\\app\\store\\pos\\page.tsx",
+      "line": 747,
+      "content": "<h3 className=\"font-semibold text-sm mb-1 line-clamp-2\">{product.name_ar}</h3>",
+      "context": "<h3 className=\"font-semibold text-sm mb-1 line-clamp-2\">{product.name_ar}</h3>"
+    },
+    {
+      "file": "src\\app\\store\\pos\\page.tsx",
+      "line": 813,
+      "content": "<h4 className=\"font-medium text-sm\">{item.product.name_ar}</h4>",
+      "context": "<h4 className=\"font-medium text-sm\">{item.product.name_ar}</h4>"
+    },
+    {
+      "file": "src\\app\\store\\pos\\page.tsx",
+      "line": 814,
+      "content": "<p className=\"text-xs text-gray-500\">{item.product.barcode}</p>",
+      "context": "<p className=\"text-xs text-gray-500\">{item.product.barcode}</p>"
+    },
+    {
+      "file": "src\\app\\store\\pos\\page.tsx",
+      "line": 1161,
+      "content": "<p className=\"font-medium\">{suspendedSale.sale_data.sale_number}</p>",
+      "context": "<p className=\"font-medium\">{suspendedSale.sale_data.sale_number}</p>"
+    },
+    {
+      "file": "src\\app\\store\\price-lists\\price-list-detail\\breadcrumb.tsx",
+      "line": 23,
+      "content": "<span>{price_list.title}</span>",
+      "context": "return <span>{price_list.title}</span>"
+    },
+    {
+      "file": "src\\app\\store\\price-lists\\price-list-prices-edit\\price-list-prices-edit.tsx",
+      "line": 46,
+      "content": "<span className=\"sr-only\">Edit Prices for {price_list?.title}</span>",
+      "context": "<span className=\"sr-only\">Edit Prices for {price_list?.title}</span>"
+    },
+    {
+      "file": "src\\app\\store\\pricing\\create\\page.tsx",
+      "line": 14,
+      "content": "<h1 className=\"text-2xl font-bold mb-6\">Create Price List</h1>",
+      "context": "<h1 className=\"text-2xl font-bold mb-6\">Create Price List</h1>"
+    },
+    {
+      "file": "src\\app\\store\\pricing\\page.tsx",
+      "line": 78,
+      "content": "<h1 className=\"text-3xl font-bold tracking-tight\">Pricing Management</h1>",
+      "context": "<h1 className=\"text-3xl font-bold tracking-tight\">Pricing Management</h1>"
+    },
+    {
+      "file": "src\\app\\store\\product-bundles\\create\\page.tsx",
+      "line": 18,
+      "content": "<p>Product bundle creation interface coming soon...</p>",
+      "context": "<p>Product bundle creation interface coming soon...</p>"
+    },
+    {
+      "file": "src\\app\\store\\product-bundles\\page.tsx",
+      "line": 131,
+      "content": "<h1 className=\"text-2xl font-bold\">Product Bundles</h1>",
+      "context": "<h1 className=\"text-2xl font-bold\">Product Bundles</h1>"
+    },
+    {
+      "file": "src\\app\\store\\product-bundles\\page.tsx",
+      "line": 132,
+      "content": "<p className=\"text-gray-600\">Manage product bundles and kits</p>",
+      "context": "<p className=\"text-gray-600\">Manage product bundles and kits</p>"
+    },
+    {
+      "file": "src\\app\\store\\product-bundles\\page.tsx",
+      "line": 168,
+      "content": "<h3 className=\"text-lg font-medium text-gray-900 mb-2\">No bundles found</h3>",
+      "context": "<h3 className=\"text-lg font-medium text-gray-900 mb-2\">No bundles found</h3>"
+    },
+    {
+      "file": "src\\app\\store\\product-bundles\\page.tsx",
+      "line": 209,
+      "content": "<span className=\"text-sm\">{bundle.item_count} items</span>",
+      "context": "<span className=\"text-sm\">{bundle.item_count} items</span>"
+    },
+    {
+      "file": "src\\app\\store\\product-tags\\product-tag-detail\\breadcrumb.tsx",
+      "line": 23,
+      "content": "<span>{product_tag.value}</span>",
+      "context": "return <span>{product_tag.value}</span>"
+    },
+    {
+      "file": "src\\app\\store\\product-types\\product-type-detail\\breadcrumb.tsx",
+      "line": 24,
+      "content": "<span>{product_type.value}</span>",
+      "context": "return <span>{product_type.value}</span>"
+    },
+    {
+      "file": "src\\app\\store\\product-variants\\product-variant-detail\\breadcrumb.tsx",
+      "line": 31,
+      "content": "<span>{variant.title}</span>",
+      "context": "return <span>{variant.title}</span>"
+    },
+    {
+      "file": "src\\app\\store\\promotions\\page.tsx",
+      "line": 83,
+      "content": "<h1 className=\"text-3xl font-bold tracking-tight\">Promotions</h1>",
+      "context": "<h1 className=\"text-3xl font-bold tracking-tight\">Promotions</h1>"
+    },
+    {
+      "file": "src\\app\\store\\purchase-orders\\page.tsx",
+      "line": 372,
+      "content": "<span className=\"font-medium text-sm\">{po.po_number}</span>",
+      "context": "<span className=\"font-medium text-sm\">{po.po_number}</span>"
+    },
+    {
+      "file": "src\\app\\store\\purchase-orders\\page.tsx",
+      "line": 375,
+      "content": "<p className=\"text-sm text-gray-600 mb-1\">{po.supplier?.name}</p>",
+      "context": "<p className=\"text-sm text-gray-600 mb-1\">{po.supplier?.name}</p>"
+    },
+    {
+      "file": "src\\app\\store\\regions\\region-detail\\breadcrumb.tsx",
+      "line": 27,
+      "content": "<span>{region.name}</span>",
+      "context": "return <span>{region.name}</span>"
+    },
+    {
+      "file": "src\\app\\store\\reservations\\reservation-detail\\breadcrumb.tsx",
+      "line": 29,
+      "content": "<span>{display}</span>",
+      "context": "return <span>{display}</span>"
+    },
+    {
+      "file": "src\\app\\store\\reset-password\\reset-password.tsx",
+      "line": 209,
+      "content": "<span>{t(\"resetPassword.successfulReset\")}</span>",
+      "context": "<span>{t(\"resetPassword.successfulReset\")}</span>"
+    },
+    {
+      "file": "src\\app\\store\\reset-password\\reset-password.tsx",
+      "line": 317,
+      "content": "<span>{t(\"resetPassword.successfulRequest\")}</span>",
+      "context": "<span>{t(\"resetPassword.successfulRequest\")}</span>"
+    },
+    {
+      "file": "src\\app\\store\\sales-channels\\sales-channel-detail\\breadcrumb.tsx",
+      "line": 23,
+      "content": "<span>{sales_channel.name}</span>",
+      "context": "return <span>{sales_channel.name}</span>"
+    },
+    {
+      "file": "src\\app\\store\\search\\page.tsx",
+      "line": 170,
+      "content": "<h3 className=\"font-semibold text-gray-900 mb-2\">{product.name}</h3>",
+      "context": "<h3 className=\"font-semibold text-gray-900 mb-2\">{product.name}</h3>"
+    },
+    {
+      "file": "src\\app\\store\\search\\page.tsx",
+      "line": 173,
+      "content": "<span>⭐ {product.rating}</span>",
+      "context": "<span>⭐ {product.rating}</span>"
+    },
+    {
+      "file": "src\\app\\store\\search\\page.tsx",
+      "line": 174,
+      "content": "<span>{product.location}</span>",
+      "context": "<span>{product.location}</span>"
+    },
+    {
+      "file": "src\\app\\store\\search\\page.tsx",
+      "line": 176,
+      "content": "<p className=\"text-sm text-gray-500 mt-1\">{product.store}</p>",
+      "context": "<p className=\"text-sm text-gray-500 mt-1\">{product.store}</p>"
+    },
+    {
+      "file": "src\\app\\store\\search\\page.tsx",
+      "line": 194,
+      "content": "<h3 className=\"font-semibold text-gray-900\">{product.name}</h3>",
+      "context": "<h3 className=\"font-semibold text-gray-900\">{product.name}</h3>"
+    },
+    {
+      "file": "src\\app\\store\\search\\page.tsx",
+      "line": 195,
+      "content": "<p className=\"text-gray-600\">{product.store}</p>",
+      "context": "<p className=\"text-gray-600\">{product.store}</p>"
+    },
+    {
+      "file": "src\\app\\store\\search\\page.tsx",
+      "line": 198,
+      "content": "<span className=\"text-sm text-gray-500\">⭐ {product.rating}</span>",
+      "context": "<span className=\"text-sm text-gray-500\">⭐ {product.rating}</span>"
+    },
+    {
+      "file": "src\\app\\store\\search\\page.tsx",
+      "line": 199,
+      "content": "<span className=\"text-sm text-gray-500\">{product.location}</span>",
+      "context": "<span className=\"text-sm text-gray-500\">{product.location}</span>"
+    },
+    {
+      "file": "src\\app\\store\\search\\page.tsx",
+      "line": 211,
+      "content": "<span className=\"font-semibold text-green-600\">BinnaHub AI Search</span>",
+      "context": "نتائج البحث مقدمة من <span className=\"font-semibold text-green-600\">BinnaHub AI Search</span>"
+    },
+    {
+      "file": "src\\app\\store\\search\\page.tsx",
+      "line": 229,
+      "content": "<span className=\"font-semibold text-green-600\">BinnaHub AI Technology</span>",
+      "context": "البحث الذكي مدعوم من <span className=\"font-semibold text-green-600\">BinnaHub AI Technology</span>"
+    },
+    {
+      "file": "src\\app\\store\\shipping-profiles\\shipping-profile-detail\\breadcrumb.tsx",
+      "line": 27,
+      "content": "<span>{shipping_profile.name}</span>",
+      "context": "return <span>{shipping_profile.name}</span>"
+    },
+    {
+      "file": "src\\app\\store\\storefront\\page.tsx",
+      "line": 117,
+      "content": "<p className=\"text-lg text-gray-600\">Loading products...</p>",
+      "context": "<p className=\"text-lg text-gray-600\">Loading products...</p>"
+    },
+    {
+      "file": "src\\app\\store\\storefront\\page.tsx",
+      "line": 131,
+      "content": "<h1 className=\"text-2xl font-bold text-gray-900\">Binna Construction Store</h1>",
+      "context": "<h1 className=\"text-2xl font-bold text-gray-900\">Binna Construction Store</h1>"
+    },
+    {
+      "file": "src\\app\\store\\storefront\\page.tsx",
+      "line": 151,
+      "content": "<h2 className=\"text-4xl font-bold mb-4\">Professional Construction Equipment</h2>",
+      "context": "<h2 className=\"text-4xl font-bold mb-4\">Professional Construction Equipment</h2>"
+    },
+    {
+      "file": "src\\app\\store\\storefront\\page.tsx",
+      "line": 152,
+      "content": "<p className=\"text-xl mb-8\">Safety gear and tools for construction professionals</p>",
+      "context": "<p className=\"text-xl mb-8\">Safety gear and tools for construction professionals</p>"
+    },
+    {
+      "file": "src\\app\\store\\storefront\\page.tsx",
+      "line": 225,
+      "content": "<p className=\"font-medium text-sm\">{variant.title}</p>",
+      "context": "<p className=\"font-medium text-sm\">{variant.title}</p>"
+    },
+    {
+      "file": "src\\app\\store\\storefront\\page.tsx",
+      "line": 227,
+      "content": "<span>SKU: {variant.sku}</span>",
+      "context": "<span>SKU: {variant.sku}</span>"
+    },
+    {
+      "file": "src\\app\\store\\storefront\\page.tsx",
+      "line": 229,
+      "content": "<span>Stock: {variant.inventory_quantity}</span>",
+      "context": "<span>Stock: {variant.inventory_quantity}</span>"
+    },
+    {
+      "file": "src\\app\\store\\storefront\\page.tsx",
+      "line": 262,
+      "content": "<h3 className=\"text-lg font-medium text-gray-900 mb-2\">No products found</h3>",
+      "context": "<h3 className=\"text-lg font-medium text-gray-900 mb-2\">No products found</h3>"
+    },
+    {
+      "file": "src\\app\\store\\storefront\\page.tsx",
+      "line": 263,
+      "content": "<p className=\"text-gray-500\">Try adjusting your search or filter criteria</p>",
+      "context": "<p className=\"text-gray-500\">Try adjusting your search or filter criteria</p>"
+    },
+    {
+      "file": "src\\app\\store\\suppliers\\page.tsx",
+      "line": 236,
+      "content": "<p className=\"text-2xl font-bold\">{suppliers.length}</p>",
+      "context": "<p className=\"text-2xl font-bold\">{suppliers.length}</p>"
+    },
+    {
+      "file": "src\\app\\store\\suppliers\\page.tsx",
+      "line": 315,
+      "content": "<h3 className=\"text-xl font-semibold\">{supplier.name}</h3>",
+      "context": "<h3 className=\"text-xl font-semibold\">{supplier.name}</h3>"
+    },
+    {
+      "file": "src\\app\\store\\suppliers\\page.tsx",
+      "line": 323,
+      "content": "<p className=\"text-gray-600 mb-2\">{supplier.contact_person}</p>",
+      "context": "<p className=\"text-gray-600 mb-2\">{supplier.contact_person}</p>"
+    },
+    {
+      "file": "src\\app\\store\\suppliers\\page.tsx",
+      "line": 328,
+      "content": "<span>{supplier.phone}</span>",
+      "context": "<span>{supplier.phone}</span>"
+    },
+    {
+      "file": "src\\app\\store\\suppliers\\page.tsx",
+      "line": 332,
+      "content": "<span>{supplier.email}</span>",
+      "context": "<span>{supplier.email}</span>"
+    },
+    {
+      "file": "src\\app\\store\\suppliers\\page.tsx",
+      "line": 336,
+      "content": "<span>{supplier.address}</span>",
+      "context": "<span>{supplier.address}</span>"
+    },
+    {
+      "file": "src\\app\\store\\suppliers\\page.tsx",
+      "line": 359,
+      "content": "<p className=\"font-semibold\">{getPaymentTermsLabel(supplier.payment_terms)}</p>",
+      "context": "<p className=\"font-semibold\">{getPaymentTermsLabel(supplier.payment_terms)}</p>"
+    },
+    {
+      "file": "src\\app\\store\\tax-regions\\tax-region-province-detail\\breadcrumb.tsx",
+      "line": 32,
+      "content": "<span>{isValid ? getProvinceByIso2(provinceCode) : provinceCode}</span>",
+      "context": "return <span>{isValid ? getProvinceByIso2(provinceCode) : provinceCode}</span>"
+    },
+    {
+      "file": "src\\app\\store\\users\\user-detail\\breadcrumb.tsx",
+      "line": 24,
+      "content": "<span>{display}</span>",
+      "context": "return <span>{display}</span>"
+    },
+    {
+      "file": "src\\app\\store\\warehouses\\page.tsx",
+      "line": 181,
+      "content": "<h1 className=\"text-2xl font-bold\">Warehouse Management</h1>",
+      "context": "<h1 className=\"text-2xl font-bold\">Warehouse Management</h1>"
+    },
+    {
+      "file": "src\\app\\store\\warehouses\\page.tsx",
+      "line": 182,
+      "content": "<p className=\"text-gray-600\">Manage your warehouses and inventory locations</p>",
+      "context": "<p className=\"text-gray-600\">Manage your warehouses and inventory locations</p>"
+    },
+    {
+      "file": "src\\app\\store\\warehouses\\page.tsx",
+      "line": 197,
+      "content": "<p className=\"text-sm font-medium text-gray-600\">Total Warehouses</p>",
+      "context": "<p className=\"text-sm font-medium text-gray-600\">Total Warehouses</p>"
+    },
+    {
+      "file": "src\\app\\store\\warehouses\\page.tsx",
+      "line": 198,
+      "content": "<p className=\"text-2xl font-bold\">{warehouses.length}</p>",
+      "context": "<p className=\"text-2xl font-bold\">{warehouses.length}</p>"
+    },
+    {
+      "file": "src\\app\\store\\warehouses\\page.tsx",
+      "line": 209,
+      "content": "<p className=\"text-sm font-medium text-gray-600\">Total Items</p>",
+      "context": "<p className=\"text-sm font-medium text-gray-600\">Total Items</p>"
+    },
+    {
+      "file": "src\\app\\store\\warehouses\\page.tsx",
+      "line": 210,
+      "content": "<p className=\"text-2xl font-bold\">{totalStats.totalItems.toLocaleString()}</p>",
+      "context": "<p className=\"text-2xl font-bold\">{totalStats.totalItems.toLocaleString()}</p>"
+    },
+    {
+      "file": "src\\app\\store\\warehouses\\page.tsx",
+      "line": 221,
+      "content": "<p className=\"text-sm font-medium text-gray-600\">Total Value</p>",
+      "context": "<p className=\"text-sm font-medium text-gray-600\">Total Value</p>"
+    },
+    {
+      "file": "src\\app\\store\\warehouses\\page.tsx",
+      "line": 222,
+      "content": "<p className=\"text-2xl font-bold\">{formatCurrency(totalStats.totalValue)}</p>",
+      "context": "<p className=\"text-2xl font-bold\">{formatCurrency(totalStats.totalValue)}</p>"
+    },
+    {
+      "file": "src\\app\\store\\warehouses\\page.tsx",
+      "line": 233,
+      "content": "<p className=\"text-sm font-medium text-gray-600\">Utilization</p>",
+      "context": "<p className=\"text-sm font-medium text-gray-600\">Utilization</p>"
+    },
+    {
+      "file": "src\\app\\store\\warehouses\\page.tsx",
+      "line": 272,
+      "content": "<h3 className=\"text-lg font-medium text-gray-900 mb-2\">No warehouses found</h3>",
+      "context": "<h3 className=\"text-lg font-medium text-gray-900 mb-2\">No warehouses found</h3>"
+    },
+    {
+      "file": "src\\app\\store\\warehouses\\page.tsx",
+      "line": 334,
+      "content": "<span className=\"text-sm\">{warehouse.total_items.toLocaleString()}</span>",
+      "context": "<span className=\"text-sm\">{warehouse.total_items.toLocaleString()}</span>"
+    },
+    {
+      "file": "src\\app\\store\\warehouses\\page.tsx",
+      "line": 337,
+      "content": "<span className=\"text-sm font-medium\">{formatCurrency(warehouse.total_value)}</span>",
+      "context": "<span className=\"text-sm font-medium\">{formatCurrency(warehouse.total_value)}</span>"
+    },
+    {
+      "file": "src\\app\\store\\workflow-executions\\workflow-execution-detail\\breadcrumb.tsx",
+      "line": 26,
+      "content": "<span>{cleanId}</span>",
+      "context": "return <span>{cleanId}</span>"
+    }
+  ],
+  "componentIssues": [
+    {
+      "file": "src\\app\\store\\api-key-management\\api-key-management-sales-channels\\api-key-management-sales-channels.tsx",
+      "line": 18,
+      "issue": "Missing key prop in map",
+      "suggestion": "Add unique key prop to mapped elements",
+      "content": ")?.sales_channels?.map((sc) => sc.id)",
+      "severity": "high"
+    },
+    {
+      "file": "src\\app\\store\\cash-registers\\page.tsx",
+      "line": 491,
+      "issue": "Missing key prop in map",
+      "suggestion": "Add unique key prop to mapped elements",
+      "content": "{registers.map((register) => {",
+      "severity": "high"
+    },
+    {
+      "file": "src\\app\\store\\categories\\construction\\page.tsx",
+      "line": 265,
+      "issue": "Missing key prop in map",
+      "suggestion": "Add unique key prop to mapped elements",
+      "content": "{category.children!.map(child => renderCategory(child, level + 1))}",
+      "severity": "high"
+    },
+    {
+      "file": "src\\app\\store\\categories\\construction\\page.tsx",
+      "line": 352,
+      "issue": "Missing key prop in map",
+      "suggestion": "Add unique key prop to mapped elements",
+      "content": "const allIds = new Set(categories.map(c => c.id));",
+      "severity": "high"
+    },
+    {
+      "file": "src\\app\\store\\categories\\construction\\page.tsx",
+      "line": 364,
+      "issue": "Missing key prop in map",
+      "suggestion": "Add unique key prop to mapped elements",
+      "content": "{categories.filter(c => c.level === 0).map(category => renderCategory(category))}",
+      "severity": "high"
+    },
+    {
+      "file": "src\\app\\store\\construction-products\\page.tsx",
+      "line": 120,
+      "issue": "Missing key prop in map",
+      "suggestion": "Add unique key prop to mapped elements",
+      "content": "...products.map(p => [",
+      "severity": "high"
+    },
+    {
+      "file": "src\\app\\store\\construction-products\\page.tsx",
+      "line": 129,
+      "issue": "Missing key prop in map",
+      "suggestion": "Add unique key prop to mapped elements",
+      "content": "].map(row => row.join(',')).join('\\n');",
+      "severity": "high"
+    },
+    {
+      "file": "src\\app\\store\\currency-region\\page.tsx",
+      "line": 255,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<Select",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\currency-region\\page.tsx",
+      "line": 259,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectTrigger>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\currency-region\\page.tsx",
+      "line": 260,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectValue />",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\currency-region\\page.tsx",
+      "line": 262,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectContent>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\currency-region\\page.tsx",
+      "line": 263,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectItem value=\"0\">0</SelectItem>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\currency-region\\page.tsx",
+      "line": 264,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectItem value=\"2\">2</SelectItem>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\currency-region\\page.tsx",
+      "line": 265,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectItem value=\"3\">3</SelectItem>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\currency-region\\page.tsx",
+      "line": 267,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "</Select>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\currency-region\\page.tsx",
+      "line": 400,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<Select",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\currency-region\\page.tsx",
+      "line": 404,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectTrigger>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\currency-region\\page.tsx",
+      "line": 405,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectValue />",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\currency-region\\page.tsx",
+      "line": 407,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectContent>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\currency-region\\page.tsx",
+      "line": 409,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectItem key={currency.code} value={currency.code}>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\currency-region\\page.tsx",
+      "line": 414,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "</Select>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\email-campaigns\\page.tsx",
+      "line": 255,
+      "issue": "Missing key prop in map",
+      "suggestion": "Add unique key prop to mapped elements",
+      "content": "{filteredCampaigns.map((campaign) => {",
+      "severity": "high"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 430,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<Select value={filterCategory} onValueChange={setFilterCategory}>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 431,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectTrigger>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 432,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectValue placeholder=\"الفئة\" />",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 434,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectContent>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 435,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectItem value=\"\">جميع الفئات</SelectItem>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 437,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectItem key={category.id} value={category.id}>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 442,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "</Select>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 444,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<Select value={filterStatus} onValueChange={setFilterStatus}>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 445,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectTrigger>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 446,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectValue placeholder=\"الحالة\" />",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 448,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectContent>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 449,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectItem value=\"\">جميع الحالات</SelectItem>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 450,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectItem value=\"pending\">في الانتظار</SelectItem>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 451,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectItem value=\"approved\">موافق عليه</SelectItem>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 452,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectItem value=\"rejected\">مرفوض</SelectItem>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 453,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectItem value=\"paid\">مدفوع</SelectItem>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 455,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "</Select>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 575,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<Select",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 589,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectTrigger>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 590,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectValue placeholder=\"اختر الفئة\" />",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 592,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectContent>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 594,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectItem key={category.id} value={category.id}>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 599,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "</Select>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 604,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<Select",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 616,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectTrigger>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 617,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectValue placeholder=\"اختر الموظف\" />",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 619,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectContent>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 620,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectItem value=\"\">بدون موظف محدد</SelectItem>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 622,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectItem key={employee.id} value={employee.id}>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 627,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "</Select>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 665,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<Select",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 670,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectTrigger>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 671,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectValue />",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 673,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectContent>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 674,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectItem value=\"cash\">نقدي</SelectItem>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 675,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectItem value=\"bank_transfer\">تحويل بنكي</SelectItem>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 676,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectItem value=\"credit_card\">بطاقة ائتمانية</SelectItem>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 677,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectItem value=\"check\">شيك</SelectItem>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 679,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "</Select>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 684,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<Select",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 689,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectTrigger>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 690,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectValue />",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 692,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectContent>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 693,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectItem value=\"pending\">في الانتظار</SelectItem>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 694,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectItem value=\"approved\">موافق عليه</SelectItem>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 695,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectItem value=\"rejected\">مرفوض</SelectItem>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 696,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectItem value=\"paid\">مدفوع</SelectItem>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\expenses\\page.tsx",
+      "line": 698,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "</Select>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\layout.tsx",
+      "line": 156,
+      "issue": "Missing key prop in map",
+      "suggestion": "Add unique key prop to mapped elements",
+      "content": "{navItems.map((item) => {",
+      "severity": "high"
+    },
+    {
+      "file": "src\\app\\store\\marketplace\\page.tsx",
+      "line": 253,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<Select",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\marketplace\\page.tsx",
+      "line": 267,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "</Select>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\marketplace\\page.tsx",
+      "line": 306,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<Select",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\marketplace\\page.tsx",
+      "line": 317,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "</Select>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\marketplace\\page.tsx",
+      "line": 354,
+      "issue": "Missing key prop in map",
+      "suggestion": "Add unique key prop to mapped elements",
+      "content": "{product.variants.slice(0, 2).map((variant) => {",
+      "severity": "high"
+    },
+    {
+      "file": "src\\app\\store\\marketplace-vendors\\page.tsx",
+      "line": 169,
+      "issue": "Missing key prop in map",
+      "suggestion": "Add unique key prop to mapped elements",
+      "content": "setVendors(vendors.map(v =>",
+      "severity": "high"
+    },
+    {
+      "file": "src\\app\\store\\marketplace-vendors\\page.tsx",
+      "line": 183,
+      "issue": "Missing key prop in map",
+      "suggestion": "Add unique key prop to mapped elements",
+      "content": "setVendors(vendors.map(v =>",
+      "severity": "high"
+    },
+    {
+      "file": "src\\app\\store\\marketplace-vendors\\page.tsx",
+      "line": 198,
+      "issue": "Missing key prop in map",
+      "suggestion": "Add unique key prop to mapped elements",
+      "content": "setVendors(vendors.map(v =>",
+      "severity": "high"
+    },
+    {
+      "file": "src\\app\\store\\marketplace-vendors\\page.tsx",
+      "line": 303,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<Select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\marketplace-vendors\\page.tsx",
+      "line": 304,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectTrigger className=\"w-48\">",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\marketplace-vendors\\page.tsx",
+      "line": 305,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectValue placeholder=\"Filter by status\" />",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\marketplace-vendors\\page.tsx",
+      "line": 307,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectContent>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\marketplace-vendors\\page.tsx",
+      "line": 308,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectItem value=\"all\">All Statuses</SelectItem>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\marketplace-vendors\\page.tsx",
+      "line": 309,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectItem value=\"pending\">Pending</SelectItem>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\marketplace-vendors\\page.tsx",
+      "line": 310,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectItem value=\"approved\">Approved</SelectItem>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\marketplace-vendors\\page.tsx",
+      "line": 311,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectItem value=\"suspended\">Suspended</SelectItem>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\marketplace-vendors\\page.tsx",
+      "line": 312,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectItem value=\"rejected\">Rejected</SelectItem>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\marketplace-vendors\\page.tsx",
+      "line": 314,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "</Select>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\order-management\\page.tsx",
+      "line": 351,
+      "issue": "Missing key prop in map",
+      "suggestion": "Add unique key prop to mapped elements",
+      "content": "{filteredFulfillments.map((fulfillment) => {",
+      "severity": "high"
+    },
+    {
+      "file": "src\\app\\store\\pos\\page.tsx",
+      "line": 341,
+      "issue": "Missing key prop in map",
+      "suggestion": "Add unique key prop to mapped elements",
+      "content": "const updatedItems = currentSale.items.map(item => {",
+      "severity": "high"
+    },
+    {
+      "file": "src\\app\\store\\pos\\page.tsx",
+      "line": 360,
+      "issue": "Missing key prop in map",
+      "suggestion": "Add unique key prop to mapped elements",
+      "content": "const updatedItems = currentSale.items.map(item => {",
+      "severity": "high"
+    },
+    {
+      "file": "src\\app\\store\\pos\\page.tsx",
+      "line": 381,
+      "issue": "Missing key prop in map",
+      "suggestion": "Add unique key prop to mapped elements",
+      "content": "const updatedItems = currentSale.items.map(item => {",
+      "severity": "high"
+    },
+    {
+      "file": "src\\app\\store\\pos\\page.tsx",
+      "line": 539,
+      "issue": "Missing key prop in map",
+      "suggestion": "Add unique key prop to mapped elements",
+      "content": "const saleItems = currentSale.items.map(item => ({",
+      "severity": "high"
+    },
+    {
+      "file": "src\\app\\store\\pos\\page.tsx",
+      "line": 662,
+      "issue": "Missing key prop in map",
+      "suggestion": "Add unique key prop to mapped elements",
+      "content": "const categories = [...new Set(products.map(p => p.category))];",
+      "severity": "high"
+    },
+    {
+      "file": "src\\app\\store\\price-lists\\price-list-configuration\\price-list-configuration.tsx",
+      "line": 33,
+      "issue": "Missing key prop in map",
+      "suggestion": "Add unique key prop to mapped elements",
+      "content": "customer_groups?.map((group) => ({",
+      "severity": "high"
+    },
+    {
+      "file": "src\\app\\store\\product-variants\\page.tsx",
+      "line": 99,
+      "issue": "Missing key prop in map",
+      "suggestion": "Add unique key prop to mapped elements",
+      "content": "inventoryItems={variant.inventory_items.map((i) => {",
+      "severity": "high"
+    },
+    {
+      "file": "src\\app\\store\\product-variants\\product-variant-detail\\product-variant-detail.tsx",
+      "line": 69,
+      "issue": "Missing key prop in map",
+      "suggestion": "Add unique key prop to mapped elements",
+      "content": "inventoryItems={variant.inventory_items.map((i) => {",
+      "severity": "high"
+    },
+    {
+      "file": "src\\app\\store\\purchase-orders\\page.tsx",
+      "line": 244,
+      "issue": "Missing key prop in map",
+      "suggestion": "Add unique key prop to mapped elements",
+      "content": "const itemsToInsert = selectedPO.items.map(item => ({",
+      "severity": "high"
+    },
+    {
+      "file": "src\\app\\store\\purchase-orders\\page.tsx",
+      "line": 434,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<Select",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\purchase-orders\\page.tsx",
+      "line": 446,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectTrigger>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\purchase-orders\\page.tsx",
+      "line": 447,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectValue placeholder=\"اختر المورد\" />",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\purchase-orders\\page.tsx",
+      "line": 449,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectContent>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\purchase-orders\\page.tsx",
+      "line": 451,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectItem key={supplier.id} value={supplier.id}>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\purchase-orders\\page.tsx",
+      "line": 456,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "</Select>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\purchase-orders\\page.tsx",
+      "line": 472,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<Select",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\purchase-orders\\page.tsx",
+      "line": 477,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectTrigger>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\purchase-orders\\page.tsx",
+      "line": 478,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectValue />",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\purchase-orders\\page.tsx",
+      "line": 480,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectContent>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\purchase-orders\\page.tsx",
+      "line": 481,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectItem value=\"draft\">مسودة</SelectItem>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\purchase-orders\\page.tsx",
+      "line": 482,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectItem value=\"sent\">مُرسل</SelectItem>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\purchase-orders\\page.tsx",
+      "line": 483,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectItem value=\"confirmed\">مؤكد</SelectItem>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\purchase-orders\\page.tsx",
+      "line": 484,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectItem value=\"received\">مُستلم</SelectItem>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\purchase-orders\\page.tsx",
+      "line": 485,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectItem value=\"cancelled\">ملغي</SelectItem>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\purchase-orders\\page.tsx",
+      "line": 487,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "</Select>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\purchase-orders\\page.tsx",
+      "line": 492,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<Select",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\purchase-orders\\page.tsx",
+      "line": 497,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectTrigger>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\purchase-orders\\page.tsx",
+      "line": 498,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectValue />",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\purchase-orders\\page.tsx",
+      "line": 500,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectContent>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\purchase-orders\\page.tsx",
+      "line": 501,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectItem value=\"immediate\">فوري</SelectItem>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\purchase-orders\\page.tsx",
+      "line": 502,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectItem value=\"deferred\">آجل</SelectItem>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\purchase-orders\\page.tsx",
+      "line": 504,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "</Select>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\regions\\region-create\\region-create.tsx",
+      "line": 11,
+      "issue": "Missing key prop in map",
+      "suggestion": "Add unique key prop to mapped elements",
+      "content": "const storeCurrencies = (store?.supported_currencies ?? []).map(",
+      "severity": "high"
+    },
+    {
+      "file": "src\\app\\store\\regions\\region-edit\\region-edit.tsx",
+      "line": 49,
+      "issue": "Missing key prop in map",
+      "suggestion": "Add unique key prop to mapped elements",
+      "content": "const storeCurrencies = (store?.supported_currencies ?? []).map(",
+      "severity": "high"
+    },
+    {
+      "file": "src\\app\\store\\store-admin\\store-add-currencies\\store-add-currencies.tsx",
+      "line": 18,
+      "issue": "Missing key prop in map",
+      "suggestion": "Add unique key prop to mapped elements",
+      "content": "value: store?.supported_currencies?.map((c) => c.currency_code),",
+      "severity": "high"
+    },
+    {
+      "file": "src\\app\\store\\suppliers\\page.tsx",
+      "line": 474,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<Select",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\suppliers\\page.tsx",
+      "line": 478,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectTrigger>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\suppliers\\page.tsx",
+      "line": 479,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectValue />",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\suppliers\\page.tsx",
+      "line": 481,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectContent>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\suppliers\\page.tsx",
+      "line": 482,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectItem value=\"immediate\">فوري</SelectItem>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\suppliers\\page.tsx",
+      "line": 483,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectItem value=\"net_30\">30 يوم</SelectItem>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\suppliers\\page.tsx",
+      "line": 484,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectItem value=\"net_60\">60 يوم</SelectItem>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\suppliers\\page.tsx",
+      "line": 485,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectItem value=\"net_90\">90 يوم</SelectItem>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\suppliers\\page.tsx",
+      "line": 487,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "</Select>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\suppliers\\page.tsx",
+      "line": 492,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<Select",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\suppliers\\page.tsx",
+      "line": 496,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectTrigger>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\suppliers\\page.tsx",
+      "line": 497,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectValue />",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\suppliers\\page.tsx",
+      "line": 499,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectContent>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\suppliers\\page.tsx",
+      "line": 500,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectItem value=\"goods\">بضائع</SelectItem>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\suppliers\\page.tsx",
+      "line": 501,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectItem value=\"services\">خدمات</SelectItem>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\suppliers\\page.tsx",
+      "line": 502,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "<SelectItem value=\"both\">بضائع وخدمات</SelectItem>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\suppliers\\page.tsx",
+      "line": 504,
+      "issue": "Select Component - Potential Hydration Issue",
+      "suggestion": "Consider using native HTML select element",
+      "content": "</Select>",
+      "severity": "medium"
+    },
+    {
+      "file": "src\\app\\store\\tax-regions\\common\\utils.ts",
+      "line": 9,
+      "issue": "Missing key prop in map",
+      "suggestion": "Add unique key prop to mapped elements",
+      "content": "return target.references.map((reference) => ({",
+      "severity": "high"
+    },
+    {
+      "file": "src\\app\\store\\tax-regions\\tax-region-tax-override-edit\\tax-region-tax-override-edit.tsx",
+      "line": 80,
+      "issue": "Missing key prop in map",
+      "suggestion": "Add unique key prop to mapped elements",
+      "content": "result.products.map((product) => ({",
+      "severity": "high"
+    },
+    {
+      "file": "src\\app\\store\\tax-regions\\tax-region-tax-override-edit\\tax-region-tax-override-edit.tsx",
+      "line": 90,
+      "issue": "Missing key prop in map",
+      "suggestion": "Add unique key prop to mapped elements",
+      "content": "result.collections.map((collection) => ({",
+      "severity": "high"
+    },
+    {
+      "file": "src\\app\\store\\tax-regions\\tax-region-tax-override-edit\\tax-region-tax-override-edit.tsx",
+      "line": 100,
+      "issue": "Missing key prop in map",
+      "suggestion": "Add unique key prop to mapped elements",
+      "content": "result.tags.map((tag: any) => ({",
+      "severity": "high"
+    },
+    {
+      "file": "src\\app\\store\\tax-regions\\tax-region-tax-override-edit\\tax-region-tax-override-edit.tsx",
+      "line": 110,
+      "issue": "Missing key prop in map",
+      "suggestion": "Add unique key prop to mapped elements",
+      "content": "result.product_types.map((productType) => ({",
+      "severity": "high"
+    },
+    {
+      "file": "src\\app\\store\\tax-regions\\tax-region-tax-override-edit\\tax-region-tax-override-edit.tsx",
+      "line": 124,
+      "issue": "Missing key prop in map",
+      "suggestion": "Add unique key prop to mapped elements",
+      "content": "result.customer_groups.map((customerGroup) => ({",
+      "severity": "high"
+    },
+    {
+      "file": "src\\app\\store\\tax-regions\\tax-region-tax-override-edit\\tax-region-tax-override-edit.tsx",
+      "line": 131,
+      "issue": "Missing key prop in map",
+      "suggestion": "Add unique key prop to mapped elements",
+      "content": "const queryResults = queries.map(({ ids, hook }) => {",
+      "severity": "high"
+    }
+  ]
+}

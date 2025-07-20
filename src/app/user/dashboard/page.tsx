@@ -28,6 +28,7 @@ import {
   Settings,
   Store,
   LogOut,
+  Building2,
   File,
   Trash2,
   BarChart3
@@ -267,12 +268,12 @@ export default function UserDashboardPage() {
   ];
 
   const quickActions = [
-    { title: 'المساعد الذكي', href: '/user/ai-assistant', icon: <Bot className="w-6 h-6" />, color: 'from-purple-50 to-purple-100', textColor: 'text-purple-700' },
-    { title: 'حاسبة التكاليف', href: '/user/projects/calculator', icon: <Calculator className="w-6 h-6" />, color: 'from-blue-50 to-blue-100', textColor: 'text-blue-700' },
+    { title: 'مركز الذكاء الاصطناعي', href: '/user/ai-hub', icon: <Brain className="w-6 h-6" />, color: 'from-purple-50 to-purple-100', textColor: 'text-purple-700' },
+    { title: 'حاسبة البناء الشاملة', href: '/user/comprehensive-construction-calculator', icon: <Calculator className="w-6 h-6" />, color: 'from-blue-50 to-blue-100', textColor: 'text-blue-700' },
     { title: 'مركز المكافآت', href: '/user/gamification', icon: <Gift className="w-6 h-6" />, color: 'from-yellow-50 to-yellow-100', textColor: 'text-yellow-700' },
     { title: 'إدارة الرصيد', href: '/user/balance', icon: <Wallet className="w-6 h-6" />, color: 'from-green-50 to-green-100', textColor: 'text-green-700' },
     { title: 'مجتمع البناء', href: '/user/social-community', icon: <Users className="w-6 h-6" />, color: 'from-indigo-50 to-indigo-100', textColor: 'text-indigo-700' },
-    { title: 'الرؤى الذكية', href: '/user/smart-insights', icon: <Lightbulb className="w-6 h-6" />, color: 'from-amber-50 to-amber-100', textColor: 'text-amber-700' },
+    { title: 'إدارة المشاريع', href: '/user/projects/list', icon: <Building2 className="w-6 h-6" />, color: 'from-emerald-50 to-emerald-100', textColor: 'text-emerald-700' },
     { title: 'إدارة الضمانات', href: '/user/warranties', icon: <Shield className="w-6 h-6" />, color: 'from-teal-50 to-teal-100', textColor: 'text-teal-700' },
     { title: 'خطط الاشتراك', href: '/user/subscriptions', icon: <Crown className="w-6 h-6" />, color: 'from-rose-50 to-rose-100', textColor: 'text-rose-700' },
     { title: 'إعدادات الحساب', href: '/user/settings', icon: <Settings className="w-6 h-6" />, color: 'from-gray-50 to-gray-100', textColor: 'text-gray-700' }
@@ -281,10 +282,9 @@ export default function UserDashboardPage() {
   const userPanelLinks = [
     { label: 'لوحة التحكم', href: '/user/dashboard', icon: <Home className="w-5 h-5" /> },
     { label: 'مشاريعي', href: '/user/projects/list', icon: <Folder className="w-5 h-5" /> },
-    { label: 'المساعد الذكي', href: '/user/ai-assistant', icon: <Bot className="w-5 h-5" /> },
+    { label: 'مركز الذكاء الاصطناعي', href: '/user/ai-hub', icon: <Brain className="w-5 h-5" /> },
     { label: 'مجتمع البناء', href: '/user/social-community', icon: <Users className="w-5 h-5" /> },
     { label: 'مركز المكافآت', href: '/user/gamification', icon: <Trophy className="w-5 h-5" /> },
-    { label: 'الرؤى الذكية', href: '/user/smart-insights', icon: <Brain className="w-5 h-5" /> },
     { label: 'إدارة الرصيد', href: '/user/balance', icon: <Wallet className="w-5 h-5" /> },
     { label: 'خطط الاشتراك', href: '/user/subscriptions', icon: <Crown className="w-5 h-5" /> },
     { label: 'إدارة الضمانات', href: '/user/warranties', icon: <Shield className="w-5 h-5" /> },

@@ -338,7 +338,7 @@ export default function WarehouseManagement() {
                     </TableCell>
                     <TableCell>
                       <Badge className={warehouse.is_active ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}>
-                        {warehouse.is_active ? "Active" : "Inactive"}
+                        {warehouse.is_active ? 'نشط' : 'غير نشط'}
                       </Badge>
                     </TableCell>
                     <TableCell>

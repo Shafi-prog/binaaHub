@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ExternalLink, BarChart3, Package, ShoppingCart, Users, Layers, Settings, AlertTriangle, Store, LogOut } from 'lucide-react';
+import { ExternalLink, BarChart3, Package, ShoppingCart, Users, Layers, Settings, AlertTriangle, Store, LogOut, FileText, Calculator, DollarSign, Receipt } from 'lucide-react';
 
 export const dynamic = 'force-dynamic'
 
@@ -36,6 +36,20 @@ const storeDashboardStats = [
     href: '/store/analytics',
     color: 'bg-orange-500',
   },
+  {
+    title: 'أوامر الشراء',
+    value: 8,
+    icon: <FileText className="w-6 h-6" />,
+    href: '/store/purchase-orders',
+    color: 'bg-indigo-500',
+  },
+  {
+    title: 'إجمالي المصروفات',
+    value: '3,250 ر.س',
+    icon: <Calculator className="w-6 h-6" />,
+    href: '/store/expenses',
+    color: 'bg-red-500',
+  },
 ];
 
 const medusaFeatures = [
@@ -56,6 +70,30 @@ const medusaFeatures = [
     description: 'تتبع وإدارة المخزون عبر المواقع',
     icon: <Layers className="w-8 h-8 text-green-600 mb-2" />,
     link: '/store/inventory',
+  },
+  {
+    name: 'أوامر الشراء ✨',
+    description: 'إدارة أوامر الشراء والموردين والفواتير',
+    icon: <FileText className="w-8 h-8 text-indigo-600 mb-2" />,
+    link: '/store/purchase-orders',
+  },
+  {
+    name: 'إدارة المصروفات ✨',
+    description: 'تتبع المصروفات والتصنيفات الضريبية',
+    icon: <Calculator className="w-8 h-8 text-red-600 mb-2" />,
+    link: '/store/expenses',
+  },
+  {
+    name: 'صناديق النقد ✨',
+    description: 'إدارة الصناديق والفتح والإغلاق اليومي',
+    icon: <DollarSign className="w-8 h-8 text-emerald-600 mb-2" />,
+    link: '/store/cash-registers',
+  },
+  {
+    name: 'نقطة البيع العربية ✨',
+    description: 'واجهة نقطة البيع بالعربية مع الباركود',
+    icon: <Receipt className="w-8 h-8 text-cyan-600 mb-2" />,
+    link: '/store/pos/arabic',
   },
   {
     name: 'العملاء',

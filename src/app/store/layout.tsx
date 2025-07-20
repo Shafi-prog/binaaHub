@@ -24,7 +24,13 @@ import {
   TrendingUp,
   Warehouse,
   Shield,
-  Truck
+  Truck,
+  FileText,
+  Receipt,
+  DollarSign,
+  Calculator as CalculatorIcon,
+  Building2,
+  Users2
 } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
@@ -62,32 +68,47 @@ export default function StoreLayout({
   const isStoreOwner = user?.account_type === 'store' || pathname.includes('/admin') || pathname.includes('/dashboard');
 
   const userNavItems = [
-    { href: '/store', label: 'Home', icon: Home },
-    { href: '/store/marketplace', label: 'Browse Products', icon: Search },
-    { href: '/store/cart', label: 'Cart', icon: ShoppingCart },
-    { href: '/store/wishlist', label: 'Wishlist', icon: Heart },
+    { href: '/store', label: 'الرئيسية', icon: Home },
+    { href: '/store/marketplace', label: 'تصفح المنتجات', icon: Search },
+    { href: '/store/cart', label: 'السلة', icon: ShoppingCart },
+    { href: '/store/wishlist', label: 'المفضلة', icon: Heart },
   ];
 
   const storeAdminNavItems = [
-    { href: '/store/dashboard', label: 'Dashboard', icon: BarChart3 },
-    { href: '/store/admin', label: 'Admin Panel', icon: Store },
-    { href: '/store/pos', label: 'Point of Sale', icon: CreditCard },
-    { href: '/store/pos/offline', label: 'Offline POS ✅', icon: Package2 },
-    { href: '/store/products', label: 'Products', icon: Package },
-    { href: '/store/inventory', label: 'Inventory', icon: Warehouse },
-    { href: '/store/orders', label: 'Orders', icon: ShoppingCart },
-    { href: '/store/delivery', label: 'Delivery', icon: Truck },
-    { href: '/store/customers', label: 'Customers', icon: Users },
-    { href: '/store/permissions', label: 'Permissions', icon: Shield },
-    { href: '/store/analytics', label: 'Market Analytics ✅', icon: TrendingUp },
-    { href: '/store/reports', label: 'Advanced Reports ✅', icon: BarChart3 },
-    { href: '/store/search', label: 'AI Search ✅', icon: Search },
-    { href: '/store/notifications', label: 'Notifications ✅', icon: Settings },
-    // Phase 2 Integration Features ✅
-    { href: '/store/payments', label: 'Payment Gateway ✅', icon: CreditCard },
-    { href: '/store/shipping', label: 'Shipping & Logistics ✅', icon: Truck },
-    { href: '/store/erp', label: 'ERP Integration ✅', icon: Package },
-    { href: '/store/settings', label: 'Settings', icon: Settings },
+    { href: '/store/dashboard', label: 'لوحة التحكم', icon: BarChart3 },
+    { href: '/store/admin', label: 'لوحة الإدارة', icon: Store },
+    
+    // POS & Sales
+    { href: '/store/pos', label: 'نقطة البيع', icon: CreditCard },
+    { href: '/store/pos/offline', label: 'نقطة البيع غير متصل ✅', icon: Package2 },
+    { href: '/store/cash-registers', label: 'صناديق النقد', icon: DollarSign },
+    
+    // Inventory & Products
+    { href: '/store/products', label: 'المنتجات', icon: Package },
+    { href: '/store/inventory', label: 'المخزون', icon: Warehouse },
+    
+    // ERP Features
+    { href: '/store/purchase-orders', label: 'أوامر الشراء', icon: FileText },
+    { href: '/store/suppliers', label: 'الموردين', icon: Users2 },
+    { href: '/store/expenses', label: 'إدارة المصروفات', icon: CalculatorIcon },
+    
+    // Operations
+    { href: '/store/orders', label: 'الطلبات', icon: ShoppingCart },
+    { href: '/store/delivery', label: 'التوصيل', icon: Truck },
+    { href: '/store/customers', label: 'العملاء', icon: Users },
+    
+    // Management
+    { href: '/store/permissions', label: 'الصلاحيات', icon: Shield },
+    { href: '/store/analytics', label: 'تحليلات السوق ✅', icon: TrendingUp },
+    { href: '/store/reports', label: 'التقارير المتقدمة ✅', icon: BarChart3 },
+    
+    // Integration & Tools
+    { href: '/store/search', label: 'البحث الذكي ✅', icon: Search },
+    { href: '/store/notifications', label: 'الإشعارات ✅', icon: Settings },
+    { href: '/store/payments', label: 'بوابة الدفع ✅', icon: CreditCard },
+    { href: '/store/shipping', label: 'الشحن واللوجستيات ✅', icon: Truck },
+    { href: '/store/erp', label: 'تكامل نظام ERP ✅', icon: Building2 },
+    { href: '/store/settings', label: 'الإعدادات', icon: Settings },
   ];
 
   const navItems = isStoreOwner ? storeAdminNavItems : userNavItems;
@@ -102,7 +123,7 @@ export default function StoreLayout({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50" dir="rtl">
       {/* Mobile sidebar backdrop */}
       {sidebarOpen && (
         <div 
@@ -112,12 +133,12 @@ export default function StoreLayout({
       )}
 
       {/* Sidebar */}
-      <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform lg:translate-x-0 lg:static lg:inset-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+      <div className={`fixed inset-y-0 right-0 z-50 w-64 bg-white shadow-lg transform transition-transform lg:translate-x-0 lg:static lg:inset-0 ${sidebarOpen ? 'translate-x-0' : 'translate-x-full'}`}>
         <div className="flex items-center justify-between h-16 px-6 border-b">
           <div className="flex items-center gap-2">
             <Store className="h-6 w-6 text-blue-600" />
             <span className="text-lg font-semibold">
-              {isStoreOwner ? 'Store Admin' : 'Binna Store'}
+              {isStoreOwner ? 'إدارة المتجر' : 'متجر بينا'}
             </span>
           </div>
           <Button
@@ -158,7 +179,7 @@ export default function StoreLayout({
           <div className="mt-8 pt-6 border-t border-gray-200">
             <div className="px-3 py-2">
               <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
-                View Mode
+                وضع العرض
               </p>
             </div>
             <div className="space-y-1">
@@ -168,7 +189,7 @@ export default function StoreLayout({
                 onClick={() => setSidebarOpen(false)}
               >
                 <ShoppingCart className="h-4 w-4" />
-                Customer View
+                عرض العميل
               </Link>
               {user?.account_type === 'store' && (
                 <Link
@@ -177,7 +198,7 @@ export default function StoreLayout({
                   onClick={() => setSidebarOpen(false)}
                 >
                   <Store className="h-4 w-4" />
-                  Admin Panel
+                  لوحة الإدارة
                 </Link>
               )}
             </div>
@@ -186,7 +207,7 @@ export default function StoreLayout({
       </div>
 
       {/* Main content */}
-      <div className="lg:pl-64">
+      <div className="lg:pr-64">
         {/* Top bar */}
         <div className="flex items-center justify-between h-16 px-6 bg-white border-b lg:hidden">
           <Button
@@ -199,7 +220,7 @@ export default function StoreLayout({
           <div className="flex items-center gap-2">
             <Store className="h-5 w-5 text-blue-600" />
             <span className="font-semibold">
-              {isStoreOwner ? 'Store Admin' : 'Binna Store'}
+              {isStoreOwner ? 'إدارة المتجر' : 'متجر بينا'}
             </span>
           </div>
           <div></div>

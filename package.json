@@ -64,7 +64,7 @@
     "@headlessui/react": "^2.2.4",
     "@heroicons/react": "^2.0.18",
     "@medusajs/cache-redis": "^1.9.2",
-    "@medusajs/framework": "^0.0.1",
+    "@medusajs/framework": "^2.8.7",
     "@medusajs/icons": "^2.8.7",
     "@medusajs/js-sdk": "^2.8.4",
     "@medusajs/medusa": "^2.8.7",

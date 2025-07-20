@@ -9,7 +9,6 @@ import { Select } from '@/core/shared/components/ui/select';
 import { Badge } from '@/core/shared/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/core/shared/components/ui/tabs';
 import { Progress } from '@/core/shared/components/ui/progress';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/core/shared/components/ui/dialog';
 import { ProjectTrackingService } from '@/core/services/projectTrackingService';
 import ConstructionGuidance from '@/core/shared/components/ConstructionGuidance';
 import { 
@@ -92,34 +91,58 @@ export default function ProjectDetailPage() {
   };
 
   const handleAddPurchase = async () => {
-    if (!selectedMaterial || !project) return;
+    if (!selectedMaterial || !project) {
+      console.error('Missing selectedMaterial or project');
+      return;
+    }
 
-    const purchase: ProjectPurchase = {
-      id: Date.now().toString(),
-      projectId: project.id,
-      materialId: selectedMaterial.materialId,
-      materialName: selectedMaterial.materialName,
-      purchasedQuantity: newPurchase.purchasedQuantity || 0,
-      unit: selectedMaterial.unit,
-      pricePerUnit: newPurchase.pricePerUnit || 0,
-      totalCost: (newPurchase.purchasedQuantity || 0) * (newPurchase.pricePerUnit || 0),
-      purchaseDate: new Date().toISOString(),
-      supplier: newPurchase.supplier || '',
-      status: newPurchase.status as any || 'ordered',
-      notes: newPurchase.notes
-    };
+    // Validate required fields
+    if (!newPurchase.purchasedQuantity || newPurchase.purchasedQuantity <= 0) {
+      alert('يرجى إدخال كمية صحيحة');
+      return;
+    }
 
-    await ProjectTrackingService.savePurchase(purchase);
-    await loadProjectData();
-    setShowPurchaseDialog(false);
-    setSelectedMaterial(null);
-    setNewPurchase({
-      purchasedQuantity: 0,
-      pricePerUnit: 0,
-      supplier: '',
-      status: 'ordered',
-      notes: ''
-    });
+    if (!newPurchase.pricePerUnit || newPurchase.pricePerUnit <= 0) {
+      alert('يرجى إدخال سعر صحيح');
+      return;
+    }
+
+    try {
+      const purchase: ProjectPurchase = {
+        id: Date.now().toString(),
+        projectId: project.id,
+        materialId: selectedMaterial.materialId,
+        materialName: selectedMaterial.materialName,
+        purchasedQuantity: newPurchase.purchasedQuantity || 0,
+        unit: selectedMaterial.unit,
+        pricePerUnit: newPurchase.pricePerUnit || 0,
+        totalCost: (newPurchase.purchasedQuantity || 0) * (newPurchase.pricePerUnit || 0),
+        purchaseDate: new Date().toISOString(),
+        supplier: newPurchase.supplier || '',
+        status: newPurchase.status as any || 'ordered',
+        notes: newPurchase.notes
+      };
+
+      console.log('Saving purchase:', purchase);
+      await ProjectTrackingService.savePurchase(purchase);
+      await loadProjectData();
+      
+      // Reset form and close dialog
+      setShowPurchaseDialog(false);
+      setSelectedMaterial(null);
+      setNewPurchase({
+        purchasedQuantity: 0,
+        pricePerUnit: 0,
+        supplier: '',
+        status: 'ordered',
+        notes: ''
+      });
+
+      alert('تم حفظ الشراء بنجاح');
+    } catch (error) {
+      console.error('Error saving purchase:', error);
+      alert('حدث خطأ أثناء حفظ الشراء. يرجى المحاولة مرة أخرى.');
+    }
   };
 
   const getStatusBadgeVariant = (status: string) => {
@@ -560,117 +583,158 @@ export default function ProjectDetailPage() {
           </TabsContent>
         </Tabs>
 
-        {/* Purchase Dialog */}
-        <Dialog open={showPurchaseDialog} onOpenChange={setShowPurchaseDialog}>
-          <DialogContent className="max-w-md">
-            <DialogHeader>
-              <DialogTitle>تسجيل شراء جديد</DialogTitle>
-            </DialogHeader>
-            {selectedMaterial && (
-              <div className="space-y-4">
-                <div>
-                  <label className="text-sm font-medium">المادة</label>
-                  <p className="text-lg font-semibold">{selectedMaterial.materialName}</p>
-                  <p className="text-sm text-gray-600">
-                    مطلوب: {selectedMaterial.estimatedQuantity} {selectedMaterial.unit}
-                  </p>
-                </div>
-
-                <div>
-                  <label className="text-sm font-medium">الكمية المشتراة</label>
-                  <Input
-                    type="number"
-                    value={newPurchase.purchasedQuantity}
-                    onChange={(e) => setNewPurchase(prev => ({
-                      ...prev,
-                      purchasedQuantity: parseFloat(e.target.value) || 0
-                    }))}
-                    placeholder="0"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-sm font-medium">سعر الوحدة (ريال)</label>
-                  <Input
-                    type="number"
-                    value={newPurchase.pricePerUnit}
-                    onChange={(e) => setNewPurchase(prev => ({
-                      ...prev,
-                      pricePerUnit: parseFloat(e.target.value) || 0
-                    }))}
-                    placeholder="0"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-sm font-medium">المورد</label>
-                  <Input
-                    value={newPurchase.supplier}
-                    onChange={(e) => setNewPurchase(prev => ({
-                      ...prev,
-                      supplier: e.target.value
-                    }))}
-                    placeholder="اسم المورد"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-sm font-medium">الحالة</label>
-                  <select
-                    value={newPurchase.status}
-                    onChange={(e) => setNewPurchase(prev => ({
-                      ...prev,
-                      status: e.target.value as any
-                    }))}
-                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        {/* Purchase Dialog with Overlay */}
+        {showPurchaseDialog && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4" style={{ zIndex: 9999 }}>
+            <div className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-screen overflow-y-auto">
+              <div className="p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-xl font-semibold">تسجيل شراء جديد</h2>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      setShowPurchaseDialog(false);
+                      setSelectedMaterial(null);
+                      setNewPurchase({
+                        purchasedQuantity: 0,
+                        pricePerUnit: 0,
+                        supplier: '',
+                        status: 'ordered',
+                        notes: ''
+                      });
+                    }}
+                    className="p-1"
                   >
-                    <option value="ordered">مطلوب</option>
-                    <option value="received">مستلم</option>
-                    <option value="installed">مركب</option>
-                    <option value="returned">مرتجع</option>
-                  </select>
+                    ✕
+                  </Button>
                 </div>
+                {selectedMaterial && (
+                  <div className="space-y-4">
+                    <div>
+                      <label className="text-sm font-medium">المادة</label>
+                      <p className="text-lg font-semibold">{selectedMaterial.materialName}</p>
+                      <p className="text-sm text-gray-600">
+                        مطلوب: {selectedMaterial.estimatedQuantity} {selectedMaterial.unit}
+                      </p>
+                    </div>
 
-                <div>
-                  <label className="text-sm font-medium">ملاحظات</label>
-                  <Input
-                    value={newPurchase.notes}
-                    onChange={(e) => setNewPurchase(prev => ({
-                      ...prev,
-                      notes: e.target.value
-                    }))}
-                    placeholder="ملاحظات إضافية..."
-                  />
-                </div>
+                    <div>
+                      <label className="text-sm font-medium">الكمية المشتراة *</label>
+                      <Input
+                        type="number"
+                        min="0.01"
+                        step="0.01"
+                        value={newPurchase.purchasedQuantity || ''}
+                        onChange={(e) => setNewPurchase(prev => ({
+                          ...prev,
+                          purchasedQuantity: parseFloat(e.target.value) || 0
+                        }))}
+                        placeholder="أدخل الكمية"
+                        className="mt-1"
+                      />
+                    </div>
 
-                <div className="bg-blue-50 p-3 rounded-lg">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600">إجمالي التكلفة:</span>
-                    <span className="text-lg font-bold text-blue-600">
-                      {((newPurchase.purchasedQuantity || 0) * (newPurchase.pricePerUnit || 0)).toLocaleString()} ريال
-                    </span>
+                    <div>
+                      <label className="text-sm font-medium">سعر الوحدة (ريال) *</label>
+                      <Input
+                        type="number"
+                        min="0.01"
+                        step="0.01"
+                        value={newPurchase.pricePerUnit || ''}
+                        onChange={(e) => setNewPurchase(prev => ({
+                          ...prev,
+                          pricePerUnit: parseFloat(e.target.value) || 0
+                        }))}
+                        placeholder="أدخل السعر"
+                        className="mt-1"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-sm font-medium">المورد</label>
+                      <Input
+                        value={newPurchase.supplier || ''}
+                        onChange={(e) => setNewPurchase(prev => ({
+                          ...prev,
+                          supplier: e.target.value
+                        }))}
+                        placeholder="اسم المورد"
+                        className="mt-1"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-sm font-medium">الحالة</label>
+                      <select
+                        value={newPurchase.status || 'ordered'}
+                        onChange={(e) => setNewPurchase(prev => ({
+                          ...prev,
+                          status: e.target.value as any
+                        }))}
+                        className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      >
+                        <option value="ordered">مطلوب</option>
+                        <option value="received">مستلم</option>
+                        <option value="installed">مركب</option>
+                        <option value="returned">مرتجع</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="text-sm font-medium">ملاحظات</label>
+                      <Input
+                        value={newPurchase.notes || ''}
+                        onChange={(e) => setNewPurchase(prev => ({
+                          ...prev,
+                          notes: e.target.value
+                        }))}
+                        placeholder="ملاحظات إضافية..."
+                        className="mt-1"
+                      />
+                    </div>
+
+                    <div className="bg-blue-50 p-3 rounded-lg">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-gray-600">إجمالي التكلفة:</span>
+                        <span className="text-lg font-bold text-blue-600">
+                          {((newPurchase.purchasedQuantity || 0) * (newPurchase.pricePerUnit || 0)).toLocaleString()} ريال
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex gap-2">
+                      <Button 
+                        onClick={handleAddPurchase}
+                        disabled={!newPurchase.purchasedQuantity || newPurchase.purchasedQuantity <= 0 || !newPurchase.pricePerUnit || newPurchase.pricePerUnit <= 0}
+                        className="flex-1"
+                      >
+                        حفظ الشراء
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        onClick={() => {
+                          setShowPurchaseDialog(false);
+                          setSelectedMaterial(null);
+                          setNewPurchase({
+                            purchasedQuantity: 0,
+                            pricePerUnit: 0,
+                            supplier: '',
+                            status: 'ordered',
+                            notes: ''
+                          });
+                        }}
+                        className="flex-1"
+                      >
+                        إلغاء
+                      </Button>
+                    </div>
                   </div>
-                </div>
-
-                <div className="flex gap-2">
-                  <Button 
-                    onClick={handleAddPurchase}
-                    disabled={!newPurchase.purchasedQuantity || !newPurchase.pricePerUnit}
-                    className="flex-1"
-                  >
-                    حفظ الشراء
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    onClick={() => setShowPurchaseDialog(false)}
-                  >
-                    إلغاء
-                  </Button>
-                </div>
+                )}
               </div>
-            )}
-          </DialogContent>
-        </Dialog>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

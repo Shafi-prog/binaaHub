@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { cn } from "@/core/shared/utils";
 import { 
   Store, 
@@ -191,6 +191,7 @@ const storeFeatures: Feature[] = [
 
 export default function MainLandingPage() {
   const [selectedTab, setSelectedTab] = useState<'users' | 'stores'>('users');
+  const [isMounted, setIsMounted] = useState(false);
   
   // Search and Filter States
   const [searchQuery, setSearchQuery] = useState('');
@@ -198,6 +199,22 @@ export default function MainLandingPage() {
   const [selectedStore, setSelectedStore] = useState('all');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [showFilters, setShowFilters] = useState(false);
+
+  // Ensure client-side rendering for locale-dependent content
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  // Consistent number formatting function
+  const formatPrice = (price: number): string => {
+    return new Intl.NumberFormat('en-US').format(price);
+  };
+
+  // Consistent date formatting function
+  const formatDate = (date: string): string => {
+    if (!isMounted) return date; // Return raw date on server
+    return new Date(date).toLocaleDateString('ar');
+  };
 
   // Get unique values for filters
   const cities = ['all', ...Array.from(new Set(mockPriceData.map(item => item.city)))];
@@ -412,7 +429,7 @@ export default function MainLandingPage() {
                   <div className="space-y-1 text-sm">
                     <div className="flex justify-between">
                       <span className="text-gray-500">السعر:</span>
-                      <span className="font-semibold text-gray-800">{item.price} ر.س</span>
+                      <span className="font-semibold text-gray-800">{formatPrice(item.price)} ر.س</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-500">الفئة:</span>
@@ -652,7 +669,7 @@ export default function MainLandingPage() {
                       </div>
                       <div className="flex items-center gap-2">
                         <Calendar className="w-4 h-4" />
-                        <span>اكتمل: {new Date(project.completionDate).toLocaleDateString('ar')}</span>
+                        <span>اكتمل: {formatDate(project.completionDate)}</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <Package className="w-4 h-4" />
@@ -678,14 +695,14 @@ export default function MainLandingPage() {
                     <div className="flex items-center justify-between">
                       <div className="text-right">
                         <div className="text-lg font-bold text-green-600">
-                          {project.price.toLocaleString()} ر.س
+                          {formatPrice(project.price)} ر.س
                         </div>
                         <div className="text-xs text-gray-500">
-                          {Math.round(project.price / project.area).toLocaleString()} ر.س/م²
+                          {formatPrice(Math.round(project.price / project.area))} ر.س/م²
                         </div>
                         {/* Profit Information */}
                         <div className="text-xs text-blue-600 mt-1">
-                          ربح {project.profitPercentage.toFixed(1)}% • تكلفة {project.totalCost.toLocaleString()} ر.س
+                          ربح {project.profitPercentage.toFixed(1)}% • تكلفة {formatPrice(project.totalCost)} ر.س
                         </div>
                       </div>
                       <Link
@@ -711,6 +728,110 @@ export default function MainLandingPage() {
                 <span>تصفح جميع المشاريع</span>
                 <ExternalLink className="w-4 h-4" />
               </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* Construction Features Section */}
+        <div className="relative z-10 max-w-7xl mx-auto px-4 mb-12">
+          <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+            <div className="text-center mb-8">
+              <div className="flex justify-center mb-4">
+                <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-500 rounded-xl flex items-center justify-center">
+                  <Package className="w-8 h-8 text-white" />
+                </div>
+              </div>
+              <h2 className="text-3xl font-bold text-gray-800 mb-2">خدمات البناء والتشييد</h2>
+              <p className="text-lg text-gray-600">دليل شامل لمساعدتك في إنجاز مشروع البناء بكفاءة ووفقاً للمعايير السعودية</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {/* Construction Steps Guide */}
+              <Link href="/construction-data" 
+                    className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-xl border border-blue-200 hover:shadow-lg transition-all group">
+                <div className="flex items-center mb-4">
+                  <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mr-3">
+                    <Calendar className="w-6 h-6 text-white" />
+                  </div>
+                  <h3 className="font-bold text-blue-800">خطوات البناء</h3>
+                </div>
+                <p className="text-gray-700 text-sm mb-3">
+                  دليل مفصل لجميع مراحل البناء من التخطيط حتى التسليم
+                </p>
+                <div className="flex items-center text-blue-600 text-sm font-medium">
+                  <span>اطلع على الدليل</span>
+                  <ExternalLink className="w-4 h-4 mr-2 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </Link>
+
+              {/* Building Advice */}
+              <Link href="/user/building-advice" 
+                    className="bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-xl border border-green-200 hover:shadow-lg transition-all group">
+                <div className="flex items-center mb-4">
+                  <div className="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center mr-3">
+                    <MessageSquare className="w-6 h-6 text-white" />
+                  </div>
+                  <h3 className="font-bold text-green-800">نصائح البناء</h3>
+                </div>
+                <p className="text-gray-700 text-sm mb-3">
+                  نصائح تفاعلية من خبراء البناء مع أدلة PDF رسمية
+                </p>
+                <div className="flex items-center text-green-600 text-sm font-medium">
+                  <span>احصل على النصائح</span>
+                  <ExternalLink className="w-4 h-4 mr-2 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </Link>
+
+              {/* Project Creation */}
+              <Link href="/user/projects/create" 
+                    className="bg-gradient-to-br from-purple-50 to-purple-100 p-6 rounded-xl border border-purple-200 hover:shadow-lg transition-all group">
+                <div className="flex items-center mb-4">
+                  <div className="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center mr-3">
+                    <Store className="w-6 h-6 text-white" />
+                  </div>
+                  <h3 className="font-bold text-purple-800">إنشاء مشروع</h3>
+                </div>
+                <p className="text-gray-700 text-sm mb-3">
+                  ابدأ مشروعك مع تتبع المراحل ورفع صور التقدم
+                </p>
+                <div className="flex items-center text-purple-600 text-sm font-medium">
+                  <span>أنشئ مشروعك</span>
+                  <ExternalLink className="w-4 h-4 mr-2 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </Link>
+
+              {/* Construction Materials Prices */}
+              <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-6 rounded-xl border border-orange-200">
+                <div className="flex items-center mb-4">
+                  <div className="w-12 h-12 bg-orange-500 rounded-lg flex items-center justify-center mr-3">
+                    <TrendingUp className="w-6 h-6 text-white" />
+                  </div>
+                  <h3 className="font-bold text-orange-800">أسعار مواد البناء</h3>
+                </div>
+                <p className="text-gray-700 text-sm mb-3">
+                  تابع أسعار مواد البناء لحظة بلحظة في الأسواق المحلية
+                </p>
+                <div className="flex items-center text-orange-600 text-sm font-medium">
+                  <span>متوفر بالأسفل</span>
+                  <Activity className="w-4 h-4 mr-2" />
+                </div>
+              </div>
+            </div>
+
+            {/* Quick Stats */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 pt-8 border-t border-gray-200">
+              <div className="text-center">
+                <div className="text-3xl font-bold text-blue-600 mb-2">50+</div>
+                <p className="text-gray-600">خطوة بناء مفصلة</p>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-green-600 mb-2">25+</div>
+                <p className="text-gray-600">دليل PDF رسمي</p>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-purple-600 mb-2">100+</div>
+                <p className="text-gray-600">نصيحة من الخبراء</p>
+              </div>
             </div>
           </div>
         </div>

@@ -39,6 +39,10 @@ export type Project = {
   endDate?: string;
   images?: ProjectImage[];
   publicDisplay?: ProjectPublicSettings;
+  // Construction phases tracking
+  selectedPhases?: string[];
+  enablePhotoTracking?: boolean;
+  enableProgressTracking?: boolean;
 };
 
 // صور المشروع

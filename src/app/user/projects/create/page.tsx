@@ -5,7 +5,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { Badge } from '@/components/ui/badge';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Progress } from '@/components/ui/progress';
 import { useRouter } from 'next/navigation';
+import { ConstructionGuidanceService } from '@/core/services/constructionGuidanceService';
 import { ProjectTrackingService } from '@/core/services/projectTrackingService';
 import { Project } from '@/core/shared/types/types';
 import { 
@@ -13,7 +17,15 @@ import {
   Home, 
   Building, 
   Calculator, 
-  Save
+  Save,
+  Camera,
+  BarChart3,
+  CheckCircle,
+  AlertCircle,
+  Hammer,
+  Clock,
+  FileText,
+  Settings
 } from 'lucide-react';
 
 export default function CreateProjectPage() {
@@ -25,7 +37,10 @@ export default function CreateProjectPage() {
     area: 0,
     projectType: 'villa',
     floorCount: 1,
-    roomCount: 4
+    roomCount: 4,
+    selectedPhases: [] as string[],
+    enablePhotoTracking: true,
+    enableProgressTracking: true
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -55,6 +70,9 @@ export default function CreateProjectPage() {
         stage: 'تخطيط',
         progress: 0,
         status: 'planning',
+        selectedPhases: projectData.selectedPhases,
+        enablePhotoTracking: projectData.enablePhotoTracking,
+        enableProgressTracking: projectData.enableProgressTracking,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
       };
@@ -92,6 +110,9 @@ export default function CreateProjectPage() {
         stage: 'تخطيط',
         progress: 0,
         status: 'planning',
+        selectedPhases: projectData.selectedPhases,
+        enablePhotoTracking: projectData.enablePhotoTracking,
+        enableProgressTracking: projectData.enableProgressTracking,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
       };
@@ -262,40 +283,234 @@ export default function CreateProjectPage() {
                   </div>
                 </div>
 
-                {/* Action Buttons */}
-                <div className="flex gap-4">
-                  <Button
-                    type="submit"
-                    disabled={loading || !projectData.name.trim() || projectData.area <= 0}
-                    className="flex-1 flex items-center gap-2"
-                  >
-                    <Save className="w-4 h-4" />
-                    {loading ? 'جاري الإنشاء...' : 'إنشاء المشروع'}
-                  </Button>
-                  
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={handleCreateWithCalculator}
-                    disabled={loading || !projectData.name.trim()}
-                    className="flex-1 flex items-center gap-2"
-                  >
-                    <Calculator className="w-4 h-4" />
-                    إنشاء + حاسبة
-                  </Button>
-                </div>
+                {/* Construction Phases Selection */}
+                <Card className="shadow-sm mt-6">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Hammer className="w-5 h-5" />
+                    اختيار مراحل البناء للتتبع
+                  </CardTitle>
+                  <p className="text-sm text-gray-600">
+                    اختر المراحل التي تريد تتبعها في مشروعك مع إمكانية رفع الصور وتوثيق التقدم
+                  </p>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {(() => {
+                    const phases = ConstructionGuidanceService.getProjectPhases({
+                      projectType: projectData.projectType as any,
+                      area: projectData.area || 200,
+                      floors: projectData.floorCount,
+                      compliance: 'enhanced',
+                      supervision: 'engineer',
+                      location: 'الرياض'
+                    });
 
-                <div className="text-center">
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    onClick={() => router.push('/user/projects/list')}
-                    className="flex items-center gap-2"
-                  >
-                    <Home className="w-4 h-4" />
-                    العودة للمشاريع
-                  </Button>
-                </div>
+                    return phases.map((phase) => (
+                      <div key={phase.id} className="flex items-center space-x-3 space-x-reverse p-3 border rounded-lg hover:bg-gray-50">
+                        <Checkbox 
+                          id={phase.id}
+                          checked={projectData.selectedPhases.includes(phase.id)}
+                          onCheckedChange={(checked) => {
+                            if (checked) {
+                              setProjectData(prev => ({
+                                ...prev,
+                                selectedPhases: [...prev.selectedPhases, phase.id]
+                              }));
+                            } else {
+                              setProjectData(prev => ({
+                                ...prev,
+                                selectedPhases: prev.selectedPhases.filter(id => id !== phase.id)
+                              }));
+                            }
+                          }}
+                        />
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2">
+                            <Clock className="w-4 h-4 text-blue-500" />
+                            <label htmlFor={phase.id} className="font-medium cursor-pointer">
+                              {phase.name}
+                            </label>
+                            <Badge variant="outline" className="text-xs">
+                              {phase.duration} يوم
+                            </Badge>
+                          </div>
+                          <p className="text-sm text-gray-600 mt-1">{phase.description}</p>
+                          <div className="flex items-center gap-4 mt-2 text-xs text-gray-500">
+                            <span className="flex items-center gap-1">
+                              <FileText className="w-3 h-3" />
+                              {phase.documents.length} وثيقة
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <CheckCircle className="w-3 h-3" />
+                              {phase.checkpoints.length} نقطة فحص
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    ));
+                  })()}
+
+                  {/* Quick Selection */}
+                  <div className="border-t pt-4">
+                    <div className="flex gap-2 flex-wrap">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          const allPhases = ConstructionGuidanceService.getProjectPhases({
+                            projectType: projectData.projectType as any,
+                            area: projectData.area || 200,
+                            floors: projectData.floorCount,
+                            compliance: 'enhanced',
+                            supervision: 'engineer',
+                            location: 'الرياض'
+                          });
+                          setProjectData(prev => ({
+                            ...prev,
+                            selectedPhases: allPhases.map(p => p.id)
+                          }));
+                        }}
+                      >
+                        تحديد الكل
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          setProjectData(prev => ({
+                            ...prev,
+                            selectedPhases: []
+                          }));
+                        }}
+                      >
+                        إلغاء التحديد
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          setProjectData(prev => ({
+                            ...prev,
+                            selectedPhases: ['planning', 'structure', 'finishing']
+                          }));
+                        }}
+                      >
+                        المراحل الأساسية
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Project Tracking Options */}
+              <Card className="shadow-sm">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Settings className="w-5 h-5" />
+                    خيارات التتبع والتوثيق
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center space-x-3 space-x-reverse">
+                    <Checkbox 
+                      id="enablePhotoTracking"
+                      checked={projectData.enablePhotoTracking}
+                      onCheckedChange={(checked) => {
+                        setProjectData(prev => ({
+                          ...prev,
+                          enablePhotoTracking: !!checked
+                        }));
+                      }}
+                    />
+                    <div className="flex-1">
+                      <label htmlFor="enablePhotoTracking" className="flex items-center gap-2 font-medium cursor-pointer">
+                        <Camera className="w-4 h-4 text-green-500" />
+                        تفعيل التوثيق بالصور
+                      </label>
+                      <p className="text-sm text-gray-600">
+                        إمكانية رفع وتنظيم صور لكل مرحلة من مراحل البناء
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center space-x-3 space-x-reverse">
+                    <Checkbox 
+                      id="enableProgressTracking"
+                      checked={projectData.enableProgressTracking}
+                      onCheckedChange={(checked) => {
+                        setProjectData(prev => ({
+                          ...prev,
+                          enableProgressTracking: !!checked
+                        }));
+                      }}
+                    />
+                    <div className="flex-1">
+                      <label htmlFor="enableProgressTracking" className="flex items-center gap-2 font-medium cursor-pointer">
+                        <BarChart3 className="w-4 h-4 text-blue-500" />
+                        تتبع التقدم والمعالم
+                      </label>
+                      <p className="text-sm text-gray-600">
+                        مراقبة تقدم العمل والمهام مع تحديثات آلية
+                      </p>
+                    </div>
+                  </div>
+
+                  {projectData.selectedPhases.length > 0 && (
+                    <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+                      <div className="flex items-center gap-2 text-green-800">
+                        <CheckCircle className="w-4 h-4" />
+                        <span className="font-medium">جاهز للبدء!</span>
+                      </div>
+                      <p className="text-sm text-green-700 mt-1">
+                        تم اختيار {projectData.selectedPhases.length} مرحلة للتتبع. 
+                        ستتمكن من رفع الصور وتوثيق التقدم لكل مرحلة.
+                      </p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
+              {/* Action Buttons */}
+              <Card className="shadow-sm">
+                <CardContent className="pt-6">
+                  <div className="flex gap-4">
+                    <Button
+                      type="submit"
+                      disabled={loading || !projectData.name.trim() || projectData.area <= 0}
+                      className="flex-1 flex items-center gap-2"
+                    >
+                      <Save className="w-4 h-4" />
+                      {loading ? 'جاري الإنشاء...' : 'إنشاء المشروع'}
+                    </Button>
+                    
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={handleCreateWithCalculator}
+                      disabled={loading || !projectData.name.trim()}
+                      className="flex-1 flex items-center gap-2"
+                    >
+                      <Calculator className="w-4 h-4" />
+                      إنشاء + حاسبة
+                    </Button>
+                  </div>
+
+                  <div className="text-center mt-4">
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      onClick={() => router.push('/user/projects/list')}
+                      className="flex items-center gap-2"
+                    >
+                      <Home className="w-4 h-4" />
+                      العودة للمشاريع
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
               </form>
             </CardContent>
           </Card>

@@ -1,10 +1,43 @@
 // @ts-nocheck
 // صفحة نصائح البناء التفاعلية الشاملة
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Lightbulb, ArrowUpCircle, Home, Building2, Factory, ChevronLeft, ChevronRight, Calculator, Video, FileText } from 'lucide-react';
-
+import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
+import { Button } from '@/core/shared/components/ui/button';
+import { Badge } from '@/core/shared/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/core/shared/components/ui/tabs';
+import { Progress } from '@/core/shared/components/ui/progress';
+import { ConstructionGuidanceService } from '@/core/services/constructionGuidanceService';
+import { 
+  Lightbulb, 
+  ArrowUpCircle, 
+  Home, 
+  Building2, 
+  Factory, 
+  ChevronLeft, 
+  ChevronRight, 
+  Calculator, 
+  Video, 
+  FileText,
+  Download,
+  Eye,
+  CheckCircle,
+  AlertTriangle,
+  BookOpen,
+  Clock,
+  Users,
+  Shield,
+  Star,
+  Bookmark,
+  Hammer,
+  Settings,
+  Camera,
+  BarChart3,
+  MapPin,
+  ExternalLink,
+  TrendingUp
+} from 'lucide-react';
 
 export const dynamic = 'force-dynamic'
 // Force dynamic rendering to avoid SSG auth context issues
@@ -38,32 +71,193 @@ const initialAdvice: Advice[] = [
   { id: 3, text: 'راجع كود البناء السعودي وتأكد من مطابقة جميع المخططات.', author: 'م. فهد', upvotes: 3 },
 ];
 
+
+// --- PDF Guidance Data ---
+interface PDFGuide {
+  id: string;
+  title: string;
+  description: string;
+  author: string;
+  pages: number;
+  downloads: number;
+  rating: number;
+  category: string;
+  fileSize: string;
+  officialSource?: boolean;
+  previewUrl?: string;
+}
+
+const constructionPDFGuides: PDFGuide[] = [
+  {
+    id: 'sbc-foundations',
+    title: 'الكود السعودي للبناء - دليل الأساسات',
+    description: 'دليل شامل لتصميم وتنفيذ الأساسات وفقاً للمعايير السعودية',
+    author: 'الهيئة السعودية للمواصفات والمقاييس والجودة',
+    pages: 156,
+    downloads: 12450,
+    rating: 4.9,
+    category: 'هيكلي',
+    fileSize: '12.4 MB',
+    officialSource: true,
+    previewUrl: '/pdf-previews/sbc-foundations.jpg'
+  },
+  {
+    id: 'residential-permits',
+    title: 'دليل استخراج رخص البناء السكنية',
+    description: 'خطوات مفصلة لاستخراج رخص البناء للمباني السكنية',
+    author: 'وزارة الشؤون البلدية والقروية',
+    pages: 89,
+    downloads: 8920,
+    rating: 4.7,
+    category: 'تراخيص',
+    fileSize: '8.1 MB',
+    officialSource: true
+  },
+  {
+    id: 'electrical-safety',
+    title: 'معايير السلامة الكهربائية في المباني',
+    description: 'دليل شامل لتنفيذ التمديدات الكهربائية بأمان',
+    author: 'الشركة السعودية للكهرباء',
+    pages: 124,
+    downloads: 6780,
+    rating: 4.6,
+    category: 'كهرباء',
+    fileSize: '9.8 MB',
+    officialSource: true
+  },
+  {
+    id: 'green-building',
+    title: 'دليل المباني الخضراء والاستدامة',
+    description: 'إرشادات لتصميم مباني صديقة للبيئة وموفرة للطاقة',
+    author: 'مجلس المباني الخضراء السعودي',
+    pages: 98,
+    downloads: 5420,
+    rating: 4.8,
+    category: 'استدامة',
+    fileSize: '15.2 MB',
+    officialSource: true
+  },
+  {
+    id: 'project-management',
+    title: 'إدارة مشاريع البناء الحديثة',
+    description: 'أفضل الممارسات في إدارة مشاريع البناء والتشييد',
+    author: 'م. خالد الأحمد',
+    pages: 67,
+    downloads: 4580,
+    rating: 4.4,
+    category: 'إدارة',
+    fileSize: '5.7 MB',
+    officialSource: false
+  }
+];
+
+// --- Enhanced Stage Advice ---
+function getStageAdvice(stageKey: string, projectType: string) {
+  const guidance = ConstructionGuidanceService.getProjectPhases({
+    projectType: projectType as any,
+    area: 300,
+    floors: 2,
+    compliance: 'enhanced',
+    supervision: 'engineer',
+    location: 'الرياض'
+  });
+
+  const phase = guidance.find(p => p.id === stageKey);
+  
+  if (!phase) {
+    return {
+      title: 'نصائح عامة',
+      tips: ['تأكد من جودة العمل', 'اتبع المعايير السعودية', 'استشر خبير إذا لزم الأمر'],
+      checklist: ['مراجعة الجودة', 'التأكد من المطابقة', 'توثيق المرحلة'],
+      resources: []
+    };
+  }
+
+  return {
+    title: `نصائح مرحلة ${phase.name}`,
+    tips: phase.tips || ['اتبع خطة العمل المحددة', 'تأكد من توفر جميع المواد', 'راجع مع المهندس المشرف'],
+    checklist: (phase.checkpoints || []).map(checkpoint => checkpoint.name),
+    resources: phase.documents || []
+  };
+}
+
 export default function BuildingAdvicePage() {
-  // --- حالة اللغة ---
+  // --- State Management ---
   const [lang, setLang] = useState<'ar' | 'en'>('ar');
-  // --- معالج اختيار نوع المشروع ---
-  const [projectType, setProjectType] = useState<string | null>(null);
-  // --- مرحلة البناء الحالية ---
+  const [projectType, setProjectType] = useState<string | null>('residential');
   const [stageIdx, setStageIdx] = useState(0);
-  // --- نصائح المجتمع ---
   const [adviceList, setAdviceList] = useState<Advice[]>(initialAdvice);
   const [form, setForm] = useState({ text: '', author: '' });
   const [submitting, setSubmitting] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [bookmarkedPDFs, setBookmarkedPDFs] = useState<Set<string>>(new Set());
+  const [isMounted, setIsMounted] = useState(false);
 
-  // --- دوال نصائح المجتمع ---
+  // Ensure client-side rendering for locale-dependent content
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  // Consistent number formatting function
+  const formatNumber = (num: number): string => {
+    if (!isMounted) return num.toString();
+    return new Intl.NumberFormat('en-US').format(num);
+  };
+
+  // Get construction phases for selected project type
+  const [constructionPhases, setConstructionPhases] = useState([]);
+  
+  useEffect(() => {
+    if (projectType) {
+      const phases = ConstructionGuidanceService.getProjectPhases({
+        projectType: projectType as any,
+        area: 300,
+        floors: 2,
+        compliance: 'enhanced',
+        supervision: 'engineer',
+        location: 'الرياض'
+      });
+      setConstructionPhases(phases);
+    }
+  }, [projectType]);
+
+  // Filter PDFs by category
+  const filteredPDFs = selectedCategory === 'all' 
+    ? constructionPDFGuides 
+    : constructionPDFGuides.filter(pdf => pdf.category === selectedCategory);
+
+  // Get unique categories
+  const categories = ['all', ...Array.from(new Set(constructionPDFGuides.map(pdf => pdf.category)))];
+
+  // Toggle bookmark
+  const toggleBookmark = (pdfId: string) => {
+    setBookmarkedPDFs(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(pdfId)) {
+        newSet.delete(pdfId);
+      } else {
+        newSet.add(pdfId);
+      }
+      return newSet;
+    });
+  };
+
+  // Community advice functions
   const handleUpvote = (id: number) => {
     setAdviceList((prev) => prev.map((a) => a.id === id ? { ...a, upvotes: a.upvotes + 1 } : a));
   };
+  
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
+  
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.text.trim() || !form.author.trim()) return;
     setSubmitting(true);
     setTimeout(() => {
       setAdviceList((prev) => [
-        { id: Date.now(), text: form.text, author: form.author, upvotes: 0 },
+        { id: Math.floor(Math.random() * 1000000), text: form.text, author: form.author, upvotes: 0 },
         ...prev,
       ]);
       setForm({ text: '', author: '' });
@@ -209,117 +403,438 @@ export default function BuildingAdvicePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 flex flex-col items-center font-tajawal py-8">
-      <div className="bg-white rounded-xl shadow-lg p-6 max-w-4xl w-full border border-blue-200">
-        {/* شريط اللغة */}
-        <div className="flex justify-end mb-2">
-          <button onClick={() => setLang(lang === 'ar' ? 'en' : 'ar')} className="text-blue-700 font-bold underline text-sm">{lang === 'ar' ? 'English' : 'العربية'}</button>
-        </div>
-        {/* مقدمة */}
-        <div className="flex flex-col items-center mb-6">
-          <Lightbulb className="w-12 h-12 text-yellow-400 mb-2" />
-          <h1 className="text-3xl font-bold text-blue-800 mb-2">{lang === 'ar' ? 'دليل البناء السعودي التفاعلي' : 'Saudi Interactive Building Guide'}</h1>
-          <p className="text-gray-600 max-w-xl text-center mb-2">
-            {lang === 'ar'
-              ? 'اتبع الخطوات التفاعلية لبناء مشروعك وفق كود البناء السعودي (SBC) مع أدوات، قوائم مرجعية، وروابط رسمية.'
-              : 'Follow interactive steps to build your project according to the Saudi Building Code (SBC) with tools, checklists, and official resources.'}
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-indigo-50/20 font-tajawal">
+      <div className="container mx-auto px-6 py-8">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold text-gray-800 mb-4">
+            نصائح البناء التفاعلية والأدلة الشاملة
+          </h1>
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            احصل على نصائح عملية من خبراء البناء وأدلة PDF رسمية لضمان نجاح مشروعك
           </p>
-          <div className="flex gap-2 mt-2">
-            <a href="https://www.sbc.gov.sa/" target="_blank" rel="noopener" className="text-blue-700 underline font-bold flex items-center"><FileText className="w-4 h-4 ml-1" />{lang === 'ar' ? 'موقع كود البناء السعودي' : 'SBC Official Site'}</a>
-            <a href="https://www.youtube.com/watch?v=QwQwQwQwQwQ" target="_blank" rel="noopener" className="text-blue-700 underline font-bold flex items-center"><Video className="w-4 h-4 ml-1" />{lang === 'ar' ? 'فيديو تعريفي' : 'Intro Video'}</a>
-          </div>
-        </div>
-        {/* معالج اختيار نوع المشروع */}
-        {!projectType ? (
-          <div className="mb-8 text-center">
-            <h2 className="text-xl font-bold mb-4 text-blue-700">{lang === 'ar' ? 'اختر نوع مشروعك:' : 'Select your project type:'}</h2>
-            <div className="flex flex-wrap justify-center gap-4">
-              {PROJECT_TYPES.map((type) => (
-                <button key={type.key} onClick={() => setProjectType(type.key)} className="bg-blue-100 hover:bg-blue-200 border border-blue-300 rounded-lg px-6 py-4 text-lg font-bold text-blue-800 flex flex-col items-center min-w-[120px]">
-                  {type.icon}
-                  {lang === 'ar' ? type.labelAr : type.labelEn}
-                </button>
-              ))}
-            </div>
-          </div>
-        ) : (
-          <div className="mb-8">
-            <div className="flex items-center justify-between mb-2">
-              <button onClick={() => setProjectType(null)} className="text-blue-600 underline text-sm">{lang === 'ar' ? 'تغيير نوع المشروع' : 'Change project type'}</button>
-              <span className="text-blue-900 font-bold">{lang === 'ar' ? PROJECT_TYPES.find(t => t.key === projectType)?.labelAr : PROJECT_TYPES.find(t => t.key === projectType)?.labelEn}</span>
-            </div>
-            {/* مراحل البناء */}
-            <div className="flex items-center justify-center gap-2 mb-4">
-              <button onClick={() => setStageIdx(Math.max(0, stageIdx - 1))} disabled={stageIdx === 0} className="bg-blue-100 rounded-full p-2 disabled:opacity-40"><ChevronRight className="w-5 h-5" /></button>
-              <span className="font-bold text-blue-800 text-lg">{lang === 'ar' ? STAGES[stageIdx].labelAr : STAGES[stageIdx].labelEn}</span>
-              <button onClick={() => setStageIdx(Math.min(STAGES.length - 1, stageIdx + 1))} disabled={stageIdx === STAGES.length - 1} className="bg-blue-100 rounded-full p-2 disabled:opacity-40"><ChevronLeft className="w-5 h-5" /></button>
-            </div>
-            <div>{renderStageContent()}</div>
-          </div>
-        )}
-        {/* قسم الموارد */}
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8">
-          <h3 className="font-bold mb-2 text-blue-700 flex items-center"><FileText className="w-5 h-5 ml-1" />{lang === 'ar' ? 'روابط وموارد مهمة' : 'Important Resources'}</h3>
-          <ul className="list-disc pr-6 text-sm text-blue-900">
-            <li><a href="https://www.sbc.gov.sa/" target="_blank" rel="noopener" className="underline">{lang === 'ar' ? 'الموقع الرسمي لكود البناء السعودي' : 'SBC Official Website'}</a></li>
-            <li><a href="https://www.momra.gov.sa/" target="_blank" rel="noopener" className="underline">{lang === 'ar' ? 'وزارة الشؤون البلدية والقروية' : 'Ministry of Municipal Affairs'}</a></li>
-            <li><a href="/downloads/sbc-summary.pdf" className="underline">{lang === 'ar' ? 'ملخص كود البناء (PDF)' : 'SBC Summary (PDF)'}</a></li>
-          </ul>
-        </div>
-        {/* نصائح المجتمع */}
-        <div className="bg-white border border-blue-100 rounded-lg p-4 mb-8">
-          <h3 className="font-bold mb-2 text-blue-700 flex items-center"><Lightbulb className="w-5 h-5 ml-1" />{lang === 'ar' ? 'نصائح المجتمع' : 'Community Advice'}</h3>
-          <form onSubmit={handleSubmit} className="mb-4 bg-blue-50 rounded-lg p-3 border border-blue-100">
-            <textarea
-              name="text"
-              value={form.text}
-              onChange={handleChange}
-              placeholder={lang === 'ar' ? 'اكتب نصيحة بناءة...' : 'Write a useful advice...'}
-              className="w-full rounded p-2 border border-blue-200 mb-2 text-right resize-none"
-              rows={2}
-              required
-            />
-            <input
-              name="author"
-              value={form.author}
-              onChange={handleChange}
-              placeholder={lang === 'ar' ? 'اسمك (اختياري)' : 'Your name (optional)'}
-              className="w-full rounded p-2 border border-blue-200 mb-2 text-right"
-              maxLength={32}
-            />
-            <button
-              type="submit"
-              disabled={submitting || !form.text.trim()}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition disabled:opacity-50"
+          
+          {/* Language Toggle */}
+          <div className="flex justify-center mt-4">
+            <Button
+              variant={lang === 'ar' ? 'default' : 'outline'}
+              onClick={() => setLang(lang === 'ar' ? 'en' : 'ar')}
+              size="sm"
             >
-              {submitting ? (lang === 'ar' ? 'جاري الإرسال...' : 'Submitting...') : (lang === 'ar' ? 'إضافة نصيحة' : 'Add Advice')}
-            </button>
-          </form>
-          <div className="space-y-4">
-            {adviceList.length === 0 && <div className="text-gray-400">{lang === 'ar' ? 'لا توجد نصائح بعد.' : 'No advice yet.'}</div>}
-            {adviceList.map((advice) => (
-              <div key={advice.id} className="bg-blue-50 border border-blue-100 rounded-lg p-4 text-right flex flex-col md:flex-row md:items-center md:justify-between gap-2">
-                <div>
-                  <div className="text-blue-900 font-medium mb-1">{advice.text}</div>
-                  <div className="text-xs text-gray-500">{advice.author ? (lang === 'ar' ? `بواسطة ${advice.author}` : `By ${advice.author}`) : (lang === 'ar' ? 'مستخدم مجهول' : 'Anonymous')}</div>
-                </div>
-                <button
-                  className="flex items-center gap-1 text-blue-600 hover:text-blue-800 font-bold text-sm"
-                  onClick={() => handleUpvote(advice.id)}
-                  aria-label={lang === 'ar' ? 'إعجاب' : 'Upvote'}
-                >
-                  <ArrowUpCircle className="w-5 h-5" /> {advice.upvotes}
-                </button>
-              </div>
-            ))}
+              {lang === 'ar' ? 'English' : 'العربية'}
+            </Button>
           </div>
         </div>
-        <div className="mt-4 text-center">
-          <Link href="/" className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition">{lang === 'ar' ? 'العودة للرئيسية' : 'Back to Home'}</Link>
-        </div>
+
+        {/* Main Content Tabs */}
+        <Tabs defaultValue="interactive" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="interactive" className="flex items-center gap-2">
+              <Lightbulb className="w-4 h-4" />
+              نصائح تفاعلية
+            </TabsTrigger>
+            <TabsTrigger value="pdf-guides" className="flex items-center gap-2">
+              <FileText className="w-4 h-4" />
+              أدلة PDF
+            </TabsTrigger>
+            <TabsTrigger value="community" className="flex items-center gap-2">
+              <Users className="w-4 h-4" />
+              نصائح المجتمع
+            </TabsTrigger>
+            <TabsTrigger value="construction-steps" className="flex items-center gap-2">
+              <Building2 className="w-4 h-4" />
+              خطوات البناء
+            </TabsTrigger>
+          </TabsList>
+
+          {/* Interactive Advice Tab */}
+          <TabsContent value="interactive">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {/* Project Type Selection */}
+              <Card className="lg:col-span-3">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Building2 className="w-5 h-5" />
+                    اختر نوع مشروعك
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {PROJECT_TYPES.map((type) => (
+                      <Button
+                        key={type.key}
+                        variant={projectType === type.key ? 'default' : 'outline'}
+                        onClick={() => setProjectType(type.key)}
+                        className="p-6 h-auto flex-col gap-2"
+                      >
+                        {type.icon}
+                        <span className="font-semibold">{type.labelAr}</span>
+                        <span className="text-sm opacity-75">{type.labelEn}</span>
+                      </Button>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Construction Phases */}
+              {projectType && (
+                <Card className="lg:col-span-2">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Clock className="w-5 h-5" />
+                      مراحل البناء
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      {constructionPhases.map((phase, index) => {
+                        const advice = getStageAdvice(phase.id, projectType);
+                        const isActive = index === stageIdx;
+                        
+                        return (
+                          <div key={phase.id} className={`border rounded-lg p-4 cursor-pointer transition-all ${
+                            isActive ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'
+                          }`} onClick={() => setStageIdx(index)}>
+                            <div className="flex items-center gap-3 mb-2">
+                              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
+                                isActive ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-600'
+                              }`}>
+                                {index + 1}
+                              </div>
+                              <h3 className="font-semibold">{phase.name}</h3>
+                              <Badge variant="outline">{phase.duration} يوم</Badge>
+                            </div>
+                            
+                            {isActive && (
+                              <div className="mt-4 space-y-3">
+                                <div>
+                                  <h4 className="font-medium mb-2 flex items-center gap-2">
+                                    <CheckCircle className="w-4 h-4 text-green-500" />
+                                    النصائح الأساسية
+                                  </h4>
+                                  <ul className="list-disc list-inside text-sm text-gray-600 space-y-1">
+                                    {advice.tips.map((tip, i) => (
+                                      <li key={i}>{tip}</li>
+                                    ))}
+                                  </ul>
+                                </div>
+                                
+                                <div>
+                                  <h4 className="font-medium mb-2 flex items-center gap-2">
+                                    <AlertTriangle className="w-4 h-4 text-yellow-500" />
+                                    قائمة المراجعة
+                                  </h4>
+                                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                    {advice.checklist.map((item, i) => (
+                                      <div key={i} className="flex items-center gap-2 text-sm">
+                                        <CheckCircle className="w-4 h-4 text-green-500" />
+                                        {item}
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* Setback Calculator */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Calculator className="w-5 h-5" />
+                    حاسبة الارتدادات
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <SetbackCalculator lang={lang} />
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          {/* PDF Guides Tab */}
+          <TabsContent value="pdf-guides">
+            <div className="space-y-6">
+              {/* Category Filter */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>تصنيف الأدلة</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex flex-wrap gap-2">
+                    {categories.map(category => (
+                      <Button
+                        key={category}
+                        variant={selectedCategory === category ? 'default' : 'outline'}
+                        onClick={() => setSelectedCategory(category)}
+                        size="sm"
+                      >
+                        {category === 'all' ? 'جميع الأدلة' : category}
+                      </Button>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* PDF Guides Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredPDFs.map(pdf => (
+                  <Card key={pdf.id} className="hover:shadow-lg transition-shadow">
+                    <CardHeader className="pb-3">
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <CardTitle className="text-lg leading-tight mb-2">
+                            {pdf.title}
+                          </CardTitle>
+                          <div className="flex items-center gap-2 mb-2">
+                            <Badge variant={pdf.officialSource ? 'default' : 'secondary'}>
+                              {pdf.officialSource ? 'رسمي' : 'خبراء'}
+                            </Badge>
+                            <Badge variant="outline">{pdf.category}</Badge>
+                          </div>
+                        </div>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => toggleBookmark(pdf.id)}
+                          className={bookmarkedPDFs.has(pdf.id) ? 'text-yellow-500' : ''}
+                        >
+                          <Bookmark className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </CardHeader>
+                    
+                    <CardContent className="space-y-3">
+                      <p className="text-sm text-gray-600 line-clamp-3">
+                        {pdf.description}
+                      </p>
+                      
+                      <div className="text-xs text-gray-500 space-y-1">
+                        <div className="flex items-center gap-2">
+                          <Users className="w-3 h-3" />
+                          {pdf.author}
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-3">
+                            <span className="flex items-center gap-1">
+                              <FileText className="w-3 h-3" />
+                              {pdf.pages} صفحة
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <Download className="w-3 h-3" />
+                              {formatNumber(pdf.downloads)}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Star className="w-3 h-3 text-yellow-500 fill-current" />
+                            {pdf.rating}
+                          </div>
+                        </div>
+                        <div className="text-gray-400">
+                          حجم الملف: {pdf.fileSize}
+                        </div>
+                      </div>
+                      
+                      <div className="flex gap-2 pt-2">
+                        {pdf.previewUrl && (
+                          <Button variant="outline" size="sm" className="flex-1">
+                            <Eye className="w-4 h-4 mr-2" />
+                            معاينة
+                          </Button>
+                        )}
+                        <Button size="sm" className="flex-1">
+                          <Download className="w-4 h-4 mr-2" />
+                          تحميل
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </TabsContent>
+
+          {/* Community Advice Tab */}
+          <TabsContent value="community">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {/* Add New Advice */}
+              <Card className="lg:col-span-1">
+                <CardHeader>
+                  <CardTitle>شارك نصيحتك</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <form onSubmit={handleSubmit} className="space-y-4">
+                    <textarea
+                      name="text"
+                      value={form.text}
+                      onChange={handleChange}
+                      placeholder="اكتب نصيحتك هنا..."
+                      className="w-full p-3 border rounded-lg resize-none"
+                      rows={4}
+                    />
+                    <input
+                      type="text"
+                      name="author"
+                      value={form.author}
+                      onChange={handleChange}
+                      placeholder="اسمك"
+                      className="w-full p-3 border rounded-lg"
+                    />
+                    <Button 
+                      type="submit" 
+                      disabled={submitting}
+                      className="w-full"
+                    >
+                      {submitting ? 'جاري الإضافة...' : 'إضافة النصيحة'}
+                    </Button>
+                  </form>
+                </CardContent>
+              </Card>
+
+              {/* Advice List */}
+              <div className="lg:col-span-2 space-y-4">
+                {adviceList.map(advice => (
+                  <Card key={advice.id}>
+                    <CardContent className="p-4">
+                      <div className="flex items-start gap-3">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleUpvote(advice.id)}
+                          className="flex-col gap-1 px-3"
+                        >
+                          <ArrowUpCircle className="w-5 h-5" />
+                          <span className="text-xs">{advice.upvotes}</span>
+                        </Button>
+                        <div className="flex-1">
+                          <p className="text-gray-800 mb-2">{advice.text}</p>
+                          <div className="flex items-center gap-2 text-sm text-gray-500">
+                            <span>بواسطة: {advice.author}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </TabsContent>
+
+          {/* Construction Steps Tab */}
+          <TabsContent value="construction-steps">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Building2 className="w-5 h-5" />
+                  دليل خطوات البناء الشامل
+                </CardTitle>
+                <p className="text-gray-600">
+                  للحصول على دليل مفصل لجميع خطوات البناء مع الوثائق الرسمية
+                </p>
+              </CardHeader>
+              <CardContent>
+                <div className="text-center py-8">
+                  <Building2 className="w-16 h-16 mx-auto mb-4 text-blue-500" />
+                  <h3 className="text-xl font-semibold mb-2">
+                    دليل شامل لخطوات البناء
+                  </h3>
+                  <p className="text-gray-600 mb-6">
+                    يحتوي على جميع المراحل التفصيلية والوثائق الرسمية المطلوبة
+                  </p>
+                  <Link href="/construction-data">
+                    <Button className="flex items-center gap-2">
+                      <BookOpen className="w-4 h-4" />
+                      عرض الدليل الكامل
+                    </Button>
+                  </Link>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
+
+  // --- Setback Calculator Component ---
+  function SetbackCalculator({ lang }: { lang: 'ar' | 'en' }) {
+    const [landWidth, setLandWidth] = useState('');
+    const [landDepth, setLandDepth] = useState('');
+    const [frontSetback, setFrontSetback] = useState('');
+    const [sideSetback, setSideSetback] = useState('');
+    const [rearSetback, setRearSetback] = useState('');
+    const [result, setResult] = useState<string | null>(null);
+    
+    const handleCalc = () => {
+      if (!landWidth || !landDepth || !frontSetback || !sideSetback || !rearSetback) return;
+      const w = parseFloat(landWidth), d = parseFloat(landDepth), f = parseFloat(frontSetback), s = parseFloat(sideSetback), r = parseFloat(rearSetback);
+      if (isNaN(w) || isNaN(d) || isNaN(f) || isNaN(s) || isNaN(r)) return;
+      const buildWidth = w - 2 * s;
+      const buildDepth = d - f - r;
+      setResult(`${lang === 'ar' ? 'المساحة المتاحة للبناء:' : 'Buildable area:'} ${Math.max(0, buildWidth * buildDepth)} م²`);
+    };
+    
+    return (
+      <div className="space-y-3">
+        <div className="grid grid-cols-2 gap-2">
+          <input 
+            type="number" 
+            min="1" 
+            placeholder={lang === 'ar' ? 'عرض الأرض (م)' : 'Land width (m)'} 
+            value={landWidth} 
+            onChange={e => setLandWidth(e.target.value)} 
+            className="border rounded p-2 text-right" 
+          />
+          <input 
+            type="number" 
+            min="1" 
+            placeholder={lang === 'ar' ? 'عمق الأرض (م)' : 'Land depth (m)'} 
+            value={landDepth} 
+            onChange={e => setLandDepth(e.target.value)} 
+            className="border rounded p-2 text-right" 
+          />
+          <input 
+            type="number" 
+            min="0" 
+            placeholder={lang === 'ar' ? 'ارتداد أمامي (م)' : 'Front setback (m)'} 
+            value={frontSetback} 
+            onChange={e => setFrontSetback(e.target.value)} 
+            className="border rounded p-2 text-right" 
+          />
+          <input 
+            type="number" 
+            min="0" 
+            placeholder={lang === 'ar' ? 'ارتداد جانبي (م)' : 'Side setback (m)'} 
+            value={sideSetback} 
+            onChange={e => setSideSetback(e.target.value)} 
+            className="border rounded p-2 text-right" 
+          />
+        </div>
+        <input 
+          type="number" 
+          min="0" 
+          placeholder={lang === 'ar' ? 'ارتداد خلفي (م)' : 'Rear setback (m)'} 
+          value={rearSetback} 
+          onChange={e => setRearSetback(e.target.value)} 
+          className="border rounded p-2 text-right w-full" 
+        />
+        <Button onClick={handleCalc} className="w-full">
+          {lang === 'ar' ? 'احسب' : 'Calculate'}
+        </Button>
+        {result && (
+          <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+            <span className="font-bold text-green-700">{result}</span>
+          </div>
+        )}
+      </div>
+    );
+  }
 }
 
 

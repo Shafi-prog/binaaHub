@@ -320,7 +320,12 @@ class GCCMarketManager {
     }>;
     insights: string[];
   }> {
-    const results = [];
+    const results: Array<{
+      country: string;
+      totalValue: number;
+      growth: number;
+      marketShare: number;
+    }> = [];
     let totalGCCValue = 0;
 
     // Calculate total GCC value for market share calculation

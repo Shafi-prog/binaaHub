@@ -150,12 +150,15 @@ export function createSecurityMiddleware(customConfig?: Partial<SecurityConfig>)
 
     // Handle OPTIONS requests for CORS
     if (req.method === 'OPTIONS') {
+      const corsHeaders = corsMiddleware(req, config.cors) || {};
+      const securityHeaders = securityHeadersMiddleware(config.contentSecurity) || {};
+      
       return new NextResponse(null, {
         status: 200,
         headers: {
-          ...corsMiddleware(req, config.cors),
-          ...securityHeadersMiddleware(config.contentSecurity),
-        },
+          ...corsHeaders,
+          ...securityHeaders,
+        } as HeadersInit,
       });
     }
 

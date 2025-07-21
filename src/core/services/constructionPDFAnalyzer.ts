@@ -382,7 +382,14 @@ export class ConstructionPDFAnalyzer {
       const totalLumensNeeded = space.area * requirements.lux;
       
       // Choose appropriate LED fixtures
-      let fixtures = [];
+      let fixtures: Array<{
+        type: string;
+        wattage: number;
+        lumens: number;
+        quantity: number;
+        cost: number;
+        position: { x: number; y: number };
+      }> = [];
       if (space.type === 'kitchen') {
         // Kitchen needs task lighting
         const mainFixtures = Math.ceil(totalLumensNeeded * 0.7 / 2400); // 24W LED spots

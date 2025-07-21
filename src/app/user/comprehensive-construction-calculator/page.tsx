@@ -100,7 +100,7 @@ interface PDFAnalysis {
 export default function ComprehensiveConstructionCalculator() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const projectId = searchParams.get('projectId');
+  const projectId = searchParams?.get('projectId');
   
   const [activeTab, setActiveTab] = useState('materials');
   const [projectArea, setProjectArea] = useState<number>(200);

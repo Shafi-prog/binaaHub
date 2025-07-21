@@ -42,7 +42,7 @@ export default function BinnaBooks() {
       try {
         // Fetch invoices from Medusa orders
         const orderService = new OrderService();
-        const orders = await orderService.list();
+        const orders: any[] = await orderService.list();
         
         // Convert orders to invoices
         const invoiceData = orders.map(order => ({

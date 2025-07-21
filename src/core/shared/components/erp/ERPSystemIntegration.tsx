@@ -3,11 +3,18 @@
 
 import React, { useState, useEffect } from 'react';
 import { 
+  erpIntegrationManager as legacyManager
+} from '@/core/shared/services/erp/erp-integration-manager';
+import { 
   erpIntegrationManager, 
   ERPSystem, 
   SyncRequest, 
-  SyncResult 
-} from '@/core/shared/services/erp/erp-integration-manager';
+  SyncResult,
+  ERPStats
+} from '@/core/shared/services/erp/erp-integration-manager-v2';
+import { getUnifiedStoreAPI } from '@/core/shared/services/store-api/unified-store-api';
+import { MedusaERPAdapter } from '@/core/shared/services/erp/adapters/medusa-adapter';
+import { UnifiedLoader, ERPSyncLoader, ComponentLoader } from '@/core/shared/components/common/UnifiedLoader';
 import { 
   Database, 
   RefreshCw, 
@@ -23,19 +30,11 @@ import {
   Server,
   Zap,
   Activity,
-  Globe
+  Globe,
+  Plus,
+  Edit,
+  Trash2
 } from 'lucide-react';
-
-interface ERPStats {
-  total_syncs: number;
-  successful_syncs: number;
-  failed_syncs: number;
-  total_records_processed: number;
-  average_sync_time: number;
-  success_rate: number;
-  system_breakdown: Record<string, any>;
-  data_type_breakdown: Record<string, number>;
-}
 
 export function ERPSystemIntegration() {
   const [erpSystems, setErpSystems] = useState<ERPSystem[]>([]);
@@ -45,6 +44,7 @@ export function ERPSystemIntegration() {
   const [loading, setLoading] = useState<boolean>(true);
   const [testingConnection, setTestingConnection] = useState<string>('');
   const [startingSync, setStartingSync] = useState<string>('');
+  const [showAddSystem, setShowAddSystem] = useState<boolean>(false);
 
   // Sync configuration
   const [selectedSystem, setSelectedSystem] = useState<string>('');
@@ -53,14 +53,21 @@ export function ERPSystemIntegration() {
 
   useEffect(() => {
     loadERPData();
+    
+    // Set up periodic refresh for active syncs
+    const interval = setInterval(() => {
+      refreshActiveSyncs();
+    }, 2000);
+
+    return () => clearInterval(interval);
   }, []);
 
   const loadERPData = async () => {
     try {
       setLoading(true);
       
-      // Load ERP systems
-      const systems = erpIntegrationManager.getActiveERPSystems();
+      // Load ERP systems using new manager
+      const systems = erpIntegrationManager.getAllERPSystems();
       setErpSystems(systems);
       
       if (systems.length > 0) {
@@ -74,11 +81,20 @@ export function ERPSystemIntegration() {
       // Test connections for all systems
       await testAllConnections(systems);
 
+      // Load active syncs
+      const syncs = erpIntegrationManager.getActiveSyncs();
+      setActiveSyncs(syncs);
+
     } catch (error) {
       console.error('Failed to load ERP data:', error);
     } finally {
       setLoading(false);
     }
+  };
+
+  const refreshActiveSyncs = () => {
+    const syncs = erpIntegrationManager.getActiveSyncs();
+    setActiveSyncs(syncs);
   };
 
   const testAllConnections = async (systems: ERPSystem[]) => {
@@ -108,6 +124,24 @@ export function ERPSystemIntegration() {
     }
   };
 
+  const connectSystem = async (systemId: string) => {
+    try {
+      await erpIntegrationManager.connectERPSystem(systemId);
+      await loadERPData(); // Refresh data
+    } catch (error) {
+      console.error('Failed to connect system:', error);
+    }
+  };
+
+  const disconnectSystem = async (systemId: string) => {
+    try {
+      await erpIntegrationManager.disconnectERPSystem(systemId);
+      await loadERPData(); // Refresh data
+    } catch (error) {
+      console.error('Failed to disconnect system:', error);
+    }
+  };
+
   const startSync = async () => {
     if (!selectedSystem) return;
 
@@ -123,28 +157,31 @@ export function ERPSystemIntegration() {
       const result = await erpIntegrationManager.startSync(syncRequest);
       setActiveSyncs(prev => [...prev, result]);
 
-      // Update active syncs periodically
-      const interval = setInterval(() => {
-        const updatedResult = erpIntegrationManager.getSyncStatus(result.sync_id);
-        if (updatedResult) {
-          setActiveSyncs(prev => prev.map(sync => 
-            sync.sync_id === result.sync_id ? updatedResult : sync
-          ));
-
-          if (updatedResult.status === 'completed' || updatedResult.status === 'failed') {
-            clearInterval(interval);
-            // Refresh stats after sync completion
-            setTimeout(() => {
-              loadERPData();
-            }, 1000);
-          }
-        }
-      }, 2000);
-
     } catch (error) {
       console.error('Failed to start sync:', error);
     } finally {
       setStartingSync('');
+    }
+  };
+
+  const addNewERPSystem = async (systemData: any) => {
+    try {
+      await erpIntegrationManager.addERPSystem(systemData);
+      setShowAddSystem(false);
+      await loadERPData();
+    } catch (error) {
+      console.error('Failed to add ERP system:', error);
+    }
+  };
+
+  const removeERPSystem = async (systemId: string) => {
+    if (confirm('Are you sure you want to remove this ERP system?')) {
+      try {
+        await erpIntegrationManager.removeERPSystem(systemId);
+        await loadERPData();
+      } catch (error) {
+        console.error('Failed to remove ERP system:', error);
+      }
     }
   };
 

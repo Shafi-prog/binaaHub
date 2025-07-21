@@ -39,7 +39,7 @@ export default function BinnaStock() {
     const fetchInventory = async () => {
       try {
         const inventoryService = new InventoryService();
-        const inventoryData = await inventoryService.getInventoryItems();
+        const inventoryData: any[] = await inventoryService.getInventoryItems();
         setInventory(inventoryData);
         
         // Filter low stock items

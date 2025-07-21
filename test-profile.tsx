@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 
 export default function TestProfile() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<{email: string; account_type: string} | null>(null);
   const [loading, setLoading] = useState(true);
 
   // Helper function to get cookie value

@@ -19,9 +19,9 @@ export default function LayoutProvider({ children }: LayoutProviderProps) {
   // Pages that should not show the navbar or onboarding
   const noNavbarPages = ['/login', '/auth/login', '/auth/signup', '/reset-password-confirm', '/clear-auth'];
   // Hide Navbar for all /store/* admin pages except /store/storefront
-  const isStoreAdminPage = pathname.startsWith('/store/') && !pathname.startsWith('/store/storefront');
+  const isStoreAdminPage = pathname ? (pathname.startsWith('/store/') && !pathname.startsWith('/store/storefront')) : false;
 
-  if (noNavbarPages.includes(pathname) || isStoreAdminPage) {
+  if ((pathname && noNavbarPages.includes(pathname)) || isStoreAdminPage) {
     // Only render children, no providers or UI wrappers
     return <>{children}</>;
   }
@@ -34,6 +34,7 @@ export default function LayoutProvider({ children }: LayoutProviderProps) {
   useEffect(() => {
     // Only show onboarding tour if not seen before and not on excluded pages
     if (
+      pathname &&
       !noNavbarPages.includes(pathname) &&
       !isStoreAdminPage &&
       typeof window !== 'undefined' &&

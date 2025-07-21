@@ -184,9 +184,9 @@ export const EnhancedInput = forwardRef<
             'focus:outline-none focus:ring-0',
             variantClasses[variant],
             sizeClasses[size as keyof typeof sizeClasses],
-            leftIcon && 'pr-10',
-            rightIcon && 'pl-10',
-            error && 'border-red-300 focus:border-red-500 focus:ring-red-500',
+            leftIcon ? 'pr-10' : '',
+            rightIcon ? 'pl-10' : '',
+            error ? 'border-red-300 focus:border-red-500 focus:ring-red-500' : '',
             className
           )}
           {...props}

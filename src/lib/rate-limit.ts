@@ -94,7 +94,7 @@ export async function rateLimit(request: NextRequest): Promise<RateLimitResult> 
     .sort((a, b) => b.length - a.length)[0];
   
   const options = config ? rateLimitConfigs[config] : defaultOptions;
-  const identifier = options.keyGenerator(request);
+  const identifier = (options.keyGenerator || defaultOptions.keyGenerator!)(request);
   
   try {
     const count = await cache.increment(`ratelimit:${identifier}`, options.windowMs);

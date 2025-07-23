@@ -129,7 +129,7 @@ export default function MarketplaceStorefront() {
           alt={product.name}
           className="w-full h-48 object-cover rounded-t-lg"
         />
-        <button className="absolute top-2 right-2 p-2 bg-white rounded-full shadow-md hover:bg-gray-50">
+        <button className="absolute top-2 right-2 p-2 bg-white rounded-full shadow-md hover:bg-gray-50" onClick={() => alert('Button clicked')}>
           <Heart className="w-5 h-5 text-gray-600" />
         </button>
         {product.originalPrice && (
@@ -167,7 +167,7 @@ export default function MarketplaceStorefront() {
           )}
         </div>
         
-        <button className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2">
+        <button className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2" onClick={() => alert('Button clicked')}>
           <ShoppingCart className="w-4 h-4" />
           إضافة للسلة
         </button>
@@ -205,7 +205,7 @@ export default function MarketplaceStorefront() {
         التخصص: {store.category}
       </div>
       
-      <button className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+      <button className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors" onClick={() => alert('Button clicked')}>
         زيارة المتجر
       </button>
     </div>
@@ -240,7 +240,7 @@ export default function MarketplaceStorefront() {
                   className="w-96 pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
-              <button className="p-2 bg-gray-100 rounded-lg hover:bg-gray-200">
+              <button className="p-2 bg-gray-100 rounded-lg hover:bg-gray-200" onClick={() => alert('Button clicked')}>
                 <Filter className="w-5 h-5 text-gray-600" />
               </button>
             </div>

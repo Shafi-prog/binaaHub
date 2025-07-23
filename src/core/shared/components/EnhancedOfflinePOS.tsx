@@ -434,7 +434,7 @@ export default function EnhancedOfflinePOS() {
                     }}
                     className="flex-1"
                   />
-                  <Button variant="outline" size="icon">
+                  <Button variant="outline" size="icon" onClick={() => alert('Button clicked')}>
                     <ScanLine className="w-4 h-4" />
                   </Button>
                 </div>
@@ -453,7 +453,7 @@ export default function EnhancedOfflinePOS() {
                             <p className="text-sm text-slate-600">SKU: {product.sku}</p>
                             <p className="text-sm text-slate-600">المخزون: {product.current_stock}</p>
                           </div>
-                          <Button size="sm">
+                          <Button size="sm" onClick={() => alert('Button clicked')}>
                             <Plus className="w-4 h-4" />
                           </Button>
                         </div>

@@ -458,16 +458,16 @@ const CustomerDashboard: React.FC = () => {
             <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-200">
               <div className="flex items-center space-x-4">
                 {order.tracking && (
-                  <button className="flex items-center space-x-2 text-blue-600 hover:text-blue-800">
+                  <button className="flex items-center space-x-2 text-blue-600 hover:text-blue-800" onClick={() => alert('Button clicked')}>
                     <Truck className="w-4 h-4" />
                     <span>Track Package</span>
                   </button>
                 )}
-                <button className="flex items-center space-x-2 text-gray-600 hover:text-gray-800">
+                <button className="flex items-center space-x-2 text-gray-600 hover:text-gray-800" onClick={() => alert('Button clicked')}>
                   <Eye className="w-4 h-4" />
                   <span>View Details</span>
                 </button>
-                <button className="flex items-center space-x-2 text-gray-600 hover:text-gray-800">
+                <button className="flex items-center space-x-2 text-gray-600 hover:text-gray-800" onClick={() => alert('Button clicked')}>
                   <Download className="w-4 h-4" />
                   <span>Download Invoice</span>
                 </button>
@@ -486,7 +486,7 @@ const CustomerDashboard: React.FC = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold">My Addresses</h2>
-        <button className="flex items-center space-x-2 bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors">
+        <button className="flex items-center space-x-2 bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors" onClick={() => alert('Button clicked')}>
           <Plus className="w-4 h-4" />
           <span>Add Address</span>
         </button>
@@ -507,7 +507,7 @@ const CustomerDashboard: React.FC = () => {
                   </span>
                 )}
               </div>
-              <button className="text-gray-400 hover:text-gray-600">
+              <button className="text-gray-400 hover:text-gray-600" onClick={() => alert('Button clicked')}>
                 <Edit className="w-4 h-4" />
               </button>
             </div>
@@ -519,10 +519,10 @@ const CustomerDashboard: React.FC = () => {
             </div>
 
             <div className="mt-4 flex space-x-2">
-              <button className="flex-1 bg-gray-100 text-gray-700 py-2 px-3 rounded-md hover:bg-gray-200 transition-colors text-sm">
+              <button className="flex-1 bg-gray-100 text-gray-700 py-2 px-3 rounded-md hover:bg-gray-200 transition-colors text-sm" onClick={() => alert('Button clicked')}>
                 Edit
               </button>
-              <button className="flex-1 bg-red-100 text-red-700 py-2 px-3 rounded-md hover:bg-red-200 transition-colors text-sm">
+              <button className="flex-1 bg-red-100 text-red-700 py-2 px-3 rounded-md hover:bg-red-200 transition-colors text-sm" onClick={() => alert('Button clicked')}>
                 Remove
               </button>
             </div>
@@ -548,7 +548,7 @@ const CustomerDashboard: React.FC = () => {
                 alt={item.name}
                 className="w-full h-48 object-cover rounded-md mb-3"
               />
-              <button className="absolute top-2 right-2 p-2 bg-white rounded-full shadow-md hover:bg-gray-50">
+              <button className="absolute top-2 right-2 p-2 bg-white rounded-full shadow-md hover:bg-gray-50" onClick={() => alert('Button clicked')}>
                 <Heart className="w-4 h-4 text-red-500 fill-current" />
               </button>
             </div>
@@ -577,7 +577,7 @@ const CustomerDashboard: React.FC = () => {
               >
                 {item.inStock ? 'Add to Cart' : 'Out of Stock'}
               </button>
-              <button className="bg-gray-100 text-gray-700 py-2 px-3 rounded-md hover:bg-gray-200 transition-colors">
+              <button className="bg-gray-100 text-gray-700 py-2 px-3 rounded-md hover:bg-gray-200 transition-colors" onClick={() => alert('Button clicked')}>
                 Remove
               </button>
             </div>
@@ -678,7 +678,7 @@ const CustomerDashboard: React.FC = () => {
           <button
             type="button"
             className="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors"
-          >
+           onClick={() => alert('Button clicked')}>
             Cancel
           </button>
           <button

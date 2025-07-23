@@ -268,7 +268,7 @@ export default function ConstructionGuidance({ project, onPhaseUpdate }: Constru
                             <Badge variant="destructive" className="text-xs">مطلوب</Badge>
                           )}
                           {doc.templateUrl && (
-                            <Button variant="outline" size="sm">
+                            <Button variant="outline" size="sm" onClick={() => alert('Button clicked')}>
                               <Download className="w-4 h-4 mr-1" />
                               تحميل
                             </Button>
@@ -291,11 +291,9 @@ export default function ConstructionGuidance({ project, onPhaseUpdate }: Constru
                             <Badge variant="destructive" className="text-xs">إجباري</Badge>
                           )}
                           <Dialog>
-                            <DialogTrigger>
-                              <Button variant="outline" size="sm">
-                                <Eye className="w-4 h-4 mr-1" />
-                                التفاصيل
-                              </Button>
+                            <DialogTrigger className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors bg-blue-600 text-white hover:bg-blue-700 h-9 px-4">
+                              <Eye className="w-4 h-4 ml-1" />
+                              عرض التفاصيل
                             </DialogTrigger>
                             <DialogContent>
                               <DialogHeader>

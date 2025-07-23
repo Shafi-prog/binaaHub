@@ -251,7 +251,7 @@ const StorePermissionSystem: React.FC = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Store Permission System</h1>
-        <Button>
+        <Button onClick={() => alert('Button clicked')}>
           <Users className="h-4 w-4 mr-2" />
           Add User
         </Button>
@@ -324,11 +324,11 @@ const StorePermissionSystem: React.FC = () => {
                     </div>
                   </div>
                   <div className="flex space-x-2">
-                    <Button size="sm" variant="outline">
+                    <Button size="sm" variant="outline" onClick={() => alert('Button clicked')}>
                       <Settings className="h-3 w-3 mr-1" />
                       Edit
                     </Button>
-                    <Button size="sm" variant="outline">
+                    <Button size="sm" variant="outline" onClick={() => alert('Button clicked')}>
                       <Eye className="h-3 w-3 mr-1" />
                       View Users
                     </Button>
@@ -374,7 +374,7 @@ const StorePermissionSystem: React.FC = () => {
                       )}
                     </div>
                     <div className="flex space-x-2">
-                      <Button size="sm" variant="outline">
+                      <Button size="sm" variant="outline" onClick={() => alert('Button clicked')}>
                         <Settings className="h-3 w-3" />
                       </Button>
                       <Button 

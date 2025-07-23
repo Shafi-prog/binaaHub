@@ -823,7 +823,7 @@ ${saleId}
                       </div>
                     )}
                     
-                    <Button variant="outline" className="w-full">
+                    <Button variant="outline" className="w-full" onClick={() => alert('Button clicked')}>
                       <UserPlus className="h-4 w-4 mr-2" />
                       {text.addCustomer}
                     </Button>

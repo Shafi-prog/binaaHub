@@ -71,7 +71,7 @@ export default function BarcodeScannerPage() {
         <Card className="p-6 max-w-md w-full text-center bg-red-50 border-red-200">          <h2 className="text-xl font-semibold text-red-800 mb-2">Error</h2>
           <p className="text-red-600 mb-4">{error}</p>
           <Link href="/stores">
-            <Button variant="default">
+            <Button variant="default" onClick={() => alert('Button clicked')}>
               Back to Stores
             </Button>
           </Link>
@@ -88,7 +88,7 @@ export default function BarcodeScannerPage() {
             Please log in to access the barcode scanner.
           </p>
           <Link href="/auth">
-            <Button variant="default">
+            <Button variant="default" onClick={() => alert('Button clicked')}>
               Login
             </Button>
           </Link>
@@ -103,7 +103,7 @@ export default function BarcodeScannerPage() {
         <div className="py-6">
           <div className="flex items-center justify-between">
             <Link href="/stores">
-              <Button variant="secondary" className="mb-4">
+              <Button variant="secondary" className="mb-4" onClick={() => alert('Button clicked')}>
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Back to Stores
               </Button>

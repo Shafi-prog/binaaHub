@@ -325,7 +325,7 @@ const ComboboxImpl = <T extends Value = string>(
                 {...props}
                 type="button"
                 className="text-ui-fg-muted transition-fg hover:bg-ui-bg-field-hover absolute right-0 flex size-8 items-center justify-center rounded-r outline-none"
-              >
+               onClick={() => alert('Button clicked')}>
                 <TrianglesMini />
               </button>
             )

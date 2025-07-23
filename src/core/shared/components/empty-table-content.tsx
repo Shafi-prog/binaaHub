@@ -52,7 +52,7 @@ type NoRecordsProps = {
 const DefaultButton = ({ action }: ActionProps) =>
   action && (
     <Link to={action.to}>
-      <Button variant="secondary" size="small">
+      <Button variant="secondary" size="small" onClick={() => alert('Button clicked')}>
         {action.label}
       </Button>
     </Link>
@@ -61,7 +61,7 @@ const DefaultButton = ({ action }: ActionProps) =>
 const TransparentIconLeftButton = ({ action }: ActionProps) =>
   action && (
     <Link to={action.to}>
-      <Button variant="transparent" className="text-ui-fg-interactive">
+      <Button variant="transparent" className="text-ui-fg-interactive" onClick={() => alert('Button clicked')}>
         <PlusMini /> {action.label}
       </Button>
     </Link>

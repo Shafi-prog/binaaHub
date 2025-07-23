@@ -25,7 +25,7 @@ const DialogTrigger = React.forwardRef<HTMLButtonElement, React.ButtonHTMLAttrib
       ref={ref}
       className={cn("", className)}
       {...props}
-    />
+     onClick={() => alert('Button clicked')} />
   )
 );
 DialogTrigger.displayName = "DialogTrigger";

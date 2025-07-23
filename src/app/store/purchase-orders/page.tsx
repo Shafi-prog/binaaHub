@@ -722,7 +722,7 @@ export default function PurchaseOrderManagement() {
                         <div>
                           <Label htmlFor="invoice_photo">رفع صورة الفاتورة</Label>
                           <div className="mt-2">
-                            <Button variant="outline" className="w-full">
+                            <Button variant="outline" className="w-full" onClick={() => alert('Button clicked')}>
                               <Upload className="w-4 h-4 ml-2" />
                               اختر صورة الفاتورة
                             </Button>

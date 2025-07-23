@@ -114,7 +114,7 @@ export const SalesChannelProductSection = ({
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">{t("products.domain")}</Heading>
         <Link to={`/settings/sales-channels/${salesChannel.id}/add-products`}>
-          <Button size="small" variant="secondary">
+          <Button size="small" variant="secondary" onClick={() => alert('Button clicked')}>
             {t("general.add")}
           </Button>
         </Link>

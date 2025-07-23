@@ -390,10 +390,10 @@ export default function ProjectIntegrationTabs({
                         <div className="text-left">
                           <p className="font-semibold text-lg">{formatCurrency(order.total_amount)}</p>
                           <div className="flex gap-2 mt-2">
-                            <button className="p-1 text-gray-400 hover:text-blue-600">
+                            <button className="p-1 text-gray-400 hover:text-blue-600" onClick={() => alert('Button clicked')}>
                               <Eye className="w-4 h-4" />
                             </button>
-                            <button className="p-1 text-gray-400 hover:text-green-600">
+                            <button className="p-1 text-gray-400 hover:text-green-600" onClick={() => alert('Button clicked')}>
                               <Edit className="w-4 h-4" />
                             </button>
                           </div>
@@ -454,10 +454,10 @@ export default function ProjectIntegrationTabs({
                             )}
                           </div>
                           <div className="flex gap-2">
-                            <button className="p-1 text-gray-400 hover:text-blue-600">
+                            <button className="p-1 text-gray-400 hover:text-blue-600" onClick={() => alert('Button clicked')}>
                               <Eye className="w-4 h-4" />
                             </button>
-                            <button className="p-1 text-gray-400 hover:text-green-600">
+                            <button className="p-1 text-gray-400 hover:text-green-600" onClick={() => alert('Button clicked')}>
                               <Edit className="w-4 h-4" />
                             </button>
                           </div>
@@ -514,10 +514,10 @@ export default function ProjectIntegrationTabs({
                         <div className="text-left">
                           <p className="font-semibold text-lg">{formatCurrency(expense.amount)}</p>
                           <div className="flex gap-2 mt-2">
-                            <button className="p-1 text-gray-400 hover:text-blue-600">
+                            <button className="p-1 text-gray-400 hover:text-blue-600" onClick={() => alert('Button clicked')}>
                               <Eye className="w-4 h-4" />
                             </button>
-                            <button className="p-1 text-gray-400 hover:text-green-600">
+                            <button className="p-1 text-gray-400 hover:text-green-600" onClick={() => alert('Button clicked')}>
                               <Edit className="w-4 h-4" />
                             </button>
                           </div>

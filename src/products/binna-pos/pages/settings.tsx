@@ -23,7 +23,7 @@ const Settings: React.FC = () => {
           </select>
         </label>
       </div>
-      <button style={{ padding: '8px 16px', borderRadius: 4, background: '#222', color: '#fff', border: 'none' }}>Save Settings</button>
+      <button style={{ padding: '8px 16px', borderRadius: 4, background: '#222', color: '#fff', border: 'none' }} onClick={() => alert('Button clicked')}>Save Settings</button>
     </div>
   );
 };

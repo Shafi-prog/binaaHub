@@ -326,7 +326,7 @@ const ExtensionRouteSection = () => {
         <RadixCollapsible.Root defaultOpen>
           <div className="px-4">
             <RadixCollapsible.Trigger asChild className="group/trigger">
-              <button className="text-ui-fg-subtle flex w-full items-center justify-between px-2">
+              <button className="text-ui-fg-subtle flex w-full items-center justify-between px-2" onClick={() => alert('Button clicked')}>
                 <Text size="xsmall" weight="plus" leading="compact">
                   {t("app.nav.common.extensions")}
                 </Text>

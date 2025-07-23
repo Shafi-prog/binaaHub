@@ -25,7 +25,7 @@ export const FilterGroup = ({ filters }: FilterGroupProps) => {
     <div className="flex items-center flex-wrap gap-2">
       {hasMore && <AddFilterMenu availableKeys={availableKeys} />}
       {isClearable && (
-        <Button variant="transparent" size="small">
+        <Button variant="transparent" size="small" onClick={() => alert('Button clicked')}>
           Clear all
         </Button>
       )}
@@ -41,7 +41,7 @@ const AddFilterMenu = ({ availableKeys }: AddFilterMenuProps) => {
   return (
     <DropdownMenu>
       <DropdownMenu.Trigger asChild>
-        <Button variant="secondary" size="small">
+        <Button variant="secondary" size="small" onClick={() => alert('Button clicked')}>
           Add filter
         </Button>
       </DropdownMenu.Trigger>

@@ -423,7 +423,7 @@ export default function SubscriptionsPage() {
           احصل على خصم 30% على الاشتراك السنوي لفترة محدودة!
         </Typography>
         
-        <Button className="bg-purple-600 hover:bg-purple-700 text-white">
+        <Button className="bg-purple-600 hover:bg-purple-700 text-white" onClick={() => alert('Button clicked')}>
           استفد من العرض
         </Button>
       </EnhancedCard>

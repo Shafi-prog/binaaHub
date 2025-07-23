@@ -1,7 +1,10 @@
 # 🏗️ Binna Platform - Pages Documentation
 
 ## Overview
-This document provides a comprehensive overview of all pages in the Binna platform, organized by functionality and user roles. Each page includes a clickable localhost link for easy testing and feedback.
+This document provides a comprehensive overview of all pages in the Binna platform, organized by functionality and user roles. Each page includes a clickable localhost link for easy testing and fee│       ├── erp/page.tsx              # ERP Integration
+│           🔗 [localhost:3000/store/erp](http://localhost:3000/store/erp)
+│       └── warranty-management/page.tsx # Warranty Claims Management
+│           🔗 [localhost:3000/store/warranty-management](http://localhost:3000/store/warranty-management)ack.
 
 ## 📁 Platform Structure Tree
 
@@ -13,21 +16,9 @@ src/app/
 ├── 📋 layout.tsx                         # Main Layout Component
 ├── 📋 layout-simple.tsx                  # Simple Layout Component
 ├── ❌ not-found.tsx                      # 404 Error Page
-├── 📱 offline/page.tsx                   # Offline Page
-│   🔗 [localhost:3000/offline](http://localhost:3000/offline)
-├── 🧪 browser-test/page.tsx              # Browser Testing Page
-│   🔗 [localhost:3000/browser-test](http://localhost:3000/browser-test)
-├── 🧪 loading-test/page.tsx              # Loading Testing Page
-│   🔗 [localhost:3000/loading-test](http://localhost:3000/loading-test)
-├── 🐛 debug-auth/page.tsx                # Authentication Debug Page
-│   🔗 [localhost:3000/debug-auth](http://localhost:3000/debug-auth)
-├── 🧹 clear-auth/page.tsx                # Clear Authentication Page
-│   🔗 [localhost:3000/clear-auth](http://localhost:3000/clear-auth)
 │
 ├── 🔐 Authentication Pages
 │   ├── auth/
-│   │   ├── page.tsx                      # Auth Router (Role-based Redirect)
-│   │   │   🔗 [localhost:3000/auth](http://localhost:3000/auth)
 │   │   ├── login/page.tsx                # Login Page
 │   │   │   🔗 [localhost:3000/auth/login](http://localhost:3000/auth/login)
 │   │   ├── signup/page.tsx               # User Registration
@@ -41,8 +32,6 @@ src/app/
 │
 ├── 👤 User Portal
 │   └── user/
-│       ├── page.tsx                      # User Portal Home
-│       │   🔗 [localhost:3000/user](http://localhost:3000/user)
 │       ├── dashboard/
 │       │   ├── page.tsx                  # User Dashboard
 │       │   │   🔗 [localhost:3000/user/dashboard](http://localhost:3000/user/dashboard)
@@ -64,10 +53,20 @@ src/app/
 │       │   🔗 [localhost:3000/user/favorites](http://localhost:3000/user/favorites)
 │       ├── warranties/page.tsx           # Product Warranties
 │       │   🔗 [localhost:3000/user/warranties](http://localhost:3000/user/warranties)
+│       ├── warranties/new/page.tsx       # Register New Warranty
+│       │   🔗 [localhost:3000/user/warranties/new](http://localhost:3000/user/warranties/new)
+│       ├── warranties/tracking/page.tsx  # Track Warranty Claims
+│       │   🔗 [localhost:3000/user/warranties/tracking](http://localhost:3000/user/warranties/tracking)
+│       ├── warranties/[id]/page.tsx      # Warranty Details
+│       │   🔗 [localhost:3000/user/warranties/W001](http://localhost:3000/user/warranties/W001)
+│       ├── warranties/[id]/claim/page.tsx # Warranty Claim Form
+│       │   🔗 [localhost:3000/user/warranties/W001/claim](http://localhost:3000/user/warranties/W001/claim)
 │       ├── documents/page.tsx            # Document Management
 │       │   🔗 [localhost:3000/user/documents](http://localhost:3000/user/documents)
 │       ├── expenses/page.tsx             # Expense Tracking
 │       │   🔗 [localhost:3000/user/expenses](http://localhost:3000/user/expenses)
+│       ├── ai-smart-features-test/page.tsx # AI & Smart Features Testing Hub (NEW)
+│       │   🔗 [localhost:3000/user/ai-smart-features-test](http://localhost:3000/user/ai-smart-features-test)
 │       ├── subscriptions/page.tsx        # Subscription Management
 │       │   🔗 [localhost:3000/user/subscriptions](http://localhost:3000/user/subscriptions)
 │       ├── stores-browse/page.tsx        # Browse Stores
@@ -117,8 +116,6 @@ src/app/
 │       │   │   │   🔗 [localhost:3000/user/projects](http://localhost:3000/user/projects)
 │       │   │   ├── list/page.tsx         # Projects List
 │       │   │   │   🔗 [localhost:3000/user/projects/list](http://localhost:3000/user/projects/list)
-│       │   │   ├── new/page.tsx          # Create New Project
-│       │   │   │   🔗 [localhost:3000/user/projects/new](http://localhost:3000/user/projects/new)
 │       │   │   ├── create/page.tsx       # Project Creation Form
 │       │   │   │   🔗 [localhost:3000/user/projects/create](http://localhost:3000/user/projects/create)
 │       │   │   ├── calculator/page.tsx   # Cost Calculator
@@ -310,10 +307,10 @@ src/app/
 ### 🏠 **Core Platform** (1 page)
 - **Main Landing Page**: Comprehensive platform showcase with search & filtering
 
-### 🔐 **Authentication** (6 pages)
-- Auth router, login, signup, password recovery, reset confirmation
+### 🔐 **Authentication** (5 pages)
+- Login, signup, password recovery, reset confirmation
 
-### 👤 **User Portal** (38 pages) ⬆️ Updated Count
+### 👤 **User Portal** (37 pages) ⬆️ Updated Count
 - Dashboard, profile, projects, payments, marketplace, community features
 - **NEW**: AI Hub, Smart Construction Advisor, Advanced Calculators
 
@@ -328,9 +325,8 @@ src/app/
 - Public marketplace, construction data, forums, financial services
 - **NEW**: Public Projects, Finance Services (Banking, Insurance, Loans)
 
-### 🛠️ **Utility Pages** (6 pages) ⬆️ Updated Count
-- Testing, debugging, offline functionality
-- **NEW**: Loading Test Page
+### 🛠️ **Utility Pages** (0 pages)
+- All utility/testing pages have been removed for production readiness
 
 ## 🎯 Key Features by Role
 
@@ -368,12 +364,26 @@ src/app/
 ## 🆕 Recent Updates & New Features
 
 ### **User Portal Enhancements**
-1. **AI Hub** - Centralized AI tools and services
+1. **AI Hub** - Centralized AI tools and services (UNIFIED APPROACH ✨)
+   - All AI features accessible from one central location
+   - Integration widgets in Dashboard, Expenses, and Warranties pages
+   - Smart feature testing and feedback system
 2. **Smart Construction Advisor** - Intelligent construction guidance
 3. **Advanced Calculators**:
    - Comprehensive Construction Calculator
    - Individual Home Calculator  
    - Company Bulk Optimizer
+4. **Document Management** - Enhanced with clear distinction from invoices
+5. **Expense Tracking** - Enhanced with AI invoice extraction integration
+
+### **AI Features Integration Strategy** 🤖
+- **Primary Hub**: `/user/ai-hub` - Main gateway to all AI features
+- **Strategic Widgets**: AI feature shortcuts integrated in:
+  - User Dashboard (Quick AI tools section)
+  - Expenses Page (AI extraction and analytics)
+  - Warranties Page (Smart warranty management)
+- **Testing Center**: `/user/ai-smart-features-test` - Comprehensive testing hub
+- **Smart Recommendations**: Context-aware AI tool suggestions throughout the platform
 
 ### **Store Management Improvements**
 1. **Arabic POS System** - Full RTL support for Arabic-speaking markets
@@ -402,6 +412,6 @@ Many pages include real-time functionality:
 
 ---
 
-**Total Pages**: 109 page.tsx files ⬆️ +17 new pages
-**Last Updated**: July 20, 2025
+**Total Pages**: 108 page.tsx files ⬆️ +6 warranty tracking pages
+**Last Updated**: July 23, 2025
 **Platform**: Binna - Comprehensive Construction & E-commerce Platform

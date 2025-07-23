@@ -91,7 +91,7 @@ export default function SuppliersPage() {
 
         {/* Add New Button */}
         <div className="mb-6">
-          <Button className="bg-green-600 text-white hover:bg-green-700 flex items-center gap-2">
+          <Button className="bg-green-600 text-white hover:bg-green-700 flex items-center gap-2" onClick={() => alert('Button clicked')}>
             <Plus className="w-4 h-4" />
             {activeTab === 'supplier' ? 'إضافة مورد جديد' : 'إضافة مقاول جديد'}
           </Button>
@@ -111,10 +111,10 @@ export default function SuppliersPage() {
                   </Typography>
                 </div>
                 <div className="flex gap-2">
-                  <button className="bg-green-100 text-green-600 p-2 rounded-lg hover:bg-green-200 transition-colors">
+                  <button className="bg-green-100 text-green-600 p-2 rounded-lg hover:bg-green-200 transition-colors" onClick={() => alert('Button clicked')}>
                     <Phone className="w-4 h-4" />
                   </button>
-                  <button className="bg-green-100 text-green-600 p-2 rounded-lg hover:bg-green-200 transition-colors">
+                  <button className="bg-green-100 text-green-600 p-2 rounded-lg hover:bg-green-200 transition-colors" onClick={() => alert('Button clicked')}>
                     <MessageCircle className="w-4 h-4" />
                   </button>
                 </div>

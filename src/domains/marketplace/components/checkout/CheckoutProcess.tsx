@@ -273,7 +273,7 @@ const CheckoutProcess: React.FC = () => {
         </div>
       ))}
       
-      <button className="w-full p-4 border-2 border-dashed border-gray-300 rounded-lg text-gray-600 hover:border-gray-400 transition-colors">
+      <button className="w-full p-4 border-2 border-dashed border-gray-300 rounded-lg text-gray-600 hover:border-gray-400 transition-colors" onClick={() => alert('Button clicked')}>
         <div className="flex items-center justify-center space-x-2">
           <MapPin className="w-5 h-5" />
           <span>Add New Address</span>
@@ -514,11 +514,11 @@ const CheckoutProcess: React.FC = () => {
       </div>
       
       <div className="space-y-3">
-        <button className="w-full bg-orange-500 text-white py-3 px-6 rounded-lg hover:bg-orange-600 transition-colors">
+        <button className="w-full bg-orange-500 text-white py-3 px-6 rounded-lg hover:bg-orange-600 transition-colors" onClick={() => alert('Button clicked')}>
           Track Your Order
         </button>
         
-        <button className="w-full bg-gray-200 text-gray-700 py-3 px-6 rounded-lg hover:bg-gray-300 transition-colors">
+        <button className="w-full bg-gray-200 text-gray-700 py-3 px-6 rounded-lg hover:bg-gray-300 transition-colors" onClick={() => alert('Button clicked')}>
           Continue Shopping
         </button>
       </div>

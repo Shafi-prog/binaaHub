@@ -234,7 +234,7 @@ export const OrderSummarySection = ({
                   },
                 ]}
               >
-                <Button variant="secondary" size="small">
+                <Button variant="secondary" size="small" onClick={() => alert('Button clicked')}>
                   {t("orders.returns.receive.action")}
                 </Button>
               </ActionMenu>

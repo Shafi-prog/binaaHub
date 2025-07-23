@@ -184,8 +184,8 @@ export const SupplierManagementWidget: React.FC = () => {
                     <td className="px-3 py-2">{supplier.totalPurchases.toLocaleString()} ر.س</td>
                     {hasPermission('edit_suppliers') && (
                       <td className="px-3 py-2">
-                        <button className="text-blue-600 hover:underline text-xs mr-2" aria-label={`تعديل المورد ${supplier.name}`} title="تعديل المورد">تعديل</button>
-                        <button className="text-green-600 hover:underline text-xs mr-2" aria-label={`مراسلة المورد ${supplier.name}`} title="مراسلة المورد">مراسلة</button>
+                        <button className="text-blue-600 hover:underline text-xs mr-2" aria-label={`تعديل المورد ${supplier.name}`} title="تعديل المورد" onClick={() => alert('Button clicked')}>تعديل</button>
+                        <button className="text-green-600 hover:underline text-xs mr-2" aria-label={`مراسلة المورد ${supplier.name}`} title="مراسلة المورد" onClick={() => alert('Button clicked')}>مراسلة</button>
                         <button className="text-red-600 hover:underline text-xs" aria-label={`تعطيل المورد ${supplier.name}`} title="تعطيل المورد" onClick={() => handleDisable(supplier.id)}>تعطيل</button>
                       </td>
                     )}

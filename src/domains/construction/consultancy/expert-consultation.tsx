@@ -478,7 +478,7 @@ export default function ExpertConsultation() {
                     >
                       Book Consultation
                     </Button>
-                    <Button size="sm" variant="outline" className="flex-1">
+                    <Button size="sm" variant="outline" className="flex-1" onClick={() => alert('Button clicked')}>
                       View Profile
                     </Button>
                   </div>
@@ -541,23 +541,23 @@ export default function ExpertConsultation() {
                     <div className="flex gap-2">
                       {consultation.status === 'scheduled' && (
                         <>
-                          <Button size="sm" variant="outline">
+                          <Button size="sm" variant="outline" onClick={() => alert('Button clicked')}>
                             <Calendar className="w-3 h-3 mr-1" />
                             Reschedule
                           </Button>
-                          <Button size="sm">
+                          <Button size="sm" onClick={() => alert('Button clicked')}>
                             <Video className="w-3 h-3 mr-1" />
                             Join Meeting
                           </Button>
                         </>
                       )}
                       {consultation.status === 'completed' && !consultation.rating && (
-                        <Button size="sm" variant="outline">
+                        <Button size="sm" variant="outline" onClick={() => alert('Button clicked')}>
                           <Star className="w-3 h-3 mr-1" />
                           Rate & Review
                         </Button>
                       )}
-                      <Button size="sm" variant="outline">
+                      <Button size="sm" variant="outline" onClick={() => alert('Button clicked')}>
                         View Details
                       </Button>
                     </div>

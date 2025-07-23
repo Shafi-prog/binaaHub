@@ -1,27 +1,21 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { formatDateSafe, formatNumberSafe, formatCurrencySafe, generateSafeId } from '../core/shared/utils/hydration-safe';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
 export function formatDate(date: string | Date): string {
-  return new Date(date).toLocaleDateString('ar-SA', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
+  return formatDateSafe(date, { format: 'long' });
 }
 
 export function formatCurrency(amount: number, currency = 'SAR'): string {
-  return new Intl.NumberFormat('ar-SA', {
-    style: 'currency',
-    currency: currency,
-  }).format(amount);
+  return formatCurrencySafe(amount);
 }
 
 export function formatNumber(number: number): string {
-  return new Intl.NumberFormat('ar-SA').format(number);
+  return formatNumberSafe(number);
 }
 
 export function truncateText(text: string, maxLength: number): string {
@@ -38,7 +32,7 @@ export function slugify(text: string): string {
 }
 
 export function generateId(): string {
-  return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+  return generateSafeId('id');
 }
 
 export function isValidEmail(email: string): boolean {

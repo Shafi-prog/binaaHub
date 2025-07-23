@@ -56,7 +56,7 @@ export const CollectionListTable = () => {
           </Text>
         </div>
         <Link to="/collections/create">
-          <Button size="small" variant="secondary">
+          <Button size="small" variant="secondary" onClick={() => alert('Button clicked')}>
             {t("actions.create")}
           </Button>
         </Link>

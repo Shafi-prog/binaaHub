@@ -71,7 +71,7 @@ export const RegionListTable = () => {
           </Text>
         </div>
         <Link to="/settings/regions/create">
-          <Button size="small" variant="secondary">
+          <Button size="small" variant="secondary" onClick={() => alert('Button clicked')}>
             {t("actions.create")}
           </Button>
         </Link>

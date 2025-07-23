@@ -86,7 +86,7 @@ export const ProductTagCreateForm = () => {
         <RouteFocusModal.Footer>
           <div className="flex items-center justify-end gap-2">
             <RouteFocusModal.Close asChild>
-              <Button size="small" variant="secondary" type="button">
+              <Button size="small" variant="secondary" type="button" onClick={() => alert('Button clicked')}>
                 {t("actions.cancel")}
               </Button>
             </RouteFocusModal.Close>

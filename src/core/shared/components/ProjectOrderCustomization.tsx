@@ -589,7 +589,7 @@ function ProjectTemplatesTab({
                 >
                   <Edit className="w-4 h-4" />
                 </button>
-                <button className="p-1 text-gray-400 hover:text-red-600">
+                <button className="p-1 text-gray-400 hover:text-red-600" onClick={() => alert('Button clicked')}>
                   <Trash2 className="w-4 h-4" />
                 </button>
               </div>
@@ -615,7 +615,7 @@ function ProjectTemplatesTab({
                 size="sm"
                 variant="outline"
                 className="w-full"
-              >
+               onClick={() => alert('Button clicked')}>
                 استخدام القالب
               </Button>
             </div>

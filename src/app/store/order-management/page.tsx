@@ -214,11 +214,11 @@ export default function AdvancedOrderManagement() {
           </p>
         </div>
         <div className="flex space-x-2">
-          <Button variant="outline" className="gap-2">
+          <Button variant="outline" className="gap-2" onClick={() => alert('Button clicked')}>
             <Settings className="h-4 w-4" />
             Workflows
           </Button>
-          <Button className="gap-2">
+          <Button className="gap-2" onClick={() => alert('Button clicked')}>
             <Plus className="h-4 w-4" />
             Create Fulfillment
           </Button>
@@ -318,7 +318,7 @@ export default function AdvancedOrderManagement() {
             className="pl-10"
           />
         </div>
-        <Button variant="outline" className="gap-2">
+        <Button variant="outline" className="gap-2" onClick={() => alert('Button clicked')}>
           <Filter className="h-4 w-4" />
           Filter
         </Button>
@@ -390,10 +390,10 @@ export default function AdvancedOrderManagement() {
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center space-x-2">
-                          <Button variant="ghost" size="sm">
+                          <Button variant="ghost" size="sm" onClick={() => alert('Button clicked')}>
                             <Edit className="h-4 w-4" />
                           </Button>
-                          <Button variant="ghost" size="sm">
+                          <Button variant="ghost" size="sm" onClick={() => alert('Button clicked')}>
                             <ArrowRight className="h-4 w-4" />
                           </Button>
                         </div>
@@ -472,10 +472,10 @@ export default function AdvancedOrderManagement() {
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center space-x-2">
-                          <Button variant="ghost" size="sm">
+                          <Button variant="ghost" size="sm" onClick={() => alert('Button clicked')}>
                             <FileText className="h-4 w-4" />
                           </Button>
-                          <Button variant="ghost" size="sm">
+                          <Button variant="ghost" size="sm" onClick={() => alert('Button clicked')}>
                             <Truck className="h-4 w-4" />
                           </Button>
                         </div>
@@ -550,10 +550,10 @@ export default function AdvancedOrderManagement() {
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center space-x-2">
-                          <Button variant="ghost" size="sm">
+                          <Button variant="ghost" size="sm" onClick={() => alert('Button clicked')}>
                             <Edit className="h-4 w-4" />
                           </Button>
-                          <Button variant="ghost" size="sm">
+                          <Button variant="ghost" size="sm" onClick={() => alert('Button clicked')}>
                             <CheckCircle className="h-4 w-4" />
                           </Button>
                         </div>

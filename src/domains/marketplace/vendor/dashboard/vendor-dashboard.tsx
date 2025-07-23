@@ -53,7 +53,7 @@ export function VendorDashboard() {
             <option value="90d">Last 90 days</option>
             <option value="1y">Last year</option>
           </select>
-          <Button>Export Report</Button>
+          <Button onClick={() => alert('Button clicked')}>Export Report</Button>
         </div>
       </div>
 
@@ -102,7 +102,7 @@ export function VendorDashboard() {
         <Card className="p-6">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-lg font-semibold">Recent Orders</h3>
-            <Button variant="outline" size="sm">View All</Button>
+            <Button variant="outline" size="sm" onClick={() => alert('Button clicked')}>View All</Button>
           </div>
           <div className="space-y-3">
             {recentOrders.map((order) => (
@@ -132,7 +132,7 @@ export function VendorDashboard() {
         <Card className="p-6">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-lg font-semibold">Top Selling Products</h3>
-            <Button variant="outline" size="sm">View All</Button>
+            <Button variant="outline" size="sm" onClick={() => alert('Button clicked')}>View All</Button>
           </div>
           <div className="space-y-3">
             {topProducts.map((product, index) => (
@@ -154,19 +154,19 @@ export function VendorDashboard() {
       <Card className="p-6 mt-6">
         <h3 className="text-lg font-semibold mb-4">Quick Actions</h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <Button className="h-20 flex-col">
+          <Button className="h-20 flex-col" onClick={() => alert('Button clicked')}>
             <span className="text-2xl mb-1">📦</span>
             Add Product
           </Button>
-          <Button className="h-20 flex-col" variant="outline">
+          <Button className="h-20 flex-col" variant="outline" onClick={() => alert('Button clicked')}>
             <span className="text-2xl mb-1">📊</span>
             View Analytics
           </Button>
-          <Button className="h-20 flex-col" variant="outline">
+          <Button className="h-20 flex-col" variant="outline" onClick={() => alert('Button clicked')}>
             <span className="text-2xl mb-1">💰</span>
             Request Payout
           </Button>
-          <Button className="h-20 flex-col" variant="outline">
+          <Button className="h-20 flex-col" variant="outline" onClick={() => alert('Button clicked')}>
             <span className="text-2xl mb-1">⚙️</span>
             Store Settings
           </Button>
@@ -182,7 +182,7 @@ export function VendorDashboard() {
             <p className="text-sm text-blue-700 mt-1">
               Add more product photos to increase conversion by up to 30%
             </p>
-            <Button size="sm" className="mt-2">Update Products</Button>
+            <Button size="sm" className="mt-2" onClick={() => alert('Button clicked')}>Update Products</Button>
           </div>
           <div className="p-4 bg-green-50 rounded-lg">
             <h4 className="font-medium text-green-900">Great Performance!</h4>
@@ -195,7 +195,7 @@ export function VendorDashboard() {
             <p className="text-sm text-yellow-700 mt-1">
               5 products are running low on stock
             </p>
-            <Button size="sm" variant="outline" className="mt-2">Manage Inventory</Button>
+            <Button size="sm" variant="outline" className="mt-2" onClick={() => alert('Button clicked')}>Manage Inventory</Button>
           </div>
         </div>
       </Card>

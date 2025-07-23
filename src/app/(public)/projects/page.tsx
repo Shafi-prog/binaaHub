@@ -364,7 +364,7 @@ export default function PublicProjectsPage() {
                         <Eye className="w-4 h-4" />
                         <span>{Math.floor(Math.random() * 500) + 100} مشاهدة</span>
                       </div>
-                      <Button size="sm" variant="outline">
+                      <Button size="sm" variant="outline" onClick={() => alert('Button clicked')}>
                         عرض التفاصيل
                       </Button>
                     </div>
@@ -460,7 +460,7 @@ export default function PublicProjectsPage() {
                 انضم إلى منصة بنّاء وابدأ في توثيق مشروعك ومشاركته مع الآخرين
               </p>
               <Link href="/auth/signup">
-                <Button size="lg" className="px-8">
+                <Button size="lg" className="px-8" onClick={() => alert('Button clicked')}>
                   ابدأ الآن مجاناً
                   <ArrowRight className="w-5 h-5 mr-2" />
                 </Button>

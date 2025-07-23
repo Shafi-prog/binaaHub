@@ -193,7 +193,7 @@ export default function StoreAdminDashboard() {
                   </div>
                 </div>
               </div>
-              <Button variant="outline" className="w-full mt-4">
+              <Button variant="outline" className="w-full mt-4" onClick={() => alert('Button clicked')}>
                 View All Orders
               </Button>
             </CardContent>
@@ -223,7 +223,7 @@ export default function StoreAdminDashboard() {
                   <Badge variant="outline">OK</Badge>
                 </div>
               </div>
-              <Button variant="outline" className="w-full mt-4">
+              <Button variant="outline" className="w-full mt-4" onClick={() => alert('Button clicked')}>
                 Manage Inventory
               </Button>
             </CardContent>

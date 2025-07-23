@@ -28,14 +28,14 @@ const UserManagement: React.FC<UserManagementProps> = () => {
               <td>{user.name}</td>
               <td>{user.role}</td>
               <td>
-                <button style={{ marginRight: 8 }}>Edit</button>
-                <button>Delete</button>
+                <button style={{ marginRight: 8 }} onClick={() => alert('Button clicked')}>Edit</button>
+                <button onClick={() => alert('Button clicked')}>Delete</button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      <button style={{ marginTop: 16, padding: '8px 16px', borderRadius: 4, background: '#222', color: '#fff', border: 'none' }}>Add User</button>
+      <button style={{ marginTop: 16, padding: '8px 16px', borderRadius: 4, background: '#222', color: '#fff', border: 'none' }} onClick={() => alert('Button clicked')}>Add User</button>
     </div>
   );
 };

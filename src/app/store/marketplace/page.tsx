@@ -269,7 +269,7 @@ export default function UserStorefront() {
 
           {/* Cart */}
           <Link href="/store/cart">
-            <Button variant="outline" className="relative">
+            <Button variant="outline" className="relative" onClick={() => alert('Button clicked')}>
               <ShoppingCart className="h-4 w-4 mr-2" />
               Cart
               {getTotalCartItems() > 0 && (
@@ -285,7 +285,7 @@ export default function UserStorefront() {
 
           {!user && (
             <Link href="/login">
-              <Button>Sign In</Button>
+              <Button onClick={() => alert('Button clicked')}>Sign In</Button>
             </Link>
           )}
         </div>
@@ -411,7 +411,7 @@ export default function UserStorefront() {
 
               {/* View More Variants */}
               {product.variants.length > 2 && (
-                <Button variant="outline" size="sm" className="w-full">
+                <Button variant="outline" size="sm" className="w-full" onClick={() => alert('Button clicked')}>
                   <Eye className="h-3 w-3 mr-1" />
                   View {product.variants.length - 2} more variant(s)
                 </Button>
@@ -445,7 +445,7 @@ export default function UserStorefront() {
               </p>
             </div>
             <Link href="/store/cart">
-              <Button size="sm">
+              <Button size="sm" onClick={() => alert('Button clicked')}>
                 View Cart
               </Button>
             </Link>

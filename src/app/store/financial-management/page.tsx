@@ -145,11 +145,11 @@ export default function FinancialDashboard() {
           </p>
         </div>
         <div className="flex space-x-2">
-          <Button variant="outline" className="gap-2">
+          <Button variant="outline" className="gap-2" onClick={() => alert('Button clicked')}>
             <FileText className="h-4 w-4" />
             Generate Report
           </Button>
-          <Button className="gap-2">
+          <Button className="gap-2" onClick={() => alert('Button clicked')}>
             <Plus className="h-4 w-4" />
             Create Invoice
           </Button>
@@ -362,10 +362,10 @@ export default function FinancialDashboard() {
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center space-x-2">
-                      <Button variant="ghost" size="sm">
+                      <Button variant="ghost" size="sm" onClick={() => alert('Button clicked')}>
                         <Edit className="h-4 w-4" />
                       </Button>
-                      <Button variant="ghost" size="sm">
+                      <Button variant="ghost" size="sm" onClick={() => alert('Button clicked')}>
                         <FileText className="h-4 w-4" />
                       </Button>
                     </div>
@@ -387,32 +387,32 @@ export default function FinancialDashboard() {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            <Button variant="outline" className="h-20 flex flex-col gap-2">
+            <Button variant="outline" className="h-20 flex flex-col gap-2" onClick={() => alert('Button clicked')}>
               <FileText className="h-6 w-6" />
               <span className="text-sm">Create Invoice</span>
             </Button>
             
-            <Button variant="outline" className="h-20 flex flex-col gap-2">
+            <Button variant="outline" className="h-20 flex flex-col gap-2" onClick={() => alert('Button clicked')}>
               <Receipt className="h-6 w-6" />
               <span className="text-sm">Record Payment</span>
             </Button>
             
-            <Button variant="outline" className="h-20 flex flex-col gap-2">
+            <Button variant="outline" className="h-20 flex flex-col gap-2" onClick={() => alert('Button clicked')}>
               <Calculator className="h-6 w-6" />
               <span className="text-sm">Chart of Accounts</span>
             </Button>
             
-            <Button variant="outline" className="h-20 flex flex-col gap-2">
+            <Button variant="outline" className="h-20 flex flex-col gap-2" onClick={() => alert('Button clicked')}>
               <PieChart className="h-6 w-6" />
               <span className="text-sm">P&L Report</span>
             </Button>
             
-            <Button variant="outline" className="h-20 flex flex-col gap-2">
+            <Button variant="outline" className="h-20 flex flex-col gap-2" onClick={() => alert('Button clicked')}>
               <BarChart3 className="h-6 w-6" />
               <span className="text-sm">Balance Sheet</span>
             </Button>
             
-            <Button variant="outline" className="h-20 flex flex-col gap-2">
+            <Button variant="outline" className="h-20 flex flex-col gap-2" onClick={() => alert('Button clicked')}>
               <TrendingUp className="h-6 w-6" />
               <span className="text-sm">Cash Flow</span>
             </Button>

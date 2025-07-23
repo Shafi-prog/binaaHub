@@ -219,7 +219,7 @@ export const ProductCreateOrganizationSection = ({
                     </Form.Hint>
                   </div>
                   <StackedFocusModal.Trigger asChild>
-                    <Button size="small" variant="secondary" type="button">
+                    <Button size="small" variant="secondary" type="button" onClick={() => alert('Button clicked')}>
                       {t("actions.add")}
                     </Button>
                   </StackedFocusModal.Trigger>

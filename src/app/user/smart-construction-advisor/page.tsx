@@ -412,7 +412,7 @@ export default function SmartConstructionAdvisor() {
                         </div>
                       ))}
                     </div>
-                    <Button className="w-full mt-4" variant="outline">
+                    <Button className="w-full mt-4" variant="outline" onClick={() => alert('Button clicked')}>
                       ابدأ الحساب
                     </Button>
                   </CardContent>

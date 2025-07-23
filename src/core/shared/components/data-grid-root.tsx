@@ -723,7 +723,7 @@ const DataGridHeader = ({
             content={t("dataGrid.columns.disabled")}
           >
             <DropdownMenu.Trigger asChild disabled={isDisabled}>
-              <Button size="small" variant="secondary">
+              <Button size="small" variant="secondary" onClick={() => alert('Button clicked')}>
                 {hasChanged ? <AdjustmentsDone /> : <Adjustments />}
                 {t("dataGrid.columns.view")}
               </Button>

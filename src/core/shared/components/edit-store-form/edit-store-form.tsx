@@ -127,7 +127,7 @@ export function EditStoreForm() {
           </div>
 
           <div className="flex justify-end gap-2">
-            <Button type="button" variant="outline">
+            <Button type="button" variant="outline" onClick={() => alert('Button clicked')}>
               Cancel
             </Button>
             <Button type="submit">

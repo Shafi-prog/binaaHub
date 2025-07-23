@@ -311,7 +311,7 @@ export default function SettingsPage() {
                     </label>
                   </div>
                   {security.twoFactor && (
-                    <Button variant="outline" className="mt-2 border-blue-300 text-blue-700 hover:bg-blue-50">
+                    <Button variant="outline" className="mt-2 border-blue-300 text-blue-700 hover:bg-blue-50" onClick={() => alert('Button clicked')}>
                       إعداد المصادقة الثنائية
                     </Button>
                   )}
@@ -356,7 +356,7 @@ export default function SettingsPage() {
                   <Button
                     variant="outline"
                     className="w-full border-gray-300 text-gray-700 hover:bg-gray-50 flex items-center gap-2"
-                  >
+                   onClick={() => alert('Button clicked')}>
                     <Key className="w-4 h-4" />
                     تغيير كلمة المرور
                   </Button>
@@ -364,7 +364,7 @@ export default function SettingsPage() {
                   <Button
                     variant="outline"
                     className="w-full border-red-300 text-red-700 hover:bg-red-50"
-                  >
+                   onClick={() => alert('Button clicked')}>
                     تسجيل الخروج من جميع الأجهزة
                   </Button>
                 </div>
@@ -422,14 +422,14 @@ export default function SettingsPage() {
                     <Button
                       variant="outline"
                       className="w-full border-blue-300 text-blue-700 hover:bg-blue-50 flex items-center gap-2"
-                    >
+                     onClick={() => alert('Button clicked')}>
                       تنزيل بياناتي
                     </Button>
                     
                     <Button
                       variant="outline"
                       className="w-full border-red-300 text-red-700 hover:bg-red-50"
-                    >
+                     onClick={() => alert('Button clicked')}>
                       حذف الحساب
                     </Button>
                   </div>

@@ -1,3 +1,5 @@
+"use client";
+
 // @ts-nocheck
 import React from 'react';
 import Link from 'next/link';
@@ -143,12 +145,12 @@ export default function PublicSupervisorsPage() {
           </p>
           <div className="flex justify-center gap-4">
             <Link href="/login">
-              <Button size="lg">
+              <Button size="lg" onClick={() => alert('Button clicked')}>
                 سجل دخولك للتواصل مع المشرفين
               </Button>
             </Link>
             <Link href="/register">
-              <Button variant="outline" size="lg">
+              <Button variant="outline" size="lg" onClick={() => alert('Button clicked')}>
                 إنشاء حساب جديد
               </Button>
             </Link>
@@ -254,7 +256,7 @@ export default function PublicSupervisorsPage() {
 
                 <div className="text-center">
                   <Link href="/login">
-                    <Button variant="outline" className="w-full">
+                    <Button variant="outline" className="w-full" onClick={() => alert('Button clicked')}>
                       سجل دخولك للتواصل
                     </Button>
                   </Link>
@@ -274,7 +276,7 @@ export default function PublicSupervisorsPage() {
               انضم إلى منصة بنّاء واحصل على مشاريع جديدة وزد دخلك
             </p>
             <Link href="/register">
-              <Button size="lg">
+              <Button size="lg" onClick={() => alert('Button clicked')}>
                 انضم كمشرف بناء
               </Button>
             </Link>

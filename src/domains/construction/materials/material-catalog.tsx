@@ -398,10 +398,10 @@ export default function MaterialCatalog() {
                   </div>
 
                   <div className="flex gap-2 pt-2">
-                    <Button size="sm" className="flex-1">
+                    <Button size="sm" className="flex-1" onClick={() => alert('Button clicked')}>
                       Request Quote
                     </Button>
-                    <Button size="sm" variant="outline" className="flex-1">
+                    <Button size="sm" variant="outline" className="flex-1" onClick={() => alert('Button clicked')}>
                       View Details
                     </Button>
                   </div>
@@ -467,10 +467,10 @@ export default function MaterialCatalog() {
                   </div>
 
                   <div className="flex gap-2 pt-2">
-                    <Button size="sm" className="flex-1">
+                    <Button size="sm" className="flex-1" onClick={() => alert('Button clicked')}>
                       Contact Supplier
                     </Button>
-                    <Button size="sm" variant="outline" className="flex-1">
+                    <Button size="sm" variant="outline" className="flex-1" onClick={() => alert('Button clicked')}>
                       View Profile
                     </Button>
                   </div>

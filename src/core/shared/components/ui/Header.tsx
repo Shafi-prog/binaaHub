@@ -66,12 +66,12 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Right Side Actions */}
           <div className="flex items-center space-x-4">
             {/* Search - Mobile */}
-            <button className="p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 md:hidden">
+            <button className="p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 md:hidden" onClick={() => alert('Button clicked')}>
               <MagnifyingGlassIcon className="h-6 w-6" />
             </button>
 
             {/* Notifications */}
-            <button className="relative p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100">
+            <button className="relative p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100" onClick={() => alert('Button clicked')}>
               <BellIcon className="h-6 w-6" />
               <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                 3
@@ -79,7 +79,7 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
 
             {/* Wishlist */}
-            <button className="relative p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100">
+            <button className="relative p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100" onClick={() => alert('Button clicked')}>
               <HeartIcon className="h-6 w-6" />
               <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                 2
@@ -87,7 +87,7 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
 
             {/* Shopping Cart */}
-            <button className="relative p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100">
+            <button className="relative p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100" onClick={() => alert('Button clicked')}>
               <ShoppingCartIcon className="h-6 w-6" />
               {cartItemCount > 0 && (
                 <span className="absolute -top-1 -right-1 bg-blue-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
@@ -110,7 +110,7 @@ export const Header: React.FC<HeaderProps> = ({
                   </span>
                 </div>
               ) : (
-                <button className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
+                <button className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors" onClick={() => alert('Button clicked')}>
                   <UserIcon className="h-4 w-4" />
                   <span className="hidden md:inline">تسجيل الدخول</span>
                 </button>

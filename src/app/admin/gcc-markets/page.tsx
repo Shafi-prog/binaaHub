@@ -154,11 +154,11 @@ export default function GCCMarketsPage() {
           <p className="text-muted-foreground">Monitor and manage regional expansion across the Gulf</p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline">
+          <Button variant="outline" onClick={() => alert('Button clicked')}>
             <Settings className="h-4 w-4 mr-2" />
             Market Settings
           </Button>
-          <Button>
+          <Button onClick={() => alert('Button clicked')}>
             <Globe className="h-4 w-4 mr-2" />
             Expand Markets
           </Button>
@@ -369,7 +369,7 @@ export default function GCCMarketsPage() {
                         </div>
                       ))}
                     </div>
-                    <Button className="w-full mt-4">
+                    <Button className="w-full mt-4" onClick={() => alert('Button clicked')}>
                       Manage {market.country} Settings
                     </Button>
                   </div>

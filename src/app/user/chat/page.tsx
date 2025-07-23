@@ -26,7 +26,7 @@ const Button = ({ children, className = '', variant = 'default', size = 'default
     <button 
       className={`${baseClasses} ${variantClasses[variant] || variantClasses.default} ${sizeClasses[size] || sizeClasses.default} ${className}`} 
       {...props}
-    >
+     onClick={() => alert('Button clicked')}>
       {children}
     </button>
   );
@@ -324,13 +324,13 @@ export default function ChatPage() {
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Button variant="outline" size="sm">
+                      <Button variant="outline" size="sm" onClick={() => alert('Button clicked')}>
                         <PhoneIcon className="h-4 w-4" />
                       </Button>
-                      <Button variant="outline" size="sm">
+                      <Button variant="outline" size="sm" onClick={() => alert('Button clicked')}>
                         <VideoCameraIcon className="h-4 w-4" />
                       </Button>
-                      <Button variant="outline" size="sm">
+                      <Button variant="outline" size="sm" onClick={() => alert('Button clicked')}>
                         <EllipsisVerticalIcon className="h-4 w-4" />
                       </Button>
                     </div>

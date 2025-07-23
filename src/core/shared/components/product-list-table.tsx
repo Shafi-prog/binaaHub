@@ -77,7 +77,7 @@ export function ProductListTable() {
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle>Products</CardTitle>
-          <Button>
+          <Button onClick={() => alert('Button clicked')}>
             <Plus className="h-4 w-4 mr-2" />
             Add Product
           </Button>
@@ -129,10 +129,10 @@ export function ProductListTable() {
                 </TableCell>
                 <TableCell>
                   <div className="flex items-center gap-2">
-                    <Button variant="ghost" size="sm">
+                    <Button variant="ghost" size="sm" onClick={() => alert('Button clicked')}>
                       <Edit className="h-4 w-4" />
                     </Button>
-                    <Button variant="ghost" size="sm">
+                    <Button variant="ghost" size="sm" onClick={() => alert('Button clicked')}>
                       <Trash2 className="h-4 w-4" />
                     </Button>
                   </div>

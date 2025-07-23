@@ -132,7 +132,7 @@ function PaymentErrorContent() {
 
           {errorInfo.invoiceId && (
             <Link href={`/store/invoices/${errorInfo.invoiceId}`}>
-              <Button className="w-full" variant="outline">
+              <Button className="w-full" variant="outline" onClick={() => alert('Button clicked')}>
                 <CreditCard className="w-4 h-4 ml-2" />
                 العودة للفاتورة
               </Button>
@@ -140,7 +140,7 @@ function PaymentErrorContent() {
           )}
 
           <Link href="/">
-            <Button className="w-full" variant="outline">
+            <Button className="w-full" variant="outline" onClick={() => alert('Button clicked')}>
               <ArrowRight className="w-4 h-4 ml-2" />
               العودة للصفحة الرئيسية
             </Button>

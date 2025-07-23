@@ -75,7 +75,7 @@ const GeoZoneFormImpl = <TForm extends UseFormReturn<any>>({
                 </Form.Hint>
               </div>
               <StackedFocusModal.Trigger asChild>
-                <Button size="small" variant="secondary" type="button">
+                <Button size="small" variant="secondary" type="button" onClick={() => alert('Button clicked')}>
                   {t("stockLocations.serviceZones.manageAreas.action")}
                 </Button>
               </StackedFocusModal.Trigger>
@@ -258,7 +258,7 @@ const AreaStackedModal = <TForm extends UseFormReturn<any>>({
       <StackedFocusModal.Footer>
         <div className="flex items-center justify-end gap-x-2">
           <StackedFocusModal.Close type="button" asChild>
-            <Button variant="secondary" size="small">
+            <Button variant="secondary" size="small" onClick={() => alert('Button clicked')}>
               {t("actions.cancel")}
             </Button>
           </StackedFocusModal.Close>

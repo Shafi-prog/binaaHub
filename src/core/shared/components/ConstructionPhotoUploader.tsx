@@ -286,7 +286,7 @@ export default function ConstructionPhotoUploader({
                          image.type === 'documentation' ? 'توثيق' : 'عرض'}
                       </Badge>
                       
-                      <Button size="sm" variant="outline" className="text-xs">
+                      <Button size="sm" variant="outline" className="text-xs" onClick={() => alert('Button clicked')}>
                         <Download className="w-3 h-3 mr-1" />
                         تحميل
                       </Button>

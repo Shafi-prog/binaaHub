@@ -327,41 +327,41 @@ export default function SmartInsightsPage() {
       {/* Market Alerts Banner */}
       {marketAlerts.length > 0 && (
         <div className="space-y-3 mb-8">
-          {marketAlerts.map((alert) => (
-            <EnhancedCard key={alert.id} className={`p-4 border-l-4 ${getUrgencyColor(alert.urgency)}`}>
+          {marketAlerts.map((marketAlert) => (
+            <EnhancedCard key={marketAlert.id} className={`p-4 border-l-4 ${getUrgencyColor(marketAlert.urgency)}`}>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-white rounded-lg">
                     <AlertTriangle className={`w-5 h-5 ${
-                      alert.urgency === 'high' ? 'text-red-600' :
-                      alert.urgency === 'medium' ? 'text-yellow-600' : 'text-green-600'
+                      marketAlert.urgency === 'high' ? 'text-red-600' :
+                      marketAlert.urgency === 'medium' ? 'text-yellow-600' : 'text-green-600'
                     }`} />
                   </div>
                   
                   <div>
-                    <Typography variant="subheading" size="lg" weight="semibold" className="mb-1">{alert.titleAr}</Typography>
-                    <Typography variant="caption" size="sm" className="text-gray-600">{alert.messageAr}</Typography>
-                    {alert.expiresAt && (
+                    <Typography variant="subheading" size="lg" weight="semibold" className="mb-1">{marketAlert.titleAr}</Typography>
+                    <Typography variant="caption" size="sm" className="text-gray-600">{marketAlert.messageAr}</Typography>
+                    {marketAlert.expiresAt && (
                       <Typography variant="caption" size="sm" className="text-red-600 mt-1">
                         <Clock className="w-4 h-4 inline ml-1" />
-                        {formatTimeRemaining(alert.expiresAt)}
+                        {formatTimeRemaining(marketAlert.expiresAt)}
                       </Typography>
                     )}
                   </div>
                 </div>
                 
                 <div className="flex items-center gap-2">
-                  <span className={`px-3 py-1 rounded-full text-sm ${getAlertTypeColor(alert.type)}`}>
-                    {alert.type === 'promotion' ? 'عرض خاص' :
-                     alert.type === 'price-increase' ? 'زيادة سعر' :
-                     alert.type === 'price-drop' ? 'انخفاض سعر' :
-                     alert.type === 'shortage' ? 'نقص' : 'منتج جديد'}
+                  <span className={`px-3 py-1 rounded-full text-sm ${getAlertTypeColor(marketAlert.type)}`}>
+                    {marketAlert.type === 'promotion' ? 'عرض خاص' :
+                     marketAlert.type === 'price-increase' ? 'زيادة سعر' :
+                     marketAlert.type === 'price-drop' ? 'انخفاض سعر' :
+                     marketAlert.type === 'shortage' ? 'نقص' : 'منتج جديد'}
                   </span>
                   
                   <Button
                     variant="outline"
                     className="border-gray-300 text-gray-700 hover:bg-gray-50"
-                  >
+                   onClick={() => window.alert('Button clicked')}>
                     عرض التفاصيل
                   </Button>
                 </div>
@@ -458,7 +458,7 @@ export default function SmartInsightsPage() {
 
               {insight.actionable && (
                 <div className="flex gap-3">
-                  <Button className="bg-purple-600 hover:bg-purple-700 text-white flex items-center gap-2">
+                  <Button className="bg-purple-600 hover:bg-purple-700 text-white flex items-center gap-2" onClick={() => alert('Button clicked')}>
                     <ArrowRight className="w-4 h-4" />
                     تطبيق التوصية
                   </Button>
@@ -466,7 +466,7 @@ export default function SmartInsightsPage() {
                   <Button
                     variant="outline"
                     className="border-gray-300 text-gray-700 hover:bg-gray-50"
-                  >
+                   onClick={() => alert('Button clicked')}>
                     عرض التفاصيل
                   </Button>
                 </div>
@@ -539,14 +539,14 @@ export default function SmartInsightsPage() {
               </div>
 
               <div className="flex gap-3">
-                <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+                <Button className="bg-blue-600 hover:bg-blue-700 text-white" onClick={() => alert('Button clicked')}>
                   عرض المنتجات
                 </Button>
                 
                 <Button
                   variant="outline"
                   className="border-gray-300 text-gray-700 hover:bg-gray-50"
-                >
+                 onClick={() => alert('Button clicked')}>
                   حفظ التوصية
                 </Button>
               </div>

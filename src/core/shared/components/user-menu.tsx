@@ -94,7 +94,7 @@ const UserBadge = () => {
 
   if (isPending) {
     return (
-      <button className="shadow-borders-base flex max-w-[192px] select-none items-center gap-x-2 overflow-hidden text-ellipsis whitespace-nowrap rounded-full py-1 pl-1 pr-2.5">
+      <button className="shadow-borders-base flex max-w-[192px] select-none items-center gap-x-2 overflow-hidden text-ellipsis whitespace-nowrap rounded-full py-1 pl-1 pr-2.5" onClick={() => alert('Button clicked')}>
         <Skeleton className="h-5 w-5 rounded-full" />
         <Skeleton className="h-[9px] w-[70px]" />
       </button>

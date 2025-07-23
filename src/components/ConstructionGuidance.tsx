@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/core/shared/components/ui/dialog';
 import { 
   ConstructionGuidanceService, 
   ConstructionPhase, 
@@ -28,6 +28,8 @@ import {
   Shield,
   BookOpen,
   Calendar,
+  Package,
+  Upload,
   MapPin,
   Users,
   Settings,
@@ -47,6 +49,47 @@ export default function ConstructionGuidance({ project, onPhaseUpdate }: Constru
   const [projectPhases, setProjectPhases] = useState<ConstructionPhase[]>([]);
   const [selectedCheckpoint, setSelectedCheckpoint] = useState<QualityCheckpoint | null>(null);
   const [complianceChecklist, setComplianceChecklist] = useState<any[]>([]);
+  const [uploadedDocuments, setUploadedDocuments] = useState<{[key: string]: File[]}>({});
+
+  // Handle compliance item completion
+  const handleComplianceToggle = (categoryIndex: number, itemId: string) => {
+    console.log('Toggling compliance item:', categoryIndex, itemId); // Debug log
+    setComplianceChecklist(prev => {
+      const updated = prev.map((category, catIdx) => 
+        catIdx === categoryIndex 
+          ? {
+              ...category,
+              items: category.items.map((item: any) => 
+                item.id === itemId 
+                  ? { ...item, completed: !item.completed }
+                  : item
+              )
+            }
+          : category
+      );
+      console.log('Updated checklist:', updated); // Debug log
+      return updated;
+    });
+  };
+
+  // Handle document upload
+  const handleDocumentUpload = (itemId: string, files: FileList | null) => {
+    if (files && files.length > 0) {
+      const fileArray = Array.from(files);
+      setUploadedDocuments(prev => ({
+        ...prev,
+        [itemId]: [...(prev[itemId] || []), ...fileArray]
+      }));
+    }
+  };
+
+  // Remove uploaded document
+  const removeDocument = (itemId: string, fileIndex: number) => {
+    setUploadedDocuments(prev => ({
+      ...prev,
+      [itemId]: prev[itemId]?.filter((_, index) => index !== fileIndex) || []
+    }));
+  };
 
   useEffect(() => {
     const settings: ProjectGuidanceSettings = {
@@ -62,7 +105,41 @@ export default function ConstructionGuidance({ project, onPhaseUpdate }: Constru
     setProjectPhases(phases);
 
     const checklist = ConstructionGuidanceService.getComplianceChecklist(project.projectType);
-    setComplianceChecklist(checklist);
+    console.log('Loaded compliance checklist:', checklist); // Debug log
+    
+    // Ensure we have data, provide fallback if needed
+    if (checklist && checklist.length > 0) {
+      setComplianceChecklist(checklist);
+    } else {
+      // Provide default compliance checklist if service fails
+      const defaultChecklist = [
+        {
+          category: 'التراخيص والموافقات',
+          items: [
+            { id: 'building_permit', description: 'رخصة البناء', completed: false, required: true },
+            { id: 'civil_defense', description: 'موافقة الدفاع المدني', completed: false, required: true },
+            { id: 'municipality', description: 'موافقة الأمانة', completed: false, required: true }
+          ]
+        },
+        {
+          category: 'المواصفات الفنية',
+          items: [
+            { id: 'sbc_compliance', description: 'مطابقة الكود السعودي للبناء', completed: false, required: true },
+            { id: 'structural_calc', description: 'الحسابات الإنشائية', completed: false, required: true },
+            { id: 'architectural_plans', description: 'المخططات المعمارية', completed: false, required: true }
+          ]
+        },
+        {
+          category: 'السلامة والأمان',
+          items: [
+            { id: 'fire_safety', description: 'أنظمة مكافحة الحريق', completed: false, required: true },
+            { id: 'electrical_safety', description: 'السلامة الكهربائية', completed: false, required: true },
+            { id: 'structural_safety', description: 'السلامة الإنشائية', completed: false, required: true }
+          ]
+        }
+      ];
+      setComplianceChecklist(defaultChecklist);
+    }
   }, [project]);
 
   const timeline = ConstructionGuidanceService.calculateProjectTimeline({
@@ -170,12 +247,32 @@ export default function ConstructionGuidance({ project, onPhaseUpdate }: Constru
           </CardHeader>
           <CardContent>
             <Tabs defaultValue="overview" className="w-full">
-              <TabsList className="grid w-full grid-cols-5">
-                <TabsTrigger value="overview">نظرة عامة</TabsTrigger>
-                <TabsTrigger value="documents">المستندات</TabsTrigger>
-                <TabsTrigger value="checkpoints">نقاط الفحص</TabsTrigger>
-                <TabsTrigger value="materials">المواد</TabsTrigger>
-                <TabsTrigger value="regulations">اللوائح</TabsTrigger>
+              <TabsList className="grid w-full grid-cols-5 bg-gray-100 p-1 rounded-lg">
+                <TabsTrigger value="overview" className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:shadow-sm">
+                  <Info className="w-4 h-4" />
+                  <span className="hidden sm:inline">نظرة عامة</span>
+                  <span className="sm:hidden">عامة</span>
+                </TabsTrigger>
+                <TabsTrigger value="documents" className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:shadow-sm">
+                  <FileText className="w-4 h-4" />
+                  <span className="hidden sm:inline">المستندات</span>
+                  <span className="sm:hidden">مستندات</span>
+                </TabsTrigger>
+                <TabsTrigger value="checkpoints" className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:shadow-sm">
+                  <CheckCircle className="w-4 h-4" />
+                  <span className="hidden sm:inline">نقاط الفحص</span>
+                  <span className="sm:hidden">فحص</span>
+                </TabsTrigger>
+                <TabsTrigger value="materials" className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:shadow-sm">
+                  <Package className="w-4 h-4" />
+                  <span className="hidden sm:inline">المواد</span>
+                  <span className="sm:hidden">مواد</span>
+                </TabsTrigger>
+                <TabsTrigger value="regulations" className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:shadow-sm">
+                  <Shield className="w-4 h-4" />
+                  <span className="hidden sm:inline">اللوائح</span>
+                  <span className="sm:hidden">لوائح</span>
+                </TabsTrigger>
               </TabsList>
 
               <TabsContent value="overview" className="space-y-4">
@@ -249,7 +346,7 @@ export default function ConstructionGuidance({ project, onPhaseUpdate }: Constru
                             <Badge variant="destructive" className="text-xs">مطلوب</Badge>
                           )}
                           {doc.templateUrl && (
-                            <Button variant="outline" size="sm">
+                            <Button variant="outline" size="sm" onClick={() => alert('Button clicked')}>
                               <Download className="w-4 h-4 mr-1" />
                               تحميل
                             </Button>
@@ -262,60 +359,124 @@ export default function ConstructionGuidance({ project, onPhaseUpdate }: Constru
               </TabsContent>
 
               <TabsContent value="checkpoints" className="space-y-4">
+                <div className="bg-blue-50 p-4 rounded-lg border border-blue-200 mb-4">
+                  <h3 className="font-semibold text-blue-800 mb-2 flex items-center gap-2">
+                    <Info className="w-4 h-4" />
+                    نقاط الفحص والجودة
+                  </h3>
+                  <p className="text-sm text-blue-700">
+                    هذه نقاط الفحص المطلوبة لضمان جودة البناء والامتثال للمعايير. اضغط على "عرض التفاصيل" لمعرفة المعايير المطلوبة.
+                  </p>
+                </div>
                 <div className="grid gap-4">
-                  {currentPhaseData.checkpoints.map((checkpoint) => (
-                    <Card key={checkpoint.id} className="p-4">
-                      <div className="flex items-center justify-between mb-3">
-                        <h5 className="font-medium">{checkpoint.name}</h5>
+                  {currentPhaseData.checkpoints.map((checkpoint, index) => (
+                    <Card key={checkpoint.id} className="hover:shadow-md transition-shadow border-l-4 border-l-blue-400">
+                      <div className="flex items-center justify-between p-4">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-3 mb-2">
+                            <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-semibold text-sm">
+                              {index + 1}
+                            </div>
+                            <h5 className="font-semibold text-lg">{checkpoint.name}</h5>
+                            {checkpoint.mandatory && (
+                              <Badge variant="destructive" className="text-xs">إجباري</Badge>
+                            )}
+                          </div>
+                          <p className="text-sm text-gray-600 mb-3 mr-11">{checkpoint.description}</p>
+                          <div className="flex items-center gap-4 mr-11">
+                            <Badge variant="outline" className="text-xs">
+                              {checkpoint.inspectionType === 'self' ? '🔍 فحص ذاتي' : 
+                               checkpoint.inspectionType === 'supervisor' ? '👷 فحص مشرف' : '🏛️ فحص رسمي'}
+                            </Badge>
+                            {checkpoint.photos && (
+                              <Badge variant="outline" className="text-xs bg-yellow-50 text-yellow-700 border-yellow-200">
+                                📷 توثيق مطلوب
+                              </Badge>
+                            )}
+                          </div>
+                        </div>
                         <div className="flex items-center gap-2">
-                          {checkpoint.mandatory && (
-                            <Badge variant="destructive" className="text-xs">إجباري</Badge>
-                          )}
-                          <Dialog>
-                            <DialogTrigger>
-                              <Button variant="outline" size="sm">
-                                <Eye className="w-4 h-4 mr-1" />
-                                التفاصيل
-                              </Button>
-                            </DialogTrigger>
-                            <DialogContent>
-                              <DialogHeader>
-                                <DialogTitle>{checkpoint.name}</DialogTitle>
-                              </DialogHeader>
-                              <div className="space-y-4">
-                                <p>{checkpoint.description}</p>
-                                <div>
-                                  <h6 className="font-medium mb-2">معايير الفحص:</h6>
-                                  <ul className="space-y-1">
-                                    {checkpoint.criteria.map((criterion, index) => (
-                                      <li key={index} className="flex items-center gap-2 text-sm">
-                                        <CheckCircle className="w-4 h-4 text-green-500" />
-                                        {criterion}
-                                      </li>
-                                    ))}
-                                  </ul>
-                                </div>
-                                {checkpoint.photos && (
-                                  <div className="bg-yellow-50 p-3 rounded-lg">
-                                    <div className="flex items-center gap-2 text-yellow-700">
-                                      <Camera className="w-4 h-4" />
-                                      <span className="text-sm">مطلوب توثيق بالصور</span>
-                                    </div>
-                                  </div>
-                                )}
-                              </div>
-                            </DialogContent>
-                          </Dialog>
+                          <button 
+                            onClick={() => setSelectedCheckpoint(checkpoint)}
+                            className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors bg-blue-600 text-white hover:bg-blue-700 h-9 px-4">
+                            <Eye className="w-4 h-4 ml-1" />
+                            عرض التفاصيل
+                          </button>
                         </div>
                       </div>
-                      <p className="text-sm text-gray-600 mb-2">{checkpoint.description}</p>
-                      <Badge variant="outline" className="text-xs">
-                        نوع الفحص: {checkpoint.inspectionType === 'self' ? 'ذاتي' : 
-                                    checkpoint.inspectionType === 'supervisor' ? 'مشرف' : 'جهة رسمية'}
-                      </Badge>
                     </Card>
                   ))}
                 </div>
+
+                {/* Dialog for checkpoint details */}
+                <Dialog 
+                  open={selectedCheckpoint !== null} 
+                  onOpenChange={(open) => {
+                    if (!open) setSelectedCheckpoint(null);
+                  }}>
+                  {selectedCheckpoint && (
+                    <DialogContent className="max-w-2xl">
+                      <DialogHeader className="relative">
+                        <DialogTitle className="text-xl font-bold text-right">{selectedCheckpoint.name}</DialogTitle>
+                        <button 
+                          onClick={() => setSelectedCheckpoint(null)}
+                          className="absolute left-0 top-0 w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-500 hover:text-gray-700 transition-colors"
+                          aria-label="إغلاق"
+                        >
+                          ✕
+                        </button>
+                      </DialogHeader>
+                      <div className="space-y-6 mt-4">
+                        <div className="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-400">
+                          <p className="text-gray-800">{selectedCheckpoint.description}</p>
+                        </div>
+                        
+                        <div className="bg-white border rounded-lg p-4">
+                          <h6 className="font-semibold mb-3 text-gray-800 flex items-center gap-2">
+                            <CheckCircle className="w-5 h-5 text-green-500" />
+                            معايير الفحص المطلوبة:
+                          </h6>
+                          <ul className="space-y-2">
+                            {selectedCheckpoint.criteria.map((criterion, index) => (
+                              <li key={index} className="flex items-start gap-3 text-sm">
+                                <div className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
+                                <span className="text-gray-700">{criterion}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+
+                        {selectedCheckpoint.photos && (
+                          <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                            <div className="flex items-center gap-2 text-yellow-800 mb-2">
+                              <Camera className="w-5 h-5" />
+                              <span className="font-medium">توثيق مطلوب</span>
+                            </div>
+                            <p className="text-sm text-yellow-700">
+                              يجب توثيق هذه المرحلة بالصور للمراجعة والمتابعة
+                            </p>
+                          </div>
+                        )}
+
+                        <div className="bg-gray-50 p-4 rounded-lg">
+                          <div className="flex items-center justify-between">
+                            <span className="font-medium text-gray-700">نوع الفحص:</span>
+                            <Badge variant="outline" className="bg-white">
+                              {selectedCheckpoint.inspectionType === 'self' ? 'فحص ذاتي' : 
+                               selectedCheckpoint.inspectionType === 'supervisor' ? 'فحص مشرف' : 'فحص جهة رسمية'}
+                            </Badge>
+                          </div>
+                          {selectedCheckpoint.mandatory && (
+                            <div className="flex items-center gap-2 mt-2">
+                              <AlertTriangle className="w-4 h-4 text-red-500" />
+                              <span className="text-sm text-red-600 font-medium">هذا الفحص إجباري ولا يمكن تجاوزه</span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </DialogContent>
+                  )}
+                </Dialog>
               </TabsContent>
 
               <TabsContent value="materials" className="space-y-4">
@@ -384,38 +545,125 @@ export default function ConstructionGuidance({ project, onPhaseUpdate }: Constru
             <Shield className="w-5 h-5" />
             قائمة مراجعة الامتثال
           </CardTitle>
-          <p className="text-sm text-gray-600">تأكد من استيفاء جميع المتطلبات القانونية</p>
+          <p className="text-sm text-gray-600">تأكد من استيفاء جميع المتطلبات القانونية ورفع الوثائق المطلوبة</p>
         </CardHeader>
         <CardContent>
-          <div className="space-y-6">
-            {complianceChecklist.map((category, categoryIndex) => (
-              <div key={categoryIndex}>
-                <h4 className="font-medium text-gray-800 mb-3">{category.category}</h4>
-                <div className="space-y-2">
+          {complianceChecklist.length === 0 ? (
+            <div className="text-center py-8">
+              <p className="text-gray-500">جاري تحميل قائمة مراجعة الامتثال...</p>
+            </div>
+          ) : (
+            <div className="space-y-6">
+              {complianceChecklist.map((category, categoryIndex) => (
+                <div key={categoryIndex} className="border rounded-lg p-4 bg-gray-50">
+                <h4 className="font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                  <BookOpen className="w-4 h-4" />
+                  {category.category}
+                </h4>
+                <div className="space-y-4">
                   {category.items.map((item: any) => (
-                    <div key={item.id} className="flex items-center gap-3 p-3 border rounded-lg">
-                      <input 
-                        type="checkbox" 
-                        checked={item.completed}
-                        className="rounded border-gray-300"
-                        onChange={() => {
-                          // Handle checkbox change
-                        }}
-                      />
-                      <div className="flex-1">
-                        <span className={item.completed ? 'line-through text-gray-500' : ''}>
-                          {item.description}
-                        </span>
-                        {item.required && (
-                          <Badge variant="destructive" className="ml-2 text-xs">مطلوب</Badge>
-                        )}
+                    <div key={item.id} className="bg-white border rounded-lg p-4 shadow-sm">
+                      <div className="flex items-start gap-3">
+                        <div className="flex items-center">
+                          <input 
+                            type="checkbox" 
+                            checked={item.completed}
+                            className="w-5 h-5 rounded border-gray-300 text-green-600 focus:ring-green-500"
+                            onChange={() => handleComplianceToggle(categoryIndex, item.id)}
+                          />
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-2">
+                            <span className={`font-medium ${item.completed ? 'line-through text-gray-500' : 'text-gray-800'}`}>
+                              {item.description}
+                            </span>
+                            {item.required && (
+                              <Badge variant="destructive" className="text-xs">مطلوب</Badge>
+                            )}
+                            {item.completed && (
+                              <Badge variant="default" className="text-xs bg-green-100 text-green-800">مكتمل</Badge>
+                            )}
+                          </div>
+                          
+                          {/* Document Upload Section */}
+                          <div className="mt-3 space-y-2">
+                            <div className="flex items-center gap-2">
+                              <label 
+                                htmlFor={`upload-${item.id}`}
+                                className="cursor-pointer inline-flex items-center gap-2 px-3 py-2 text-sm bg-blue-50 text-blue-700 border border-blue-200 rounded-md hover:bg-blue-100 transition-colors"
+                              >
+                                <Upload className="w-4 h-4" />
+                                رفع مستند
+                              </label>
+                              <input
+                                id={`upload-${item.id}`}
+                                type="file"
+                                multiple
+                                accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
+                                className="hidden"
+                                onChange={(e) => handleDocumentUpload(item.id, e.target.files)}
+                              />
+                              <span className="text-xs text-gray-500">
+                                PDF, صور, أو مستندات Word
+                              </span>
+                            </div>
+                            
+                            {/* Uploaded Documents List */}
+                            {uploadedDocuments[item.id] && uploadedDocuments[item.id].length > 0 && (
+                              <div className="bg-gray-50 p-3 rounded-md">
+                                <h6 className="text-sm font-medium text-gray-700 mb-2">المستندات المرفوعة:</h6>
+                                <div className="space-y-1">
+                                  {uploadedDocuments[item.id].map((file, fileIndex) => (
+                                    <div key={fileIndex} className="flex items-center justify-between text-sm">
+                                      <div className="flex items-center gap-2">
+                                        <FileText className="w-4 h-4 text-blue-500" />
+                                        <span className="text-gray-700">{file.name}</span>
+                                        <span className="text-gray-500">({(file.size / 1024).toFixed(1)} KB)</span>
+                                      </div>
+                                      <button
+                                        onClick={() => removeDocument(item.id, fileIndex)}
+                                        className="text-red-500 hover:text-red-700 transition-colors"
+                                        title="حذف المستند"
+                                      >
+                                        ✕
+                                      </button>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
                       </div>
                     </div>
                   ))}
                 </div>
               </div>
             ))}
+            
+            {/* Progress Summary */}
+            {complianceChecklist.length > 0 && (
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <h5 className="font-medium text-blue-800 mb-2">ملخص التقدم</h5>
+                {complianceChecklist.map((category, categoryIndex) => {
+                  const totalItems = category.items.length;
+                  const completedItems = category.items.filter((item: any) => item.completed).length;
+                  const progress = (completedItems / totalItems) * 100;
+                  
+                  return (
+                    <div key={categoryIndex} className="mb-3 last:mb-0">
+                      <div className="flex justify-between text-sm mb-1">
+                        <span className="text-blue-700">{category.category}</span>
+                        <span className="text-blue-600">{completedItems}/{totalItems}</span>
+                      </div>
+                      <Progress value={progress} className="h-2" />
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
+          )}
         </CardContent>
       </Card>
     </div>

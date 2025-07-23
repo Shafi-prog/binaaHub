@@ -224,7 +224,7 @@ export const PriceListConfigurationForm = ({
                             <button
                               type="button"
                               className="bg-ui-bg-field shadow-borders-base txt-compact-small text-ui-fg-muted flex flex-1 items-center gap-x-2 rounded-md px-2 py-1.5"
-                            >
+                             onClick={() => alert('Button clicked')}>
                               <MagnifyingGlass />
                               {t(
                                 "priceLists.fields.customerAvailability.placeholder"
@@ -232,7 +232,7 @@ export const PriceListConfigurationForm = ({
                             </button>
                           </StackedDrawer.Trigger>
                           <StackedDrawer.Trigger asChild>
-                            <Button variant="secondary">
+                            <Button variant="secondary" onClick={() => alert('Button clicked')}>
                               {t("actions.browse")}
                             </Button>
                           </StackedDrawer.Trigger>
@@ -297,7 +297,7 @@ export const PriceListConfigurationForm = ({
         <RouteDrawer.Footer className="shrink-0">
           <div className="flex items-center justify-end gap-x-2">
             <RouteDrawer.Close asChild>
-              <Button size="small" variant="secondary">
+              <Button size="small" variant="secondary" onClick={() => alert('Button clicked')}>
                 {t("actions.cancel")}
               </Button>
             </RouteDrawer.Close>

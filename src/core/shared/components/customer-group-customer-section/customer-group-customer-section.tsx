@@ -91,7 +91,7 @@ export const CustomerGroupCustomerSection = ({
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">{t("customers.domain")}</Heading>
         <Link to={`/customer-groups/${group.id}/add-customers`}>
-          <Button variant="secondary" size="small">
+          <Button variant="secondary" size="small" onClick={() => alert('Button clicked')}>
             {t("general.add")}
           </Button>
         </Link>

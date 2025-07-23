@@ -161,10 +161,10 @@ export function ResourceManagement() {
           </div>
 
           <div className="flex gap-2">
-            <Button size="sm">Allocate</Button>
-            <Button size="sm" variant="outline">Reorder</Button>
-            <Button size="sm" variant="outline">Transfer</Button>
-            <Button size="sm" variant="outline">View History</Button>
+            <Button size="sm" onClick={() => alert('Button clicked')}>Allocate</Button>
+            <Button size="sm" variant="outline" onClick={() => alert('Button clicked')}>Reorder</Button>
+            <Button size="sm" variant="outline" onClick={() => alert('Button clicked')}>Transfer</Button>
+            <Button size="sm" variant="outline" onClick={() => alert('Button clicked')}>View History</Button>
           </div>
         </Card>
       ))}
@@ -205,10 +205,10 @@ export function ResourceManagement() {
           </div>
 
           <div className="flex gap-2">
-            <Button size="sm">Schedule</Button>
-            <Button size="sm" variant="outline">Maintenance</Button>
-            <Button size="sm" variant="outline">Transfer</Button>
-            <Button size="sm" variant="outline">History</Button>
+            <Button size="sm" onClick={() => alert('Button clicked')}>Schedule</Button>
+            <Button size="sm" variant="outline" onClick={() => alert('Button clicked')}>Maintenance</Button>
+            <Button size="sm" variant="outline" onClick={() => alert('Button clicked')}>Transfer</Button>
+            <Button size="sm" variant="outline" onClick={() => alert('Button clicked')}>History</Button>
           </div>
         </Card>
       ))}
@@ -250,10 +250,10 @@ export function ResourceManagement() {
           </div>
 
           <div className="flex gap-2">
-            <Button size="sm">Assign</Button>
-            <Button size="sm" variant="outline">Schedule</Button>
-            <Button size="sm" variant="outline">Performance</Button>
-            <Button size="sm" variant="outline">Contact</Button>
+            <Button size="sm" onClick={() => alert('Button clicked')}>Assign</Button>
+            <Button size="sm" variant="outline" onClick={() => alert('Button clicked')}>Schedule</Button>
+            <Button size="sm" variant="outline" onClick={() => alert('Button clicked')}>Performance</Button>
+            <Button size="sm" variant="outline" onClick={() => alert('Button clicked')}>Contact</Button>
           </div>
         </Card>
       ))}
@@ -264,7 +264,7 @@ export function ResourceManagement() {
     <div className="p-6 max-w-7xl mx-auto">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Resource Management</h1>
-        <Button>+ Add Resource</Button>
+        <Button onClick={() => alert('Button clicked')}>+ Add Resource</Button>
       </div>
 
       {/* Resource Overview */}

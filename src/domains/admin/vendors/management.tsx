@@ -472,7 +472,7 @@ export default function VendorManagement() {
                         >
                           <Eye className="w-4 h-4" />
                         </button>
-                        <button className="text-gray-600 hover:text-gray-900">
+                        <button className="text-gray-600 hover:text-gray-900" onClick={() => alert('Button clicked')}>
                           <Edit className="w-4 h-4" />
                         </button>
                       </div>

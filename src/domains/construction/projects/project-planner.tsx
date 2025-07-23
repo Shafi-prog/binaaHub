@@ -163,10 +163,10 @@ export function ProjectPlanner() {
               </div>
 
               <div className="flex gap-2">
-                <Button size="sm" variant="outline">View Details</Button>
-                <Button size="sm" variant="outline">Edit</Button>
-                <Button size="sm" variant="outline">Timeline</Button>
-                <Button size="sm" variant="outline">Resources</Button>
+                <Button size="sm" variant="outline" onClick={() => alert(`عرض تفاصيل المشروع ${project.name}`)}>View Details</Button>
+                <Button size="sm" variant="outline" onClick={() => alert(`تحرير المشروع ${project.name}`)}>Edit</Button>
+                <Button size="sm" variant="outline" onClick={() => alert(`عرض جدول المشروع ${project.name}`)}>Timeline</Button>
+                <Button size="sm" variant="outline" onClick={() => alert(`إدارة موارد المشروع ${project.name}`)}>Resources</Button>
               </div>
             </div>
           ))}
@@ -199,7 +199,7 @@ export function ProjectPlanner() {
                   Budget: SAR {phase.budget.toLocaleString()}
                 </p>
               </div>
-              <Button size="sm" variant="outline">Manage</Button>
+              <Button size="sm" variant="outline" onClick={() => alert('Button clicked')}>Manage</Button>
             </div>
           ))}
         </div>

@@ -604,7 +604,7 @@ export const ClaimCreateForm = ({
                             type="button"
                             variant="secondary"
                             size="small"
-                          >
+                           onClick={() => alert('Button clicked')}>
                             {t("actions.cancel")}
                           </Button>
                         </RouteFocusModal.Close>

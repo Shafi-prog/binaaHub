@@ -346,7 +346,7 @@ export default function StorePermissionSystem() {
 
             <Dialog open={isInviteDialogOpen} onOpenChange={setIsInviteDialogOpen}>
               <DialogTrigger asChild>
-                <Button className="flex items-center gap-2">
+                <Button className="flex items-center gap-2" onClick={() => alert('Button clicked')}>
                   <UserPlus className="h-4 w-4" />
                   Invite Staff Member
                 </Button>
@@ -458,7 +458,7 @@ export default function StorePermissionSystem() {
                             Last active: {user.lastActive === 'Never' ? 'Never' : new Date(user.lastActive).toLocaleDateString()}
                           </p>
                         </div>
-                        <Button variant="ghost" size="sm">
+                        <Button variant="ghost" size="sm" onClick={() => alert('Button clicked')}>
                           <MoreVertical className="h-4 w-4" />
                         </Button>
                       </div>
@@ -491,7 +491,7 @@ export default function StorePermissionSystem() {
                       <p className="text-gray-600 mt-1">{role.description}</p>
                     </div>
                     {!role.isSystem && (
-                      <Button variant="outline" size="sm">
+                      <Button variant="outline" size="sm" onClick={() => alert('Button clicked')}>
                         Edit Role
                       </Button>
                     )}

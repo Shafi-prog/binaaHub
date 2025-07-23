@@ -199,8 +199,8 @@ export default function BinnaBooksApp() {
               <CardContent>
                 <div className="flex justify-between items-center mb-4">
                   <div className="flex space-x-2">
-                    <Button>فاتورة جديدة</Button>
-                    <Button variant="outline">استيراد فواتير</Button>
+                    <Button onClick={() => alert('Button clicked')}>فاتورة جديدة</Button>
+                    <Button variant="outline" onClick={() => alert('Button clicked')}>استيراد فواتير</Button>
                   </div>
                   <div className="text-sm text-gray-500">
                     {invoices.length} فاتورة في {selectedPeriod}
@@ -249,9 +249,9 @@ export default function BinnaBooksApp() {
                           </td>
                           <td className="p-3">
                             <div className="flex space-x-2">
-                              <Button variant="outline" size="sm">عرض</Button>
-                              <Button variant="outline" size="sm">تحرير</Button>
-                              <Button variant="outline" size="sm">طباعة</Button>
+                              <Button variant="outline" size="sm" onClick={() => alert('Button clicked')}>عرض</Button>
+                              <Button variant="outline" size="sm" onClick={() => alert('Button clicked')}>تحرير</Button>
+                              <Button variant="outline" size="sm" onClick={() => alert('Button clicked')}>طباعة</Button>
                             </div>
                           </td>
                         </tr>
@@ -292,7 +292,7 @@ export default function BinnaBooksApp() {
                       </span>
                     </div>
                   </div>
-                  <Button className="w-full mt-4">تحميل التقرير</Button>
+                  <Button className="w-full mt-4" onClick={() => alert('Button clicked')}>تحميل التقرير</Button>
                 </CardContent>
               </Card>
 
@@ -321,7 +321,7 @@ export default function BinnaBooksApp() {
                       <span className="text-blue-600">1,780,000 ر.س</span>
                     </div>
                   </div>
-                  <Button className="w-full mt-4">تحميل التقرير</Button>
+                  <Button className="w-full mt-4" onClick={() => alert('Button clicked')}>تحميل التقرير</Button>
                 </CardContent>
               </Card>
             </div>
@@ -376,8 +376,8 @@ export default function BinnaBooksApp() {
                 </div>
                 
                 <div className="flex space-x-4 mt-6">
-                  <Button>إنشاء إقرار ضريبي</Button>
-                  <Button variant="outline">تحميل تقرير الضريبة</Button>
+                  <Button onClick={() => alert('Button clicked')}>إنشاء إقرار ضريبي</Button>
+                  <Button variant="outline" onClick={() => alert('Button clicked')}>تحميل تقرير الضريبة</Button>
                 </div>
               </CardContent>
             </Card>
@@ -431,8 +431,8 @@ export default function BinnaBooksApp() {
                 </div>
                 
                 <div className="mt-6">
-                  <Button>اختبار الاتصال مع الهيئة</Button>
-                  <Button variant="outline" className="mr-4">تحديث الإعدادات</Button>
+                  <Button onClick={() => alert('Button clicked')}>اختبار الاتصال مع الهيئة</Button>
+                  <Button variant="outline" className="mr-4" onClick={() => alert('Button clicked')}>تحديث الإعدادات</Button>
                 </div>
               </CardContent>
             </Card>

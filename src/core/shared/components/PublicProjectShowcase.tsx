@@ -100,7 +100,7 @@ export default function PublicProjectShowcase({ project, showHeader = true }: Pu
                 <Heart className={`w-4 h-4 mr-1 ${liked ? 'fill-current' : ''}`} />
                 {liked ? 'معجب' : 'إعجاب'}
               </Button>
-              <Button variant="outline" size="sm" className="border-white text-white hover:bg-white hover:text-blue-600">
+              <Button variant="outline" size="sm" className="border-white text-white hover:bg-white hover:text-blue-600" onClick={() => alert('Button clicked')}>
                 <Share2 className="w-4 h-4 mr-1" />
                 مشاركة
               </Button>
@@ -348,7 +348,7 @@ export default function PublicProjectShowcase({ project, showHeader = true }: Pu
                 احصل على استشارة مجانية ومساعدة في التخطيط
               </p>
               <Link href="/auth/signup">
-                <Button className="w-full">
+                <Button className="w-full" onClick={() => alert('Button clicked')}>
                   ابدأ مشروعك
                   <ArrowRight className="w-4 h-4 mr-2" />
                 </Button>

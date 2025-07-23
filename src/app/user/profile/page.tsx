@@ -155,10 +155,10 @@ export default function UserProfile() {
                 <div className="pt-6 border-t">
                   <h4 className="font-medium text-gray-700 mb-4">إدارة الحساب</h4>
                   <div className="flex gap-4">
-                    <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                    <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700" onClick={() => alert('Button clicked')}>
                       تصدير البيانات
                     </button>
-                    <button className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
+                    <button className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700" onClick={() => alert('Button clicked')}>
                       حذف الحساب
                     </button>
                   </div>

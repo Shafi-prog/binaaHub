@@ -368,7 +368,7 @@ const AdvancedSearchSystem: React.FC = () => {
       
       <p className="text-sm text-gray-600 mb-3">Sold by {product.seller}</p>
       
-      <button className="w-full bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-600 transition-colors duration-200">
+      <button className="w-full bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-600 transition-colors duration-200" onClick={() => alert('Button clicked')}>
         Add to Cart
       </button>
     </div>

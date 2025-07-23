@@ -171,12 +171,12 @@ export default function ConstructionDataPage() {
           {/* Quick Actions */}
           <div className="flex justify-center gap-4 mt-6">
             <Link href="/auth/register">
-              <Button className="flex items-center gap-2">
+              <Button className="flex items-center gap-2" onClick={() => alert('Button clicked')}>
                 <PlayCircle className="w-4 h-4" />
                 ابدأ مشروعك الآن
               </Button>
             </Link>
-            <Button variant="outline" className="flex items-center gap-2">
+            <Button variant="outline" className="flex items-center gap-2" onClick={() => alert('Button clicked')}>
               <Download className="w-4 h-4" />
               تحميل الدليل الكامل
             </Button>
@@ -319,7 +319,7 @@ export default function ConstructionDataPage() {
                                       <p className="text-xs text-gray-500">{doc.authority}</p>
                                     </div>
                                     <a href={doc.url} target="_blank" rel="noopener noreferrer">
-                                      <Button size="sm" variant="outline">
+                                      <Button size="sm" variant="outline" onClick={() => alert('Button clicked')}>
                                         <ExternalLink className="w-3 h-3" />
                                       </Button>
                                     </a>
@@ -431,7 +431,7 @@ export default function ConstructionDataPage() {
                     <FileText className="w-4 h-4 text-purple-500" />
                     <span>مراجعة المخططات</span>
                   </div>
-                  <Button className="w-full mt-4" size="sm">
+                  <Button className="w-full mt-4" size="sm" onClick={() => alert('Button clicked')}>
                     تواصل معنا
                   </Button>
                 </div>

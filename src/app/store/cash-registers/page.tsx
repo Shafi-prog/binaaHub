@@ -558,7 +558,7 @@ export default function CashRegisterManagement() {
                       {selectedRegister.status === 'closed' ? (
                         <Dialog open={showOpenDialog} onOpenChange={setShowOpenDialog}>
                           <DialogTrigger asChild>
-                            <Button size="sm" className="bg-green-600 hover:bg-green-700">
+                            <Button size="sm" className="bg-green-600 hover:bg-green-700" onClick={() => alert('Button clicked')}>
                               <Unlock className="w-4 h-4 ml-1" />
                               فتح الصندوق
                             </Button>
@@ -596,7 +596,7 @@ export default function CashRegisterManagement() {
                         <div className="flex gap-2">
                           <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
                             <DialogTrigger asChild>
-                              <Button variant="outline" size="sm">
+                              <Button variant="outline" size="sm" onClick={() => alert('Button clicked')}>
                                 <Plus className="w-4 h-4 ml-1" />
                                 إضافة نقد
                               </Button>
@@ -643,7 +643,7 @@ export default function CashRegisterManagement() {
 
                           <Dialog open={showWithdrawDialog} onOpenChange={setShowWithdrawDialog}>
                             <DialogTrigger asChild>
-                              <Button variant="outline" size="sm">
+                              <Button variant="outline" size="sm" onClick={() => alert('Button clicked')}>
                                 <TrendingDown className="w-4 h-4 ml-1" />
                                 سحب نقد
                               </Button>
@@ -690,7 +690,7 @@ export default function CashRegisterManagement() {
 
                           <Dialog open={showCloseDialog} onOpenChange={setShowCloseDialog}>
                             <DialogTrigger asChild>
-                              <Button variant="destructive" size="sm">
+                              <Button variant="destructive" size="sm" onClick={() => alert('Button clicked')}>
                                 <Lock className="w-4 h-4 ml-1" />
                                 إغلاق الصندوق
                               </Button>

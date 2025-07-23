@@ -559,13 +559,13 @@ export const TaxRegionCreateTaxOverrideForm = ({
                                         <button
                                           type="button"
                                           className="bg-ui-bg-field-component hover:bg-ui-bg-field-component-hover shadow-borders-base txt-compact-small text-ui-fg-muted transition-fg focus-visible:shadow-borders-interactive-with-active flex flex-1 items-center gap-x-2 rounded-md px-2 py-1.5 outline-none"
-                                        >
+                                         onClick={() => alert('Button clicked')}>
                                           <MagnifyingGlass />
                                           {searchPlaceholder}
                                         </button>
                                       </StackedFocusModal.Trigger>
                                       <StackedFocusModal.Trigger asChild>
-                                        <Button variant="secondary">
+                                        <Button variant="secondary" onClick={() => alert('Button clicked')}>
                                           {t("actions.browse")}
                                         </Button>
                                       </StackedFocusModal.Trigger>
@@ -634,7 +634,7 @@ export const TaxRegionCreateTaxOverrideForm = ({
         <RouteFocusModal.Footer>
           <div className="flex items-center justify-end gap-x-2">
             <RouteFocusModal.Close asChild>
-              <Button size="small" variant="secondary">
+              <Button size="small" variant="secondary" onClick={() => alert('Button clicked')}>
                 {t("actions.cancel")}
               </Button>
             </RouteFocusModal.Close>

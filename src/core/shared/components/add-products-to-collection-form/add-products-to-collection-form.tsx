@@ -159,7 +159,7 @@ export const AddProductsToCollectionForm = ({
               <Hint variant="error">{form.formState.errors.add.message}</Hint>
             )}
             <RouteFocusModal.Close asChild>
-              <Button size="small" variant="secondary">
+              <Button size="small" variant="secondary" onClick={() => alert('Button clicked')}>
                 {t("actions.cancel")}
               </Button>
             </RouteFocusModal.Close>

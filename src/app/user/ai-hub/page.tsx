@@ -1,12 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
 import { Button } from '@/core/shared/components/ui/button';
 import { Badge } from '@/core/shared/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/core/shared/components/ui/tabs';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { 
   Bot, 
   Calculator, 
@@ -25,7 +25,11 @@ import {
   FileText,
   Settings,
   Grid,
-  Star
+  Star,
+  Upload,
+  Eye,
+  Shield,
+  Receipt
 } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
@@ -36,7 +40,7 @@ interface AIFeature {
   description: string;
   icon: React.ReactNode;
   href: string;
-  category: 'calculator' | 'advisor' | 'insights' | 'assistant';
+  category: 'calculator' | 'advisor' | 'insights' | 'assistant' | 'extractor';
   status: 'active' | 'beta' | 'coming-soon';
   features: string[];
   popularity: number;
@@ -44,7 +48,27 @@ interface AIFeature {
 
 export default function AIHubPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
+
+  // Handle direct feature access via URL parameters
+  useEffect(() => {
+    const feature = searchParams?.get('feature');
+    if (feature === 'expense-tracker') {
+      setSelectedCategory('extractor');
+      // Scroll to expense tracker feature
+      setTimeout(() => {
+        const element = document.getElementById('warranty-expense-tracker');
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          element.classList.add('ring-4', 'ring-purple-500', 'ring-opacity-50');
+          setTimeout(() => {
+            element.classList.remove('ring-4', 'ring-purple-500', 'ring-opacity-50');
+          }, 3000);
+        }
+      }, 100);
+    }
+  }, [searchParams]);
 
   const aiFeatures: AIFeature[] = [
     {
@@ -101,6 +125,39 @@ export default function AIHubPage() {
       status: 'beta',
       features: ['مراحل البناء', 'مستويات الجودة', 'توصيات ذكية', 'توفير التكاليف'],
       popularity: 71
+    },
+    {
+      id: 'invoice-extractor',
+      name: 'مستخرج بيانات الفواتير',
+      description: 'خدمة ذكية لاستخراج بيانات الضمان والفواتير تلقائياً باستخدام الذكاء الاصطناعي',
+      icon: <Receipt className="w-8 h-8" />,
+      href: '/user/warranties/ai-extract',
+      category: 'extractor',
+      status: 'active',
+      features: ['اكتشاف اسم المنتج والمتجر', 'استخراج التاريخ والسعر', 'تحديد مدة الضمان', 'دقة عالية 95%'],
+      popularity: 89
+    },
+    {
+      id: 'warranty-expense-tracker',
+      name: 'مستخرج بيانات المصروفات',
+      description: 'استخراج ذكي لبيانات المصروفات من الفواتير والإيصالات باستخدام الذكاء الاصطناعي',
+      icon: <BarChart3 className="w-8 h-8" />,
+      href: '/user/warranty-expense-tracking',
+      category: 'extractor',
+      status: 'active',
+      features: ['اكتشاف اسم المتجر والمنتج', 'استخراج المبلغ والتاريخ', 'تصنيف نوع المصروف', 'دقة عالية 95%'],
+      popularity: 85
+    },
+    {
+      id: 'ai-features-test',
+      name: 'مختبر الميزات الذكية',
+      description: 'اختبار ومراجعة شاملة لجميع ميزات الذكاء الاصطناعي وتقديم التغذية الراجعة للتحسين',
+      icon: <Target className="w-8 h-8" />,
+      href: '/user/ai-smart-features-test',
+      category: 'assistant',
+      status: 'active',
+      features: ['اختبار الميزات', 'تقييم الأداء', 'تقارير الجودة', 'تحسين مستمر'],
+      popularity: 68
     }
   ];
 
@@ -109,7 +166,8 @@ export default function AIHubPage() {
     { id: 'calculator', name: 'الحاسبات', icon: <Calculator className="w-4 h-4" /> },
     { id: 'assistant', name: 'المساعدين', icon: <Bot className="w-4 h-4" /> },
     { id: 'insights', name: 'الرؤى', icon: <Lightbulb className="w-4 h-4" /> },
-    { id: 'advisor', name: 'المستشارين', icon: <Building2 className="w-4 h-4" /> }
+    { id: 'advisor', name: 'المستشارين', icon: <Building2 className="w-4 h-4" /> },
+    { id: 'extractor', name: 'مستخرجات البيانات', icon: <Eye className="w-4 h-4" /> }
   ];
 
   const filteredFeatures = selectedCategory === 'all' 
@@ -146,6 +204,8 @@ export default function AIHubPage() {
         return 'text-amber-600 bg-amber-50';
       case 'advisor':
         return 'text-green-600 bg-green-50';
+      case 'extractor':
+        return 'text-orange-600 bg-orange-50';
       default:
         return 'text-gray-600 bg-gray-50';
     }
@@ -162,9 +222,21 @@ export default function AIHubPage() {
             </div>
             <h1 className="text-4xl font-bold text-gray-800">مركز الذكاء الاصطناعي</h1>
           </div>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-4">
             مجموعة شاملة من أدوات الذكاء الاصطناعي لمساعدتك في جميع مراحل مشروع البناء
           </p>
+          
+          {/* Testing Link */}
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 max-w-2xl mx-auto">
+            <p className="text-yellow-800 mb-2">
+              🧪 نحن نعمل على تحسين الميزات الذكية - ساعدنا في الاختبار والتطوير
+            </p>
+            <Link href="/user/ai-smart-features-test">
+              <Button className="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-lg" onClick={() => alert('Button clicked')}>
+                صفحة اختبار الميزات الذكية
+              </Button>
+            </Link>
+          </div>
         </div>
 
         {/* Stats Cards */}
@@ -232,7 +304,11 @@ export default function AIHubPage() {
         {/* AI Features Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {filteredFeatures.map((feature) => (
-            <Card key={feature.id} className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+            <Card 
+              key={feature.id} 
+              id={feature.id}
+              className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+            >
               <CardHeader className="pb-4">
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-4">
@@ -281,7 +357,7 @@ export default function AIHubPage() {
                     </Button>
                   </Link>
                   
-                  <Button variant="outline" size="sm" className="px-4">
+                  <Button variant="outline" size="sm" className="px-4" onClick={() => alert('Button clicked')}>
                     <FileText className="w-4 h-4" />
                   </Button>
                 </div>
@@ -301,7 +377,7 @@ export default function AIHubPage() {
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <Link href="/user/projects/create">
-                <Button variant="outline" className="h-auto p-4 flex flex-col gap-2 w-full">
+                <Button variant="outline" className="h-auto p-4 flex flex-col gap-2 w-full" onClick={() => alert('Button clicked')}>
                   <Building2 className="w-6 h-6" />
                   <div className="text-center">
                     <div className="font-medium">إنشاء مشروع جديد</div>
@@ -311,7 +387,7 @@ export default function AIHubPage() {
               </Link>
               
               <Link href="/user/comprehensive-construction-calculator">
-                <Button variant="outline" className="h-auto p-4 flex flex-col gap-2 w-full">
+                <Button variant="outline" className="h-auto p-4 flex flex-col gap-2 w-full" onClick={() => alert('Button clicked')}>
                   <Calculator className="w-6 h-6" />
                   <div className="text-center">
                     <div className="font-medium">حاسبة سريعة</div>
@@ -321,7 +397,7 @@ export default function AIHubPage() {
               </Link>
               
               <Link href="/user/ai-assistant">
-                <Button variant="outline" className="h-auto p-4 flex flex-col gap-2 w-full">
+                <Button variant="outline" className="h-auto p-4 flex flex-col gap-2 w-full" onClick={() => alert('Button clicked')}>
                   <MessageSquare className="w-6 h-6" />
                   <div className="text-center">
                     <div className="font-medium">اسأل المساعد</div>

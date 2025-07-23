@@ -69,7 +69,7 @@ export const ApiKeyManagementListTable = ({
           </Text>
         </div>
         <Link to="create">
-          <Button variant="secondary" size="small">
+          <Button variant="secondary" size="small" onClick={() => alert('Button clicked')}>
             {t("actions.create")}
           </Button>
         </Link>

@@ -382,19 +382,19 @@ export default function ForumPage() {
               <Card className="p-6 mt-6">
                 <h3 className="text-lg font-semibold text-gray-800 mb-4">إجراءات سريعة</h3>
                 <div className="space-y-3">
-                  <button className="w-full bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-lg transition-colors">
+                  <button className="w-full bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-lg transition-colors" onClick={() => alert('Button clicked')}>
                     <div className="flex items-center gap-2">
                       <ClientIcon type="settings" size={16} />
                       <span>موضوع جديد</span>
                     </div>
                   </button>
-                  <button className="w-full border border-gray-300 hover:bg-gray-50 text-gray-700 p-3 rounded-lg transition-colors">
+                  <button className="w-full border border-gray-300 hover:bg-gray-50 text-gray-700 p-3 rounded-lg transition-colors" onClick={() => alert('Button clicked')}>
                     <div className="flex items-center gap-2">
                       <ClientIcon type="cart" size={16} />
                       <span>مواضيعي المحفوظة</span>
                     </div>
                   </button>
-                  <button className="w-full border border-gray-300 hover:bg-gray-50 text-gray-700 p-3 rounded-lg transition-colors">
+                  <button className="w-full border border-gray-300 hover:bg-gray-50 text-gray-700 p-3 rounded-lg transition-colors" onClick={() => alert('Button clicked')}>
                     <div className="flex items-center gap-2">
                       <ClientIcon type="chart" size={16} />
                       <span>مشاركاتي</span>
@@ -426,7 +426,7 @@ export default function ForumPage() {
                     <option>الأكثر إعجاباً</option>
                   </select>
                   {user && (
-                    <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors">
+                    <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors" onClick={() => alert('Button clicked')}>
                       موضوع جديد
                     </button>
                   )}

@@ -220,7 +220,7 @@ export default function ShoppingPage() {
                   ابدأ بإضافة المنتجات إلى سلة التسوق
                 </Typography>
                 <Link href="/stores">
-                  <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+                  <Button className="bg-blue-600 hover:bg-blue-700 text-white" onClick={() => alert('Button clicked')}>
                     تصفح المتاجر
                   </Button>
                 </Link>
@@ -336,13 +336,13 @@ export default function ShoppingPage() {
                   </div>
                 </div>
 
-                <Button className="w-full bg-green-600 hover:bg-green-700 text-white py-3 flex items-center justify-center gap-2">
+                <Button className="w-full bg-green-600 hover:bg-green-700 text-white py-3 flex items-center justify-center gap-2" onClick={() => alert('Button clicked')}>
                   <CreditCard className="w-5 h-5" />
                   إتمام الشراء
                 </Button>
                 
                 <Link href="/stores" className="block mt-3">
-                  <Button variant="outline" className="w-full border-gray-300 text-gray-700 hover:bg-gray-50">
+                  <Button variant="outline" className="w-full border-gray-300 text-gray-700 hover:bg-gray-50" onClick={() => alert('Button clicked')}>
                     متابعة التسوق
                   </Button>
                 </Link>
@@ -364,7 +364,7 @@ export default function ShoppingPage() {
                 ابدأ بإضافة المنتجات إلى قائمة المفضلة
               </Typography>
               <Link href="/stores">
-                <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+                <Button className="bg-blue-600 hover:bg-blue-700 text-white" onClick={() => alert('Button clicked')}>
                   تصفح المتاجر
                 </Button>
               </Link>
@@ -426,7 +426,7 @@ export default function ShoppingPage() {
                     </Button>
                     
                     <Link href={`/products/${item.productId}`}>
-                      <Button variant="outline" className="w-full border-gray-300 text-gray-700 hover:bg-gray-50">
+                      <Button variant="outline" className="w-full border-gray-300 text-gray-700 hover:bg-gray-50" onClick={() => alert('Button clicked')}>
                         عرض التفاصيل
                       </Button>
                     </Link>

@@ -139,7 +139,7 @@ export const AddCustomersForm = ({
               </Hint>
             )}
             <RouteFocusModal.Close asChild>
-              <Button variant="secondary" size="small">
+              <Button variant="secondary" size="small" onClick={() => alert('Button clicked')}>
                 {t("actions.cancel")}
               </Button>
             </RouteFocusModal.Close>

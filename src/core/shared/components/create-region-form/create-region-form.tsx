@@ -190,7 +190,7 @@ export const CreateRegionForm = ({
         <RouteFocusModal.Header>
           <div className="flex items-center justify-end gap-x-2">
             <RouteFocusModal.Close asChild>
-              <Button size="small" variant="secondary">
+              <Button size="small" variant="secondary" onClick={() => alert('Button clicked')}>
                 {t("actions.cancel")}
               </Button>
             </RouteFocusModal.Close>
@@ -345,7 +345,7 @@ export const CreateRegionForm = ({
                 <StackedFocusModal id={STACKED_MODAL_ID}>
                   <div className="flex items-center justify-end">
                     <StackedFocusModal.Trigger asChild>
-                      <Button variant="secondary" size="small">
+                      <Button variant="secondary" size="small" onClick={() => alert('Button clicked')}>
                         {t("regions.addCountries")}
                       </Button>
                     </StackedFocusModal.Trigger>
@@ -379,7 +379,7 @@ export const CreateRegionForm = ({
                       <StackedFocusModal.Footer>
                         <div className="flex items-center justify-end gap-x-2">
                           <StackedFocusModal.Close asChild>
-                            <Button variant="secondary" size="small">
+                            <Button variant="secondary" size="small" onClick={() => alert('Button clicked')}>
                               {t("actions.cancel")}
                             </Button>
                           </StackedFocusModal.Close>

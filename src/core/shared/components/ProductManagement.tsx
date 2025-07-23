@@ -168,15 +168,15 @@ const MedusaProductManagement: React.FC = () => {
           <p className="text-gray-600">Powered by Medusa Commerce</p>
         </div>
         <div className="flex space-x-2">
-          <button className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+          <button className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700" onClick={() => alert('Button clicked')}>
             <Plus className="w-4 h-4 mr-2" />
             Add Product
           </button>
-          <button className="flex items-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+          <button className="flex items-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50" onClick={() => alert('Button clicked')}>
             <Upload className="w-4 h-4 mr-2" />
             Import
           </button>
-          <button className="flex items-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+          <button className="flex items-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50" onClick={() => alert('Button clicked')}>
             <Download className="w-4 h-4 mr-2" />
             Export
           </button>
@@ -307,13 +307,13 @@ const MedusaProductManagement: React.FC = () => {
                 
                 <div className="flex justify-between items-center mt-4">
                   <div className="flex space-x-1">
-                    <button className="p-1 text-gray-600 hover:text-blue-600">
+                    <button className="p-1 text-gray-600 hover:text-blue-600" onClick={() => alert('Button clicked')}>
                       <Eye className="w-4 h-4" />
                     </button>
-                    <button className="p-1 text-gray-600 hover:text-blue-600">
+                    <button className="p-1 text-gray-600 hover:text-blue-600" onClick={() => alert('Button clicked')}>
                       <Edit className="w-4 h-4" />
                     </button>
-                    <button className="p-1 text-gray-600 hover:text-red-600">
+                    <button className="p-1 text-gray-600 hover:text-red-600" onClick={() => alert('Button clicked')}>
                       <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
@@ -408,13 +408,13 @@ const MedusaProductManagement: React.FC = () => {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <div className="flex space-x-2">
-                        <button className="text-blue-600 hover:text-blue-900">
+                        <button className="text-blue-600 hover:text-blue-900" onClick={() => alert('Button clicked')}>
                           <Eye className="w-4 h-4" />
                         </button>
-                        <button className="text-gray-600 hover:text-gray-900">
+                        <button className="text-gray-600 hover:text-gray-900" onClick={() => alert('Button clicked')}>
                           <Edit className="w-4 h-4" />
                         </button>
-                        <button className="text-red-600 hover:text-red-900">
+                        <button className="text-red-600 hover:text-red-900" onClick={() => alert('Button clicked')}>
                           <Trash2 className="w-4 h-4" />
                         </button>
                       </div>

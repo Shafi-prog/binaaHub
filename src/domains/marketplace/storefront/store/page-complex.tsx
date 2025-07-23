@@ -378,7 +378,7 @@ export default function StoreDashboard() {
           <Card className="p-6">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-lg font-semibold text-gray-900">الطلبات الحديثة</h2>
-              <button className="text-blue-600 hover:text-blue-800 text-sm font-medium">
+              <button className="text-blue-600 hover:text-blue-800 text-sm font-medium" onClick={() => alert('Button clicked')}>
                 عرض الكل
               </button>
             </div>

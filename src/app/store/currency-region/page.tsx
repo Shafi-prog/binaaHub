@@ -203,7 +203,7 @@ export default function CurrencyRegionManagementPage() {
             </div>
             <Dialog open={isCreateCurrencyDialogOpen} onOpenChange={setIsCreateCurrencyDialogOpen}>
               <DialogTrigger asChild>
-                <Button>
+                <Button onClick={() => alert('Button clicked')}>
                   <Plus className="w-4 h-4 mr-2" />
                   Add Currency
                 </Button>
@@ -341,7 +341,7 @@ export default function CurrencyRegionManagementPage() {
                       </TableCell>
                       <TableCell>
                         <div className="flex space-x-2">
-                          <Button size="sm" variant="outline">
+                          <Button size="sm" variant="outline" onClick={() => alert('Button clicked')}>
                             <Edit className="w-4 h-4" />
                           </Button>
                           {!currency.is_default && (
@@ -371,7 +371,7 @@ export default function CurrencyRegionManagementPage() {
             </div>
             <Dialog open={isCreateRegionDialogOpen} onOpenChange={setIsCreateRegionDialogOpen}>
               <DialogTrigger asChild>
-                <Button>
+                <Button onClick={() => alert('Button clicked')}>
                   <Plus className="w-4 h-4 mr-2" />
                   Create Region
                 </Button>
@@ -476,7 +476,7 @@ export default function CurrencyRegionManagementPage() {
                     <span className="font-medium">{region.countries.length}</span>
                   </div>
                   <div className="flex space-x-2 pt-2">
-                    <Button size="sm" variant="outline" className="flex-1">
+                    <Button size="sm" variant="outline" className="flex-1" onClick={() => alert('Button clicked')}>
                       <Edit className="w-4 h-4 mr-1" />
                       Edit
                     </Button>

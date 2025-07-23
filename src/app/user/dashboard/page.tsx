@@ -442,41 +442,94 @@ export default function UserDashboardPage() {
             </div>
           </EnhancedCard>
 
-          {/* AI Insights */}
+          {/* AI Features Hub */}
           <EnhancedCard variant="elevated" className="bg-white/80 backdrop-blur-sm">
             <div className="mb-6">
               <Typography variant="subheading" size="xl" weight="semibold" className="text-gray-800 mb-2 flex items-center gap-2">
                 <Brain className="w-5 h-5 text-purple-600" />
-                الرؤى الذكية 🧠
+                مركز الذكاء الاصطناعي �
               </Typography>
               <Typography variant="body" size="sm" className="text-gray-600">
-                توصيات مخصصة لك
+                أدوات ذكية لمساعدتك في مشاريعك
               </Typography>
             </div>
-            <div className="space-y-4">
-              <div className="bg-purple-50 rounded-lg p-4">
+            
+            {/* Quick AI Tools */}
+            <div className="grid grid-cols-2 gap-3 mb-4">
+              <Link href="/user/comprehensive-construction-calculator">
+                <div className="bg-blue-50 rounded-lg p-3 hover:bg-blue-100 transition-colors cursor-pointer">
+                  <div className="flex items-center gap-2 mb-1">
+                    <Calculator className="w-4 h-4 text-blue-600" />
+                    <Typography variant="caption" size="sm" weight="medium" className="text-blue-800">حاسبة شاملة</Typography>
+                  </div>
+                  <Typography variant="caption" size="xs" className="text-blue-600">حساب تكاليف دقيقة</Typography>
+                </div>
+              </Link>
+              
+              <Link href="/user/ai-assistant">
+                <div className="bg-green-50 rounded-lg p-3 hover:bg-green-100 transition-colors cursor-pointer">
+                  <div className="flex items-center gap-2 mb-1">
+                    <Bot className="w-4 h-4 text-green-600" />
+                    <Typography variant="caption" size="sm" weight="medium" className="text-green-800">مساعد ذكي</Typography>
+                  </div>
+                  <Typography variant="caption" size="xs" className="text-green-600">إجابات فورية</Typography>
+                </div>
+              </Link>
+              
+              <Link href="/user/smart-construction-advisor">
+                <div className="bg-orange-50 rounded-lg p-3 hover:bg-orange-100 transition-colors cursor-pointer">
+                  <div className="flex items-center gap-2 mb-1">
+                    <Building2 className="w-4 h-4 text-orange-600" />
+                    <Typography variant="caption" size="sm" weight="medium" className="text-orange-800">مستشار ذكي</Typography>
+                  </div>
+                  <Typography variant="caption" size="xs" className="text-orange-600">نصائح مخصصة</Typography>
+                </div>
+              </Link>
+              
+              <Link href="/user/smart-insights">
+                <div className="bg-purple-50 rounded-lg p-3 hover:bg-purple-100 transition-colors cursor-pointer">
+                  <div className="flex items-center gap-2 mb-1">
+                    <BarChart3 className="w-4 h-4 text-purple-600" />
+                    <Typography variant="caption" size="sm" weight="medium" className="text-purple-800">رؤى ذكية</Typography>
+                  </div>
+                  <Typography variant="caption" size="xs" className="text-purple-600">تحليلات متقدمة</Typography>
+                </div>
+              </Link>
+            </div>
+            
+            {/* AI Insights */}
+            <div className="space-y-3 mb-4">
+              <div className="bg-yellow-50 rounded-lg p-3 border border-yellow-200">
                 <div className="flex items-start gap-3">
-                  <TrendingDown className="w-5 h-5 text-purple-600 mt-0.5" />
+                  <Lightbulb className="w-4 h-4 text-yellow-600 mt-0.5" />
                   <div>
-                    <p className="text-sm font-medium text-purple-800">توفير محتمل</p>
-                    <p className="text-xs text-purple-600">يمكنك توفير 15% من تكاليف المواد</p>
+                    <p className="text-sm font-medium text-yellow-800">⚠️ تحسين الميزات الذكية</p>
+                    <p className="text-xs text-yellow-700">نعمل على تحسين دقة وفعالية الأدوات الذكية</p>
                   </div>
                 </div>
               </div>
-              <div className="bg-blue-50 rounded-lg p-4">
+              <div className="bg-blue-50 rounded-lg p-3">
                 <div className="flex items-start gap-3">
-                  <Lightbulb className="w-5 h-5 text-blue-600 mt-0.5" />
+                  <TrendingDown className="w-4 h-4 text-blue-600 mt-0.5" />
                   <div>
-                    <p className="text-sm font-medium text-blue-800">توصية ذكية</p>
-                    <p className="text-xs text-blue-600">الوقت المثالي لبدء مشروع الأسقف</p>
+                    <p className="text-sm font-medium text-blue-800">توفير محتمل</p>
+                    <p className="text-xs text-blue-600">استخدم الحاسبة الشاملة لتوفير 15% من التكاليف</p>
                   </div>
                 </div>
               </div>
-              <div className="border-t pt-4">
-                <Link href="/user/smart-insights" className="text-purple-600 hover:text-purple-700 text-sm font-medium">
-                  عرض جميع الرؤى ←
-                </Link>
-              </div>
+            </div>
+            
+            <div className="flex gap-2 pt-3 border-t">
+              <Link href="/user/ai-hub" className="flex-1">
+                <Button variant="outline" className="w-full text-purple-600 border-purple-300 hover:bg-purple-50 text-sm py-2" onClick={() => alert('Button clicked')}>
+                  مركز الذكاء الاصطناعي
+                </Button>
+              </Link>
+              <Link href="/user/ai-smart-features-test" className="flex-1">
+                <Button variant="outline" className="w-full text-orange-600 border-orange-300 hover:bg-orange-50 text-sm py-2" onClick={() => alert('Button clicked')}>
+                  اختبار الميزات
+                </Button>
+              </Link>
             </div>
           </EnhancedCard>
 

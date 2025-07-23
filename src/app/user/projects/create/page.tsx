@@ -34,7 +34,7 @@ export default function CreateProjectPage() {
   const [projectData, setProjectData] = useState({
     name: '',
     description: '',
-    area: 0,
+    area: '',
     projectType: 'villa',
     floorCount: 1,
     roomCount: 4,
@@ -51,7 +51,8 @@ export default function CreateProjectPage() {
       return;
     }
 
-    if (projectData.area <= 0) {
+    const area = parseFloat(projectData.area);
+    if (!area || area <= 0) {
       alert('يرجى إدخال مساحة صحيحة للمشروع');
       return;
     }
@@ -63,7 +64,7 @@ export default function CreateProjectPage() {
         id: Date.now().toString(),
         name: projectData.name.trim(),
         description: projectData.description.trim(),
-        area: projectData.area,
+        area: area,
         projectType: projectData.projectType,
         floorCount: projectData.floorCount,
         roomCount: projectData.roomCount,
@@ -96,6 +97,12 @@ export default function CreateProjectPage() {
       return;
     }
 
+    const area = parseFloat(projectData.area);
+    if (!area || area <= 0) {
+      alert('يرجى إدخال مساحة صحيحة للمشروع');
+      return;
+    }
+
     try {
       setLoading(true);
       
@@ -103,7 +110,7 @@ export default function CreateProjectPage() {
         id: Date.now().toString(),
         name: projectData.name.trim(),
         description: projectData.description.trim(),
-        area: projectData.area || 200,
+        area: area,
         projectType: projectData.projectType,
         floorCount: projectData.floorCount,
         roomCount: projectData.roomCount,
@@ -212,8 +219,8 @@ export default function CreateProjectPage() {
                   </label>
                   <Input
                     type="number"
-                    value={projectData.area || ''}
-                    onChange={(e) => setProjectData(prev => ({ ...prev, area: parseFloat(e.target.value) || 0 }))}
+                    value={projectData.area}
+                    onChange={(e) => setProjectData(prev => ({ ...prev, area: e.target.value }))}
                     placeholder="200"
                     min="1"
                     required
@@ -298,7 +305,7 @@ export default function CreateProjectPage() {
                   {(() => {
                     const phases = ConstructionGuidanceService.getProjectPhases({
                       projectType: projectData.projectType as any,
-                      area: projectData.area || 200,
+                      area: Number(projectData.area) || 200,
                       floors: projectData.floorCount,
                       compliance: 'enhanced',
                       supervision: 'engineer',
@@ -360,7 +367,7 @@ export default function CreateProjectPage() {
                         onClick={() => {
                           const allPhases = ConstructionGuidanceService.getProjectPhases({
                             projectType: projectData.projectType as any,
-                            area: projectData.area || 200,
+                            area: Number(projectData.area) || 200,
                             floors: projectData.floorCount,
                             compliance: 'enhanced',
                             supervision: 'engineer',
@@ -479,7 +486,7 @@ export default function CreateProjectPage() {
                   <div className="flex gap-4">
                     <Button
                       type="submit"
-                      disabled={loading || !projectData.name.trim() || projectData.area <= 0}
+                      disabled={loading || !projectData.name.trim() || !projectData.area || parseFloat(projectData.area) <= 0}
                       className="flex-1 flex items-center gap-2"
                     >
                       <Save className="w-4 h-4" />
@@ -490,7 +497,7 @@ export default function CreateProjectPage() {
                       type="button"
                       variant="outline"
                       onClick={handleCreateWithCalculator}
-                      disabled={loading || !projectData.name.trim()}
+                      disabled={loading || !projectData.name.trim() || !projectData.area || parseFloat(projectData.area) <= 0}
                       className="flex-1 flex items-center gap-2"
                     >
                       <Calculator className="w-4 h-4" />

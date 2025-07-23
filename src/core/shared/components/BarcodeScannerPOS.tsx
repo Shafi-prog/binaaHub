@@ -285,7 +285,7 @@ export default function BarcodeScanner({ onProductSelected, onClose, storeId }: 
                     </div>
                     
                     <div className="mt-3 flex justify-end">
-                      <Button size="sm" className="bg-green-600 hover:bg-green-700">
+                      <Button size="sm" className="bg-green-600 hover:bg-green-700" onClick={() => alert('Button clicked')}>
                         <ShoppingCart className="w-4 h-4 ml-1" />
                         إضافة للفاتورة
                       </Button>

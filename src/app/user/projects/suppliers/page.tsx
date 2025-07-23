@@ -113,7 +113,7 @@ export default function SuppliersPage() {
           <Button 
             variant="filled"
             className="flex items-center gap-2"
-          >
+           onClick={() => alert('Button clicked')}>
             <Plus className="w-4 h-4" />
             {activeTab === 'supplier' ? 'إضافة مورد جديد' : 'إضافة مقاول جديد'}
           </Button>
@@ -162,13 +162,13 @@ export default function SuppliersPage() {
                       <button 
                         className="bg-green-100 text-green-600 p-3 rounded-lg hover:bg-green-200 transition-colors"
                         title="اتصال"
-                      >
+                       onClick={() => alert('Button clicked')}>
                         <Phone className="w-5 h-5" />
                       </button>
                       <button 
                         className="bg-green-100 text-green-600 p-3 rounded-lg hover:bg-green-200 transition-colors"
                         title="واتساب"
-                      >
+                       onClick={() => alert('Button clicked')}>
                         <MessageCircle className="w-5 h-5" />
                       </button>
                     </div>

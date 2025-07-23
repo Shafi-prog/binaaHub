@@ -528,8 +528,8 @@ export default function SupervisorDashboard() {
                         <span className="text-sm text-gray-500">{inspection.photos.length} photos</span>
                       </div>
                       <div className="flex gap-2">
-                        <Button size="sm" variant="outline">View Details</Button>
-                        <Button size="sm">Follow Up</Button>
+                        <Button size="sm" variant="outline" onClick={() => alert('Button clicked')}>View Details</Button>
+                        <Button size="sm" onClick={() => alert('Button clicked')}>Follow Up</Button>
                       </div>
                     </div>
                   </div>
@@ -586,8 +586,8 @@ export default function SupervisorDashboard() {
                         <span className="text-sm text-gray-500">{incident.photos.length} photos</span>
                       </div>
                       <div className="flex gap-2">
-                        <Button size="sm" variant="outline">View Report</Button>
-                        <Button size="sm">Update Status</Button>
+                        <Button size="sm" variant="outline" onClick={() => alert('Button clicked')}>View Report</Button>
+                        <Button size="sm" onClick={() => alert('Button clicked')}>Update Status</Button>
                       </div>
                     </div>
                   </div>
@@ -656,11 +656,11 @@ export default function SupervisorDashboard() {
                     </div>
 
                     <div className="flex gap-2 mt-3">
-                      <Button size="sm" variant="outline" className="flex-1">
+                      <Button size="sm" variant="outline" className="flex-1" onClick={() => alert('Button clicked')}>
                         <MessageSquare className="w-3 h-3 mr-1" />
                         Contact
                       </Button>
-                      <Button size="sm" className="flex-1">
+                      <Button size="sm" className="flex-1" onClick={() => alert('Button clicked')}>
                         View Profile
                       </Button>
                     </div>

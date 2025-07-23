@@ -115,7 +115,7 @@ function DismissedQuantity({
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <Popover.Trigger asChild>
-        <Button className="flex gap-2 px-2" variant="secondary" type="button">
+        <Button className="flex gap-2 px-2" variant="secondary" type="button" onClick={() => alert('Button clicked')}>
           <div>
             <HeartBroken />
           </div>

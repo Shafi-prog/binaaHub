@@ -229,15 +229,15 @@ export default function AdvancedInventoryManagement() {
             <Scan className="w-4 h-4 mr-2" />
             مسح الباركود
           </Button>
-          <Button variant="outline">
+          <Button variant="outline" onClick={() => alert('Button clicked')}>
             <Download className="w-4 h-4 mr-2" />
             تصدير
           </Button>
-          <Button variant="outline">
+          <Button variant="outline" onClick={() => alert('Button clicked')}>
             <Upload className="w-4 h-4 mr-2" />
             استيراد
           </Button>
-          <Button>
+          <Button onClick={() => alert('Button clicked')}>
             <Plus className="w-4 h-4 mr-2" />
             إضافة منتج
           </Button>
@@ -430,10 +430,10 @@ export default function AdvancedInventoryManagement() {
                         <Button size="sm" variant="ghost" onClick={() => setSelectedProduct(product)}>
                           <Eye className="w-4 h-4" />
                         </Button>
-                        <Button size="sm" variant="ghost">
+                        <Button size="sm" variant="ghost" onClick={() => alert('Button clicked')}>
                           <Edit className="w-4 h-4" />
                         </Button>
-                        <Button size="sm" variant="ghost" className="text-red-600">
+                        <Button size="sm" variant="ghost" className="text-red-600" onClick={() => alert('Button clicked')}>
                           <Trash2 className="w-4 h-4" />
                         </Button>
                       </div>
@@ -461,7 +461,7 @@ export default function AdvancedInventoryManagement() {
                 <Button onClick={() => setShowBarcodeScanner(false)} variant="outline" className="flex-1">
                   إلغاء
                 </Button>
-                <Button className="flex-1">
+                <Button className="flex-1" onClick={() => alert('Button clicked')}>
                   مسح
                 </Button>
               </div>

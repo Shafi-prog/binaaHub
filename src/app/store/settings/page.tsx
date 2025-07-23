@@ -106,7 +106,7 @@ export default function StoreSettings() {
                   {store?.default_currency_code || 'ر.س (SAR)'}
                 </Typography>
               </div>
-              <Button className="w-full" variant="primary">
+              <Button className="w-full" variant="primary" onClick={() => alert('Button clicked')}>
                 تعديل إعدادات المتجر
               </Button>
             </div>
@@ -139,7 +139,7 @@ export default function StoreSettings() {
                   {store?.created_at ? new Date(store.created_at).toLocaleDateString('ar-SA') : 'غير متوفر'}
                 </Typography>
               </div>
-              <Button variant="outline" className="w-full">
+              <Button variant="outline" className="w-full" onClick={() => alert('Button clicked')}>
                 عرض تحليلات المتجر
               </Button>
             </div>

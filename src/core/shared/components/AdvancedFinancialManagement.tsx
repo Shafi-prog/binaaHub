@@ -263,15 +263,15 @@ export default function AdvancedFinancialManagement() {
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold">الإدارة المالية المتقدمة</h1>
         <div className="flex space-x-2">
-          <Button variant="outline">
+          <Button variant="outline" onClick={() => alert('Button clicked')}>
             <Download className="w-4 h-4 mr-2" />
             تقرير مالي
           </Button>
-          <Button variant="outline">
+          <Button variant="outline" onClick={() => alert('Button clicked')}>
             <FileText className="w-4 h-4 mr-2" />
             تقرير ضريبة القيمة المضافة
           </Button>
-          <Button>
+          <Button onClick={() => alert('Button clicked')}>
             <Plus className="w-4 h-4 mr-2" />
             فاتورة جديدة
           </Button>
@@ -528,10 +528,10 @@ export default function AdvancedFinancialManagement() {
                     </td>
                     <td className="p-3">
                       <div className="flex space-x-2">
-                        <Button size="sm" variant="ghost">
+                        <Button size="sm" variant="ghost" onClick={() => alert('Button clicked')}>
                           <Eye className="w-4 h-4" />
                         </Button>
-                        <Button size="sm" variant="ghost">
+                        <Button size="sm" variant="ghost" onClick={() => alert('Button clicked')}>
                           <Edit className="w-4 h-4" />
                         </Button>
                         <Button 

@@ -3,7 +3,6 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { LoadingSpinner } from '@/core/shared/components/ui/loading-spinner';
 import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/enhanced-components';
 import { Badge } from '@/core/shared/components/ui/badge';
@@ -36,7 +35,6 @@ export default function ConstructionDataDashboard() {
   const [cookieInfo, setCookieInfo] = useState<string[]>([]);
   const [showDebug, setShowDebug] = useState(false);
   const [headerInfo, setHeaderInfo] = useState<any>(null);
-  const supabase = createClientComponentClient();
   const router = useRouter();
 
   useEffect(() => {
@@ -51,13 +49,31 @@ export default function ConstructionDataDashboard() {
         setError(null);
         const cookies = document.cookie.split(';').map((c) => c.trim());
         setCookieInfo(cookies);
-        const { data: { session } } = await supabase.auth.getSession();
-        if (!session) {
-          setError('Authentication session not found');
-          setTimeout(() => router.push('/login'), 2000);
-          return;
+        
+        // Try to get user from sessionStorage (our temporary auth)
+        const userData = sessionStorage.getItem('temp_user');
+        if (userData) {
+          const parsedUser = JSON.parse(userData);
+          console.log('✅ [Construction Data] Found temp user:', parsedUser);
+          setUser(parsedUser);
+        } else {
+          // Try cookie auth as fallback
+          const tempAuthCookie = document.cookie
+            .split(';')
+            .find(row => row.startsWith('temp_auth_user='));
+          
+          if (tempAuthCookie) {
+            const cookieValue = tempAuthCookie.split('=')[1];
+            const cookieUser = JSON.parse(decodeURIComponent(cookieValue));
+            console.log('✅ [Construction Data] Found cookie user:', cookieUser);
+            setUser(cookieUser);
+          } else {
+            setError('Authentication session not found');
+            setTimeout(() => router.push('/login'), 2000);
+            return;
+          }
         }
-        setUser(session.user);
+        
         // TODO: Replace with real API call for construction dashboard stats
         setStats({
           totalProjects: 3,
@@ -81,7 +97,7 @@ export default function ConstructionDataDashboard() {
       }
     };
     loadDashboard();
-  }, [isHydrated, router, supabase]);
+  }, [isHydrated, router]);
 
   if (!isHydrated || loading) {
     return (

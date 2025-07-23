@@ -66,7 +66,7 @@ export const DateRangePicker = ({ value, onChange }: DateRangePickerProps) => {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <Popover.Trigger asChild>
-        <Button variant="secondary" className="gap-x-2">
+        <Button variant="secondary" className="gap-x-2" onClick={() => alert('Button clicked')}>
           <CalendarDays />
           <Text size="small">{formatDateRange(value)}</Text>
         </Button>

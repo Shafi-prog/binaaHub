@@ -503,10 +503,10 @@ export default function QualityControl() {
                         )}
                       </div>
                       <div className="flex gap-2">
-                        <Button size="sm" variant="outline">
+                        <Button size="sm" variant="outline" onClick={() => alert('Button clicked')}>
                           View Details
                         </Button>
-                        <Button size="sm">
+                        <Button size="sm" onClick={() => alert('Button clicked')}>
                           Update Status
                         </Button>
                       </div>

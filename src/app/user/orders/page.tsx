@@ -329,7 +329,7 @@ export default function OrdersPage() {
                 <Button
                   variant="outline"
                   className="border-gray-300 text-gray-700 hover:bg-gray-50 flex items-center gap-2 justify-center"
-                >
+                 onClick={() => alert('Button clicked')}>
                   <Eye className="w-4 h-4" />
                   عرض التفاصيل
                 </Button>
@@ -358,7 +358,7 @@ export default function OrdersPage() {
                 <Button
                   variant="outline"
                   className="border-green-300 text-green-700 hover:bg-green-50 flex items-center gap-2 justify-center"
-                >
+                 onClick={() => alert('Button clicked')}>
                   <MessageSquare className="w-4 h-4" />
                   تواصل مع المتجر
                 </Button>
@@ -378,7 +378,7 @@ export default function OrdersPage() {
             {searchTerm || statusFilter !== 'all' ? 'لم يتم العثور على طلبات تطابق البحث' : 'لم تقم بأي طلبات بعد'}
           </Typography>
           <Link href="/stores" className="inline-block mt-4">
-            <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+            <Button className="bg-blue-600 hover:bg-blue-700 text-white" onClick={() => alert('Button clicked')}>
               تصفح المتاجر
             </Button>
           </Link>

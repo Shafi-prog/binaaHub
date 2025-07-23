@@ -285,6 +285,16 @@ export default function ExpensesPage() {
           </select>
         )}
 
+        {/* AI Invoice Extractor Button */}
+        <Link href="/user/ai-hub?feature=expense-tracker">
+          <Button className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg flex items-center gap-2" onClick={() => alert('Button clicked')}>
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            استخراج من فاتورة بالذكاء الاصطناعي
+          </Button>
+        </Link>
+
         <Button
           onClick={() => setShowAddExpense(true)}
           className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg flex items-center gap-2"
@@ -463,7 +473,7 @@ export default function ExpensesPage() {
                     variant="outline"
                     size="sm"
                     className="border-blue-300 text-blue-700 hover:bg-blue-50"
-                  >
+                   onClick={() => alert('Button clicked')}>
                     <Edit className="w-4 h-4" />
                   </Button>
                   <Button
@@ -492,6 +502,64 @@ export default function ExpensesPage() {
           </Typography>
         </div>
       )}
+
+      {/* AI Features Integration */}
+      <EnhancedCard className="p-6 mt-8 bg-gradient-to-r from-purple-50 to-blue-50 border-purple-200">
+        <Typography variant="subheading" size="xl" weight="semibold" className="mb-4 flex items-center gap-3">
+          <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014.846 21H9.154a3.374 3.374 0 00-2.53-1.453l-.548-.547z" />
+          </svg>
+          أدوات ذكية لإدارة المصروفات
+        </Typography>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <Link href="/user/ai-hub?feature=expense-tracker">
+            <div className="bg-white rounded-lg p-4 hover:shadow-lg transition-shadow cursor-pointer border border-purple-200">
+              <div className="flex items-center gap-3 mb-2">
+                <svg className="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                <Typography variant="subheading" size="lg" weight="semibold" className="text-purple-800">
+                  استخراج ذكي من الفواتير
+                </Typography>
+              </div>
+              <Typography variant="body" size="sm" className="text-purple-600">
+                استخدم الذكاء الاصطناعي لاستخراج بيانات المصروفات من الفواتير تلقائياً
+              </Typography>
+            </div>
+          </Link>
+          
+          <Link href="/user/smart-insights">
+            <div className="bg-white rounded-lg p-4 hover:shadow-lg transition-shadow cursor-pointer border border-blue-200">
+              <div className="flex items-center gap-3 mb-2">
+                <BarChart3 className="w-8 h-8 text-blue-600" />
+                <Typography variant="subheading" size="lg" weight="semibold" className="text-blue-800">
+                  تحليلات ذكية
+                </Typography>
+              </div>
+              <Typography variant="body" size="sm" className="text-blue-600">
+                احصل على رؤى ذكية وتوقعات لأنماط إنفاقك ونصائح للتوفير
+              </Typography>
+            </div>
+          </Link>
+          
+          <Link href="/user/comprehensive-construction-calculator">
+            <div className="bg-white rounded-lg p-4 hover:shadow-lg transition-shadow cursor-pointer border border-green-200">
+              <div className="flex items-center gap-3 mb-2">
+                <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                </svg>
+                <Typography variant="subheading" size="lg" weight="semibold" className="text-green-800">
+                  حاسبة ذكية
+                </Typography>
+              </div>
+              <Typography variant="body" size="sm" className="text-green-600">
+                احسب تكاليف مشاريعك بدقة واربطها بمصروفاتك الفعلية
+              </Typography>
+            </div>
+          </Link>
+        </div>
+      </EnhancedCard>
     </div>
   );
 }

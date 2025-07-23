@@ -597,10 +597,10 @@ export default function SupabaseERPSystem() {
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <button className="p-2 text-gray-400 hover:text-gray-600">
+              <button className="p-2 text-gray-400 hover:text-gray-600" onClick={() => alert('Button clicked')}>
                 <Bell className="w-5 h-5" />
               </button>
-              <button className="p-2 text-gray-400 hover:text-gray-600">
+              <button className="p-2 text-gray-400 hover:text-gray-600" onClick={() => alert('Button clicked')}>
                 <Settings className="w-5 h-5" />
               </button>
               <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">

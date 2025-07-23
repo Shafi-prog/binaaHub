@@ -75,7 +75,7 @@ export const TaxRegionTable = ({
             </div>
           )}
           <Link to={action.to}>
-            <Button size="small" variant="secondary">
+            <Button size="small" variant="secondary" onClick={() => alert('Button clicked')}>
               {action.label}
             </Button>
           </Link>

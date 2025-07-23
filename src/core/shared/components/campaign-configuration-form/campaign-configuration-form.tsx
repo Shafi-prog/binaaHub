@@ -114,7 +114,7 @@ export const CampaignConfigurationForm = ({
         <RouteDrawer.Footer>
           <div className="flex items-center justify-end gap-x-2">
             <RouteDrawer.Close asChild>
-              <Button variant="secondary" size="small">
+              <Button variant="secondary" size="small" onClick={() => alert('Button clicked')}>
                 {t("actions.cancel")}
               </Button>
             </RouteDrawer.Close>

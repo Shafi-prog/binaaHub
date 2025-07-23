@@ -178,7 +178,7 @@ export default function AIAssistantPage() {
               <Button
                 variant="outline"
                 className="w-full border-blue-300 text-blue-700 hover:bg-blue-50"
-              >
+               onClick={() => alert('Button clicked')}>
                 {feature.action}
               </Button>
             </EnhancedCard>
@@ -193,7 +193,7 @@ export default function AIAssistantPage() {
           <Button
             variant="outline"
             className="border-gray-300 text-gray-700 hover:bg-gray-50 flex items-center gap-2"
-          >
+           onClick={() => alert('Button clicked')}>
             <Settings className="w-4 h-4" />
             إدارة المحادثات
           </Button>
@@ -237,7 +237,7 @@ export default function AIAssistantPage() {
                   <Button
                     variant="outline"
                     className="border-blue-300 text-blue-700 hover:bg-blue-50 flex items-center gap-2"
-                  >
+                   onClick={() => alert('Button clicked')}>
                     <MessageSquare className="w-4 h-4" />
                     متابعة
                   </Button>

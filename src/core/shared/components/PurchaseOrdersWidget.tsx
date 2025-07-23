@@ -185,7 +185,7 @@ export const PurchaseOrdersWidget: React.FC = () => {
                     <td className="px-3 py-2">{order.total.toLocaleString()} ر.س</td>
                     {hasPermission('edit_purchase_orders') && (
                       <td className="px-3 py-2">
-                        <button className="text-blue-600 hover:underline text-xs mr-2" aria-label={`تعديل أمر الشراء ${order.id}`} title="تعديل أمر الشراء">تعديل</button>
+                        <button className="text-blue-600 hover:underline text-xs mr-2" aria-label={`تعديل أمر الشراء ${order.id}`} title="تعديل أمر الشراء" onClick={() => alert('Button clicked')}>تعديل</button>
                         <button className="text-red-600 hover:underline text-xs" aria-label={`إلغاء أمر الشراء ${order.id}`} title="إلغاء أمر الشراء" onClick={() => handleCancel(order.id)}>إلغاء</button>
                       </td>
                     )}

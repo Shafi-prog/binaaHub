@@ -324,15 +324,15 @@ export default function AdvancedCRMManagement() {
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold">إدارة علاقات العملاء المتقدمة</h1>
         <div className="flex space-x-2">
-          <Button variant="outline">
+          <Button variant="outline" onClick={() => alert('Button clicked')}>
             <Download className="w-4 h-4 mr-2" />
             تقرير العملاء
           </Button>
-          <Button variant="outline">
+          <Button variant="outline" onClick={() => alert('Button clicked')}>
             <MessageSquare className="w-4 h-4 mr-2" />
             إرسال رسائل جماعية
           </Button>
-          <Button>
+          <Button onClick={() => alert('Button clicked')}>
             <Plus className="w-4 h-4 mr-2" />
             عميل جديد
           </Button>
@@ -624,13 +624,13 @@ export default function AdvancedCRMManagement() {
                       <td className="p-3">{customer.assignedSalesperson}</td>
                       <td className="p-3">
                         <div className="flex space-x-2">
-                          <Button size="sm" variant="ghost">
+                          <Button size="sm" variant="ghost" onClick={() => alert('Button clicked')}>
                             <Eye className="w-4 h-4" />
                           </Button>
-                          <Button size="sm" variant="ghost">
+                          <Button size="sm" variant="ghost" onClick={() => alert('Button clicked')}>
                             <Edit className="w-4 h-4" />
                           </Button>
-                          <Button size="sm" variant="ghost">
+                          <Button size="sm" variant="ghost" onClick={() => alert('Button clicked')}>
                             <MessageSquare className="w-4 h-4" />
                           </Button>
                         </div>
@@ -703,13 +703,13 @@ export default function AdvancedCRMManagement() {
                       </td>
                       <td className="p-3">
                         <div className="flex space-x-2">
-                          <Button size="sm" variant="ghost">
+                          <Button size="sm" variant="ghost" onClick={() => alert('Button clicked')}>
                             <Eye className="w-4 h-4" />
                           </Button>
-                          <Button size="sm" variant="ghost">
+                          <Button size="sm" variant="ghost" onClick={() => alert('Button clicked')}>
                             <Edit className="w-4 h-4" />
                           </Button>
-                          <Button size="sm" variant="ghost">
+                          <Button size="sm" variant="ghost" onClick={() => alert('Button clicked')}>
                             <MessageSquare className="w-4 h-4" />
                           </Button>
                         </div>

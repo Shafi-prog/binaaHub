@@ -1,7 +1,7 @@
 // @ts-nocheck
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ClientIcon } from '@/components/icons';
 import { Button } from '@/core/shared/components/ui/enhanced-components';
 import { LoadingSpinner } from '@/core/shared/components/ui/loading-spinner';
@@ -46,6 +46,7 @@ interface AIConstructionCalculatorProps {
 
 export default function AIConstructionCalculator({ userId }: AIConstructionCalculatorProps) {
   const [isCalculating, setIsCalculating] = useState(false);
+  const [isClient, setIsClient] = useState(false);
   const [projectSpecs, setProjectSpecs] = useState<ProjectSpecs>({
     projectType: '',
     area: 0,
@@ -57,6 +58,10 @@ export default function AIConstructionCalculator({ userId }: AIConstructionCalcu
   const [estimate, setEstimate] = useState<CostEstimate | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'specs' | 'results'>('specs');
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const projectTypes = [
     { value: 'villa', label: 'فيلا سكنية', icon: 'design' },
@@ -136,6 +141,10 @@ export default function AIConstructionCalculator({ userId }: AIConstructionCalcu
   };
 
   const formatCurrency = (amount: number) => {
+    if (!isClient) {
+      // Return a simple format for SSR to avoid hydration mismatch
+      return `${amount.toLocaleString('en-US')} ر.س`;
+    }
     return new Intl.NumberFormat('ar-SA', {
       style: 'currency',
       currency: 'SAR',
@@ -307,6 +316,24 @@ export default function AIConstructionCalculator({ userId }: AIConstructionCalcu
                 </div>
               )}
             </Button>
+            <Button
+              onClick={() => {
+                setProjectSpecs({
+                  projectType: '',
+                  area: 0,
+                  floors: 1,
+                  location: '',
+                  finishLevel: '',
+                  timeline: ''
+                });
+                setEstimate(null);
+                setError(null);
+              }}
+              variant="secondary"
+              className="border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium px-6 py-3"
+            >
+              إلغاء
+            </Button>
           </div>
 
           {/* Error Display */}
@@ -423,17 +450,21 @@ export default function AIConstructionCalculator({ userId }: AIConstructionCalcu
           <div className="flex gap-3">
             <Button
               onClick={saveEstimate}
-              className="bg-green-600 hover:bg-green-700 text-white"
+              className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 shadow-md"
             >
               حفظ التقدير
             </Button>
             <Button
               onClick={() => setActiveTab('specs')}
               variant="secondary"
+              className="border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium px-4 py-2"
             >
               تعديل المواصفات
             </Button>
-            <Button variant="secondary">
+            <Button 
+              variant="secondary"
+              className="border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium px-4 py-2"
+             onClick={() => alert('Button clicked')}>
               تصدير PDF
             </Button>
           </div>

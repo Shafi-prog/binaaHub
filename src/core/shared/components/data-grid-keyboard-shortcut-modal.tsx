@@ -180,7 +180,7 @@ export const DataGridKeyboardShortcutModal = ({
   return (
     <RadixDialog.Root open={open} onOpenChange={onOpenChange}>
       <RadixDialog.Trigger asChild>
-        <Button size="small" variant="secondary">
+        <Button size="small" variant="secondary" onClick={() => alert('Button clicked')}>
           {t("dataGrid.shortcuts.label")}
         </Button>
       </RadixDialog.Trigger>

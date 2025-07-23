@@ -366,11 +366,11 @@ export default function EnhancedInventoryManagement() {
             <RefreshCw className="w-4 h-4 mr-2" />
             تحديث
           </Button>
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" onClick={() => alert('Button clicked')}>
             <Download className="w-4 h-4 mr-2" />
             تصدير
           </Button>
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" onClick={() => alert('Button clicked')}>
             <Upload className="w-4 h-4 mr-2" />
             استيراد
           </Button>
@@ -437,7 +437,7 @@ export default function EnhancedInventoryManagement() {
                       >
                         <Edit className="w-3 h-3" />
                       </Button>
-                      <Button size="sm" variant="outline">
+                      <Button size="sm" variant="outline" onClick={() => alert('Button clicked')}>
                         <Eye className="w-3 h-3" />
                       </Button>
                     </div>

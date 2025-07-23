@@ -107,6 +107,12 @@ export default function ComprehensiveConstructionCalculator() {
   const [projectType, setProjectType] = useState<string>('villa');
   const [floorCount, setFloorCount] = useState<number>(1);
   const [roomCount, setRoomCount] = useState<number>(4);
+  const [isClient, setIsClient] = useState(false);
+  
+  // Set client-side flag
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
   
   // Project and estimation data
   const [currentProject, setCurrentProject] = useState<Project | null>(null);
@@ -141,6 +147,9 @@ export default function ComprehensiveConstructionCalculator() {
     }
   });
 
+  // Saved rooms for lighting
+  const [savedRooms, setSavedRooms] = useState<LightCalculation[]>([]);
+
   // PDF Analysis States
   const [pdfFile, setPdfFile] = useState<File | null>(null);
   const [pdfAnalysis, setPdfAnalysis] = useState<PDFAnalysis | null>(null);
@@ -154,7 +163,7 @@ export default function ComprehensiveConstructionCalculator() {
       nameEn: 'Portland Cement',
       unit: 'كيس 50كغ',
       category: 'خرسانة',
-      standardQuantity: 0.8, // bags per sqm
+      standardQuantity: 7.5, // bags per sqm (more realistic for construction)
       price: 18,
       specifications: ['مقاومة 42.5N/mm²', 'مطابق للمواصفات السعودية', 'سريع التصلب'],
       suppliers: ['شركة أسمنت الرياض', 'أسمنت اليمامة', 'أسمنت الشرقية']
@@ -165,7 +174,7 @@ export default function ComprehensiveConstructionCalculator() {
       nameEn: 'Reinforcement Steel',
       unit: 'طن',
       category: 'حديد',
-      standardQuantity: 0.12, // tons per sqm
+      standardQuantity: 0.18, // tons per sqm (increased for realistic construction)
       price: 2800,
       specifications: ['درجة 60', 'قطر 8-32 مم', 'مقاوم للصدأ'],
       suppliers: ['حديد السعودية', 'الراجحي للحديد', 'صناعات الحديد المتطورة']
@@ -176,7 +185,7 @@ export default function ComprehensiveConstructionCalculator() {
       nameEn: 'Concrete Blocks',
       unit: 'قطعة',
       category: 'بناء',
-      standardQuantity: 12, // pieces per sqm
+      standardQuantity: 15, // pieces per sqm (increased)
       price: 2.5,
       specifications: ['20×20×40 سم', 'مقاومة ضغط 5N/mm²', 'عازل حراري'],
       suppliers: ['مصنع البلوك الحديث', 'شركة الخرسانة السعودية', 'مصانع البناء المتقدمة']
@@ -260,6 +269,16 @@ export default function ComprehensiveConstructionCalculator() {
     { value: 'LED-36W', label: 'LED 36W - 3600 لومن', lumens: 3600, price: 150 }
   ];
 
+  // Hydration-safe number formatter
+  const formatNumber = (num: number): string => {
+    if (!isClient) {
+      // Server-side or before hydration: return simple format
+      return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+    // Client-side: use locale string
+    return num.toLocaleString();
+  };
+
   // Calculate material quantities
   const calculateMaterials = () => {
     const calculated = materials.map(material => {
@@ -270,7 +289,7 @@ export default function ComprehensiveConstructionCalculator() {
         ...material,
         calculatedQuantity: quantity,
         totalCost: totalMaterialCost,
-        formattedCost: totalMaterialCost.toLocaleString()
+        formattedCost: formatNumber(totalMaterialCost)
       };
     });
 
@@ -329,6 +348,61 @@ export default function ComprehensiveConstructionCalculator() {
         lengthSpacing: Number(secondRowLengthSpacing.toFixed(2))
       }
     }));
+  };
+
+  // Save current room calculation
+  const saveCurrentRoom = () => {
+    if (!lightCalc.roomName.trim()) {
+      alert('يرجى إدخال اسم الغرفة');
+      return;
+    }
+
+    // Check if room with same name already exists
+    const existingRoomIndex = savedRooms.findIndex(room => room.roomName === lightCalc.roomName);
+    
+    if (existingRoomIndex !== -1) {
+      // Update existing room
+      const updatedRooms = [...savedRooms];
+      updatedRooms[existingRoomIndex] = { ...lightCalc };
+      setSavedRooms(updatedRooms);
+      alert('تم تحديث بيانات الغرفة بنجاح');
+    } else {
+      // Add new room
+      setSavedRooms(prev => [...prev, { ...lightCalc }]);
+      alert('تم حفظ الغرفة بنجاح');
+    }
+    
+    // Reset form for new room
+    setLightCalc(prev => ({
+      ...prev,
+      roomName: '',
+      length: 5,
+      width: 4
+    }));
+  };
+
+  // Delete saved room
+  const deleteSavedRoom = (roomName: string) => {
+    setSavedRooms(prev => prev.filter(room => room.roomName !== roomName));
+    alert('تم حذف الغرفة بنجاح');
+  };
+
+  // Load saved room for editing
+  const loadSavedRoom = (room: LightCalculation) => {
+    setLightCalc({ ...room });
+  };
+
+  // Calculate total lighting cost for all saved rooms
+  const getTotalLightingCost = () => {
+    return savedRooms.reduce((total, room) => {
+      const firstRowProduct = lightProducts.find(p => p.value === room.firstRowLights.product);
+      const secondRowProduct = lightProducts.find(p => p.value === room.secondRowLights.product);
+      
+      const firstRowCost = (room.firstRowLights.widthCount * room.firstRowLights.lengthCount) * (firstRowProduct?.price || 0);
+      const secondRowCost = (room.secondRowLights.widthCount * room.secondRowLights.lengthCount) * (secondRowProduct?.price || 0);
+      
+      return total + firstRowCost + secondRowCost;
+    }, 0);
   };
 
   // Simulate PDF analysis
@@ -556,6 +630,139 @@ export default function ComprehensiveConstructionCalculator() {
     }
   };
 
+  // Generate and download PDF report
+  const generateAndDownloadPDF = () => {
+    try {
+      // Create report data
+      const reportData = {
+        projectInfo: {
+          name: projectName || `مشروع ${projectType}`,
+          area: projectArea,
+          type: projectType,
+          floors: floorCount,
+          rooms: roomCount,
+          date: new Date().toLocaleDateString('ar-SA')
+        },
+        materials: calculatedMaterials,
+        totalCost,
+        lightingCalculation: lightCalc,
+        pdfAnalysis
+      };
+
+      // Create blob with report content
+      const reportContent = JSON.stringify(reportData, null, 2);
+      const blob = new Blob([reportContent], { type: 'application/json' });
+      
+      // Create download link
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `تقرير-مشروع-${Date.now()}.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+
+      alert('تم تحميل التقرير بنجاح!');
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      alert('حدث خطأ في إنشاء التقرير');
+    }
+  };
+
+  // Preview report in new window
+  const previewReport = () => {
+    try {
+      const reportData = {
+        projectInfo: {
+          name: projectName || `مشروع ${projectType}`,
+          area: projectArea,
+          type: projectType,
+          floors: floorCount,
+          rooms: roomCount,
+          date: new Date().toLocaleDateString('ar-SA')
+        },
+        materials: calculatedMaterials,
+        totalCost,
+        lightingCalculation: lightCalc,
+        pdfAnalysis
+      };
+
+      // Create HTML content for preview
+      const htmlContent = `
+        <!DOCTYPE html>
+        <html dir="rtl" lang="ar">
+        <head>
+          <meta charset="UTF-8">
+          <title>معاينة تقرير المشروع</title>
+          <style>
+            body { font-family: Arial, sans-serif; padding: 20px; direction: rtl; }
+            .header { text-align: center; margin-bottom: 30px; }
+            .section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; }
+            .cost { color: #059669; font-weight: bold; }
+            table { width: 100%; border-collapse: collapse; }
+            th, td { padding: 8px; border: 1px solid #ddd; text-align: right; }
+            th { background-color: #f9f9f9; }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <h1>تقرير المشروع الشامل</h1>
+            <p>تاريخ الإنشاء: ${new Date().toLocaleDateString('ar-SA')}</p>
+          </div>
+          
+          <div class="section">
+            <h2>معلومات المشروع</h2>
+            <p><strong>اسم المشروع:</strong> ${reportData.projectInfo.name}</p>
+            <p><strong>المساحة:</strong> ${reportData.projectInfo.area} متر مربع</p>
+            <p><strong>نوع المشروع:</strong> ${reportData.projectInfo.type}</p>
+            <p><strong>عدد الطوابق:</strong> ${reportData.projectInfo.floors}</p>
+            <p><strong>عدد الغرف:</strong> ${reportData.projectInfo.rooms}</p>
+          </div>
+
+          <div class="section">
+            <h2>تفاصيل المواد والتكاليف</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>المادة</th>
+                  <th>الكمية</th>
+                  <th>الوحدة</th>
+                  <th>التكلفة الإجمالية</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${calculatedMaterials.map(material => `
+                  <tr>
+                    <td>${material.name}</td>
+                    <td>${material.calculatedQuantity}</td>
+                    <td>${material.unit}</td>
+                    <td class="cost">${material.formattedCost} ريال</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+            <p style="text-align: center; font-size: 18px; margin-top: 20px;">
+              <strong>إجمالي التكلفة: <span class="cost">${formatNumber(totalCost)} ريال سعودي</span></strong>
+            </p>
+          </div>
+        </body>
+        </html>
+      `;
+
+      const newWindow = window.open('', '_blank');
+      if (newWindow) {
+        newWindow.document.write(htmlContent);
+        newWindow.document.close();
+      } else {
+        alert('يرجى السماح بفتح النوافذ المنبثقة لعرض التقرير');
+      }
+    } catch (error) {
+      console.error('Error previewing report:', error);
+      alert('حدث خطأ في معاينة التقرير');
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 p-6" dir="rtl">
       <div className="container mx-auto max-w-7xl">
@@ -599,18 +806,14 @@ export default function ComprehensiveConstructionCalculator() {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-4 mb-8">
+          <TabsList className="grid w-full grid-cols-3 mb-8">
             <TabsTrigger value="materials" className="flex items-center gap-2">
               <Package className="w-4 h-4" />
-              حساب المواد
+              حاسبة المواد الذكية
             </TabsTrigger>
             <TabsTrigger value="lighting" className="flex items-center gap-2">
               <Lightbulb className="w-4 h-4" />
               توزيع الإنارة
-            </TabsTrigger>
-            <TabsTrigger value="pdf-analysis" className="flex items-center gap-2">
-              <FileText className="w-4 h-4" />
-              تحليل المخططات
             </TabsTrigger>
             <TabsTrigger value="comprehensive" className="flex items-center gap-2">
               <Target className="w-4 h-4" />
@@ -618,61 +821,194 @@ export default function ComprehensiveConstructionCalculator() {
             </TabsTrigger>
           </TabsList>
 
-          {/* Materials Calculator Tab */}
+          {/* Smart Materials Calculator Tab */}
           <TabsContent value="materials">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {/* Project Input */}
+              {/* Input Methods */}
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Home className="w-5 h-5" />
-                    مواصفات المشروع
+                    <Calculator className="w-5 h-5" />
+                    طرق إدخال البيانات
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium mb-2">نوع المشروع</label>
-                    <Select 
-                      value={projectType} 
-                      onChange={(e) => setProjectType(e.target.value)}
-                      options={[
-                        { value: 'villa', label: 'فيلا سكنية' },
-                        { value: 'apartment', label: 'شقة سكنية' },
-                        { value: 'commercial', label: 'مبنى تجاري' },
-                        { value: 'warehouse', label: 'مستودع' }
-                      ]}
-                    />
+                <CardContent className="space-y-6">
+                  {/* Method 1: Manual Entry */}
+                  <div className="border rounded-lg p-4">
+                    <div className="flex items-center gap-2 mb-4">
+                      <Home className="w-5 h-5 text-blue-600" />
+                      <h3 className="font-semibold">الطريقة الأولى: الإدخال اليدوي</h3>
+                    </div>
+                    
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium mb-2">نوع المشروع</label>
+                        <Select 
+                          value={projectType} 
+                          onChange={(e) => setProjectType(e.target.value)}
+                          options={[
+                            { value: 'villa', label: 'فيلا سكنية' },
+                            { value: 'apartment', label: 'شقة سكنية' },
+                            { value: 'commercial', label: 'مبنى تجاري' },
+                            { value: 'warehouse', label: 'مستودع' }
+                          ]}
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">المساحة الإجمالية (م²)</label>
+                        <Input 
+                          type="number" 
+                          value={projectArea} 
+                          onChange={(e) => setProjectArea(Number(e.target.value))}
+                          placeholder="200"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">عدد الأدوار</label>
+                        <Input 
+                          type="number" 
+                          value={floorCount} 
+                          onChange={(e) => setFloorCount(Number(e.target.value))}
+                          placeholder="2"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">عدد الغرف</label>
+                        <Input 
+                          type="number" 
+                          value={roomCount} 
+                          onChange={(e) => setRoomCount(Number(e.target.value))}
+                          placeholder="4"
+                        />
+                      </div>
+                      
+                      <Button 
+                        onClick={() => {
+                          console.log('Calculate materials button clicked');
+                          calculateMaterials();
+                        }} 
+                        className="w-full"
+                      >
+                        احسب المواد المطلوبة
+                      </Button>
+                    </div>
                   </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-2">المساحة الإجمالية (م²)</label>
-                    <Input 
-                      type="number" 
-                      value={projectArea} 
-                      onChange={(e) => setProjectArea(Number(e.target.value))}
-                      placeholder="200"
-                    />
+
+                  {/* Method 2: PDF Analysis */}
+                  <div className="border rounded-lg p-4">
+                    <div className="flex items-center gap-2 mb-4">
+                      <FileText className="w-5 h-5 text-green-600" />
+                      <h3 className="font-semibold">الطريقة الثانية: تحليل المخططات</h3>
+                    </div>
+                    
+                    <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                      <input
+                        type="file"
+                        accept=".pdf"
+                        onChange={handleFileUpload}
+                        className="hidden"
+                        id="pdf-upload"
+                      />
+                      <label htmlFor="pdf-upload" className="cursor-pointer">
+                        <FileText className="w-12 h-12 text-gray-400 mx-auto mb-3" />
+                        <p className="text-sm font-medium text-gray-700 mb-1">
+                          ارفع مخططات المشروع (PDF)
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          سيتم تحليلها تلقائياً وحساب المواد
+                        </p>
+                      </label>
+                    </div>
+                    
+                    {pdfFile && (
+                      <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                        <div className="flex items-center gap-2">
+                          <FileText className="w-4 h-4 text-blue-600" />
+                          <span className="text-sm font-medium">{pdfFile.name}</span>
+                        </div>
+                      </div>
+                    )}
+
+                    {analyzing && (
+                      <div className="mt-4 text-center py-6">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600 mx-auto mb-2"></div>
+                        <p className="text-sm text-gray-600">جاري تحليل المخططات...</p>
+                      </div>
+                    )}
+
+                    {pdfAnalysis && !analyzing && (
+                      <div className="mt-4">
+                        <Button 
+                          onClick={() => {
+                            // Auto-fill manual inputs from PDF analysis
+                            setProjectArea(pdfAnalysis.extractedData.totalArea);
+                            setProjectType('villa');
+                            setFloorCount(1);
+                            setRoomCount(pdfAnalysis.extractedData.rooms.length);
+                            
+                            // Trigger calculation with PDF data
+                            calculateMaterials();
+                          }}
+                          className="w-full bg-green-600 hover:bg-green-700"
+                        >
+                          استخدم بيانات المخططات
+                        </Button>
+                        <p className="text-xs text-green-600 mt-2 text-center">
+                          تم استخراج: {pdfAnalysis.extractedData.totalArea} م² • {pdfAnalysis.extractedData.rooms.length} غرفة
+                        </p>
+                      </div>
+                    )}
                   </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-2">عدد الأدوار</label>
-                    <Input 
-                      type="number" 
-                      value={floorCount} 
-                      onChange={(e) => setFloorCount(Number(e.target.value))}
-                      placeholder="2"
-                    />
+
+                  {/* Method 3: Quick Templates */}
+                  <div className="border rounded-lg p-4">
+                    <div className="flex items-center gap-2 mb-4">
+                      <Target className="w-5 h-5 text-purple-600" />
+                      <h3 className="font-semibold">الطريقة الثالثة: القوالب الجاهزة</h3>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Button 
+                        variant="outline" 
+                        onClick={() => {
+                          setProjectArea(150);
+                          setProjectType('apartment');
+                          setFloorCount(1);
+                          setRoomCount(3);
+                          calculateMaterials();
+                        }}
+                        className="w-full text-left justify-start"
+                      >
+                        شقة صغيرة (150م² • 3 غرف)
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        onClick={() => {
+                          setProjectArea(300);
+                          setProjectType('villa');
+                          setFloorCount(2);
+                          setRoomCount(5);
+                          calculateMaterials();
+                        }}
+                        className="w-full text-left justify-start"
+                      >
+                        فيلا متوسطة (300م² • 5 غرف)
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        onClick={() => {
+                          setProjectArea(500);
+                          setProjectType('villa');
+                          setFloorCount(2);
+                          setRoomCount(8);
+                          calculateMaterials();
+                        }}
+                        className="w-full text-left justify-start"
+                      >
+                        فيلا كبيرة (500م² • 8 غرف)
+                      </Button>
+                    </div>
                   </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-2">عدد الغرف</label>
-                    <Input 
-                      type="number" 
-                      value={roomCount} 
-                      onChange={(e) => setRoomCount(Number(e.target.value))}
-                      placeholder="4"
-                    />
-                  </div>
-                  <Button onClick={calculateMaterials} className="w-full">
-                    احسب المواد المطلوبة
-                  </Button>
                 </CardContent>
               </Card>
 
@@ -683,9 +1019,54 @@ export default function ComprehensiveConstructionCalculator() {
                     <CardTitle className="flex items-center gap-2">
                       <Package className="w-5 h-5" />
                       قائمة المواد المطلوبة
+                      {pdfAnalysis && (
+                        <Badge variant="secondary" className="ml-2">
+                          <FileText className="w-3 h-3 mr-1" />
+                          من تحليل المخططات
+                        </Badge>
+                      )}
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
+                    {/* Project Summary */}
+                    <div className="mb-6 p-4 bg-gray-50 rounded-lg">
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                        <div className="text-center">
+                          <p className="text-gray-600">المساحة</p>
+                          <p className="font-semibold">{projectArea} م²</p>
+                        </div>
+                        <div className="text-center">
+                          <p className="text-gray-600">النوع</p>
+                          <p className="font-semibold">
+                            {projectType === 'villa' ? 'فيلا' : 
+                             projectType === 'apartment' ? 'شقة' : 
+                             projectType === 'commercial' ? 'تجاري' : 'مستودع'}
+                          </p>
+                        </div>
+                        <div className="text-center">
+                          <p className="text-gray-600">الأدوار</p>
+                          <p className="font-semibold">{floorCount}</p>
+                        </div>
+                        <div className="text-center">
+                          <p className="text-gray-600">الغرف</p>
+                          <p className="font-semibold">{roomCount}</p>
+                        </div>
+                      </div>
+                      
+                      {pdfAnalysis && (
+                        <div className="mt-4 pt-4 border-t">
+                          <h4 className="font-medium mb-2">الغرف المستخرجة من المخططات:</h4>
+                          <div className="grid grid-cols-2 gap-2 text-xs">
+                            {pdfAnalysis.extractedData.rooms.map((room, idx) => (
+                              <div key={idx} className="flex justify-between bg-white p-2 rounded">
+                                <span>{room.name}</span>
+                                <span>{room.area} م²</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {calculatedMaterials.map((material) => (
                         <div key={material.id} className="border rounded-lg p-4">
@@ -725,7 +1106,7 @@ export default function ComprehensiveConstructionCalculator() {
                     <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
                       <div className="flex items-center justify-between">
                         <span className="text-lg font-semibold">إجمالي تكلفة المواد:</span>
-                        <span className="text-2xl font-bold text-blue-600">{totalCost.toLocaleString()} ر.س</span>
+                        <span className="text-2xl font-bold text-blue-600">{formatNumber(totalCost)} ر.س</span>
                       </div>
                       <p className="text-sm text-blue-700 mt-2">
                         * الأسعار تقديرية وقد تختلف حسب الموردين والسوق
@@ -739,7 +1120,7 @@ export default function ComprehensiveConstructionCalculator() {
 
           {/* Lighting Distribution Tab */}
           <TabsContent value="lighting">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Lighting Input */}
               <Card>
                 <CardHeader>
@@ -837,6 +1218,20 @@ export default function ComprehensiveConstructionCalculator() {
                       />
                     </div>
                   )}
+                  
+                  <div className="pt-4 border-t">
+                    <Button 
+                      onClick={saveCurrentRoom}
+                      className="w-full flex items-center gap-2 bg-green-600 hover:bg-green-700"
+                      disabled={!lightCalc.roomName.trim()}
+                    >
+                      <Plus className="w-4 h-4" />
+                      حفظ الغرفة
+                    </Button>
+                    <p className="text-xs text-gray-500 mt-2 text-center">
+                      يجب إدخال اسم الغرفة قبل الحفظ
+                    </p>
+                  </div>
                 </CardContent>
               </Card>
 
@@ -919,157 +1314,145 @@ export default function ComprehensiveConstructionCalculator() {
                         <li>• فحص الإنارة قبل التشطيب النهائي</li>
                       </ul>
                     </div>
+
+                    {/* Current Room Lighting Cost */}
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                      <h4 className="font-semibold mb-2 text-blue-800">تكلفة إنارة الغرفة الحالية</h4>
+                      <div className="text-sm space-y-1">
+                        {(() => {
+                          const firstRowProduct = lightProducts.find(p => p.value === lightCalc.firstRowLights.product);
+                          const secondRowProduct = lightProducts.find(p => p.value === lightCalc.secondRowLights.product);
+                          const firstRowTotal = (lightCalc.firstRowLights.widthCount * lightCalc.firstRowLights.lengthCount);
+                          const secondRowTotal = (lightCalc.secondRowLights.widthCount * lightCalc.secondRowLights.lengthCount);
+                          const firstRowCost = firstRowTotal * (firstRowProduct?.price || 0);
+                          const secondRowCost = secondRowTotal * (secondRowProduct?.price || 0);
+                          const totalCost = firstRowCost + secondRowCost;
+                          
+                          return (
+                            <>
+                              <div className="flex justify-between">
+                                <span>الصف الأول ({firstRowTotal} وحدة):</span>
+                                <span className="font-medium">{formatNumber(firstRowCost)} ر.س</span>
+                              </div>
+                              {lightCalc.rowCount === 2 && (
+                                <div className="flex justify-between">
+                                  <span>الصف الثاني ({secondRowTotal} وحدة):</span>
+                                  <span className="font-medium">{formatNumber(secondRowCost)} ر.س</span>
+                                </div>
+                              )}
+                              <div className="flex justify-between border-t pt-2 font-bold text-blue-600">
+                                <span>إجمالي التكلفة:</span>
+                                <span>{formatNumber(totalCost)} ر.س</span>
+                              </div>
+                            </>
+                          );
+                        })()}
+                      </div>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
-            </div>
-          </TabsContent>
-
-          {/* PDF Analysis Tab */}
-          <TabsContent value="pdf-analysis">
-            <div className="space-y-6">
-              {/* File Upload */}
+              
+              {/* Saved Rooms */}
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Upload className="w-5 h-5" />
-                    رفع ملف المخططات (PDF)
+                    <Eye className="w-5 h-5" />
+                    الغرف المحفوظة ({savedRooms.length})
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
-                    <input
-                      type="file"
-                      accept=".pdf"
-                      onChange={handleFileUpload}
-                      className="hidden"
-                      id="pdf-upload"
-                    />
-                    <label htmlFor="pdf-upload" className="cursor-pointer">
-                      <FileText className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                      <p className="text-lg font-medium text-gray-700 mb-2">
-                        اسحب ملف PDF هنا أو اضغط للاختيار
-                      </p>
-                      <p className="text-sm text-gray-500">
-                        سيتم تحليل المخططات تلقائياً وحساب كميات المواد المطلوبة
-                      </p>
-                    </label>
-                  </div>
-                  
-                  {pdfFile && (
-                    <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                      <div className="flex items-center gap-2">
-                        <FileText className="w-5 h-5 text-blue-600" />
-                        <span className="font-medium">الملف المرفوع: {pdfFile.name}</span>
+                  {savedRooms.length === 0 ? (
+                    <div className="text-center py-8 text-gray-500">
+                      <Package className="w-12 h-12 mx-auto mb-4 text-gray-300" />
+                      <p>لم يتم حفظ أي غرف بعد</p>
+                      <p className="text-sm">احسب إنارة غرفة واحفظها لرؤيتها هنا</p>
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      {savedRooms.map((room, index) => {
+                        const roomTypeLabel = roomTypes.find(rt => rt.value === room.roomType)?.label || room.roomType;
+                        const firstRowProduct = lightProducts.find(p => p.value === room.firstRowLights.product);
+                        const secondRowProduct = lightProducts.find(p => p.value === room.secondRowLights.product);
+                        const firstRowTotal = (room.firstRowLights.widthCount * room.firstRowLights.lengthCount);
+                        const secondRowTotal = (room.secondRowLights.widthCount * room.secondRowLights.lengthCount);
+                        const firstRowCost = firstRowTotal * (firstRowProduct?.price || 0);
+                        const secondRowCost = secondRowTotal * (secondRowProduct?.price || 0);
+                        const totalRoomCost = firstRowCost + secondRowCost;
+                        
+                        return (
+                          <div key={index} className="border rounded-lg p-4 bg-gray-50">
+                            <div className="flex items-start justify-between mb-3">
+                              <div>
+                                <h4 className="font-semibold text-gray-900">{room.roomName}</h4>
+                                <p className="text-sm text-gray-600">{roomTypeLabel} • {room.area} م²</p>
+                              </div>
+                              <div className="flex gap-1">
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={() => loadSavedRoom(room)}
+                                  className="text-xs"
+                                >
+                                  تعديل
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant="destructive"
+                                  onClick={() => deleteSavedRoom(room.roomName)}
+                                  className="text-xs"
+                                >
+                                  حذف
+                                </Button>
+                              </div>
+                            </div>
+                            
+                            <div className="text-sm space-y-1">
+                              <div className="flex justify-between">
+                                <span>الأبعاد:</span>
+                                <span>{room.length}م × {room.width}م</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span>إجمالي الوحدات:</span>
+                                <span>{firstRowTotal + secondRowTotal} وحدة</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span>التكلفة:</span>
+                                <span className="font-semibold text-green-600">{formatNumber(totalRoomCost)} ر.س</span>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                      
+                      {/* Total Lighting Cost Summary */}
+                      <div className="border-t pt-4">
+                        <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                          <h4 className="font-semibold mb-2 text-green-800">ملخص تكلفة الإنارة</h4>
+                          <div className="text-sm space-y-1">
+                            <div className="flex justify-between">
+                              <span>عدد الغرف:</span>
+                              <span>{savedRooms.length} غرفة</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>إجمالي الوحدات:</span>
+                              <span>{savedRooms.reduce((total, room) => {
+                                const firstRowTotal = room.firstRowLights.widthCount * room.firstRowLights.lengthCount;
+                                const secondRowTotal = room.secondRowLights.widthCount * room.secondRowLights.lengthCount;
+                                return total + firstRowTotal + secondRowTotal;
+                              }, 0)} وحدة</span>
+                            </div>
+                            <div className="flex justify-between border-t pt-2 font-bold text-green-600">
+                              <span>إجمالي التكلفة:</span>
+                              <span>{formatNumber(getTotalLightingCost())} ر.س</span>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   )}
                 </CardContent>
               </Card>
-
-              {/* Analysis Results */}
-              {analyzing && (
-                <Card>
-                  <CardContent className="text-center py-12">
-                    <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                    <h3 className="text-xl font-semibold text-gray-700 mb-2">جاري تحليل المخططات...</h3>
-                    <p className="text-gray-500">الذكاء الاصطناعي يحلل الملف ويحسب الكميات المطلوبة</p>
-                  </CardContent>
-                </Card>
-              )}
-
-              {pdfAnalysis && !analyzing && (
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  {/* Project Details */}
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <Eye className="w-5 h-5" />
-                        تفاصيل المشروع المستخرجة
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-4">
-                        <div>
-                          <span className="font-medium">نوع المشروع:</span>
-                          <span className="float-left">{pdfAnalysis.extractedData.projectType}</span>
-                        </div>
-                        <div>
-                          <span className="font-medium">المساحة الإجمالية:</span>
-                          <span className="float-left">{pdfAnalysis.extractedData.totalArea} م²</span>
-                        </div>
-                        
-                        <div>
-                          <h4 className="font-semibold mb-2">الغرف المكتشفة:</h4>
-                          <div className="space-y-2">
-                            {pdfAnalysis.extractedData.rooms.map((room, idx) => (
-                              <div key={idx} className="flex justify-between text-sm bg-gray-50 p-2 rounded">
-                                <span>{room.name}</span>
-                                <span>{room.area} م²</span>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-
-                        <div>
-                          <h4 className="font-semibold mb-2">المواصفات:</h4>
-                          <ul className="text-sm space-y-1">
-                            {pdfAnalysis.extractedData.specifications.map((spec, idx) => (
-                              <li key={idx} className="flex items-start gap-2">
-                                <CheckCircle className="w-3 h-3 text-green-500 mt-1 flex-shrink-0" />
-                                {spec}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  {/* Calculated Materials */}
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <Calculator className="w-5 h-5" />
-                        الكميات المحسوبة
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-4">
-                        {Object.entries(pdfAnalysis.calculations).map(([material, calc]) => (
-                          <div key={material} className="border rounded-lg p-3">
-                            <div className="flex justify-between items-start mb-2">
-                              <h4 className="font-semibold">{material}</h4>
-                              <Badge variant="outline">{calc.unit}</Badge>
-                            </div>
-                            <div className="text-sm space-y-1">
-                              <div className="flex justify-between">
-                                <span>الكمية:</span>
-                                <span className="font-medium">{calc.quantity.toLocaleString()}</span>
-                              </div>
-                              <div className="flex justify-between">
-                                <span>التكلفة:</span>
-                                <span className="font-bold text-green-600">{calc.totalCost.toLocaleString()} ر.س</span>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                        
-                        <div className="border-t pt-4">
-                          <div className="flex justify-between text-lg font-bold">
-                            <span>إجمالي التكلفة:</span>
-                            <span className="text-blue-600">
-                              {Object.values(pdfAnalysis.calculations)
-                                .reduce((sum, calc) => sum + calc.totalCost, 0)
-                                .toLocaleString()} ر.س
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
-              )}
             </div>
           </TabsContent>
 
@@ -1089,7 +1472,7 @@ export default function ComprehensiveConstructionCalculator() {
                       <Package className="w-12 h-12 text-blue-600 mx-auto mb-4" />
                       <h3 className="text-xl font-bold text-blue-800">تكلفة المواد</h3>
                       <p className="text-3xl font-bold text-blue-600 mt-2">
-                        {totalCost.toLocaleString()} ر.س
+                        {formatNumber(totalCost)} ر.س
                       </p>
                       <p className="text-sm text-blue-700 mt-2">شاملة جميع المواد الأساسية</p>
                     </div>
@@ -1098,10 +1481,15 @@ export default function ComprehensiveConstructionCalculator() {
                       <Lightbulb className="w-12 h-12 text-green-600 mx-auto mb-4" />
                       <h3 className="text-xl font-bold text-green-800">الإنارة</h3>
                       <p className="text-3xl font-bold text-green-600 mt-2">
-                        {(lightCalc.firstRowLights.widthCount * lightCalc.firstRowLights.lengthCount) + 
-                         (lightCalc.secondRowLights.widthCount * lightCalc.secondRowLights.lengthCount)} وحدة
+                        {formatNumber(getTotalLightingCost())} ر.س
                       </p>
-                      <p className="text-sm text-green-700 mt-2">إجمالي وحدات الإنارة</p>
+                      <p className="text-sm text-green-700 mt-2">
+                        {savedRooms.length} غرفة • {savedRooms.reduce((total, room) => {
+                          const firstRowTotal = room.firstRowLights.widthCount * room.firstRowLights.lengthCount;
+                          const secondRowTotal = room.secondRowLights.widthCount * room.secondRowLights.lengthCount;
+                          return total + firstRowTotal + secondRowTotal;
+                        }, 0)} وحدة إنارة
+                      </p>
                     </div>
 
                     <div className="bg-purple-50 border border-purple-200 rounded-lg p-6 text-center">
@@ -1110,16 +1498,28 @@ export default function ComprehensiveConstructionCalculator() {
                       <p className="text-3xl font-bold text-purple-600 mt-2">
                         {pdfAnalysis ? 'مكتمل' : 'متاح'}
                       </p>
-                      <p className="text-sm text-purple-700 mt-2">تحليل المخططات بالذكاء الاصطناعي</p>
+                      <p className="text-sm text-purple-700 mt-2">
+                        {pdfAnalysis ? 
+                          `تم تحليل: ${pdfAnalysis.extractedData.rooms.length} غرفة` : 
+                          'ارفع المخططات للتحليل الذكي'
+                        }
+                      </p>
                     </div>
                   </div>
 
                   <div className="mt-8 flex gap-4 justify-center">
-                    <Button className="flex items-center gap-2">
+                    <Button 
+                      className="flex items-center gap-2"
+                      onClick={() => generateAndDownloadPDF()}
+                    >
                       <Download className="w-4 h-4" />
                       تحميل التقرير الشامل
                     </Button>
-                    <Button variant="outline" className="flex items-center gap-2">
+                    <Button 
+                      variant="outline" 
+                      className="flex items-center gap-2"
+                      onClick={() => previewReport()}
+                    >
                       <Eye className="w-4 h-4" />
                       معاينة التقرير
                     </Button>
@@ -1173,7 +1573,7 @@ export default function ComprehensiveConstructionCalculator() {
                   </div>
                   <div className="flex justify-between">
                     <span>تكلفة المواد:</span>
-                    <span>{totalCost.toLocaleString()} ريال</span>
+                    <span>{formatNumber(totalCost)} ريال</span>
                   </div>
                   <div className="flex justify-between">
                     <span>عدد المواد:</span>

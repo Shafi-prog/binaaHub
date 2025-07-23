@@ -347,10 +347,10 @@ export default function LoansPage() {
             </div>
 
             <div className="flex gap-2 mt-6">
-              <button className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
+              <button className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors" onClick={() => alert('Button clicked')}>
                 طلب القرض
               </button>
-              <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+              <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors" onClick={() => alert('Button clicked')}>
                 الحاسبة
               </button>
             </div>

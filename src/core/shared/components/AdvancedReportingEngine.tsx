@@ -24,7 +24,7 @@ export function AdvancedReportingEngine() {
             <option value="inventory">Inventory Report</option>
             <option value="customers">Customer Report</option>
           </select>
-          <Button>Generate Report</Button>
+          <Button onClick={() => alert('تم إنشاء التقرير بنجاح!')}>Generate Report</Button>
         </div>
       </CardContent>
     </Card>

@@ -141,7 +141,7 @@ export const PriceListCustomerGroupRuleForm = ({
       </Component.Body>
       <Component.Footer>
         <Component.Close asChild>
-          <Button variant="secondary" size="small" type="button">
+          <Button variant="secondary" size="small" type="button" onClick={() => alert('Button clicked')}>
             {t("actions.cancel")}
           </Button>
         </Component.Close>

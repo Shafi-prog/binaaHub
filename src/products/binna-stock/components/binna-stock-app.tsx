@@ -219,10 +219,10 @@ export default function BinnaStockApp() {
                         </td>
                         <td className="p-3">
                           <div className="flex space-x-2">
-                            <Button variant="outline" size="sm">
+                            <Button variant="outline" size="sm" onClick={() => alert('Button clicked')}>
                               تعديل
                             </Button>
-                            <Button variant="outline" size="sm">
+                            <Button variant="outline" size="sm" onClick={() => alert('Button clicked')}>
                               إعادة طلب
                             </Button>
                           </div>
@@ -246,7 +246,7 @@ export default function BinnaStockApp() {
               <p className="text-sm text-gray-600 mb-4">
                 نظام متقدم لتوقع الطلب المستقبلي بناءً على البيانات التاريخية
               </p>
-              <Button variant="outline" className="w-full">عرض التنبؤات</Button>
+              <Button variant="outline" className="w-full" onClick={() => alert('Button clicked')}>عرض التنبؤات</Button>
             </CardContent>
           </Card>
 
@@ -258,7 +258,7 @@ export default function BinnaStockApp() {
               <p className="text-sm text-gray-600 mb-4">
                 إدارة المخزون عبر مواقع متعددة مع تتبع الحركة في الوقت الفعلي
               </p>
-              <Button variant="outline" className="w-full">إدارة المواقع</Button>
+              <Button variant="outline" className="w-full" onClick={() => alert('Button clicked')}>إدارة المواقع</Button>
             </CardContent>
           </Card>
 
@@ -270,7 +270,7 @@ export default function BinnaStockApp() {
               <p className="text-sm text-gray-600 mb-4">
                 ربط مباشر مع أنظمة الموردين للطلب التلقائي وتتبع الشحنات
               </p>
-              <Button variant="outline" className="w-full">إعداد الموردين</Button>
+              <Button variant="outline" className="w-full" onClick={() => alert('Button clicked')}>إعداد الموردين</Button>
             </CardContent>
           </Card>
         </div>

@@ -512,7 +512,7 @@ export default function CompleteERPSystem() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">إدارة العملاء</h2>
-        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center">
+        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center" onClick={() => alert('Button clicked')}>
           <Plus className="w-4 h-4 mr-2" />
           إضافة عميل جديد
         </button>
@@ -529,12 +529,12 @@ export default function CompleteERPSystem() {
                 className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
-            <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center">
+            <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center" onClick={() => alert('Button clicked')}>
               <Filter className="w-4 h-4 mr-2" />
               تصفية
             </button>
           </div>
-          <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center">
+          <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center" onClick={() => alert('Button clicked')}>
             <Download className="w-4 h-4 mr-2" />
             تصدير
           </button>
@@ -588,13 +588,13 @@ export default function CompleteERPSystem() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div className="flex space-x-2">
-                      <button className="text-blue-600 hover:text-blue-900">
+                      <button className="text-blue-600 hover:text-blue-900" onClick={() => alert('Button clicked')}>
                         <Eye className="w-4 h-4" />
                       </button>
-                      <button className="text-green-600 hover:text-green-900">
+                      <button className="text-green-600 hover:text-green-900" onClick={() => alert('Button clicked')}>
                         <Edit className="w-4 h-4" />
                       </button>
-                      <button className="text-red-600 hover:text-red-900">
+                      <button className="text-red-600 hover:text-red-900" onClick={() => alert('Button clicked')}>
                         <Trash2 className="w-4 h-4" />
                       </button>
                     </div>
@@ -612,7 +612,7 @@ export default function CompleteERPSystem() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">إدارة المنتجات</h2>
-        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center">
+        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center" onClick={() => alert('Button clicked')}>
           <Plus className="w-4 h-4 mr-2" />
           إضافة منتج جديد
         </button>
@@ -628,10 +628,10 @@ export default function CompleteERPSystem() {
                 <p className="text-sm text-gray-500">{product.description}</p>
               </div>
               <div className="flex space-x-2">
-                <button className="text-blue-600 hover:text-blue-900">
+                <button className="text-blue-600 hover:text-blue-900" onClick={() => alert('Button clicked')}>
                   <Edit className="w-4 h-4" />
                 </button>
-                <button className="text-red-600 hover:text-red-900">
+                <button className="text-red-600 hover:text-red-900" onClick={() => alert('Button clicked')}>
                   <Trash2 className="w-4 h-4" />
                 </button>
               </div>
@@ -674,7 +674,7 @@ export default function CompleteERPSystem() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">إدارة الطلبات</h2>
-        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center">
+        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center" onClick={() => alert('Button clicked')}>
           <Plus className="w-4 h-4 mr-2" />
           طلب جديد
         </button>
@@ -735,13 +735,13 @@ export default function CompleteERPSystem() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div className="flex space-x-2">
-                      <button className="text-blue-600 hover:text-blue-900">
+                      <button className="text-blue-600 hover:text-blue-900" onClick={() => alert('Button clicked')}>
                         <Eye className="w-4 h-4" />
                       </button>
-                      <button className="text-green-600 hover:text-green-900">
+                      <button className="text-green-600 hover:text-green-900" onClick={() => alert('Button clicked')}>
                         <Edit className="w-4 h-4" />
                       </button>
-                      <button className="text-purple-600 hover:text-purple-900">
+                      <button className="text-purple-600 hover:text-purple-900" onClick={() => alert('Button clicked')}>
                         <FileText className="w-4 h-4" />
                       </button>
                     </div>
@@ -759,7 +759,7 @@ export default function CompleteERPSystem() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">إدارة الفواتير</h2>
-        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center">
+        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center" onClick={() => alert('Button clicked')}>
           <Plus className="w-4 h-4 mr-2" />
           فاتورة جديدة
         </button>
@@ -811,13 +811,13 @@ export default function CompleteERPSystem() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div className="flex space-x-2">
-                      <button className="text-blue-600 hover:text-blue-900">
+                      <button className="text-blue-600 hover:text-blue-900" onClick={() => alert('Button clicked')}>
                         <Eye className="w-4 h-4" />
                       </button>
-                      <button className="text-green-600 hover:text-green-900">
+                      <button className="text-green-600 hover:text-green-900" onClick={() => alert('Button clicked')}>
                         <Edit className="w-4 h-4" />
                       </button>
-                      <button className="text-purple-600 hover:text-purple-900">
+                      <button className="text-purple-600 hover:text-purple-900" onClick={() => alert('Button clicked')}>
                         <Download className="w-4 h-4" />
                       </button>
                     </div>
@@ -836,10 +836,10 @@ export default function CompleteERPSystem() {
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">نقطة البيع</h2>
         <div className="flex space-x-4">
-          <button className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
+          <button className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700" onClick={() => alert('Button clicked')}>
             إنهاء البيع
           </button>
-          <button className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700">
+          <button className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700" onClick={() => alert('Button clicked')}>
             إلغاء
           </button>
         </div>
@@ -861,7 +861,7 @@ export default function CompleteERPSystem() {
                 <button
                   key={product.id}
                   className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 text-left"
-                >
+                 onClick={() => alert('Button clicked')}>
                   <h4 className="font-medium text-sm">{product.name}</h4>
                   <p className="text-xs text-gray-500">{product.sku}</p>
                   <p className="font-bold text-lg mt-2">{product.price} ر.س</p>
@@ -900,10 +900,10 @@ export default function CompleteERPSystem() {
               </div>
               
               <div className="mt-4 space-y-2">
-                <button className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
+                <button className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700" onClick={() => alert('Button clicked')}>
                   الدفع نقداً
                 </button>
-                <button className="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700">
+                <button className="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700" onClick={() => alert('Button clicked')}>
                   الدفع بالبطاقة
                 </button>
               </div>
@@ -981,10 +981,10 @@ export default function CompleteERPSystem() {
               </h2>
             </div>
             <div className="flex items-center space-x-4">
-              <button className="p-2 text-gray-400 hover:text-gray-600">
+              <button className="p-2 text-gray-400 hover:text-gray-600" onClick={() => alert('Button clicked')}>
                 <Bell className="w-5 h-5" />
               </button>
-              <button className="p-2 text-gray-400 hover:text-gray-600">
+              <button className="p-2 text-gray-400 hover:text-gray-600" onClick={() => alert('Button clicked')}>
                 <Settings className="w-5 h-5" />
               </button>
               <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">

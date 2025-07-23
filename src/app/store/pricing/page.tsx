@@ -81,7 +81,7 @@ export default function PricingManagement() {
           </p>
         </div>
         <Link href="/store/pricing/create">
-          <Button className="gap-2">
+          <Button className="gap-2" onClick={() => alert('Button clicked')}>
             <Plus className="h-4 w-4" />
             Create Price List
           </Button>
@@ -208,10 +208,10 @@ export default function PricingManagement() {
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center space-x-2">
-                      <Button variant="ghost" size="sm">
+                      <Button variant="ghost" size="sm" onClick={() => alert('Button clicked')}>
                         <Edit className="h-4 w-4" />
                       </Button>
-                      <Button variant="ghost" size="sm">
+                      <Button variant="ghost" size="sm" onClick={() => alert('Button clicked')}>
                         <Trash2 className="h-4 w-4" />
                       </Button>
                     </div>

@@ -84,7 +84,7 @@ const Button = ({ children, className = '', variant = 'default', size = 'default
   };
   
   return (
-    <button className={`${baseClasses} ${variants[variant]} ${sizes[size]} ${className}`} {...props}>
+    <button className={`${baseClasses} ${variants[variant]} ${sizes[size]} ${className}`} {...props} onClick={() => alert('Button clicked')}>
       {children}
     </button>
   );
@@ -420,13 +420,13 @@ const CompleteERPDashboard = () => {
             <h1 className="text-xl font-bold">نظام إدارة الأعمال المتكامل</h1>
           </div>
           <div className="flex items-center space-x-4">
-            <Button variant="ghost" size="sm">
+            <Button variant="ghost" size="sm" onClick={() => alert('Button clicked')}>
               <Bell className="h-4 w-4" />
             </Button>
-            <Button variant="ghost" size="sm">
+            <Button variant="ghost" size="sm" onClick={() => alert('Button clicked')}>
               <User className="h-4 w-4" />
             </Button>
-            <Button variant="ghost" size="sm">
+            <Button variant="ghost" size="sm" onClick={() => alert('Button clicked')}>
               <Settings className="h-4 w-4" />
             </Button>
           </div>

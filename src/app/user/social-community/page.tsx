@@ -367,11 +367,11 @@ export default function CommunityPage() {
                 
                 <div className="flex items-center justify-between mt-3">
                   <div className="flex gap-2">
-                    <Button variant="outline" className="flex items-center gap-2 border-gray-300 text-gray-700">
+                    <Button variant="outline" className="flex items-center gap-2 border-gray-300 text-gray-700" onClick={() => alert('Button clicked')}>
                       <Image className="w-4 h-4" />
                       صورة
                     </Button>
-                    <Button variant="outline" className="flex items-center gap-2 border-gray-300 text-gray-700">
+                    <Button variant="outline" className="flex items-center gap-2 border-gray-300 text-gray-700" onClick={() => alert('Button clicked')}>
                       <Video className="w-4 h-4" />
                       فيديو
                     </Button>
@@ -506,7 +506,7 @@ export default function CommunityPage() {
                       <span>{post.likes}</span>
                     </button>
                     
-                    <button className="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors">
+                    <button className="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors" onClick={() => alert('Button clicked')}>
                       <MessageSquare className="w-5 h-5" />
                       <span>{post.comments}</span>
                     </button>
@@ -523,7 +523,7 @@ export default function CommunityPage() {
                   <Button
                     variant="outline"
                     className="border-gray-300 text-gray-700 hover:bg-gray-50 flex items-center gap-2"
-                  >
+                   onClick={() => alert('Button clicked')}>
                     <Send className="w-4 h-4" />
                     رد
                   </Button>

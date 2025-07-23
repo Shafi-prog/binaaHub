@@ -177,7 +177,7 @@ export const DataTableFilter = ({
         {!readonly && availableFilters.length > 0 && (
           <RadixPopover.Root modal open={open} onOpenChange={setOpen}>
             <RadixPopover.Trigger asChild id="filters_menu_trigger">
-              <Button size="small" variant="secondary">
+              <Button size="small" variant="secondary" onClick={() => alert('Button clicked')}>
                 {t("filters.addFilter")}
               </Button>
             </RadixPopover.Trigger>

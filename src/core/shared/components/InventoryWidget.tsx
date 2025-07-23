@@ -196,7 +196,7 @@ export function InventoryWidget() {
                           className="text-blue-600 hover:underline text-xs mr-2"
                           aria-label={`تعديل المنتج ${item.name}`}
                           title="تعديل المنتج"
-                        >تعديل</button>
+                         onClick={() => alert('Button clicked')}>تعديل</button>
                         <button
                           className="text-red-600 hover:underline text-xs"
                           aria-label={`تعطيل المنتج ${item.name}`}

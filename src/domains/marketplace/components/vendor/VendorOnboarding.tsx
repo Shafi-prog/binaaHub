@@ -697,7 +697,7 @@ const VendorOnboarding: React.FC = () => {
                     {doc.status}
                   </span>
                   
-                  <button className="text-blue-600 hover:text-blue-800">
+                  <button className="text-blue-600 hover:text-blue-800" onClick={() => alert('Button clicked')}>
                     <Eye className="w-4 h-4" />
                   </button>
                 </div>

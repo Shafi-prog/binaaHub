@@ -217,10 +217,10 @@ export const ProjectPlanner: React.FC<ProjectPlannerProps> = ({ projects, onCrea
                     {project.location}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <button className="text-blue-600 hover:text-blue-900 ml-2">
+                    <button className="text-blue-600 hover:text-blue-900 ml-2" onClick={() => alert('Button clicked')}>
                       عرض
                     </button>
-                    <button className="text-green-600 hover:text-green-900 ml-2">
+                    <button className="text-green-600 hover:text-green-900 ml-2" onClick={() => alert('Button clicked')}>
                       تحرير
                     </button>
                   </td>

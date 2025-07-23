@@ -276,7 +276,7 @@ const ShippingLogisticsIntegration: React.FC = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Shipping & Logistics Integration</h1>
-        <Button>
+        <Button onClick={() => alert('Button clicked')}>
           <Truck className="h-4 w-4 mr-2" />
           Create Shipment
         </Button>
@@ -467,7 +467,7 @@ const ShippingLogisticsIntegration: React.FC = () => {
                   <Button onClick={() => setSelectedProvider(null)} variant="outline">
                     Cancel
                   </Button>
-                  <Button>Save Configuration</Button>
+                  <Button onClick={() => alert('Button clicked')}>Save Configuration</Button>
                 </div>
               </div>
             </CardContent>

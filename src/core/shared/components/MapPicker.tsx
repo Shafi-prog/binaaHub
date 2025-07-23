@@ -46,7 +46,7 @@ export function MapPicker({ initialLocation, onLocationSelect, readOnly = false 
         ${
           !readOnly
             ? `
-          <button id="update-location" class="w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+          <button id="update-location" class="w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors" onClick={() => alert('Button clicked')}>
             تحديث الموقع
           </button>
         `

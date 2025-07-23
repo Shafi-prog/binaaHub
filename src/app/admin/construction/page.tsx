@@ -202,11 +202,11 @@ export default function ConstructionEcosystemPage() {
           <p className="text-muted-foreground">Gulf-optimized construction management and guidance</p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline">
+          <Button variant="outline" onClick={() => alert('Button clicked')}>
             <Calendar className="h-4 w-4 mr-2" />
             Project Planning
           </Button>
-          <Button>
+          <Button onClick={() => alert('Button clicked')}>
             <Hammer className="h-4 w-4 mr-2" />
             New Project
           </Button>
@@ -368,7 +368,7 @@ export default function ConstructionEcosystemPage() {
                 className="pl-10"
               />
             </div>
-            <Button variant="outline">
+            <Button variant="outline" onClick={() => alert('Button clicked')}>
               <Filter className="h-4 w-4 mr-2" />
               Filter
             </Button>
@@ -412,7 +412,7 @@ export default function ConstructionEcosystemPage() {
                       <p className="text-sm text-muted-foreground">{material.suppliers} suppliers</p>
                       <p className="font-medium">SAR {material.avgPrice}/unit</p>
                     </div>
-                    <Button size="sm">View Details</Button>
+                    <Button size="sm" onClick={() => alert('Button clicked')}>View Details</Button>
                   </div>
                 </CardContent>
               </Card>
@@ -431,7 +431,7 @@ export default function ConstructionEcosystemPage() {
                 className="pl-10"
               />
             </div>
-            <Button variant="outline">
+            <Button variant="outline" onClick={() => alert('Button clicked')}>
               <Filter className="h-4 w-4 mr-2" />
               Filter by Location
             </Button>
@@ -480,8 +480,8 @@ export default function ConstructionEcosystemPage() {
                       {contractor.projectsCompleted} completed projects
                     </p>
                     <div className="flex gap-2">
-                      <Button size="sm" variant="outline">View Portfolio</Button>
-                      <Button size="sm">Get Quote</Button>
+                      <Button size="sm" variant="outline" onClick={() => alert('Button clicked')}>View Portfolio</Button>
+                      <Button size="sm" onClick={() => alert('Button clicked')}>Get Quote</Button>
                     </div>
                   </div>
                 </CardContent>
@@ -567,7 +567,7 @@ export default function ConstructionEcosystemPage() {
               <div className="text-center py-8">
                 <Building className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
                 <p className="text-muted-foreground mb-4">Project management interface coming soon</p>
-                <Button>
+                <Button onClick={() => alert('Button clicked')}>
                   <Calendar className="h-4 w-4 mr-2" />
                   Schedule Project Planning Session
                 </Button>

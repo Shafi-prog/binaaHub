@@ -643,12 +643,12 @@ export default function BuildingAdvicePage() {
                       
                       <div className="flex gap-2 pt-2">
                         {pdf.previewUrl && (
-                          <Button variant="outline" size="sm" className="flex-1">
+                          <Button variant="outline" size="sm" className="flex-1" onClick={() => alert('Button clicked')}>
                             <Eye className="w-4 h-4 mr-2" />
                             معاينة
                           </Button>
                         )}
-                        <Button size="sm" className="flex-1">
+                        <Button size="sm" className="flex-1" onClick={() => alert('Button clicked')}>
                           <Download className="w-4 h-4 mr-2" />
                           تحميل
                         </Button>
@@ -748,7 +748,7 @@ export default function BuildingAdvicePage() {
                     يحتوي على جميع المراحل التفصيلية والوثائق الرسمية المطلوبة
                   </p>
                   <Link href="/construction-data">
-                    <Button className="flex items-center gap-2">
+                    <Button className="flex items-center gap-2" onClick={() => alert('Button clicked')}>
                       <BookOpen className="w-4 h-4" />
                       عرض الدليل الكامل
                     </Button>

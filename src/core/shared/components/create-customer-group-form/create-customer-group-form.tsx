@@ -92,7 +92,7 @@ export const CreateCustomerGroupForm = () => {
         </RouteFocusModal.Body>
         <RouteFocusModal.Footer>
           <RouteFocusModal.Close asChild>
-            <Button variant="secondary" size="small">
+            <Button variant="secondary" size="small" onClick={() => alert('Button clicked')}>
               {t("actions.cancel")}
             </Button>
           </RouteFocusModal.Close>

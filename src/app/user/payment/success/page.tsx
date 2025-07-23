@@ -84,7 +84,7 @@ function PaymentSuccessContent() {
         <div className="space-y-3">
           {paymentInfo.invoiceId && (
             <Link href={`/store/invoices/${paymentInfo.invoiceId}`}>
-              <Button className="w-full" variant="outline">
+              <Button className="w-full" variant="outline" onClick={() => alert('Button clicked')}>
                 <FileText className="w-4 h-4 ml-2" />
                 عرض الفاتورة
               </Button>
@@ -97,7 +97,7 @@ function PaymentSuccessContent() {
           </Button>
 
           <Link href="/">
-            <Button className="w-full">
+            <Button className="w-full" onClick={() => alert('Button clicked')}>
               <ArrowRight className="w-4 h-4 ml-2" />
               العودة للصفحة الرئيسية
             </Button>

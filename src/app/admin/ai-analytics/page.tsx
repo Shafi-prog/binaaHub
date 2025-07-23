@@ -232,11 +232,11 @@ export default function AIAnalyticsPage() {
           <p className="text-muted-foreground">Advanced machine learning insights for GCC market optimization</p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline">
+          <Button variant="outline" onClick={() => alert('Button clicked')}>
             <Activity className="h-4 w-4 mr-2" />
             Real-time Data
           </Button>
-          <Button>
+          <Button onClick={() => alert('Button clicked')}>
             <BarChart3 className="h-4 w-4 mr-2" />
             Generate Report
           </Button>
@@ -336,12 +336,12 @@ export default function AIAnalyticsPage() {
                       )}
                     </div>
                     <div className="flex gap-2">
-                      <Button size="sm" variant="outline">
+                      <Button size="sm" variant="outline" onClick={() => alert('Button clicked')}>
                         <Eye className="h-4 w-4 mr-1" />
                         Details
                       </Button>
                       {insight.actionable && (
-                        <Button size="sm">
+                        <Button size="sm" onClick={() => alert('Button clicked')}>
                           Implement
                         </Button>
                       )}
@@ -465,7 +465,7 @@ export default function AIAnalyticsPage() {
                       <span>Size: {segment.size.toLocaleString()}</span>
                       <span>Value: ${(segment.size * segment.avgSpend / 1000000).toFixed(1)}M</span>
                     </div>
-                    <Button size="sm">
+                    <Button size="sm" onClick={() => alert('Button clicked')}>
                       <Users className="h-4 w-4 mr-1" />
                       Target Segment
                     </Button>
@@ -552,10 +552,10 @@ export default function AIAnalyticsPage() {
                       </div>
                     </div>
                     <div className="flex flex-col gap-2">
-                      <Button size="sm">
+                      <Button size="sm" onClick={() => alert('Button clicked')}>
                         Implement
                       </Button>
-                      <Button size="sm" variant="outline">
+                      <Button size="sm" variant="outline" onClick={() => alert('Button clicked')}>
                         Schedule
                       </Button>
                     </div>

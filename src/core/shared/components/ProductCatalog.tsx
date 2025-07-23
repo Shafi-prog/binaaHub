@@ -121,7 +121,7 @@ export const ConstructionProductCatalog: React.FC<ProductCatalogProps> = ({
             </button>
             
             {showAddButton && (
-              <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+              <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700" onClick={() => alert('Button clicked')}>
                 <Plus size={20} />
                 {language === 'ar' ? 'إضافة منتج' : 'Add Product'}
               </button>

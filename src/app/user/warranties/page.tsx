@@ -2,8 +2,10 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/enhanced-components';
 import { Shield, Calendar, FileText, Search, Plus, Filter, ExternalLink, AlertCircle, CheckCircle, Clock } from 'lucide-react';
+import { formatDateSafe, useIsClient, generateSafeId } from '../../../core/shared/utils/hydration-safe';
 
 export const dynamic = 'force-dynamic'
 
@@ -20,6 +22,7 @@ interface Warranty {
 }
 
 export default function WarrantiesPage() {
+  const router = useRouter();
   const [warranties, setWarranties] = useState<Warranty[]>([
     {
       id: 'W001',
@@ -92,8 +95,43 @@ export default function WarrantiesPage() {
   };
 
   const handleClaimWarranty = (warrantyId: string) => {
-    // Implementation for warranty claim
-    console.log('Claiming warranty:', warrantyId);
+    const warranty = warranties.find(w => w.id === warrantyId);
+    if (!warranty) return;
+
+    // Check if warranty already has a claim
+    if (warranty.claimId) {
+      // Redirect to tracking page if claim already exists
+      router.push(`/user/warranties/tracking?highlight=${warranty.claimId}`);
+      return;
+    }
+
+    // Show confirmation dialog
+    const confirmed = window.confirm(
+      `هل أنت متأكد من رغبتك في المطالبة بضمان "${warranty.productName}"؟\n\nسيتم إرسال إشعار إلى "${warranty.store}" لبدء عملية المطالبة.`
+    );
+    
+    if (confirmed) {
+      // Create new claim and redirect directly to claim form
+      const claimId = generateSafeId('CLAIM');
+      
+      // Update warranty status
+      setWarranties(prev => prev.map(w => 
+        w.id === warrantyId 
+          ? { ...w, status: 'claimed' as const, claimId }
+          : w
+      ));
+
+      // Go directly to claim form
+      router.push(`/user/warranties/${warrantyId}/claim?claimId=${claimId}`);
+      
+      // Send notification to store
+      console.log(`Warranty claim sent to store: ${warranty.store} for warranty: ${warrantyId}`);
+    }
+  };
+
+  const handleViewDetails = (warrantyId: string) => {
+    // Navigate to warranty details page
+    window.location.href = `/user/warranties/${warrantyId}`;
   };
 
   return (
@@ -110,7 +148,7 @@ export default function WarrantiesPage() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
         <EnhancedCard className="p-6">
           <div className="flex items-center justify-between">
             <div>
@@ -132,6 +170,18 @@ export default function WarrantiesPage() {
               <Typography variant="caption" size="sm" className="text-gray-600">ضمانات منتهية</Typography>
             </div>
             <AlertCircle className="w-8 h-8 text-red-600" />
+          </div>
+        </EnhancedCard>
+
+        <EnhancedCard className="p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <Typography variant="subheading" size="2xl" weight="bold" className="text-orange-600">
+                {warranties.filter(w => w.status === 'claimed').length}
+              </Typography>
+              <Typography variant="caption" size="sm" className="text-gray-600">تم المطالبة</Typography>
+            </div>
+            <Clock className="w-8 h-8 text-orange-600" />
           </div>
         </EnhancedCard>
 
@@ -184,8 +234,15 @@ export default function WarrantiesPage() {
           <option value="claimed">تم المطالبة</option>
         </select>
 
+        <Link href="/user/warranties/tracking">
+          <Button className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg flex items-center gap-2" onClick={() => alert('Button clicked')}>
+            <Shield className="w-5 h-5" />
+            تتبع المطالبات
+          </Button>
+        </Link>
+
         <Link href="/user/warranties/new">
-          <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg flex items-center gap-2">
+          <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg flex items-center gap-2" onClick={() => alert('Button clicked')}>
             <Plus className="w-5 h-5" />
             إضافة ضمان جديد
           </Button>
@@ -218,7 +275,7 @@ export default function WarrantiesPage() {
                     <Typography variant="caption" size="sm" className="text-gray-600 mb-1">تاريخ الشراء</Typography>
                     <Typography variant="body" size="lg" weight="medium" className="flex items-center gap-1">
                       <Calendar className="w-4 h-4" />
-                      {new Date(warranty.purchaseDate).toLocaleDateString('ar-SA')}
+                      {formatDateSafe(warranty.purchaseDate, { format: 'medium' })}
                     </Typography>
                   </div>
                   
@@ -226,7 +283,7 @@ export default function WarrantiesPage() {
                     <Typography variant="caption" size="sm" className="text-gray-600 mb-1">تاريخ انتهاء الضمان</Typography>
                     <Typography variant="body" size="lg" weight="medium" className="flex items-center gap-1">
                       <Calendar className="w-4 h-4" />
-                      {new Date(warranty.expiryDate).toLocaleDateString('ar-SA')}
+                      {formatDateSafe(warranty.expiryDate, { format: 'medium' })}
                     </Typography>
                   </div>
                 </div>
@@ -256,6 +313,7 @@ export default function WarrantiesPage() {
                 
                 <Button
                   variant="outline"
+                  onClick={() => handleViewDetails(warranty.id)}
                   className="border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg flex items-center gap-2"
                 >
                   <ExternalLink className="w-4 h-4" />
@@ -278,6 +336,59 @@ export default function WarrantiesPage() {
           </Typography>
         </div>
       )}
+
+      {/* AI Features Integration */}
+      <EnhancedCard className="p-6 mt-8 bg-gradient-to-r from-green-50 to-blue-50 border-green-200">
+        <Typography variant="subheading" size="xl" weight="semibold" className="mb-4 flex items-center gap-3">
+          <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014.846 21H9.154a3.374 3.374 0 00-2.53-1.453l-.548-.547z" />
+          </svg>
+          أدوات ذكية لإدارة الضمانات
+        </Typography>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Link href="/user/warranties/ai-extract">
+            <div className="bg-white rounded-lg p-4 hover:shadow-lg transition-shadow cursor-pointer border border-green-200">
+              <div className="flex items-center gap-3 mb-2">
+                <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                <Typography variant="subheading" size="lg" weight="semibold" className="text-green-800">
+                  استخراج بيانات الضمان
+                </Typography>
+              </div>
+              <Typography variant="body" size="sm" className="text-green-600">
+                استخدم الذكاء الاصطناعي لاستخراج بيانات الضمان من الفواتير والإيصالات
+              </Typography>
+            </div>
+          </Link>
+          
+          <Link href="/user/warranty-expense-tracking">
+            <div className="bg-white rounded-lg p-4 hover:shadow-lg transition-shadow cursor-pointer border border-blue-200">
+              <div className="flex items-center gap-3 mb-2">
+                <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+                <Typography variant="subheading" size="lg" weight="semibold" className="text-blue-800">
+                  تتبع ذكي للمصروفات
+                </Typography>
+              </div>
+              <Typography variant="body" size="sm" className="text-blue-600">
+                ربط الضمانات بالمصروفات للحصول على رؤى مالية شاملة
+              </Typography>
+            </div>
+          </Link>
+        </div>
+        
+        <div className="mt-4 pt-4 border-t border-gray-200">
+          <Link href="/user/ai-hub" className="text-purple-600 hover:text-purple-700 text-sm font-medium flex items-center gap-2">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+            </svg>
+            استكشف جميع الأدوات الذكية في مركز الذكاء الاصطناعي
+          </Link>
+        </div>
+      </EnhancedCard>
     </div>
   );
 }

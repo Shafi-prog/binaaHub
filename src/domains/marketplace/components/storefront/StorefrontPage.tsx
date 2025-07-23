@@ -151,7 +151,7 @@ const StorefrontPage: React.FC = () => {
           alt={product.name}
           className="w-full h-48 object-cover rounded-md mb-3"
         />
-        <button className="absolute top-2 right-2 p-2 bg-white rounded-full shadow-md hover:bg-gray-50">
+        <button className="absolute top-2 right-2 p-2 bg-white rounded-full shadow-md hover:bg-gray-50" onClick={() => alert('Button clicked')}>
           <Heart className="w-4 h-4 text-gray-600" />
         </button>
       </div>
@@ -238,7 +238,7 @@ const StorefrontPage: React.FC = () => {
             
             {/* User Actions */}
             <div className="flex items-center space-x-4">
-              <button className="relative">
+              <button className="relative" onClick={() => alert('Button clicked')}>
                 <ShoppingCart className="h-6 w-6 text-gray-600" />
                 {cartCount > 0 && (
                   <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">

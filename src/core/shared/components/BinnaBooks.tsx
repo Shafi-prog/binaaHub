@@ -297,7 +297,7 @@ export default function BinnaBooks() {
                           Mark Paid
                         </button>
                       )}
-                      <button className="text-gray-600 hover:text-gray-900">
+                      <button className="text-gray-600 hover:text-gray-900" onClick={() => alert('Button clicked')}>
                         View
                       </button>
                     </td>

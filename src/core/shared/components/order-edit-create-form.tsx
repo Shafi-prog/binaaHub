@@ -209,7 +209,7 @@ export const OrderEditCreateForm = ({
           <div className="flex w-full items-center justify-end gap-x-4">
             <div className="flex items-center justify-end gap-x-2">
               <RouteFocusModal.Close asChild>
-                <Button type="button" variant="secondary" size="small">
+                <Button type="button" variant="secondary" size="small" onClick={() => alert('Button clicked')}>
                   {t("orders.edits.cancel")}
                 </Button>
               </RouteFocusModal.Close>

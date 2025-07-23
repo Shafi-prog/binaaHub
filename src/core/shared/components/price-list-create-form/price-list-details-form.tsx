@@ -264,7 +264,7 @@ export const PriceListDetailsForm = ({ form }: PriceListDetailsFormProps) => {
                           <button
                             type="button"
                             className="bg-ui-bg-field-component hover:bg-ui-bg-field-component-hover shadow-borders-base txt-compact-small text-ui-fg-muted transition-fg focus-visible:shadow-borders-interactive-with-active flex flex-1 items-center gap-x-2 rounded-md px-2 py-1.5 outline-none"
-                          >
+                           onClick={() => alert('Button clicked')}>
                             <MagnifyingGlass />
                             {t(
                               "priceLists.fields.customerAvailability.placeholder"
@@ -272,7 +272,7 @@ export const PriceListDetailsForm = ({ form }: PriceListDetailsFormProps) => {
                           </button>
                         </StackedFocusModal.Trigger>
                         <StackedFocusModal.Trigger asChild>
-                          <Button variant="secondary">
+                          <Button variant="secondary" onClick={() => alert('Button clicked')}>
                             {t("actions.browse")}
                           </Button>
                         </StackedFocusModal.Trigger>

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/enhanced-components';
 import { FileText, Search, Download, Calendar, CreditCard, Store, Eye, Printer, Filter } from 'lucide-react';
+import { formatDateSafe, formatNumberSafe, useIsClient } from '../../../core/shared/utils/hydration-safe';
 
 export const dynamic = 'force-dynamic'
 
@@ -29,6 +30,8 @@ interface Invoice {
 }
 
 export default function InvoicesPage() {
+  const isHydrated = useIsClient();
+  
   const [invoices, setInvoices] = useState<Invoice[]>([
     {
       id: 'INV001',
@@ -142,19 +145,365 @@ export default function InvoicesPage() {
     }
   };
 
+  const handleViewInvoice = (invoiceId: string) => {
+    // Find the invoice
+    const invoice = invoices.find(inv => inv.id === invoiceId);
+    if (!invoice) return;
+
+    // Create a detailed invoice view window
+    const invoiceWindow = window.open('', '_blank', 'width=800,height=600');
+    if (!invoiceWindow) return;
+
+    const invoiceHTML = `
+      <!DOCTYPE html>
+      <html dir="rtl" lang="ar">
+      <head>
+        <meta charset="UTF-8">
+        <title>فاتورة ${invoice.invoiceNumber}</title>
+        <style>
+          body { font-family: Arial, sans-serif; margin: 20px; direction: rtl; }
+          .header { text-align: center; border-bottom: 2px solid #333; padding-bottom: 20px; margin-bottom: 20px; }
+          .invoice-details { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px; }
+          .items-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+          .items-table th, .items-table td { border: 1px solid #ddd; padding: 8px; text-align: right; }
+          .items-table th { background-color: #f5f5f5; }
+          .totals { margin-right: auto; width: 300px; }
+          .total-row { display: flex; justify-content: space-between; padding: 5px 0; }
+          .final-total { border-top: 2px solid #333; font-weight: bold; font-size: 1.2em; }
+          .status { padding: 5px 10px; border-radius: 20px; color: white; }
+          .status.paid { background-color: #10b981; }
+          .status.pending { background-color: #f59e0b; }
+          .status.overdue { background-color: #ef4444; }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <h1>فاتورة رقم: ${invoice.invoiceNumber}</h1>
+          <h2>منصة بنا للإنشاءات</h2>
+        </div>
+        
+        <div class="invoice-details">
+          <div>
+            <h3>تفاصيل المتجر:</h3>
+            <p><strong>${invoice.store}</strong></p>
+            <p>رقم الطلب: ${invoice.orderId}</p>
+          </div>
+          <div>
+            <h3>تفاصيل الفاتورة:</h3>
+            <p>تاريخ الإصدار: ${formatDateSafe(invoice.issueDate, { format: 'medium' })}</p>
+            <p>تاريخ الاستحقاق: ${formatDateSafe(invoice.dueDate, { format: 'medium' })}</p>
+            ${invoice.paidDate ? `<p>تاريخ الدفع: ${formatDateSafe(invoice.paidDate, { format: 'medium' })}</p>` : ''}
+            <p>الحالة: <span class="status ${invoice.status}">${getStatusText(invoice.status)}</span></p>
+          </div>
+        </div>
+
+        <table class="items-table">
+          <thead>
+            <tr>
+              <th>الوصف</th>
+              <th>الكمية</th>
+              <th>سعر الوحدة</th>
+              <th>الإجمالي</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${invoice.items.map(item => `
+              <tr>
+                <td>${item.description}</td>
+                <td>${item.quantity}</td>
+                <td>${formatNumberSafe(item.unitPrice)} ر.س</td>
+                <td>${formatNumberSafe(item.total)} ر.س</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+
+        <div class="totals">
+          <div class="total-row">
+            <span>المبلغ:</span>
+            <span>${formatNumberSafe(invoice.amount)} ر.س</span>
+          </div>
+          <div class="total-row">
+            <span>الضريبة (15%):</span>
+            <span>${formatNumberSafe(invoice.tax)} ر.س</span>
+          </div>
+          <div class="total-row final-total">
+            <span>الإجمالي:</span>
+            <span>${formatNumberSafe(invoice.total)} ر.س</span>
+          </div>
+        </div>
+
+        ${invoice.paymentMethod ? `
+          <div style="margin-top: 20px; padding: 15px; background-color: #f0fdf4; border-radius: 5px;">
+            <strong>طريقة الدفع:</strong> ${invoice.paymentMethod}
+          </div>
+        ` : ''}
+      </body>
+      </html>
+    `;
+
+    invoiceWindow.document.write(invoiceHTML);
+    invoiceWindow.document.close();
+  };
+
   const handleDownloadInvoice = (invoiceId: string) => {
-    // Implementation for downloading invoice
-    console.log('Downloading invoice:', invoiceId);
+    // Find the invoice
+    const invoice = invoices.find(inv => inv.id === invoiceId);
+    if (!invoice) return;
+
+    try {
+      // Create HTML content for PDF generation
+      const pdfHTML = `
+        <!DOCTYPE html>
+        <html dir="rtl" lang="ar">
+        <head>
+          <meta charset="UTF-8">
+          <title>فاتورة ${invoice.invoiceNumber}</title>
+          <style>
+            body { 
+              font-family: Arial, sans-serif; 
+              margin: 0; 
+              padding: 20px; 
+              direction: rtl; 
+              font-size: 14px;
+              line-height: 1.6;
+            }
+            .header { 
+              text-align: center; 
+              border-bottom: 3px solid #2563eb; 
+              padding-bottom: 20px; 
+              margin-bottom: 30px; 
+              background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+              padding: 20px;
+              border-radius: 8px;
+            }
+            .company-name {
+              color: #2563eb;
+              font-size: 28px;
+              font-weight: bold;
+              margin-bottom: 10px;
+            }
+            .invoice-title {
+              font-size: 24px;
+              color: #374151;
+              margin-bottom: 10px;
+            }
+            .invoice-details { 
+              display: grid; 
+              grid-template-columns: 1fr 1fr; 
+              gap: 30px; 
+              margin-bottom: 40px; 
+            }
+            .detail-section {
+              background: #f9fafb;
+              padding: 20px;
+              border-radius: 8px;
+              border: 1px solid #e5e7eb;
+            }
+            .detail-section h3 {
+              color: #374151;
+              border-bottom: 2px solid #2563eb;
+              padding-bottom: 8px;
+              margin-bottom: 15px;
+            }
+            .items-table { 
+              width: 100%; 
+              border-collapse: collapse; 
+              margin-bottom: 30px; 
+              box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            }
+            .items-table th, .items-table td { 
+              border: 1px solid #d1d5db; 
+              padding: 12px 8px; 
+              text-align: right; 
+            }
+            .items-table th { 
+              background-color: #2563eb; 
+              color: white;
+              font-weight: bold;
+            }
+            .items-table tbody tr:nth-child(even) {
+              background-color: #f9fafb;
+            }
+            .totals { 
+              margin-right: auto; 
+              width: 350px; 
+              background: #f9fafb;
+              padding: 20px;
+              border-radius: 8px;
+              border: 1px solid #e5e7eb;
+            }
+            .total-row { 
+              display: flex; 
+              justify-content: space-between; 
+              padding: 8px 0; 
+              border-bottom: 1px solid #e5e7eb;
+            }
+            .final-total { 
+              border-top: 3px solid #2563eb; 
+              font-weight: bold; 
+              font-size: 18px;
+              color: #2563eb;
+              margin-top: 10px;
+              padding-top: 10px;
+            }
+            .status { 
+              padding: 8px 16px; 
+              border-radius: 20px; 
+              color: white; 
+              font-weight: bold;
+              display: inline-block;
+            }
+            .status.paid { background-color: #10b981; }
+            .status.pending { background-color: #f59e0b; }
+            .status.overdue { background-color: #ef4444; }
+            .payment-info {
+              margin-top: 30px; 
+              padding: 20px; 
+              background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+              border-radius: 8px;
+              border: 1px solid #bbf7d0;
+            }
+            .footer {
+              margin-top: 40px;
+              text-align: center;
+              color: #6b7280;
+              font-size: 12px;
+              border-top: 1px solid #e5e7eb;
+              padding-top: 20px;
+            }
+            @media print {
+              body { margin: 0; }
+              .header { break-inside: avoid; }
+              .items-table { break-inside: avoid; }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <div class="company-name">منصة بنا للإنشاءات</div>
+            <div class="invoice-title">فاتورة رقم: ${invoice.invoiceNumber}</div>
+            <div style="color: #6b7280;">تاريخ الإصدار: ${formatDateSafe(invoice.issueDate)}</div>
+          </div>
+          
+          <div class="invoice-details">
+            <div class="detail-section">
+              <h3>معلومات المتجر</h3>
+              <p><strong>${invoice.store}</strong></p>
+              <p><strong>رقم الطلب:</strong> ${invoice.orderId}</p>
+            </div>
+            <div class="detail-section">
+              <h3>تفاصيل الفاتورة</h3>
+              <p><strong>تاريخ الاستحقاق:</strong> ${formatDateSafe(invoice.dueDate)}</p>
+              ${invoice.paidDate ? `<p><strong>تاريخ الدفع:</strong> ${formatDateSafe(invoice.paidDate)}</p>` : ''}
+              <p><strong>الحالة:</strong> <span class="status ${invoice.status}">${getStatusText(invoice.status)}</span></p>
+            </div>
+          </div>
+
+          <table class="items-table">
+            <thead>
+              <tr>
+                <th>الوصف</th>
+                <th>الكمية</th>
+                <th>سعر الوحدة (ر.س)</th>
+                <th>الإجمالي (ر.س)</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${invoice.items.map(item => `
+                <tr>
+                  <td>${item.description}</td>
+                  <td>${item.quantity}</td>
+                  <td>${formatNumberSafe(item.unitPrice)}</td>
+                  <td>${formatNumberSafe(item.total)}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+
+          <div class="totals">
+            <div class="total-row">
+              <span>المبلغ الأساسي:</span>
+              <span>${formatNumberSafe(invoice.amount)} ر.س</span>
+            </div>
+            <div class="total-row">
+              <span>ضريبة القيمة المضافة (15%):</span>
+              <span>${formatNumberSafe(invoice.tax)} ر.س</span>
+            </div>
+            <div class="total-row final-total">
+              <span>المبلغ الإجمالي:</span>
+              <span>${formatNumberSafe(invoice.total)} ر.س</span>
+            </div>
+          </div>
+
+          ${invoice.paymentMethod ? `
+            <div class="payment-info">
+              <h3 style="color: #065f46; margin-top: 0;">معلومات الدفع</h3>
+              <p><strong>طريقة الدفع:</strong> ${invoice.paymentMethod}</p>
+              <p><strong>حالة الدفع:</strong> ${getStatusText(invoice.status)}</p>
+            </div>
+          ` : ''}
+
+          <div class="footer">
+            <p>منصة بنا للإنشاءات - جميع الحقوق محفوظة © 2025</p>
+            <p>للاستفسارات: support@binna.com | هاتف: +966 11 123 4567</p>
+          </div>
+        </body>
+        </html>
+      `;
+
+      // Create a new window for PDF generation
+      const pdfWindow = window.open('', '_blank', 'width=800,height=600');
+      if (!pdfWindow) {
+        alert('يرجى السماح بفتح النوافذ المنبثقة لتحميل PDF');
+        return;
+      }
+
+      pdfWindow.document.write(pdfHTML);
+      pdfWindow.document.close();
+
+      // Add print functionality to generate PDF
+      setTimeout(() => {
+        pdfWindow.print();
+        alert('تم فتح نافذة الطباعة. يمكنك حفظ الفاتورة كـ PDF من خيارات الطباعة.');
+      }, 500);
+
+    } catch (error) {
+      alert('حدث خطأ أثناء إنشاء PDF. يرجى المحاولة مرة أخرى.');
+    }
   };
 
   const handlePrintInvoice = (invoiceId: string) => {
-    // Implementation for printing invoice
-    console.log('Printing invoice:', invoiceId);
+    // Generate the same PDF content as download but focus on printing
+    const invoice = invoices.find(inv => inv.id === invoiceId);
+    if (!invoice) return;
+
+    // Use the same PDF generation logic as download
+    handleDownloadInvoice(invoiceId);
+    
+    alert('تم فتح الفاتورة للطباعة. يمكنك طباعتها أو حفظها كـ PDF من نافذة الطباعة.');
   };
 
   const handlePayInvoice = (invoiceId: string) => {
-    // Implementation for paying invoice
-    console.log('Paying invoice:', invoiceId);
+    // Find the invoice
+    const invoice = invoices.find(inv => inv.id === invoiceId);
+    if (!invoice) return;
+
+    // Store invoice data in sessionStorage for payment page
+    const paymentData = {
+      type: 'invoice',
+      invoiceId: invoice.id,
+      invoiceNumber: invoice.invoiceNumber,
+      amount: invoice.total,
+      description: `دفع فاتورة ${invoice.invoiceNumber} - ${invoice.store}`,
+      dueDate: invoice.dueDate,
+      store: invoice.store
+    };
+
+    sessionStorage.setItem('pendingPayment', JSON.stringify(paymentData));
+    
+    // Redirect to payment channels page
+    window.location.href = '/user/payment-channels';
   };
 
   return (
@@ -212,7 +561,7 @@ export default function InvoicesPage() {
           <div className="flex items-center justify-between">
             <div>
               <Typography variant="subheading" size="2xl" weight="bold" className="text-blue-600">
-                {invoices.reduce((sum, i) => sum + i.total, 0).toLocaleString()}
+                {formatNumberSafe(invoices.reduce((sum, i) => sum + i.total, 0))}
               </Typography>
               <Typography variant="caption" size="sm" className="text-gray-600">إجمالي المبلغ (ر.س)</Typography>
             </div>
@@ -283,11 +632,11 @@ export default function InvoicesPage() {
                         <div className="flex-1">
                           <Typography variant="body" size="lg" weight="medium">{item.description}</Typography>
                           <Typography variant="caption" size="sm" className="text-gray-600">
-                            {item.quantity} × {item.unitPrice.toLocaleString()} ر.س
+                            {item.quantity} × {formatNumberSafe(item.unitPrice)} ر.س
                           </Typography>
                         </div>
                         <Typography variant="body" size="lg" weight="semibold" className="text-blue-600">
-                          {item.total.toLocaleString()} ر.س
+                          {formatNumberSafe(item.total)} ر.س
                         </Typography>
                       </div>
                     ))}
@@ -300,7 +649,7 @@ export default function InvoicesPage() {
                     <Typography variant="caption" size="sm" className="text-gray-600 mb-1">تاريخ الإصدار</Typography>
                     <Typography variant="body" size="lg" weight="medium" className="flex items-center gap-1">
                       <Calendar className="w-4 h-4" />
-                      {new Date(invoice.issueDate).toLocaleDateString('ar-SA')}
+                      {formatDateSafe(invoice.issueDate)}
                     </Typography>
                   </div>
                   
@@ -308,7 +657,7 @@ export default function InvoicesPage() {
                     <Typography variant="caption" size="sm" className="text-gray-600 mb-1">تاريخ الاستحقاق</Typography>
                     <Typography variant="body" size="lg" weight="medium" className="flex items-center gap-1">
                       <Calendar className="w-4 h-4" />
-                      {new Date(invoice.dueDate).toLocaleDateString('ar-SA')}
+                      {formatDateSafe(invoice.dueDate)}
                     </Typography>
                   </div>
                   
@@ -317,7 +666,7 @@ export default function InvoicesPage() {
                       <Typography variant="caption" size="sm" className="text-gray-600 mb-1">تاريخ الدفع</Typography>
                       <Typography variant="body" size="lg" weight="medium" className="flex items-center gap-1">
                         <Calendar className="w-4 h-4" />
-                        {new Date(invoice.paidDate).toLocaleDateString('ar-SA')}
+                        {formatDateSafe(invoice.paidDate)}
                       </Typography>
                     </div>
                   )}
@@ -338,21 +687,22 @@ export default function InvoicesPage() {
                   <div className="space-y-2">
                     <div className="flex justify-between">
                       <Typography variant="caption" size="sm" className="text-gray-600">المبلغ:</Typography>
-                      <Typography variant="caption" size="sm" weight="medium">{invoice.amount.toLocaleString()} ر.س</Typography>
+                      <Typography variant="caption" size="sm" weight="medium">{formatNumberSafe(invoice.amount)} ر.س</Typography>
                     </div>
                     <div className="flex justify-between">
                       <Typography variant="caption" size="sm" className="text-gray-600">الضريبة:</Typography>
-                      <Typography variant="caption" size="sm" weight="medium">{invoice.tax.toLocaleString()} ر.س</Typography>
+                      <Typography variant="caption" size="sm" weight="medium">{formatNumberSafe(invoice.tax)} ر.س</Typography>
                     </div>
                     <div className="flex justify-between border-t pt-2">
                       <Typography variant="body" size="lg" weight="semibold">الإجمالي:</Typography>
-                      <Typography variant="body" size="lg" weight="bold" className="text-blue-600">{invoice.total.toLocaleString()} ر.س</Typography>
+                      <Typography variant="body" size="lg" weight="bold" className="text-blue-600">{formatNumberSafe(invoice.total)} ر.س</Typography>
                     </div>
                   </div>
                 </div>
 
                 <div className="space-y-2">
                   <Button
+                    onClick={() => handleViewInvoice(invoice.id)}
                     variant="outline"
                     className="w-full border-gray-300 text-gray-700 hover:bg-gray-50 flex items-center gap-2 justify-center"
                   >

@@ -1,10 +1,9 @@
-// @ts-nocheck
 'use client';
 
 import { useState } from 'react';
 import { Search, Filter, Grid, List, Sparkles, SortDesc } from 'lucide-react';
-import AISearchSuggestions from '@/components/search/AISearchSuggestions';
-import SocialSharing from '@/components/social/SocialSharing';
+// import AISearchSuggestions from '@/components/search/AISearchSuggestions'; // Temporarily disabled
+// import SocialSharing from '@/components/social/SocialSharing'; // Temporarily disabled
 
 
 export const dynamic = 'force-dynamic'

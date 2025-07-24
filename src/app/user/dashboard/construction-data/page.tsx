@@ -1,4 +1,3 @@
-// @ts-nocheck
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -6,8 +5,8 @@ import { useRouter } from 'next/navigation';
 import { LoadingSpinner } from '@/core/shared/components/ui/loading-spinner';
 import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/enhanced-components';
 import { Badge } from '@/core/shared/components/ui/badge';
-import { ClientIcon } from '@/components/icons';
-import type { IconKey } from '@/components/icons/ClientIcon';
+// import { ClientIcon } from '@/components/icons'; // Temporarily disabled
+// import type { IconKey } from '@/components/icons/ClientIcon'; // Temporarily disabled
 import Link from 'next/link';
 
 

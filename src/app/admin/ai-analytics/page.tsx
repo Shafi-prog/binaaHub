@@ -1,4 +1,3 @@
-// @ts-nocheck
 'use client'
 
 import React, { useState, useEffect } from 'react'
@@ -27,7 +26,7 @@ import {
 } from 'lucide-react'
 
 // Force dynamic rendering to avoid SSG auth context issues
-import { MarketAnalytics } from '@/components/analytics/MarketAnalytics'
+// import { MarketAnalytics } from '@/components/analytics/MarketAnalytics'; // Temporarily disabled
 
 
 export const dynamic = 'force-dynamic'

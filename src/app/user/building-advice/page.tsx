@@ -1,4 +1,3 @@
-// @ts-nocheck
 // صفحة نصائح البناء التفاعلية الشاملة
 'use client';
 import React, { useState, useEffect } from 'react';

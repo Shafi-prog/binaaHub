@@ -1,0 +1,334 @@
+'use client';
+
+import { useState, useMemo } from 'react';
+import { Button } from '@/core/shared/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
+import { Badge } from '@/core/shared/components/ui/badge';
+import { Input } from '@/core/shared/components/ui/input';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/core/shared/components/ui/table';
+import { Plus, Search, Package, Eye, Edit, Trash2, ShoppingCart, DollarSign, Layers } from 'lucide-react';
+import Link from 'next/link';
+
+export const dynamic = 'force-dynamic';
+
+interface Product {
+  id: string;
+  name: string;
+  category: string;
+  sku: string;
+  price: number;
+  cost: number;
+  stock_quantity: number;
+  status: 'active' | 'inactive' | 'out_of_stock';
+  description: string;
+  unit: string;
+  supplier: string;
+  created_at: string;
+  last_updated: string;
+}
+
+// Mock data for products
+const mockProducts: Product[] = [
+  {
+    id: 'prod_1',
+    name: 'أسمنت بورتلاندي عادي',
+    category: 'مواد البناء',
+    sku: 'CEM-001',
+    price: 25.50,
+    cost: 20.00,
+    stock_quantity: 150,
+    status: 'active',
+    description: 'أسمنت بورتلاندي عادي 50 كيلوجرام',
+    unit: 'كيس',
+    supplier: 'شركة الأسمنت السعودية',
+    created_at: '2024-01-15',
+    last_updated: '2024-03-10'
+  },
+  {
+    id: 'prod_2',
+    name: 'حديد تسليح 12 ملم',
+    category: 'حديد ومعادن',
+    sku: 'REB-012',
+    price: 3200.00,
+    cost: 2800.00,
+    stock_quantity: 25,
+    status: 'active',
+    description: 'حديد تسليح قطر 12 ملم - طن',
+    unit: 'طن',
+    supplier: 'مصنع حديد الخليج',
+    created_at: '2024-01-20',
+    last_updated: '2024-03-12'
+  },
+  {
+    id: 'prod_3',
+    name: 'رمل أصفر مغسول',
+    category: 'مواد خام',
+    sku: 'SND-001',
+    price: 45.00,
+    cost: 35.00,
+    stock_quantity: 0,
+    status: 'out_of_stock',
+    description: 'رمل أصفر مغسول للبناء',
+    unit: 'متر مكعب',
+    supplier: 'مقالع الرياض',
+    created_at: '2024-02-01',
+    last_updated: '2024-03-14'
+  },
+  {
+    id: 'prod_4',
+    name: 'بلاط سيراميك 60x60',
+    category: 'بلاط وسيراميك',
+    sku: 'TIL-6060',
+    price: 28.75,
+    cost: 22.00,
+    stock_quantity: 450,
+    status: 'active',
+    description: 'بلاط سيراميك أبيض 60x60 سم',
+    unit: 'متر مربع',
+    supplier: 'شركة السيراميك الحديث',
+    created_at: '2024-02-15',
+    last_updated: '2024-03-11'
+  }
+];
+
+export default function StoreProductsPage() {
+  const [products] = useState<Product[]>(mockProducts);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const filteredProducts = useMemo(() => {
+    return products.filter(product =>
+      product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.sku.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.category.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [products, searchTerm]);
+
+  const productStats = useMemo(() => {
+    const totalProducts = products.length;
+    const activeProducts = products.filter(p => p.status === 'active').length;
+    const outOfStock = products.filter(p => p.status === 'out_of_stock').length;
+    const totalValue = products.reduce((sum, p) => sum + (p.price * p.stock_quantity), 0);
+    
+    return { totalProducts, activeProducts, outOfStock, totalValue };
+  }, [products]);
+
+  const getStatusColor = (status: Product['status']) => {
+    const colors = {
+      active: 'bg-green-100 text-green-800',
+      inactive: 'bg-gray-100 text-gray-800',
+      out_of_stock: 'bg-red-100 text-red-800',
+    };
+    return colors[status];
+  };
+
+  const getStatusText = (status: Product['status']) => {
+    const statusText = {
+      active: 'نشط',
+      inactive: 'غير نشط',
+      out_of_stock: 'نفذت الكمية',
+    };
+    return statusText[status];
+  };
+
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('ar-SA', {
+      style: 'currency',
+      currency: 'SAR',
+    }).format(amount);
+  };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('ar-SA');
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <div className="bg-white shadow-sm border-b">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex justify-between items-center">
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">إدارة المنتجات</h1>
+              <p className="text-gray-600">إدارة شاملة لمنتجات المتجر والمخزون</p>
+            </div>
+            <div className="flex gap-3">
+              <Link href="/store/products/construction/new">
+                <Button className="flex items-center gap-2">
+                  <Plus className="h-4 w-4" />
+                  إضافة منتج جديد
+                </Button>
+              </Link>
+              <Link href="/store/construction-products">
+                <Button variant="outline">
+                  منتجات البناء
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto p-6 space-y-6">
+        {/* Statistics */}
+        <div className="grid grid-cols-4 gap-4">
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center">
+                <Package className="h-8 w-8 text-blue-600" />
+                <div className="mr-4">
+                  <p className="text-sm font-medium text-gray-600">إجمالي المنتجات</p>
+                  <p className="text-2xl font-bold">{productStats.totalProducts}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center">
+                <ShoppingCart className="h-8 w-8 text-green-600" />
+                <div className="mr-4">
+                  <p className="text-sm font-medium text-gray-600">منتجات نشطة</p>
+                  <p className="text-2xl font-bold">{productStats.activeProducts}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center">
+                <Layers className="h-8 w-8 text-red-600" />
+                <div className="mr-4">
+                  <p className="text-sm font-medium text-gray-600">نفذت الكمية</p>
+                  <p className="text-2xl font-bold">{productStats.outOfStock}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center">
+                <DollarSign className="h-8 w-8 text-purple-600" />
+                <div className="mr-4">
+                  <p className="text-sm font-medium text-gray-600">قيمة المخزون</p>
+                  <p className="text-2xl font-bold">{formatCurrency(productStats.totalValue)}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Products Table */}
+        <Card>
+          <CardHeader>
+            <div className="flex items-center gap-4">
+              <div className="flex-1 relative">
+                <Search className="h-4 w-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                <Input
+                  placeholder="البحث في المنتجات..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pr-10"
+                />
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent>
+            {filteredProducts.length === 0 ? (
+              <div className="text-center py-12">
+                <Package className="h-12 w-12 mx-auto text-gray-400 mb-4" />
+                <h3 className="text-lg font-medium text-gray-900 mb-2">لا توجد منتجات</h3>
+                <p className="text-gray-600 mb-4">
+                  {searchTerm 
+                    ? 'لا توجد منتجات تطابق معايير البحث'
+                    : 'ابدأ بإضافة منتجات جديدة'
+                  }
+                </p>
+                <Button>
+                  <Plus className="h-4 w-4 ml-2" />
+                  إضافة منتج
+                </Button>
+              </div>
+            ) : (
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>اسم المنتج</TableHead>
+                    <TableHead>الفئة</TableHead>
+                    <TableHead>رمز المنتج</TableHead>
+                    <TableHead>السعر</TableHead>
+                    <TableHead>التكلفة</TableHead>
+                    <TableHead>المخزون</TableHead>
+                    <TableHead>الوحدة</TableHead>
+                    <TableHead>الحالة</TableHead>
+                    <TableHead>آخر تحديث</TableHead>
+                    <TableHead>الإجراءات</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {filteredProducts.map((product) => (
+                    <TableRow key={product.id}>
+                      <TableCell>
+                        <div>
+                          <div className="font-medium">{product.name}</div>
+                          <div className="text-sm text-gray-600">{product.description}</div>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant="outline">{product.category}</Badge>
+                      </TableCell>
+                      <TableCell>
+                        <div className="font-mono text-sm">{product.sku}</div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="font-medium text-green-600">
+                          {formatCurrency(product.price)}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="text-gray-600">
+                          {formatCurrency(product.cost)}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className={`font-medium ${product.stock_quantity <= 0 ? 'text-red-600' : 'text-gray-900'}`}>
+                          {product.stock_quantity.toLocaleString('ar-SA')}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="text-sm">{product.unit}</div>
+                      </TableCell>
+                      <TableCell>
+                        <Badge className={getStatusColor(product.status)}>
+                          {getStatusText(product.status)}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <div className="text-sm">{formatDate(product.last_updated)}</div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <Button variant="ghost" size="sm">
+                            <Eye className="h-4 w-4" />
+                          </Button>
+                          <Button variant="ghost" size="sm">
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                          <Button variant="ghost" size="sm" className="text-red-600">
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}

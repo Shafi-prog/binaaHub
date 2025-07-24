@@ -1,116 +1,216 @@
-// @ts-nocheck
-'use client'
+'use client';
 
-import { useState, useEffect } from "react"
-import { useParams } from "next/navigation"
-import { TwoColumnPageSkeleton } from "@/components/common/skeleton"
-import { TwoColumnPage } from "@/components/layout/pages"
-import { VariantGeneralSection } from "@/core/shared/components/variant-general-section"
-import {
-  InventorySectionPlaceholder,
-  VariantInventorySection,
-} from "@/core/shared/components/variant-inventory-section"
+import { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
+import { Button } from '@/core/shared/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
+import { Badge } from '@/core/shared/components/ui/badge';
+import { Input } from '@/core/shared/components/ui/input';
+import { Label } from '@/core/shared/components/ui/label';
+import { Edit, Package, DollarSign, BarChart3 } from 'lucide-react';
 
-// Force dynamic rendering to avoid SSG auth context issues
-import { VariantPricesSection } from "@/core/shared/components/variant-prices-section"
+export const dynamic = 'force-dynamic';
 
-
-export const dynamic = 'force-dynamic'
-// Force dynamic rendering for this page to avoid SSG issues with auth context
-
-
-// Check if we're in SSR/build environment
-const isSSR = typeof window === 'undefined';
-
-// Mock data for variant
-const mockVariant = {
-  id: "var_123",
-  title: "Sample Variant",
-  manage_inventory: true,
-  inventory_items: [
-    {
-      inventory: {
-        id: "inv_123",
-        sku: "SKU-123",
-        quantity: 10,
-        location: "Warehouse A"
-      },
-      required_quantity: 1
-    }
-  ]
+interface ProductVariant {
+  id: string;
+  title: string;
+  sku: string;
+  price: number;
+  inventory_quantity: number;
+  manage_inventory: boolean;
+  options: Record<string, string>;
+  product_id: string;
 }
 
+// Mock data for variant
+const mockVariant: ProductVariant = {
+  id: "var_123",
+  title: "Medium - Blue",
+  sku: "SKU-MED-BLUE-001",
+  price: 299.99,
+  inventory_quantity: 45,
+  manage_inventory: true,
+  options: {
+    size: "Medium",
+    color: "Blue"
+  },
+  product_id: "prod_123"
+};
+
 export default function ProductVariantDetail() {
-  // Return a loading skeleton during SSR/build to avoid auth context issues
-  if (isSSR) {
-    return <TwoColumnPageSkeleton />
-  }
-
-  const params = useParams()
-  const [variant, setVariant] = useState(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const [isError, setIsError] = useState(false)
-
-  // Mock getWidgets function
-  const getWidgets = (section: string) => []
+  const params = useParams();
+  const [variant, setVariant] = useState<ProductVariant | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate loading
-    setTimeout(() => {
-      setVariant(mockVariant)
-      setIsLoading(false)
-    }, 1000)
-  }, [])
+    // Simulate loading variant data
+    const timer = setTimeout(() => {
+      setVariant(mockVariant);
+      setLoading(false);
+    }, 500);
 
-  if (isLoading || !variant) {
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
     return (
-      <TwoColumnPageSkeleton
-        mainSections={2}
-        sidebarSections={1}
-        showJSON
-        showMetadata
-      />
-    )
+      <div className="min-h-screen bg-gray-50 p-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="animate-pulse">
+            <div className="h-8 bg-gray-200 rounded w-1/3 mb-4"></div>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div className="lg:col-span-2 space-y-6">
+                <div className="h-64 bg-gray-200 rounded"></div>
+                <div className="h-48 bg-gray-200 rounded"></div>
+              </div>
+              <div className="h-96 bg-gray-200 rounded"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
-  if (isError) {
-    return <div>Error loading variant</div>
+  if (!variant) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-xl font-semibold text-gray-900 mb-2">البديل غير موجود</h2>
+          <p className="text-gray-600">لم يتم العثور على البديل المطلوب</p>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <TwoColumnPage
-      data={variant}
-      hasOutlet
-      showJSON
-      showMetadata
-      widgets={{
-        after: getWidgets("product_variant.details.after"),
-        before: getWidgets("product_variant.details.before"),
-        sideAfter: getWidgets("product_variant.details.side.after"),
-        sideBefore: getWidgets("product_variant.details.side.before"),
-      }}
-    >
-      <TwoColumnPage.Main>
-        <VariantGeneralSection variant={variant} />
-        {!variant.manage_inventory ? (
-          <InventorySectionPlaceholder />
-        ) : (
-          <VariantInventorySection
-            inventoryItems={variant.inventory_items.map((i) => {
-              return {
-                ...i.inventory,
-                required_quantity: i.required_quantity,
-                variant,
-              }
-            })}
-          />
-        )}
-      </TwoColumnPage.Main>
-      <TwoColumnPage.Sidebar>
-        <VariantPricesSection variant={variant} />
-      </TwoColumnPage.Sidebar>
-    </TwoColumnPage>
-  )
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <div className="bg-white shadow-sm border-b">
+        <div className="max-w-6xl mx-auto px-6 py-4">
+          <div className="flex justify-between items-center">
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">{variant.title}</h1>
+              <p className="text-gray-600">رمز المنتج: {variant.sku}</p>
+            </div>
+            <Button className="flex items-center gap-2">
+              <Edit size={16} />
+              تعديل البديل
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="max-w-6xl mx-auto p-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Main Content */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* General Info */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Package size={20} />
+                  المعلومات العامة
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="title">عنوان البديل</Label>
+                    <Input id="title" defaultValue={variant.title} />
+                  </div>
+                  <div>
+                    <Label htmlFor="sku">رمز المنتج (SKU)</Label>
+                    <Input id="sku" defaultValue={variant.sku} />
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <Label>الخيارات</Label>
+                  <div className="flex flex-wrap gap-2">
+                    {Object.entries(variant.options).map(([key, value]) => (
+                      <Badge key={key} variant="secondary">
+                        {key}: {value}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Inventory */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <BarChart3 size={20} />
+                  إدارة المخزون
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="quantity">الكمية المتاحة</Label>
+                    <Input 
+                      id="quantity" 
+                      type="number" 
+                      defaultValue={variant.inventory_quantity} 
+                    />
+                  </div>
+                  <div className="flex items-center justify-center">
+                    <Badge 
+                      variant={variant.inventory_quantity > 10 ? "default" : "destructive"}
+                      className="text-sm"
+                    >
+                      {variant.inventory_quantity > 10 ? "متوفر" : "مخزون منخفض"}
+                    </Badge>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Sidebar */}
+          <div>
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <DollarSign size={20} />
+                  التسعير
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <Label htmlFor="price">السعر</Label>
+                  <Input 
+                    id="price" 
+                    type="number" 
+                    step="0.01" 
+                    defaultValue={variant.price} 
+                  />
+                </div>
+                
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <h4 className="font-medium text-gray-900 mb-2">ملخص التسعير</h4>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span>السعر الأساسي:</span>
+                      <span>{variant.price.toFixed(2)} ر.س</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>الضريبة (15%):</span>
+                      <span>{(variant.price * 0.15).toFixed(2)} ر.س</span>
+                    </div>
+                    <div className="flex justify-between font-medium border-t pt-2">
+                      <span>السعر النهائي:</span>
+                      <span>{(variant.price * 1.15).toFixed(2)} ر.س</span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
-
-

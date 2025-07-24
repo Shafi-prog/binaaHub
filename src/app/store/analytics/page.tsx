@@ -1,7 +1,6 @@
-// @ts-nocheck
 import { Metadata } from 'next';
-import MarketAnalytics from '@/components/analytics/MarketAnalytics';
-import CityPriceTracking from '@/components/pricing/CityPriceTracking';
+// import MarketAnalytics from '@/components/analytics/MarketAnalytics'; // Temporarily disabled
+// import CityPriceTracking from '@/components/pricing/CityPriceTracking'; // Temporarily disabled
 import { AdvancedReportingEngine } from '@/core/shared/components/AdvancedReportingEngine';
 
 export const metadata: Metadata = {

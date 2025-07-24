@@ -1,4 +1,3 @@
-// @ts-nocheck
 'use client';
 import { useEffect, useState } from 'react';
 import UserProfileForm from '@/core/shared/components/UserProfileForm';

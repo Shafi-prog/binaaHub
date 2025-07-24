@@ -1,4 +1,3 @@
-// @ts-nocheck
 export default function MarketplacePage() {
   return (
     <div className="space-y-6 text-right" dir="rtl">

@@ -1,5 +1,4 @@
-// @ts-nocheck
-import PaymentGatewayIntegration from '@/components/payments/PaymentGatewayIntegration';
+// import PaymentGatewayIntegration from '@/components/payments/PaymentGatewayIntegration'; // Temporarily disabled
 
 export default function PaymentsPage() {
   return (

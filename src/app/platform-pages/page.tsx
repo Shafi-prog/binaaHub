@@ -1,7 +1,9 @@
 'use client';
 
+export const dynamic = 'force-dynamic';
+
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { cn } from '@/core/shared/utils';
 import { 
   Book, 
@@ -15,12 +17,24 @@ import {
   Search,
   ChevronDown,
   Copy,
-  Check
+  Check,
+  CheckSquare,
+  Square,
+  AlertTriangle,
+  Trash2,
+  Download,
+  Upload
 } from 'lucide-react';
 
 // Base URLs
 const LOCAL_BASE_URL = 'http://localhost:3000';
 const VERCEL_BASE_URL = 'https://binaa-hub-shafi-projs-projects.vercel.app';
+
+// Page evaluation status type
+type PageStatus = 'working' | 'needFix' | 'delete' | 'duplicate' | 'merge' | null;
+
+// Local storage key for evaluations
+const EVALUATIONS_STORAGE_KEY = 'platform-pages-evaluations';
 
 // Pages data organized by sections
 const pagesSections = {
@@ -186,29 +200,148 @@ const pagesSections = {
   }
 };
 
-interface PageLinkProps {
+interface PageData {
   path: string;
   name: string;
   description: string;
 }
 
-function PageLink({ path, name, description }: PageLinkProps) {
+interface PageLinkProps extends PageData {
+  evaluations: Record<string, PageStatus>;
+  updateEvaluation: (pagePath: string, status: PageStatus) => void;
+}
+
+function PageLink({ path, name, description, evaluations, updateEvaluation }: PageLinkProps) {
   const [copied, setCopied] = useState<string | null>(null);
 
-  const copyToClipboard = (url: string, type: 'local' | 'vercel') => {
-    navigator.clipboard.writeText(url);
-    setCopied(`${path}-${type}`);
-    setTimeout(() => setCopied(null), 2000);
+  const copyToClipboard = async (url: string, type: 'local' | 'vercel') => {
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopied(`${path}-${type}`);
+      setTimeout(() => setCopied(null), 2000);
+    } catch (error) {
+      console.error('Failed to copy to clipboard:', error);
+      // Fallback method for older browsers or when clipboard access is denied
+      const textArea = document.createElement('textarea');
+      textArea.value = url;
+      document.body.appendChild(textArea);
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        setCopied(`${path}-${type}`);
+        setTimeout(() => setCopied(null), 2000);
+      } catch (fallbackError) {
+        console.error('Fallback copy failed:', fallbackError);
+      }
+      document.body.removeChild(textArea);
+    }
+  };
+
+  const getStatusColor = (status: PageStatus) => {
+    switch (status) {
+      case 'working':
+        return 'border-green-300 bg-green-50';
+      case 'needFix':
+        return 'border-yellow-300 bg-yellow-50';
+      case 'delete':
+        return 'border-red-300 bg-red-50';
+      case 'duplicate':
+        return 'border-orange-300 bg-orange-50';
+      case 'merge':
+        return 'border-purple-300 bg-purple-50';
+      default:
+        return 'border-gray-200 bg-gray-50';
+    }
   };
 
   const localUrl = `${LOCAL_BASE_URL}${path}`;
   const vercelUrl = `${VERCEL_BASE_URL}${path}`;
+  const currentStatus = evaluations[path];
 
   return (
-    <div className="bg-gray-50 rounded-lg p-4 border border-gray-200 hover:border-blue-300 transition-colors">
-      <h4 className="font-semibold text-gray-800 mb-2">{name}</h4>
+    <div className={`rounded-lg p-4 border hover:border-blue-300 transition-colors ${getStatusColor(currentStatus)}`}>
+      {/* Header with name and current status */}
+      <div className="flex items-start justify-between mb-2">
+        <h4 className="font-semibold text-gray-800 flex-1">{name}</h4>
+        {currentStatus && (
+          <div className="ml-2">
+            {currentStatus === 'working' && <Check className="w-4 h-4 text-green-600" />}
+            {currentStatus === 'needFix' && <AlertTriangle className="w-4 h-4 text-yellow-600" />}
+            {currentStatus === 'delete' && <Trash2 className="w-4 h-4 text-red-600" />}
+            {currentStatus === 'duplicate' && <Copy className="w-4 h-4 text-orange-600" />}
+            {currentStatus === 'merge' && <FileText className="w-4 h-4 text-purple-600" />}
+          </div>
+        )}
+      </div>
+
       <p className="text-sm text-gray-600 mb-3">{description}</p>
       
+      {/* Evaluation Options */}
+      <div className="mb-4 p-3 bg-white rounded border">
+        <p className="text-xs font-medium text-gray-700 mb-2">تقييم الصفحة:</p>
+        <div className="grid grid-cols-2 gap-2">
+          <button
+            onClick={() => updateEvaluation(path, currentStatus === 'working' ? null : 'working')}
+            className="flex items-center gap-2 text-sm hover:bg-green-50 p-1 rounded"
+            title="Mark as Working"
+          >
+            {currentStatus === 'working' ? 
+              <CheckSquare className="w-4 h-4 text-green-600" /> : 
+              <Square className="w-4 h-4 text-gray-400" />
+            }
+            <span className="text-green-700">يعمل</span>
+          </button>
+          
+          <button
+            onClick={() => updateEvaluation(path, currentStatus === 'needFix' ? null : 'needFix')}
+            className="flex items-center gap-2 text-sm hover:bg-yellow-50 p-1 rounded"
+            title="Mark as Need Fix"
+          >
+            {currentStatus === 'needFix' ? 
+              <CheckSquare className="w-4 h-4 text-yellow-600" /> : 
+              <Square className="w-4 h-4 text-gray-400" />
+            }
+            <span className="text-yellow-700">يحتاج إصلاح</span>
+          </button>
+          
+          <button
+            onClick={() => updateEvaluation(path, currentStatus === 'delete' ? null : 'delete')}
+            className="flex items-center gap-2 text-sm hover:bg-red-50 p-1 rounded"
+            title="Mark for Deletion"
+          >
+            {currentStatus === 'delete' ? 
+              <CheckSquare className="w-4 h-4 text-red-600" /> : 
+              <Square className="w-4 h-4 text-gray-400" />
+            }
+            <span className="text-red-700">حذف</span>
+          </button>
+
+          <button
+            onClick={() => updateEvaluation(path, currentStatus === 'duplicate' ? null : 'duplicate')}
+            className="flex items-center gap-2 text-sm hover:bg-orange-50 p-1 rounded"
+            title="Mark as Duplicate"
+          >
+            {currentStatus === 'duplicate' ? 
+              <CheckSquare className="w-4 h-4 text-orange-600" /> : 
+              <Square className="w-4 h-4 text-gray-400" />
+            }
+            <span className="text-orange-700">مكرر</span>
+          </button>
+
+          <button
+            onClick={() => updateEvaluation(path, currentStatus === 'merge' ? null : 'merge')}
+            className="flex items-center gap-2 text-sm hover:bg-purple-50 p-1 rounded"
+            title="Mark for Merge"
+          >
+            {currentStatus === 'merge' ? 
+              <CheckSquare className="w-4 h-4 text-purple-600" /> : 
+              <Square className="w-4 h-4 text-gray-400" />
+            }
+            <span className="text-purple-700">دمج</span>
+          </button>
+        </div>
+      </div>
+
       <div className="space-y-2">
         {/* Local Development Link */}
         <div className="flex items-center justify-between">
@@ -270,18 +403,25 @@ interface SectionProps {
   title: string;
   emoji: string;
   description: string;
-  pages: PageLinkProps[];
+  pages: PageData[];
   defaultExpanded?: boolean;
+  evaluations: Record<string, PageStatus>;
+  updateEvaluation: (pagePath: string, status: PageStatus) => void;
 }
 
-function Section({ title, emoji, description, pages, defaultExpanded = false }: SectionProps) {
+function Section({ title, emoji, description, pages, defaultExpanded = false, evaluations, updateEvaluation }: SectionProps) {
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
+
+  const handleToggle = () => {
+    console.log(`Toggling section: ${title}, current state: ${isExpanded}`);
+    setIsExpanded(!isExpanded);
+  };
 
   return (
     <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
       <button
-        onClick={() => setIsExpanded(!isExpanded)}
-        className="w-full px-6 py-4 text-left bg-gradient-to-r from-gray-50 to-gray-100 hover:from-gray-100 hover:to-gray-200 transition-colors"
+        onClick={handleToggle}
+        className="w-full px-6 py-4 text-left bg-gradient-to-r from-gray-50 to-gray-100 hover:from-gray-100 hover:to-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -293,7 +433,7 @@ function Section({ title, emoji, description, pages, defaultExpanded = false }: 
             </div>
           </div>
           <ChevronDown 
-            className={cn("w-5 h-5 text-gray-400 transition-transform", 
+            className={cn("w-5 h-5 text-gray-400 transition-transform duration-200", 
               isExpanded && "rotate-180"
             )} 
           />
@@ -301,10 +441,15 @@ function Section({ title, emoji, description, pages, defaultExpanded = false }: 
       </button>
 
       {isExpanded && (
-        <div className="p-6 border-t border-gray-200">
+        <div className="p-6 border-t border-gray-200 animate-in slide-in-from-top duration-200">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {pages.map((page) => (
-              <PageLink key={page.path} {...page} />
+              <PageLink 
+                key={page.path} 
+                {...page} 
+                evaluations={evaluations}
+                updateEvaluation={updateEvaluation}
+              />
             ))}
           </div>
         </div>
@@ -316,6 +461,98 @@ function Section({ title, emoji, description, pages, defaultExpanded = false }: 
 export default function PagesDocumentationPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSection, setSelectedSection] = useState<string>('all');
+  const [evaluations, setEvaluations] = useState<Record<string, PageStatus>>({});
+
+  // Load evaluations from localStorage on component mount
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(EVALUATIONS_STORAGE_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        setEvaluations(parsed);
+      }
+    } catch (error) {
+      console.error('Failed to load saved evaluations:', error);
+      // Clear corrupted data
+      localStorage.removeItem(EVALUATIONS_STORAGE_KEY);
+    }
+  }, []);
+
+  // Get all page paths for statistics
+  const allPagePaths = Object.values(pagesSections).flatMap(section => 
+    section.pages.map(page => page.path)
+  );
+
+  // Calculate statistics
+  const stats = {
+    total: allPagePaths.length,
+    working: allPagePaths.filter(path => evaluations[path] === 'working').length,
+    needFix: allPagePaths.filter(path => evaluations[path] === 'needFix').length,
+    delete: allPagePaths.filter(path => evaluations[path] === 'delete').length,
+    duplicate: allPagePaths.filter(path => evaluations[path] === 'duplicate').length,
+    merge: allPagePaths.filter(path => evaluations[path] === 'merge').length,
+    notEvaluated: allPagePaths.filter(path => !evaluations[path]).length
+  };
+
+  // Update evaluation function
+  const updateEvaluation = (pagePath: string, status: PageStatus) => {
+    try {
+      const newEvaluations = { ...evaluations, [pagePath]: status };
+      setEvaluations(newEvaluations);
+      localStorage.setItem(EVALUATIONS_STORAGE_KEY, JSON.stringify(newEvaluations));
+    } catch (error) {
+      console.error('Failed to save evaluation to localStorage:', error);
+      // Still update the state even if localStorage fails
+      setEvaluations({ ...evaluations, [pagePath]: status });
+    }
+  };
+
+  // Export evaluations to JSON file
+  const exportEvaluations = () => {
+    try {
+      const dataStr = JSON.stringify(evaluations, null, 2);
+      const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+      
+      const exportFileDefaultName = `platform-pages-evaluations-${new Date().toISOString().split('T')[0]}.json`;
+      
+      const linkElement = document.createElement('a');
+      linkElement.setAttribute('href', dataUri);
+      linkElement.setAttribute('download', exportFileDefaultName);
+      linkElement.click();
+    } catch (error) {
+      console.error('Failed to export evaluations:', error);
+      alert('خطأ في تصدير الملف');
+    }
+  };
+
+  // Import evaluations from JSON file
+  const importEvaluations = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const result = e.target?.result as string;
+          if (!result) {
+            throw new Error('فشل في قراءة الملف');
+          }
+          const imported = JSON.parse(result);
+          setEvaluations(imported);
+          localStorage.setItem(EVALUATIONS_STORAGE_KEY, JSON.stringify(imported));
+        } catch (error) {
+          console.error('Import error:', error);
+          alert('خطأ في استيراد الملف. تأكد من أن الملف بصيغة JSON صحيحة.');
+        }
+      };
+      reader.onerror = (error) => {
+        console.error('FileReader error:', error);
+        alert('خطأ في قراءة الملف');
+      };
+      reader.readAsText(file);
+    }
+    // Reset the input
+    event.target.value = '';
+  };
 
   // Calculate total pages
   const totalPages = Object.values(pagesSections).reduce((total, section) => total + section.pages.length, 0) + 1; // +1 for landing page
@@ -367,6 +604,76 @@ export default function PagesDocumentationPage() {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 py-8">
+        {/* Evaluation Statistics Dashboard */}
+        <div className="bg-white rounded-xl shadow-lg p-6 mb-8 border border-gray-200">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl font-bold text-gray-800">📊 تقييم الصفحات</h2>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={exportEvaluations}
+                className="flex items-center gap-2 px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm"
+              >
+                <Download className="w-4 h-4" />
+                تصدير التقييمات
+              </button>
+              <label className="flex items-center gap-2 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm cursor-pointer">
+                <Upload className="w-4 h-4" />
+                استيراد التقييمات
+                <input
+                  type="file"
+                  accept=".json"
+                  onChange={importEvaluations}
+                  className="hidden"
+                />
+              </label>
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-4">
+            <div className="bg-gray-50 rounded-lg p-4 text-center">
+              <div className="text-2xl font-bold text-gray-700">{stats.total}</div>
+              <div className="text-sm text-gray-600">إجمالي الصفحات</div>
+            </div>
+            <div className="bg-green-50 rounded-lg p-4 text-center">
+              <div className="text-2xl font-bold text-green-700">{stats.working}</div>
+              <div className="text-sm text-green-600">تعمل بشكل صحيح</div>
+            </div>
+            <div className="bg-yellow-50 rounded-lg p-4 text-center">
+              <div className="text-2xl font-bold text-yellow-700">{stats.needFix}</div>
+              <div className="text-sm text-yellow-600">تحتاج إصلاح</div>
+            </div>
+            <div className="bg-red-50 rounded-lg p-4 text-center">
+              <div className="text-2xl font-bold text-red-700">{stats.delete}</div>
+              <div className="text-sm text-red-600">للحذف</div>
+            </div>
+            <div className="bg-orange-50 rounded-lg p-4 text-center">
+              <div className="text-2xl font-bold text-orange-700">{stats.duplicate}</div>
+              <div className="text-sm text-orange-600">مكرر</div>
+            </div>
+            <div className="bg-purple-50 rounded-lg p-4 text-center">
+              <div className="text-2xl font-bold text-purple-700">{stats.merge}</div>
+              <div className="text-sm text-purple-600">للدمج</div>
+            </div>
+            <div className="bg-blue-50 rounded-lg p-4 text-center">
+              <div className="text-2xl font-bold text-blue-700">{stats.notEvaluated}</div>
+              <div className="text-sm text-blue-600">غير مقيمة</div>
+            </div>
+          </div>
+
+          {/* Progress Bar */}
+          <div className="mt-4">
+            <div className="flex items-center justify-between text-sm text-gray-600 mb-2">
+              <span>التقدم في التقييم</span>
+              <span>{Math.round(((stats.total - stats.notEvaluated) / stats.total) * 100)}%</span>
+            </div>
+            <div className="w-full bg-gray-200 rounded-full h-2">
+              <div 
+                className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                style={{ width: `${((stats.total - stats.notEvaluated) / stats.total) * 100}%` }}
+              ></div>
+            </div>
+          </div>
+        </div>
         {/* Base URLs Info */}
         <div className="bg-white rounded-xl shadow-lg p-6 mb-8 border border-gray-200">
           <h2 className="text-xl font-bold text-gray-800 mb-4">🌐 Base URLs</h2>
@@ -399,6 +706,8 @@ export default function PagesDocumentationPage() {
             path="/"
             name="Main Landing Page"
             description="Comprehensive platform showcase with search, filtering, and feature overview"
+            evaluations={evaluations}
+            updateEvaluation={updateEvaluation}
           />
         </div>
 
@@ -440,7 +749,9 @@ export default function PagesDocumentationPage() {
               emoji={section.emoji}
               description={section.description}
               pages={section.pages}
-              defaultExpanded={selectedSection !== 'all' || searchQuery !== ''}
+              defaultExpanded={true}
+              evaluations={evaluations}
+              updateEvaluation={updateEvaluation}
             />
           ))}
         </div>

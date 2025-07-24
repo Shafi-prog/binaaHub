@@ -1,4 +1,3 @@
-// @ts-nocheck
 'use client'
 
 // Force dynamic rendering to avoid SSG auth context issues

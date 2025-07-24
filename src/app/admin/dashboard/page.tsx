@@ -1,4 +1,3 @@
-// @ts-nocheck
 export default function AdminDashboard() {
   return (
     <div className="space-y-6" dir="rtl">

@@ -1,5 +1,4 @@
-// @ts-nocheck
-import ShippingLogisticsIntegration from '@/components/shipping/ShippingLogisticsIntegration';
+// import ShippingLogisticsIntegration from '@/components/shipping/ShippingLogisticsIntegration'; // Temporarily disabled
 
 export default function ShippingPage() {
   return (

@@ -1,5 +1,4 @@
 "use client"
-// @ts-nocheck
 
 // Force dynamic rendering to avoid SSG auth context issues
 import { useState, useEffect } from "react"

@@ -1,5 +1,6 @@
-// @ts-nocheck
 'use client';
+
+export const dynamic = 'force-dynamic';
 
 import { useState, useEffect, useRef } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';

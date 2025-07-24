@@ -1,15 +1,13 @@
-// @ts-nocheck
 'use client';
 
-import { useState, useEffect } from 'react';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { useState, useEffect, useMemo } from 'react';
 import { Button } from '@/core/shared/components/ui/button';
 import { Input } from '@/core/shared/components/ui/input';
 import { Label } from '@/core/shared/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/core/shared/components/ui/select';
 import { Textarea } from '@/core/shared/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
 import { Badge } from '@/core/shared/components/ui/badge';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/core/shared/components/ui/table';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/core/shared/components/ui/dialog';
 import { 
   Plus, 
@@ -23,7 +21,8 @@ import {
   FileText,
   DollarSign
 } from 'lucide-react';
-import { toast } from 'sonner';
+
+export const dynamic = 'force-dynamic';
 
 interface Supplier {
   id: string;
@@ -42,25 +41,63 @@ interface Supplier {
   created_at: string;
 }
 
+const mockSuppliers: Supplier[] = [
+  {
+    id: 'sup_001',
+    name: 'شركة البناء المتقدم',
+    contact_person: 'أحمد محمد',
+    phone: '+966501234567',
+    email: 'ahmed@advanced-construction.sa',
+    address: 'حي الملك فهد، الرياض',
+    tax_number: '1234567890',
+    payment_terms: 'net_30',
+    supplier_type: 'goods',
+    outstanding_balance: 25000,
+    total_purchases: 450000,
+    status: 'active',
+    notes: 'مورد موثوق للمواد الإنشائية',
+    created_at: '2024-01-15'
+  },
+  {
+    id: 'sup_002',
+    name: 'مؤسسة الأثاث الحديث',
+    contact_person: 'سارة أحمد',
+    phone: '+966502345678',
+    email: 'sara@modern-furniture.sa',
+    address: 'طريق الملك عبدالعزيز، جدة',
+    tax_number: '2345678901',
+    payment_terms: 'net_60',
+    supplier_type: 'goods',
+    outstanding_balance: 15000,
+    total_purchases: 320000,
+    status: 'active',
+    notes: 'متخصص في الأثاث المكتبي',
+    created_at: '2024-01-10'
+  },
+  {
+    id: 'sup_003',
+    name: 'خدمات الصيانة السريعة',
+    contact_person: 'محمد علي',
+    phone: '+966503456789',
+    email: 'mohammed@quick-maintenance.sa',
+    address: 'الدمام، المنطقة الشرقية',
+    payment_terms: 'immediate',
+    supplier_type: 'services',
+    outstanding_balance: 0,
+    total_purchases: 85000,
+    status: 'active',
+    notes: 'خدمات صيانة فورية',
+    created_at: '2024-02-01'
+  }
+];
+
 export default function SuppliersPage() {
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [editingSupplier, setEditingSupplier] = useState<Supplier | null>(null);
-  const [formData, setFormData] = useState({
-    name: '',
-    contact_person: '',
-    phone: '',
-    email: '',
-    address: '',
-    tax_number: '',
-    payment_terms: 'net_30' as 'immediate' | 'net_30' | 'net_60' | 'net_90',
-    supplier_type: 'goods' as 'goods' | 'services' | 'both',
-    notes: ''
-  });
-
-  const supabase = createClientComponentClient();
+  const [formData, setFormData] = useState<Partial<Supplier>>({});
 
   useEffect(() => {
     loadSuppliers();
@@ -69,462 +106,440 @@ export default function SuppliersPage() {
   const loadSuppliers = async () => {
     try {
       setLoading(true);
-      const { data, error } = await supabase
-        .from('suppliers')
-        .select('*')
-        .order('name');
-
-      if (error) throw error;
-      setSuppliers(data || []);
+      // Simulate API call
+      setTimeout(() => {
+        setSuppliers(mockSuppliers);
+        setLoading(false);
+      }, 500);
     } catch (error) {
       console.error('Error loading suppliers:', error);
-      toast.error('خطأ في تحميل الموردين');
-    } finally {
       setLoading(false);
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const filteredSuppliers = useMemo(() => {
+    if (!searchTerm) return suppliers;
     
-    if (!formData.name.trim()) {
-      toast.error('اسم المورد مطلوب');
+    return suppliers.filter(supplier =>
+      supplier.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      supplier.contact_person.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      supplier.email.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [suppliers, searchTerm]);
+
+  const handleSaveSupplier = async () => {
+    if (!formData.name?.trim()) {
+      alert('اسم المورد مطلوب');
       return;
     }
 
     try {
-      setLoading(true);
-
       if (editingSupplier) {
         // Update existing supplier
-        const { error } = await supabase
-          .from('suppliers')
-          .update({
-            ...formData,
-            updated_at: new Date().toISOString()
-          })
-          .eq('id', editingSupplier.id);
-
-        if (error) throw error;
-        toast.success('تم تحديث المورد بنجاح');
+        const updatedSuppliers = suppliers.map(supplier =>
+          supplier.id === editingSupplier.id
+            ? { ...supplier, ...formData }
+            : supplier
+        );
+        setSuppliers(updatedSuppliers);
       } else {
-        // Create new supplier
-        const { error } = await supabase
-          .from('suppliers')
-          .insert({
-            ...formData,
-            outstanding_balance: 0,
-            total_purchases: 0,
-            status: 'active',
-            created_at: new Date().toISOString()
-          });
-
-        if (error) throw error;
-        toast.success('تم إضافة المورد بنجاح');
+        // Add new supplier
+        const newSupplier: Supplier = {
+          id: `sup_${Date.now()}`,
+          name: formData.name || '',
+          contact_person: formData.contact_person || '',
+          phone: formData.phone || '',
+          email: formData.email || '',
+          address: formData.address || '',
+          tax_number: formData.tax_number,
+          payment_terms: formData.payment_terms || 'net_30',
+          supplier_type: formData.supplier_type || 'goods',
+          outstanding_balance: 0,
+          total_purchases: 0,
+          status: 'active',
+          notes: formData.notes,
+          created_at: new Date().toISOString().split('T')[0]
+        };
+        setSuppliers([...suppliers, newSupplier]);
       }
 
-      resetForm();
-      await loadSuppliers();
-
+      setShowAddDialog(false);
+      setEditingSupplier(null);
+      setFormData({});
     } catch (error) {
       console.error('Error saving supplier:', error);
-      toast.error('خطأ في حفظ المورد');
-    } finally {
-      setLoading(false);
     }
   };
 
-  const handleEdit = (supplier: Supplier) => {
-    setEditingSupplier(supplier);
-    setFormData({
-      name: supplier.name,
-      contact_person: supplier.contact_person,
-      phone: supplier.phone,
-      email: supplier.email,
-      address: supplier.address,
-      tax_number: supplier.tax_number || '',
-      payment_terms: supplier.payment_terms,
-      supplier_type: supplier.supplier_type,
-      notes: supplier.notes || ''
-    });
-    setShowAddDialog(true);
-  };
-
-  const handleDelete = async (supplierId: string) => {
+  const handleDeleteSupplier = async (supplierId: string) => {
     if (!confirm('هل أنت متأكد من حذف هذا المورد؟')) return;
 
     try {
-      const { error } = await supabase
-        .from('suppliers')
-        .delete()
-        .eq('id', supplierId);
-
-      if (error) throw error;
-      
-      toast.success('تم حذف المورد بنجاح');
-      await loadSuppliers();
-
+      setSuppliers(suppliers.filter(s => s.id !== supplierId));
     } catch (error) {
       console.error('Error deleting supplier:', error);
-      toast.error('خطأ في حذف المورد');
     }
   };
 
-  const resetForm = () => {
-    setFormData({
-      name: '',
-      contact_person: '',
-      phone: '',
-      email: '',
-      address: '',
-      tax_number: '',
-      payment_terms: 'net_30',
-      supplier_type: 'goods',
-      notes: ''
-    });
-    setEditingSupplier(null);
-    setShowAddDialog(false);
+  const openEditDialog = (supplier: Supplier) => {
+    setEditingSupplier(supplier);
+    setFormData(supplier);
+    setShowAddDialog(true);
   };
 
-  const filteredSuppliers = suppliers.filter(supplier =>
-    supplier.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    supplier.contact_person.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    supplier.phone.includes(searchTerm) ||
-    supplier.email.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const openAddDialog = () => {
+    setEditingSupplier(null);
+    setFormData({});
+    setShowAddDialog(true);
+  };
 
   const getPaymentTermsLabel = (terms: string) => {
-    const labels = {
-      immediate: 'فوري',
-      net_30: '30 يوم',
-      net_60: '60 يوم',
-      net_90: '90 يوم'
-    };
-    return labels[terms as keyof typeof labels] || terms;
+    switch (terms) {
+      case 'immediate': return 'فوري';
+      case 'net_30': return '30 يوم';
+      case 'net_60': return '60 يوم';
+      case 'net_90': return '90 يوم';
+      default: return terms;
+    }
   };
 
   const getSupplierTypeLabel = (type: string) => {
-    const labels = {
-      goods: 'بضائع',
-      services: 'خدمات',
-      both: 'بضائع وخدمات'
-    };
-    return labels[type as keyof typeof labels] || type;
+    switch (type) {
+      case 'goods': return 'سلع';
+      case 'services': return 'خدمات';
+      case 'both': return 'سلع وخدمات';
+      default: return type;
+    }
   };
 
-  return (
-    <div className="container mx-auto p-6" dir="rtl">
-      {/* Header */}
-      <div className="flex justify-between items-center mb-6">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">إدارة الموردين</h1>
-          <p className="text-gray-600 mt-1">إدارة معلومات الموردين وتفاصيل التعامل</p>
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('ar-SA', {
+      style: 'currency',
+      currency: 'SAR',
+      minimumFractionDigits: 0,
+    }).format(amount);
+  };
+
+  const totalStats = useMemo(() => {
+    return suppliers.reduce(
+      (acc, supplier) => ({
+        totalBalance: acc.totalBalance + supplier.outstanding_balance,
+        totalPurchases: acc.totalPurchases + supplier.total_purchases,
+        activeCount: acc.activeCount + (supplier.status === 'active' ? 1 : 0),
+      }),
+      { totalBalance: 0, totalPurchases: 0, activeCount: 0 }
+    );
+  }, [suppliers]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 p-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="animate-pulse">
+            <div className="h-8 bg-gray-200 rounded w-1/3 mb-6"></div>
+            <div className="grid grid-cols-4 gap-4 mb-6">
+              {[1, 2, 3, 4].map((i) => (
+                <div key={i} className="h-24 bg-gray-200 rounded"></div>
+              ))}
+            </div>
+            <div className="h-96 bg-gray-200 rounded"></div>
+          </div>
         </div>
-        <Button onClick={() => setShowAddDialog(true)} className="bg-blue-600 hover:bg-blue-700">
-          <Plus className="w-4 h-4 ml-2" />
-          إضافة مورد جديد
-        </Button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <div className="bg-white shadow-sm border-b">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex justify-between items-center">
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">إدارة الموردين</h1>
+              <p className="text-gray-600">إدارة قاعدة بيانات الموردين والشركاء التجاريين</p>
+            </div>
+            <Button onClick={openAddDialog} className="flex items-center gap-2">
+              <Plus size={16} />
+              إضافة مورد جديد
+            </Button>
+          </div>
+        </div>
       </div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600">إجمالي الموردين</p>
-                <p className="text-2xl font-bold">{suppliers.length}</p>
-              </div>
-              <Building className="w-8 h-8 text-blue-500" />
-            </div>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600">الموردين النشطين</p>
-                <p className="text-2xl font-bold">
-                  {suppliers.filter(s => s.status === 'active').length}
-                </p>
-              </div>
-              <FileText className="w-8 h-8 text-green-500" />
-            </div>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600">إجمالي المستحقات</p>
-                <p className="text-2xl font-bold">
-                  {suppliers.reduce((sum, s) => sum + s.outstanding_balance, 0).toLocaleString('en-US')} ر.س
-                </p>
-              </div>
-              <DollarSign className="w-8 h-8 text-red-500" />
-            </div>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600">إجمالي المشتريات</p>
-                <p className="text-2xl font-bold">
-                  {suppliers.reduce((sum, s) => sum + s.total_purchases, 0).toLocaleString('en-US')} ر.س
-                </p>
-              </div>
-              <FileText className="w-8 h-8 text-blue-500" />
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Search */}
-      <Card className="mb-6">
-        <CardContent className="p-4">
-          <div className="relative">
-            <Search className="absolute right-3 top-3 h-4 w-4 text-gray-400" />
-            <Input
-              placeholder="البحث في الموردين..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pr-10"
-            />
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Suppliers List */}
-      <div className="grid gap-4">
-        {loading ? (
-          <div className="text-center py-8">
-            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-            <p className="mt-2 text-gray-600">جاري التحميل...</p>
-          </div>
-        ) : filteredSuppliers.length > 0 ? (
-          filteredSuppliers.map((supplier) => (
-            <Card key={supplier.id}>
-              <CardContent className="p-6">
-                <div className="flex justify-between items-start mb-4">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <h3 className="text-xl font-semibold">{supplier.name}</h3>
-                      <Badge variant={supplier.status === 'active' ? 'default' : 'secondary'}>
-                        {supplier.status === 'active' ? 'نشط' : 'غير نشط'}
-                      </Badge>
-                      <Badge variant="outline">
-                        {getSupplierTypeLabel(supplier.supplier_type)}
-                      </Badge>
-                    </div>
-                    <p className="text-gray-600 mb-2">{supplier.contact_person}</p>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                      <div className="flex items-center gap-2">
-                        <Phone className="w-4 h-4 text-gray-400" />
-                        <span>{supplier.phone}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Mail className="w-4 h-4 text-gray-400" />
-                        <span>{supplier.email}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <MapPin className="w-4 h-4 text-gray-400" />
-                        <span>{supplier.address}</span>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex gap-2">
-                    <Button variant="outline" size="sm" onClick={() => handleEdit(supplier)}>
-                      <Edit className="w-4 h-4" />
-                    </Button>
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      onClick={() => handleDelete(supplier.id)}
-                      className="text-red-600 hover:text-red-700"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
-                  </div>
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t">
-                  <div className="text-center">
-                    <p className="text-sm text-gray-600">مدة السداد</p>
-                    <p className="font-semibold">{getPaymentTermsLabel(supplier.payment_terms)}</p>
-                  </div>
-                  <div className="text-center">
-                    <p className="text-sm text-gray-600">المستحقات</p>
-                    <p className="font-semibold text-red-600">
-                      {supplier.outstanding_balance.toLocaleString('en-US')} ر.س
-                    </p>
-                  </div>
-                  <div className="text-center">
-                    <p className="text-sm text-gray-600">إجمالي المشتريات</p>
-                    <p className="font-semibold text-green-600">
-                      {supplier.total_purchases.toLocaleString('en-US')} ر.س
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))
-        ) : (
+      {/* Content */}
+      <div className="max-w-7xl mx-auto p-6 space-y-6">
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           <Card>
-            <CardContent className="p-8 text-center">
-              <Building className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-              <p className="text-gray-500">لا توجد موردين</p>
-              <Button 
-                onClick={() => setShowAddDialog(true)} 
-                className="mt-4"
-                variant="outline"
-              >
-                إضافة أول مورد
-              </Button>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-gray-600">إجمالي الموردين</p>
+                  <p className="text-2xl font-bold">{suppliers.length}</p>
+                </div>
+                <Building className="h-8 w-8 text-blue-500" />
+              </div>
             </CardContent>
           </Card>
-        )}
+          
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-gray-600">الموردين النشطين</p>
+                  <p className="text-2xl font-bold">{totalStats.activeCount}</p>
+                </div>
+                <Building className="h-8 w-8 text-green-500" />
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-gray-600">إجمالي المشتريات</p>
+                  <p className="text-2xl font-bold">{formatCurrency(totalStats.totalPurchases)}</p>
+                </div>
+                <DollarSign className="h-8 w-8 text-purple-500" />
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-gray-600">الأرصدة المستحقة</p>
+                  <p className="text-2xl font-bold">{formatCurrency(totalStats.totalBalance)}</p>
+                </div>
+                <FileText className="h-8 w-8 text-orange-500" />
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Search */}
+        <Card>
+          <CardContent className="p-6">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+              <Input
+                type="text"
+                placeholder="البحث في الموردين..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Suppliers Table */}
+        <Card>
+          <CardHeader>
+            <CardTitle>قائمة الموردين</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {filteredSuppliers.length === 0 ? (
+              <div className="text-center py-8">
+                <Building className="mx-auto h-12 w-12 text-gray-400 mb-4" />
+                <h3 className="text-lg font-medium text-gray-900 mb-2">
+                  {searchTerm ? 'لا توجد نتائج' : 'لا يوجد موردين'}
+                </h3>
+                <p className="text-gray-600">
+                  {searchTerm ? 'جرب مصطلح بحث مختلف' : 'ابدأ بإضافة مورد جديد'}
+                </p>
+              </div>
+            ) : (
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>اسم المورد</TableHead>
+                    <TableHead>جهة الاتصال</TableHead>
+                    <TableHead>النوع</TableHead>
+                    <TableHead>شروط الدفع</TableHead>
+                    <TableHead>الرصيد المستحق</TableHead>
+                    <TableHead>الحالة</TableHead>
+                    <TableHead>الإجراءات</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {filteredSuppliers.map((supplier) => (
+                    <TableRow key={supplier.id}>
+                      <TableCell>
+                        <div>
+                          <div className="font-medium">{supplier.name}</div>
+                          <div className="text-sm text-gray-500 flex items-center gap-1">
+                            <Mail size={12} />
+                            {supplier.email}
+                          </div>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div>
+                          <div className="text-sm">{supplier.contact_person}</div>
+                          <div className="text-sm text-gray-500 flex items-center gap-1">
+                            <Phone size={12} />
+                            {supplier.phone}
+                          </div>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant="secondary">
+                          {getSupplierTypeLabel(supplier.supplier_type)}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant="outline">
+                          {getPaymentTermsLabel(supplier.payment_terms)}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <span className={`font-medium ${
+                          supplier.outstanding_balance > 0 ? 'text-red-600' : 'text-green-600'
+                        }`}>
+                          {formatCurrency(supplier.outstanding_balance)}
+                        </span>
+                      </TableCell>
+                      <TableCell>
+                        <Badge 
+                          variant={supplier.status === 'active' ? 'default' : 'secondary'}
+                        >
+                          {supplier.status === 'active' ? 'نشط' : 'غير نشط'}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <Button 
+                            variant="ghost" 
+                            size="sm"
+                            onClick={() => openEditDialog(supplier)}
+                          >
+                            <Edit size={16} />
+                          </Button>
+                          <Button 
+                            variant="ghost" 
+                            size="sm"
+                            onClick={() => handleDeleteSupplier(supplier.id)}
+                          >
+                            <Trash2 size={16} />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            )}
+          </CardContent>
+        </Card>
       </div>
 
-      {/* Add/Edit Supplier Dialog */}
+      {/* Add/Edit Dialog */}
       <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
-        <DialogContent dir="rtl" className="max-w-2xl">
+        <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle>
               {editingSupplier ? 'تعديل المورد' : 'إضافة مورد جديد'}
             </DialogTitle>
           </DialogHeader>
-          
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="name">اسم المورد *</Label>
-                <Input
-                  id="name"
-                  value={formData.name}
-                  onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                  placeholder="اسم المورد"
-                  required
-                />
-              </div>
-              
-              <div>
-                <Label htmlFor="contact_person">الشخص المسؤول</Label>
-                <Input
-                  id="contact_person"
-                  value={formData.contact_person}
-                  onChange={(e) => setFormData(prev => ({ ...prev, contact_person: e.target.value }))}
-                  placeholder="اسم الشخص المسؤول"
-                />
-              </div>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="phone">رقم الهاتف</Label>
-                <Input
-                  id="phone"
-                  value={formData.phone}
-                  onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
-                  placeholder="رقم الهاتف"
-                />
-              </div>
-              
-              <div>
-                <Label htmlFor="email">البريد الإلكتروني</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                  placeholder="البريد الإلكتروني"
-                />
-              </div>
-            </div>
-            
+          <div className="space-y-4">
             <div>
-              <Label htmlFor="address">العنوان</Label>
-              <Textarea
-                id="address"
-                value={formData.address}
-                onChange={(e) => setFormData(prev => ({ ...prev, address: e.target.value }))}
-                placeholder="العنوان الكامل"
-                rows={2}
+              <Label htmlFor="name">اسم المورد *</Label>
+              <Input
+                id="name"
+                value={formData.name || ''}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                placeholder="أدخل اسم المورد"
               />
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                <Label htmlFor="tax_number">الرقم الضريبي</Label>
-                <Input
-                  id="tax_number"
-                  value={formData.tax_number}
-                  onChange={(e) => setFormData(prev => ({ ...prev, tax_number: e.target.value }))}
-                  placeholder="الرقم الضريبي"
-                />
-              </div>
-              
-              <div>
-                <Label htmlFor="payment_terms">مدة السداد</Label>
-                <Select
-                  value={formData.payment_terms}
-                  onValueChange={(value) => setFormData(prev => ({ ...prev, payment_terms: value as any }))}
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="immediate">فوري</SelectItem>
-                    <SelectItem value="net_30">30 يوم</SelectItem>
-                    <SelectItem value="net_60">60 يوم</SelectItem>
-                    <SelectItem value="net_90">90 يوم</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div>
-                <Label htmlFor="supplier_type">نوع المورد</Label>
-                <Select
-                  value={formData.supplier_type}
-                  onValueChange={(value) => setFormData(prev => ({ ...prev, supplier_type: value as any }))}
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="goods">بضائع</SelectItem>
-                    <SelectItem value="services">خدمات</SelectItem>
-                    <SelectItem value="both">بضائع وخدمات</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+            <div>
+              <Label htmlFor="contact_person">جهة الاتصال</Label>
+              <Input
+                id="contact_person"
+                value={formData.contact_person || ''}
+                onChange={(e) => setFormData({ ...formData, contact_person: e.target.value })}
+                placeholder="اسم الشخص المسؤول"
+              />
+            </div>
+            
+            <div>
+              <Label htmlFor="phone">رقم الهاتف</Label>
+              <Input
+                id="phone"
+                value={formData.phone || ''}
+                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                placeholder="+966..."
+              />
+            </div>
+            
+            <div>
+              <Label htmlFor="email">البريد الإلكتروني</Label>
+              <Input
+                id="email"
+                type="email"
+                value={formData.email || ''}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                placeholder="email@domain.com"
+              />
+            </div>
+            
+            <div>
+              <Label htmlFor="supplier_type">نوع المورد</Label>
+              <select
+                id="supplier_type"
+                value={formData.supplier_type || 'goods'}
+                onChange={(e) => setFormData({ ...formData, supplier_type: e.target.value as any })}
+                className="w-full h-10 px-3 border border-gray-300 rounded-md"
+              >
+                <option value="goods">سلع</option>
+                <option value="services">خدمات</option>
+                <option value="both">سلع وخدمات</option>
+              </select>
+            </div>
+            
+            <div>
+              <Label htmlFor="payment_terms">شروط الدفع</Label>
+              <select
+                id="payment_terms"
+                value={formData.payment_terms || 'net_30'}
+                onChange={(e) => setFormData({ ...formData, payment_terms: e.target.value as any })}
+                className="w-full h-10 px-3 border border-gray-300 rounded-md"
+              >
+                <option value="immediate">فوري</option>
+                <option value="net_30">30 يوم</option>
+                <option value="net_60">60 يوم</option>
+                <option value="net_90">90 يوم</option>
+              </select>
             </div>
             
             <div>
               <Label htmlFor="notes">ملاحظات</Label>
               <Textarea
                 id="notes"
-                value={formData.notes}
-                onChange={(e) => setFormData(prev => ({ ...prev, notes: e.target.value }))}
-                placeholder="ملاحظات إضافية"
+                value={formData.notes || ''}
+                onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                placeholder="ملاحظات إضافية..."
                 rows={3}
               />
             </div>
             
-            <div className="flex gap-2 justify-end pt-4">
-              <Button type="button" variant="outline" onClick={resetForm}>
+            <div className="flex gap-2 pt-4">
+              <Button onClick={handleSaveSupplier} className="flex-1">
+                {editingSupplier ? 'تحديث' : 'إضافة'}
+              </Button>
+              <Button 
+                variant="outline" 
+                onClick={() => setShowAddDialog(false)}
+                className="flex-1"
+              >
                 إلغاء
               </Button>
-              <Button type="submit" disabled={loading}>
-                {loading ? 'جاري الحفظ...' : (editingSupplier ? 'تحديث' : 'إضافة')}
-              </Button>
             </div>
-          </form>
+          </div>
         </DialogContent>
       </Dialog>
     </div>

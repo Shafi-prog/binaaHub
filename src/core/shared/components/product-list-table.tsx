@@ -1,5 +1,5 @@
 "use client"
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/core/shared/components/ui/table";
 import { Button } from "@/core/shared/components/ui/button";
 import { Input } from "@/core/shared/components/ui/input";
@@ -22,11 +22,11 @@ export function ProductListTable() {
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    // Mock data - replace with actual API call
+    // Mock data - remove setTimeout to prevent unnecessary delays
     const mockProducts: Product[] = [
       {
         id: "prod_1",
-        title: "Construction Helmet",
+        title: "خوذة البناء",
         handle: "construction-helmet",
         status: "published",
         variants_count: 3,
@@ -34,15 +34,15 @@ export function ProductListTable() {
       },
       {
         id: "prod_2",
-        title: "Safety Gloves",
-        handle: "safety-gloves",
-        status: "published",
+        title: "أدوات البناء الأساسية",
+        handle: "basic-construction-tools",
+        status: "published", 
         variants_count: 5,
-        created_at: "2024-01-10T08:00:00Z",
+        created_at: "2024-01-12T08:30:00Z",
       },
       {
         id: "prod_3",
-        title: "Work Boots",
+        title: "أحذية العمل",
         handle: "work-boots",
         status: "draft",
         variants_count: 2,
@@ -50,13 +50,17 @@ export function ProductListTable() {
       },
     ];
     
+    // Set data immediately - no setTimeout needed for mock data
     setProducts(mockProducts);
     setLoading(false);
-  }, []);
+  }, []); // Empty dependency array to run only once
 
-  const filteredProducts = products.filter(product =>
-    product.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    product.handle.toLowerCase().includes(searchTerm.toLowerCase())
+  // Memoize filtered products to prevent unnecessary re-calculations
+  const filteredProducts = useMemo(() => 
+    products.filter(product =>
+      product.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.handle.toLowerCase().includes(searchTerm.toLowerCase())
+    ), [products, searchTerm]
   );
 
   const getStatusColor = (status: string) => {

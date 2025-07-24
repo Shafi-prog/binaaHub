@@ -2,6 +2,8 @@
 // To re-enable email/password login, restore the form and logic here.
 // Only direct login as 'user' or 'store admin' is available on this page.
 'use client';
+
+export const dynamic = 'force-dynamic';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { TempUser } from '@/core/shared/services/auth';

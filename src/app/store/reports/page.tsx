@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * Advanced Reporting Page
  * Business intelligence and custom report builder

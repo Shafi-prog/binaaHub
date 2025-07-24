@@ -1,5 +1,4 @@
-// @ts-nocheck
-import { ERPSystemIntegration } from '@/components/erp/ERPSystemIntegration';
+// import { ERPSystemIntegration } from '@/components/erp/ERPSystemIntegration'; // Temporarily disabled
 
 export default function ERPPage() {
   return (

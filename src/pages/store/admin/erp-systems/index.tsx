@@ -1,442 +1,412 @@
-/**
- * Main ERP Systems Management Page
- * Handles multiple ERP systems (Rawaa, Onyx Pro, Wafeq, Mezan, SAP, etc.)
- */
-
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { 
-  Plus, 
-  Settings, 
-  Trash2, 
-  Power, 
-  PowerOff, 
-  RefreshCw, 
-  Activity,
-  AlertTriangle,
-  CheckCircle,
-  Clock,
-  Database,
-  TrendingUp
-} from 'lucide-react';
-import { ERPSystemConfig } from '@/core/shared/components/erp/ERPSystemConfig';
-import { UnifiedLoader } from '@/core/shared/components/common/UnifiedLoader';
-import { UnifiedBreadcrumb } from '@/core/shared/components/common/UnifiedBreadcrumb';
+import { useState, useMemo } from 'react';
+import { Button } from '@/core/shared/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
+import { Badge } from '@/core/shared/components/ui/badge';
+import { Input } from '@/core/shared/components/ui/input';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/core/shared/components/ui/table';
+import { Plus, Search, Settings, Database, Cloud, Shield, Activity, CheckCircle, XCircle, Edit, Trash2 } from 'lucide-react';
 
-export interface ERPSystemData {
+export const dynamic = 'force-dynamic';
+
+interface ERPSystem {
   id: string;
   name: string;
-  type: string;
+  provider: string;
+  type: 'cloud' | 'on-premise' | 'hybrid';
+  status: 'active' | 'inactive' | 'maintenance' | 'error';
   version: string;
-  status: 'active' | 'inactive' | 'error' | 'syncing';
-  lastSync?: Date;
-  config: any;
-  features: string[];
-  stats?: {
-    products: number;
-    orders: number;
-    customers: number;
-    lastActivity: Date;
-  };
+  last_sync: string;
+  total_records: number;
+  sync_frequency: string;
+  api_endpoint?: string;
+  created_at: string;
 }
 
-const ERPSystemsManagement: React.FC = () => {
-  const [systems, setSystems] = useState<ERPSystemData[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [isConfigOpen, setIsConfigOpen] = useState(false);
-  const [editingSystem, setEditingSystem] = useState<ERPSystemData | null>(null);
-  const [syncing, setSyncing] = useState<string | null>(null);
-
-  // Mock data for demonstration
-  useEffect(() => {
-    const loadSystems = async () => {
-      setLoading(true);
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      const mockSystems: ERPSystemData[] = [
-        {
-          id: '1',
-          name: 'Primary Medusa Store',
-          type: 'medusa',
-          version: '2.8.7',
-          status: 'active',
-          lastSync: new Date(Date.now() - 5 * 60 * 1000), // 5 minutes ago
-          config: { baseUrl: 'http://localhost:9000' },
-          features: ['products', 'orders', 'customers', 'inventory'],
-          stats: {
-            products: 1247,
-            orders: 3891,
-            customers: 2156,
-            lastActivity: new Date(Date.now() - 2 * 60 * 1000)
-          }
-        },
-        {
-          id: '2',
-          name: 'Rawaa ERP Production',
-          type: 'rawaa',
-          version: '3.2.1',
-          status: 'inactive',
-          config: { baseUrl: 'https://api.rawaa.com' },
-          features: ['accounting', 'inventory', 'hr', 'projects']
-        },
-        {
-          id: '3',
-          name: 'Wafeq Accounting',
-          type: 'wafeq',
-          version: '2.1.0',
-          status: 'error',
-          lastSync: new Date(Date.now() - 2 * 60 * 60 * 1000), // 2 hours ago
-          config: { baseUrl: 'https://api.wafeq.com' },
-          features: ['accounting', 'invoicing', 'reports']
-        }
-      ];
-      
-      setSystems(mockSystems);
-      setLoading(false);
-    };
-
-    loadSystems();
-  }, []);
-
-  const getStatusColor = (status: ERPSystemData['status']) => {
-    switch (status) {
-      case 'active':
-        return 'text-green-600 bg-green-100';
-      case 'inactive':
-        return 'text-gray-600 bg-gray-100';
-      case 'error':
-        return 'text-red-600 bg-red-100';
-      case 'syncing':
-        return 'text-blue-600 bg-blue-100';
-      default:
-        return 'text-gray-600 bg-gray-100';
-    }
-  };
-
-  const getStatusIcon = (status: ERPSystemData['status']) => {
-    switch (status) {
-      case 'active':
-        return <CheckCircle className="w-4 h-4" />;
-      case 'inactive':
-        return <PowerOff className="w-4 h-4" />;
-      case 'error':
-        return <AlertTriangle className="w-4 h-4" />;
-      case 'syncing':
-        return <RefreshCw className="w-4 h-4 animate-spin" />;
-      default:
-        return <Clock className="w-4 h-4" />;
-    }
-  };
-
-  const handleAddSystem = () => {
-    setEditingSystem(null);
-    setIsConfigOpen(true);
-  };
-
-  const handleEditSystem = (system: ERPSystemData) => {
-    setEditingSystem(system);
-    setIsConfigOpen(true);
-  };
-
-  const handleSaveSystem = async (systemData: any) => {
-    if (editingSystem) {
-      // Update existing system
-      setSystems(prev => prev.map(sys => 
-        sys.id === editingSystem.id 
-          ? { ...sys, ...systemData, id: editingSystem.id }
-          : sys
-      ));
-    } else {
-      // Add new system
-      const newSystem: ERPSystemData = {
-        ...systemData,
-        id: Date.now().toString(),
-        status: 'inactive' as const
-      };
-      setSystems(prev => [...prev, newSystem]);
-    }
-  };
-
-  const handleToggleSystem = async (systemId: string) => {
-    setSyncing(systemId);
-    
-    // Simulate activation/deactivation
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    setSystems(prev => prev.map(sys => 
-      sys.id === systemId 
-        ? { 
-            ...sys, 
-            status: sys.status === 'active' ? 'inactive' : 'active',
-            lastSync: sys.status === 'inactive' ? new Date() : sys.lastSync
-          }
-        : sys
-    ));
-    
-    setSyncing(null);
-  };
-
-  const handleDeleteSystem = async (systemId: string) => {
-    if (confirm('Are you sure you want to delete this ERP system? This action cannot be undone.')) {
-      setSystems(prev => prev.filter(sys => sys.id !== systemId));
-    }
-  };
-
-  const handleSyncSystem = async (systemId: string) => {
-    setSyncing(systemId);
-    
-    setSystems(prev => prev.map(sys => 
-      sys.id === systemId 
-        ? { ...sys, status: 'syncing' as const }
-        : sys
-    ));
-    
-    // Simulate sync process
-    await new Promise(resolve => setTimeout(resolve, 3000));
-    
-    setSystems(prev => prev.map(sys => 
-      sys.id === systemId 
-        ? { 
-            ...sys, 
-            status: 'active' as const,
-            lastSync: new Date(),
-            stats: sys.stats ? {
-              ...sys.stats,
-              lastActivity: new Date()
-            } : undefined
-          }
-        : sys
-    ));
-    
-    setSyncing(null);
-  };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50">
-        <UnifiedBreadcrumb />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <UnifiedLoader type="spinner" context="page" message="Loading ERP systems..." />
-        </div>
-      </div>
-    );
+// Mock data for ERP systems
+const mockERPSystems: ERPSystem[] = [
+  {
+    id: 'erp_1',
+    name: 'نظام SAP الأساسي',
+    provider: 'SAP',
+    type: 'cloud',
+    status: 'active',
+    version: '2024.1',
+    last_sync: '2024-03-15T14:30:00',
+    total_records: 15420,
+    sync_frequency: 'كل ساعة',
+    api_endpoint: 'https://api.sap.com/v1',
+    created_at: '2023-01-15'
+  },
+  {
+    id: 'erp_2',
+    name: 'نظام Oracle ERP',
+    provider: 'Oracle',
+    type: 'on-premise',
+    status: 'active',
+    version: '23c',
+    last_sync: '2024-03-15T13:45:00',
+    total_records: 28650,
+    sync_frequency: 'كل 4 ساعات',
+    created_at: '2023-06-10'
+  },
+  {
+    id: 'erp_3',
+    name: 'نظام Microsoft Dynamics',
+    provider: 'Microsoft',
+    type: 'hybrid',
+    status: 'maintenance',
+    version: '365',
+    last_sync: '2024-03-14T18:20:00',
+    total_records: 9840,
+    sync_frequency: 'يومياً',
+    api_endpoint: 'https://dynamics.microsoft.com/api',
+    created_at: '2023-08-22'
+  },
+  {
+    id: 'erp_4',
+    name: 'نظام NetSuite',
+    provider: 'Oracle NetSuite',
+    type: 'cloud',
+    status: 'error',
+    version: '2024.1.0',
+    last_sync: '2024-03-13T10:15:00',
+    total_records: 5420,
+    sync_frequency: 'كل ساعتين',
+    api_endpoint: 'https://api.netsuite.com/v1',
+    created_at: '2024-01-08'
   }
+];
+
+export default function ERPSystemsPage() {
+  const [systems] = useState<ERPSystem[]>(mockERPSystems);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const filteredSystems = useMemo(() => {
+    return systems.filter(system =>
+      system.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      system.provider.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      system.type.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [systems, searchTerm]);
+
+  const systemStats = useMemo(() => {
+    const totalSystems = systems.length;
+    const activeSystems = systems.filter(s => s.status === 'active').length;
+    const totalRecords = systems.reduce((sum, s) => sum + s.total_records, 0);
+    const errorSystems = systems.filter(s => s.status === 'error').length;
+    
+    return { totalSystems, activeSystems, totalRecords, errorSystems };
+  }, [systems]);
+
+  const getStatusColor = (status: ERPSystem['status']) => {
+    const colors = {
+      active: 'bg-green-100 text-green-800',
+      inactive: 'bg-gray-100 text-gray-800',
+      maintenance: 'bg-yellow-100 text-yellow-800',
+      error: 'bg-red-100 text-red-800',
+    };
+    return colors[status];
+  };
+
+  const getStatusText = (status: ERPSystem['status']) => {
+    const statusText = {
+      active: 'نشط',
+      inactive: 'غير نشط',
+      maintenance: 'صيانة',
+      error: 'خطأ',
+    };
+    return statusText[status];
+  };
+
+  const getStatusIcon = (status: ERPSystem['status']) => {
+    switch (status) {
+      case 'active':
+        return <CheckCircle className="h-4 w-4 text-green-600" />;
+      case 'error':
+        return <XCircle className="h-4 w-4 text-red-600" />;
+      case 'maintenance':
+        return <Settings className="h-4 w-4 text-yellow-600" />;
+      default:
+        return <Activity className="h-4 w-4 text-gray-600" />;
+    }
+  };
+
+  const getTypeColor = (type: ERPSystem['type']) => {
+    const colors = {
+      cloud: 'bg-blue-100 text-blue-800',
+      'on-premise': 'bg-purple-100 text-purple-800',
+      hybrid: 'bg-orange-100 text-orange-800',
+    };
+    return colors[type];
+  };
+
+  const getTypeText = (type: ERPSystem['type']) => {
+    const typeText = {
+      cloud: 'سحابي',
+      'on-premise': 'محلي',
+      hybrid: 'مختلط',
+    };
+    return typeText[type];
+  };
+
+  const getTypeIcon = (type: ERPSystem['type']) => {
+    switch (type) {
+      case 'cloud':
+        return <Cloud className="h-4 w-4" />;
+      case 'on-premise':
+        return <Database className="h-4 w-4" />;
+      case 'hybrid':
+        return <Shield className="h-4 w-4" />;
+      default:
+        return <Database className="h-4 w-4" />;
+    }
+  };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('ar-SA', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+
+  const formatRecords = (count: number) => {
+    return new Intl.NumberFormat('ar-SA').format(count);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <UnifiedBreadcrumb />
-      
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between">
+      {/* Header */}
+      <div className="bg-white shadow-sm border-b">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">ERP Systems</h1>
-              <p className="mt-2 text-gray-600">
-                Manage integrations with Rawaa, Onyx Pro, Wafeq, Mezan, and other ERP systems
-              </p>
+              <h1 className="text-2xl font-bold text-gray-900">أنظمة تخطيط موارد المؤسسة (ERP)</h1>
+              <p className="text-gray-600">إدارة ومراقبة أنظمة ERP المتكاملة</p>
             </div>
-            <button
-              onClick={handleAddSystem}
-              className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
-            >
-              <Plus className="w-5 h-5 mr-2" />
-              Add ERP System
-            </button>
+            <Button className="flex items-center gap-2">
+              <Plus className="h-4 w-4" />
+              إضافة نظام ERP جديد
+            </Button>
           </div>
-        </div>
-
-        {/* Stats Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center">
-              <Database className="w-8 h-8 text-indigo-600" />
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Total Systems</p>
-                <p className="text-2xl font-bold text-gray-900">{systems.length}</p>
-              </div>
-            </div>
-          </div>
-          
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center">
-              <CheckCircle className="w-8 h-8 text-green-600" />
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Active Systems</p>
-                <p className="text-2xl font-bold text-gray-900">
-                  {systems.filter(s => s.status === 'active').length}
-                </p>
-              </div>
-            </div>
-          </div>
-          
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center">
-              <Activity className="w-8 h-8 text-blue-600" />
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Last Sync</p>
-                <p className="text-2xl font-bold text-gray-900">
-                  {systems.filter(s => s.lastSync).length > 0 ? '5m ago' : 'Never'}
-                </p>
-              </div>
-            </div>
-          </div>
-          
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center">
-              <TrendingUp className="w-8 h-8 text-purple-600" />
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Total Records</p>
-                <p className="text-2xl font-bold text-gray-900">
-                  {systems.reduce((acc, sys) => acc + (sys.stats?.products || 0), 0)}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Systems List */}
-        <div className="bg-white shadow rounded-lg overflow-hidden">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <h2 className="text-lg font-medium text-gray-900">ERP Systems</h2>
-          </div>
-          
-          {systems.length === 0 ? (
-            <div className="text-center py-12">
-              <Database className="mx-auto h-12 w-12 text-gray-400" />
-              <h3 className="mt-2 text-sm font-medium text-gray-900">No ERP systems</h3>
-              <p className="mt-1 text-sm text-gray-500">
-                Get started by adding your first ERP system integration.
-              </p>
-              <div className="mt-6">
-                <button
-                  onClick={handleAddSystem}
-                  className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
-                >
-                  <Plus className="w-5 h-5 mr-2" />
-                  Add ERP System
-                </button>
-              </div>
-            </div>
-          ) : (
-            <div className="divide-y divide-gray-200">
-              {systems.map((system) => (
-                <div key={system.id} className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-4">
-                      <div className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(system.status)}`}>
-                        {getStatusIcon(system.status)}
-                        <span className="ml-1 capitalize">{system.status}</span>
-                      </div>
-                      
-                      <div>
-                        <h3 className="text-lg font-medium text-gray-900">{system.name}</h3>
-                        <p className="text-sm text-gray-500">
-                          {system.type.charAt(0).toUpperCase() + system.type.slice(1)} v{system.version}
-                        </p>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-center space-x-2">
-                      {system.status === 'active' && (
-                        <button
-                          onClick={() => handleSyncSystem(system.id)}
-                          disabled={syncing === system.id}
-                          className="p-2 text-gray-400 hover:text-gray-600 disabled:opacity-50"
-                          title="Sync Now"
-                        >
-                          <RefreshCw className={`w-5 h-5 ${syncing === system.id ? 'animate-spin' : ''}`} />
-                        </button>
-                      )}
-                      
-                      <button
-                        onClick={() => handleToggleSystem(system.id)}
-                        disabled={syncing === system.id}
-                        className={`p-2 ${system.status === 'active' ? 'text-red-400 hover:text-red-600' : 'text-green-400 hover:text-green-600'} disabled:opacity-50`}
-                        title={system.status === 'active' ? 'Deactivate' : 'Activate'}
-                      >
-                        {system.status === 'active' ? <PowerOff className="w-5 h-5" /> : <Power className="w-5 h-5" />}
-                      </button>
-                      
-                      <button
-                        onClick={() => handleEditSystem(system)}
-                        className="p-2 text-gray-400 hover:text-gray-600"
-                        title="Configure"
-                      >
-                        <Settings className="w-5 h-5" />
-                      </button>
-                      
-                      <button
-                        onClick={() => handleDeleteSystem(system.id)}
-                        className="p-2 text-gray-400 hover:text-red-600"
-                        title="Delete"
-                      >
-                        <Trash2 className="w-5 h-5" />
-                      </button>
-                    </div>
-                  </div>
-                  
-                  {/* System Details */}
-                  <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div>
-                      <p className="text-sm font-medium text-gray-500">Features</p>
-                      <div className="mt-1 flex flex-wrap gap-1">
-                        {system.features.slice(0, 3).map(feature => (
-                          <span key={feature} className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-gray-100 text-gray-800">
-                            {feature}
-                          </span>
-                        ))}
-                        {system.features.length > 3 && (
-                          <span className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-gray-100 text-gray-800">
-                            +{system.features.length - 3} more
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                    
-                    {system.stats && (
-                      <>
-                        <div>
-                          <p className="text-sm font-medium text-gray-500">Products</p>
-                          <p className="mt-1 text-lg font-semibold text-gray-900">
-                            {system.stats.products.toLocaleString('en-US')}
-                          </p>
-                        </div>
-                        
-                        <div>
-                          <p className="text-sm font-medium text-gray-500">Orders</p>
-                          <p className="mt-1 text-lg font-semibold text-gray-900">
-                            {system.stats.orders.toLocaleString('en-US')}
-                          </p>
-                        </div>
-                        
-                        <div>
-                          <p className="text-sm font-medium text-gray-500">Last Sync</p>
-                          <p className="mt-1 text-sm text-gray-600">
-                            {system.lastSync ? new Date(system.lastSync).toLocaleString('en-US') : 'Never'}
-                          </p>
-                        </div>
-                      </>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
         </div>
       </div>
 
-      {/* Configuration Modal */}
-      <ERPSystemConfig
-        isOpen={isConfigOpen}
-        onClose={() => setIsConfigOpen(false)}
-        onSave={handleSaveSystem}
-        editingSystem={editingSystem}
-      />
+      <div className="max-w-7xl mx-auto p-6 space-y-6">
+        {/* Statistics */}
+        <div className="grid grid-cols-4 gap-4">
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center">
+                <Database className="h-8 w-8 text-blue-600" />
+                <div className="mr-4">
+                  <p className="text-sm font-medium text-gray-600">إجمالي الأنظمة</p>
+                  <p className="text-2xl font-bold">{systemStats.totalSystems}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center">
+                <CheckCircle className="h-8 w-8 text-green-600" />
+                <div className="mr-4">
+                  <p className="text-sm font-medium text-gray-600">الأنظمة النشطة</p>
+                  <p className="text-2xl font-bold">{systemStats.activeSystems}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center">
+                <Activity className="h-8 w-8 text-purple-600" />
+                <div className="mr-4">
+                  <p className="text-sm font-medium text-gray-600">إجمالي السجلات</p>
+                  <p className="text-2xl font-bold">{formatRecords(systemStats.totalRecords)}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center">
+                <XCircle className="h-8 w-8 text-red-600" />
+                <div className="mr-4">
+                  <p className="text-sm font-medium text-gray-600">أنظمة بأخطاء</p>
+                  <p className="text-2xl font-bold">{systemStats.errorSystems}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* ERP Systems Table */}
+        <Card>
+          <CardHeader>
+            <div className="flex items-center gap-4">
+              <div className="flex-1 relative">
+                <Search className="h-4 w-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                <Input
+                  placeholder="البحث في أنظمة ERP..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pr-10"
+                />
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent>
+            {filteredSystems.length === 0 ? (
+              <div className="text-center py-12">
+                <Database className="h-12 w-12 mx-auto text-gray-400 mb-4" />
+                <h3 className="text-lg font-medium text-gray-900 mb-2">لا توجد أنظمة ERP</h3>
+                <p className="text-gray-600 mb-4">
+                  {searchTerm 
+                    ? 'لا توجد أنظمة تطابق معايير البحث'
+                    : 'ابدأ بإضافة أنظمة ERP جديدة'
+                  }
+                </p>
+                <Button>
+                  <Plus className="h-4 w-4 ml-2" />
+                  إضافة نظام ERP
+                </Button>
+              </div>
+            ) : (
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>اسم النظام</TableHead>
+                    <TableHead>المزود</TableHead>
+                    <TableHead>النوع</TableHead>
+                    <TableHead>الحالة</TableHead>
+                    <TableHead>الإصدار</TableHead>
+                    <TableHead>عدد السجلات</TableHead>
+                    <TableHead>تكرار المزامنة</TableHead>
+                    <TableHead>آخر مزامنة</TableHead>
+                    <TableHead>الإجراءات</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {filteredSystems.map((system) => (
+                    <TableRow key={system.id}>
+                      <TableCell>
+                        <div className="font-medium">{system.name}</div>
+                        {system.api_endpoint && (
+                          <div className="text-sm text-gray-600 truncate max-w-xs">
+                            {system.api_endpoint}
+                          </div>
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        <div className="font-medium">{system.provider}</div>
+                      </TableCell>
+                      <TableCell>
+                        <Badge className={`${getTypeColor(system.type)} flex items-center gap-1 w-fit`}>
+                          {getTypeIcon(system.type)}
+                          {getTypeText(system.type)}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <Badge className={`${getStatusColor(system.status)} flex items-center gap-1 w-fit`}>
+                          {getStatusIcon(system.status)}
+                          {getStatusText(system.status)}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <div className="font-medium">{system.version}</div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="font-medium">{formatRecords(system.total_records)}</div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="text-sm">{system.sync_frequency}</div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="text-sm">{formatDate(system.last_sync)}</div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <Button variant="ghost" size="sm" title="إعدادات المزامنة">
+                            <Settings className="h-4 w-4" />
+                          </Button>
+                          <Button variant="ghost" size="sm" title="تعديل">
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                          <Button variant="ghost" size="sm" className="text-red-600" title="حذف">
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Quick Actions */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center gap-4">
+                <div className="p-3 bg-blue-100 rounded-lg">
+                  <Activity className="h-6 w-6 text-blue-600" />
+                </div>
+                <div>
+                  <h3 className="font-medium text-gray-900">مراقبة الحالة</h3>
+                  <p className="text-sm text-gray-600">مراقبة حالة جميع الأنظمة</p>
+                </div>
+              </div>
+              <Button variant="outline" className="w-full mt-4">
+                عرض المراقبة
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center gap-4">
+                <div className="p-3 bg-green-100 rounded-lg">
+                  <Database className="h-6 w-6 text-green-600" />
+                </div>
+                <div>
+                  <h3 className="font-medium text-gray-900">إعدادات المزامنة</h3>
+                  <p className="text-sm text-gray-600">تكوين جداول المزامنة</p>
+                </div>
+              </div>
+              <Button variant="outline" className="w-full mt-4">
+                إدارة المزامنة
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center gap-4">
+                <div className="p-3 bg-purple-100 rounded-lg">
+                  <Settings className="h-6 w-6 text-purple-600" />
+                </div>
+                <div>
+                  <h3 className="font-medium text-gray-900">إعدادات الاتصال</h3>
+                  <p className="text-sm text-gray-600">تكوين نقاط الاتصال</p>
+                </div>
+              </div>
+              <Button variant="outline" className="w-full mt-4">
+                إدارة الاتصالات
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </div>
   );
-};
-
-export default ERPSystemsManagement;
+}

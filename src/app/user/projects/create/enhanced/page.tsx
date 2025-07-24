@@ -1,5 +1,7 @@
 'use client';
 
+export const dynamic = 'force-dynamic';
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, Button, Input, Textarea, Badge, Progress } from '@/core/shared/components/ui';
 import { useRouter } from 'next/navigation';

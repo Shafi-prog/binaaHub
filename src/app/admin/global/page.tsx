@@ -1,4 +1,3 @@
-// @ts-nocheck
 'use client'
 
 // Global Markets Management Dashboard (Phase 5)

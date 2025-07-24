@@ -1,6 +1,5 @@
 "use client";
 
-// @ts-nocheck
 import React from 'react';
 import Link from 'next/link';
 import { Card, CardContent } from '@/core/shared/components/ui/card';

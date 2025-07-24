@@ -1,4 +1,3 @@
-// @ts-nocheck
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -6,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { User } from '@supabase/supabase-js';
 import type { Database } from '@/core/shared/types/database';
-import BarcodeScanner from '@/components/BarcodeScanner';
+// import BarcodeScanner from '@/components/BarcodeScanner'; // Temporarily disabled
 import { LoadingSpinner } from '@/core/shared/components/ui/loading-spinner';
 import { Card } from '@/core/shared/components/ui/card';
 import { Button } from '@/core/shared/components/ui/button';

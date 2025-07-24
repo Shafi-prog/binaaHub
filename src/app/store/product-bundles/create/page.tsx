@@ -1,4 +1,3 @@
-// @ts-nocheck
 'use client'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/core/shared/components/ui/card';

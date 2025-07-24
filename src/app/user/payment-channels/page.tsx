@@ -1,4 +1,3 @@
-// @ts-nocheck
 // صفحة قنوات الدفع
 'use client';
 import React, { useState } from 'react';

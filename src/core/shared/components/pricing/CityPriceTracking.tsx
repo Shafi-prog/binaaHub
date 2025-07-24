@@ -24,12 +24,14 @@ interface CityPriceTrackingProps {
   category?: string;
   selectedCities?: string[];
   onCitySelect?: (cities: string[]) => void;
+  className?: string;
 }
 
 export function CityPriceTracking({ 
   category = 'real-estate', 
   selectedCities = [],
-  onCitySelect 
+  onCitySelect,
+  className = ''
 }: CityPriceTrackingProps) {
   const [priceData, setPriceData] = useState<CityPriceData[]>([]);
   const [loading, setLoading] = useState(false);
@@ -186,7 +188,7 @@ export function CityPriceTracking({
   }
 
   return (
-    <Card>
+    <Card className={className}>
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           <span>GCC City Price Tracking</span>

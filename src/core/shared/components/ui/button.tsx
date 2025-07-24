@@ -2,8 +2,10 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link";
+  variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link" | "warning" | "success" | "neutral";
   size?: "default" | "sm" | "lg" | "icon";
+  asChild?: boolean;
+  loading?: boolean;
 }
 
 const buttonVariants = {
@@ -13,6 +15,9 @@ const buttonVariants = {
   secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
   ghost: "hover:bg-accent hover:text-accent-foreground",
   link: "underline-offset-4 hover:underline text-primary",
+  warning: "bg-yellow-600 text-white hover:bg-yellow-700",
+  success: "bg-green-600 text-white hover:bg-green-700",
+  neutral: "bg-gray-500 text-white hover:bg-gray-600",
 };
 
 const buttonSizes = {
@@ -23,10 +28,27 @@ const buttonSizes = {
 };
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = "default", size = "default", ...props }, ref) => {
+  ({ className, variant = "default", size = "default", asChild, loading, children, disabled, ...props }, ref) => {
+    if (asChild) {
+      // For asChild, just return the children wrapped in a div with button styling
+      return (
+        <div
+          className={cn(
+            "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background",
+            buttonVariants[variant],
+            buttonSizes[size],
+            className
+          )}
+        >
+          {children}
+        </div>
+      );
+    }
+    
     return (
       <button
         ref={ref}
+        disabled={disabled || loading}
         className={cn(
           "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background",
           buttonVariants[variant],
@@ -34,7 +56,16 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           className
         )}
         {...props}
-      />
+      >
+        {loading ? (
+          <>
+            <div className="animate-spin h-4 w-4 border-2 border-current border-t-transparent rounded-full mr-2" />
+            Loading...
+          </>
+        ) : (
+          children
+        )}
+      </button>
     );
   }
 );

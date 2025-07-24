@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-// import PushNotificationManager from '@/components/notifications/PushNotificationManager'; // Temporarily disabled
+import PushNotificationManager from '@/core/shared/components/PushNotificationManager';
 
 export const metadata: Metadata = {
   title: 'إعدادات الإشعارات المتقدمة - منصة بنا',

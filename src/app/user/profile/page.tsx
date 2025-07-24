@@ -5,10 +5,16 @@ import ConstructionProfileAdvice from '@/core/shared/components/ConstructionProf
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/core/shared/components/ui/tabs';
 import { User, Building2, Settings, HelpCircle } from 'lucide-react';
 
+interface UserData {
+  email: string;
+  account_type: string;
+  [key: string]: any;
+}
+
 export const dynamic = 'force-dynamic'
 
 export default function UserProfile() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
 
   // Helper function to get cookie value

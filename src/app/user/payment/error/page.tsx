@@ -20,9 +20,9 @@ function PaymentErrorContent() {
   }>({});
 
   useEffect(() => {
-    const reason = searchParams.get('reason');
-    const invoiceId = searchParams.get('invoice');
-    const message = searchParams.get('message');
+    const reason = searchParams?.get('reason');
+    const invoiceId = searchParams?.get('invoice');
+    const message = searchParams?.get('message');
 
     setErrorInfo({
       reason: reason || undefined,

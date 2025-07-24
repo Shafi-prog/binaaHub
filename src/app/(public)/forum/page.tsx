@@ -5,7 +5,7 @@ import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import Link from 'next/link';
 import { User } from '@supabase/supabase-js';
 import { Card, LoadingSpinner, EmptyState } from '@/core/shared/components/ui';
-// import { ClientIcon } from '@/components/icons'; // Temporarily disabled
+import ClientIcon from '@/core/shared/components/ClientIcon';
 import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 
 
@@ -448,10 +448,11 @@ export default function ForumPage() {
                 }
                 title="لا توجد مشاركات"
                 description="لم يتم العثور على مشاركات في هذا القسم أو بهذا البحث"
-                actionLabel={user ? 'إنشاء موضوع جديد' : 'تسجيل الدخول للمشاركة'}
-                onAction={() =>
-                  user ? console.log('Create new post') : (window.location.href = '/login')
-                }
+                action={{
+                  label: user ? 'إنشاء موضوع جديد' : 'تسجيل الدخول للمشاركة',
+                  onClick: () =>
+                    user ? console.log('Create new post') : (window.location.href = '/login')
+                }}
               />
             ) : (
               <div className="space-y-4">

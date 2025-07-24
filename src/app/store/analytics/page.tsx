@@ -1,6 +1,8 @@
 import { Metadata } from 'next';
 // import MarketAnalytics from '@/components/analytics/MarketAnalytics'; // Temporarily disabled
 // import CityPriceTracking from '@/components/pricing/CityPriceTracking'; // Temporarily disabled
+import MarketAnalytics from '@/core/shared/components/analytics/MarketAnalytics';
+import CityPriceTracking from '@/core/shared/components/pricing/CityPriceTracking';
 import { AdvancedReportingEngine } from '@/core/shared/components/AdvancedReportingEngine';
 
 export const metadata: Metadata = {

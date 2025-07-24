@@ -4,6 +4,11 @@
 import React, { useState, useEffect } from 'react';
 import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 
+// Mock AI Personalization Engine
+const AIPersonalizationEngine = {
+  generateMarketingCampaign: (user: any) => 'حملة تسويقية مخصصة للمستخدم'
+};
+
 
 export const dynamic = 'force-dynamic'
 // Force dynamic rendering to avoid SSG auth context issues
@@ -39,7 +44,11 @@ const GlobalDashboard: React.FC = () => {
   };
 
   // Mock data instead of complex imports that might fail during build
-  const recommendations = ['Product A', 'Product B', 'Product C'];
+  const recommendations = [
+    { productId: 'prod-001', confidence: 0.85, reason: 'Based on purchase history' },
+    { productId: 'prod-002', confidence: 0.72, reason: 'Similar user preferences' },
+    { productId: 'prod-003', confidence: 0.68, reason: 'Trending in region' }
+  ];
   const dynamicPrice = 100;
 
   const sampleMetrics = [
@@ -50,7 +59,10 @@ const GlobalDashboard: React.FC = () => {
   ];
 
   // Mock data for complex engines that might fail during build
-  const anomalies = ['High conversion rate in UK region'];
+  const anomalies = [
+    { region: 'UK', message: 'High conversion rate detected', confidence: 0.85 },
+    { region: 'SA', message: 'Sales spike in construction materials', confidence: 0.72 }
+  ];
   const insights = ['Cross-region sales trending upward'];
   const complianceScore = 95;
   const securityReport = { status: 'Good', issues: 0 };
@@ -129,7 +141,7 @@ const GlobalDashboard: React.FC = () => {
         <h2>أمان المؤسسة والامتثال</h2>
         <div style={{ background: '#f0fdf4', padding: 24, borderRadius: 8 }}>
           <p><strong>Compliance Score:</strong> {complianceScore}%</p>
-          <p><strong>Security Status:</strong> {securityReport}</p>
+          <p><strong>Security Status:</strong> {securityReport.status} ({securityReport.issues} issues)</p>
           <p><strong>Frameworks:</strong> SOC2, ISO27001, GDPR, CCPA, PDPL</p>
         </div>
       </div>

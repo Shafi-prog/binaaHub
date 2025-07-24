@@ -25,8 +25,8 @@ function ResetPasswordConfirmContent() {
 
   useEffect(() => {
     // Check if we have the required tokens from the URL
-    const accessToken = searchParams.get('access_token');
-    const refreshToken = searchParams.get('refresh_token');
+    const accessToken = searchParams?.get('access_token');
+    const refreshToken = searchParams?.get('refresh_token');
     
     if (accessToken && refreshToken) {
       setValidToken(true);

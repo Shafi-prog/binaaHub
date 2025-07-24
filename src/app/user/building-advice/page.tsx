@@ -7,7 +7,7 @@ import { Button } from '@/core/shared/components/ui/button';
 import { Badge } from '@/core/shared/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/core/shared/components/ui/tabs';
 import { Progress } from '@/core/shared/components/ui/progress';
-import { ConstructionGuidanceService } from '@/core/services/constructionGuidanceService';
+import { ConstructionGuidanceService, ConstructionPhase } from '@/core/services/constructionGuidanceService';
 import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 import { 
   Lightbulb, 
@@ -205,7 +205,7 @@ export default function BuildingAdvicePage() {
   };
 
   // Get construction phases for selected project type
-  const [constructionPhases, setConstructionPhases] = useState([]);
+  const [constructionPhases, setConstructionPhases] = useState<ConstructionPhase[]>([]);
   
   useEffect(() => {
     if (projectType) {
@@ -761,80 +761,6 @@ export default function BuildingAdvicePage() {
       </div>
     </div>
   );
-
-  // --- Setback Calculator Component ---
-  function SetbackCalculator({ lang }: { lang: 'ar' | 'en' }) {
-    const [landWidth, setLandWidth] = useState('');
-    const [landDepth, setLandDepth] = useState('');
-    const [frontSetback, setFrontSetback] = useState('');
-    const [sideSetback, setSideSetback] = useState('');
-    const [rearSetback, setRearSetback] = useState('');
-    const [result, setResult] = useState<string | null>(null);
-    
-    const handleCalc = () => {
-      if (!landWidth || !landDepth || !frontSetback || !sideSetback || !rearSetback) return;
-      const w = parseFloat(landWidth), d = parseFloat(landDepth), f = parseFloat(frontSetback), s = parseFloat(sideSetback), r = parseFloat(rearSetback);
-      if (isNaN(w) || isNaN(d) || isNaN(f) || isNaN(s) || isNaN(r)) return;
-      const buildWidth = w - 2 * s;
-      const buildDepth = d - f - r;
-      setResult(`${lang === 'ar' ? 'المساحة المتاحة للبناء:' : 'Buildable area:'} ${Math.max(0, buildWidth * buildDepth)} م²`);
-    };
-    
-    return (
-      <div className="space-y-3">
-        <div className="grid grid-cols-2 gap-2">
-          <input 
-            type="number" 
-            min="1" 
-            placeholder={lang === 'ar' ? 'عرض الأرض (م)' : 'Land width (m)'} 
-            value={landWidth} 
-            onChange={e => setLandWidth(e.target.value)} 
-            className="border rounded p-2 text-right" 
-          />
-          <input 
-            type="number" 
-            min="1" 
-            placeholder={lang === 'ar' ? 'عمق الأرض (م)' : 'Land depth (m)'} 
-            value={landDepth} 
-            onChange={e => setLandDepth(e.target.value)} 
-            className="border rounded p-2 text-right" 
-          />
-          <input 
-            type="number" 
-            min="0" 
-            placeholder={lang === 'ar' ? 'ارتداد أمامي (م)' : 'Front setback (m)'} 
-            value={frontSetback} 
-            onChange={e => setFrontSetback(e.target.value)} 
-            className="border rounded p-2 text-right" 
-          />
-          <input 
-            type="number" 
-            min="0" 
-            placeholder={lang === 'ar' ? 'ارتداد جانبي (م)' : 'Side setback (m)'} 
-            value={sideSetback} 
-            onChange={e => setSideSetback(e.target.value)} 
-            className="border rounded p-2 text-right" 
-          />
-        </div>
-        <input 
-          type="number" 
-          min="0" 
-          placeholder={lang === 'ar' ? 'ارتداد خلفي (م)' : 'Rear setback (m)'} 
-          value={rearSetback} 
-          onChange={e => setRearSetback(e.target.value)} 
-          className="border rounded p-2 text-right w-full" 
-        />
-        <Button onClick={handleCalc} className="w-full">
-          {lang === 'ar' ? 'احسب' : 'Calculate'}
-        </Button>
-        {result && (
-          <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-            <span className="font-bold text-green-700">{result}</span>
-          </div>
-        )}
-      </div>
-    );
-  }
 }
 
 

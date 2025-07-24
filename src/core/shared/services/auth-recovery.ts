@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { User } from '@supabase/supabase-js';
 

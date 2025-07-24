@@ -20,8 +20,8 @@ function PaymentSuccessContent() {
   }>({});
 
   useEffect(() => {
-    const invoiceId = searchParams.get('invoice');    const amount = searchParams.get('amount');
-    const transactionId = searchParams.get('transaction');
+    const invoiceId = searchParams?.get('invoice');    const amount = searchParams?.get('amount');
+    const transactionId = searchParams?.get('transaction');
 
     setPaymentInfo({
       invoiceId: invoiceId || undefined,

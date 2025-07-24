@@ -96,7 +96,7 @@
     "@zxing/library": "^0.21.3",
     "autoprefixer": "^10.4.21",
     "awilix": "^8.0.1",
-    "axios": "^1.10.0",
+    "axios": "^1.11.0",
     "bcrypt": "^6.0.0",
     "bcryptjs": "^3.0.2",
     "chart.js": "^4.5.0",
@@ -211,7 +211,7 @@
     "@mikro-orm/migrations": "6.4.3",
     "@mikro-orm/postgresql": "6.4.3",
     "multer": "^2.0.2",
-    "axios": "^1.10.0",
+    "axios": "^1.11.0",
     "esbuild": "^0.25.8",
     "on-headers": "^1.1.0"
   }

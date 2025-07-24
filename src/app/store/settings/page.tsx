@@ -5,14 +5,22 @@ import { useState, useEffect } from "react"
 import { Button, EnhancedCard, Typography } from "@/core/shared/components/ui/enhanced-components"
 import { Settings } from "lucide-react"
 
+interface StoreData {
+  id: string;
+  name: string;
+  default_currency_code: string;
+  default_sales_channel_id: string;
+  default_region_id: string;
+  created_at: string;
+}
 
 export const dynamic = 'force-dynamic'
 // Force dynamic rendering to avoid static generation issues with QueryClient
 
 export default function StoreSettings() {
-  const [store, setStore] = useState(null)
+  const [store, setStore] = useState<StoreData | null>(null)
   const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState(null)
+  const [error, setError] = useState<Error | null>(null)
 
   useEffect(() => {
     // Simulate loading store data

@@ -1,6 +1,10 @@
 'use client'
 
+// Force dynamic rendering to avoid SSG auth context issues
+export const dynamic = 'force-dynamic'
+
 import React, { useState, useEffect } from 'react'
+import MarketAnalytics from '@/core/shared/components/analytics/MarketAnalytics'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/core/shared/components/ui/card'
 import { Button } from '@/core/shared/components/ui/button'
 import { Badge } from '@/core/shared/components/ui/badge'
@@ -25,11 +29,8 @@ import {
   Star
 } from 'lucide-react'
 
-// Force dynamic rendering to avoid SSG auth context issues
-// import { MarketAnalytics } from '@/components/analytics/MarketAnalytics'; // Temporarily disabled
+// AI Analytics Dashboard Component
 
-
-export const dynamic = 'force-dynamic'
 interface AIInsight {
   id: string
   type: 'recommendation' | 'prediction' | 'alert' | 'opportunity'

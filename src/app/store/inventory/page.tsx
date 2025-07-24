@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import EnhancedInventoryManagement from '@/domains/stores/components/inventory/EnhancedInventoryManagement';
+import EnhancedInventoryManagement from '@/core/shared/components/EnhancedInventoryManagement';
 
 
 export const dynamic = 'force-dynamic'

@@ -1,9 +1,14 @@
 'use client';
 
-import { useState } from 'react';
-import { Search, Filter, Grid, List, Sparkles, SortDesc } from 'lucide-react';
-// import AISearchSuggestions from '@/components/search/AISearchSuggestions'; // Temporarily disabled
-// import SocialSharing from '@/components/social/SocialSharing'; // Temporarily disabled
+import { useState, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
+import { Input } from '@/core/shared/components/ui/input';
+import { Button } from '@/core/shared/components/ui/button';
+import { Card } from '@/core/shared/components/ui/card';
+import { Badge } from '@/core/shared/components/ui/badge';
+import { Search, Filter, SortAsc, Star, Eye, Heart, Grid3X3, List as ListIcon } from 'lucide-react';
+import AISearchSuggestions from '@/core/shared/components/AISearchSuggestions';
+import SocialSharing from '@/core/shared/components/SocialSharing';
 
 
 export const dynamic = 'force-dynamic'
@@ -124,7 +129,7 @@ export default function AdvancedSearchPage() {
                           : 'text-gray-600 hover:text-gray-900'
                       }`}
                     >
-                      <Grid className="w-4 h-4" />
+                      <Grid3X3 className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => setViewMode('list')}
@@ -134,7 +139,7 @@ export default function AdvancedSearchPage() {
                           : 'text-gray-600 hover:text-gray-900'
                       }`}
                     >
-                      <List className="w-4 h-4" />
+                      <ListIcon className="w-4 h-4" />
                     </button>
                   </div>
 

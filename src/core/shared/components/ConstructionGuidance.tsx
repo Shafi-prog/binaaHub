@@ -8,11 +8,10 @@ import { Progress } from '@/core/shared/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/core/shared/components/ui/tabs';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/core/shared/components/ui/dialog';
 import ConstructionPhotoUploader from '@/core/shared/components/ConstructionPhotoUploader';
-import { 
-  ConstructionGuidanceService, 
-  ConstructionPhase, 
-  ProjectGuidanceSettings,
-  QualityCheckpoint 
+import {
+  ConstructionGuidanceService,
+  ConstructionLevel,
+  ProjectLevel
 } from '@/core/services/constructionGuidanceService';
 import { Project, ProjectImage } from '@/core/shared/types/types';
 import { 
@@ -43,37 +42,22 @@ interface ConstructionGuidanceProps {
 }
 
 export default function ConstructionGuidance({ project, onPhaseUpdate }: ConstructionGuidanceProps) {
-  const [currentPhase, setCurrentPhase] = useState<string>('planning');
+  const [currentPhase, setCurrentPhase] = useState<string>('land-acquisition');
   const [completedPhases, setCompletedPhases] = useState<string[]>([]);
-  const [projectPhases, setProjectPhases] = useState<ConstructionPhase[]>([]);
-  const [selectedCheckpoint, setSelectedCheckpoint] = useState<QualityCheckpoint | null>(null);
-  const [complianceChecklist, setComplianceChecklist] = useState<any[]>([]);
+  const [projectPhases, setProjectPhases] = useState<ConstructionLevel[]>([]);
+  const [selectedLevel, setSelectedLevel] = useState<ConstructionLevel | null>(null);
+  const [guidanceData, setGuidanceData] = useState<any>({});
 
   useEffect(() => {
-    const settings: ProjectGuidanceSettings = {
-      projectType: project.projectType as any,
-      area: project.area,
-      floors: project.floorCount,
-      compliance: 'enhanced',
-      supervision: 'engineer',
-      location: 'الرياض'
-    };
+    // Get construction levels from the service
+    const levels = ConstructionGuidanceService.getConstructionLevels();
+    setProjectPhases(levels);
 
-    const phases = ConstructionGuidanceService.getProjectPhases(settings);
-    setProjectPhases(phases);
-
-    const checklist = ConstructionGuidanceService.getComplianceChecklist(project.projectType);
-    setComplianceChecklist(checklist);
+    // Set initial current phase to first level
+    if (levels.length > 0) {
+      setCurrentPhase(levels[0].id);
+    }
   }, [project]);
-
-  const timeline = ConstructionGuidanceService.calculateProjectTimeline({
-    projectType: project.projectType as any,
-    area: project.area,
-    floors: project.floorCount,
-    compliance: 'enhanced',
-    supervision: 'engineer',
-    location: 'الرياض'
-  });
 
   const handlePhaseComplete = (phaseId: string) => {
     if (!completedPhases.includes(phaseId)) {
@@ -81,14 +65,14 @@ export default function ConstructionGuidance({ project, onPhaseUpdate }: Constru
       onPhaseUpdate?.(phaseId, true);
       
       // Move to next phase
-      const nextPhase = ConstructionGuidanceService.getNextPhase(phaseId, projectPhases);
-      if (nextPhase) {
-        setCurrentPhase(nextPhase.id);
+      const currentIndex = projectPhases.findIndex(p => p.id === phaseId);
+      if (currentIndex < projectPhases.length - 1) {
+        setCurrentPhase(projectPhases[currentIndex + 1].id);
       }
     }
   };
 
-  const getPhaseStatus = (phase: ConstructionPhase) => {
+  const getPhaseStatus = (phase: ConstructionLevel) => {
     if (completedPhases.includes(phase.id)) {
       return { status: 'completed', color: 'bg-green-100 text-green-800', icon: <CheckCircle className="w-4 h-4" /> };
     } else if (phase.id === currentPhase) {
@@ -100,6 +84,9 @@ export default function ConstructionGuidance({ project, onPhaseUpdate }: Constru
 
   const currentPhaseData = projectPhases.find(p => p.id === currentPhase);
   const overallProgress = (completedPhases.length / projectPhases.length) * 100;
+  
+  // Get guidance for current phase
+  const currentGuidance = currentPhaseData ? ConstructionGuidanceService.getGuidanceForLevel(currentPhaseData.id) : null;
 
   return (
     <div className="space-y-6">
@@ -112,7 +99,7 @@ export default function ConstructionGuidance({ project, onPhaseUpdate }: Constru
               خطة تنفيذ المشروع
             </CardTitle>
             <Badge className="bg-blue-100 text-blue-800">
-              المدة المتوقعة: {timeline.totalDuration} يوم
+              عدد المستويات: {projectPhases.length} مستوى
             </Badge>
           </div>
         </CardHeader>
@@ -143,8 +130,8 @@ export default function ConstructionGuidance({ project, onPhaseUpdate }: Constru
                           {status.icon}
                         </div>
                         <div className="flex-1">
-                          <h4 className="font-medium text-sm">{phase.name}</h4>
-                          <p className="text-xs text-gray-500">{phase.duration} يوم</p>
+                          <h4 className="font-medium text-sm">{phase.arabicTitle}</h4>
+                          <p className="text-xs text-gray-500">{phase.estimatedDuration}</p>
                         </div>
                       </div>
                       <Badge variant="outline" className="text-xs">
@@ -165,7 +152,7 @@ export default function ConstructionGuidance({ project, onPhaseUpdate }: Constru
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Hammer className="w-5 h-5" />
-              {currentPhaseData.name}
+              {currentPhaseData.arabicTitle}
             </CardTitle>
             <p className="text-gray-600">{currentPhaseData.description}</p>
           </CardHeader>
@@ -188,7 +175,7 @@ export default function ConstructionGuidance({ project, onPhaseUpdate }: Constru
                       نصائح مهمة
                     </h4>
                     <ul className="space-y-2">
-                      {currentPhaseData.tips.map((tip, index) => (
+                      {currentGuidance?.tips.map((tip, index) => (
                         <li key={index} className="flex items-start gap-2 text-sm">
                           <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
                           <span>{tip}</span>
@@ -203,7 +190,7 @@ export default function ConstructionGuidance({ project, onPhaseUpdate }: Constru
                       تحذيرات مهمة
                     </h4>
                     <ul className="space-y-2">
-                      {currentPhaseData.warnings.map((warning, index) => (
+                      {currentGuidance?.warnings.map((warning, index) => (
                         <li key={index} className="flex items-start gap-2 text-sm">
                           <AlertTriangle className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" />
                           <span>{warning}</span>
@@ -253,26 +240,24 @@ export default function ConstructionGuidance({ project, onPhaseUpdate }: Constru
 
               <TabsContent value="documents" className="space-y-4">
                 <div className="grid gap-4">
-                  {currentPhaseData.documents.map((doc) => (
+                  {currentPhaseData.documentationFiles.map((doc) => (
                     <Card key={doc.id} className="p-4">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
                           <FileText className="w-5 h-5 text-blue-500" />
                           <div>
-                            <h5 className="font-medium">{doc.name}</h5>
-                            <p className="text-sm text-gray-600">{doc.authority}</p>
+                            <h5 className="font-medium">{doc.arabicTitle}</h5>
+                            <p className="text-sm text-gray-600">{doc.source}</p>
                           </div>
                         </div>
                         <div className="flex items-center gap-2">
-                          {doc.required && (
-                            <Badge variant="destructive" className="text-xs">مطلوب</Badge>
+                          {doc.isOfficial && (
+                            <Badge variant="default" className="text-xs">رسمي</Badge>
                           )}
-                          {doc.templateUrl && (
-                            <Button variant="outline" size="sm" onClick={() => alert('Button clicked')}>
-                              <Download className="w-4 h-4 mr-1" />
-                              تحميل
-                            </Button>
-                          )}
+                          <Button variant="outline" size="sm" onClick={() => window.open(doc.url, '_blank')}>
+                            <Download className="w-4 h-4 mr-1" />
+                            تحميل
+                          </Button>
                         </div>
                       </div>
                     </Card>
@@ -282,54 +267,13 @@ export default function ConstructionGuidance({ project, onPhaseUpdate }: Constru
 
               <TabsContent value="checkpoints" className="space-y-4">
                 <div className="grid gap-4">
-                  {currentPhaseData.checkpoints.map((checkpoint) => (
-                    <Card key={checkpoint.id} className="p-4">
+                  {currentPhaseData.requirements.map((requirement, index) => (
+                    <Card key={index} className="p-4">
                       <div className="flex items-center justify-between mb-3">
-                        <h5 className="font-medium">{checkpoint.name}</h5>
-                        <div className="flex items-center gap-2">
-                          {checkpoint.mandatory && (
-                            <Badge variant="destructive" className="text-xs">إجباري</Badge>
-                          )}
-                          <Dialog>
-                            <DialogTrigger className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors bg-blue-600 text-white hover:bg-blue-700 h-9 px-4">
-                              <Eye className="w-4 h-4 ml-1" />
-                              عرض التفاصيل
-                            </DialogTrigger>
-                            <DialogContent>
-                              <DialogHeader>
-                                <DialogTitle>{checkpoint.name}</DialogTitle>
-                              </DialogHeader>
-                              <div className="space-y-4">
-                                <p>{checkpoint.description}</p>
-                                <div>
-                                  <h6 className="font-medium mb-2">معايير الفحص:</h6>
-                                  <ul className="space-y-1">
-                                    {checkpoint.criteria.map((criterion, index) => (
-                                      <li key={index} className="flex items-center gap-2 text-sm">
-                                        <CheckCircle className="w-4 h-4 text-green-500" />
-                                        {criterion}
-                                      </li>
-                                    ))}
-                                  </ul>
-                                </div>
-                                {checkpoint.photos && (
-                                  <div className="bg-yellow-50 p-3 rounded-lg">
-                                    <div className="flex items-center gap-2 text-yellow-700">
-                                      <Camera className="w-4 h-4" />
-                                      <span className="text-sm">مطلوب توثيق بالصور</span>
-                                    </div>
-                                  </div>
-                                )}
-                              </div>
-                            </DialogContent>
-                          </Dialog>
-                        </div>
+                        <h5 className="font-medium">{requirement}</h5>
+                        <Badge variant="default" className="text-xs">مطلوب</Badge>
                       </div>
-                      <p className="text-sm text-gray-600 mb-2">{checkpoint.description}</p>
-                      <Badge variant="outline" className="text-xs">
-                        نوع الفحص: {checkpoint.inspectionType === 'self' ? 'ذاتي' : 
-                                    checkpoint.inspectionType === 'supervisor' ? 'مشرف' : 'جهة رسمية'}
-                      </Badge>
+                      <p className="text-sm text-gray-600 mb-2">متطلب أساسي لإكمال هذا المستوى</p>
                     </Card>
                   ))}
                 </div>
@@ -337,25 +281,16 @@ export default function ConstructionGuidance({ project, onPhaseUpdate }: Constru
 
               <TabsContent value="materials" className="space-y-4">
                 <div className="grid gap-4">
-                  {currentPhaseData.materials.map((material) => (
-                    <Card key={material.materialId} className="p-4">
-                      <div className="flex items-center justify-between mb-2">
-                        <h5 className="font-medium">{material.name}</h5>
-                        <div className="flex items-center gap-2">
-                          {material.sbcCompliant && (
-                            <Badge className="bg-green-100 text-green-800 text-xs">
-                              <Shield className="w-3 h-3 mr-1" />
-                              معتمد SBC
-                            </Badge>
-                          )}
+                  {currentGuidance?.bestPractices.map((practice, index) => (
+                    <Card key={index} className="p-4">
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 bg-green-100 rounded-lg">
+                          <CheckCircle className="w-4 h-4 text-green-600" />
                         </div>
-                      </div>
-                      <p className="text-sm text-gray-600 mb-2">
-                        الكمية: {material.quantity.toLocaleString()} {material.unit}
-                      </p>
-                      <div className="text-xs text-gray-500">
-                        <p>المواصفات: {material.specifications.join(', ')}</p>
-                        <p>الموردين: {material.suppliers.join(', ')}</p>
+                        <div>
+                          <h5 className="font-medium">أفضل الممارسات</h5>
+                          <p className="text-sm text-gray-600">{practice}</p>
+                        </div>
                       </div>
                     </Card>
                   ))}
@@ -364,27 +299,20 @@ export default function ConstructionGuidance({ project, onPhaseUpdate }: Constru
 
               <TabsContent value="regulations" className="space-y-4">
                 <div className="grid gap-4">
-                  {currentPhaseData.regulations.map((regulation) => (
-                    <Card key={regulation.id} className="p-4">
-                      <div className="flex items-center justify-between mb-2">
-                        <div className="flex items-center gap-2">
-                          <BookOpen className="w-5 h-5 text-blue-500" />
-                          <h5 className="font-medium">{regulation.code}</h5>
+                  {currentPhaseData.externalPlatforms?.map((platform, index) => (
+                    <Card key={index} className="p-4">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <ExternalLink className="w-5 h-5 text-blue-500" />
+                          <div>
+                            <h5 className="font-medium">{platform}</h5>
+                            <p className="text-sm text-gray-600">منصة خارجية للدعم</p>
+                          </div>
                         </div>
-                        <a 
-                          href={regulation.documentUrl} 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1 px-3 py-1 text-sm border border-gray-300 rounded-md hover:bg-gray-50"
-                        >
-                          <ExternalLink className="w-4 h-4" />
-                          عرض المستند
-                        </a>
-                      </div>
-                      <p className="text-sm text-gray-600 mb-1">{regulation.section}</p>
-                      <p className="text-sm">{regulation.description}</p>
-                      <div className="mt-2 p-2 bg-blue-50 rounded text-sm text-blue-700">
-                        {regulation.requirement}
+                        <Button variant="outline" size="sm" onClick={() => alert('سيتم التوجه للمنصة الخارجية')}>
+                          <ExternalLink className="w-4 h-4 mr-1" />
+                          زيارة
+                        </Button>
                       </div>
                     </Card>
                   ))}
@@ -395,44 +323,29 @@ export default function ConstructionGuidance({ project, onPhaseUpdate }: Constru
         </Card>
       )}
 
-      {/* Compliance Checklist */}
+      {/* Summary Card */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Shield className="w-5 h-5" />
-            قائمة مراجعة الامتثال
+            ملخص المشروع
           </CardTitle>
-          <p className="text-sm text-gray-600">تأكد من استيفاء جميع المتطلبات القانونية</p>
+          <p className="text-sm text-gray-600">معلومات عامة عن المشروع والمستويات</p>
         </CardHeader>
         <CardContent>
-          <div className="space-y-6">
-            {complianceChecklist.map((category, categoryIndex) => (
-              <div key={categoryIndex}>
-                <h4 className="font-medium text-gray-800 mb-3">{category.category}</h4>
-                <div className="space-y-2">
-                  {category.items.map((item: any) => (
-                    <div key={item.id} className="flex items-center gap-3 p-3 border rounded-lg">
-                      <input 
-                        type="checkbox" 
-                        checked={item.completed}
-                        className="rounded border-gray-300"
-                        onChange={() => {
-                          // Handle checkbox change
-                        }}
-                      />
-                      <div className="flex-1">
-                        <span className={item.completed ? 'line-through text-gray-500' : ''}>
-                          {item.description}
-                        </span>
-                        {item.required && (
-                          <Badge variant="destructive" className="ml-2 text-xs">مطلوب</Badge>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="text-center p-4 bg-blue-50 rounded-lg">
+              <div className="text-2xl font-bold text-blue-600">{projectPhases.length}</div>
+              <div className="text-sm text-gray-600">إجمالي المستويات</div>
+            </div>
+            <div className="text-center p-4 bg-green-50 rounded-lg">
+              <div className="text-2xl font-bold text-green-600">{completedPhases.length}</div>
+              <div className="text-sm text-gray-600">المستويات المكتملة</div>
+            </div>
+            <div className="text-center p-4 bg-orange-50 rounded-lg">
+              <div className="text-2xl font-bold text-orange-600">{Math.round(overallProgress)}%</div>
+              <div className="text-sm text-gray-600">نسبة التقدم</div>
+            </div>
           </div>
         </CardContent>
       </Card>

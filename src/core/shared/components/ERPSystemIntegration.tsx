@@ -242,7 +242,7 @@ export function ERPSystemIntegration() {
               <div>
                 <p className="text-sm font-medium text-gray-600">Records Processed</p>
                 <p className="text-2xl font-bold text-indigo-600">
-                  {erpStats.total_records_processed.toLocaleString()}
+                  {erpStats.total_records_processed.toLocaleString('en-US')}
                 </p>
               </div>
               <Database className="w-8 h-8 text-indigo-500" />
@@ -458,7 +458,7 @@ export function ERPSystemIntegration() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm text-gray-900">
-                        {sync.records_processed.toLocaleString()} processed
+                        {sync.records_processed.toLocaleString('en-US')} processed
                       </div>
                       {sync.records_failed > 0 && (
                         <div className="text-sm text-red-600">
@@ -533,7 +533,7 @@ export function ERPSystemIntegration() {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Records:</span>
-                      <span className="font-medium">{stats.records_processed.toLocaleString()}</span>
+                      <span className="font-medium">{stats.records_processed.toLocaleString('en-US')}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Last Sync:</span>
@@ -563,7 +563,7 @@ export function ERPSystemIntegration() {
               {Object.entries(erpStats.data_type_breakdown).map(([dataType, count]) => (
                 <div key={dataType} className="text-center p-4 border rounded-lg">
                   <div className="text-2xl font-bold text-indigo-600">
-                    {count.toLocaleString()}
+                    {count.toLocaleString('en-US')}
                   </div>
                   <div className="text-sm text-gray-600 capitalize">
                     {dataType}

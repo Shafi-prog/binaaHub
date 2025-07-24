@@ -6,6 +6,7 @@ import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { Card } from '@/core/shared/components/ui/card';
 import { LoadingSpinner } from '@/core/shared/components/ui/loading-spinner';
 import { formatCurrency } from '@/core/shared/utils';
+import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 import { 
   BarChart3, 
   Users, 

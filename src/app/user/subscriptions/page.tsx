@@ -275,7 +275,7 @@ export default function SubscriptionsPage() {
               
               <div className="mb-4">
                 <Typography variant="heading" size="3xl" weight="bold" className="text-gray-900">
-                  {plan.price.toLocaleString('ar-SA')}
+                  {plan.price.toLocaleString('en-US')}
                   <span className="text-sm font-normal text-gray-600 mr-1">ر.س</span>
                 </Typography>
                 <Typography variant="caption" size="sm" className="text-gray-600">
@@ -389,8 +389,8 @@ export default function SubscriptionsPage() {
                         {subscription.plan}
                       </Typography>
                       <div className="flex items-center gap-4 text-sm text-gray-600">
-                        <span>من {new Date(subscription.startDate).toLocaleDateString('ar-SA')}</span>
-                        <span>إلى {new Date(subscription.endDate).toLocaleDateString('ar-SA')}</span>
+                        <span>من {new Date(subscription.startDate).toLocaleDateString('en-US')}</span>
+                        <span>إلى {new Date(subscription.endDate).toLocaleDateString('en-US')}</span>
                         <span className={`px-2 py-1 rounded-full text-xs ${getStatusColor(subscription.status)}`}>
                           {getStatusText(subscription.status)}
                         </span>
@@ -400,7 +400,7 @@ export default function SubscriptionsPage() {
                   
                   <div className="text-left">
                     <Typography variant="subheading" size="lg" weight="bold" className="text-gray-900">
-                      {subscription.amount.toLocaleString('ar-SA')} ر.س
+                      {subscription.amount.toLocaleString('en-US')} ر.س
                     </Typography>
                   </div>
                 </div>

@@ -7,6 +7,7 @@ import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { Card, LoadingSpinner } from '@/core/shared/components/ui';
 import { formatCurrency } from '@/core/shared/utils';
 import ERPIntegrationServiceCore from '@/core/shared/services/erp-integration/service';
+import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 import {
   TrendingUp,
   TrendingDown,

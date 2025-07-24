@@ -1121,7 +1121,7 @@ function POSSystemComponent() {
                         {suspendedSale.sale_data.items.length} عنصر - {suspendedSale.sale_data.total_amount.toFixed(2)} ريال
                       </p>
                       <p className="text-xs text-gray-500">
-                        معلق في: {new Date(suspendedSale.suspended_at).toLocaleString('ar-SA')}
+                        معلق في: {new Date(suspendedSale.suspended_at).toLocaleString('en-US')}
                       </p>
                     </div>
                     <Button

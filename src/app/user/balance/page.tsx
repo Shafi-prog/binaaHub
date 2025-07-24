@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/enhanced-components';
 import { Wallet, CreditCard, Plus, Minus, DollarSign, TrendingUp, TrendingDown, RefreshCw, Download, Eye, Gift, Crown, Filter, Calendar, Search, X } from 'lucide-react';
+import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 
 export const dynamic = 'force-dynamic'
 
@@ -299,24 +300,24 @@ export default function BalancePage() {
       const csvRows = [
         // Title and export info
         ['تقرير المعاملات المالية - منصة بنا'],
-        ['تاريخ التصدير:', new Date().toLocaleDateString('ar-SA')],
+        ['تاريخ التصدير:', new Date().toLocaleDateString('en-US')],
         ['عدد المعاملات:', transactions.length.toString()],
         [''],
         
         // Balance summary
         ['ملخص الرصيد الحالي'],
-        ['الرصيد الأساسي:', `${balance.main.toLocaleString('ar-SA')} ر.س`],
-        ['الرصيد المعلق:', `${balance.pending.toLocaleString('ar-SA')} ر.س`],
-        ['رصيد المكافآت:', `${balance.bonus.toLocaleString('ar-SA')} ر.س`],
-        ['إجمالي الرصيد:', `${balance.total.toLocaleString('ar-SA')} ر.س`],
+        ['الرصيد الأساسي:', `${balance.main.toLocaleString('en-US')} ر.س`],
+        ['الرصيد المعلق:', `${balance.pending.toLocaleString('en-US')} ر.س`],
+        ['رصيد المكافآت:', `${balance.bonus.toLocaleString('en-US')} ر.س`],
+        ['إجمالي الرصيد:', `${balance.total.toLocaleString('en-US')} ر.س`],
         [''],
         
         // Transaction summary
         ['ملخص المعاملات'],
-        ['إجمالي الإيداعات:', `${summary.totalDeposits.toLocaleString('ar-SA')} ر.س`],
-        ['إجمالي السحوبات:', `${summary.totalWithdrawals.toLocaleString('ar-SA')} ر.س`],
-        ['إجمالي المشتريات:', `${summary.totalPurchases.toLocaleString('ar-SA')} ر.س`],
-        ['إجمالي المكافآت:', `${summary.totalBonuses.toLocaleString('ar-SA')} ر.س`],
+        ['إجمالي الإيداعات:', `${summary.totalDeposits.toLocaleString('en-US')} ر.س`],
+        ['إجمالي السحوبات:', `${summary.totalWithdrawals.toLocaleString('en-US')} ر.س`],
+        ['إجمالي المشتريات:', `${summary.totalPurchases.toLocaleString('en-US')} ر.س`],
+        ['إجمالي المكافآت:', `${summary.totalBonuses.toLocaleString('en-US')} ر.س`],
         [''],
         [''],
         
@@ -328,7 +329,7 @@ export default function BalancePage() {
           t.id,
           getTransactionText(t.type),
           t.description,
-          `${t.amount.toLocaleString('ar-SA')}`,
+          `${t.amount.toLocaleString('en-US')}`,
           formatDate(t.date),
           getStatusText(t.status),
           t.reference || ''
@@ -473,7 +474,7 @@ export default function BalancePage() {
           <div className="flex items-center justify-between">
             <div>
               <Typography variant="caption" size="sm" className="text-green-100 mb-1">الرصيد الأساسي</Typography>
-              <Typography variant="heading" size="2xl" weight="bold">{balance.main.toLocaleString('ar-SA')} ر.س</Typography>
+              <Typography variant="heading" size="2xl" weight="bold">{balance.main.toLocaleString('en-US')} ر.س</Typography>
             </div>
             <Wallet className="w-8 h-8 text-green-200" />
           </div>
@@ -483,7 +484,7 @@ export default function BalancePage() {
           <div className="flex items-center justify-between">
             <div>
               <Typography variant="caption" size="sm" className="text-yellow-100 mb-1">رصيد معلق</Typography>
-              <Typography variant="heading" size="2xl" weight="bold">{balance.pending.toLocaleString('ar-SA')} ر.س</Typography>
+              <Typography variant="heading" size="2xl" weight="bold">{balance.pending.toLocaleString('en-US')} ر.س</Typography>
             </div>
             <RefreshCw className="w-8 h-8 text-yellow-200" />
           </div>
@@ -493,7 +494,7 @@ export default function BalancePage() {
           <div className="flex items-center justify-between">
             <div>
               <Typography variant="caption" size="sm" className="text-purple-100 mb-1">رصيد المكافآت</Typography>
-              <Typography variant="heading" size="2xl" weight="bold">{balance.bonus.toLocaleString('ar-SA')} ر.س</Typography>
+              <Typography variant="heading" size="2xl" weight="bold">{balance.bonus.toLocaleString('en-US')} ر.س</Typography>
             </div>
             <Gift className="w-8 h-8 text-purple-200" />
           </div>
@@ -503,7 +504,7 @@ export default function BalancePage() {
           <div className="flex items-center justify-between">
             <div>
               <Typography variant="caption" size="sm" className="text-blue-100 mb-1">إجمالي الرصيد</Typography>
-              <Typography variant="heading" size="2xl" weight="bold">{balance.total.toLocaleString('ar-SA')} ر.س</Typography>
+              <Typography variant="heading" size="2xl" weight="bold">{balance.total.toLocaleString('en-US')} ر.س</Typography>
             </div>
             <TrendingUp className="w-8 h-8 text-blue-200" />
           </div>
@@ -792,7 +793,7 @@ export default function BalancePage() {
                         transaction.amount > 0 ? 'text-green-600' : 'text-red-600'
                       }
                     >
-                      {transaction.amount > 0 ? '+' : ''}{transaction.amount.toLocaleString('ar-SA')} ر.س
+                      {transaction.amount > 0 ? '+' : ''}{transaction.amount.toLocaleString('en-US')} ر.س
                     </Typography>
                   </div>
                 </div>

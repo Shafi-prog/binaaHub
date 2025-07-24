@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useState, useEffect } from "react";
 import { cn } from "@/core/shared/utils";
+import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 import { 
   Store, 
   Users, 
@@ -29,7 +30,8 @@ import {
   Filter,
   ChevronDown,
   SlidersHorizontal,
-  Calendar
+  Calendar,
+  Book
 } from "lucide-react";
 
 interface PriceData {
@@ -44,38 +46,38 @@ interface PriceData {
 
 const mockPriceData: PriceData[] = [
   // Metal Products
-  { product: "Iron Ton", category: "Metal", price: 450, change: +12.5, store: "Gulf Steel Co.", city: "Riyadh", lastUpdated: "2 hours ago" },
-  { product: "Copper Kg", category: "Metal", price: 8.75, change: -3.2, store: "Metal World", city: "Dubai", lastUpdated: "1 hour ago" },
-  { product: "Aluminum Ton", category: "Metal", price: 2100, change: +5.8, store: "Al-Manara Metals", city: "Kuwait", lastUpdated: "30 min ago" },
-  { product: "Steel Rebar Ton", category: "Metal", price: 520, change: +8.2, store: "Steel Kingdom", city: "Riyadh", lastUpdated: "3 hours ago" },
-  { product: "Zinc Kg", category: "Metal", price: 3.20, change: -1.5, store: "Gulf Steel Co.", city: "Dubai", lastUpdated: "1 hour ago" },
+  { product: "طن حديد", category: "معادن", price: 450, change: +12.5, store: "شركة الخليج للحديد", city: "الرياض", lastUpdated: "منذ ساعتين" },
+  { product: "كيلو نحاس", category: "معادن", price: 8.75, change: -3.2, store: "عالم المعادن", city: "دبي", lastUpdated: "منذ ساعة" },
+  { product: "طن ألمونيوم", category: "معادن", price: 2100, change: +5.8, store: "المنارة للمعادن", city: "الكويت", lastUpdated: "منذ 30 دقيقة" },
+  { product: "طن حديد تسليح", category: "معادن", price: 520, change: +8.2, store: "مملكة الحديد", city: "الرياض", lastUpdated: "منذ 3 ساعات" },
+  { product: "كيلو زنك", category: "معادن", price: 3.20, change: -1.5, store: "شركة الخليج للحديد", city: "دبي", lastUpdated: "منذ ساعة" },
   
   // Precious Metals
-  { product: "Gold Gram", category: "Precious", price: 235, change: +1.2, store: "Gold Palace", city: "Doha", lastUpdated: "15 min ago" },
-  { product: "Silver Ounce", category: "Precious", price: 24.50, change: -0.8, store: "Silver Star", city: "Manama", lastUpdated: "45 min ago" },
-  { product: "Platinum Gram", category: "Precious", price: 32.5, change: +2.1, store: "Precious Metals Co.", city: "Riyadh", lastUpdated: "2 hours ago" },
+  { product: "جرام ذهب", category: "معادن ثمينة", price: 235, change: +1.2, store: "قصر الذهب", city: "الدوحة", lastUpdated: "منذ 15 دقيقة" },
+  { product: "أونصة فضة", category: "معادن ثمينة", price: 24.50, change: -0.8, store: "نجمة الفضة", city: "المنامة", lastUpdated: "منذ 45 دقيقة" },
+  { product: "جرام بلاتين", category: "معادن ثمينة", price: 32.5, change: +2.1, store: "شركة المعادن الثمينة", city: "الرياض", lastUpdated: "منذ ساعتين" },
   
   // Construction Materials
-  { product: "Cement Bag 50Kg", category: "Construction", price: 18.5, change: +3.4, store: "Build Masters", city: "Riyadh", lastUpdated: "4 hours ago" },
-  { product: "Sand Ton", category: "Construction", price: 45, change: +5.2, store: "Construction Plus", city: "Dubai", lastUpdated: "3 hours ago" },
-  { product: "Gravel Ton", category: "Construction", price: 55, change: -2.1, store: "Build Masters", city: "Kuwait", lastUpdated: "2 hours ago" },
-  { product: "Bricks 1000 pcs", category: "Construction", price: 280, change: +4.5, store: "Brick Factory", city: "Doha", lastUpdated: "5 hours ago" },
-  { product: "Tiles Per Sqm", category: "Construction", price: 85, change: -1.2, store: "Tile World", city: "Manama", lastUpdated: "3 hours ago" },
+  { product: "كيس إسمنت 50كغ", category: "مواد بناء", price: 18.5, change: +3.4, store: "أساتذة البناء", city: "الرياض", lastUpdated: "منذ 4 ساعات" },
+  { product: "طن رمل", category: "مواد بناء", price: 45, change: +5.2, store: "البناء بلس", city: "دبي", lastUpdated: "منذ 3 ساعات" },
+  { product: "طن حصى", category: "مواد بناء", price: 55, change: -2.1, store: "أساتذة البناء", city: "الكويت", lastUpdated: "منذ ساعتين" },
+  { product: "1000 طوبة", category: "مواد بناء", price: 280, change: +4.5, store: "مصنع الطوب", city: "الدوحة", lastUpdated: "منذ 5 ساعات" },
+  { product: "بلاط للمتر المربع", category: "مواد بناء", price: 85, change: -1.2, store: "عالم البلاط", city: "المنامة", lastUpdated: "منذ 3 ساعات" },
   
   // Electronics
-  { product: "Copper Wire 100m", category: "Electronics", price: 125, change: +6.8, store: "Electric Pro", city: "Riyadh", lastUpdated: "1 hour ago" },
-  { product: "LED Light Bulb", category: "Electronics", price: 15.5, change: -2.3, store: "Light House", city: "Dubai", lastUpdated: "2 hours ago" },
-  { product: "Switch Socket", category: "Electronics", price: 25, change: +1.8, store: "Electric Pro", city: "Kuwait", lastUpdated: "4 hours ago" },
+  { product: "سلك نحاس 100م", category: "إلكترونيات", price: 125, change: +6.8, store: "الكهرباء المحترفة", city: "الرياض", lastUpdated: "منذ ساعة" },
+  { product: "لمبة LED", category: "إلكترونيات", price: 15.5, change: -2.3, store: "بيت الإضاءة", city: "دبي", lastUpdated: "منذ ساعتين" },
+  { product: "مفتاح كهرباء", category: "إلكترونيات", price: 25, change: +1.8, store: "الكهرباء المحترفة", city: "الكويت", lastUpdated: "منذ 4 ساعات" },
   
   // Textiles
-  { product: "Cotton Fabric Meter", category: "Textiles", price: 12.5, change: +2.8, store: "Fabric Land", city: "Riyadh", lastUpdated: "6 hours ago" },
-  { product: "Silk Fabric Meter", category: "Textiles", price: 45, change: -1.5, store: "Luxury Textiles", city: "Dubai", lastUpdated: "3 hours ago" },
-  { product: "Wool Fabric Meter", category: "Textiles", price: 28, change: +3.2, store: "Fabric Land", city: "Doha", lastUpdated: "4 hours ago" },
+  { product: "متر قماش قطني", category: "منسوجات", price: 12.5, change: +2.8, store: "أرض الأقمشة", city: "الرياض", lastUpdated: "منذ 6 ساعات" },
+  { product: "متر قماش حريري", category: "منسوجات", price: 45, change: -1.5, store: "الأقمشة الفاخرة", city: "دبي", lastUpdated: "منذ 3 ساعات" },
+  { product: "متر قماش صوفي", category: "منسوجات", price: 28, change: +3.2, store: "أرض الأقمشة", city: "الدوحة", lastUpdated: "منذ 4 ساعات" },
   
   // Food & Commodities
-  { product: "Wheat Ton", category: "Food", price: 320, change: +4.5, store: "Grain Market", city: "Riyadh", lastUpdated: "5 hours ago" },
-  { product: "Rice Ton", category: "Food", price: 580, change: -2.1, store: "Food Hub", city: "Dubai", lastUpdated: "3 hours ago" },
-  { product: "Sugar Ton", category: "Food", price: 450, change: +1.8, store: "Sweet Supply", city: "Kuwait", lastUpdated: "2 hours ago" },
+  { product: "طن قمح", category: "غذائيات", price: 320, change: +4.5, store: "سوق الحبوب", city: "الرياض", lastUpdated: "منذ 5 ساعات" },
+  { product: "طن أرز", category: "غذائيات", price: 580, change: -2.1, store: "مركز الغذاء", city: "دبي", lastUpdated: "منذ 3 ساعات" },
+  { product: "طن سكر", category: "غذائيات", price: 450, change: +1.8, store: "إمداد الحلويات", city: "الكويت", lastUpdated: "منذ ساعتين" },
   { product: "Coffee Kg", category: "Food", price: 25, change: +5.2, store: "Coffee Masters", city: "Manama", lastUpdated: "1 hour ago" },
 ];
 
@@ -745,7 +747,7 @@ export default function MainLandingPage() {
               <p className="text-lg text-gray-600">دليل شامل لمساعدتك في إنجاز مشروع البناء بكفاءة ووفقاً للمعايير السعودية</p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
               {/* Construction Steps Guide */}
               <Link href="/construction-data" 
                     className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-xl border border-blue-200 hover:shadow-lg transition-all group">
@@ -800,6 +802,24 @@ export default function MainLandingPage() {
                 </div>
               </Link>
 
+              {/* Pages Documentation */}
+              <Link href="/platform-pages" 
+                    className="bg-gradient-to-br from-indigo-50 to-indigo-100 p-6 rounded-xl border border-indigo-200 hover:shadow-lg transition-all group">
+                <div className="flex items-center mb-4">
+                  <div className="w-12 h-12 bg-indigo-500 rounded-lg flex items-center justify-center mr-3">
+                    <Book className="w-6 h-6 text-white" />
+                  </div>
+                  <h3 className="font-bold text-indigo-800">دليل الصفحات</h3>
+                </div>
+                <p className="text-gray-700 text-sm mb-3">
+                  دليل شامل لجميع صفحات المنصة مع روابط مباشرة للاختبار
+                </p>
+                <div className="flex items-center text-indigo-600 text-sm font-medium">
+                  <span>استعرض الصفحات</span>
+                  <ExternalLink className="w-4 h-4 mr-2 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </Link>
+
               {/* Construction Materials Prices */}
               <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-6 rounded-xl border border-orange-200">
                 <div className="flex items-center mb-4">
@@ -819,7 +839,7 @@ export default function MainLandingPage() {
             </div>
 
             {/* Quick Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 pt-8 border-t border-gray-200">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-8 pt-8 border-t border-gray-200">
               <div className="text-center">
                 <div className="text-3xl font-bold text-blue-600 mb-2">50+</div>
                 <p className="text-gray-600">خطوة بناء مفصلة</p>
@@ -831,6 +851,10 @@ export default function MainLandingPage() {
               <div className="text-center">
                 <div className="text-3xl font-bold text-purple-600 mb-2">100+</div>
                 <p className="text-gray-600">نصيحة من الخبراء</p>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-indigo-600 mb-2">109+</div>
+                <p className="text-gray-600">صفحة موثقة</p>
               </div>
             </div>
           </div>

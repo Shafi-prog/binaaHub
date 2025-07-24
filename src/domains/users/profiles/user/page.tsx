@@ -374,7 +374,7 @@ export default function WarrantyDetailPage() {
                   <div>
                     <p className="text-sm text-gray-600">تاريخ الشراء</p>
                     <p className="font-medium">
-                      {new Date(warranty.purchase_date).toLocaleDateString('ar-SA')}
+                      {new Date(warranty.purchase_date).toLocaleDateString('en-US')}
                     </p>
                   </div>
                 </div>
@@ -384,7 +384,7 @@ export default function WarrantyDetailPage() {
                   <div>
                     <p className="text-sm text-gray-600">انتهاء الضمان</p>
                     <p className="font-medium">
-                      {new Date(warranty.warranty_end_date).toLocaleDateString('ar-SA')}
+                      {new Date(warranty.warranty_end_date).toLocaleDateString('en-US')}
                     </p>
                   </div>
                 </div>
@@ -408,7 +408,7 @@ export default function WarrantyDetailPage() {
                     <div className="w-5 h-5 text-gray-500">💰</div>
                     <div>
                       <p className="text-sm text-gray-600">سعر الشراء</p>
-                      <p className="font-medium">{warranty.purchase_price.toLocaleString()} ريال</p>
+                      <p className="font-medium">{warranty.purchase_price.toLocaleString('en-US')} ريال</p>
                     </div>
                   </div>
                 )}
@@ -540,7 +540,7 @@ export default function WarrantyDetailPage() {
                     <p className="text-sm text-gray-600 mb-2">{claim.issue_description}</p>
                     <div className="flex items-center text-xs text-gray-500">
                       <Calendar className="w-3 h-3 mr-1" />
-                      {new Date(claim.claim_date).toLocaleDateString('ar-SA')}
+                      {new Date(claim.claim_date).toLocaleDateString('en-US')}
                     </div>
                     {claim.resolution_notes && (
                       <div className="mt-2 p-2 bg-gray-50 rounded text-sm">

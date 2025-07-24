@@ -125,7 +125,7 @@ export default function BinnaStock() {
           <div className="bg-white p-6 rounded-lg shadow">
             <h3 className="text-lg font-semibold text-gray-700 mb-2">Total Value</h3>
             <p className="text-3xl font-bold text-green-600">
-              {inventory.reduce((sum, item) => sum + (item.quantity * item.cost_price), 0).toLocaleString()} SAR
+              {inventory.reduce((sum, item) => sum + (item.quantity * item.cost_price), 0).toLocaleString('en-US')} SAR
             </p>
           </div>
           <div className="bg-white p-6 rounded-lg shadow">
@@ -229,7 +229,7 @@ export default function BinnaStock() {
                       {item.location}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {item.cost_price.toLocaleString()} SAR
+                      {item.cost_price.toLocaleString('en-US')} SAR
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <button

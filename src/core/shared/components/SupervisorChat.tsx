@@ -8,6 +8,7 @@ import { Badge } from '@/core/shared/components/ui/badge';
 import { LoadingSpinner } from '@/core/shared/components/ui/loading-spinner';
 import { useTranslation } from '@/core/shared/hooks/useTranslation';
 import { formatDate } from '@/core/shared/utils';
+import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 
 interface Message {
   id: string;

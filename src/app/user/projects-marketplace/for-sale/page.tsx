@@ -278,7 +278,7 @@ export default function ProjectsForSalePage() {
                     <div className="flex items-center text-gray-600 mb-4">
                       <Calendar className="w-4 h-4 mr-2" />
                       <span className="text-sm">
-                        تاريخ الإنجاز: {new Date(project.expected_completion_date).toLocaleDateString('ar-SA')}
+                        تاريخ الإنجاز: {new Date(project.expected_completion_date).toLocaleDateString('en-US')}
                       </span>
                     </div>
                   )}

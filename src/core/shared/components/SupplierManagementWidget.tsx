@@ -181,7 +181,7 @@ export const SupplierManagementWidget: React.FC = () => {
                     </td>
                     <td className="px-3 py-2">{supplier.contact}</td>
                     <td className="px-3 py-2">{supplier.email}</td>
-                    <td className="px-3 py-2">{supplier.totalPurchases.toLocaleString()} ر.س</td>
+                    <td className="px-3 py-2">{supplier.totalPurchases.toLocaleString('en-US')} ر.س</td>
                     {hasPermission('edit_suppliers') && (
                       <td className="px-3 py-2">
                         <button className="text-blue-600 hover:underline text-xs mr-2" aria-label={`تعديل المورد ${supplier.name}`} title="تعديل المورد" onClick={() => alert('Button clicked')}>تعديل</button>

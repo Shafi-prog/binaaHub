@@ -70,7 +70,7 @@ export default function CostCalculatorPage() {
               التقدير التقريبي لتكلفة البناء
             </Typography>
             <Typography variant="heading" size="2xl" weight="bold" className="text-green-700">
-              {result.toLocaleString()} ر.س
+              {result.toLocaleString('en-US')} ر.س
             </Typography>
           </EnhancedCard>
         )}

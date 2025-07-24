@@ -7,8 +7,8 @@ export default function ProjectsPage() {
   const router = useRouter();
 
   useEffect(() => {
-    // Redirect to the main construction hub
-    router.replace('/user/projects/new');
+    // Redirect to the projects list instead of new project creation
+    router.replace('/user/projects/list');
   }, [router]);
 
   return null;

@@ -317,7 +317,7 @@ export default function ConstructionProductsPage() {
               <div className="space-y-2 mb-4">
                 <div className="flex justify-between items-center">                  <span className="text-sm text-gray-600">السعر:</span>
                   <span className="font-semibold text-green-600">
-                    {(product.price || product.selling_price || 0).toLocaleString()} ر.س
+                    {(product.price || product.selling_price || 0).toLocaleString('en-US')} ر.س
                   </span>
                 </div>
                 

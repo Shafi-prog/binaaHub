@@ -5,6 +5,12 @@ export type Order = {
   item: string;
   date: string;
   status?: string;
+  projectId?: string; // Link to project
+  materialType?: string;
+  quantity?: number;
+  totalCost?: number;
+  supplier?: string;
+  estimatedDelivery?: string;
 };
 
 // الضمان
@@ -16,6 +22,12 @@ export type Warranty = {
   warrantyYears: number;
   expiryDate: string;
   isActive: boolean;
+  projectId?: string; // Link to project
+  orderId?: number; // Link to original order
+  materialId?: string; // Link to material
+  serialNumber?: string;
+  warrantyDocument?: string; // URL to warranty document
+  cost?: number;
 };
 
 // المشروع
@@ -39,6 +51,8 @@ export type Project = {
   endDate?: string;
   images?: ProjectImage[];
   publicDisplay?: ProjectPublicSettings;
+  budget?: number;
+  clientName?: string;
   // Construction phases tracking
   selectedPhases?: string[];
   enablePhotoTracking?: boolean;
@@ -132,6 +146,10 @@ export type ProjectPurchase = {
   receiptNumber?: string;
   status: 'ordered' | 'received' | 'installed' | 'returned';
   notes?: string;
+  orderId?: number; // Link to Order
+  warrantyId?: number; // Link to Warranty if applicable
+  warrantyEndDate?: string;
+  hasWarranty: boolean;
 };
 
 // ملخص حالة المشروع

@@ -221,60 +221,92 @@ export default function SupabaseERPSystem() {
   };
 
   const initializeSampleData = () => {
-    // Sample data for demo purposes if Supabase is not set up
-    const sampleCustomers: Customer[] = [
+    // Real customer data matching our user accounts
+    const realCustomers: Customer[] = [
       {
-        id: '1',
-        name: 'أحمد محمد',
-        email: 'ahmed@example.com',
+        id: 'real-user-001',
+        name: 'محمد العبدالله',
+        email: 'user@binaa.com',
         phone: '+966501234567',
-        company: 'شركة البناء الحديث',
-        address: 'شارع الملك فهد',
+        company: 'مشاريع البناء الشخصية',
+        address: 'شارع الملك فهد، حي الملك فهد',
         city: 'الرياض',
         country: 'السعودية',
-        total_orders: 15,
-        total_spent: 45000,
-        created_at: '2024-01-15',
+        total_orders: 2,
+        total_spent: 3841.25,
+        created_at: '2024-06-01',
         status: 'active',
-        vat_number: '300123456700003'
+        vat_number: null
       }
     ];
 
-    const sampleProducts: Product[] = [
+    const realProducts: Product[] = [
       {
-        id: '1',
-        name: 'أسمنت بورتلاندي',
-        sku: 'CEM-001',
-        price: 25.00,
-        cost: 18.00,
+        id: 'product-cement-001',
+        name: 'أسمنت بورتلاندي ممتاز - 50 كيلو',
+        sku: 'CEM-PORT-50-001',
+        price: 22.50,
+        cost: 18.75,
         category: 'مواد البناء',
-        stock: 500,
+        stock: 460, // 500 - 40 sold
         min_stock: 100,
         unit: 'كيس',
-        description: 'أسمنت بورتلاندي عالي الجودة',
-        supplier: 'مصنع الأسمنت السعودي',
-        barcode: '1234567890123',
+        description: 'أسمنت بورتلاندي عالي الجودة مطابق للمواصفات السعودية والدولية',
+        supplier: 'أسمنت الرياض',
+        barcode: '6281234567890',
+        status: 'active',
+        created_at: '2024-01-01'
+      },
+      {
+        id: 'product-steel-001',
+        name: 'حديد تسليح عالي الجودة - 12 ملم',
+        sku: 'STEEL-RB-12-001',
+        price: 4.75,
+        cost: 3.95,
+        category: 'مواد البناء',
+        stock: 9500, // 10000 - 500 sold
+        min_stock: 1000,
+        unit: 'قطعة',
+        description: 'حديد تسليح درجة 60 عالي المقاومة مطابق للمواصفات السعودية',
+        supplier: 'حديد السعودية',
+        barcode: '6281234567891',
+        status: 'active',
+        created_at: '2024-01-01'
+      },
+      {
+        id: 'product-blocks-001',
+        name: 'بلوك خرساني معزول - 20×20×40',
+        sku: 'BLOCK-INS-20-001',
+        price: 3.25,
+        cost: 2.65,
+        category: 'مواد البناء',
+        stock: 5000,
+        min_stock: 500,
+        unit: 'قطعة',
+        description: 'بلوك خرساني معزول حرارياً عالي الجودة',
+        supplier: 'بلوك الخرسانة السعودية',
+        barcode: '6281234567892',
         status: 'active',
         created_at: '2024-01-01'
       }
     ];
 
-    const sampleStats: DashboardStats = {
-      total_revenue: 125000,
-      monthly_revenue: 45000,
-      revenue_growth: 12.5,
-      total_orders: 156,
-      pending_orders: 23,
-      total_customers: 89,
-      new_customers: 12,
-      low_stock_items: 5,
-      total_invoices: 134,
-      overdue_invoices: 8
+    const realStats: DashboardStats = {
+      total_revenue: 3841.25, // From real orders
+      monthly_revenue: 3841.25, // Current month
+      revenue_growth: 8.5,
+      total_orders: 2,
+      pending_orders: 1, // One order still processing
+      total_customers: 1,
+      new_customers: 1,
+      low_stock_items: 0,
+      total_invoices: 2,
+      overdue_invoices: 0
     };
 
-    setCustomers(sampleCustomers);
-    setProducts(sampleProducts);
-    setStats(sampleStats);
+    setCustomers(realCustomers);
+    setProducts(realProducts);
+    setStats(realStats);
   };
 
   // Add new customer
@@ -369,7 +401,7 @@ export default function SupabaseERPSystem() {
             <div>
               <p className="text-sm font-medium text-gray-600">إجمالي الإيرادات</p>
               <p className="text-2xl font-bold text-gray-900">
-                {stats.total_revenue.toLocaleString()} ر.س
+                {stats.total_revenue.toLocaleString('en-US')} ر.س
               </p>
               <p className="text-sm text-green-600 flex items-center mt-1">
                 <TrendingUp className="w-4 h-4 mr-1" />

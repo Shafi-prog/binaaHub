@@ -427,7 +427,7 @@ export default function UnifiedBarcodeScanner({
                           {/* Price and Stock */}
                           <div className="text-left flex-shrink-0">
                             <div className="text-lg font-bold text-blue-600">
-                              {product.price.toLocaleString()} ر.س
+                              {product.price.toLocaleString('en-US')} ر.س
                             </div>
                             <div className={`text-sm ${
                               product.stock > 0 ? 'text-green-600' : 'text-red-600'

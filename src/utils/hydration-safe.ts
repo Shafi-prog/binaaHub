@@ -4,6 +4,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
+import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 
 // Hook to detect if we're on the client side
 export const useIsClient = () => {
@@ -107,11 +108,11 @@ export const formatCurrencySafe = (amount: number) => {
 export const formatPhoneSafe = (phone: string) => {
   // Remove any Arabic numerals and normalize
   const arabicToEnglish: { [key: string]: string } = {
-    '٠': '0', '١': '1', '٢': '2', '٣': '3', '٤': '4',
-    '٥': '5', '٦': '6', '٧': '7', '٨': '8', '٩': '9'
+    '0': '0', '1': '1', '2': '2', '3': '3', '4': '4',
+    '5': '5', '6': '6', '7': '7', '8': '8', '9': '9'
   };
   
-  const cleaned = phone.replace(/[٠١٢٣٤٥٦٧٨٩]/g, (match) => {
+  const cleaned = phone.replace(/[0123456789]/g, (match) => {
     return arabicToEnglish[match] || match;
   }).replace(/\D/g, '');
 
@@ -128,11 +129,11 @@ export const formatPhoneSafe = (phone: string) => {
 // Convert Arabic numerals to English numerals
 export const arabicToEnglishNumerals = (text: string) => {
   const arabicToEnglish: { [key: string]: string } = {
-    '٠': '0', '١': '1', '٢': '2', '٣': '3', '٤': '4',
-    '٥': '5', '٦': '6', '٧': '7', '٨': '8', '٩': '9'
+    '0': '0', '1': '1', '2': '2', '3': '3', '4': '4',
+    '5': '5', '6': '6', '7': '7', '8': '8', '9': '9'
   };
   
-  return text.replace(/[٠١٢٣٤٥٦٧٨٩]/g, (match) => arabicToEnglish[match] || match);
+  return text.replace(/[0123456789]/g, (match) => arabicToEnglish[match] || match);
 };
 
 // Format time ago in a consistent way

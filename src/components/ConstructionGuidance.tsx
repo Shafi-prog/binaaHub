@@ -1,17 +1,15 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Card, CardContent, CardHeader, CardTitle, Button, Badge, Progress, Tabs, TabsContent, TabsList, TabsTrigger } from '@/core/shared/components/ui';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/core/shared/components/ui/dialog';
 import { 
   ConstructionGuidanceService, 
-  ConstructionPhase, 
-  ProjectGuidanceSettings,
-  QualityCheckpoint 
+  ConstructionLevel, 
+  ProjectLevel,
+  ConstructionPhase,
+  QualityCheckpoint,
+  ProjectGuidanceSettings
 } from '@/core/services/constructionGuidanceService';
 import { Project } from '@/core/shared/types/types';
 import { 
@@ -495,11 +493,11 @@ export default function ConstructionGuidance({ project, onPhaseUpdate }: Constru
                         </div>
                       </div>
                       <p className="text-sm text-gray-600 mb-2">
-                        الكمية: {material.quantity.toLocaleString()} {material.unit}
+                        الكمية: {material.quantity.toLocaleString('en-US')} {material.unit}
                       </p>
                       <div className="text-xs text-gray-500">
-                        <p>المواصفات: {material.specifications.join(', ')}</p>
-                        <p>الموردين: {material.suppliers.join(', ')}</p>
+                        <p>المواصفات: {material.specifications?.join(', ') || 'غير محدد'}</p>
+                        <p>الموردين: {material.suppliers?.join(', ') || 'غير محدد'}</p>
                       </div>
                     </Card>
                   ))}

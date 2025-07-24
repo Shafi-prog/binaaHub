@@ -419,7 +419,7 @@ export default function AdvancedProjectManagement() {
               <div>
                 <p className="text-sm font-medium text-gray-600">إجمالي الميزانيات</p>
                 <p className="text-xl font-bold">
-                  {metrics.totalBudget.toLocaleString('ar-SA', { style: 'currency', currency: 'SAR' })}
+                  {metrics.totalBudget.toLocaleString('en-US')}
                 </p>
               </div>
               <DollarSign className="h-8 w-8 text-orange-600" />
@@ -433,7 +433,7 @@ export default function AdvancedProjectManagement() {
               <div>
                 <p className="text-sm font-medium text-gray-600">المبلغ المنفق</p>
                 <p className="text-xl font-bold text-red-600">
-                  {metrics.totalSpent.toLocaleString('ar-SA', { style: 'currency', currency: 'SAR' })}
+                  {metrics.totalSpent.toLocaleString('en-US')}
                 </p>
               </div>
               <TrendingUp className="h-8 w-8 text-red-600" />
@@ -517,7 +517,7 @@ export default function AdvancedProjectManagement() {
                     <XAxis dataKey="name" />
                     <YAxis />
                     <Tooltip 
-                      formatter={(value: any) => value.toLocaleString('ar-SA', { style: 'currency', currency: 'SAR' })}
+                      formatter={(value: any) => value.toLocaleString('en-US')}
                     />
                     <Bar dataKey="budget" fill="#3B82F6" name="الميزانية المخططة" />
                     <Bar dataKey="spent" fill="#EF4444" name="المبلغ المنفق" />
@@ -607,7 +607,7 @@ export default function AdvancedProjectManagement() {
                     <div>
                       <span className="text-gray-600">الميزانية: </span>
                       <span className="font-medium">
-                        {project.budget.toLocaleString('ar-SA', { style: 'currency', currency: 'SAR' })}
+                        {project.budget.toLocaleString('en-US')}
                       </span>
                     </div>
                   </div>
@@ -616,7 +616,7 @@ export default function AdvancedProjectManagement() {
                     <div>
                       <span className="text-gray-600">المنفق: </span>
                       <span className="font-medium text-red-600">
-                        {project.spent.toLocaleString('ar-SA', { style: 'currency', currency: 'SAR' })}
+                        {project.spent.toLocaleString('en-US')}
                       </span>
                     </div>
                   </div>
@@ -691,7 +691,7 @@ export default function AdvancedProjectManagement() {
                         </td>
                         <td className="p-3">{project.name}</td>
                         <td className="p-3">{task.assignee}</td>
-                        <td className="p-3">{new Date(task.dueDate).toLocaleDateString('ar-SA')}</td>
+                        <td className="p-3">{new Date(task.dueDate).toLocaleDateString('en-US')}</td>
                         <td className="p-3">{task.estimatedHours} ساعة</td>
                         <td className="p-3">{task.actualHours} ساعة</td>
                         <td className="p-3">
@@ -740,7 +740,7 @@ export default function AdvancedProjectManagement() {
                     </Badge>
                   </div>
                   <div className="text-sm text-gray-600 mb-2">
-                    <span>من {new Date(project.startDate).toLocaleDateString('ar-SA')} إلى {new Date(project.endDate).toLocaleDateString('ar-SA')}</span>
+                    <span>من {new Date(project.startDate).toLocaleDateString('en-US')} إلى {new Date(project.endDate).toLocaleDateString('en-US')}</span>
                   </div>
                   <div className="space-y-2 mb-4">
                     <div className="flex justify-between text-sm">
@@ -757,7 +757,7 @@ export default function AdvancedProjectManagement() {
                           <div key={milestone.id} className="flex items-center space-x-2 text-sm">
                             <div className={`w-3 h-3 rounded-full ${milestone.completed ? 'bg-green-500' : 'bg-gray-300'}`}></div>
                             <span className={milestone.completed ? 'line-through text-gray-500' : ''}>{milestone.title}</span>
-                            <span className="text-gray-500">({new Date(milestone.dueDate).toLocaleDateString('ar-SA')})</span>
+                            <span className="text-gray-500">({new Date(milestone.dueDate).toLocaleDateString('en-US')})</span>
                           </div>
                         ))}
                       </div>
@@ -789,16 +789,16 @@ export default function AdvancedProjectManagement() {
                   <div className="space-y-2 text-sm">
                     <div><span className="font-medium">العميل:</span> {selectedProject.client}</div>
                     <div><span className="font-medium">مدير المشروع:</span> {selectedProject.manager}</div>
-                    <div><span className="font-medium">تاريخ البداية:</span> {new Date(selectedProject.startDate).toLocaleDateString('ar-SA')}</div>
-                    <div><span className="font-medium">تاريخ النهاية:</span> {new Date(selectedProject.endDate).toLocaleDateString('ar-SA')}</div>
+                    <div><span className="font-medium">تاريخ البداية:</span> {new Date(selectedProject.startDate).toLocaleDateString('en-US')}</div>
+                    <div><span className="font-medium">تاريخ النهاية:</span> {new Date(selectedProject.endDate).toLocaleDateString('en-US')}</div>
                   </div>
                 </div>
                 <div>
                   <h3 className="font-semibold mb-2">الميزانية والتقدم</h3>
                   <div className="space-y-2 text-sm">
-                    <div><span className="font-medium">الميزانية:</span> {selectedProject.budget.toLocaleString('ar-SA', { style: 'currency', currency: 'SAR' })}</div>
-                    <div><span className="font-medium">المنفق:</span> {selectedProject.spent.toLocaleString('ar-SA', { style: 'currency', currency: 'SAR' })}</div>
-                    <div><span className="font-medium">المتبقي:</span> {(selectedProject.budget - selectedProject.spent).toLocaleString('ar-SA', { style: 'currency', currency: 'SAR' })}</div>
+                    <div><span className="font-medium">الميزانية:</span> {selectedProject.budget.toLocaleString('en-US')}</div>
+                    <div><span className="font-medium">المنفق:</span> {selectedProject.spent.toLocaleString('en-US')}</div>
+                    <div><span className="font-medium">المتبقي:</span> {(selectedProject.budget - selectedProject.spent).toLocaleString('en-US')}</div>
                     <div><span className="font-medium">التقدم:</span> {selectedProject.progress}%</div>
                   </div>
                 </div>
@@ -836,7 +836,7 @@ export default function AdvancedProjectManagement() {
                         <div className="text-sm text-gray-600 mb-2">{task.description}</div>
                         <div className="flex justify-between text-xs text-gray-500">
                           <span>المكلف: {task.assignee}</span>
-                          <span>الاستحقاق: {new Date(task.dueDate).toLocaleDateString('ar-SA')}</span>
+                          <span>الاستحقاق: {new Date(task.dueDate).toLocaleDateString('en-US')}</span>
                         </div>
                       </div>
                     ))}

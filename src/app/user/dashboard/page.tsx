@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/enhanced-components';
+import { formatNumber, formatCurrency } from '@/core/shared/utils/formatting';
 import { 
   Calendar, 
   Wallet, 
@@ -195,7 +196,7 @@ export default function UserDashboardPage() {
   const dashboardCards = [
     {
       title: 'نقاط الولاء',
-      value: stats.loyaltyPoints.toLocaleString(),
+      value: formatNumber(stats.loyaltyPoints),
       subtitle: `مستوى ${stats.currentLevel}`,
       icon: <Trophy className="w-6 h-6" />,
       href: '/user/gamification',
@@ -204,7 +205,7 @@ export default function UserDashboardPage() {
     },
     {
       title: 'الرصيد المتاح',
-      value: `${stats.balanceAmount.toLocaleString()} ر.س`,
+      value: formatCurrency(stats.balanceAmount),
       subtitle: 'جاهز للاستخدام',
       icon: <Wallet className="w-6 h-6" />,
       href: '/user/balance',
@@ -213,7 +214,7 @@ export default function UserDashboardPage() {
     },
     {
       title: 'الرؤى الذكية',
-      value: stats.aiInsights,
+      value: formatNumber(stats.aiInsights),
       subtitle: 'توصية جديدة',
       icon: <Brain className="w-6 h-6" />,
       href: '/user/smart-insights',
@@ -222,7 +223,7 @@ export default function UserDashboardPage() {
     },
     {
       title: 'المجتمع',
-      value: stats.communityPosts,
+      value: formatNumber(stats.communityPosts),
       subtitle: 'منشورات هذا الشهر',
       icon: <Users className="w-6 h-6" />,
       href: '/user/social-community',
@@ -231,7 +232,7 @@ export default function UserDashboardPage() {
     },
     {
       title: 'المشاريع النشطة',
-      value: stats.activeProjects,
+      value: formatNumber(stats.activeProjects),
       subtitle: 'قيد التنفيذ',
       icon: <Calendar className="w-6 h-6" />,
       href: '/user/projects/list',
@@ -240,7 +241,7 @@ export default function UserDashboardPage() {
     },
     {
       title: 'الضمانات النشطة',
-      value: stats.activeWarranties,
+      value: formatNumber(stats.activeWarranties),
       subtitle: 'سارية المفعول',
       icon: <Shield className="w-6 h-6" />,
       href: '/user/warranties',
@@ -249,7 +250,7 @@ export default function UserDashboardPage() {
     },
     {
       title: 'إجمالي الطلبات',
-      value: stats.totalOrders,
+      value: formatNumber(stats.totalOrders),
       subtitle: 'طلب مكتمل',
       icon: <Box className="w-6 h-6" />,
       href: '/user/orders',
@@ -258,7 +259,7 @@ export default function UserDashboardPage() {
     },
     {
       title: 'الإنفاق الشهري',
-      value: `${stats.monthlySpent.toLocaleString()} ر.س`,
+      value: formatCurrency(stats.monthlySpent),
       subtitle: 'هذا الشهر',
       icon: <TrendingUp className="w-6 h-6" />,
       href: '/user/expenses',

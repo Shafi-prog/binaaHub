@@ -204,7 +204,7 @@ export default function IndividualHomeCalculator() {
         type: 'cost',
         title: 'تجاوز الميزانية',
         description: 'التكلفة المقدرة تتجاوز ميزانيتك. يمكنك تقليل المساحة أو تغيير مستوى الجودة.',
-        impact: `توفير ${(totalCost - budget).toLocaleString()} ر.س`,
+        impact: `توفير ${(totalCost - budget).toLocaleString('en-US')} ر.س`,
         savings: totalCost - budget,
         icon: <AlertCircle className="w-5 h-5 text-orange-600" />
       });
@@ -448,7 +448,7 @@ export default function IndividualHomeCalculator() {
                       <div className="text-center">
                         <div className="text-sm opacity-90 mb-2">التكلفة المقدرة</div>
                         <div className="text-3xl font-bold mb-4">
-                          {estimatedCost.toLocaleString()} ر.س
+                          {estimatedCost.toLocaleString('en-US')} ر.س
                         </div>
                         <div className="text-sm opacity-90">
                           {(estimatedCost / homeArea).toFixed(0)} ر.س للمتر المربع
@@ -469,11 +469,11 @@ export default function IndividualHomeCalculator() {
                     <div className="space-y-4">
                       <div className="flex justify-between">
                         <span>الميزانية المتاحة:</span>
-                        <span className="font-semibold">{budget.toLocaleString()} ر.س</span>
+                        <span className="font-semibold">{budget.toLocaleString('en-US')} ر.س</span>
                       </div>
                       <div className="flex justify-between">
                         <span>التكلفة المقدرة:</span>
-                        <span className="font-semibold">{estimatedCost.toLocaleString()} ر.س</span>
+                        <span className="font-semibold">{estimatedCost.toLocaleString('en-US')} ر.س</span>
                       </div>
                       <div className="space-y-2">
                         <div className="flex justify-between">
@@ -560,7 +560,7 @@ export default function IndividualHomeCalculator() {
                         <div>
                           <span className="text-gray-600">التكلفة:</span>
                           <div className="font-semibold text-green-600">
-                            {phase.estimatedCost.toLocaleString()} ر.س
+                            {phase.estimatedCost.toLocaleString('en-US')} ر.س
                           </div>
                         </div>
                         <div>
@@ -630,7 +630,7 @@ export default function IndividualHomeCalculator() {
                           <span>{rec.impact}</span>
                           {rec.savings && (
                             <div className="text-green-600 font-semibold mt-1">
-                              وفورات محتملة: {rec.savings.toLocaleString()} ر.س
+                              وفورات محتملة: {rec.savings.toLocaleString('en-US')} ر.س
                             </div>
                           )}
                         </div>
@@ -698,7 +698,7 @@ export default function IndividualHomeCalculator() {
                         <div className="bg-blue-50 p-3 rounded-lg">
                           <span className="text-sm font-medium">التكلفة التقديرية:</span>
                           <div className="text-lg font-bold text-blue-600">
-                            {((estimatedCost / qualityLevels.find(q => q.id === qualityLevel)!.priceMultiplier) * level.priceMultiplier).toLocaleString()} ر.س
+                            {((estimatedCost / qualityLevels.find(q => q.id === qualityLevel)!.priceMultiplier) * level.priceMultiplier).toLocaleString('en-US')} ر.س
                           </div>
                         </div>
                       )}

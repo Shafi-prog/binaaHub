@@ -2,6 +2,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 import { 
   ShoppingCart, 
   Package, 
@@ -472,7 +473,7 @@ const MedusaOrderManagement: React.FC = () => {
                     {formatCurrency(order.total, order.currency_code)}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {new Date(order.created_at).toLocaleDateString('ar-SA')}
+                    {new Date(order.created_at).toLocaleDateString('en-US')}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div className="flex space-x-2">
@@ -545,7 +546,7 @@ const MedusaOrderManagement: React.FC = () => {
                     </div>
                     <div className="flex justify-between">
                       <span>Created:</span>
-                      <span>{new Date(selectedOrder.created_at).toLocaleString('ar-SA')}</span>
+                      <span>{new Date(selectedOrder.created_at).toLocaleString('en-US')}</span>
                     </div>
                     <div className="flex justify-between">
                       <span>Currency:</span>

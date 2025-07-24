@@ -2,6 +2,7 @@
 import { useState } from "react"
 import { Button, DatePicker, Popover, Text } from "@medusajs/ui"
 import { CalendarDays } from "@medusajs/icons"
+import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 
 interface DateRangePickerProps {
   value: { from: Date; to: Date }

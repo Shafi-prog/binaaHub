@@ -228,7 +228,7 @@ export default function POSUserSearch({ onCustomerSelect, selectedCustomer }: PO
           {customer.total_spent > 0 && (
             <div className="flex items-center gap-1 text-green-600">
               <DollarSign className="w-3 h-3" />
-              <span>{customer.total_spent.toLocaleString()} ريال</span>
+              <span>{customer.total_spent.toLocaleString('en-US')} ريال</span>
             </div>
           )}
         </div>

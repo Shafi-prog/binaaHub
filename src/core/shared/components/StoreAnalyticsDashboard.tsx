@@ -33,6 +33,7 @@ import type {
   AnalyticsDataPoint,
 } from '@/core/shared/types/store-analytics';
 import { formatCurrency } from '@/core/shared/utils';
+import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
@@ -196,12 +197,12 @@ export default function StoreAnalyticsDashboard({ storeId }: AnalyticsProps) {
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis
                   dataKey="date"
-                  tickFormatter={(value) => new Date(value).toLocaleDateString('ar-SA')}
+                  tickFormatter={(value) => new Date(value).toLocaleDateString('en-US')}
                 />
                 <YAxis />
                 <Tooltip
                   formatter={(value: number) => formatCurrency(value)}
-                  labelFormatter={(label) => new Date(label).toLocaleDateString('ar-SA')}
+                  labelFormatter={(label) => new Date(label).toLocaleDateString('en-US')}
                 />
                 <Legend />
                 <Line

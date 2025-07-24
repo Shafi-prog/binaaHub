@@ -287,7 +287,7 @@ export default function EnhancedInventoryManagement() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-600">قيمة المخزون</p>
-                <p className="text-2xl font-bold">{stats.total_value.toLocaleString()} ريال</p>
+                <p className="text-2xl font-bold">{stats.total_value.toLocaleString('en-US')} ريال</p>
               </div>
               <BarChart3 className="w-8 h-8 text-green-600" />
             </div>
@@ -420,7 +420,7 @@ export default function EnhancedInventoryManagement() {
                   <td className="py-3">{product.min_stock_level}</td>
                   <td className="py-3">{product.price} ريال</td>
                   <td className="py-3">
-                    {(product.stock_quantity * product.cost_price).toLocaleString()} ريال
+                    {(product.stock_quantity * product.cost_price).toLocaleString('en-US')} ريال
                   </td>
                   <td className="py-3">
                     {getStockStatusBadge(product)}

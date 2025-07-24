@@ -517,7 +517,7 @@ export default function CashRegisterManagement() {
                         <div className="flex justify-between text-sm">
                           <span>الرصيد الحالي:</span>
                           <span className="font-medium text-green-600">
-                            {register.current_balance.toLocaleString('ar-SA')} ريال
+                            {register.current_balance.toLocaleString('en-US')} ريال
                           </span>
                         </div>
                         
@@ -525,7 +525,7 @@ export default function CashRegisterManagement() {
                           <div className="flex justify-between text-sm">
                             <span>الرصيد المتوقع:</span>
                             <span className="font-medium text-blue-600">
-                              {register.expected_balance.toLocaleString('ar-SA')} ريال
+                              {register.expected_balance.toLocaleString('en-US')} ريال
                             </span>
                           </div>
                         )}
@@ -533,8 +533,8 @@ export default function CashRegisterManagement() {
 
                       {session && (
                         <div className="mt-2 text-xs text-gray-500">
-                          <p>فُتح: {new Date(session.opened_at).toLocaleString('ar-SA')}</p>
-                          <p>المبيعات: {session.total_sales.toLocaleString('ar-SA')} ريال</p>
+                          <p>فُتح: {new Date(session.opened_at).toLocaleString('en-US')}</p>
+                          <p>المبيعات: {session.total_sales.toLocaleString('en-US')} ريال</p>
                         </div>
                       )}
                     </div>
@@ -705,24 +705,24 @@ export default function CashRegisterManagement() {
                                   <div className="space-y-1 text-sm">
                                     <div className="flex justify-between">
                                       <span>مبلغ الافتتاح:</span>
-                                      <span>{activeSession?.opening_balance.toLocaleString('ar-SA')} ريال</span>
+                                      <span>{activeSession?.opening_balance.toLocaleString('en-US')} ريال</span>
                                     </div>
                                     <div className="flex justify-between">
                                       <span>إجمالي المبيعات:</span>
-                                      <span>{activeSession?.total_sales.toLocaleString('ar-SA')} ريال</span>
+                                      <span>{activeSession?.total_sales.toLocaleString('en-US')} ريال</span>
                                     </div>
                                     <div className="flex justify-between">
                                       <span>الإضافات:</span>
-                                      <span>{activeSession?.cash_additions.toLocaleString('ar-SA')} ريال</span>
+                                      <span>{activeSession?.cash_additions.toLocaleString('en-US')} ريال</span>
                                     </div>
                                     <div className="flex justify-between">
                                       <span>السحوبات:</span>
-                                      <span>{activeSession?.cash_withdrawals.toLocaleString('ar-SA')} ريال</span>
+                                      <span>{activeSession?.cash_withdrawals.toLocaleString('en-US')} ريال</span>
                                     </div>
                                     <Separator />
                                     <div className="flex justify-between font-bold">
                                       <span>الرصيد المتوقع:</span>
-                                      <span>{activeSession?.expected_balance.toLocaleString('ar-SA')} ريال</span>
+                                      <span>{activeSession?.expected_balance.toLocaleString('en-US')} ريال</span>
                                     </div>
                                   </div>
                                 </div>
@@ -776,7 +776,7 @@ export default function CashRegisterManagement() {
                           <div>
                             <p className="text-sm text-gray-600">الرصيد الحالي</p>
                             <p className="text-2xl font-bold text-blue-600">
-                              {selectedRegister.current_balance.toLocaleString('ar-SA')} ريال
+                              {selectedRegister.current_balance.toLocaleString('en-US')} ريال
                             </p>
                           </div>
                         </div>
@@ -793,7 +793,7 @@ export default function CashRegisterManagement() {
                             <div>
                               <p className="text-sm text-gray-600">الرصيد المتوقع</p>
                               <p className="text-2xl font-bold text-green-600">
-                                {selectedRegister.expected_balance.toLocaleString('ar-SA')} ريال
+                                {selectedRegister.expected_balance.toLocaleString('en-US')} ريال
                               </p>
                             </div>
                           </div>
@@ -811,7 +811,7 @@ export default function CashRegisterManagement() {
                             <div>
                               <p className="text-sm text-gray-600">إجمالي المبيعات</p>
                               <p className="text-2xl font-bold text-purple-600">
-                                {activeSession.total_sales.toLocaleString('ar-SA')} ريال
+                                {activeSession.total_sales.toLocaleString('en-US')} ريال
                               </p>
                             </div>
                           </div>
@@ -848,7 +848,7 @@ export default function CashRegisterManagement() {
                                     {getTransactionTypeLabel(transaction.transaction_type)}
                                   </p>
                                   <p className="text-xs text-gray-600">
-                                    {new Date(transaction.created_at).toLocaleString('ar-SA')}
+                                    {new Date(transaction.created_at).toLocaleString('en-US')}
                                   </p>
                                   {transaction.description && (
                                     <p className="text-xs text-gray-500">{transaction.description}</p>
@@ -862,7 +862,7 @@ export default function CashRegisterManagement() {
                                     : 'text-red-600'
                                 }`}>
                                   {['sale', 'addition', 'opening'].includes(transaction.transaction_type) ? '+' : '-'}
-                                  {transaction.amount.toLocaleString('ar-SA')} ريال
+                                  {transaction.amount.toLocaleString('en-US')} ريال
                                 </p>
                                 <p className="text-xs text-gray-500">{transaction.payment_method}</p>
                               </div>

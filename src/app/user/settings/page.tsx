@@ -154,7 +154,7 @@ export default function SettingsPage() {
                   <div>
                     <Typography variant="subheading" size="lg" weight="semibold" className="mb-1">نوع الحساب</Typography>
                     <Typography variant="caption" size="sm" className="text-gray-600">
-                      عضو منذ {new Date(profile.memberSince).toLocaleDateString('ar-SA')}
+                      عضو منذ {new Date(profile.memberSince).toLocaleDateString('en-US')}
                     </Typography>
                   </div>
                   <span className={`px-3 py-1 rounded-full text-sm font-medium ${getAccountTypeColor(profile.accountType)}`}>

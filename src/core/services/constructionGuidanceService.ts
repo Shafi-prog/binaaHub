@@ -1,397 +1,576 @@
-// Construction Guidance Service
-// Based on Saudi Building Code (SBC) and MOMAH requirements
+// Enhanced Construction Guidance Service
+// Integrated with formal documents and external platforms
+
+import { LandListing } from './constructionIntegrationService';
 
 export interface ConstructionPhase {
   id: string;
   name: string;
-  nameEn: string;
+  arabicName: string;
   description: string;
   order: number;
-  duration: number; // days
-  dependencies: string[]; // phase IDs that must be completed first
-  documents: ConstructionDocument[];
+  status: 'not-started' | 'in-progress' | 'completed' | 'on-hold';
+  progress: number;
+  estimatedDuration: string;
+  duration: number; // in days
+  dependencies?: string[];
   checkpoints: QualityCheckpoint[];
-  materials: PhaseMaterial[];
-  regulations: RegulationReference[];
   tips: string[];
   warnings: string[];
-}
-
-export interface ConstructionDocument {
-  id: string;
-  name: string;
-  type: 'permit' | 'inspection' | 'certificate' | 'plan' | 'report';
-  required: boolean;
-  authority: string; // MOMAH, Municipality, etc.
-  downloadUrl?: string;
-  templateUrl?: string;
+  documents: DocumentationFile[];
+  materials: Material[];
+  regulations: Regulation[];
 }
 
 export interface QualityCheckpoint {
   id: string;
   name: string;
+  arabicName: string;
   description: string;
-  inspectionType: 'self' | 'supervisor' | 'authority';
-  criteria: string[];
-  photos: boolean; // requires photo documentation
+  isRequired: boolean;
   mandatory: boolean;
+  status: 'pending' | 'passed' | 'failed';
+  checkDate?: Date;
+  notes?: string;
+  inspectionType: 'self' | 'supervisor' | 'official';
+  photos?: string[];
+  criteria: string[];
 }
 
-export interface PhaseMaterial {
-  materialId: string;
+export interface Material {
+  id: string;
+  materialId?: string;
   name: string;
+  arabicName: string;
   quantity: number;
   unit: string;
-  specifications: string[];
-  sbcCompliant: boolean;
-  suppliers: string[];
+  estimatedCost: number;
+  sbcCompliant?: boolean;
+  specifications?: string[];
+  suppliers?: string[];
 }
 
-export interface RegulationReference {
+export interface Regulation {
   id: string;
-  code: string; // SBC-201, MOMAH-2024, etc.
-  section: string;
+  title: string;
+  arabicTitle: string;
+  code?: string;
   description: string;
-  requirement: string;
-  documentUrl: string;
+  authority: string;
+  url?: string;
+  documentUrl?: string;
+  section?: string;
+  requirement?: string;
 }
 
 export interface ProjectGuidanceSettings {
-  projectType: 'villa' | 'apartment' | 'commercial' | 'warehouse' | 'office';
+  projectType: 'residential' | 'commercial' | 'industrial';
   area: number;
   floors: number;
   compliance: 'basic' | 'enhanced' | 'premium';
   supervision: 'self' | 'engineer' | 'contractor';
-  location: string; // city/region for specific regulations
+  location: string;
+}
+
+export interface ConstructionLevel {
+  id: string;
+  title: string;
+  arabicTitle: string;
+  description: string;
+  order: number;
+  hasExternalIntegration: boolean;
+  externalPlatforms?: string[];
+  documentationFiles: DocumentationFile[];
+  requirements: string[];
+  estimatedDuration: string;
+  estimatedCost?: {
+    min: number;
+    max: number;
+    currency: string;
+  };
+  dependencies?: string[]; // Other levels that must be completed first
+}
+
+export interface DocumentationFile {
+  id: string;
+  title: string;
+  arabicTitle: string;
+  name?: string; // alias for title
+  type: 'pdf' | 'doc' | 'guide' | 'checklist';
+  url: string;
+  description: string;
+  topics: string[];
+  isOfficial: boolean;
+  source: string;
+  authority?: string;
+  required?: boolean;
+  templateUrl?: string;
+}
+
+export interface ProjectLevel {
+  levelId: string;
+  status: 'not-started' | 'in-progress' | 'completed' | 'on-hold';
+  startDate?: Date;
+  completionDate?: Date;
+  selectedOptions?: Record<string, any>;
+  documents?: string[]; // IDs of completed documents
+  notes?: string;
+  progress: number; // 0-100
+}
+
+export interface ConstructionProject {
+  id: string;
+  name: string;
+  description: string;
+  location: string;
+  area: number;
+  budget: number;
+  clientName: string;
+  projectType: 'residential' | 'commercial' | 'industrial';
+  levels: ProjectLevel[];
+  currentLevel: string;
+  overallProgress: number;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export class ConstructionGuidanceService {
-  private static phases: ConstructionPhase[] = [
-    {
-      id: 'planning',
-      name: 'التخطيط والتصميم',
-      nameEn: 'Planning and Design',
-      description: 'مرحلة التخطيط الأولي والحصول على التراخيص',
-      order: 1,
-      duration: 30,
-      dependencies: [],
-      documents: [
-        {
-          id: 'building_permit',
-          name: 'رخصة البناء',
-          type: 'permit',
-          required: true,
-          authority: 'أمانة المنطقة',
-          templateUrl: 'https://momah.gov.sa/building-permit-form'
-        },
-        {
-          id: 'structural_plans',
-          name: 'المخططات الإنشائية',
-          type: 'plan',
-          required: true,
-          authority: 'مكتب هندسي مرخص'
-        }
-      ],
-      checkpoints: [
-        {
-          id: 'site_survey',
-          name: 'مسح الموقع',
-          description: 'التأكد من حدود الأرض ومطابقة المخططات',
-          inspectionType: 'supervisor',
-          criteria: ['حدود الأرض واضحة', 'عدم وجود تعديات', 'صالحية التربة'],
-          photos: true,
-          mandatory: true
-        }
-      ],
-      materials: [],
-      regulations: [
-        {
-          id: 'sbc_201_planning',
-          code: 'SBC-201',
-          section: 'الفصل الثالث',
-          description: 'متطلبات التخطيط والتصميم',
-          requirement: 'يجب الحصول على رخصة بناء قبل البدء',
-          documentUrl: 'https://sbc.gov.sa/ar/BC/Documents/tableofcontent2024/SBC%20201/SBC201_AR2024.pdf'
-        }
-      ],
-      tips: [
-        'احرص على الحصول على جميع التراخيص قبل البدء',
-        'تأكد من مطابقة المخططات للوائح البناء',
-        'استعن بمهندس مرخص لمراجعة التصاميم'
-      ],
-      warnings: [
-        'البناء بدون ترخيص يعرضك للغرامات والهدم',
-        'عدم مطابقة المخططات قد يؤخر المشروع'
-      ]
-    },
-    {
-      id: 'excavation',
-      name: 'أعمال الحفر والأساسات',
-      nameEn: 'Excavation and Foundation',
-      description: 'حفر الأساسات وصب القواعد حسب المواصفات',
-      order: 2,
-      duration: 14,
-      dependencies: ['planning'],
-      documents: [
-        {
-          id: 'soil_test',
-          name: 'فحص التربة',
-          type: 'report',
-          required: true,
-          authority: 'مختبر معتمد'
-        }
-      ],
-      checkpoints: [
-        {
-          id: 'excavation_depth',
-          name: 'عمق الحفر',
-          description: 'التأكد من عمق الحفر حسب المخططات',
-          inspectionType: 'supervisor',
-          criteria: ['العمق مطابق للمخططات', 'نظافة قاع الحفرة', 'عدم وجود مياه'],
-          photos: true,
-          mandatory: true
-        },
-        {
-          id: 'reinforcement',
-          name: 'حديد التسليح',
-          description: 'فحص حديد التسليح قبل الصب',
-          inspectionType: 'authority',
-          criteria: ['قطر الحديد مطابق', 'المسافات صحيحة', 'الربط محكم'],
-          photos: true,
-          mandatory: true
-        }
-      ],
-      materials: [
-        {
-          materialId: 'concrete_c25',
-          name: 'خرسانة جاهزة C25',
-          quantity: 150,
-          unit: 'متر مكعب',
-          specifications: ['مقاومة 25 نيوتن/مم²', 'هبوط 8-12 سم'],
-          sbcCompliant: true,
-          suppliers: ['شركة الخرسانة الجاهزة', 'مصنع البناء']
-        }
-      ],
-      regulations: [
-        {
-          id: 'sbc_201_foundation',
-          code: 'SBC-201',
-          section: 'الفصل الخامس',
-          description: 'متطلبات الأساسات',
-          requirement: 'يجب فحص التربة قبل تصميم الأساسات',
-          documentUrl: 'https://sbc.gov.sa/ar/BC/Documents/tableofcontent2024/SBC%20201/SBC201_AR2024.pdf'
-        }
-      ],
-      tips: [
-        'تأكد من جفاف الحفرة قبل الصب',
-        'استخدم خرسانة جاهزة لضمان الجودة',
-        'اتبع فترة المعالجة المطلوبة'
-      ],
-      warnings: [
-        'الصب في الطقس الحار يتطلب عناية خاصة',
-        'عدم المعالجة الصحيحة يضعف الخرسانة'
-      ]
-    },
-    {
-      id: 'structure',
-      name: 'الهيكل الإنشائي',
-      nameEn: 'Structural Work',
-      description: 'بناء الجدران والأعمدة والسقف',
-      order: 3,
-      duration: 45,
-      dependencies: ['excavation'],
-      documents: [],
-      checkpoints: [
-        {
-          id: 'wall_height',
-          name: 'ارتفاع الجدران',
-          description: 'التأكد من ارتفاع الجدران حسب المخططات',
-          inspectionType: 'self',
-          criteria: ['الارتفاع مطابق', 'الجدران عمودية', 'المقاسات صحيحة'],
-          photos: true,
-          mandatory: true
-        }
-      ],
-      materials: [
-        {
-          materialId: 'concrete_blocks',
-          name: 'بلوك خرساني',
-          quantity: 2000,
-          unit: 'قطعة',
-          specifications: ['20×20×40 سم', 'كثافة 1800 كج/م³'],
-          sbcCompliant: true,
-          suppliers: ['مصنع البلوك المتطور', 'شركة مواد البناء']
-        }
-      ],
-      regulations: [],
-      tips: [
-        'استخدم خيط الشاقول للتأكد من استقامة الجدران',
-        'تأكد من تطابق الفتحات مع المخططات'
-      ],
-      warnings: [
-        'عدم دقة المقاسات يصعب أعمال التشطيب'
-      ]
-    },
-    {
-      id: 'utilities',
-      name: 'الأعمال الكهربائية والصحية',
-      nameEn: 'MEP Work',
-      description: 'تمديد الكهرباء والسباكة والتكييف',
-      order: 4,
-      duration: 21,
-      dependencies: ['structure'],
-      documents: [
-        {
-          id: 'electrical_certificate',
-          name: 'شهادة الأعمال الكهربائية',
-          type: 'certificate',
-          required: true,
-          authority: 'كهربائي مرخص'
-        }
-      ],
-      checkpoints: [
-        {
-          id: 'electrical_safety',
-          name: 'سلامة الكهرباء',
-          description: 'فحص التمديدات الكهربائية',
-          inspectionType: 'authority',
-          criteria: ['مطابقة للمعايير', 'عزل جيد', 'لوحة رئيسية آمنة'],
-          photos: true,
-          mandatory: true
-        }
-      ],
-      materials: [],
-      regulations: [
-        {
-          id: 'electrical_code',
-          code: 'الكود الكهربائي السعودي',
-          section: 'معايير السلامة',
-          description: 'متطلبات التمديدات الكهربائية',
-          requirement: 'يجب تنفيذ الأعمال بواسطة كهربائي مرخص',
-          documentUrl: 'https://sbc.gov.sa'
-        }
-      ],
-      tips: [
-        'خطط لمواقع المقابس والمفاتيح مسبقاً',
-        'استخدم مواد كهربائية معتمدة'
-      ],
-      warnings: [
-        'الأعمال الكهربائية الخاطئة خطر على السلامة'
-      ]
-    },
-    {
-      id: 'finishing',
-      name: 'أعمال التشطيب',
-      nameEn: 'Finishing Work',
-      description: 'الدهان والأرضيات والتشطيبات النهائية',
-      order: 5,
-      duration: 30,
-      dependencies: ['utilities'],
-      documents: [],
-      checkpoints: [
-        {
-          id: 'final_inspection',
-          name: 'الفحص النهائي',
-          description: 'فحص شامل لجميع الأعمال',
-          inspectionType: 'authority',
-          criteria: ['مطابقة المخططات', 'جودة التشطيب', 'سلامة المرافق'],
-          photos: true,
-          mandatory: true
-        }
-      ],
-      materials: [],
-      regulations: [],
-      tips: [
-        'تأكد من جفاف الجدران قبل الدهان',
-        'استخدم مواد تشطيب عالية الجودة'
-      ],
-      warnings: [
-        'التسرع في التشطيب يؤثر على الجودة'
-      ]
-    }
-  ];
+  private static readonly DRIVE_BASE_URL = 'https://drive.google.com/drive/folders/1e3V8i3wQrhl9tqbhZ6JMWgaW1gEH0KMS';
 
-  static getProjectPhases(settings: ProjectGuidanceSettings): ConstructionPhase[] {
-    // Filter and customize phases based on project settings
-    let phases = [...this.phases];
-    
-    // Adjust phases based on project type
-    if (settings.projectType === 'apartment') {
-      phases = phases.filter(phase => phase.id !== 'excavation'); // Apartments might not need excavation
-    }
-    
-    // Adjust durations based on project size
-    phases = phases.map(phase => ({
-      ...phase,
-      duration: Math.ceil(phase.duration * (settings.area / 200)) // Scale based on area
-    }));
-    
-    return phases;
-  }
-
-  static getPhaseById(phaseId: string): ConstructionPhase | null {
-    return this.phases.find(phase => phase.id === phaseId) || null;
-  }
-
-  static getNextPhase(currentPhaseId: string, projectPhases: ConstructionPhase[]): ConstructionPhase | null {
-    const currentIndex = projectPhases.findIndex(phase => phase.id === currentPhaseId);
-    if (currentIndex !== -1 && currentIndex < projectPhases.length - 1) {
-      return projectPhases[currentIndex + 1];
-    }
-    return null;
-  }
-
-  static calculateProjectTimeline(settings: ProjectGuidanceSettings): {
-    totalDuration: number;
-    phases: { id: string; startDay: number; duration: number }[];
-  } {
-    const phases = this.getProjectPhases(settings);
-    let currentDay = 0;
-    const timeline = phases.map(phase => {
-      const phaseTimeline = {
-        id: phase.id,
-        startDay: currentDay,
-        duration: phase.duration
-      };
-      currentDay += phase.duration;
-      return phaseTimeline;
-    });
-
-    return {
-      totalDuration: currentDay,
-      phases: timeline
-    };
-  }
-
-  static getComplianceChecklist(projectType: string): {
-    category: string;
-    items: { id: string; description: string; completed: boolean; required: boolean }[];
-  }[] {
+  static getConstructionLevels(): ConstructionLevel[] {
     return [
       {
-        category: 'التراخيص والموافقات',
-        items: [
-          { id: 'building_permit', description: 'رخصة البناء', completed: false, required: true },
-          { id: 'civil_defense', description: 'موافقة الدفاع المدني', completed: false, required: true },
-          { id: 'municipality', description: 'موافقة الأمانة', completed: false, required: true }
+        id: 'land-acquisition',
+        title: 'Land Acquisition',
+        arabicTitle: 'حجز وشراء الأرض',
+        description: 'البحث عن الأرض المناسبة وإجراءات الشراء والتسجيل',
+        order: 1,
+        hasExternalIntegration: true,
+        externalPlatforms: ['sa.aqar.fm', 'sakani.sa'],
+        estimatedDuration: '2-4 أسابيع',
+        estimatedCost: { min: 100000, max: 2000000, currency: 'SAR' },
+        requirements: [
+          'تحديد الموقع المطلوب',
+          'تحديد المساحة المطلوبة',
+          'تحديد الميزانية',
+          'الحصول على تمويل (إن لزم الأمر)'
+        ],
+        documentationFiles: [
+          {
+            id: 'land-purchase-guide',
+            title: 'Land Purchase Complete Guide',
+            arabicTitle: 'دليل شراء الأراضي الشامل',
+            type: 'pdf',
+            url: `${this.DRIVE_BASE_URL}/land-purchase-guide.pdf`,
+            description: 'دليل شامل لعملية شراء الأراضي في المملكة العربية السعودية',
+            topics: ['إجراءات الشراء', 'الوثائق المطلوبة', 'التمويل العقاري', 'التسجيل في الطابو'],
+            isOfficial: true,
+            source: 'وزارة العدل - مصلحة الطابو'
+          },
+          {
+            id: 'sakani-program-guide',
+            title: 'Sakani Housing Program Guide',
+            arabicTitle: 'دليل برنامج سكني للإسكان',
+            type: 'guide',
+            url: `${this.DRIVE_BASE_URL}/sakani-program.pdf`,
+            description: 'دليل التقديم على برنامج سكني والحصول على أرض مجانية',
+            topics: ['شروط التقديم', 'المستندات المطلوبة', 'آلية التقييم', 'الحصول على الأرض'],
+            isOfficial: true,
+            source: 'وزارة الإسكان - برنامج سكني'
+          }
         ]
       },
       {
-        category: 'المواصفات الفنية',
-        items: [
-          { id: 'sbc_compliance', description: 'مطابقة الكود السعودي للبناء', completed: false, required: true },
-          { id: 'structural_calc', description: 'الحسابات الإنشائية', completed: false, required: true },
-          { id: 'architectural_plans', description: 'المخططات المعمارية', completed: false, required: true }
+        id: 'design-approval',
+        title: 'Design and Permits',
+        arabicTitle: 'التصميم والتراخيص',
+        description: 'إعداد التصميم المعماري والحصول على تراخيص البناء',
+        order: 2,
+        hasExternalIntegration: true,
+        externalPlatforms: ['ackdconsult.com', 'sakani.sa'],
+        estimatedDuration: '4-8 أسابيع',
+        estimatedCost: { min: 15000, max: 50000, currency: 'SAR' },
+        dependencies: ['land-acquisition'],
+        requirements: [
+          'مسح الأرض',
+          'إعداد التصميم المعماري',
+          'إعداد التصميم الإنشائي',
+          'الحصول على رخصة البناء'
+        ],
+        documentationFiles: [
+          {
+            id: 'building-permit-guide',
+            title: 'Building Permit Application Guide',
+            arabicTitle: 'دليل التقديم على رخصة البناء',
+            type: 'pdf',
+            url: `${this.DRIVE_BASE_URL}/building-permit-guide.pdf`,
+            description: 'دليل شامل للحصول على رخصة البناء من الأمانة',
+            topics: ['المستندات المطلوبة', 'الرسوم', 'مراحل الموافقة', 'الشروط والمتطلبات'],
+            isOfficial: true,
+            source: 'أمانة المنطقة - إدارة التراخيص'
+          },
+          {
+            id: 'saudi-building-code',
+            title: 'Saudi Building Code (SBC)',
+            arabicTitle: 'كود البناء السعودي',
+            type: 'pdf',
+            url: `${this.DRIVE_BASE_URL}/saudi-building-code.pdf`,
+            description: 'كود البناء السعودي - المتطلبات والمعايير',
+            topics: ['المعايير الإنشائية', 'معايير السلامة', 'المتطلبات البيئية', 'التصميم المعماري'],
+            isOfficial: true,
+            source: 'الهيئة السعودية للمواصفات والمقاييس والجودة'
+          }
         ]
       },
       {
-        category: 'السلامة والأمان',
-        items: [
-          { id: 'fire_safety', description: 'أنظمة مكافحة الحريق', completed: false, required: true },
-          { id: 'electrical_safety', description: 'السلامة الكهربائية', completed: false, required: true },
-          { id: 'structural_safety', description: 'السلامة الإنشائية', completed: false, required: true }
+        id: 'contractor-selection',
+        title: 'Contractor Selection',
+        arabicTitle: 'اختيار المقاول',
+        description: 'اختيار المقاول المناسب والتعاقد معه',
+        order: 3,
+        hasExternalIntegration: true,
+        externalPlatforms: ['sca.sa', 'comyon.com'],
+        estimatedDuration: '1-2 أسبوع',
+        dependencies: ['design-approval'],
+        requirements: [
+          'البحث عن مقاولين معتمدين',
+          'طلب عروض أسعار',
+          'مقارنة العروض',
+          'التعاقد مع المقاول'
+        ],
+        documentationFiles: [
+          {
+            id: 'contractor-selection-guide',
+            title: 'Contractor Selection Guide',
+            arabicTitle: 'دليل اختيار المقاول',
+            type: 'guide',
+            url: `${this.DRIVE_BASE_URL}/contractor-selection.pdf`,
+            description: 'دليل شامل لاختيار المقاول المناسب للمشروع',
+            topics: ['معايير الاختيار', 'التحقق من التراخيص', 'مقارنة العروض', 'نموذج العقد'],
+            isOfficial: false,
+            source: 'غرفة التجارة والصناعة'
+          },
+          {
+            id: 'construction-contract-template',
+            title: 'Construction Contract Template',
+            arabicTitle: 'نموذج عقد المقاولة',
+            type: 'doc',
+            url: `${this.DRIVE_BASE_URL}/construction-contract.pdf`,
+            description: 'نموذج عقد مقاولة شامل يحمي حقوق جميع الأطراف',
+            topics: ['بنود العقد', 'الضمانات', 'آلية الدفع', 'حل النزاعات'],
+            isOfficial: true,
+            source: 'وزارة العدل'
+          }
+        ]
+      },
+      {
+        id: 'foundation-work',
+        title: 'Foundation Work',
+        arabicTitle: 'أعمال الأساسات',
+        description: 'حفر الأساسات وصب القواعد',
+        order: 4,
+        hasExternalIntegration: false,
+        estimatedDuration: '2-4 أسابيع',
+        dependencies: ['contractor-selection'],
+        requirements: [
+          'مسح الموقع وتحديد المناسيب',
+          'حفر الأساسات',
+          'تركيب حديد التسليح',
+          'صب الخرسانة'
+        ],
+        documentationFiles: [
+          {
+            id: 'foundation-construction-guide',
+            title: 'Foundation Construction Guide',
+            arabicTitle: 'دليل تنفيذ الأساسات',
+            type: 'pdf',
+            url: `${this.DRIVE_BASE_URL}/foundation-guide.pdf`,
+            description: 'دليل تقني لتنفيذ أعمال الأساسات والقواعد',
+            topics: ['أنواع الأساسات', 'حديد التسليح', 'خلطات الخرسانة', 'ضبط الجودة'],
+            isOfficial: true,
+            source: 'الهيئة السعودية للمهندسين'
+          }
+        ]
+      },
+      {
+        id: 'structural-work',
+        title: 'Structural Work',
+        arabicTitle: 'الأعمال الإنشائية',
+        description: 'بناء الهيكل الخرساني والجدران',
+        order: 5,
+        hasExternalIntegration: false,
+        estimatedDuration: '6-12 أسبوع',
+        dependencies: ['foundation-work'],
+        requirements: [
+          'صب الأعمدة والجسور',
+          'صب البلاطات',
+          'بناء الجدران',
+          'تركيب الأبواب والشبابيك'
+        ],
+        documentationFiles: [
+          {
+            id: 'structural-construction-guide',
+            title: 'Structural Construction Guide',
+            arabicTitle: 'دليل الأعمال الإنشائية',
+            type: 'pdf',
+            url: `${this.DRIVE_BASE_URL}/structural-guide.pdf`,
+            description: 'دليل تنفيذ الأعمال الإنشائية والخرسانية',
+            topics: ['صب الخرسانة', 'حديد التسليح', 'القوالب', 'معالجة الخرسانة'],
+            isOfficial: true,
+            source: 'الهيئة السعودية للمهندسين'
+          }
+        ]
+      },
+      {
+        id: 'mep-installation',
+        title: 'MEP Installation',
+        arabicTitle: 'التمديدات الكهربائية والصحية',
+        description: 'تمديد الكهرباء والسباكة والتكييف',
+        order: 6,
+        hasExternalIntegration: false,
+        estimatedDuration: '3-6 أسابيع',
+        dependencies: ['structural-work'],
+        requirements: [
+          'التمديدات الكهربائية',
+          'التمديدات الصحية',
+          'تمديدات التكييف',
+          'أنظمة الأمان والحماية'
+        ],
+        documentationFiles: [
+          {
+            id: 'electrical-installation-guide',
+            title: 'Electrical Installation Guide',
+            arabicTitle: 'دليل التمديدات الكهربائية',
+            type: 'pdf',
+            url: `${this.DRIVE_BASE_URL}/electrical-guide.pdf`,
+            description: 'دليل تنفيذ التمديدات الكهربائية طبقاً للكود السعودي',
+            topics: ['الأحمال الكهربائية', 'أنواع الكابلات', 'لوحات التوزيع', 'أنظمة الحماية'],
+            isOfficial: true,
+            source: 'الهيئة السعودية للمهندسين'
+          },
+          {
+            id: 'plumbing-installation-guide',
+            title: 'Plumbing Installation Guide',
+            arabicTitle: 'دليل التمديدات الصحية',
+            type: 'pdf',
+            url: `${this.DRIVE_BASE_URL}/plumbing-guide.pdf`,
+            description: 'دليل تنفيذ التمديدات الصحية وأنظمة الصرف',
+            topics: ['أنابيب المياه', 'أنظمة الصرف', 'أجهزة السباكة', 'العزل المائي'],
+            isOfficial: true,
+            source: 'الهيئة السعودية للمهندسين'
+          }
+        ]
+      },
+      {
+        id: 'finishing-work',
+        title: 'Finishing Work',
+        arabicTitle: 'أعمال التشطيب',
+        description: 'التشطيبات الداخلية والخارجية',
+        order: 7,
+        hasExternalIntegration: true,
+        externalPlatforms: ['ackdconsult.com'],
+        estimatedDuration: '4-8 أسابيع',
+        dependencies: ['mep-installation'],
+        requirements: [
+          'أعمال الدهان',
+          'تركيب الأرضيات',
+          'تركيب الأسقف المستعارة',
+          'التشطيبات الخارجية'
+        ],
+        documentationFiles: [
+          {
+            id: 'finishing-guide',
+            title: 'Finishing Work Guide',
+            arabicTitle: 'دليل أعمال التشطيب',
+            type: 'pdf',
+            url: `${this.DRIVE_BASE_URL}/finishing-guide.pdf`,
+            description: 'دليل شامل لأعمال التشطيب الداخلي والخارجي',
+            topics: ['أنواع الدهانات', 'أنواع الأرضيات', 'الأسقف المستعارة', 'التشطيبات الخارجية'],
+            isOfficial: false,
+            source: 'اتحاد المقاولين'
+          }
+        ]
+      },
+      {
+        id: 'final-inspection',
+        title: 'Final Inspection',
+        arabicTitle: 'الفحص النهائي والتسليم',
+        description: 'الفحص النهائي للمشروع والتسليم',
+        order: 8,
+        hasExternalIntegration: false,
+        estimatedDuration: '1-2 أسبوع',
+        dependencies: ['finishing-work'],
+        requirements: [
+          'فحص الأعمال المدنية',
+          'فحص التمديدات',
+          'اختبار الأنظمة',
+          'استلام المشروع'
+        ],
+        documentationFiles: [
+          {
+            id: 'final-inspection-checklist',
+            title: 'Final Inspection Checklist',
+            arabicTitle: 'قائمة الفحص النهائي',
+            type: 'checklist',
+            url: `${this.DRIVE_BASE_URL}/inspection-checklist.pdf`,
+            description: 'قائمة شاملة لفحص المشروع قبل التسليم',
+            topics: ['فحص الأعمال المدنية', 'فحص التمديدات', 'اختبار الأنظمة', 'التوثيق'],
+            isOfficial: true,
+            source: 'أمانة المنطقة - إدارة الرقابة'
+          }
         ]
       }
     ];
+  }
+
+  static getLevelById(levelId: string): ConstructionLevel | undefined {
+    return this.getConstructionLevels().find(level => level.id === levelId);
+  }
+
+  static getLevelsByProjectType(projectType: string): ConstructionLevel[] {
+    // For now, return all levels. Later we can filter by project type
+    return this.getConstructionLevels();
+  }
+
+  static getNextLevel(currentLevelId: string): ConstructionLevel | undefined {
+    const levels = this.getConstructionLevels();
+    const currentLevel = levels.find(level => level.id === currentLevelId);
+    if (!currentLevel) return undefined;
+    
+    return levels.find(level => level.order === currentLevel.order + 1);
+  }
+
+  static canStartLevel(levelId: string, completedLevels: string[]): boolean {
+    const level = this.getLevelById(levelId);
+    if (!level) return false;
+    
+    if (!level.dependencies) return true;
+    
+    return level.dependencies.every(dep => completedLevels.includes(dep));
+  }
+
+  static calculateOverallProgress(projectLevels: ProjectLevel[]): number {
+    if (projectLevels.length === 0) return 0;
+    
+    const totalProgress = projectLevels.reduce((sum, level) => sum + level.progress, 0);
+    return Math.round(totalProgress / projectLevels.length);
+  }
+
+  static async downloadDocument(documentId: string): Promise<Blob> {
+    // This would implement actual document download from Google Drive
+    // For now, return a placeholder
+    throw new Error('Document download not implemented yet');
+  }
+
+  static getGuidanceForLevel(levelId: string): {
+    tips: string[];
+    warnings: string[];
+    bestPractices: string[];
+  } {
+    const guidanceMap: Record<string, any> = {
+      'land-acquisition': {
+        tips: [
+          'تأكد من صحة ملكية الأرض قبل الشراء',
+          'احرص على وجود طريق معبد للوصول إلى الأرض',
+          'تحقق من توفر الخدمات الأساسية (كهرباء، ماء، صرف)',
+          'راجع اللوائح العمرانية للمنطقة'
+        ],
+        warnings: [
+          'لا تقم بالدفع قبل التأكد من صحة الوثائق',
+          'تجنب الأراضي في المناطق المعرضة للفيضانات',
+          'احذر من الأراضي غير المرخصة للبناء'
+        ],
+        bestPractices: [
+          'استعن بخبير عقاري معتمد',
+          'قم بمسح الأرض قبل الشراء',
+          'احرص على وجود ضمانات قانونية'
+        ]
+      },
+      'design-approval': {
+        tips: [
+          'اختر مكتب هندسي معتمد ومرخص',
+          'احرص على التصميم المناسب للمناخ المحلي',
+          'تأكد من مطابقة التصميم لكود البناء السعودي',
+          'خطط للتوسعات المستقبلية'
+        ],
+        warnings: [
+          'لا تبدأ البناء قبل الحصول على رخصة البناء',
+          'تجنب التعديلات غير المرخصة على التصميم',
+          'احذر من تجاوز نسب البناء المسموحة'
+        ],
+        bestPractices: [
+          'احرص على كفاءة الطاقة في التصميم',
+          'خطط لأنظمة الصرف والتهوية',
+          'استخدم مواد صديقة للبيئة'
+        ]
+      },
+      'contractor-selection': {
+        tips: [
+          'اطلب عروض أسعار من عدة مقاولين',
+          'تحقق من سجل المقاول وأعماله السابقة',
+          'احرص على وجود ترخيص ساري المفعول',
+          'اشترط ضمانات على الأعمال'
+        ],
+        warnings: [
+          'لا تتعامل مع مقاولين غير مرخصين',
+          'احذر من العروض المنخفضة جداً',
+          'تجنب الدفع المقدم الكبير'
+        ],
+        bestPractices: [
+          'اكتب عقد مفصل وواضح',
+          'حدد جدول زمني للتنفيذ',
+          'اشترط مواد ذات جودة عالية'
+        ]
+      }
+    };
+
+    return guidanceMap[levelId] || { tips: [], warnings: [], bestPractices: [] };
+  }
+
+  static getProjectPhases(settings: ProjectGuidanceSettings): ConstructionPhase[] {
+    // Mock data for project phases
+    return [
+      {
+        id: 'planning',
+        name: 'Planning Phase',
+        arabicName: 'مرحلة التخطيط',
+        description: 'Initial planning and design phase',
+        order: 1,
+        status: 'not-started',
+        progress: 0,
+        estimatedDuration: '2-4 weeks',
+        duration: 28,
+        checkpoints: [],
+        tips: ['Plan thoroughly', 'Consider future expansion'],
+        warnings: ['Do not rush planning', 'Get proper approvals'],
+        documents: [],
+        materials: [],
+        regulations: []
+      }
+    ];
+  }
+
+  static getComplianceChecklist(projectType: string): any[] {
+    return [
+      {
+        category: 'Building Permits',
+        items: [
+          { id: 'permit-1', name: 'Building License', completed: false },
+          { id: 'permit-2', name: 'Construction Permit', completed: false }
+        ]
+      }
+    ];
+  }
+
+  static calculateProjectTimeline(settings: ProjectGuidanceSettings): any {
+    return {
+      totalDuration: 180, // days
+      phases: this.getProjectPhases(settings)
+    };
+  }
+
+  static getNextPhase(currentPhaseId: string, phases: ConstructionPhase[]): ConstructionPhase | null {
+    const currentIndex = phases.findIndex(p => p.id === currentPhaseId);
+    return currentIndex >= 0 && currentIndex < phases.length - 1 ? phases[currentIndex + 1] : null;
   }
 }

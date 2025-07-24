@@ -90,7 +90,7 @@ export default function NotebookPage() {
                           {note}
                         </Typography>
                         <Typography variant="caption" size="sm" className="text-gray-500 mt-2">
-                          {new Date().toLocaleDateString('ar-SA')}
+                          {new Date().toLocaleDateString('en-US')}
                         </Typography>
                       </div>
                     </div>

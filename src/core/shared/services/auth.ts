@@ -20,27 +20,28 @@ class TempAuthService {
   private currentUser: TempUser | null = null;
   private listeners: Array<(user: TempUser | null) => void> = [];
 
-  // Mock users for development
+  // Real users for production (matching database seed data)
   private mockUsers: Record<string, TempUser> = {
-    'admin@binna.com': {
-      id: '1',
-      email: 'admin@binna.com',
-      name: 'Admin User',
-      role: 'admin',
+    'user@binaa.com': {
+      id: 'real-user-001',
+      email: 'user@binaa.com',
+      name: 'محمد العبدالله',
+      role: 'user',
       isAuthenticated: true
     },
-    'store@binna.com': {
-      id: '2',
-      email: 'store@binna.com',
-      name: 'Store Owner',
+    'store@binaa.com': {
+      id: 'real-store-001',
+      email: 'store@binaa.com',
+      name: 'أحمد التجاري',
       role: 'store_owner',
       isAuthenticated: true
     },
-    'user@binna.com': {
-      id: '3',
-      email: 'user@binna.com',
-      name: 'Regular User',
-      role: 'user',
+    // Keep admin for system administration
+    'admin@binaa.com': {
+      id: 'admin-001',
+      email: 'admin@binaa.com',
+      name: 'مدير النظام',
+      role: 'admin',
       isAuthenticated: true
     }
   };

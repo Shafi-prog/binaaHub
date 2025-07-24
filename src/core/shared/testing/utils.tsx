@@ -79,30 +79,30 @@ export const testScenarios = {
     },
   },
 
-  // Test user roles
+    // Real test users matching production data
   users: {
     admin: {
-      id: '1',
-      email: 'admin@binna.sa',
-      name: 'Admin User',
+      id: 'admin-001',
+      email: 'admin@binaa.com',
+      name: 'مدير النظام',
       role: 'admin',
     },
     storeOwner: {
-      id: '2',
-      email: 'owner@store.sa',
-      name: 'Store Owner',
+      id: 'real-store-001',
+      email: 'store@binaa.com',
+      name: 'أحمد التجاري',
       role: 'store_owner',
     },
-    employee: {
-      id: '3',
-      email: 'employee@store.sa',
-      name: 'Employee',
-      role: 'employee',
+    user: {
+      id: 'real-user-001',
+      email: 'user@binaa.com',
+      name: 'محمد العبدالله',
+      role: 'user',
     },
     customer: {
-      id: '4',
-      email: 'customer@email.sa',
-      name: 'Customer',
+      id: 'real-user-001',
+      email: 'user@binaa.com',
+      name: 'محمد العبدالله',
       role: 'customer',
     },
   },

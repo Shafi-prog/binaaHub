@@ -64,8 +64,8 @@ export class AdvancedAnalyticsEngine {
       current.sales > best.sales ? current : best
     );
     
-    insights.push(`Total global sales: $${totalSales.toLocaleString()}`);
-    insights.push(`Best performing region: ${bestPerforming.region} with $${bestPerforming.sales.toLocaleString()}`);
+    insights.push(`Total global sales: $${totalSales.toLocaleString('en-US')}`);
+    insights.push(`Best performing region: ${bestPerforming.region} with $${bestPerforming.sales.toLocaleString('en-US')}`);
     insights.push(`Average global conversion rate: ${(metrics.reduce((sum, m) => sum + m.conversionRate, 0) / metrics.length * 100).toFixed(2)}%`);
     
     return insights;

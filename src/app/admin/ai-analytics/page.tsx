@@ -209,11 +209,11 @@ export default function AIAnalyticsPage() {
 
   if (loading) {
     return (
-      <div className="container mx-auto p-6">
+      <div className="container mx-auto p-6" dir="rtl">
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
             <Brain className="h-8 w-8 animate-pulse mx-auto mb-4" />
-            <p>Loading AI Analytics...</p>
+            <p>جارٍ تحميل تحليلات الذكاء الاصطناعي...</p>
           </div>
         </div>
       </div>
@@ -221,24 +221,24 @@ export default function AIAnalyticsPage() {
   }
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
+    <div className="container mx-auto p-6 space-y-6" dir="rtl">
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold flex items-center gap-2">
             <Brain className="h-8 w-8" />
-            AI-Powered Analytics
+            تحليلات مدعومة بالذكاء الاصطناعي
           </h1>
-          <p className="text-muted-foreground">Advanced machine learning insights for GCC market optimization</p>
+          <p className="text-muted-foreground">رؤى التعلم الآلي المتقدمة لتحسين أسواق دول الخليج</p>
         </div>
         <div className="flex gap-2">
           <Button variant="outline" onClick={() => alert('Button clicked')}>
-            <Activity className="h-4 w-4 mr-2" />
-            Real-time Data
+            <Activity className="h-4 w-4 ml-2" />
+            البيانات المباشرة
           </Button>
           <Button onClick={() => alert('Button clicked')}>
-            <BarChart3 className="h-4 w-4 mr-2" />
-            Generate Report
+            <BarChart3 className="h-4 w-4 ml-2" />
+            إنشاء تقرير
           </Button>
         </div>
       </div>
@@ -247,7 +247,7 @@ export default function AIAnalyticsPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Prediction Accuracy</CardTitle>
+            <CardTitle className="text-sm font-medium">دقة التنبؤ</CardTitle>
             <Target className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -426,7 +426,7 @@ export default function AIAnalyticsPage() {
                     <div>
                       <CardTitle>{segment.name}</CardTitle>
                       <CardDescription>
-                        {segment.size.toLocaleString()} customers • Average spend: ${segment.avgSpend.toLocaleString()}
+                        {segment.size.toLocaleString('en-US')} customers • Average spend: ${segment.avgSpend.toLocaleString('en-US')}
                       </CardDescription>
                     </div>
                     <Badge variant={segment.growth > 25 ? 'default' : 'secondary'}>
@@ -462,7 +462,7 @@ export default function AIAnalyticsPage() {
                   
                   <div className="flex justify-between items-center pt-2 border-t">
                     <div className="flex items-center gap-4 text-sm">
-                      <span>Size: {segment.size.toLocaleString()}</span>
+                      <span>Size: {segment.size.toLocaleString('en-US')}</span>
                       <span>Value: ${(segment.size * segment.avgSpend / 1000000).toFixed(1)}M</span>
                     </div>
                     <Button size="sm" onClick={() => alert('Button clicked')}>

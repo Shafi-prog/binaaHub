@@ -587,7 +587,7 @@ export default function CurrencyRegionManagementPage() {
                         </div>
                       </div>
                       <div className="text-right">
-                        <div className="font-medium">${revenue.toLocaleString()}</div>
+                        <div className="font-medium">${revenue.toLocaleString('en-US')}</div>
                         <div className="text-sm text-gray-500">{percentage}%</div>
                       </div>
                     </div>

@@ -14,6 +14,7 @@ import {
 
 // Force dynamic rendering to avoid SSG auth context issues
 import Link from "next/link"
+import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 
 
 export const dynamic = 'force-dynamic'

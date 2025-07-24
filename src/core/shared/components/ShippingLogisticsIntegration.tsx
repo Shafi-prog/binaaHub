@@ -627,7 +627,7 @@ export function ShippingLogisticsIntegration() {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Total Cost:</span>
-                      <span className="font-medium">{stats.cost.toLocaleString()} SAR</span>
+                      <span className="font-medium">{stats.cost.toLocaleString('en-US')} SAR</span>
                     </div>
                   </div>
                 </div>

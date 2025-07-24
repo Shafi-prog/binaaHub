@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { formatPercentage } from "../../../../../lib/percentage-helpers"
 import { useDeleteTaxRateAction } from "../../hooks"
+import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 
 type TaxRateLineProps = {
   taxRate: HttpTypes.AdminTaxRate

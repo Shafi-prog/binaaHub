@@ -3,6 +3,7 @@
 
 // Global Markets Management Dashboard (Phase 5)
 import React, { useState, useEffect } from 'react';
+import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 
 
 export const dynamic = 'force-dynamic'
@@ -25,7 +26,7 @@ const GlobalDashboard: React.FC = () => {
   if (isLoading) {
     return (
       <div style={{ padding: 32, fontFamily: 'sans-serif' }}>
-        <h1>Loading Global Markets Dashboard...</h1>
+        <h1>جاري تحميل لوحة تحكم الأسواق العالمية...</h1>
       </div>
     );
   }
@@ -70,32 +71,32 @@ const GlobalDashboard: React.FC = () => {
   };
 
   return (
-    <div style={{ padding: 32, fontFamily: 'sans-serif' }}>
-      <h1>Global Markets Dashboard (Phase 5)</h1>
+    <div style={{ padding: 32, fontFamily: 'sans-serif' }} dir="rtl">
+      <h1>لوحة تحكم الأسواق العالمية (المرحلة 5)</h1>
       
       <div style={{ marginBottom: 32 }}>
-        <h2>Global Regions Overview</h2>
+        <h2>نظرة عامة على المناطق العالمية</h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16 }}>
           {globalRegions.map(region => (
             <div key={region.code} style={{ background: '#f3f4f6', padding: 16, borderRadius: 8 }}>
               <h3>{region.name}</h3>
-              <p>Currency: {region.currency}</p>
-              <p>Tax Rate: {(region.taxRate * 100)}%</p>
-              <p>Sample Price: {formatCurrency(100, region.code)}</p>
+              <p>العملة: {region.currency}</p>
+              <p>معدل الضريبة: {(region.taxRate * 100)}%</p>
+              <p>سعر العينة: {formatCurrency(100, region.code)}</p>
             </div>
           ))}
         </div>
       </div>
 
       <div style={{ marginBottom: 32 }}>
-        <h2>AI Personalization Demo</h2>
+        <h2>عرض توضيحي للذكاء الاصطناعي</h2>
         <div style={{ background: '#f9fafb', padding: 24, borderRadius: 8 }}>
-          <h3>User Profile: {sampleUser.id}</h3>
-          <p><strong>Region:</strong> {sampleUser.locationRegion}</p>
-          <p><strong>Dynamic Price:</strong> ${dynamicPrice}</p>
-          <p><strong>Campaign:</strong> {AIPersonalizationEngine.generateMarketingCampaign(sampleUser)}</p>
+          <h3>ملف المستخدم: {sampleUser.id}</h3>
+          <p><strong>المنطقة:</strong> {sampleUser.locationRegion}</p>
+          <p><strong>السعر الديناميكي:</strong> ${dynamicPrice}</p>
+          <p><strong>الحملة:</strong> {AIPersonalizationEngine.generateMarketingCampaign(sampleUser)}</p>
           
-          <h4>AI Recommendations:</h4>
+          <h4>توصيات الذكاء الاصطناعي:</h4>
           <ul>
             {recommendations.map((rec, idx) => (
               <li key={idx}>
@@ -107,16 +108,16 @@ const GlobalDashboard: React.FC = () => {
       </div>
 
       <div style={{ marginBottom: 32 }}>
-        <h2>Advanced Analytics 2.0 & Anomaly Detection</h2>
+        <h2>التحليلات المتقدمة 2.0 واكتشاف الشذوذ</h2>
         <div style={{ background: '#f9fafb', padding: 24, borderRadius: 8 }}>
-          <h3>Cross-Region Business Intelligence</h3>
+          <h3>ذكاء الأعمال عبر المناطق</h3>
           {insights.map((insight, idx) => (
             <p key={idx}>{insight}</p>
           ))}
           
           {anomalies.length > 0 && (
             <div style={{ marginTop: 16, background: '#fef2f2', padding: 12, borderRadius: 6, color: '#dc2626' }}>
-              <h4>🚨 Anomaly Alerts:</h4>
+              <h4>🚨 تنبيهات الشذوذ:</h4>
               {anomalies.map((alert, idx) => (
                 <p key={idx}><strong>{alert.region}:</strong> {alert.message} (Confidence: {(alert.confidence * 100).toFixed(1)}%)</p>
               ))}
@@ -126,7 +127,7 @@ const GlobalDashboard: React.FC = () => {
       </div>
 
       <div style={{ marginBottom: 32 }}>
-        <h2>Enterprise Security & Compliance</h2>
+        <h2>أمان المؤسسة والامتثال</h2>
         <div style={{ background: '#f0fdf4', padding: 24, borderRadius: 8 }}>
           <p><strong>Compliance Score:</strong> {complianceScore}%</p>
           <p><strong>Security Status:</strong> {securityReport}</p>
@@ -135,10 +136,10 @@ const GlobalDashboard: React.FC = () => {
       </div>
 
       <div style={{ marginBottom: 32 }}>
-        <h2>Mobile & PWA Feature Parity</h2>
+        <h2>تطبيق الجوال وتطابق ميزات PWA</h2>
         <div style={{ background: '#fef9c3', padding: 24, borderRadius: 8 }}>
           <p><strong>Mobile Parity Score:</strong> {mobileParityScore.toFixed(1)}%</p>
-          <h4>Mobile Development Roadmap:</h4>
+          <h4>خارطة طريق تطوير الجوال:</h4>
           <ul>
             {mobileRoadmap.map((item, idx) => (
               <li key={idx}>{item}</li>
@@ -148,7 +149,7 @@ const GlobalDashboard: React.FC = () => {
       </div>
 
       <div>
-        <h2>Developer API Access</h2>
+        <h2>وصول API للمطورين</h2>
         <div style={{ background: '#ecfdf5', padding: 16, borderRadius: 8 }}>
           <p>Public API endpoints are now available for ecosystem partners.</p>
           <p>Contact support for API keys and documentation.</p>

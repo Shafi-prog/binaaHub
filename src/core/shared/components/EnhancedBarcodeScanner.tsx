@@ -223,7 +223,7 @@ export default function EnhancedBarcodeScanner({
                     <div className="mt-2 grid grid-cols-2 gap-2">
                       <div>
                         <span className="text-green-600">السعر: </span>
-                        <span className="font-medium">{searchResult.price.toLocaleString()} ر.س</span>
+                        <span className="font-medium">{searchResult.price.toLocaleString('en-US')} ر.س</span>
                       </div>
                       <div>
                         <span className="text-green-600">المخزون: </span>

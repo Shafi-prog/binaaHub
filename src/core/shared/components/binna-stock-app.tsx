@@ -196,9 +196,9 @@ export default function BinnaStockApp() {
                           </code>
                         </td>
                         <td className="p-3">
-                          <div className="font-semibold">{item.currentStock.toLocaleString()}</div>
+                          <div className="font-semibold">{item.currentStock.toLocaleString('en-US')}</div>
                           <div className="text-sm text-gray-500">
-                            الحد الأدنى: {item.minStock.toLocaleString()}
+                            الحد الأدنى: {item.minStock.toLocaleString('en-US')}
                           </div>
                         </td>
                         <td className="p-3">

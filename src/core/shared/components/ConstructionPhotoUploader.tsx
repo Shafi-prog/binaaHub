@@ -276,7 +276,7 @@ export default function ConstructionPhotoUploader({
                     
                     <div className="flex items-center gap-2 text-xs text-gray-500">
                       <Calendar className="w-3 h-3" />
-                      <span>{new Date(image.uploadedAt).toLocaleDateString('ar-SA')}</span>
+                      <span>{new Date(image.uploadedAt).toLocaleDateString('en-US')}</span>
                     </div>
 
                     <div className="flex justify-between items-center pt-2">

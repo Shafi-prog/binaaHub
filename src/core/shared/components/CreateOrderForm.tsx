@@ -6,6 +6,7 @@ import type { Database } from '@/core/shared/types/database';
 import { Card, LoadingSpinner } from '@/core/shared/components/ui';
 import { formatCurrency } from '@/core/shared/utils';
 import { EnhancedInput, EnhancedSelect, Button } from '@/core/shared/components/ui/enhanced-components';
+import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 
 interface ProjectOption {
   id: string;

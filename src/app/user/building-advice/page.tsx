@@ -9,6 +9,7 @@ import { Badge } from '@/core/shared/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/core/shared/components/ui/tabs';
 import { Progress } from '@/core/shared/components/ui/progress';
 import { ConstructionGuidanceService } from '@/core/services/constructionGuidanceService';
+import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 import { 
   Lightbulb, 
   ArrowUpCircle, 

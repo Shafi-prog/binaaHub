@@ -182,7 +182,7 @@ export function InventoryWidget() {
                         <span className="ml-2 inline-block px-2 py-0.5 text-xs rounded bg-red-100 text-red-700 animate-pulse" title="كمية منخفضة">منخفض</span>
                       )}
                     </td>
-                    <td className="px-3 py-2 text-gray-700">{item.price.toLocaleString('ar-SA', { style: 'currency', currency: 'SAR' })}</td>
+                    <td className="px-3 py-2 text-gray-700">{item.price.toLocaleString('en-US')}</td>
                     <td className="px-3 py-2">
                       {item.enabled ? (
                         <span className="inline-block px-2 py-1 text-xs rounded bg-green-100 text-green-700">نشط</span>

@@ -2,6 +2,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 import { 
   ShoppingCart, 
   Package, 
@@ -309,7 +310,7 @@ const MedusaDashboard: React.FC = () => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-gray-600">Total Orders</p>
-              <p className="text-2xl font-bold text-gray-900">{analytics.orders.total.toLocaleString()}</p>
+              <p className="text-2xl font-bold text-gray-900">{analytics.orders.total.toLocaleString('en-US')}</p>
             </div>
             <div className="p-3 bg-blue-100 rounded-full">
               <ShoppingCart className="w-6 h-6 text-blue-600" />
@@ -328,7 +329,7 @@ const MedusaDashboard: React.FC = () => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-gray-600">Total Customers</p>
-              <p className="text-2xl font-bold text-gray-900">{analytics.customers.total.toLocaleString()}</p>
+              <p className="text-2xl font-bold text-gray-900">{analytics.customers.total.toLocaleString('en-US')}</p>
             </div>
             <div className="p-3 bg-purple-100 rounded-full">
               <Users className="w-6 h-6 text-purple-600" />
@@ -406,7 +407,7 @@ const MedusaDashboard: React.FC = () => {
                   </div>
                   <div className="text-sm text-gray-500">{order.email}</div>
                   <div className="text-xs text-gray-400">
-                    {new Date(order.created_at).toLocaleDateString('ar-SA')}
+                    {new Date(order.created_at).toLocaleDateString('en-US')}
                   </div>
                 </div>
                 <div className="text-right">

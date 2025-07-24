@@ -342,7 +342,7 @@ export default function ExpenseManagement() {
               <div>
                 <p className="text-sm text-gray-600">إجمالي المصروفات</p>
                 <p className="text-2xl font-bold text-blue-600">
-                  {totalExpenses.toLocaleString('ar-SA')} ريال
+                  {totalExpenses.toLocaleString('en-US')} ريال
                 </p>
               </div>
             </div>
@@ -358,7 +358,7 @@ export default function ExpenseManagement() {
               <div>
                 <p className="text-sm text-gray-600">مصروفات معفاة من الضريبة</p>
                 <p className="text-2xl font-bold text-green-600">
-                  {totalTaxDeductible.toLocaleString('ar-SA')} ريال
+                  {totalTaxDeductible.toLocaleString('en-US')} ريال
                 </p>
               </div>
             </div>
@@ -390,7 +390,7 @@ export default function ExpenseManagement() {
               <div>
                 <p className="text-sm text-gray-600">متوسط يومي</p>
                 <p className="text-2xl font-bold text-orange-600">
-                  {Math.round(totalExpenses / 30).toLocaleString('ar-SA')} ريال
+                  {Math.round(totalExpenses / 30).toLocaleString('en-US')} ريال
                 </p>
               </div>
             </div>
@@ -499,11 +499,11 @@ export default function ExpenseManagement() {
                     </div>
                     <p className="text-xs text-gray-600 mb-1">{expense.category?.name_ar}</p>
                     <p className="text-xs text-gray-500 mb-2">
-                      {new Date(expense.expense_date).toLocaleDateString('ar-SA')}
+                      {new Date(expense.expense_date).toLocaleDateString('en-US')}
                     </p>
                     <div className="flex items-center justify-between">
                       <span className="text-sm font-medium text-green-600">
-                        {expense.amount.toLocaleString('ar-SA')} ريال
+                        {expense.amount.toLocaleString('en-US')} ريال
                       </span>
                       {expense.is_tax_deductible && (
                         <Badge variant="outline" className="text-xs">معفاة ضريبياً</Badge>

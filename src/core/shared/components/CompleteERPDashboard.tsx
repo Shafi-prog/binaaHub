@@ -18,6 +18,7 @@ import {
   AreaChart,
   Area
 } from 'recharts';
+import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 import {
   DollarSign,
   ShoppingCart,
@@ -214,7 +215,7 @@ const CompleteERPDashboard = () => {
   }, []);
 
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('ar-SA', { style: 'currency', currency: 'SAR' }).format(amount);
+    return new Intl.NumberFormat('en-US').format(amount);
   };
 
   const getStatusColor = (status: string) => {

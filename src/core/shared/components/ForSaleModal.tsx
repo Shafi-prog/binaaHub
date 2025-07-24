@@ -99,7 +99,7 @@ export default function ForSaleModal({ isOpen, onClose, onSubmit, project }: For
               )}
               {suggestedPrice > 0 && (
                 <p className="text-sm text-gray-500 mt-1">
-                  Suggested price based on investment: ${suggestedPrice.toLocaleString()}
+                  Suggested price based on investment: ${suggestedPrice.toLocaleString('en-US')}
                   <button
                     type="button"
                     onClick={() => handleInputChange('price', suggestedPrice)}
@@ -169,10 +169,10 @@ export default function ForSaleModal({ isOpen, onClose, onSubmit, project }: For
                   <div>Completion: {project.completion_percentage}%</div>
                 )}
                 {project.budget && (
-                  <div>Original Budget: ${project.budget.toLocaleString()}</div>
+                  <div>Original Budget: ${project.budget.toLocaleString('en-US')}</div>
                 )}
                 {project.spent && (
-                  <div>Amount Invested: ${project.spent.toLocaleString()}</div>
+                  <div>Amount Invested: ${project.spent.toLocaleString('en-US')}</div>
                 )}
               </div>
             </div>

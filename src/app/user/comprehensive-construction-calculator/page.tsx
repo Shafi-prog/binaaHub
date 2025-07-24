@@ -11,8 +11,10 @@ import { Badge } from '@/core/shared/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/core/shared/components/ui/tabs';
 import { Progress } from '@/core/shared/components/ui/progress';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/core/shared/components/ui/dialog';
+import ProjectPurchasesWarranties from '@/core/shared/components/ui/ProjectPurchasesWarranties';
 import { ProjectTrackingService } from '@/core/services/projectTrackingService';
 import { Project, ProjectEstimation, MaterialEstimation, LightingEstimation } from '@/core/shared/types/types';
+import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 import { 
   Calculator, 
   FileText, 
@@ -32,7 +34,20 @@ import {
   AlertTriangle,
   Info,
   Save,
-  Plus
+  Plus,
+  DollarSign,
+  Clock,
+  TrendingUp,
+  Trash2,
+  Edit,
+  Building,
+  MapPin,
+  Users,
+  Calendar,
+  Award,
+  Globe,
+  Shield,
+  ShoppingCart
 } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
@@ -102,7 +117,7 @@ export default function ComprehensiveConstructionCalculator() {
   const router = useRouter();
   const projectId = searchParams?.get('projectId');
   
-  const [activeTab, setActiveTab] = useState('materials');
+  const [activeTab, setActiveTab] = useState(projectId ? 'overview' : 'materials');
   const [projectArea, setProjectArea] = useState<number>(200);
   const [projectType, setProjectType] = useState<string>('villa');
   const [floorCount, setFloorCount] = useState<number>(1);
@@ -113,12 +128,68 @@ export default function ComprehensiveConstructionCalculator() {
   useEffect(() => {
     setIsClient(true);
   }, []);
+
+  // Load project data if projectId is provided
+  useEffect(() => {
+    if (projectId) {
+      loadProjectData();
+    }
+  }, [projectId]);
+
+  const loadProjectData = async () => {
+    if (!projectId) return;
+    
+    try {
+      const project = await ProjectTrackingService.getProjectById(projectId);
+      if (project) {
+        setCurrentProject(project);
+        setProjectArea(project.area);
+        setProjectType(project.projectType || 'villa');
+        setFloorCount(project.floorCount || 1);
+        setRoomCount(project.roomCount || 4);
+        setProjectName(project.name);
+        setProjectDescription(project.description || '');
+        
+        // Populate edit form data
+        setEditProjectData({
+          name: project.name,
+          description: project.description || '',
+          area: project.area,
+          projectType: project.projectType || 'residential',
+          floorCount: project.floorCount || 1,
+          roomCount: project.roomCount || 4,
+          location: project.location || ''
+        });
+        
+        // Load project summary
+        const summary = await ProjectTrackingService.calculateProjectSummary(projectId);
+        if (summary) {
+          setProjectSummary(summary);
+        }
+      }
+    } catch (error) {
+      console.error('Error loading project:', error);
+    }
+  };
   
   // Project and estimation data
   const [currentProject, setCurrentProject] = useState<Project | null>(null);
+  const [projectSummary, setProjectSummary] = useState<any>(null);
   const [showSaveDialog, setShowSaveDialog] = useState(false);
   const [projectName, setProjectName] = useState('');
   const [projectDescription, setProjectDescription] = useState('');
+  
+  // Edit project information state
+  const [isEditingProject, setIsEditingProject] = useState(false);
+  const [editProjectData, setEditProjectData] = useState({
+    name: '',
+    description: '',
+    area: 0,
+    projectType: 'residential',
+    floorCount: 1,
+    roomCount: 4,
+    location: ''
+  });
   
   // Light Distribution States
   const [lightCalc, setLightCalc] = useState<LightCalculation>({
@@ -269,32 +340,177 @@ export default function ComprehensiveConstructionCalculator() {
     { value: 'LED-36W', label: 'LED 36W - 3600 لومن', lumens: 3600, price: 150 }
   ];
 
-  // Hydration-safe number formatter
-  const formatNumber = (num: number): string => {
-    if (!isClient) {
-      // Server-side or before hydration: return simple format
-      return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    }
-    // Client-side: use locale string
-    return num.toLocaleString();
-  };
+// Material calculation interface
+interface UnifiedMaterial {
+  id: string;
+  name: string;
+  nameEn: string;
+  quantity: number;
+  unit: string;
+  category: string;
+  categoryAr: string;
+  description: string;
+  totalCost: number;
+  purchased?: number;
+  remaining?: number;
+  remainingCost?: number;
+}
 
-  // Calculate material quantities
-  const calculateMaterials = () => {
-    const calculated = materials.map(material => {
-      const quantity = Math.ceil(projectArea * floorCount * material.standardQuantity);
-      const totalMaterialCost = quantity * material.price;
+interface UnifiedMaterialsMap {
+  [key: string]: UnifiedMaterial;
+}
+
+  // Unified Materials Calculation - CONSISTENT ACROSS ALL CALCULATIONS
+  const calculateUnifiedMaterials = (area: number, projectType: string = 'residential', floorCount: number = 1): UnifiedMaterialsMap => {
+    // Base calculations per square meter (standardized formulas)
+    const baseCalculations = {
+      'concrete': {
+        name: 'خرسانة',
+        nameEn: 'concrete',
+        quantityPerSqm: 0.3, // 0.3 cubic meters per sqm
+        unitPrice: 350, // SAR per cubic meter
+        unit: 'متر مكعب',
+        category: 'foundation',
+        categoryAr: 'أساسات',
+        description: 'خرسانة للأساسات والأعمدة والسقف'
+      },
+      'steel': {
+        name: 'حديد التسليح',
+        nameEn: 'steel',
+        quantityPerSqm: 120, // 120 kg per sqm
+        unitPrice: 4.5, // SAR per kg
+        unit: 'كيلوجرام',
+        category: 'structure',
+        categoryAr: 'هيكل',
+        description: 'حديد التسليح للمنشأ'
+      },
+      'cement': {
+        name: 'إسمنت بورتلاند',
+        nameEn: 'cement',
+        quantityPerSqm: 2, // 2 bags per sqm
+        unitPrice: 18, // SAR per 50kg bag
+        unit: 'كيس 50كغ',
+        category: 'foundation',
+        categoryAr: 'أساسات',
+        description: 'إسمنت بورتلاندي للبناء'
+      },
+      'blocks': {
+        name: 'بلوك خرساني',
+        nameEn: 'blocks',
+        quantityPerSqm: 45, // 45 blocks per sqm
+        unitPrice: 3.5, // SAR per block
+        unit: 'قطعة',
+        category: 'structure',
+        categoryAr: 'بناء',
+        description: 'بلوك خرساني للجدران'
+      },
+      'sand': {
+        name: 'رمل بناء',
+        nameEn: 'sand',
+        quantityPerSqm: 0.5, // 0.5 cubic meters per sqm
+        unitPrice: 80, // SAR per cubic meter
+        unit: 'متر مكعب',
+        category: 'foundation',
+        categoryAr: 'خرسانة',
+        description: 'رمل للملاط والخرسانة'
+      },
+      'gravel': {
+        name: 'حصى مدرج',
+        nameEn: 'gravel',
+        quantityPerSqm: 0.4, // 0.4 cubic meters per sqm
+        unitPrice: 90, // SAR per cubic meter
+        unit: 'متر مكعب',
+        category: 'foundation',
+        categoryAr: 'خرسانة',
+        description: 'حصى للخرسانة والأساسات'
+      },
+      'tiles': {
+        name: 'بلاط سيراميك',
+        nameEn: 'tiles',
+        quantityPerSqm: 1.1, // 1.1 sqm per sqm (waste factor)
+        unitPrice: 45, // SAR per sqm
+        unit: 'متر مربع',
+        category: 'finishing',
+        categoryAr: 'تشطيبات',
+        description: 'بلاط للأرضيات'
+      },
+      'paint': {
+        name: 'دهان أكريليك',
+        nameEn: 'paint',
+        quantityPerSqm: 0.5, // 0.5 gallons per sqm of wall area
+        unitPrice: 80, // SAR per 4L gallon
+        unit: 'جالون 4 لتر',
+        category: 'finishing',
+        categoryAr: 'دهانات',
+        description: 'دهان للجدران الداخلية والخارجية'
+      }
+    };
+
+    // Calculate total quantities based on area and floors
+    const calculatedMaterials: UnifiedMaterialsMap = {};
+    
+    Object.entries(baseCalculations).forEach(([key, material]) => {
+      let quantity = Math.ceil(area * material.quantityPerSqm);
       
-      return {
-        ...material,
-        calculatedQuantity: quantity,
-        totalCost: totalMaterialCost,
-        formattedCost: formatNumber(totalMaterialCost)
+      // Apply floor multiplier for certain materials
+      if (['concrete', 'steel', 'cement'].includes(key)) {
+        quantity = quantity * floorCount;
+      }
+      
+      // Apply project type multiplier
+      let typeMultiplier = 1;
+      if (projectType === 'commercial') {
+        typeMultiplier = 1.3;
+      } else if (projectType === 'industrial') {
+        typeMultiplier = 1.5;
+      }
+      
+      quantity = Math.ceil(quantity * typeMultiplier);
+      const totalCost = quantity * material.unitPrice;
+      
+      calculatedMaterials[key] = {
+        id: key,
+        name: material.name,
+        nameEn: material.nameEn,
+        quantity: quantity,
+        unit: material.unit,
+        category: material.category,
+        categoryAr: material.categoryAr,
+        description: material.description,
+        totalCost: totalCost,
+        purchased: 0,
+        remaining: quantity,
+        remainingCost: totalCost
       };
     });
 
+    return calculatedMaterials;
+  };
+
+  // Calculate material quantities - UNIFIED with project creation
+  const calculateMaterials = () => {
+    const area = projectArea || 0;
+    const type = projectType;
+    const floors = floorCount || 1;
+    
+    // Use unified calculation
+    const unifiedMaterialsData = calculateUnifiedMaterials(area, type, floors);
+    
+    // Convert to format expected by the UI
+    const calculated = Object.values(unifiedMaterialsData).map((material, index) => ({
+      ...materials[index], // Keep original material properties if they exist
+      id: material.id,
+      name: material.name,
+      calculatedQuantity: material.quantity,
+      totalCost: material.totalCost,
+      formattedCost: formatNumber(material.totalCost),
+      unit: material.unit,
+      category: material.category,
+      description: material.description
+    }));
+
     setCalculatedMaterials(calculated);
-    setTotalCost(calculated.reduce((sum, material) => sum + material.totalCost, 0));
+    setTotalCost(calculated.reduce((sum, material) => sum + (material.totalCost || 0), 0));
   };
 
   // Calculate lighting distribution
@@ -462,6 +678,40 @@ export default function ComprehensiveConstructionCalculator() {
     }
   };
 
+  // Handle save project edits
+  const handleSaveProject = async () => {
+    if (!currentProject) return;
+    
+    try {
+      const updatedProject = {
+        ...currentProject,
+        name: editProjectData.name,
+        description: editProjectData.description,
+        area: editProjectData.area,
+        projectType: editProjectData.projectType,
+        floorCount: editProjectData.floorCount,
+        roomCount: editProjectData.roomCount,
+        location: editProjectData.location,
+        updatedAt: new Date().toISOString()
+      };
+      
+      await ProjectTrackingService.saveProject(updatedProject);
+      setCurrentProject(updatedProject);
+      setProjectName(editProjectData.name);
+      setProjectDescription(editProjectData.description);
+      setProjectArea(editProjectData.area);
+      setProjectType(editProjectData.projectType);
+      setFloorCount(editProjectData.floorCount);
+      setRoomCount(editProjectData.roomCount);
+      setIsEditingProject(false);
+      
+      alert('تم حفظ التغييرات بنجاح');
+    } catch (error) {
+      console.error('Error updating project:', error);
+      alert('حدث خطأ أثناء حفظ التغييرات');
+    }
+  };
+
   useEffect(() => {
     calculateMaterials();
   }, [projectArea, floorCount, projectType]);
@@ -600,8 +850,8 @@ export default function ComprehensiveConstructionCalculator() {
       alert('تم حفظ التقدير بنجاح!');
       setShowSaveDialog(false);
       
-      // Navigate to project detail page
-      router.push(`/user/projects/${targetProjectId}`);
+      // Navigate to project list page since we're already in the unified interface
+      router.push('/user/projects/list');
       
     } catch (error) {
       console.error('Error saving estimation:', error);
@@ -641,7 +891,7 @@ export default function ComprehensiveConstructionCalculator() {
           type: projectType,
           floors: floorCount,
           rooms: roomCount,
-          date: new Date().toLocaleDateString('ar-SA')
+          date: new Date().toLocaleDateString('en-US')
         },
         materials: calculatedMaterials,
         totalCost,
@@ -680,7 +930,7 @@ export default function ComprehensiveConstructionCalculator() {
           type: projectType,
           floors: floorCount,
           rooms: roomCount,
-          date: new Date().toLocaleDateString('ar-SA')
+          date: new Date().toLocaleDateString('en-US')
         },
         materials: calculatedMaterials,
         totalCost,
@@ -708,7 +958,7 @@ export default function ComprehensiveConstructionCalculator() {
         <body>
           <div class="header">
             <h1>تقرير المشروع الشامل</h1>
-            <p>تاريخ الإنشاء: ${new Date().toLocaleDateString('ar-SA')}</p>
+            <p>تاريخ الإنشاء: ${new Date().toLocaleDateString('en-US')}</p>
           </div>
           
           <div class="section">
@@ -785,6 +1035,25 @@ export default function ComprehensiveConstructionCalculator() {
             )}
           </div>
           <div className="flex flex-col gap-2">
+            {projectId && (
+              <Button
+                variant="outline"
+                onClick={() => {
+                  if (confirm(`هل أنت متأكد من حذف المشروع "${currentProject?.name}"؟ هذا الإجراء لا يمكن التراجع عنه.`)) {
+                    ProjectTrackingService.deleteProject(projectId).then(() => {
+                      router.push('/user/projects/list');
+                    }).catch((error) => {
+                      console.error('Error deleting project:', error);
+                      alert('حدث خطأ في حذف المشروع');
+                    });
+                  }
+                }}
+                className="flex items-center gap-2 text-red-600 hover:text-red-700"
+              >
+                <Trash2 className="w-4 h-4" />
+                حذف المشروع
+              </Button>
+            )}
             <Button
               onClick={() => setShowSaveDialog(true)}
               className="flex items-center gap-2 bg-green-600 hover:bg-green-700"
@@ -806,7 +1075,27 @@ export default function ComprehensiveConstructionCalculator() {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-3 mb-8">
+          <TabsList className={`grid w-full ${projectId ? 'grid-cols-7' : 'grid-cols-3'} mb-8`}>
+            {projectId && (
+              <>
+                <TabsTrigger value="overview" className="flex items-center gap-2">
+                  <Eye className="w-4 h-4" />
+                  نظرة عامة
+                </TabsTrigger>
+                <TabsTrigger value="expenses" className="flex items-center gap-2">
+                  <DollarSign className="w-4 h-4" />
+                  المصروفات والمشتريات
+                </TabsTrigger>
+                <TabsTrigger value="advice" className="flex items-center gap-2">
+                  <Lightbulb className="w-4 h-4" />
+                  النصائح والتوصيات
+                </TabsTrigger>
+                <TabsTrigger value="purchases" className="flex items-center gap-2">
+                  <ShoppingCart className="w-4 h-4" />
+                  المشتريات والضمانات
+                </TabsTrigger>
+              </>
+            )}
             <TabsTrigger value="materials" className="flex items-center gap-2">
               <Package className="w-4 h-4" />
               حاسبة المواد الذكية
@@ -820,6 +1109,538 @@ export default function ComprehensiveConstructionCalculator() {
               التقرير الشامل
             </TabsTrigger>
           </TabsList>
+
+          {/* Project Overview Tab - only shown when projectId exists */}
+          {projectId && (
+            <TabsContent value="overview">
+              <div className="space-y-6">
+                {/* Project Header */}
+                {currentProject && (
+                  <Card>
+                    <CardHeader>
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <CardTitle className="text-2xl">{currentProject.name}</CardTitle>
+                          <p className="text-gray-600 mt-1">{currentProject.description}</p>
+                        </div>
+                        <Badge variant="secondary">
+                          {currentProject.status === 'planning' && 'تخطيط'}
+                          {currentProject.status === 'in-progress' && 'جاري التنفيذ'}
+                          {currentProject.status === 'completed' && 'مكتمل'}
+                          {currentProject.status === 'on-hold' && 'متوقف'}
+                        </Badge>
+                      </div>
+                    </CardHeader>
+                  </Card>
+                )}
+
+                {/* Quick Stats */}
+                {projectSummary && (
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <Card>
+                      <CardContent className="p-6">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="text-sm text-gray-600">التكلفة المقدرة</p>
+                            <p className="text-2xl font-bold text-blue-600">
+                              {projectSummary.totalEstimatedCost?.toLocaleString('en-US') || '0'} ريال
+                            </p>
+                          </div>
+                          <DollarSign className="w-8 h-8 text-blue-500" />
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    <Card>
+                      <CardContent className="p-6">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="text-sm text-gray-600">المنفق فعلياً</p>
+                            <p className="text-2xl font-bold text-green-600">
+                              {projectSummary.totalSpentCost?.toLocaleString('en-US') || '0'} ريال
+                            </p>
+                          </div>
+                          <Hammer className="w-8 h-8 text-green-500" />
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    <Card>
+                      <CardContent className="p-6">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="text-sm text-gray-600">المتبقي</p>
+                            <p className="text-2xl font-bold text-orange-600">
+                              {projectSummary.remainingCost?.toLocaleString('en-US') || '0'} ريال
+                            </p>
+                          </div>
+                          <Clock className="w-8 h-8 text-orange-500" />
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    <Card>
+                      <CardContent className="p-6">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="text-sm text-gray-600">نسبة الإكمال</p>
+                            <p className="text-2xl font-bold text-purple-600">
+                              {projectSummary.completionPercentage || 0}%
+                            </p>
+                          </div>
+                          <TrendingUp className="w-8 h-8 text-purple-500" />
+                        </div>
+                        <Progress value={projectSummary.completionPercentage || 0} className="mt-2" />
+                      </CardContent>
+                    </Card>
+                  </div>
+                )}
+
+                {/* Project Details */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  {currentProject && (
+                    <Card>
+                      <CardHeader>
+                        <div className="flex items-center justify-between">
+                          <CardTitle className="flex items-center gap-2">
+                            <FileText className="w-5 h-5" />
+                            معلومات المشروع
+                          </CardTitle>
+                          <button
+                            onClick={() => router.push(`/user/projects/create?editId=${projectId}`)}
+                            className="flex items-center gap-2 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
+                          >
+                            <Edit size={16} />
+                            تعديل المشروع
+                          </button>
+                        </div>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <label className="text-sm text-gray-600">المساحة</label>
+                            <p className="font-semibold">{currentProject.area} متر مربع</p>
+                          </div>
+                          <div>
+                            <label className="text-sm text-gray-600">نوع المشروع</label>
+                            <p className="font-semibold">
+                              {currentProject.projectType === 'residential' && 'سكني'}
+                              {currentProject.projectType === 'commercial' && 'تجاري'}
+                              {currentProject.projectType === 'industrial' && 'صناعي'}
+                            </p>
+                          </div>
+                          <div>
+                            <label className="text-sm text-gray-600">عدد الأدوار</label>
+                            <p className="font-semibold">{currentProject.floorCount}</p>
+                          </div>
+                          <div>
+                            <label className="text-sm text-gray-600">عدد الغرف</label>
+                            <p className="font-semibold">{currentProject.roomCount}</p>
+                          </div>
+                        </div>
+                        <div className="pt-4 border-t">
+                          <label className="text-sm text-gray-600">الموقع</label>
+                          <p className="font-semibold">{currentProject.location || 'غير محدد'}</p>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
+
+                  {/* Material Categories Progress */}
+                  {projectSummary?.materialProgress && (
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                          <Package className="w-5 h-5" />
+                          تقدم فئات المواد
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        {Object.entries(projectSummary.materialProgress).map(([category, progress]: [string, any]) => {
+                          const completionPercent = progress.estimatedCost > 0 
+                            ? Math.round((progress.spentCost / progress.estimatedCost) * 100)
+                            : 0;
+                          
+                          return (
+                            <div key={category} className="space-y-2">
+                              <div className="flex justify-between items-center">
+                                <span className="text-sm font-medium">{category}</span>
+                                <span className="text-sm text-gray-600">{completionPercent}%</span>
+                              </div>
+                              <Progress value={completionPercent} />
+                              <div className="flex justify-between text-xs text-gray-500">
+                                <span>منفق: {progress.spentCost?.toLocaleString('en-US') || '0'} ريال</span>
+                                <span>مقدر: {progress.estimatedCost?.toLocaleString('en-US') || '0'} ريال</span>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </CardContent>
+                    </Card>
+                  )}
+                </div>
+              </div>
+            </TabsContent>
+          )}
+
+          {/* Expenses and Purchases Tab */}
+          {projectId && (
+            <TabsContent value="expenses">
+              <div className="space-y-6">
+                {/* Materials List Header */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Package className="w-5 h-5" />
+                      قائمة المواد المقدرة
+                    </CardTitle>
+                  </CardHeader>
+                </Card>
+
+                {/* Unified Materials List */}
+                <div className="space-y-4">
+                  {(() => {
+                    const area = projectArea || 0;
+                    const type = projectType;
+                    const floors = floorCount || 1;
+                    const unifiedMaterials = calculateUnifiedMaterials(area, type, floors);
+                    
+                    return Object.values(unifiedMaterials).map((material: UnifiedMaterial) => (
+                      <Card key={material.id} className="border-l-4 border-l-blue-500">
+                        <CardContent className="p-6">
+                          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            {/* Material Info */}
+                            <div>
+                              <div className="flex items-center gap-3 mb-3">
+                                <div className="p-2 bg-blue-100 rounded-lg">
+                                  <Package className="w-5 h-5 text-blue-600" />
+                                </div>
+                                <div>
+                                  <h3 className="text-lg font-semibold">{material.name}</h3>
+                                  <p className="text-sm text-gray-600">{material.categoryAr}</p>
+                                </div>
+                              </div>
+                              <div className="bg-gray-50 p-3 rounded-lg">
+                                <p className="text-sm text-gray-600 mb-1">{material.category}</p>
+                                <div className="flex items-center gap-2">
+                                  <ShoppingCart className="w-4 h-4 text-blue-600" />
+                                  <span className="text-sm font-medium">شراء</span>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Purchase Details */}
+                            <div className="space-y-4">
+                              {/* Estimated */}
+                              <div className="flex justify-between items-center p-3 bg-blue-50 rounded-lg">
+                                <span className="text-sm font-medium">مقدر:</span>
+                                <span className="font-bold text-blue-800">
+                                  {material.quantity.toLocaleString('en-US')} {material.unit}
+                                </span>
+                              </div>
+
+                              {/* Purchased */}
+                              <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                                <span className="text-sm font-medium">مشترى:</span>
+                                <span className="font-bold text-gray-800">
+                                  {(material.purchased ?? 0).toLocaleString('en-US')} {material.unit}
+                                </span>
+                              </div>
+
+                              {/* Remaining */}
+                              <div className="flex justify-between items-center p-3 bg-orange-50 rounded-lg">
+                                <span className="text-sm font-medium">متبقي:</span>
+                                <span className="font-bold text-orange-800">
+                                  {(material.remaining ?? 0).toLocaleString('en-US')} {material.unit}
+                                </span>
+                              </div>
+
+                              {/* Remaining Cost */}
+                              <div className="flex justify-between items-center p-3 bg-red-50 rounded-lg border border-red-200">
+                                <span className="text-sm font-medium">التكلفة المتبقية:</span>
+                                <span className="text-lg font-bold text-red-700">
+                                  {(material.remainingCost ?? 0).toLocaleString('en-US')} ريال
+                                </span>
+                              </div>
+
+                              {/* Add Purchase Button */}
+                              <Button 
+                                className="w-full bg-green-600 hover:bg-green-700"
+                                onClick={() => {
+                                  // TODO: Implement add purchase functionality
+                                  alert('سيتم إضافة مشتريات قريباً');
+                                }}
+                              >
+                                <Plus className="w-4 h-4 mr-2" />
+                                إضافة مشترى
+                              </Button>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ));
+                  })()}
+                </div>
+
+                {/* Purchase Summary */}
+                <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200">
+                  <CardContent className="p-6">
+                    <h3 className="text-lg font-semibold text-blue-800 mb-4">ملخص المشتريات</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                      {(() => {
+                        const area = projectArea || 0;
+                        const type = projectType;
+                        const floors = floorCount || 1;
+                        const unifiedMaterials = calculateUnifiedMaterials(area, type, floors);
+                        const totalEstimated = Object.values(unifiedMaterials).reduce((sum: number, material: UnifiedMaterial) => sum + material.totalCost, 0);
+                        const totalPurchased = 0; // Since no purchases yet
+                        const totalRemaining = totalEstimated - totalPurchased;
+                        
+                        return [
+                          {
+                            label: 'إجمالي التقدير',
+                            value: `${totalEstimated.toLocaleString('en-US')} ريال`,
+                            color: 'text-blue-600'
+                          },
+                          {
+                            label: 'المشترى فعلياً',
+                            value: `${totalPurchased.toLocaleString('en-US')} ريال`,
+                            color: 'text-green-600'
+                          },
+                          {
+                            label: 'المتبقي للشراء',
+                            value: `${totalRemaining.toLocaleString('en-US')} ريال`,
+                            color: 'text-orange-600'
+                          },
+                          {
+                            label: 'نسبة الإكمال',
+                            value: `${Math.round((totalPurchased / totalEstimated) * 100) || 0}%`,
+                            color: 'text-purple-600'
+                          }
+                        ].map((item, index) => (
+                          <div key={index} className="text-center">
+                            <p className="text-sm text-gray-600">{item.label}</p>
+                            <p className={`text-xl font-bold ${item.color}`}>{item.value}</p>
+                          </div>
+                        ));
+                      })()}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </TabsContent>
+          )}
+
+          {/* Advice and Recommendations Tab */}
+          {projectId && (
+            <TabsContent value="advice">
+              <div className="space-y-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Lightbulb className="w-5 h-5 text-yellow-600" />
+                      نصائح وتوصيات المشروع
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                    {/* AI-Powered Recommendations */}
+                    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-6">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="p-2 bg-blue-100 rounded-lg">
+                          <Lightbulb className="w-6 h-6 text-blue-600" />
+                        </div>
+                        <h3 className="text-lg font-semibold text-blue-800">توصيات ذكية من بِنَّا</h3>
+                      </div>
+                      <div className="space-y-4">
+                        <div className="bg-white rounded-lg p-4 border-l-4 border-l-green-500">
+                          <div className="flex items-center gap-2 mb-2">
+                            <CheckCircle className="w-4 h-4 text-green-600" />
+                            <h4 className="font-semibold text-green-800">توفير في التكلفة</h4>
+                          </div>
+                          <p className="text-sm text-gray-700">
+                            يمكن توفير 15% من تكلفة الخرسانة عبر شراء دفعة واحدة بدلاً من دفعات متعددة. 
+                            الكمية المتبقية (30 م³) يمكن شراؤها مع الطلبية القادمة لتوفير 4,500 ريال.
+                          </p>
+                        </div>
+                        
+                        <div className="bg-white rounded-lg p-4 border-l-4 border-l-blue-500">
+                          <div className="flex items-center gap-2 mb-2">
+                            <Calendar className="w-4 h-4 text-blue-600" />
+                            <h4 className="font-semibold text-blue-800">جدولة التوريد</h4>
+                          </div>
+                          <p className="text-sm text-gray-700">
+                            بناءً على تقدم المشروع، ننصح بطلب الدهانات خلال الأسبوعين القادمين لتجنب التأخير. 
+                            مواد التشطيب الحالية تكفي لـ 3 أسابيع إضافية.
+                          </p>
+                        </div>
+                        
+                        <div className="bg-white rounded-lg p-4 border-l-4 border-l-orange-500">
+                          <div className="flex items-center gap-2 mb-2">
+                            <AlertTriangle className="w-4 h-4 text-orange-600" />
+                            <h4 className="font-semibold text-orange-800">تحذير مواد</h4>
+                          </div>
+                          <p className="text-sm text-gray-700">
+                            معدل استهلاك الإسمنت أعلى من المتوقع بنسبة 8%. ننصح بمراجعة جودة الخلط 
+                            وطلب 20 كيس إضافي لتجنب نقص المواد.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Expert Tips */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <Card className="border-l-4 border-l-purple-500">
+                        <CardHeader>
+                          <CardTitle className="flex items-center gap-2 text-purple-800">
+                            <Award className="w-5 h-5" />
+                            نصائح من الخبراء
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-3">
+                          <div className="flex items-start gap-3">
+                            <div className="w-2 h-2 bg-purple-500 rounded-full mt-2 flex-shrink-0"></div>
+                            <p className="text-sm">
+                              <strong>جودة الخرسانة:</strong> تأكد من اختبار مقاومة الخرسانة كل 50 م³ 
+                              للحفاظ على جودة البناء وسلامة المنشأ.
+                            </p>
+                          </div>
+                          <div className="flex items-start gap-3">
+                            <div className="w-2 h-2 bg-purple-500 rounded-full mt-2 flex-shrink-0"></div>
+                            <p className="text-sm">
+                              <strong>تخزين المواد:</strong> احتفظ بالإسمنت في مكان جاف ومرتفع عن الأرض 
+                              لمنع التكتل وفقدان الفعالية.
+                            </p>
+                          </div>
+                          <div className="flex items-start gap-3">
+                            <div className="w-2 h-2 bg-purple-500 rounded-full mt-2 flex-shrink-0"></div>
+                            <p className="text-sm">
+                              <strong>توقيت الدهان:</strong> تجنب الدهان في الأجواء الرطبة أو شديدة الحرارة 
+                              لضمان التصاق مثالي ولمعان دائم.
+                            </p>
+                          </div>
+                        </CardContent>
+                      </Card>
+
+                      <Card className="border-l-4 border-l-green-500">
+                        <CardHeader>
+                          <CardTitle className="flex items-center gap-2 text-green-800">
+                            <DollarSign className="w-5 h-5" />
+                            توفير المال
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-3">
+                          <div className="flex items-start gap-3">
+                            <div className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
+                            <p className="text-sm">
+                              <strong>الشراء بالجملة:</strong> اطلب كميات كبيرة من نفس المورد 
+                              للحصول على خصومات تصل إلى 12%.
+                            </p>
+                          </div>
+                          <div className="flex items-start gap-3">
+                            <div className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
+                            <p className="text-sm">
+                              <strong>مقارنة الأسعار:</strong> قارن أسعار 3 موردين على الأقل 
+                              لكل مادة لضمان أفضل سعر وجودة.
+                            </p>
+                          </div>
+                          <div className="flex items-start gap-3">
+                            <div className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
+                            <p className="text-sm">
+                              <strong>التفاوض على التسليم:</strong> اطلب توصيل مجاني للطلبيات 
+                              الكبيرة لتوفير تكاليف النقل.
+                            </p>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </div>
+
+                    {/* Weather Recommendations */}
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                          <Globe className="w-5 h-5 text-blue-600" />
+                          توصيات الطقس والموسم
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                          <div className="bg-blue-50 p-4 rounded-lg">
+                            <h4 className="font-semibold text-blue-800 mb-2">هذا الأسبوع</h4>
+                            <p className="text-sm text-gray-700">
+                              درجة الحرارة معتدلة (28°م) - مثالية لأعمال الخرسانة والبناء. 
+                              لا توجد أمطار متوقعة.
+                            </p>
+                          </div>
+                          <div className="bg-orange-50 p-4 rounded-lg">
+                            <h4 className="font-semibold text-orange-800 mb-2">الأسبوع القادم</h4>
+                            <p className="text-sm text-gray-700">
+                              ارتفاع في درجة الحرارة (35°م) - ننصح بالعمل في الصباح الباكر 
+                              وتجنب صب الخرسانة ظهراً.
+                            </p>
+                          </div>
+                          <div className="bg-yellow-50 p-4 rounded-lg">
+                            <h4 className="font-semibold text-yellow-800 mb-2">نصائح موسمية</h4>
+                            <p className="text-sm text-gray-700">
+                              فصل الصيف يتطلب حماية إضافية للخرسانة الطازجة. 
+                              استخدم المشمع والرش المستمر بالماء.
+                            </p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    {/* Quality Assurance Tips */}
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                          <Shield className="w-5 h-5 text-red-600" />
+                          ضمان الجودة والسلامة
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="space-y-4">
+                          <div className="flex items-start gap-4">
+                            <div className="p-2 bg-red-100 rounded-lg">
+                              <Shield className="w-5 h-5 text-red-600" />
+                            </div>
+                            <div>
+                              <h4 className="font-semibold mb-1">فحص دوري للمواد</h4>
+                              <p className="text-sm text-gray-700">
+                                تأكد من فحص جودة المواد عند التسليم ورفض أي مواد لا تطابق المواصفات. 
+                                احتفظ بعينات للاختبار إذا لزم الأمر.
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex items-start gap-4">
+                            <div className="p-2 bg-red-100 rounded-lg">
+                              <AlertTriangle className="w-5 h-5 text-red-600" />
+                            </div>
+                            <div>
+                              <h4 className="font-semibold mb-1">معايير السلامة</h4>
+                              <p className="text-sm text-gray-700">
+                                تأكد من ارتداء معدات الحماية الشخصية وتوفير بيئة عمل آمنة. 
+                                راجع إرشادات السلامة مع فريق العمل أسبوعياً.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </CardContent>
+                </Card>
+              </div>
+            </TabsContent>
+          )}
+
+          {/* Purchases & Warranties Tab */}
+          {projectId && (
+            <TabsContent value="purchases">
+              <ProjectPurchasesWarranties 
+                projectId={projectId} 
+                projectName={currentProject?.name || 'المشروع الحالي'} 
+              />
+            </TabsContent>
+          )}
 
           {/* Smart Materials Calculator Tab */}
           <TabsContent value="materials">

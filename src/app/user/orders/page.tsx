@@ -264,7 +264,7 @@ export default function OrdersPage() {
                           <Typography variant="caption" size="sm" className="text-gray-600">الكمية: {item.quantity}</Typography>
                         </div>
                         <Typography variant="body" size="lg" weight="semibold" className="text-blue-600">
-                          {(item.quantity * item.price).toLocaleString()} ر.س
+                          {(item.quantity * item.price).toLocaleString('en-US')} ر.س
                         </Typography>
                       </div>
                     ))}
@@ -277,7 +277,7 @@ export default function OrdersPage() {
                     <Typography variant="caption" size="sm" className="text-gray-600 mb-1">تاريخ الطلب</Typography>
                     <Typography variant="body" size="lg" weight="medium" className="flex items-center gap-1">
                       <Calendar className="w-4 h-4" />
-                      {new Date(order.orderDate).toLocaleDateString('ar-SA')}
+                      {new Date(order.orderDate).toLocaleDateString('en-US')}
                     </Typography>
                   </div>
                   
@@ -286,7 +286,7 @@ export default function OrdersPage() {
                       <Typography variant="caption" size="sm" className="text-gray-600 mb-1">التسليم المتوقع</Typography>
                       <Typography variant="body" size="lg" weight="medium" className="flex items-center gap-1">
                         <Calendar className="w-4 h-4" />
-                        {new Date(order.expectedDelivery).toLocaleDateString('ar-SA')}
+                        {new Date(order.expectedDelivery).toLocaleDateString('en-US')}
                       </Typography>
                     </div>
                   )}
@@ -321,7 +321,7 @@ export default function OrdersPage() {
               <div className="flex flex-col gap-2 lg:w-48">
                 <div className="text-left lg:text-right mb-4">
                   <Typography variant="subheading" size="2xl" weight="bold" className="text-blue-600">
-                    {order.total.toLocaleString()} ر.س
+                    {order.total.toLocaleString('en-US')} ر.س
                   </Typography>
                   <Typography variant="caption" size="sm" className="text-gray-600">الإجمالي</Typography>
                 </div>

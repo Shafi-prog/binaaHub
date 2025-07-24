@@ -145,34 +145,34 @@ const StorePermissionSystem: React.FC = () => {
         }
       ];
 
-      // Mock users
+      // Real users matching our authentication system
       const mockUsers: User[] = [
         {
-          id: 'user_1',
-          email: 'admin@store.com',
-          name: 'Store Admin',
+          id: 'real-store-001',
+          email: 'store@binaa.com',
+          name: 'أحمد التجاري',
           role: 'admin',
           status: 'active',
           lastLogin: new Date().toISOString(),
-          storeAccess: ['store_1', 'store_2']
+          storeAccess: ['store-binaa-001']
         },
         {
-          id: 'user_2',
-          email: 'manager@store.com',
-          name: 'John Manager',
-          role: 'manager',
+          id: 'real-user-001',
+          email: 'user@binaa.com',
+          name: 'محمد العبدالله',
+          role: 'viewer',
           status: 'active',
           lastLogin: new Date(Date.now() - 86400000).toISOString(),
-          storeAccess: ['store_1']
+          storeAccess: ['store-binaa-001']
         },
         {
-          id: 'user_3',
-          email: 'cashier@store.com',
-          name: 'Jane Cashier',
-          role: 'cashier',
+          id: 'admin-001',
+          email: 'admin@binaa.com',
+          name: 'مدير النظام',
+          role: 'admin',
           status: 'active',
           lastLogin: new Date(Date.now() - 3600000).toISOString(),
-          storeAccess: ['store_1']
+          storeAccess: ['store-binaa-001']
         }
       ];
 

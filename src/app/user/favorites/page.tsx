@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
 import { Button } from '@/core/shared/components/ui/enhanced-components';
 import { formatDateSafe, formatNumberSafe } from '../../../core/shared/utils/hydration-safe';
+import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 
 interface FavoriteProduct {
   id: string;

@@ -318,11 +318,11 @@ export default function LoansPage() {
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">الحد الأدنى:</span>
-                <span className="font-medium">{service.minAmount.toLocaleString()} ريال</span>
+                <span className="font-medium">{service.minAmount.toLocaleString('en-US')} ريال</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">الحد الأقصى:</span>
-                <span className="font-medium">{service.maxAmount.toLocaleString()} ريال</span>
+                <span className="font-medium">{service.maxAmount.toLocaleString('en-US')} ريال</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">مدة السداد:</span>

@@ -40,7 +40,7 @@ export default function MaterialPricesPage() {
         city: city.name,
         price: Math.round(2800 + Math.random() * 400), // Random price between 2800-3200
         change: Math.round((Math.random() * 10 - 5) * 10) / 10, // Random change between -5 and +5
-        lastUpdated: new Date().toLocaleDateString('ar-SA'),
+        lastUpdated: new Date().toLocaleDateString('en-US'),
       }));
 
       setPriceData(mockData);
@@ -91,7 +91,7 @@ export default function MaterialPricesPage() {
                   <div className="flex justify-between items-center mb-4">
                     <div>
                       <p className="text-3xl font-bold text-gray-900">
-                        {data.price.toLocaleString()}
+                        {data.price.toLocaleString('en-US')}
                         <span className="text-sm font-normal text-gray-500 mr-1">ر.س/طن</span>
                       </p>
                     </div>

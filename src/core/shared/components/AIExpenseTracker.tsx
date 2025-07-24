@@ -176,7 +176,7 @@ export default function AIExpenseTracker({ userId, onExpenseAdded }: AIExpenseTr
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">المبلغ</label>
-              <p className="bg-white rounded-lg p-3 border">{extractedData.amount.toLocaleString()} ريال</p>
+              <p className="bg-white rounded-lg p-3 border">{extractedData.amount.toLocaleString('en-US')} ريال</p>
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">التاريخ</label>

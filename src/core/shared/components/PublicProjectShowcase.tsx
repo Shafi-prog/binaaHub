@@ -264,7 +264,7 @@ export default function PublicProjectShowcase({ project, showHeader = true }: Pu
                 <span className="text-gray-600">المساحة:</span>
                 <span className="flex items-center gap-1">
                   <Ruler className="w-4 h-4" />
-                  {project.area.toLocaleString()} م²
+                  {project.area.toLocaleString('en-US')} م²
                 </span>
               </div>
 
@@ -308,7 +308,7 @@ export default function PublicProjectShowcase({ project, showHeader = true }: Pu
                     <div>
                       <div className="text-sm font-medium">تاريخ البدء</div>
                       <div className="text-sm text-gray-600">
-                        {new Date(project.startDate).toLocaleDateString('ar-SA')}
+                        {new Date(project.startDate).toLocaleDateString('en-US')}
                       </div>
                     </div>
                   </div>
@@ -320,7 +320,7 @@ export default function PublicProjectShowcase({ project, showHeader = true }: Pu
                     <div>
                       <div className="text-sm font-medium">تاريخ الانتهاء المتوقع</div>
                       <div className="text-sm text-gray-600">
-                        {new Date(project.endDate).toLocaleDateString('ar-SA')}
+                        {new Date(project.endDate).toLocaleDateString('en-US')}
                       </div>
                     </div>
                   </div>

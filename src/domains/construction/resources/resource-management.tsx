@@ -156,7 +156,7 @@ export function ResourceManagement() {
             </div>
             <div>
               <p className="text-sm text-gray-600">Total Value</p>
-              <p className="font-bold">SAR {(material.availableQuantity * material.costPerUnit).toLocaleString()}</p>
+              <p className="font-bold">SAR {(material.availableQuantity * material.costPerUnit).toLocaleString('en-US')}</p>
             </div>
           </div>
 

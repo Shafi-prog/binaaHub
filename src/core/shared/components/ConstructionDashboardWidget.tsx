@@ -143,7 +143,7 @@ export default function ConstructionDashboardWidget({ storeId }: ConstructionDas
           <div>
             <p className="text-sm text-orange-700">إجمالي قيمة المخزون</p>
             <p className="text-2xl font-bold text-orange-800">
-              {stats.totalValue.toLocaleString()} ر.س
+              {stats.totalValue.toLocaleString('en-US')} ر.س
             </p>
           </div>
           <TrendingUp className="w-8 h-8 text-orange-600" />
@@ -180,7 +180,7 @@ export default function ConstructionDashboardWidget({ storeId }: ConstructionDas
                   <span className="text-gray-700">{activity.product_name}</span>
                 </div>
                 <span className="text-gray-500">
-                  {new Date(activity.timestamp).toLocaleDateString('ar-SA')}
+                  {new Date(activity.timestamp).toLocaleDateString('en-US')}
                 </span>
               </div>
             ))}

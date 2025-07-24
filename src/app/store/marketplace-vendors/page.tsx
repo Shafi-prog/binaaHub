@@ -14,6 +14,7 @@ import { Badge } from "@/core/shared/components/ui/badge"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/core/shared/components/ui/table"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/core/shared/components/ui/select"
 import { Plus, Search, Edit, Trash2, Store, Users, DollarSign, Package, Eye, CheckCircle, XCircle } from "lucide-react"
+import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 
 
 export const dynamic = 'force-dynamic'

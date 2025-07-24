@@ -6,8 +6,8 @@ import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import Link from 'next/link';
 import { User } from '@supabase/supabase-js';
 import { Card, LoadingSpinner, EmptyState } from '@/core/shared/components/ui';
-import { formatDate } from '@/core/shared/utils';
 import { ClientIcon } from '@/components/icons';
+import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 
 
 export const dynamic = 'force-dynamic'

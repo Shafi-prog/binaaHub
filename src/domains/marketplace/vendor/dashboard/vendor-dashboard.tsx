@@ -61,7 +61,7 @@ export function VendorDashboard() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 mb-8">
         <StatCard
           title="Total Sales"
-          value={`SAR ${stats.totalSales.toLocaleString()}`}
+          value={`SAR ${stats.totalSales.toLocaleString('en-US')}`}
           trend="+12.5%"
           trendDirection="up"
         />
@@ -85,13 +85,13 @@ export function VendorDashboard() {
         />
         <StatCard
           title="Commission Paid"
-          value={`SAR ${stats.commission.toLocaleString()}`}
+          value={`SAR ${stats.commission.toLocaleString('en-US')}`}
           trend="-"
           trendDirection="neutral"
         />
         <StatCard
           title="Pending Payouts"
-          value={`SAR ${stats.pendingPayouts.toLocaleString()}`}
+          value={`SAR ${stats.pendingPayouts.toLocaleString('en-US')}`}
           trend="+5.2%"
           trendDirection="up"
         />
@@ -142,7 +142,7 @@ export function VendorDashboard() {
                   <p className="text-sm text-gray-600">{product.sales} sold</p>
                 </div>
                 <div className="text-right">
-                  <p className="font-medium">SAR {product.revenue.toLocaleString()}</p>
+                  <p className="font-medium">SAR {product.revenue.toLocaleString('en-US')}</p>
                 </div>
               </div>
             ))}

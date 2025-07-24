@@ -166,7 +166,7 @@ export default function LaunchMonitoringDashboard() {
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{metrics.activeUsers.toLocaleString()}</div>
+            <div className="text-2xl font-bold">{metrics.activeUsers.toLocaleString('en-US')}</div>
             <p className="text-xs text-muted-foreground">
               +12% from yesterday
             </p>
@@ -179,7 +179,7 @@ export default function LaunchMonitoringDashboard() {
             <ShoppingCart className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{metrics.transactions.toLocaleString()}</div>
+            <div className="text-2xl font-bold">{metrics.transactions.toLocaleString('en-US')}</div>
             <p className="text-xs text-muted-foreground">
               +8% from yesterday
             </p>
@@ -192,7 +192,7 @@ export default function LaunchMonitoringDashboard() {
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">SAR {metrics.revenue.toLocaleString()}</div>
+            <div className="text-2xl font-bold">SAR {metrics.revenue.toLocaleString('en-US')}</div>
             <p className="text-xs text-muted-foreground">
               +15% from yesterday
             </p>

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/enhanced-components';
 import { FileText, Upload, Search, Filter, FolderOpen, Download, Eye, Edit, Trash2, Tag, Calendar, Shield, Receipt, ArrowRight } from 'lucide-react';
 import { formatDateSafe, useIsClient } from '../../../core/shared/utils/hydration-safe';
+import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 
 export const dynamic = 'force-dynamic'
 

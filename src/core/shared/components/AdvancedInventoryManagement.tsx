@@ -264,7 +264,7 @@ export default function AdvancedInventoryManagement() {
               <TrendingUp className="h-8 w-8 text-green-600" />
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">قيمة المخزون</p>
-                <p className="text-2xl font-bold">{inventoryStats.totalValue.toLocaleString('ar-SA', { style: 'currency', currency: 'SAR' })}</p>
+                <p className="text-2xl font-bold">{inventoryStats.totalValue.toLocaleString('en-US')}</p>
               </div>
             </div>
           </CardContent>
@@ -418,7 +418,7 @@ export default function AdvancedInventoryManagement() {
                         </div>
                       </div>
                     </td>
-                    <td className="p-3">{product.unitPrice.toLocaleString('ar-SA', { style: 'currency', currency: 'SAR' })}</td>
+                    <td className="p-3">{product.unitPrice.toLocaleString('en-US')}</td>
                     <td className="p-3">{product.supplier}</td>
                     <td className="p-3">
                       <Badge className={getStatusColor(product.status)}>

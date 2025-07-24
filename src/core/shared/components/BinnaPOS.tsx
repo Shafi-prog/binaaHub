@@ -101,7 +101,7 @@ export default function BinnaPOS() {
         total: calculateTotal() * 1.15,
         paymentMethod: 'card', // TODO: make dynamic
         cashier: 'Ali', // TODO: make dynamic
-        date: new Date().toLocaleString()
+        date: new Date().toLocaleString('en-US')
       };
       setLastReceipt(receiptData);
       setShowReceipt(true);
@@ -153,7 +153,7 @@ export default function BinnaPOS() {
               />
               <h3 className="font-medium text-gray-800 mb-2">{product.title}</h3>
               <p className="text-lg font-bold text-blue-600">
-                {product.price.toLocaleString()} SAR
+                {product.price.toLocaleString('en-US')} SAR
               </p>
               <p className="text-sm text-gray-500">
                 Stock: {product.inventory_quantity}
@@ -177,7 +177,7 @@ export default function BinnaPOS() {
                   <div className="flex-1">
                     <h4 className="font-medium">{item.product.title}</h4>
                     <p className="text-sm text-gray-500">
-                      {item.product.price.toLocaleString()} SAR each
+                      {item.product.price.toLocaleString('en-US')} SAR each
                     </p>
                   </div>
                   <div className="flex items-center space-x-2">
@@ -202,15 +202,15 @@ export default function BinnaPOS() {
             <div className="border-t pt-4">
               <div className="flex justify-between mb-2">
                 <span>Subtotal:</span>
-                <span>{calculateTotal().toLocaleString()} SAR</span>
+                <span>{calculateTotal().toLocaleString('en-US')} SAR</span>
               </div>
               <div className="flex justify-between mb-2">
                 <span>VAT (15%):</span>
-                <span>{(calculateTotal() * 0.15).toLocaleString()} SAR</span>
+                <span>{(calculateTotal() * 0.15).toLocaleString('en-US')} SAR</span>
               </div>
               <div className="flex justify-between font-bold text-lg border-t pt-2">
                 <span>Total:</span>
-                <span>{(calculateTotal() * 1.15).toLocaleString()} SAR</span>
+                <span>{(calculateTotal() * 1.15).toLocaleString('en-US')} SAR</span>
               </div>
             </div>
 

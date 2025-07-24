@@ -289,7 +289,7 @@ export default function EnhancedStorePOS() {
             <div class="header">
               <h2>فاتورة نقطة البيع</h2>
               <p>رقم المعاملة: ${transactionId}</p>
-              <p>التاريخ: ${new Date().toLocaleDateString('ar-SA')}</p>
+              <p>التاريخ: ${new Date().toLocaleDateString('en-US')}</p>
               ${selectedCustomer ? `<p>العميل: ${selectedCustomer.name}</p>` : ''}
             </div>
             

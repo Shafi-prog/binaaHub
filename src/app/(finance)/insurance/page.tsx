@@ -304,7 +304,7 @@ export default function InsurancePage() {
               {service.premium && (
                 <div className="flex justify-between">
                   <span className="text-gray-600">القسط السنوي:</span>
-                  <span className="font-medium">{service.premium.toLocaleString()} ريال</span>
+                  <span className="font-medium">{service.premium.toLocaleString('en-US')} ريال</span>
                 </div>
               )}
               <div className="flex justify-between">

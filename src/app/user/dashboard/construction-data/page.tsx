@@ -148,13 +148,13 @@ export default function ConstructionDataDashboard() {
     },
     {
       title: 'إجمالي المصروفات',
-      value: `${stats.totalExpenses.toLocaleString()} ريال`,
+      value: `${stats.totalExpenses.toLocaleString('en-US')} ريال`,
       icon: 'money' as IconKey,
       color: 'bg-orange-500',
     },
     {
       title: 'الإنفاق الشهري',
-      value: `${stats.monthlySpending.toLocaleString()} ريال`,
+      value: `${stats.monthlySpending.toLocaleString('en-US')} ريال`,
       icon: 'chart' as IconKey,
       color: 'bg-indigo-500',
     },
@@ -299,7 +299,7 @@ export default function ConstructionDataDashboard() {
                       {expense.category}
                     </Typography>
                     <Typography variant="caption" size="sm" className="text-gray-600">
-                      {expense.amount.toLocaleString()} ريال
+                      {expense.amount.toLocaleString('en-US')} ريال
                     </Typography>
                   </div>
                 </div>

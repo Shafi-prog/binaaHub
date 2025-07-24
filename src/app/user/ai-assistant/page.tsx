@@ -230,7 +230,7 @@ export default function AIAssistantPage() {
                     </Typography>
                     
                     <Typography variant="caption" size="sm" className="text-gray-500">
-                      {new Date(conversation.timestamp).toLocaleDateString('ar-SA')} - {new Date(conversation.timestamp).toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' })}
+                      {new Date(conversation.timestamp).toLocaleDateString('en-US')} - {new Date(conversation.timestamp).toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' })}
                     </Typography>
                   </div>
                   

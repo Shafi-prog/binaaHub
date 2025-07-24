@@ -383,7 +383,7 @@ export default function AdvancedCRMManagement() {
               <div>
                 <p className="text-sm font-medium text-gray-600">متوسط قيمة الصفقة</p>
                 <p className="text-xl font-bold">
-                  {metrics.averageDealSize.toLocaleString('ar-SA', { style: 'currency', currency: 'SAR' })}
+                  {metrics.averageDealSize.toLocaleString('en-US')}
                 </p>
               </div>
               <DollarSign className="h-8 w-8 text-orange-600" />
@@ -397,7 +397,7 @@ export default function AdvancedCRMManagement() {
               <div>
                 <p className="text-sm font-medium text-gray-600">قيمة العميل الدائمة</p>
                 <p className="text-xl font-bold">
-                  {metrics.customerLifetimeValue.toLocaleString('ar-SA', { style: 'currency', currency: 'SAR' })}
+                  {metrics.customerLifetimeValue.toLocaleString('en-US')}
                 </p>
               </div>
               <TrendingUp className="h-8 w-8 text-indigo-600" />
@@ -411,7 +411,7 @@ export default function AdvancedCRMManagement() {
               <div>
                 <p className="text-sm font-medium text-gray-600">الإيرادات الشهرية المتكررة</p>
                 <p className="text-xl font-bold">
-                  {metrics.monthlyRecurringRevenue.toLocaleString('ar-SA', { style: 'currency', currency: 'SAR' })}
+                  {metrics.monthlyRecurringRevenue.toLocaleString('en-US')}
                 </p>
               </div>
               <FileText className="h-8 w-8 text-red-600" />
@@ -608,9 +608,9 @@ export default function AdvancedCRMManagement() {
                         </div>
                       </td>
                       <td className="p-3 font-medium">
-                        {customer.totalPurchases.toLocaleString('ar-SA', { style: 'currency', currency: 'SAR' })}
+                        {customer.totalPurchases.toLocaleString('en-US')}
                       </td>
-                      <td className="p-3">{new Date(customer.lastPurchase).toLocaleDateString('ar-SA')}</td>
+                      <td className="p-3">{new Date(customer.lastPurchase).toLocaleDateString('en-US')}</td>
                       <td className="p-3">
                         <Badge className={getSegmentColor(customer.segment)}>
                           {getSegmentText(customer.segment)}
@@ -686,7 +686,7 @@ export default function AdvancedCRMManagement() {
                         </div>
                       </td>
                       <td className="p-3 font-medium">
-                        {lead.value.toLocaleString('ar-SA', { style: 'currency', currency: 'SAR' })}
+                        {lead.value.toLocaleString('en-US')}
                       </td>
                       <td className="p-3">
                         <Badge className={getLeadStatusColor(lead.status)}>
@@ -698,7 +698,7 @@ export default function AdvancedCRMManagement() {
                       <td className="p-3">
                         <div className="flex items-center text-sm">
                           <Calendar className="w-3 h-3 mr-1 text-gray-400" />
-                          {new Date(lead.nextFollowUp).toLocaleDateString('ar-SA')}
+                          {new Date(lead.nextFollowUp).toLocaleDateString('en-US')}
                         </div>
                       </td>
                       <td className="p-3">

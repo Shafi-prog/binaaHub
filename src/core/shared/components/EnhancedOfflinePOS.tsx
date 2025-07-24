@@ -713,7 +713,7 @@ export default function EnhancedOfflinePOS() {
                   </div>
                   <div className="flex justify-between">
                     <span>التاريخ:</span>
-                    <span>{new Date(lastTransaction.timestamp).toLocaleString('ar-SA')}</span>
+                    <span>{new Date(lastTransaction.timestamp).toLocaleString('en-US')}</span>
                   </div>
                   <div className="flex justify-between">
                     <span>طريقة الدفع:</span>

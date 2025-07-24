@@ -183,7 +183,7 @@ export const CRMWidget: React.FC = () => {
                     <td className="px-3 py-2">{customer.email}</td>
                     <td className="px-3 py-2">{customer.phone}</td>
                     <td className="px-3 py-2">{customer.lastPurchase}</td>
-                    <td className="px-3 py-2">{customer.totalSpent.toLocaleString()} ر.س</td>
+                    <td className="px-3 py-2">{customer.totalSpent.toLocaleString('en-US')} ر.س</td>
                     {hasPermission('edit_customers') && (
                       <td className="px-3 py-2">
                         <button className="text-blue-600 hover:underline text-xs mr-2" aria-label={`تعديل العميل ${customer.name}`} title="تعديل العميل" onClick={() => alert('Button clicked')}>تعديل</button>

@@ -287,7 +287,7 @@ export default function GamificationPage() {
           
           <div className="text-left">
             <Typography variant="subheading" size="3xl" weight="bold" className="text-yellow-800">
-              {userStats.totalPoints.toLocaleString()}
+              {userStats.totalPoints.toLocaleString('en-US')}
             </Typography>
             <Typography variant="caption" size="sm" className="text-yellow-600">
               نقطة إجمالية
@@ -313,7 +313,7 @@ export default function GamificationPage() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         <EnhancedCard className="p-4 text-center">
           <Typography variant="subheading" size="2xl" weight="bold" className="text-blue-600 mb-1">
-            {userStats.totalSpent.toLocaleString()}
+            {userStats.totalSpent.toLocaleString('en-US')}
           </Typography>
           <Typography variant="caption" size="sm" className="text-gray-600">إجمالي الإنفاق (ر.س)</Typography>
         </EnhancedCard>
@@ -417,7 +417,7 @@ export default function GamificationPage() {
                   
                   <div className="flex items-center justify-between">
                     <span className="font-bold text-lg text-blue-600">
-                      {reward.pointsCost.toLocaleString()} نقطة
+                      {reward.pointsCost.toLocaleString('en-US')} نقطة
                     </span>
                     <Button
                       onClick={() => handleClaimReward(reward.id)}
@@ -574,7 +574,7 @@ export default function GamificationPage() {
                       
                       <div className="flex items-center justify-between">
                         <span className={`font-bold text-lg ${affordable ? 'text-blue-600' : 'text-gray-400'}`}>
-                          {reward.pointsCost.toLocaleString()} نقطة
+                          {reward.pointsCost.toLocaleString('en-US')} نقطة
                         </span>
                         
                         <Button

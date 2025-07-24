@@ -374,10 +374,10 @@ export default function PurchaseOrderManagement() {
                     </div>
                     <p className="text-sm text-gray-600 mb-1">{po.supplier?.name}</p>
                     <p className="text-sm text-gray-500">
-                      {new Date(po.order_date).toLocaleDateString('ar-SA')}
+                      {new Date(po.order_date).toLocaleDateString('en-US')}
                     </p>
                     <p className="text-sm font-medium text-green-600">
-                      {po.total_amount.toLocaleString('ar-SA')} ريال
+                      {po.total_amount.toLocaleString('en-US')} ريال
                     </p>
                   </div>
                 ))}

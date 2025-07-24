@@ -239,8 +239,8 @@ export default function ProgressTracking() {
     total_cost?: number;
   }) => {
     console.log('Project marked for sale:', saleData);
-    console.log(`Total Cost: ${saleData.total_cost?.toLocaleString()} SAR`);
-    console.log(`Sale Price: ${saleData.sale_price.toLocaleString()} SAR`);
+    console.log(`Total Cost: ${saleData.total_cost?.toLocaleString('en-US')} SAR`);
+    console.log(`Sale Price: ${saleData.sale_price.toLocaleString('en-US')} SAR`);
     console.log(`Profit Percentage: ${saleData.profit_percentage}%`);
     console.log(`Net Profit: ${saleData.sale_price - (saleData.total_cost || 0) - (saleData.sale_price * 0.05)} SAR`);
     // Here you would integrate with your project API to update the project

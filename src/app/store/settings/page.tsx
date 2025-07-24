@@ -136,7 +136,7 @@ export default function StoreSettings() {
                   تاريخ الإنشاء
                 </Typography>
                 <Typography variant="body" size="lg" className="text-gray-900">
-                  {store?.created_at ? new Date(store.created_at).toLocaleDateString('ar-SA') : 'غير متوفر'}
+                  {store?.created_at ? new Date(store.created_at).toLocaleDateString('en-US') : 'غير متوفر'}
                 </Typography>
               </div>
               <Button variant="outline" className="w-full" onClick={() => alert('Button clicked')}>

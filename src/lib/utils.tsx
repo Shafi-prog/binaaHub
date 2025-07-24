@@ -1,6 +1,7 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { formatDateSafe, formatNumberSafe, formatCurrencySafe, generateSafeId } from '../core/shared/utils/hydration-safe';
+import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));

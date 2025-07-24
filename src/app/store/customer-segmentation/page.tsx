@@ -179,7 +179,7 @@ export default function CustomerSegmentation() {
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{totalCustomers.toLocaleString()}</div>
+            <div className="text-2xl font-bold">{totalCustomers.toLocaleString('en-US')}</div>
             <p className="text-xs text-muted-foreground">
               Across all segments
             </p>
@@ -206,7 +206,7 @@ export default function CustomerSegmentation() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {Math.round(totalCustomers / segments.length).toLocaleString()}
+              {Math.round(totalCustomers / segments.length).toLocaleString('en-US')}
             </div>
             <p className="text-xs text-muted-foreground">
               Customers per segment
@@ -270,7 +270,7 @@ export default function CustomerSegmentation() {
                   </TableCell>
                   <TableCell>
                     <div className="text-sm">
-                      <div className="font-medium">{segment.customer_count.toLocaleString()}</div>
+                      <div className="font-medium">{segment.customer_count.toLocaleString('en-US')}</div>
                       <div className="text-muted-foreground">customers</div>
                     </div>
                   </TableCell>

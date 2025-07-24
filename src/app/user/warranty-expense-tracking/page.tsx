@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/enhanced-components';
 import { Shield, DollarSign, TrendingUp, ArrowRight, Receipt, Eye, Calendar, Package, BarChart3, PieChart } from 'lucide-react';
 import { formatDateSafe, useIsClient } from '../../../core/shared/utils/hydration-safe';
+import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 
 export const dynamic = 'force-dynamic'
 
@@ -118,7 +119,7 @@ export default function WarrantyExpenseTrackingPage() {
           <div className="flex items-center justify-between">
             <div>
               <Typography variant="subheading" size="2xl" weight="bold" className="text-blue-600">
-                {totalInvestment.toLocaleString()}
+                {totalInvestment.toLocaleString('en-US')}
               </Typography>
               <Typography variant="caption" size="sm" className="text-gray-600">إجمالي الاستثمار (ر.س)</Typography>
             </div>
@@ -130,7 +131,7 @@ export default function WarrantyExpenseTrackingPage() {
           <div className="flex items-center justify-between">
             <div>
               <Typography variant="subheading" size="2xl" weight="bold" className="text-green-600">
-                {totalWarrantyValue.toLocaleString()}
+                {totalWarrantyValue.toLocaleString('en-US')}
               </Typography>
               <Typography variant="caption" size="sm" className="text-gray-600">قيمة الضمانات (ر.س)</Typography>
             </div>
@@ -142,7 +143,7 @@ export default function WarrantyExpenseTrackingPage() {
           <div className="flex items-center justify-between">
             <div>
               <Typography variant="subheading" size="2xl" weight="bold" className="text-orange-600">
-                {totalClaimedValue.toLocaleString()}
+                {totalClaimedValue.toLocaleString('en-US')}
               </Typography>
               <Typography variant="caption" size="sm" className="text-gray-600">المطالبات المستلمة (ر.س)</Typography>
             </div>
@@ -179,7 +180,7 @@ export default function WarrantyExpenseTrackingPage() {
                   <div className="flex justify-between items-center">
                     <Typography variant="body" size="md">{category}</Typography>
                     <Typography variant="body" size="md" weight="medium">
-                      {amount.toLocaleString()} ر.س ({percentage}%)
+                      {amount.toLocaleString('en-US')} ر.س ({percentage}%)
                     </Typography>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
@@ -218,7 +219,7 @@ export default function WarrantyExpenseTrackingPage() {
             <div className="flex justify-between items-center p-3 bg-purple-50 rounded-lg">
               <Typography variant="body" size="md">متوسط قيمة المنتج</Typography>
               <Typography variant="body" size="md" weight="bold" className="text-purple-600">
-                {(totalInvestment / expenses.length).toLocaleString()} ر.س
+                {(totalInvestment / expenses.length).toLocaleString('en-US')} ر.س
               </Typography>
             </div>
           </div>
@@ -254,7 +255,7 @@ export default function WarrantyExpenseTrackingPage() {
                     <Typography variant="caption" size="sm" className="text-gray-600">{expense.category}</Typography>
                   </td>
                   <td className="py-4 px-4">
-                    <Typography variant="body" size="md" weight="medium">{expense.purchasePrice.toLocaleString()} ر.س</Typography>
+                    <Typography variant="body" size="md" weight="medium">{expense.purchasePrice.toLocaleString('en-US')} ر.س</Typography>
                   </td>
                   <td className="py-4 px-4">
                     <Typography variant="caption" size="sm" className="text-gray-600">
@@ -273,7 +274,7 @@ export default function WarrantyExpenseTrackingPage() {
                   </td>
                   <td className="py-4 px-4">
                     <Typography variant="body" size="md" weight="medium">
-                      {expense.claimValue ? `${expense.claimValue.toLocaleString()} ر.س` : '-'}
+                      {expense.claimValue ? `${expense.claimValue.toLocaleString('en-US')} ر.س` : '-'}
                     </Typography>
                   </td>
                   <td className="py-4 px-4">

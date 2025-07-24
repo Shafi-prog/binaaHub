@@ -14,6 +14,7 @@ import { Badge } from "@/core/shared/components/ui/badge"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/core/shared/components/ui/table"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/core/shared/components/ui/select"
 import { Plus, Search, Edit, Trash2, Warehouse, MapPin, Package, TrendingUp } from "lucide-react"
+import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 
 
 export const dynamic = 'force-dynamic'
@@ -207,7 +208,7 @@ export default function WarehouseManagement() {
               <Package className="h-8 w-8 text-green-600" />
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Total Items</p>
-                <p className="text-2xl font-bold">{totalStats.totalItems.toLocaleString()}</p>
+                <p className="text-2xl font-bold">{totalStats.totalItems.toLocaleString('en-US')}</p>
               </div>
             </div>
           </CardContent>
@@ -323,7 +324,7 @@ export default function WarehouseManagement() {
                     <TableCell>
                       <div>
                         <div className={`text-sm font-medium ${getUtilizationColor(warehouse.current_utilization, warehouse.capacity)}`}>
-                          {warehouse.current_utilization.toLocaleString()} / {warehouse.capacity.toLocaleString()}
+                          {warehouse.current_utilization.toLocaleString('en-US')} / {warehouse.capacity.toLocaleString('en-US')}
                         </div>
                         <div className="text-xs text-gray-500">
                           {Math.round((warehouse.current_utilization / warehouse.capacity) * 100)}% utilized
@@ -331,7 +332,7 @@ export default function WarehouseManagement() {
                       </div>
                     </TableCell>
                     <TableCell>
-                      <span className="text-sm">{warehouse.total_items.toLocaleString()}</span>
+                      <span className="text-sm">{warehouse.total_items.toLocaleString('en-US')}</span>
                     </TableCell>
                     <TableCell>
                       <span className="text-sm font-medium">{formatCurrency(warehouse.total_value)}</span>

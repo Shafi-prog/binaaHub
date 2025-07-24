@@ -281,11 +281,11 @@ export default function ShoppingPage() {
                             <div className="flex items-center gap-2">
                               {item.originalPrice && (
                                 <Typography variant="caption" size="sm" className="text-gray-500 line-through">
-                                  {(item.originalPrice * item.quantity).toLocaleString()} ر.س
+                                  {(item.originalPrice * item.quantity).toLocaleString('en-US')} ر.س
                                 </Typography>
                               )}
                               <Typography variant="subheading" size="lg" weight="bold" className="text-blue-600">
-                                {(item.price * item.quantity).toLocaleString()} ر.س
+                                {(item.price * item.quantity).toLocaleString('en-US')} ر.س
                               </Typography>
                             </div>
                             
@@ -298,7 +298,7 @@ export default function ShoppingPage() {
                             
                             {item.estimatedDelivery && (
                               <Typography variant="caption" size="sm" className="text-gray-600">
-                                التسليم: {new Date(item.estimatedDelivery).toLocaleDateString('ar-SA')}
+                                التسليم: {new Date(item.estimatedDelivery).toLocaleDateString('en-US')}
                               </Typography>
                             )}
                           </div>
@@ -320,18 +320,18 @@ export default function ShoppingPage() {
                 <div className="space-y-3 mb-6">
                   <div className="flex justify-between">
                     <Typography variant="body" size="lg">المجموع الفرعي:</Typography>
-                    <Typography variant="body" size="lg" weight="medium">{cartSubtotal.toLocaleString()} ر.س</Typography>
+                    <Typography variant="body" size="lg" weight="medium">{cartSubtotal.toLocaleString('en-US')} ر.س</Typography>
                   </div>
                   
                   <div className="flex justify-between">
                     <Typography variant="body" size="lg">الشحن:</Typography>
-                    <Typography variant="body" size="lg" weight="medium">{cartShipping.toLocaleString()} ر.س</Typography>
+                    <Typography variant="body" size="lg" weight="medium">{cartShipping.toLocaleString('en-US')} ر.س</Typography>
                   </div>
                   
                   <div className="border-t pt-3">
                     <div className="flex justify-between">
                       <Typography variant="subheading" size="lg" weight="bold">الإجمالي:</Typography>
-                      <Typography variant="subheading" size="lg" weight="bold" className="text-blue-600">{cartTotal.toLocaleString()} ر.س</Typography>
+                      <Typography variant="subheading" size="lg" weight="bold" className="text-blue-600">{cartTotal.toLocaleString('en-US')} ر.س</Typography>
                     </div>
                   </div>
                 </div>
@@ -398,11 +398,11 @@ export default function ShoppingPage() {
                     <div>
                       {item.originalPrice && (
                         <Typography variant="caption" size="sm" className="text-gray-500 line-through">
-                          {item.originalPrice.toLocaleString()} ر.س
+                          {item.originalPrice.toLocaleString('en-US')} ر.س
                         </Typography>
                       )}
                       <Typography variant="subheading" size="lg" weight="bold" className="text-blue-600">
-                        {item.price.toLocaleString()} ر.س
+                        {item.price.toLocaleString('en-US')} ر.س
                       </Typography>
                     </div>
                     
@@ -412,7 +412,7 @@ export default function ShoppingPage() {
                   </div>
                   
                   <Typography variant="caption" size="sm" className="text-gray-500 mb-4">
-                    أُضيف في: {new Date(item.addedDate).toLocaleDateString('ar-SA')}
+                    أُضيف في: {new Date(item.addedDate).toLocaleDateString('en-US')}
                   </Typography>
                   
                   <div className="space-y-2">

@@ -273,7 +273,7 @@ export default function AISearchSuggestions({
                       <span className="text-gray-900">{suggestion.text}</span>
                       {suggestion.searchCount && (
                         <span className="text-xs text-gray-500">
-                          ({suggestion.searchCount.toLocaleString()} بحث)
+                          ({suggestion.searchCount.toLocaleString('en-US')} بحث)
                         </span>
                       )}
                     </div>

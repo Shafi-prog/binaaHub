@@ -183,7 +183,7 @@ export default function ExpensesPage() {
           <div className="flex items-center justify-between">
             <div>
               <Typography variant="subheading" size="2xl" weight="bold" className="text-blue-600">
-                {totalExpenses.toLocaleString()}
+                {totalExpenses.toLocaleString('en-US')}
               </Typography>
               <Typography variant="caption" size="sm" className="text-gray-600">إجمالي المصروفات (ر.س)</Typography>
             </div>
@@ -195,7 +195,7 @@ export default function ExpensesPage() {
           <div className="flex items-center justify-between">
             <div>
               <Typography variant="subheading" size="2xl" weight="bold" className="text-green-600">
-                {monthlyTotal.toLocaleString()}
+                {monthlyTotal.toLocaleString('en-US')}
               </Typography>
               <Typography variant="caption" size="sm" className="text-gray-600">مصروفات هذا الشهر (ر.س)</Typography>
             </div>
@@ -219,7 +219,7 @@ export default function ExpensesPage() {
           <div className="flex items-center justify-between">
             <div>
               <Typography variant="subheading" size="2xl" weight="bold" className="text-orange-600">
-                {Math.round(totalExpenses / expenses.length).toLocaleString()}
+                {Math.round(totalExpenses / expenses.length).toLocaleString('en-US')}
               </Typography>
               <Typography variant="caption" size="sm" className="text-gray-600">متوسط المصروف (ر.س)</Typography>
             </div>
@@ -241,7 +241,7 @@ export default function ExpensesPage() {
               </div>
               <Typography variant="caption" size="sm" className="font-medium">{category.name}</Typography>
               <Typography variant="caption" size="sm" className="text-gray-600">
-                {category.total.toLocaleString()} ر.س
+                {category.total.toLocaleString('en-US')} ر.س
               </Typography>
             </div>
           ))}
@@ -438,7 +438,7 @@ export default function ExpensesPage() {
                       <div>
                         <Typography variant="caption" size="sm" className="text-gray-600 flex items-center gap-1">
                           <Calendar className="w-4 h-4" />
-                          {new Date(expense.date).toLocaleDateString('ar-SA')}
+                          {new Date(expense.date).toLocaleDateString('en-US')}
                         </Typography>
                         <Typography variant="caption" size="sm" className="text-gray-600">الدفع: {expense.paymentMethod}</Typography>
                       </div>
@@ -465,7 +465,7 @@ export default function ExpensesPage() {
 
               <div className="flex items-center gap-3">
                 <Typography variant="subheading" size="2xl" weight="bold" className="text-green-600">
-                  {expense.amount.toLocaleString()} ر.س
+                  {expense.amount.toLocaleString('en-US')} ر.س
                 </Typography>
                 
                 <div className="flex gap-2">

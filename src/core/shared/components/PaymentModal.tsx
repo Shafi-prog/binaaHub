@@ -19,7 +19,7 @@ export default function PaymentModal({ open, total, onClose, onPay }: {
         </div>
         <div className="flex justify-between items-center">
           <span className="font-bold">Total:</span>
-          <span className="text-lg">{total.toLocaleString()} SAR</span>
+          <span className="text-lg">{total.toLocaleString('en-US')} SAR</span>
         </div>
         <button onClick={onClose} className="mt-6 w-full bg-gray-300 py-2 rounded">Cancel</button>
       </div>

@@ -370,7 +370,7 @@ export default function CompleteERPSystem() {
             <div>
               <p className="text-sm font-medium text-gray-600">إجمالي الإيرادات</p>
               <p className="text-2xl font-bold text-gray-900">
-                {stats.total_revenue.toLocaleString()} ر.س
+                {stats.total_revenue.toLocaleString('en-US')} ر.س
               </p>
               <p className="text-sm text-green-600 flex items-center mt-1">
                 <TrendingUp className="w-4 h-4 mr-1" />
@@ -575,7 +575,7 @@ export default function CompleteERPSystem() {
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{customer.city}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{customer.total_orders}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {customer.total_spent.toLocaleString()} ر.س
+                    {customer.total_spent.toLocaleString('en-US')} ر.س
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
@@ -704,10 +704,10 @@ export default function CompleteERPSystem() {
                     {order.customer_name}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {new Date(order.order_date).toLocaleDateString('ar-SA')}
+                    {new Date(order.order_date).toLocaleDateString('en-US')}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {order.total.toLocaleString()} ر.س
+                    {order.total.toLocaleString('en-US')} ر.س
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
@@ -789,13 +789,13 @@ export default function CompleteERPSystem() {
                     {invoice.customer_name}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {new Date(invoice.issue_date).toLocaleDateString('ar-SA')}
+                    {new Date(invoice.issue_date).toLocaleDateString('en-US')}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {new Date(invoice.due_date).toLocaleDateString('ar-SA')}
+                    {new Date(invoice.due_date).toLocaleDateString('en-US')}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {invoice.total.toLocaleString()} ر.س
+                    {invoice.total.toLocaleString('en-US')} ر.س
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${

@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/enhanced-components';
 import { Shield, Calendar, FileText, Search, Plus, Filter, ExternalLink, AlertCircle, CheckCircle, Clock } from 'lucide-react';
 import { formatDateSafe, useIsClient, generateSafeId } from '../../../core/shared/utils/hydration-safe';
+import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 
 export const dynamic = 'force-dynamic'
 
@@ -201,7 +202,7 @@ export default function WarrantiesPage() {
           <div className="flex items-center justify-between">
             <div>
               <Typography variant="subheading" size="2xl" weight="bold" className="text-purple-600">
-                {warranties.reduce((sum, w) => sum + w.value, 0).toLocaleString()}
+                {warranties.reduce((sum, w) => sum + w.value, 0).toLocaleString('en-US')}
               </Typography>
               <Typography variant="caption" size="sm" className="text-gray-600">القيمة الإجمالية (ر.س)</Typography>
             </div>
@@ -296,7 +297,7 @@ export default function WarrantiesPage() {
                   
                   <div>
                     <Typography variant="caption" size="sm" className="text-gray-600 mb-1">القيمة</Typography>
-                    <Typography variant="body" size="lg" weight="medium">{warranty.value.toLocaleString()} ر.س</Typography>
+                    <Typography variant="body" size="lg" weight="medium">{warranty.value.toLocaleString('en-US')} ر.س</Typography>
                   </div>
                 </div>
               </div>

@@ -322,7 +322,7 @@ export default function ProjectsPage() {
   };
 
   const formatArea = (area: number) => {
-    return new Intl.NumberFormat('ar-SA').format(area);
+    return new Intl.NumberFormat('en-US').format(area);
   };
 
   const getProjectTypeLabel = (type: string) => {

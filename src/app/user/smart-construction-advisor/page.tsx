@@ -330,7 +330,7 @@ export default function SmartConstructionAdvisor() {
                               <div className="flex items-center gap-2">
                                 <DollarSign className="w-4 h-4 text-green-600" />
                                 <span className="text-green-700 font-semibold">
-                                  توفير متوقع: {rec.savings.toLocaleString()} ر.س
+                                  توفير متوقع: {rec.savings.toLocaleString('en-US')} ر.س
                                 </span>
                               </div>
                             </div>

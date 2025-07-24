@@ -383,7 +383,7 @@ const MedusaStockMovements: React.FC = () => {
                     {movement.location_name}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {new Date(movement.created_at).toLocaleDateString('ar-SA')}
+                    {new Date(movement.created_at).toLocaleDateString('en-US')}
                     <div className="text-xs">
                       {new Date(movement.created_at).toLocaleTimeString('ar-SA')}
                     </div>
@@ -436,7 +436,7 @@ const MedusaStockMovements: React.FC = () => {
               <div><span className="font-medium">Type:</span> {selectedMovement.type.replace('_', ' ')}</div>
               <div><span className="font-medium">Quantity:</span> {selectedMovement.quantity}</div>
               <div><span className="font-medium">Location:</span> {selectedMovement.location_name}</div>
-              <div><span className="font-medium">Date:</span> {new Date(selectedMovement.created_at).toLocaleString('ar-SA')}</div>
+              <div><span className="font-medium">Date:</span> {new Date(selectedMovement.created_at).toLocaleString('en-US')}</div>
               {selectedMovement.reason && (
                 <div><span className="font-medium">Reason:</span> {selectedMovement.reason}</div>
               )}

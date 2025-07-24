@@ -78,9 +78,9 @@ export default function ConstructionEcosystemPage() {
         const mockMaterials: MaterialData[] = [
           {
             id: '1',
-            name: 'Thermal Insulation Blocks',
-            category: 'Insulation',
-            specifications: ['High temperature resistance', 'Moisture resistant', 'Fire retardant'],
+            name: 'كتل العزل الحراري',
+            category: 'العزل',
+            specifications: ['مقاومة درجات الحرارة العالية', 'مقاوم للرطوبة', 'مقاوم للحريق'],
             suppliers: 12,
             avgPrice: 45,
             climateRating: 95,
@@ -89,9 +89,9 @@ export default function ConstructionEcosystemPage() {
           },
           {
             id: '2',
-            name: 'Sand-Resistant Concrete',
-            category: 'Foundation',
-            specifications: ['Enhanced durability', 'Sand penetration resistance', 'High compression'],
+            name: 'خرسانة مقاومة للرمال',
+            category: 'الأساسات',
+            specifications: ['متانة محسّنة', 'مقاومة تسرب الرمال', 'ضغط عالي'],
             suppliers: 8,
             avgPrice: 320,
             climateRating: 90,
@@ -100,9 +100,9 @@ export default function ConstructionEcosystemPage() {
           },
           {
             id: '3',
-            name: 'UV-Protected Roofing',
-            category: 'Roofing',
-            specifications: ['UV protection', 'Heat reflection', 'Waterproof'],
+            name: 'أسقف محمية من الأشعة فوق البنفسجية',
+            category: 'الأسقف',
+            specifications: ['حماية من الأشعة فوق البنفسجية', 'عكس الحرارة', 'مقاوم للماء'],
             suppliers: 15,
             avgPrice: 89,
             climateRating: 88,
@@ -114,31 +114,31 @@ export default function ConstructionEcosystemPage() {
         const mockContractors: ContractorData[] = [
           {
             id: '1',
-            name: 'Gulf Construction Masters',
-            specialization: ['Residential', 'Commercial', 'Infrastructure'],
+            name: 'أساتذة البناء الخليجي',
+            specialization: ['سكني', 'تجاري', 'بنية تحتية'],
             rating: 4.8,
             projectsCompleted: 156,
-            location: 'Riyadh',
+            location: 'الرياض',
             verified: true,
             priceRange: '$$-$$$'
           },
           {
             id: '2',
-            name: 'Desert Build Experts',
-            specialization: ['Foundation', 'Climate Optimization'],
+            name: 'خبراء البناء الصحراوي',
+            specialization: ['الأساسات', 'التحسين المناخي'],
             rating: 4.6,
             projectsCompleted: 89,
-            location: 'Jeddah',
+            location: 'جدة',
             verified: true,
             priceRange: '$-$$'
           },
           {
             id: '3',
-            name: 'Saudi Construction Alliance',
-            specialization: ['Large Scale', 'Government Projects'],
+            name: 'تحالف البناء السعودي',
+            specialization: ['مشاريع كبيرة', 'مشاريع حكومية'],
             rating: 4.9,
             projectsCompleted: 203,
-            location: 'Dammam',
+            location: 'الدمام',
             verified: true,
             priceRange: '$$$-$$$$'
           }
@@ -182,11 +182,11 @@ export default function ConstructionEcosystemPage() {
 
   if (loading) {
     return (
-      <div className="container mx-auto p-6">
+      <div className="container mx-auto p-6" dir="rtl">
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
             <Building className="h-8 w-8 animate-pulse mx-auto mb-4" />
-            <p>Loading Construction Ecosystem...</p>
+            <p>جارٍ تحميل نظام البناء المتطور...</p>
           </div>
         </div>
       </div>
@@ -194,21 +194,21 @@ export default function ConstructionEcosystemPage() {
   }
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
+    <div className="container mx-auto p-6 space-y-6" dir="rtl">
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold">Construction Ecosystem</h1>
-          <p className="text-muted-foreground">Gulf-optimized construction management and guidance</p>
+          <h1 className="text-3xl font-bold">نظام البناء المتطور</h1>
+          <p className="text-muted-foreground">إدارة وتوجيه البناء المحسّن لدول الخليج</p>
         </div>
         <div className="flex gap-2">
           <Button variant="outline" onClick={() => alert('Button clicked')}>
-            <Calendar className="h-4 w-4 mr-2" />
-            Project Planning
+            <Calendar className="h-4 w-4 ml-2" />
+            تخطيط المشروع
           </Button>
           <Button onClick={() => alert('Button clicked')}>
-            <Hammer className="h-4 w-4 mr-2" />
-            New Project
+            <Hammer className="h-4 w-4 ml-2" />
+            مشروع جديد
           </Button>
         </div>
       </div>
@@ -217,45 +217,45 @@ export default function ConstructionEcosystemPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Materials Available</CardTitle>
+            <CardTitle className="text-sm font-medium">المواد المتاحة</CardTitle>
             <Package className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">50,000+</div>
-            <p className="text-xs text-muted-foreground">Gulf-optimized specifications</p>
+            <p className="text-xs text-muted-foreground">مواصفات محسّنة لدول الخليج</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Verified Contractors</CardTitle>
+            <CardTitle className="text-sm font-medium">المقاولون المعتمدون</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">10,000+</div>
-            <p className="text-xs text-muted-foreground">Across GCC region</p>
+            <p className="text-xs text-muted-foreground">عبر منطقة دول الخليج</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Current Temperature</CardTitle>
+            <CardTitle className="text-sm font-medium">درجة الحرارة الحالية</CardTitle>
             <Thermometer className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{weatherData?.temperature}°C</div>
-            <p className="text-xs text-muted-foreground">Construction suitability: {weatherData?.constructionSuitability}%</p>
+            <div className="text-2xl font-bold">{weatherData?.temperature}°م</div>
+            <p className="text-xs text-muted-foreground">ملاءمة البناء: {weatherData?.constructionSuitability}%</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Projects Active</CardTitle>
+            <CardTitle className="text-sm font-medium">المشاريع النشطة</CardTitle>
             <Building className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">1,250</div>
-            <p className="text-xs text-muted-foreground">Across Saudi Arabia</p>
+            <p className="text-xs text-muted-foreground">عبر المملكة العربية السعودية</p>
           </CardContent>
         </Card>
       </div>
@@ -266,28 +266,28 @@ export default function ConstructionEcosystemPage() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-orange-800">
               <Cloud className="h-5 w-5" />
-              Current Climate Conditions
+              الظروف المناخية الحالية
             </CardTitle>
           </CardHeader>
           <CardContent className="text-orange-700">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
               <div>
-                <p className="text-sm font-medium">Temperature</p>
-                <p className="text-lg">{weatherData.temperature}°C</p>
+                <p className="text-sm font-medium">درجة الحرارة</p>
+                <p className="text-lg">{weatherData.temperature}°م</p>
               </div>
               <div>
-                <p className="text-sm font-medium">Humidity</p>
+                <p className="text-sm font-medium">الرطوبة</p>
                 <p className="text-lg">{weatherData.humidity}%</p>
               </div>
               <div>
-                <p className="text-sm font-medium">Sandstorm Risk</p>
+                <p className="text-sm font-medium">خطر العواصف الرملية</p>
                 <Badge variant={weatherData.sandstormRisk === 'low' ? 'default' : 'destructive'}>
-                  {weatherData.sandstormRisk}
+                  {weatherData.sandstormRisk === 'low' ? 'منخفض' : weatherData.sandstormRisk === 'medium' ? 'متوسط' : 'عالي'}
                 </Badge>
               </div>
             </div>
             <div>
-              <p className="font-medium mb-2">Today's Construction Recommendations:</p>
+              <p className="font-medium mb-2">توصيات البناء لليوم:</p>
               <ul className="space-y-1">
                 {weatherData.recommendations.map((rec, index) => (
                   <li key={index} className="flex items-start gap-2 text-sm">
@@ -304,22 +304,22 @@ export default function ConstructionEcosystemPage() {
       {/* Main Content Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="grid w-full grid-cols-5">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="materials">Materials</TabsTrigger>
-          <TabsTrigger value="contractors">Contractors</TabsTrigger>
-          <TabsTrigger value="guidance">Building Guidance</TabsTrigger>
-          <TabsTrigger value="projects">Projects</TabsTrigger>
+          <TabsTrigger value="overview">نظرة عامة</TabsTrigger>
+          <TabsTrigger value="materials">المواد</TabsTrigger>
+          <TabsTrigger value="contractors">المقاولون</TabsTrigger>
+          <TabsTrigger value="guidance">دليل البناء</TabsTrigger>
+          <TabsTrigger value="projects">المشاريع</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
-                <CardTitle>Material Categories</CardTitle>
-                <CardDescription>Most popular construction materials by climate rating</CardDescription>
+                <CardTitle>فئات المواد</CardTitle>
+                <CardDescription>أكثر مواد البناء شيوعاً حسب التقييم المناخي</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                {['Insulation', 'Foundation', 'Roofing', 'Flooring', 'Exterior'].map((category, index) => (
+                {['العزل', 'الأساسات', 'الأسقف', 'الأرضيات', 'الواجهات الخارجية'].map((category, index) => (
                   <div key={category} className="flex justify-between items-center">
                     <span className="text-sm font-medium">{category}</span>
                     <div className="flex items-center gap-2">
@@ -333,8 +333,8 @@ export default function ConstructionEcosystemPage() {
 
             <Card>
               <CardHeader>
-                <CardTitle>Top Contractors</CardTitle>
-                <CardDescription>Highest rated construction partners</CardDescription>
+                <CardTitle>أفضل المقاولين</CardTitle>
+                <CardDescription>شركاء البناء الأعلى تقييماً</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 {contractors.slice(0, 3).map((contractor) => (
@@ -348,7 +348,7 @@ export default function ConstructionEcosystemPage() {
                         <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                         <span className="font-medium">{contractor.rating}</span>
                       </div>
-                      <p className="text-sm text-muted-foreground">{contractor.projectsCompleted} projects</p>
+                      <p className="text-sm text-muted-foreground">{contractor.projectsCompleted} مشروع</p>
                     </div>
                   </div>
                 ))}
@@ -360,17 +360,17 @@ export default function ConstructionEcosystemPage() {
         <TabsContent value="materials" className="space-y-4">
           <div className="flex gap-4 mb-4">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+              <Search className="absolute right-3 top-3 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder="Search materials..."
+                placeholder="البحث في المواد..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
+                className="pr-10"
               />
             </div>
             <Button variant="outline" onClick={() => alert('Button clicked')}>
-              <Filter className="h-4 w-4 mr-2" />
-              Filter
+              <Filter className="h-4 w-4 ml-2" />
+              تصفية
             </Button>
           </div>
 
@@ -384,21 +384,21 @@ export default function ConstructionEcosystemPage() {
                       <CardDescription>{material.category}</CardDescription>
                     </div>
                     <Badge variant={material.availability === 'high' ? 'default' : 'secondary'}>
-                      {material.availability}
+                      {material.availability === 'high' ? 'عالي' : material.availability === 'medium' ? 'متوسط' : 'منخفض'}
                     </Badge>
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
                     <div className="flex justify-between text-sm mb-2">
-                      <span>Climate Rating</span>
+                      <span>التقييم المناخي</span>
                       <span>{material.climateRating}%</span>
                     </div>
                     <Progress value={material.climateRating} className="h-2" />
                   </div>
 
                   <div className="space-y-2">
-                    <p className="text-sm font-medium">Specifications:</p>
+                    <p className="text-sm font-medium">المواصفات:</p>
                     {material.specifications.map((spec, index) => (
                       <div key={index} className="flex items-center gap-2 text-sm">
                         <CheckCircle className="h-3 w-3 text-green-500" />
@@ -409,10 +409,10 @@ export default function ConstructionEcosystemPage() {
 
                   <div className="flex justify-between items-center pt-2 border-t">
                     <div>
-                      <p className="text-sm text-muted-foreground">{material.suppliers} suppliers</p>
-                      <p className="font-medium">SAR {material.avgPrice}/unit</p>
+                      <p className="text-sm text-muted-foreground">{material.suppliers} مورد</p>
+                      <p className="font-medium">{material.avgPrice} ريال/وحدة</p>
                     </div>
-                    <Button size="sm" onClick={() => alert('Button clicked')}>View Details</Button>
+                    <Button size="sm" onClick={() => alert('Button clicked')}>عرض التفاصيل</Button>
                   </div>
                 </CardContent>
               </Card>
@@ -423,17 +423,17 @@ export default function ConstructionEcosystemPage() {
         <TabsContent value="contractors" className="space-y-4">
           <div className="flex gap-4 mb-4">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+              <Search className="absolute right-3 top-3 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder="Search contractors..."
+                placeholder="البحث في المقاولين..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
+                className="pr-10"
               />
             </div>
             <Button variant="outline" onClick={() => alert('Button clicked')}>
-              <Filter className="h-4 w-4 mr-2" />
-              Filter by Location
+              <Filter className="h-4 w-4 ml-2" />
+              تصفية حسب الموقع
             </Button>
           </div>
 
@@ -465,7 +465,7 @@ export default function ConstructionEcosystemPage() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
-                    <p className="text-sm font-medium mb-2">Specializations:</p>
+                    <p className="text-sm font-medium mb-2">التخصصات:</p>
                     <div className="flex flex-wrap gap-1">
                       {contractor.specialization.map((spec, index) => (
                         <Badge key={index} variant="outline" className="text-xs">
@@ -477,11 +477,11 @@ export default function ConstructionEcosystemPage() {
 
                   <div className="flex justify-between items-center pt-2 border-t">
                     <p className="text-sm text-muted-foreground">
-                      {contractor.projectsCompleted} completed projects
+                      {contractor.projectsCompleted} مشروع مكتمل
                     </p>
                     <div className="flex gap-2">
-                      <Button size="sm" variant="outline" onClick={() => alert('Button clicked')}>View Portfolio</Button>
-                      <Button size="sm" onClick={() => alert('Button clicked')}>Get Quote</Button>
+                      <Button size="sm" variant="outline" onClick={() => alert('Button clicked')}>عرض المشاريع</Button>
+                      <Button size="sm" onClick={() => alert('Button clicked')}>طلب عرض سعر</Button>
                     </div>
                   </div>
                 </CardContent>
@@ -493,44 +493,44 @@ export default function ConstructionEcosystemPage() {
         <TabsContent value="guidance" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Saudi Arabia Building Guidance System</CardTitle>
-              <CardDescription>Climate-optimized construction recommendations for the Gulf region</CardDescription>
+              <CardTitle>نظام إرشادات البناء للمملكة العربية السعودية</CardTitle>
+              <CardDescription>توصيات البناء المحسّنة مناخياً لمنطقة الخليج</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               {[
                 {
-                  phase: 'Foundation Planning',
+                  phase: 'تخطيط الأساسات',
                   recommendations: [
-                    'Use sand-resistant concrete mix for enhanced durability',
-                    'Implement proper moisture barriers for high humidity protection',
-                    'Consider seasonal soil expansion in foundation depth calculations'
+                    'استخدام خليط الخرسانة المقاوم للرمال لمتانة محسّنة',
+                    'تطبيق حواجز الرطوبة المناسبة للحماية من الرطوبة العالية',
+                    'اعتبار تمدد التربة الموسمي في حسابات عمق الأساسات'
                   ],
-                  climateFactors: ['Soil composition', 'Seasonal moisture', 'Sand infiltration']
+                  climateFactors: ['تركيب التربة', 'الرطوبة الموسمية', 'تسلل الرمال']
                 },
                 {
-                  phase: 'Structural Framework',
+                  phase: 'الهيكل الإنشائي',
                   recommendations: [
-                    'Choose steel with anti-corrosion coating for coastal areas',
-                    'Implement thermal expansion joints for extreme temperature variations',
-                    'Use reinforced connections for sandstorm resistance'
+                    'اختيار الفولاذ بطلاء مقاوم للتآكل للمناطق الساحلية',
+                    'تطبيق مفاصل التمدد الحراري لتغيرات درجة الحرارة الشديدة',
+                    'استخدام وصلات معززة لمقاومة العواصف الرملية'
                   ],
-                  climateFactors: ['Temperature extremes', 'Humidity corrosion', 'Wind loads']
+                  climateFactors: ['درجات الحرارة القصوى', 'تآكل الرطوبة', 'أحمال الرياح']
                 },
                 {
-                  phase: 'Insulation & Protection',
+                  phase: 'العزل والحماية',
                   recommendations: [
-                    'Install high-performance thermal insulation (R-30 minimum)',
-                    'Use reflective roofing materials to reduce heat absorption',
-                    'Implement proper ventilation systems for humidity control'
+                    'تركيب عزل حراري عالي الأداء (الحد الأدنى R-30)',
+                    'استخدام مواد أسقف عاكسة لتقليل امتصاص الحرارة',
+                    'تطبيق أنظمة تهوية مناسبة للتحكم في الرطوبة'
                   ],
-                  climateFactors: ['Extreme heat', 'Humidity control', 'Energy efficiency']
+                  climateFactors: ['الحرارة الشديدة', 'التحكم في الرطوبة', 'كفاءة الطاقة']
                 }
               ].map((guidance, index) => (
                 <div key={index} className="border rounded-lg p-4">
                   <h3 className="font-semibold mb-3">{guidance.phase}</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <p className="text-sm font-medium mb-2">Recommendations:</p>
+                      <p className="text-sm font-medium mb-2">التوصيات:</p>
                       <ul className="space-y-1">
                         {guidance.recommendations.map((rec, idx) => (
                           <li key={idx} className="flex items-start gap-2 text-sm">
@@ -541,7 +541,7 @@ export default function ConstructionEcosystemPage() {
                       </ul>
                     </div>
                     <div>
-                      <p className="text-sm font-medium mb-2">Climate Factors:</p>
+                      <p className="text-sm font-medium mb-2">العوامل المناخية:</p>
                       <div className="flex flex-wrap gap-1">
                         {guidance.climateFactors.map((factor, idx) => (
                           <Badge key={idx} variant="outline" className="text-xs">
@@ -560,16 +560,16 @@ export default function ConstructionEcosystemPage() {
         <TabsContent value="projects" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Active Construction Projects</CardTitle>
-              <CardDescription>Monitor ongoing projects across the region</CardDescription>
+              <CardTitle>مشاريع البناء النشطة</CardTitle>
+              <CardDescription>مراقبة المشاريع الجارية عبر المنطقة</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="text-center py-8">
                 <Building className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                <p className="text-muted-foreground mb-4">Project management interface coming soon</p>
+                <p className="text-muted-foreground mb-4">واجهة إدارة المشاريع قريباً</p>
                 <Button onClick={() => alert('Button clicked')}>
-                  <Calendar className="h-4 w-4 mr-2" />
-                  Schedule Project Planning Session
+                  <Calendar className="h-4 w-4 ml-2" />
+                  جدولة جلسة تخطيط المشروع
                 </Button>
               </div>
             </CardContent>

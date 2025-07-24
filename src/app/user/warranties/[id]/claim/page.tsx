@@ -5,6 +5,7 @@ import { useRouter, useParams } from 'next/navigation';
 import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/enhanced-components';
 import { Shield, Calendar, ArrowRight, Package, Upload, MessageSquare, AlertTriangle, FileText, Camera } from 'lucide-react';
 import { formatDateSafe, generateSafeId } from '../../../../../core/shared/utils/hydration-safe';
+import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 
 export const dynamic = 'force-dynamic'
 

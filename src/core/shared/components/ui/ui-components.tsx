@@ -3,6 +3,7 @@
 import React, { forwardRef } from 'react';
 import { cn, formatCurrency } from '@/core/shared/utils';
 import { ChevronDown, Search, Filter, SortAsc, Eye, Edit, Trash2, Plus } from 'lucide-react';
+import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 
 // Enhanced Typography Components
 export function Typography({

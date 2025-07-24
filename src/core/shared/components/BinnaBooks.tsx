@@ -174,13 +174,13 @@ export default function BinnaBooks() {
           <div className="bg-white p-6 rounded-lg shadow">
             <h3 className="text-lg font-semibold text-gray-700 mb-2">Total Revenue</h3>
             <p className="text-3xl font-bold text-green-600">
-              {financialSummary?.total_revenue.toLocaleString()} SAR
+              {financialSummary?.total_revenue.toLocaleString('en-US')} SAR
             </p>
           </div>
           <div className="bg-white p-6 rounded-lg shadow">
             <h3 className="text-lg font-semibold text-gray-700 mb-2">VAT Collected</h3>
             <p className="text-3xl font-bold text-blue-600">
-              {financialSummary?.vat_collected.toLocaleString()} SAR
+              {financialSummary?.vat_collected.toLocaleString('en-US')} SAR
             </p>
           </div>
           <div className="bg-white p-6 rounded-lg shadow">
@@ -264,10 +264,10 @@ export default function BinnaBooks() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-medium text-gray-900">
-                        {invoice.total_amount.toLocaleString()} SAR
+                        {invoice.total_amount.toLocaleString('en-US')} SAR
                       </div>
                       <div className="text-sm text-gray-500">
-                        VAT: {invoice.vat_amount.toLocaleString()} SAR
+                        VAT: {invoice.vat_amount.toLocaleString('en-US')} SAR
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">

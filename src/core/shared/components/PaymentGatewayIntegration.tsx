@@ -201,7 +201,7 @@ export function PaymentGatewayIntegration() {
               <div>
                 <p className="text-sm font-medium text-gray-600">Total Volume</p>
                 <p className="text-2xl font-bold text-indigo-600">
-                  {paymentStats.total_amount.toLocaleString()} SAR
+                  {paymentStats.total_amount.toLocaleString('en-US')} SAR
                 </p>
               </div>
               <DollarSign className="w-8 h-8 text-indigo-500" />
@@ -423,7 +423,7 @@ export function PaymentGatewayIntegration() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-medium text-gray-900">
-                        {payment.amount.toLocaleString()} {payment.currency}
+                        {payment.amount.toLocaleString('en-US')} {payment.currency}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -497,7 +497,7 @@ export function PaymentGatewayIntegration() {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Volume:</span>
-                      <span className="font-medium">{stats.amount.toLocaleString()} SAR</span>
+                      <span className="font-medium">{stats.amount.toLocaleString('en-US')} SAR</span>
                     </div>
                   </div>
                 </div>

@@ -202,7 +202,7 @@ export default function MarketAnalytics({ className = '' }: MarketAnalyticsProps
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-blue-600 text-sm font-medium">إجمالي الطلبات</p>
-                  <p className="text-3xl font-bold text-blue-900">{selectedData.totalOrders.toLocaleString()}</p>
+                  <p className="text-3xl font-bold text-blue-900">{selectedData.totalOrders.toLocaleString('en-US')}</p>
                 </div>
                 <Users className="w-12 h-12 text-blue-500" />
               </div>
@@ -212,7 +212,7 @@ export default function MarketAnalytics({ className = '' }: MarketAnalyticsProps
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-green-600 text-sm font-medium">إجمالي الإيرادات</p>
-                  <p className="text-3xl font-bold text-green-900">{selectedData.totalRevenue.toLocaleString()} ريال</p>
+                  <p className="text-3xl font-bold text-green-900">{selectedData.totalRevenue.toLocaleString('en-US')} ريال</p>
                 </div>
                 <DollarSign className="w-12 h-12 text-green-500" />
               </div>
@@ -222,7 +222,7 @@ export default function MarketAnalytics({ className = '' }: MarketAnalyticsProps
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-purple-600 text-sm font-medium">متوسط قيمة الطلب</p>
-                  <p className="text-3xl font-bold text-purple-900">{selectedData.averageOrderValue.toLocaleString()} ريال</p>
+                  <p className="text-3xl font-bold text-purple-900">{selectedData.averageOrderValue.toLocaleString('en-US')} ريال</p>
                 </div>
                 <Zap className="w-12 h-12 text-purple-500" />
               </div>

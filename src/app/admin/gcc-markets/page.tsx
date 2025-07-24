@@ -26,6 +26,7 @@ import { GCCMarketManager } from '@/core/shared/services/markets/gcc-market-mana
 import { UAEMarketManager } from '@/core/shared/services/markets/uae-market-manager'
 import { KuwaitMarketManager } from '@/core/shared/services/markets/kuwait-market-manager'
 import { QatarMarketManager } from '@/core/shared/services/markets/qatar-market-manager'
+import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 
 
 export const dynamic = 'force-dynamic'
@@ -146,21 +147,21 @@ export default function GCCMarketsPage() {
   }
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
+    <div className="container mx-auto p-6 space-y-6" dir="rtl">
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold">GCC Markets Management</h1>
-          <p className="text-muted-foreground">Monitor and manage regional expansion across the Gulf</p>
+          <h1 className="text-3xl font-bold">إدارة أسواق دول الخليج</h1>
+          <p className="text-muted-foreground">مراقبة وإدارة التوسع الإقليمي عبر الخليج</p>
         </div>
         <div className="flex gap-2">
           <Button variant="outline" onClick={() => alert('Button clicked')}>
-            <Settings className="h-4 w-4 mr-2" />
-            Market Settings
+            <Settings className="h-4 w-4 ml-2" />
+            إعدادات السوق
           </Button>
           <Button onClick={() => alert('Button clicked')}>
-            <Globe className="h-4 w-4 mr-2" />
-            Expand Markets
+            <Globe className="h-4 w-4 ml-2" />
+            توسيع الأسواق
           </Button>
         </div>
       </div>
@@ -169,34 +170,34 @@ export default function GCCMarketsPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Vendors</CardTitle>
+            <CardTitle className="text-sm font-medium">إجمالي الموردين</CardTitle>
             <Store className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{totalVendors.toLocaleString()}</div>
-            <p className="text-xs text-muted-foreground">Across 4 GCC markets</p>
+            <div className="text-2xl font-bold">{totalVendors.toLocaleString('ar-SA')}</div>
+            <p className="text-xs text-muted-foreground">عبر 4 أسواق خليجية</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Customers</CardTitle>
+            <CardTitle className="text-sm font-medium">العملاء النشطون</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{totalCustomers.toLocaleString()}</div>
-            <p className="text-xs text-muted-foreground">Regional customer base</p>
+            <div className="text-2xl font-bold">{totalCustomers.toLocaleString('ar-SA')}</div>
+            <p className="text-xs text-muted-foreground">قاعدة العملاء الإقليمية</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+            <CardTitle className="text-sm font-medium">إجمالي الإيرادات</CardTitle>
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">${(totalRevenue / 1000000).toFixed(1)}M</div>
-            <p className="text-xs text-muted-foreground">Combined GCC revenue</p>
+            <div className="text-2xl font-bold">{(totalRevenue / 1000000).toFixed(1)} مليون ريال</div>
+            <p className="text-xs text-muted-foreground">إيرادات دول الخليج المجمعة</p>
           </CardContent>
         </Card>
 
@@ -251,11 +252,11 @@ export default function GCCMarketsPage() {
                   <div className="grid grid-cols-3 gap-4 text-sm">
                     <div>
                       <p className="text-muted-foreground">Vendors</p>
-                      <p className="font-semibold">{market.vendors.toLocaleString()}</p>
+                      <p className="font-semibold">{market.vendors.toLocaleString('en-US')}</p>
                     </div>
                     <div>
                       <p className="text-muted-foreground">Customers</p>
-                      <p className="font-semibold">{market.customers.toLocaleString()}</p>
+                      <p className="font-semibold">{market.customers.toLocaleString('en-US')}</p>
                     </div>
                     <div>
                       <p className="text-muted-foreground">Growth</p>
@@ -317,11 +318,11 @@ export default function GCCMarketsPage() {
                     <div className="space-y-2">
                       <div className="flex justify-between">
                         <span className="text-sm">Active Vendors:</span>
-                        <span className="font-medium">{market.vendors.toLocaleString()}</span>
+                        <span className="font-medium">{market.vendors.toLocaleString('en-US')}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-sm">Total Customers:</span>
-                        <span className="font-medium">{market.customers.toLocaleString()}</span>
+                        <span className="font-medium">{market.customers.toLocaleString('en-US')}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-sm">Monthly Revenue:</span>

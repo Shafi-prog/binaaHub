@@ -2,6 +2,7 @@
 import { Card } from '@/core/shared/components/ui';
 import { StoreStats } from '@/core/shared/services/api/store-dashboard';
 import { formatCurrency } from '@/core/shared/utils';
+import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 
 type StatCardProps = {
   title: string;

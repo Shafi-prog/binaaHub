@@ -3,6 +3,7 @@
 
 import React, { useState } from 'react';
 import { createWathqService, CRUtils, type WathqCommercialRecord } from '@/core/shared/services/wathq-api';
+import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 import { 
   Shield, 
   CheckCircle, 

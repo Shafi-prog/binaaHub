@@ -411,8 +411,8 @@ const EnhancedMedusaDashboard: React.FC = () => {
                     <h4 className="font-medium mb-2">ℹ️ Metadata</h4>
                     <div className="text-xs text-gray-500 space-y-1">
                       <p>ID: <code className="bg-gray-100 px-1 rounded">{selectedProduct.id}</code></p>
-                      <p>Created: {new Date(selectedProduct.created_at).toLocaleString()}</p>
-                      <p>Updated: {new Date(selectedProduct.updated_at).toLocaleString()}</p>
+                      <p>Created: {new Date(selectedProduct.created_at).toLocaleString('en-US')}</p>
+                      <p>Updated: {new Date(selectedProduct.updated_at).toLocaleString('en-US')}</p>
                       <p>Total Inventory: <span className="font-medium">{getTotalInventory(selectedProduct.variants)}</span></p>
                     </div>
                   </div>

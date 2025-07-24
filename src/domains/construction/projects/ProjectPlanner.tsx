@@ -141,7 +141,7 @@ export const ProjectPlanner: React.FC<ProjectPlannerProps> = ({ projects, onCrea
             <div>
               <p className="text-sm text-gray-600">إجمالي الميزانية</p>
               <p className="text-2xl font-bold text-gray-900">
-                {projects.reduce((sum, p) => sum + p.budget, 0).toLocaleString()} ر.س
+                {projects.reduce((sum, p) => sum + p.budget, 0).toLocaleString('en-US')} ر.س
               </p>
             </div>
             <CurrencyDollarIcon className="h-8 w-8 text-yellow-500" />
@@ -206,10 +206,10 @@ export const ProjectPlanner: React.FC<ProjectPlannerProps> = ({ projects, onCrea
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                     <div>
                       <div className="text-sm font-medium">
-                        {project.budget.toLocaleString()} ر.س
+                        {project.budget.toLocaleString('en-US')} ر.س
                       </div>
                       <div className="text-xs text-gray-500">
-                        مُستخدم: {project.spent.toLocaleString()} ر.س
+                        مُستخدم: {project.spent.toLocaleString('en-US')} ر.س
                       </div>
                     </div>
                   </td>

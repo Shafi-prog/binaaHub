@@ -19,6 +19,7 @@ import { Badge } from '@/core/shared/components/ui/badge';
 import { LoadingSpinner } from '@/core/shared/components/ui/loading-spinner';
 import { useTranslation } from '@/core/shared/hooks/useTranslation'
 import { formatDate, formatCurrency } from '@/core/shared/utils'
+import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 
 interface CommissionDashboard {
   totalEarnings: number
@@ -595,7 +596,7 @@ export default function CommissionDashboard() {
                   >
                     <div className="space-y-4">
                       <div className="text-sm text-gray-600">
-                        Available balance: ৳{dashboard?.availableBalance.toLocaleString()}
+                        Available balance: ৳{dashboard?.availableBalance.toLocaleString('en-US')}
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -655,7 +656,7 @@ export default function CommissionDashboard() {
                         <CardContent className="p-4">
                           <div className="flex items-center justify-between">
                             <div>
-                              <div className="font-medium">৳{payout.amount.toLocaleString()}</div>
+                              <div className="font-medium">৳{payout.amount.toLocaleString('en-US')}</div>
                               <div className="text-sm text-gray-500">
                                 {payout.payment_method} • {' '}
                                 {new Date(payout.created_at).toLocaleDateString()}

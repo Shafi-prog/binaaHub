@@ -19,6 +19,7 @@ import ProjectOrderComponent from '@/domains/users/components/ProjectOrderCompon
 import ProjectWarrantyManager from '@/domains/users/components/ProjectWarrantyManager';
 import ProjectExpenseTracker from '@/domains/users/components/ProjectExpenseTracker';
 import { toast } from 'react-hot-toast';
+import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 
 // Advice for each stage
 const STAGE_ADVICE = {
@@ -525,17 +526,17 @@ function ProjectDetailClient() {
                 </button>
                 
                 <button 
-                  onClick={() => router.push(`/user/projects/${project.id}/edit`)}
+                  onClick={() => router.push(`/user/projects/create?editId=${project.id}`)}
                   className="w-full bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded-lg transition-colors"
                 >
                   تعديل المشروع
                 </button>
                 
                 <Link 
-                  href={`/user/projects/${project.id}/timeline`}
+                  href={`/user/comprehensive-construction-calculator?projectId=${project.id}`}
                   className="block w-full bg-purple-500 hover:bg-purple-600 text-white py-2 px-4 rounded-lg transition-colors text-center"
                 >
-                  الجدول الزمني
+                  إدارة المشروع
                 </Link>
               </div>
             </Card>

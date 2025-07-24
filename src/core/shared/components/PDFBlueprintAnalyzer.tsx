@@ -194,7 +194,7 @@ const PDFBlueprintAnalyzer: React.FC = () => {
 
     const report = {
       projectName: file?.name.replace('.pdf', '') || 'مشروع غير محدد',
-      analysisDate: new Date().toLocaleDateString('ar-SA'),
+      analysisDate: new Date().toLocaleDateString('en-US'),
       extractedData,
       costEstimate,
     };
@@ -445,7 +445,7 @@ const PDFBlueprintAnalyzer: React.FC = () => {
             <div className="text-center">
               <div className="text-sm text-green-600 mb-2">التكلفة الإجمالية المقدرة</div>
               <div className="text-4xl font-bold text-green-700">
-                {costEstimate.totalCost.toLocaleString('ar-SA')} ريال
+                {costEstimate.totalCost.toLocaleString('en-US')} ريال
               </div>
               <div className="text-sm text-green-600 mt-2">
                 تشمل المواد والعمالة (بدون أرباح المقاول)
@@ -461,7 +461,7 @@ const PDFBlueprintAnalyzer: React.FC = () => {
                 {Object.entries(costEstimate.breakdown).map(([phase, cost]) => (
                   <div key={phase} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
                     <span className="font-medium">{getPhaseNameArabic(phase)}</span>
-                    <span className="font-bold text-gray-800">{cost.toLocaleString('ar-SA')} ر.س</span>
+                    <span className="font-bold text-gray-800">{cost.toLocaleString('en-US')} ر.س</span>
                   </div>
                 ))}
               </div>
@@ -480,7 +480,7 @@ const PDFBlueprintAnalyzer: React.FC = () => {
                         </div>
                       </div>
                       <div className="font-bold text-right">
-                        {material.totalPrice.toLocaleString('ar-SA')} ر.س
+                        {material.totalPrice.toLocaleString('en-US')} ر.س
                       </div>
                     </div>
                   </div>
@@ -502,7 +502,7 @@ const PDFBlueprintAnalyzer: React.FC = () => {
                   <div key={index} className="bg-white p-3 rounded-lg">
                     <div className="font-medium text-sm">{phase.name}</div>
                     <div className="text-blue-600 font-bold">{phase.duration} شهر</div>
-                    <div className="text-xs text-gray-600">{phase.cost.toLocaleString('ar-SA')} ر.س</div>
+                    <div className="text-xs text-gray-600">{phase.cost.toLocaleString('en-US')} ر.س</div>
                   </div>
                 ))}
               </div>
@@ -534,7 +534,7 @@ const PDFBlueprintAnalyzer: React.FC = () => {
                     <div className="flex justify-between items-start mb-2">
                       <span className="font-medium text-green-800">{alternative.description}</span>
                       <span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-sm font-medium">
-                        وفر {alternative.savings.toLocaleString('ar-SA')} ر.س
+                        وفر {alternative.savings.toLocaleString('en-US')} ر.س
                       </span>
                     </div>
                     <div className="text-sm text-green-600">{alternative.impact}</div>

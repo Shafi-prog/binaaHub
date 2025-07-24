@@ -237,7 +237,7 @@ export default function BankingPage() {
               {service.minAmount && (
                 <div className="flex justify-between">
                   <span className="text-gray-600">الحد الأدنى:</span>
-                  <span className="font-medium">{service.minAmount.toLocaleString()} ريال</span>
+                  <span className="font-medium">{service.minAmount.toLocaleString('en-US')} ريال</span>
                 </div>
               )}
               {service.term && (

@@ -422,7 +422,7 @@ export default function SmartInsightsPage() {
                         {insight.categoryAr}
                       </span>
                       <span>الثقة: {insight.confidence}%</span>
-                      <span>{new Date(insight.timestamp).toLocaleDateString('ar-SA')}</span>
+                      <span>{new Date(insight.timestamp).toLocaleDateString('en-US')}</span>
                     </div>
                   </div>
                 </div>
@@ -430,7 +430,7 @@ export default function SmartInsightsPage() {
                 <div className="text-left">
                   {insight.impact > 0 && (
                     <Typography variant="subheading" size="2xl" weight="bold" className="text-green-600">
-                      {insight.impact.toLocaleString()} ر.س
+                      {insight.impact.toLocaleString('en-US')} ر.س
                     </Typography>
                   )}
                   <Typography variant="caption" size="sm" className="text-gray-600">
@@ -511,11 +511,11 @@ export default function SmartInsightsPage() {
                         
                         <div className="text-left">
                           <Typography variant="subheading" size="lg" weight="bold" className="text-blue-600">
-                            {product.price.toLocaleString()} ر.س
+                            {product.price.toLocaleString('en-US')} ر.س
                           </Typography>
                           {product.savings && (
                             <Typography variant="caption" size="sm" className="text-green-600">
-                              وفر {product.savings.toLocaleString()} ر.س
+                              وفر {product.savings.toLocaleString('en-US')} ر.س
                             </Typography>
                           )}
                         </div>

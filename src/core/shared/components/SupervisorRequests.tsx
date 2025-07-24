@@ -7,6 +7,7 @@ import { LoadingSpinner } from '@/core/shared/components/ui/loading-spinner';
 import { Input, Textarea, Select, Modal, EmptyState } from '@/core/shared/components/ui';
 import { useTranslation } from '@/core/shared/hooks/useTranslation';
 import { formatCurrency, formatDate } from '@/core/shared/utils';
+import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 
 interface SupervisorRequest {
   id: string;

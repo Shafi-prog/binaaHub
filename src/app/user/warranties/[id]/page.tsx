@@ -5,6 +5,7 @@ import { useRouter, useParams } from 'next/navigation';
 import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/enhanced-components';
 import { Shield, Calendar, FileText, ArrowRight, Package, DollarSign, AlertCircle, CheckCircle, Clock, Phone, Mail, MapPin } from 'lucide-react';
 import { formatDateSafe, useIsClient } from '../../../../core/shared/utils/hydration-safe';
+import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 
 export const dynamic = 'force-dynamic'
 
@@ -254,7 +255,7 @@ export default function WarrantyDetailsPage() {
                 <Typography variant="caption" size="sm" className="text-gray-600 mb-1">قيمة المنتج</Typography>
                 <Typography variant="body" size="lg" weight="medium" className="flex items-center gap-1">
                   <DollarSign className="w-4 h-4" />
-                  {warranty.value.toLocaleString()} ر.س
+                  {warranty.value.toLocaleString('en-US')} ر.س
                 </Typography>
               </div>
             </div>

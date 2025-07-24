@@ -151,7 +151,7 @@ export default function BudgetManagement() {
               <div>
                 <p className="text-sm font-medium text-gray-600">Total Budget</p>
                 <p className="text-2xl font-bold text-blue-600">
-                  {budgetSummary.totalBudget.toLocaleString()} SAR
+                  {budgetSummary.totalBudget.toLocaleString('en-US')} SAR
                 </p>
               </div>
               <Calculator className="w-8 h-8 text-blue-600" />
@@ -165,7 +165,7 @@ export default function BudgetManagement() {
               <div>
                 <p className="text-sm font-medium text-gray-600">Actual Spent</p>
                 <p className="text-2xl font-bold text-green-600">
-                  {budgetSummary.totalActual.toLocaleString()} SAR
+                  {budgetSummary.totalActual.toLocaleString('en-US')} SAR
                 </p>
               </div>
               <DollarSign className="w-8 h-8 text-green-600" />
@@ -179,7 +179,7 @@ export default function BudgetManagement() {
               <div>
                 <p className="text-sm font-medium text-gray-600">Variance</p>
                 <p className={`text-2xl font-bold ${budgetSummary.totalVariance < 0 ? 'text-green-600' : 'text-red-600'}`}>
-                  {budgetSummary.totalVariance > 0 ? '+' : ''}{budgetSummary.totalVariance.toLocaleString()} SAR
+                  {budgetSummary.totalVariance > 0 ? '+' : ''}{budgetSummary.totalVariance.toLocaleString('en-US')} SAR
                 </p>
               </div>
               {budgetSummary.totalVariance < 0 ? 
@@ -222,7 +222,7 @@ export default function BudgetManagement() {
                 <div className="flex justify-between items-center">
                   <span className="text-sm font-medium">Overall Progress</span>
                   <span className="text-sm text-gray-600">
-                    {budgetSummary.totalActual.toLocaleString()} / {budgetSummary.totalBudget.toLocaleString()} SAR
+                    {budgetSummary.totalActual.toLocaleString('en-US')} / {budgetSummary.totalBudget.toLocaleString('en-US')} SAR
                   </span>
                 </div>
                 <Progress value={budgetSummary.utilizationRate} className="w-full" />
@@ -254,8 +254,8 @@ export default function BudgetManagement() {
                     </div>
                     <div className="flex items-center gap-4">
                       <div className="text-right">
-                        <p className="text-sm font-medium">{item.actualAmount.toLocaleString()} SAR</p>
-                        <p className="text-xs text-gray-500">of {item.budgetAmount.toLocaleString()} SAR</p>
+                        <p className="text-sm font-medium">{item.actualAmount.toLocaleString('en-US')} SAR</p>
+                        <p className="text-xs text-gray-500">of {item.budgetAmount.toLocaleString('en-US')} SAR</p>
                       </div>
                       <Badge className={getStatusColor(item.status)}>
                         {item.status}
@@ -287,8 +287,8 @@ export default function BudgetManagement() {
                       </div>
                       <Progress value={utilization} className="w-full" />
                       <div className="flex justify-between text-sm text-gray-500">
-                        <span>{item.actualAmount.toLocaleString()} SAR</span>
-                        <span>{item.budgetAmount.toLocaleString()} SAR</span>
+                        <span>{item.actualAmount.toLocaleString('en-US')} SAR</span>
+                        <span>{item.budgetAmount.toLocaleString('en-US')} SAR</span>
                       </div>
                     </div>
                   );

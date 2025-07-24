@@ -182,7 +182,7 @@ export const PurchaseOrdersWidget: React.FC = () => {
                         <span className="ml-2 inline-block px-2 py-0.5 text-xs rounded bg-red-100 text-red-700">ملغي</span>
                       )}
                     </td>
-                    <td className="px-3 py-2">{order.total.toLocaleString()} ر.س</td>
+                    <td className="px-3 py-2">{order.total.toLocaleString('en-US')} ر.س</td>
                     {hasPermission('edit_purchase_orders') && (
                       <td className="px-3 py-2">
                         <button className="text-blue-600 hover:underline text-xs mr-2" aria-label={`تعديل أمر الشراء ${order.id}`} title="تعديل أمر الشراء" onClick={() => alert('Button clicked')}>تعديل</button>

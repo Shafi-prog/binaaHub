@@ -401,21 +401,21 @@ const ERPSystemsManagement: React.FC = () => {
                         <div>
                           <p className="text-sm font-medium text-gray-500">Products</p>
                           <p className="mt-1 text-lg font-semibold text-gray-900">
-                            {system.stats.products.toLocaleString()}
+                            {system.stats.products.toLocaleString('en-US')}
                           </p>
                         </div>
                         
                         <div>
                           <p className="text-sm font-medium text-gray-500">Orders</p>
                           <p className="mt-1 text-lg font-semibold text-gray-900">
-                            {system.stats.orders.toLocaleString()}
+                            {system.stats.orders.toLocaleString('en-US')}
                           </p>
                         </div>
                         
                         <div>
                           <p className="text-sm font-medium text-gray-500">Last Sync</p>
                           <p className="mt-1 text-sm text-gray-600">
-                            {system.lastSync ? new Date(system.lastSync).toLocaleString() : 'Never'}
+                            {system.lastSync ? new Date(system.lastSync).toLocaleString('en-US') : 'Never'}
                           </p>
                         </div>
                       </>

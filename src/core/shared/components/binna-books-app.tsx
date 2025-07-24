@@ -125,7 +125,7 @@ export default function BinnaBooksApp() {
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold text-green-600">
-                {financialData.revenue.toLocaleString()} ر.س
+                {financialData.revenue.toLocaleString('en-US')} ر.س
               </div>
               <div className="text-sm text-gray-500">+15% من الشهر الماضي</div>
             </CardContent>
@@ -137,7 +137,7 @@ export default function BinnaBooksApp() {
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold text-red-600">
-                {financialData.expenses.toLocaleString()} ر.س
+                {financialData.expenses.toLocaleString('en-US')} ر.س
               </div>
               <div className="text-sm text-gray-500">+8% من الشهر الماضي</div>
             </CardContent>
@@ -149,7 +149,7 @@ export default function BinnaBooksApp() {
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold text-blue-600">
-                {financialData.profit.toLocaleString()} ر.س
+                {financialData.profit.toLocaleString('en-US')} ر.س
               </div>
               <div className="text-sm text-gray-500">هامش ربح 27%</div>
             </CardContent>
@@ -161,7 +161,7 @@ export default function BinnaBooksApp() {
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold text-purple-600">
-                {financialData.vatCollected.toLocaleString()} ر.س
+                {financialData.vatCollected.toLocaleString('en-US')} ر.س
               </div>
               <div className="text-sm text-gray-500">15% على المبيعات</div>
             </CardContent>
@@ -173,7 +173,7 @@ export default function BinnaBooksApp() {
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold text-orange-600">
-                {financialData.vatPaid.toLocaleString()} ر.س
+                {financialData.vatPaid.toLocaleString('en-US')} ر.س
               </div>
               <div className="text-sm text-gray-500">على المشتريات</div>
             </CardContent>
@@ -231,9 +231,9 @@ export default function BinnaBooksApp() {
                             </code>
                           </td>
                           <td className="p-3 font-medium">{invoice.customer}</td>
-                          <td className="p-3">{invoice.amount.toLocaleString()} ر.س</td>
-                          <td className="p-3">{invoice.vat.toLocaleString()} ر.س</td>
-                          <td className="p-3 font-semibold">{invoice.total.toLocaleString()} ر.س</td>
+                          <td className="p-3">{invoice.amount.toLocaleString('en-US')} ر.س</td>
+                          <td className="p-3">{invoice.vat.toLocaleString('en-US')} ر.س</td>
+                          <td className="p-3 font-semibold">{invoice.total.toLocaleString('en-US')} ر.س</td>
                           <td className="p-3 text-sm text-gray-500">{invoice.date}</td>
                           <td className="p-3">
                             <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(invoice.status)}`}>
@@ -275,20 +275,20 @@ export default function BinnaBooksApp() {
                     <div className="flex justify-between">
                       <span>إجمالي الإيرادات</span>
                       <span className="font-semibold text-green-600">
-                        {financialData.revenue.toLocaleString()} ر.س
+                        {financialData.revenue.toLocaleString('en-US')} ر.س
                       </span>
                     </div>
                     <div className="flex justify-between">
                       <span>إجمالي المصروفات</span>
                       <span className="font-semibold text-red-600">
-                        ({financialData.expenses.toLocaleString()}) ر.س
+                        ({financialData.expenses.toLocaleString('en-US')}) ر.س
                       </span>
                     </div>
                     <hr />
                     <div className="flex justify-between text-lg font-bold">
                       <span>صافي الربح</span>
                       <span className="text-blue-600">
-                        {financialData.profit.toLocaleString()} ر.س
+                        {financialData.profit.toLocaleString('en-US')} ر.س
                       </span>
                     </div>
                   </div>
@@ -342,7 +342,7 @@ export default function BinnaBooksApp() {
                     <div className="space-y-2">
                       <div className="flex justify-between">
                         <span>مبيعات محلية (15%)</span>
-                        <span>{financialData.vatCollected.toLocaleString()} ر.س</span>
+                        <span>{financialData.vatCollected.toLocaleString('en-US')} ر.س</span>
                       </div>
                       <div className="flex justify-between">
                         <span>صادرات (0%)</span>
@@ -356,7 +356,7 @@ export default function BinnaBooksApp() {
                     <div className="space-y-2">
                       <div className="flex justify-between">
                         <span>مشتريات محلية (15%)</span>
-                        <span>{financialData.vatPaid.toLocaleString()} ر.س</span>
+                        <span>{financialData.vatPaid.toLocaleString('en-US')} ر.س</span>
                       </div>
                       <div className="flex justify-between">
                         <span>واردات (15%)</span>
@@ -370,7 +370,7 @@ export default function BinnaBooksApp() {
                   <div className="flex justify-between items-center">
                     <span className="text-lg font-semibold">صافي ضريبة القيمة المضافة المستحقة:</span>
                     <span className="text-xl font-bold text-blue-600">
-                      {(financialData.vatCollected - financialData.vatPaid).toLocaleString()} ر.س
+                      {(financialData.vatCollected - financialData.vatPaid).toLocaleString('en-US')} ر.س
                     </span>
                   </div>
                 </div>

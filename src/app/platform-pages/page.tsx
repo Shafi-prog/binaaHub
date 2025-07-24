@@ -1,0 +1,516 @@
+'use client';
+
+import Link from 'next/link';
+import { useState } from 'react';
+import { cn } from '@/core/shared/utils';
+import { 
+  Book, 
+  ExternalLink, 
+  Home, 
+  Users, 
+  Store, 
+  Shield, 
+  Globe,
+  FileText,
+  Search,
+  ChevronDown,
+  Copy,
+  Check
+} from 'lucide-react';
+
+// Base URLs
+const LOCAL_BASE_URL = 'http://localhost:3000';
+const VERCEL_BASE_URL = 'https://binaa-hub-shafi-projs-projects.vercel.app';
+
+// Pages data organized by sections
+const pagesSections = {
+  auth: {
+    title: 'Authentication Pages',
+    emoji: '🔐',
+    description: 'User authentication and account management pages.',
+    pages: [
+      { path: '/auth/login', name: 'Login', description: 'User login page' },
+      { path: '/auth/signup', name: 'Signup', description: 'User registration page' },
+      { path: '/auth/forgot-password', name: 'Forgot Password', description: 'Password recovery page' },
+      { path: '/auth/reset-password-confirm', name: 'Reset Password', description: 'Password reset confirmation' },
+      { path: '/login', name: 'Alternative Login', description: 'Alternative login entry point' }
+    ]
+  },
+  user: {
+    title: 'User Portal Pages',
+    emoji: '👤',
+    description: 'Complete user portal with dashboard, projects, AI tools, warranties, social features, and comprehensive personal management.',
+    pages: [
+      { path: '/user/dashboard', name: 'User Dashboard', description: 'Main user dashboard with stats and overview' },
+      { path: '/user/dashboard/construction-data', name: 'Construction Data Dashboard', description: 'Construction-specific data dashboard' },
+      { path: '/user/profile', name: 'User Profile', description: 'User profile management and settings' },
+      { path: '/user/projects', name: 'Projects Dashboard', description: 'Project management dashboard' },
+      { path: '/user/projects/new', name: 'Create New Project', description: 'Create new construction project' },
+      { path: '/user/projects/list', name: 'Projects List', description: 'List and manage all projects' },
+      { path: '/user/projects/calculator', name: 'Project Calculator', description: 'Project cost calculation tools' },
+      { path: '/user/projects/notebook', name: 'Project Notebook', description: 'Project notes and documentation' },
+      { path: '/user/projects/settings', name: 'Project Settings', description: 'Configure project settings' },
+      { path: '/user/projects/suppliers', name: 'Project Suppliers', description: 'Manage project suppliers' },
+      { path: '/user/projects/subscription', name: 'Project Subscriptions', description: 'Manage project-related subscriptions' },
+      { path: '/user/projects/create', name: 'Project Creation Wizard', description: 'Step-by-step project creation' },
+      { path: '/user/comprehensive-construction-calculator', name: 'Construction Calculator', description: 'Advanced construction cost calculator' },
+      { path: '/user/individual-home-calculator', name: 'Home Calculator', description: 'Individual home construction calculator' },
+      { path: '/user/company-bulk-optimizer', name: 'Company Bulk Optimizer', description: 'Bulk purchase optimization for companies' },
+      { path: '/user/ai-hub', name: 'AI Hub', description: 'Central AI tools and services' },
+      { path: '/user/ai-assistant', name: 'AI Assistant', description: 'Personal AI construction assistant' },
+      { path: '/user/ai-smart-features-test', name: 'AI Smart Features Test', description: 'Test AI-powered smart features' },
+      { path: '/user/smart-construction-advisor', name: 'Smart Construction Advisor', description: 'AI-powered construction advice' },
+      { path: '/user/smart-insights', name: 'Smart Insights', description: 'AI-driven project insights and analytics' },
+      { path: '/user/projects-marketplace', name: 'Projects Marketplace', description: 'Browse and purchase completed projects' },
+      { path: '/user/projects-marketplace/for-sale', name: 'Projects For Sale', description: 'Projects available for purchase' },
+      { path: '/user/building-advice', name: 'Construction Advice', description: 'Construction tips and professional advice' },
+      { path: '/user/expenses', name: 'Expense Tracking', description: 'Personal expense tracking and management' },
+      { path: '/user/warranty-expense-tracking', name: 'Warranty & Expense Tracking', description: 'Combined warranty and expense management' },
+      { path: '/user/warranties', name: 'Warranty Management', description: 'Product warranty tracking and claims' },
+      { path: '/user/warranties/new', name: 'Add New Warranty', description: 'Register new product warranty' },
+      { path: '/user/warranties/tracking', name: 'Warranty Tracking', description: 'Track warranty status and claims' },
+      { path: '/user/warranties/ai-extract', name: 'AI Warranty Extraction', description: 'AI-powered warranty information extraction' },
+      { path: '/user/orders', name: 'Order History', description: 'Order history and tracking' },
+      { path: '/user/cart', name: 'Shopping Cart', description: 'Shopping cart management' },
+      { path: '/user/favorites', name: 'Favorites', description: 'Saved items and favorites' },
+      { path: '/user/balance', name: 'Account Balance', description: 'Account balance and transactions' },
+      { path: '/user/payment-channels', name: 'Payment Methods', description: 'Manage payment methods and channels' },
+      { path: '/user/payment/success', name: 'Payment Success', description: 'Payment success confirmation page' },
+      { path: '/user/payment/error', name: 'Payment Error', description: 'Payment error handling page' },
+      { path: '/user/invoices', name: 'Invoices', description: 'Invoice management and history' },
+      { path: '/user/subscriptions', name: 'Subscriptions', description: 'Manage active subscriptions' },
+      { path: '/user/social-community', name: 'Social Community', description: 'Community features and social interactions' },
+      { path: '/user/chat', name: 'Chat & Messaging', description: 'Real-time chat and messaging' },
+      { path: '/user/gamification', name: 'Gamification', description: 'Achievements, points, and gamification features' },
+      { path: '/user/stores-browse', name: 'Browse Stores', description: 'Browse and discover stores' },
+      { path: '/user/support', name: 'Customer Support', description: 'Help and customer support' },
+      { path: '/user/help-center', name: 'Help Center', description: 'Self-service help and documentation' },
+      { path: '/user/feedback', name: 'Feedback', description: 'Submit feedback and suggestions' },
+      { path: '/user/settings', name: 'User Settings', description: 'Account settings and preferences' },
+      { path: '/user/documents', name: 'Documents', description: 'Personal document management' }
+    ]
+  },
+  store: {
+    title: 'Store Management Pages',
+    emoji: '🏪',
+    description: 'Comprehensive e-commerce store management including products, orders, customers, POS, inventory, analytics, and business operations.',
+    pages: [
+      { path: '/store/dashboard', name: 'Store Dashboard', description: 'Store management dashboard with key metrics' },
+      { path: '/store/pos', name: 'POS System', description: 'Point of sale system for in-store transactions' },
+      { path: '/store/pos/arabic', name: 'Arabic POS', description: 'Arabic language POS system' },
+      { path: '/store/pos/offline', name: 'Offline POS', description: 'Offline-capable POS system' },
+      { path: '/store/construction-products', name: 'Construction Products', description: 'Construction product catalog and management' },
+      { path: '/store/construction-products/new', name: 'Add Construction Product', description: 'Add new construction products' },
+      { path: '/store/products/construction/new', name: 'New Construction Product', description: 'Create new construction product listing' },
+      { path: '/store/orders', name: 'Order Management', description: 'Order processing, fulfillment, and tracking' },
+      { path: '/store/order-management', name: 'Advanced Order Management', description: 'Advanced order processing and management' },
+      { path: '/store/customers', name: 'Customer Database', description: 'Customer management and relationship tracking' },
+      { path: '/store/customer-segmentation', name: 'Customer Segmentation', description: 'Customer segmentation and targeting' },
+      { path: '/store/customer-groups', name: 'Customer Groups', description: 'Manage customer groups and categories' },
+      { path: '/store/inventory', name: 'Inventory Management', description: 'Inventory tracking, stock management, and alerts' },
+      { path: '/store/analytics', name: 'Store Analytics', description: 'Store analytics, reports, and performance metrics' },
+      { path: '/store/reports', name: 'Reports', description: 'Detailed business reports and analytics' },
+      { path: '/store/financial-management', name: 'Financial Management', description: 'Financial overview, revenue, and expense tracking' },
+      { path: '/store/expenses', name: 'Expense Management', description: 'Store expense tracking and management' },
+      { path: '/store/payments', name: 'Payment Management', description: 'Payment processing and transaction management' },
+      { path: '/store/promotions', name: 'Promotions & Discounts', description: 'Promotional campaigns, discounts, and offers' },
+      { path: '/store/campaigns', name: 'Marketing Campaigns', description: 'Marketing campaign management' },
+      { path: '/store/email-campaigns', name: 'Email Campaigns', description: 'Email marketing and campaigns' },
+      { path: '/store/suppliers', name: 'Supplier Management', description: 'Supplier relationship and procurement management' },
+      { path: '/store/purchase-orders', name: 'Purchase Orders', description: 'Purchase order management and procurement' },
+      { path: '/store/warehouses', name: 'Warehouse Management', description: 'Warehouse operations and management' },
+      { path: '/store/delivery', name: 'Delivery Management', description: 'Delivery and logistics management' },
+      { path: '/store/shipping', name: 'Shipping Management', description: 'Shipping options and logistics' },
+      { path: '/store/collections', name: 'Product Collections', description: 'Product collections and categorization' },
+      { path: '/store/categories/construction', name: 'Construction Categories', description: 'Construction product categories' },
+      { path: '/store/product-bundles', name: 'Product Bundles', description: 'Product bundling and package deals' },
+      { path: '/store/product-bundles/create', name: 'Create Product Bundle', description: 'Create new product bundles' },
+      { path: '/store/product-variants', name: 'Product Variants', description: 'Product variants and options management' },
+      { path: '/store/pricing', name: 'Pricing Management', description: 'Price management and strategies' },
+      { path: '/store/pricing/create', name: 'Create Pricing Rule', description: 'Create new pricing rules' },
+      { path: '/store/marketplace', name: 'Marketplace Integration', description: 'Marketplace listings and integration' },
+      { path: '/store/marketplace-vendors', name: 'Marketplace Vendors', description: 'Vendor management for marketplace' },
+      { path: '/store/storefront', name: 'Storefront Customization', description: 'Customize store appearance and layout' },
+      { path: '/store/warranty-management', name: 'Warranty Management', description: 'Product warranty tracking and claims' },
+      { path: '/store/cash-registers', name: 'Cash Registers', description: 'Cash register management and setup' },
+      { path: '/store/barcode-scanner', name: 'Barcode Scanner', description: 'Barcode scanning functionality' },
+      { path: '/store/currency-region', name: 'Currency & Region', description: 'Multi-currency and regional settings' },
+      { path: '/store/erp', name: 'ERP Integration', description: 'Enterprise resource planning integration' },
+      { path: '/store/admin', name: 'Store Admin', description: 'Store administration and management tools' },
+      { path: '/store/permissions', name: 'User Permissions', description: 'Staff permissions and role management' },
+      { path: '/store/notifications', name: 'Notifications', description: 'Store notification management' },
+      { path: '/store/search', name: 'Product Search', description: 'Product search and discovery features' },
+      { path: '/store/settings', name: 'Store Settings', description: 'Store configuration and preferences' }
+    ]
+  },
+  admin: {
+    title: 'Admin Portal Pages',
+    emoji: '👑',
+    description: 'Complete platform administration with analytics, store management, financial oversight, and system settings.',
+    pages: [
+      { path: '/admin/dashboard', name: 'Admin Dashboard', description: 'Platform administration dashboard with comprehensive overview' },
+      { path: '/admin/analytics', name: 'Platform Analytics', description: 'Comprehensive platform analytics and performance metrics' },
+      { path: '/admin/stores', name: 'Store Management', description: 'Manage and monitor all stores on the platform' },
+      { path: '/admin/finance', name: 'Finance & Commissions', description: 'Financial management and commission tracking' },
+      { path: '/admin/construction', name: 'Construction Ecosystem', description: 'Advanced construction module administration' },
+      { path: '/admin/gcc-markets', name: 'GCC Markets Management', description: 'Gulf Cooperation Council markets oversight' },
+      { path: '/admin/ai-analytics', name: 'AI Analytics Dashboard', description: 'AI-powered analytics and insights' },
+      { path: '/admin/settings', name: 'System Settings', description: 'Platform-wide settings and configuration' },
+      { path: '/admin/global', name: 'Global Settings', description: 'Global platform settings and configurations' }
+    ]
+  },
+  public: {
+    title: 'Public Access Pages',
+    emoji: '🌍',
+    description: 'Public pages accessible without authentication including marketplace, forums, information services, and financial services.',
+    pages: [
+      { path: '/marketplace', name: 'Public Marketplace', description: 'Public marketplace browsing and product discovery' },
+      { path: '/construction-data', name: 'Public Construction Data', description: 'Public construction data and insights' },
+      { path: '/material-prices', name: 'Public Material Prices', description: 'Public material price information and trends' },
+      { path: '/forum', name: 'Public Forum', description: 'Community forum and discussions' },
+      { path: '/projects', name: 'Public Projects', description: 'Public project showcase and inspiration' },
+      { path: '/supervisors', name: 'Supervisors Directory', description: 'Find and connect with construction supervisors' },
+      { path: '/banking', name: 'Banking Services', description: 'Banking and financial services integration' },
+      { path: '/insurance', name: 'Insurance Services', description: 'Insurance services and products for construction' },
+      { path: '/loans', name: 'Loan Services', description: 'Construction loan and financing services' }
+    ]
+  },
+  utility: {
+    title: 'Utility & Development Pages',
+    emoji: '🔧',
+    description: 'Development utilities, testing pages, and specialized tools for platform management.',
+    pages: [
+      { path: '/platform-pages', name: 'Platform Pages Directory', description: 'This comprehensive page directory and navigation hub' },
+      { path: '/test-button', name: 'Test Button', description: 'UI component testing and button functionality tests' }
+    ]
+  }
+};
+
+interface PageLinkProps {
+  path: string;
+  name: string;
+  description: string;
+}
+
+function PageLink({ path, name, description }: PageLinkProps) {
+  const [copied, setCopied] = useState<string | null>(null);
+
+  const copyToClipboard = (url: string, type: 'local' | 'vercel') => {
+    navigator.clipboard.writeText(url);
+    setCopied(`${path}-${type}`);
+    setTimeout(() => setCopied(null), 2000);
+  };
+
+  const localUrl = `${LOCAL_BASE_URL}${path}`;
+  const vercelUrl = `${VERCEL_BASE_URL}${path}`;
+
+  return (
+    <div className="bg-gray-50 rounded-lg p-4 border border-gray-200 hover:border-blue-300 transition-colors">
+      <h4 className="font-semibold text-gray-800 mb-2">{name}</h4>
+      <p className="text-sm text-gray-600 mb-3">{description}</p>
+      
+      <div className="space-y-2">
+        {/* Local Development Link */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Home className="w-4 h-4 text-blue-600" />
+            <Link 
+              href={localUrl}
+              className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              localhost:3000{path}
+            </Link>
+          </div>
+          <button
+            onClick={() => copyToClipboard(localUrl, 'local')}
+            className="text-gray-400 hover:text-gray-600 p-1"
+            title="Copy localhost URL"
+          >
+            {copied === `${path}-local` ? (
+              <Check className="w-4 h-4 text-green-500" />
+            ) : (
+              <Copy className="w-4 h-4" />
+            )}
+          </button>
+        </div>
+
+        {/* Vercel Production Link */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Globe className="w-4 h-4 text-green-600" />
+            <Link 
+              href={vercelUrl}
+              className="text-green-600 hover:text-green-800 text-sm font-medium"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              vercel{path}
+            </Link>
+          </div>
+          <button
+            onClick={() => copyToClipboard(vercelUrl, 'vercel')}
+            className="text-gray-400 hover:text-gray-600 p-1"
+            title="Copy Vercel URL"
+          >
+            {copied === `${path}-vercel` ? (
+              <Check className="w-4 h-4 text-green-500" />
+            ) : (
+              <Copy className="w-4 h-4" />
+            )}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+interface SectionProps {
+  title: string;
+  emoji: string;
+  description: string;
+  pages: PageLinkProps[];
+  defaultExpanded?: boolean;
+}
+
+function Section({ title, emoji, description, pages, defaultExpanded = false }: SectionProps) {
+  const [isExpanded, setIsExpanded] = useState(defaultExpanded);
+
+  return (
+    <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
+      <button
+        onClick={() => setIsExpanded(!isExpanded)}
+        className="w-full px-6 py-4 text-left bg-gradient-to-r from-gray-50 to-gray-100 hover:from-gray-100 hover:to-gray-200 transition-colors"
+      >
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <span className="text-2xl">{emoji}</span>
+            <div>
+              <h3 className="text-xl font-bold text-gray-800">{title}</h3>
+              <p className="text-sm text-gray-600 mt-1">{description}</p>
+              <p className="text-xs text-blue-600 mt-1">{pages.length} pages</p>
+            </div>
+          </div>
+          <ChevronDown 
+            className={cn("w-5 h-5 text-gray-400 transition-transform", 
+              isExpanded && "rotate-180"
+            )} 
+          />
+        </div>
+      </button>
+
+      {isExpanded && (
+        <div className="p-6 border-t border-gray-200">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {pages.map((page) => (
+              <PageLink key={page.path} {...page} />
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default function PagesDocumentationPage() {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedSection, setSelectedSection] = useState<string>('all');
+
+  // Calculate total pages
+  const totalPages = Object.values(pagesSections).reduce((total, section) => total + section.pages.length, 0) + 1; // +1 for landing page
+
+  // Filter pages based on search query
+  const filteredSections = Object.entries(pagesSections).reduce((acc, [key, section]) => {
+    if (selectedSection !== 'all' && selectedSection !== key) {
+      return acc;
+    }
+
+    const filteredPages = section.pages.filter(page => 
+      page.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      page.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      page.path.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    if (filteredPages.length > 0) {
+      acc[key] = { ...section, pages: filteredPages };
+    }
+
+    return acc;
+  }, {} as typeof pagesSections);
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+      {/* Header */}
+      <div className="bg-white shadow-sm border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 py-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
+                <Book className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h1 className="text-3xl font-bold text-gray-900">Pages Documentation</h1>
+                <p className="text-gray-600">Navigate all {totalPages} pages in the Binna platform</p>
+              </div>
+            </div>
+            <Link
+              href="/"
+              className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              <Home className="w-4 h-4" />
+              Back to Home
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        {/* Base URLs Info */}
+        <div className="bg-white rounded-xl shadow-lg p-6 mb-8 border border-gray-200">
+          <h2 className="text-xl font-bold text-gray-800 mb-4">🌐 Base URLs</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
+              <div className="flex items-center gap-2 mb-2">
+                <Home className="w-5 h-5 text-blue-600" />
+                <h3 className="font-semibold text-blue-800">Development Environment</h3>
+              </div>
+              <code className="text-sm text-blue-700 bg-blue-100 px-2 py-1 rounded">
+                http://localhost:3000
+              </code>
+            </div>
+            <div className="bg-green-50 rounded-lg p-4 border border-green-200">
+              <div className="flex items-center gap-2 mb-2">
+                <Globe className="w-5 h-5 text-green-600" />
+                <h3 className="font-semibold text-green-800">Production Environment (Vercel)</h3>
+              </div>
+              <code className="text-sm text-green-700 bg-green-100 px-2 py-1 rounded break-all">
+                https://binaa-hub-shafi-projs-projects.vercel.app
+              </code>
+            </div>
+          </div>
+        </div>
+
+        {/* Main Landing Page */}
+        <div className="bg-white rounded-xl shadow-lg p-6 mb-8 border border-gray-200">
+          <h2 className="text-xl font-bold text-gray-800 mb-4">🏠 Main Platform Page</h2>
+          <PageLink 
+            path="/"
+            name="Main Landing Page"
+            description="Comprehensive platform showcase with search, filtering, and feature overview"
+          />
+        </div>
+
+        {/* Search and Filter */}
+        <div className="bg-white rounded-xl shadow-lg p-6 mb-8 border border-gray-200">
+          <div className="flex flex-col md:flex-row gap-4">
+            <div className="flex-1 relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <input
+                type="text"
+                placeholder="Search pages by name, description, or path..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+            <select
+              value={selectedSection}
+              onChange={(e) => setSelectedSection(e.target.value)}
+              className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >
+              <option value="all">All Sections</option>
+              <option value="auth">🔐 Authentication</option>
+              <option value="user">👤 User Portal</option>
+              <option value="store">🏪 Store Management</option>
+              <option value="admin">👑 Admin Portal</option>
+              <option value="public">🌍 Public Access</option>
+              <option value="utility">🔧 Utility & Development</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Page Sections */}
+        <div className="space-y-6">
+          {Object.entries(filteredSections).map(([key, section]) => (
+            <Section
+              key={key}
+              title={section.title}
+              emoji={section.emoji}
+              description={section.description}
+              pages={section.pages}
+              defaultExpanded={selectedSection !== 'all' || searchQuery !== ''}
+            />
+          ))}
+        </div>
+
+        {/* Summary */}
+        <div className="bg-white rounded-xl shadow-lg p-6 mt-8 border border-gray-200">
+          <h2 className="text-xl font-bold text-gray-800 mb-4">📊 Platform Summary</h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-4">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-blue-600">{totalPages}</div>
+              <div className="text-sm text-gray-600">Total Pages</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-purple-600">{pagesSections.auth.pages.length}</div>
+              <div className="text-sm text-gray-600">Auth Pages</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-green-600">{pagesSections.user.pages.length}</div>
+              <div className="text-sm text-gray-600">User Pages</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-orange-600">{pagesSections.store.pages.length}</div>
+              <div className="text-sm text-gray-600">Store Pages</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-red-600">{pagesSections.admin.pages.length}</div>
+              <div className="text-sm text-gray-600">Admin Pages</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-cyan-600">{pagesSections.public.pages.length}</div>
+              <div className="text-sm text-gray-600">Public Pages</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-gray-600">{pagesSections.utility.pages.length}</div>
+              <div className="text-sm text-gray-600">Utility Pages</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Testing Tips */}
+        <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6 mt-8 border border-blue-200">
+          <h2 className="text-xl font-bold text-gray-800 mb-4">🚀 Testing Instructions</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <h3 className="font-semibold text-gray-700">Development Testing</h3>
+              <p className="text-sm text-gray-600">Use localhost URLs when running <code className="bg-gray-200 px-1 rounded">npm run dev</code></p>
+            </div>
+            <div className="space-y-2">
+              <h3 className="font-semibold text-gray-700">Production Testing</h3>
+              <p className="text-sm text-gray-600">Use Vercel URLs to test the deployed version</p>
+            </div>
+            <div className="space-y-2">
+              <h3 className="font-semibold text-gray-700">Mobile Testing</h3>
+              <p className="text-sm text-gray-600">Vercel URLs work perfectly on mobile devices</p>
+            </div>
+            <div className="space-y-2">
+              <h3 className="font-semibold text-gray-700">Team Sharing</h3>
+              <p className="text-sm text-gray-600">Share Vercel URLs with team members for easy access</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div className="bg-white border-t border-gray-200 mt-16">
+        <div className="max-w-7xl mx-auto px-4 py-6 text-center text-gray-500 text-sm">
+          <p>Last Updated: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+          <p className="mt-1">Binna - Comprehensive Construction & E-commerce Platform</p>
+        </div>
+      </div>
+    </div>
+  );
+}

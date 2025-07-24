@@ -159,7 +159,7 @@ export default function CostCalculatorPage() {
                   التكلفة التقديرية
                 </Typography>
                 <Typography variant="heading" size="3xl" weight="bold" className="text-green-900 mb-4">
-                  {result.toLocaleString()} ر.س
+                  {result.toLocaleString('en-US')} ر.س
                 </Typography>
                 <Typography variant="body" size="sm" className="text-green-700">
                   * هذا تقدير أولي وقد تختلف التكلفة الفعلية حسب المواصفات والأسعار الحالية

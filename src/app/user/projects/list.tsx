@@ -112,23 +112,23 @@ export default function ProjectsListPage() {
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
                   <span className="text-gray-600">المقدرة:</span>
-                  <span className="font-medium">{project.estimated.toLocaleString()} ر.س</span>
+                  <span className="font-medium">{project.estimated.toLocaleString('en-US')} ر.س</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">المدفوعات:</span>
-                  <span className="font-medium">{project.paid.toLocaleString()} ر.س</span>
+                  <span className="font-medium">{project.paid.toLocaleString('en-US')} ر.س</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">العظم:</span>
-                  <span className="font-medium">{project.skeleton.toLocaleString()} ر.س</span>
+                  <span className="font-medium">{project.skeleton.toLocaleString('en-US')} ر.س</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">التشطيب:</span>
-                  <span className="font-medium">{project.finishing.toLocaleString()} ر.س</span>
+                  <span className="font-medium">{project.finishing.toLocaleString('en-US')} ر.س</span>
                 </div>
                 <div className="flex justify-between border-t pt-2">
                   <span className="text-gray-600">متبقي:</span>
-                  <span className="font-bold text-red-600">{project.remaining.toLocaleString()} ر.س</span>
+                  <span className="font-bold text-red-600">{project.remaining.toLocaleString('en-US')} ر.س</span>
                 </div>
               </div>
 

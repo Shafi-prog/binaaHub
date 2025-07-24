@@ -269,7 +269,7 @@ export default function ConstructionProfileAdvice() {
                     {resource.category}
                   </Badge>
                   <span className="text-xs text-gray-500">
-                    محدث: {new Date(resource.lastUpdated).toLocaleDateString('ar-SA')}
+                    محدث: {new Date(resource.lastUpdated).toLocaleDateString('en-US')}
                   </span>
                 </div>
                 

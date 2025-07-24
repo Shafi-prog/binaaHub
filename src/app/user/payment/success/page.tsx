@@ -71,7 +71,7 @@ function PaymentSuccessContent() {
             )}
             <div className="flex justify-between">
               <span className="text-gray-600">التاريخ:</span>
-              <span>{new Date().toLocaleDateString('ar-SA')}</span>
+              <span>{new Date().toLocaleDateString('en-US')}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-600">الحالة:</span>

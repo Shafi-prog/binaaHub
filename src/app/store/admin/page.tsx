@@ -90,7 +90,7 @@ export default function StoreAdminDashboard() {
               <DollarSign className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">${stats.totalRevenue.toLocaleString()}</div>
+              <div className="text-2xl font-bold">${stats.totalRevenue.toLocaleString('en-US')}</div>
               <p className="text-xs text-muted-foreground">
                 <TrendingUp className="inline w-3 h-3 mr-1" />
                 +12% from last month

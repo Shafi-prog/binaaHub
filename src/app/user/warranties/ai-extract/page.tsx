@@ -317,14 +317,14 @@ export default function AIExtractionPage() {
               <div>
                 <Typography variant="caption" size="sm" className="text-gray-600 mb-2">تاريخ الشراء</Typography>
                 <Typography variant="body" size="lg" weight="medium" className="text-gray-900">
-                  {new Date(extractedData.purchaseDate).toLocaleDateString('ar-SA')}
+                  {new Date(extractedData.purchaseDate).toLocaleDateString('en-US')}
                 </Typography>
               </div>
               
               <div>
                 <Typography variant="caption" size="sm" className="text-gray-600 mb-2">السعر</Typography>
                 <Typography variant="body" size="lg" weight="medium" className="text-gray-900">
-                  {extractedData.price.toLocaleString()} ريال سعودي
+                  {extractedData.price.toLocaleString('en-US')} ريال سعودي
                 </Typography>
               </div>
               

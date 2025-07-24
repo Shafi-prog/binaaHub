@@ -7,6 +7,7 @@ import { Card } from '@/core/shared/components/ui/card';
 import { LoadingSpinner } from '@/core/shared/components/ui/loading-spinner';
 import { formatCurrency } from '@/core/shared/utils';
 import Link from 'next/link';
+import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 import { 
   Package, 
   ShoppingBag, 

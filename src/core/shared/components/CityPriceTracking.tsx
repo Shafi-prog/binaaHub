@@ -354,7 +354,7 @@ export default function CityPriceTracking({ className = '' }: CityPriceTrackingP
                   <td className="py-4 px-4 text-gray-600">
                     <div className="flex items-center gap-1">
                       <Calendar className="w-4 h-4" />
-                      {new Date(cityPrice.lastUpdated).toLocaleDateString('ar-SA')}
+                      {new Date(cityPrice.lastUpdated).toLocaleDateString('en-US')}
                     </div>
                   </td>
                   <td className="py-4 px-4 text-gray-600">

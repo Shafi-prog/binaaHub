@@ -27,6 +27,7 @@ import { getOrderPaymentStatus } from "../../../../../lib/order-helpers"
 import { getPaymentsFromOrder } from "../../../../../lib/orders"
 import { getTotalCaptured, getTotalPending } from "../../../../../lib/payment"
 import { getLoyaltyPlugin } from "../../../../../lib/plugins"
+import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 
 type OrderPaymentSectionProps = {
   order: HttpTypes.AdminOrder

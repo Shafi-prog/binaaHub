@@ -185,7 +185,7 @@ export default function EmailCampaigns() {
             <Send className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{totalSent.toLocaleString()}</div>
+            <div className="text-2xl font-bold">{totalSent.toLocaleString('en-US')}</div>
             <p className="text-xs text-muted-foreground">
               This month
             </p>

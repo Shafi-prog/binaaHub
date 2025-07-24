@@ -134,7 +134,7 @@ export function ProjectPlanner() {
                     {project.status}
                   </span>
                   <p className="text-sm text-gray-600 mt-1">
-                    SAR {project.budget.toLocaleString()}
+                    SAR {project.budget.toLocaleString('en-US')}
                   </p>
                 </div>
               </div>
@@ -142,11 +142,11 @@ export function ProjectPlanner() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-3">
                 <div>
                   <p className="text-sm text-gray-600">Start Date</p>
-                  <p className="font-medium">{new Date(project.startDate).toLocaleDateString('ar-SA')}</p>
+                  <p className="font-medium">{new Date(project.startDate).toLocaleDateString('en-US')}</p>
                 </div>
                 <div>
                   <p className="text-sm text-gray-600">End Date</p>
-                  <p className="font-medium">{new Date(project.endDate).toLocaleDateString('ar-SA')}</p>
+                  <p className="font-medium">{new Date(project.endDate).toLocaleDateString('en-US')}</p>
                 </div>
                 <div>
                   <p className="text-sm text-gray-600">Progress</p>
@@ -192,11 +192,11 @@ export function ProjectPlanner() {
               <div className="flex-1">
                 <h4 className="font-medium">{phase.name}</h4>
                 <p className="text-sm text-gray-600">
-                  {new Date(phase.startDate).toLocaleDateString('ar-SA')} - 
-                  {new Date(phase.endDate).toLocaleDateString('ar-SA')}
+                  {new Date(phase.startDate).toLocaleDateString('en-US')} - 
+                  {new Date(phase.endDate).toLocaleDateString('en-US')}
                 </p>
                 <p className="text-sm text-gray-500">
-                  Budget: SAR {phase.budget.toLocaleString()}
+                  Budget: SAR {phase.budget.toLocaleString('en-US')}
                 </p>
               </div>
               <Button size="sm" variant="outline" onClick={() => alert('Button clicked')}>Manage</Button>

@@ -287,12 +287,12 @@ export default function CompanyBulkPurchaseOptimizer() {
                       </div>
                       <div className="flex justify-between">
                         <span>المساحة الإجمالية:</span>
-                        <span className="font-semibold">{(project.area * project.units).toLocaleString()} م²</span>
+                        <span className="font-semibold">{(project.area * project.units).toLocaleString('en-US')} م²</span>
                       </div>
                       <div className="flex justify-between">
                         <span>الميزانية:</span>
                         <span className="font-semibold text-green-600">
-                          {project.budget.toLocaleString()} ر.س
+                          {project.budget.toLocaleString('en-US')} ر.س
                         </span>
                       </div>
                       <div className="flex justify-between">
@@ -323,7 +323,7 @@ export default function CompanyBulkPurchaseOptimizer() {
                     </div>
                     <div className="text-center">
                       <div className="text-2xl font-bold text-blue-600">
-                        {totalBudget.toLocaleString()}
+                        {totalBudget.toLocaleString('en-US')}
                       </div>
                       <div className="text-sm text-gray-600">إجمالي الميزانية (ر.س)</div>
                     </div>
@@ -350,7 +350,7 @@ export default function CompanyBulkPurchaseOptimizer() {
                   <CardContent className="p-6">
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
                       <div>
-                        <div className="text-3xl font-bold">{totalSavings.toLocaleString()}</div>
+                        <div className="text-3xl font-bold">{totalSavings.toLocaleString('en-US')}</div>
                         <div className="text-sm opacity-90">إجمالي الوفورات (ر.س)</div>
                       </div>
                       <div>
@@ -386,24 +386,24 @@ export default function CompanyBulkPurchaseOptimizer() {
                           <div className="grid grid-cols-2 gap-4 text-sm">
                             <div>
                               <span className="text-gray-600">الكمية المطلوبة:</span>
-                              <div className="font-semibold">{opt.totalQuantity.toLocaleString()}</div>
+                              <div className="font-semibold">{opt.totalQuantity.toLocaleString('en-US')}</div>
                             </div>
                             <div>
                               <span className="text-gray-600">التكلفة العادية:</span>
                               <div className="font-semibold text-red-600">
-                                {opt.standardCost.toLocaleString()} ر.س
+                                {opt.standardCost.toLocaleString('en-US')} ر.س
                               </div>
                             </div>
                             <div>
                               <span className="text-gray-600">التكلفة المحسّنة:</span>
                               <div className="font-semibold text-green-600">
-                                {opt.optimizedCost.toLocaleString()} ر.س
+                                {opt.optimizedCost.toLocaleString('en-US')} ر.س
                               </div>
                             </div>
                             <div>
                               <span className="text-gray-600">الوفورات:</span>
                               <div className="font-semibold text-blue-600">
-                                {opt.savings.toLocaleString()} ر.س
+                                {opt.savings.toLocaleString('en-US')} ر.س
                               </div>
                             </div>
                           </div>
@@ -501,7 +501,7 @@ export default function CompanyBulkPurchaseOptimizer() {
                           <div className="flex justify-between items-center mb-2">
                             <span className="font-medium">{category}</span>
                             <span className="text-sm text-gray-600">
-                              {categorySavings.toLocaleString()} ر.س ({percentage.toFixed(1)}%)
+                              {categorySavings.toLocaleString('en-US')} ر.س ({percentage.toFixed(1)}%)
                             </span>
                           </div>
                           <div className="w-full bg-gray-200 rounded-full h-2">
@@ -526,21 +526,21 @@ export default function CompanyBulkPurchaseOptimizer() {
                     <div className="bg-red-50 border border-red-200 rounded-lg p-4">
                       <div className="text-red-800 font-semibold mb-1">التكلفة بدون تحسين</div>
                       <div className="text-2xl font-bold text-red-600">
-                        {optimizations.reduce((sum, opt) => sum + opt.standardCost, 0).toLocaleString()} ر.س
+                        {optimizations.reduce((sum, opt) => sum + opt.standardCost, 0).toLocaleString('en-US')} ر.س
                       </div>
                     </div>
                     
                     <div className="bg-green-50 border border-green-200 rounded-lg p-4">
                       <div className="text-green-800 font-semibold mb-1">التكلفة بعد التحسين</div>
                       <div className="text-2xl font-bold text-green-600">
-                        {optimizations.reduce((sum, opt) => sum + opt.optimizedCost, 0).toLocaleString()} ر.س
+                        {optimizations.reduce((sum, opt) => sum + opt.optimizedCost, 0).toLocaleString('en-US')} ر.س
                       </div>
                     </div>
                     
                     <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                       <div className="text-blue-800 font-semibold mb-1">إجمالي الوفورات</div>
                       <div className="text-2xl font-bold text-blue-600">
-                        {totalSavings.toLocaleString()} ر.س
+                        {totalSavings.toLocaleString('en-US')} ر.س
                       </div>
                       <div className="text-sm text-blue-600">
                         ({savingsPercentage.toFixed(2)}% من إجمالي الميزانية)

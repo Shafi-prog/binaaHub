@@ -248,14 +248,14 @@ export default function CommunityPage() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         <EnhancedCard className="p-4 text-center">
           <Typography variant="subheading" size="2xl" weight="bold" className="text-blue-600 mb-1">
-            {communityStats.totalMembers.toLocaleString()}
+            {communityStats.totalMembers.toLocaleString('en-US')}
           </Typography>
           <Typography variant="caption" size="sm" className="text-gray-600">إجمالي الأعضاء</Typography>
         </EnhancedCard>
         
         <EnhancedCard className="p-4 text-center">
           <Typography variant="subheading" size="2xl" weight="bold" className="text-green-600 mb-1">
-            {communityStats.activeToday.toLocaleString()}
+            {communityStats.activeToday.toLocaleString('en-US')}
           </Typography>
           <Typography variant="caption" size="sm" className="text-gray-600">نشط اليوم</Typography>
         </EnhancedCard>

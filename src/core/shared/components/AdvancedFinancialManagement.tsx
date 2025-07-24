@@ -286,7 +286,7 @@ export default function AdvancedFinancialManagement() {
               <div>
                 <p className="text-sm font-medium text-gray-600">إجمالي الإيرادات</p>
                 <p className="text-2xl font-bold text-green-600">
-                  {financialSummary.totalRevenue.toLocaleString('ar-SA', { style: 'currency', currency: 'SAR' })}
+                  {financialSummary.totalRevenue.toLocaleString('en-US')}
                 </p>
               </div>
               <TrendingUp className="h-8 w-8 text-green-600" />
@@ -300,7 +300,7 @@ export default function AdvancedFinancialManagement() {
               <div>
                 <p className="text-sm font-medium text-gray-600">إجمالي المصروفات</p>
                 <p className="text-2xl font-bold text-red-600">
-                  {financialSummary.totalExpenses.toLocaleString('ar-SA', { style: 'currency', currency: 'SAR' })}
+                  {financialSummary.totalExpenses.toLocaleString('en-US')}
                 </p>
               </div>
               <TrendingDown className="h-8 w-8 text-red-600" />
@@ -314,7 +314,7 @@ export default function AdvancedFinancialManagement() {
               <div>
                 <p className="text-sm font-medium text-gray-600">صافي الربح</p>
                 <p className="text-2xl font-bold text-blue-600">
-                  {financialSummary.netProfit.toLocaleString('ar-SA', { style: 'currency', currency: 'SAR' })}
+                  {financialSummary.netProfit.toLocaleString('en-US')}
                 </p>
               </div>
               <DollarSign className="h-8 w-8 text-blue-600" />
@@ -328,7 +328,7 @@ export default function AdvancedFinancialManagement() {
               <div>
                 <p className="text-sm font-medium text-gray-600">الذمم المدينة</p>
                 <p className="text-2xl font-bold text-orange-600">
-                  {financialSummary.outstandingReceivables.toLocaleString('ar-SA', { style: 'currency', currency: 'SAR' })}
+                  {financialSummary.outstandingReceivables.toLocaleString('en-US')}
                 </p>
               </div>
               <AlertCircle className="h-8 w-8 text-orange-600" />
@@ -342,7 +342,7 @@ export default function AdvancedFinancialManagement() {
               <div>
                 <p className="text-sm font-medium text-gray-600">ضريبة ق.م محصلة</p>
                 <p className="text-2xl font-bold text-purple-600">
-                  {financialSummary.vatCollected.toLocaleString('ar-SA', { style: 'currency', currency: 'SAR' })}
+                  {financialSummary.vatCollected.toLocaleString('en-US')}
                 </p>
               </div>
               <FileText className="h-8 w-8 text-purple-600" />
@@ -356,7 +356,7 @@ export default function AdvancedFinancialManagement() {
               <div>
                 <p className="text-sm font-medium text-gray-600">ضريبة ق.م مدفوعة</p>
                 <p className="text-2xl font-bold text-indigo-600">
-                  {financialSummary.vatPaid.toLocaleString('ar-SA', { style: 'currency', currency: 'SAR' })}
+                  {financialSummary.vatPaid.toLocaleString('en-US')}
                 </p>
               </div>
               <FileText className="h-8 w-8 text-indigo-600" />
@@ -378,7 +378,7 @@ export default function AdvancedFinancialManagement() {
                 <XAxis dataKey="month" />
                 <YAxis />
                 <Tooltip 
-                  formatter={(value: any) => value.toLocaleString('ar-SA', { style: 'currency', currency: 'SAR' })}
+                  formatter={(value: any) => value.toLocaleString('en-US')}
                 />
                 <Line type="monotone" dataKey="revenue" stroke="#10B981" name="الإيرادات" strokeWidth={2} />
                 <Line type="monotone" dataKey="expenses" stroke="#EF4444" name="المصروفات" strokeWidth={2} />
@@ -511,10 +511,10 @@ export default function AdvancedFinancialManagement() {
                         <div className="text-sm text-gray-500">{invoice.clientTaxId}</div>
                       </div>
                     </td>
-                    <td className="p-3">{new Date(invoice.date).toLocaleDateString('ar-SA')}</td>
-                    <td className="p-3">{new Date(invoice.dueDate).toLocaleDateString('ar-SA')}</td>
+                    <td className="p-3">{new Date(invoice.date).toLocaleDateString('en-US')}</td>
+                    <td className="p-3">{new Date(invoice.dueDate).toLocaleDateString('en-US')}</td>
                     <td className="p-3 font-medium">
-                      {invoice.total.toLocaleString('ar-SA', { style: 'currency', currency: 'SAR' })}
+                      {invoice.total.toLocaleString('en-US')}
                     </td>
                     <td className="p-3">
                       <Badge className={getStatusColor(invoice.status)}>

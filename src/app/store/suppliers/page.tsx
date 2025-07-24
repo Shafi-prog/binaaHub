@@ -260,7 +260,7 @@ export default function SuppliersPage() {
               <div>
                 <p className="text-sm text-gray-600">إجمالي المستحقات</p>
                 <p className="text-2xl font-bold">
-                  {suppliers.reduce((sum, s) => sum + s.outstanding_balance, 0).toLocaleString('ar-SA')} ر.س
+                  {suppliers.reduce((sum, s) => sum + s.outstanding_balance, 0).toLocaleString('en-US')} ر.س
                 </p>
               </div>
               <DollarSign className="w-8 h-8 text-red-500" />
@@ -274,7 +274,7 @@ export default function SuppliersPage() {
               <div>
                 <p className="text-sm text-gray-600">إجمالي المشتريات</p>
                 <p className="text-2xl font-bold">
-                  {suppliers.reduce((sum, s) => sum + s.total_purchases, 0).toLocaleString('ar-SA')} ر.س
+                  {suppliers.reduce((sum, s) => sum + s.total_purchases, 0).toLocaleString('en-US')} ر.س
                 </p>
               </div>
               <FileText className="w-8 h-8 text-blue-500" />
@@ -361,13 +361,13 @@ export default function SuppliersPage() {
                   <div className="text-center">
                     <p className="text-sm text-gray-600">المستحقات</p>
                     <p className="font-semibold text-red-600">
-                      {supplier.outstanding_balance.toLocaleString('ar-SA')} ر.س
+                      {supplier.outstanding_balance.toLocaleString('en-US')} ر.س
                     </p>
                   </div>
                   <div className="text-center">
                     <p className="text-sm text-gray-600">إجمالي المشتريات</p>
                     <p className="font-semibold text-green-600">
-                      {supplier.total_purchases.toLocaleString('ar-SA')} ر.س
+                      {supplier.total_purchases.toLocaleString('en-US')} ر.س
                     </p>
                   </div>
                 </div>

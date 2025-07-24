@@ -341,7 +341,7 @@ export default function PublicProjectsPage() {
                         <span>{getProjectTypeLabel(project.projectType)}</span>
                         <span className="text-gray-400">•</span>
                         <Layers className="w-4 h-4 text-gray-500" />
-                        <span>{project.area.toLocaleString()} م²</span>
+                        <span>{project.area.toLocaleString('en-US')} م²</span>
                       </div>
                       
                       {project.publicDisplay?.showLocation && project.location && (
@@ -354,7 +354,7 @@ export default function PublicProjectsPage() {
                       {project.publicDisplay?.showTimeline && project.startDate && (
                         <div className="flex items-center gap-2 text-sm text-gray-600">
                           <Calendar className="w-4 h-4 text-gray-500" />
-                          <span>بدء: {new Date(project.startDate).toLocaleDateString('ar-SA')}</span>
+                          <span>بدء: {new Date(project.startDate).toLocaleDateString('en-US')}</span>
                         </div>
                       )}
                     </div>
@@ -418,7 +418,7 @@ export default function PublicProjectsPage() {
                           </div>
                           <div className="flex items-center gap-1">
                             <Layers className="w-4 h-4" />
-                            <span>{project.area.toLocaleString()} م²</span>
+                            <span>{project.area.toLocaleString('en-US')} م²</span>
                           </div>
                           {project.publicDisplay?.showLocation && project.location && (
                             <div className="flex items-center gap-1">

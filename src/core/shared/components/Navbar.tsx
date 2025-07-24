@@ -22,7 +22,12 @@ import {
   Package,
   DollarSign,
   Calendar,
-  ShoppingCart
+  ShoppingCart,
+  MapPin,
+  Hammer,
+  FileCheck,
+  Truck,
+  Award
 } from 'lucide-react';
 import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/enhanced-components';
 import { NotificationService } from '@/core/shared/services/notifications';
@@ -195,6 +200,76 @@ export default function Navbar({ user, accountType }: NavbarProps) {
       requiresAuth: false
     },
     {
+      label: 'رحلة البناء',
+      href: '#',
+      icon: MapPin,
+      requiresAuth: false,
+      isDropdown: true,
+      dropdownItems: [
+        {
+          label: 'شراء الأرض',
+          href: '/construction-journey/land-purchase',
+          icon: MapPin,
+          description: 'البحث عن الأراضي والشراء'
+        },
+        {
+          label: 'اختيار المقاول',
+          href: '/construction-journey/contractor-selection',
+          icon: Users,
+          description: 'اختيار المقاول والمخططات'
+        },
+        {
+          label: 'التسوير',
+          href: '/construction-journey/fencing',
+          icon: Shield,
+          description: 'تسوير الأرض وتأمينها'
+        },
+        {
+          label: 'الحفر وتجهيز الأرض',
+          href: '/construction-journey/excavation',
+          icon: Hammer,
+          description: 'أعمال الحفر والتجهيز'
+        },
+        {
+          label: 'إصدار التأمين',
+          href: '/construction-journey/insurance',
+          icon: Shield,
+          description: 'الحصول على التأمين'
+        },
+        {
+          label: 'مخلفات البناء',
+          href: '/construction-journey/waste-disposal',
+          icon: Truck,
+          description: 'إدارة مخلفات البناء'
+        },
+        {
+          label: 'مراجعة المخططات',
+          href: '/construction-journey/blueprint-approval',
+          icon: FileCheck,
+          description: 'مراجعة وموافقة المخططات'
+        },
+        {
+          label: 'التنفيذ والمتابعة',
+          href: '/construction-journey/execution',
+          icon: Building2,
+          description: 'تنفيذ ومتابعة البناء'
+        },
+        {
+          label: 'إنهاء المشروع',
+          href: '/construction-journey/completion',
+          icon: Award,
+          description: 'إنهاء وتسليم المشروع'
+        },
+        {
+          label: 'مشروع بناء متكامل',
+          href: '/user/projects/create/construction',
+          icon: Building2,
+          description: 'إنشاء مشروع بناء متكامل',
+          isHighlighted: true
+        }
+      ]
+    },
+    {
       label: t('services'),
       href: '/#features',
       icon: Package,
@@ -327,12 +402,64 @@ export default function Navbar({ user, accountType }: NavbarProps) {
         {/* Main Navigation Links */}
         <div className="flex gap-4">
           {navigationItems.map((item, idx) => (
-            <Link key={idx} href={item.href} className="no-underline">
-              <EnhancedCard variant="elevated" hover className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/80 text-blue-800 shadow-sm transition-all hover:scale-105">
-                <item.icon className="w-5 h-5 text-blue-600" />
-                <Typography variant="body" size="md" weight="medium">{item.label}</Typography>
-              </EnhancedCard>
-            </Link>
+            item.isDropdown ? (
+              <div key={idx} className="relative" ref={journeyRef}>
+                <button
+                  onClick={() => setJourneyOpen(!journeyOpen)}
+                  className="no-underline"
+                >
+                  <EnhancedCard variant="elevated" hover className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/80 text-blue-800 shadow-sm transition-all hover:scale-105">
+                    <item.icon className="w-5 h-5 text-blue-600" />
+                    <Typography variant="body" size="md" weight="medium">{item.label}</Typography>
+                    <ChevronDown className={`w-4 h-4 text-blue-600 transition-transform ${journeyOpen ? 'rotate-180' : ''}`} />
+                  </EnhancedCard>
+                </button>
+                
+                {journeyOpen && (
+                  <div className="absolute top-full left-0 mt-2 w-80 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 p-2">
+                    <div className="py-2">
+                      <div className="px-4 py-2 border-b border-gray-100">
+                        <Typography variant="heading" size="sm" weight="bold" className="text-gray-800">
+                          مراحل البناء
+                        </Typography>
+                        <Typography variant="caption" size="xs" className="text-gray-600">
+                          تتبع رحلة البناء خطوة بخطوة
+                        </Typography>
+                      </div>
+                      <div className="max-h-96 overflow-y-auto">
+                        {item.dropdownItems?.map((dropdownItem, dropdownIdx) => (
+                          <Link
+                            key={dropdownIdx}
+                            href={dropdownItem.href}
+                            className="block px-4 py-3 hover:bg-blue-50 rounded-lg transition-colors no-underline"
+                            onClick={() => setJourneyOpen(false)}
+                          >
+                            <div className={`flex items-start gap-3 ${dropdownItem.isHighlighted ? 'bg-gradient-to-r from-blue-100 to-indigo-100 p-2 rounded-lg' : ''}`}>
+                              <dropdownItem.icon className={`w-5 h-5 mt-0.5 ${dropdownItem.isHighlighted ? 'text-blue-700' : 'text-blue-600'}`} />
+                              <div className="flex-1">
+                                <Typography variant="body" size="sm" weight="medium" className={dropdownItem.isHighlighted ? 'text-blue-800' : 'text-gray-800'}>
+                                  {dropdownItem.label}
+                                </Typography>
+                                <Typography variant="caption" size="xs" className={dropdownItem.isHighlighted ? 'text-blue-600' : 'text-gray-600'}>
+                                  {dropdownItem.description}
+                                </Typography>
+                              </div>
+                            </div>
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <Link key={idx} href={item.href} className="no-underline">
+                <EnhancedCard variant="elevated" hover className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/80 text-blue-800 shadow-sm transition-all hover:scale-105">
+                  <item.icon className="w-5 h-5 text-blue-600" />
+                  <Typography variant="body" size="md" weight="medium">{item.label}</Typography>
+                </EnhancedCard>
+              </Link>
+            )
           ))}
         </div>
         {/* User Panel */}
@@ -491,184 +618,58 @@ export default function Navbar({ user, accountType }: NavbarProps) {
             {/* Construction Journey */}
             {userData?.account_type !== 'store' && (
               <div className="border-t pt-4">
-                <h3 className="font-semibold text-gray-800 mb-3">رحلة البناء</h3>
+                <h3 className="font-semibold text-gray-800 mb-3 flex items-center gap-2">
+                  <MapPin className="w-5 h-5 text-blue-600" />
+                  رحلة البناء
+                </h3>
                 <div className="space-y-2 text-sm">
-                  <div className="p-2 bg-blue-50 rounded">اختيار الأرض</div>
-                  <div className="p-2 bg-blue-50 rounded">تخطيط المشروع</div>
-                  <div className="p-2 bg-blue-50 rounded">التصميم المعماري</div>
-                  <div className="p-2 bg-blue-50 rounded">الحصول على التراخيص</div>
-                  <div className="p-2 bg-blue-50 rounded">تنفيذ البناء</div>
-                  <div className="p-2 bg-blue-50 rounded">التشطيبات والتسليم</div>
-                </div>
-              </div>
-            )}
-
-            {/* Settings and Logout */}
-            {userData && (
-              <div className="border-t pt-4 space-y-2">
-                <Link href="/user/profile" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
-                  <User className="w-5 h-5 text-blue-600" />
-                  <span>الملف الشخصي</span>
-                </Link>
-                <Link href="/user/settings" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
-                  <Settings className="w-5 h-5 text-blue-600" />
-                  <span>الإعدادات</span>
-                </Link>                <button
-                  onClick={handleLogout}
-                  disabled={loading}
-                  className="flex items-center gap-3 p-3 rounded-lg hover:bg-red-50 text-red-600 w-full text-right disabled:opacity-50"
-                >
-                  <LogOut className="w-5 h-5" />
-                  <span>{loading ? 'جاري تسجيل الخروج...' : 'تسجيل الخروج'}</span>
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile Navigation */}
-      <div className="lg:hidden">
-        <div className="flex items-center justify-between h-16 px-4">
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="p-2 rounded-md hover:bg-blue-700 focus:outline-none"
-          >
-            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
-
-          {/* Logo */}
-          <Link href="/" className="text-xl font-bold">بِنَّا</Link>
-
-          {/* Right side icons */}
-          <div className="flex items-center gap-2">
-            {/* Cart Icon for stores */}
-            {userData?.account_type === 'store' && (
-              <ShoppingCart className="text-white w-5 h-5" />
-            )}
-            
-            {/* Notifications */}
-            {userData && (
-              <button
-                className="relative p-2"
-                onClick={() => setShowNotifications(!showNotifications)}
-              >
-                <Bell className="w-5 h-5" />
-                {unreadCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-xs text-white rounded-full px-1.5 py-0.5 min-w-[18px] text-center">
-                    {unreadCount > 9 ? '9+' : unreadCount}
-                  </span>
-                )}
-              </button>
-            )}
-
-            {/* User Menu Button */}
-            {userData && (
-              <button
-                onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                className="p-2 rounded-md hover:bg-blue-700"
-              >
-                <User className="w-5 h-5" />
-              </button>
-            )}
-          </div>
-        </div>
-
-        {/* Mobile Menu Overlay */}
-        {isMenuOpen && (
-          <div className="fixed inset-0 z-40 bg-black bg-opacity-50" onClick={() => setIsMenuOpen(false)} />
-        )}
-
-        {/* Mobile Menu Sidebar */}
-        <div className={`fixed right-0 top-0 h-full w-80 bg-white text-gray-900 transform transition-transform duration-300 ease-in-out z-50 ${
-          isMenuOpen ? 'translate-x-0' : 'translate-x-full'
-        }`}>
-          {/* Mobile Menu Header */}
-          <div className="flex items-center justify-between p-4 border-b bg-blue-600 text-white">
-            <h2 className="text-lg font-semibold">القائمة الرئيسية</h2>
-            <button onClick={() => setIsMenuOpen(false)} className="p-2 hover:bg-blue-700 rounded">
-              <X className="w-5 h-5" />
-            </button>
-          </div>
-
-          {/* Mobile Menu Content */}
-          <div className="p-4 space-y-4 overflow-y-auto h-full pb-20">
-            {/* User Info */}
-            {userData && (
-              <div className="bg-gray-50 p-4 rounded-lg mb-4">
-                <p className="font-semibold text-gray-800">{userData.name || 'المستخدم'}</p>
-                <p className="text-sm text-gray-600">{userData.account_type === 'store' ? 'متجر' : 'مستخدم'}</p>
-              </div>
-            )}
-
-            {/* Navigation Links */}            {userData?.account_type === 'store' ? (
-              <div className="space-y-2">
-                <h3 className="font-semibold text-gray-800 mb-3">لوحة المتجر</h3>
-                <Link href="/store/dashboard" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
-                  <Home className="w-5 h-5 text-blue-600" />
-                  <span>لوحة التحكم</span>
-                </Link>
-                <Link href="/store/products" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
-                  <Package className="w-5 h-5 text-blue-600" />
-                  <span>المنتجات</span>
-                </Link>
-                <Link href="/store/inventory" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
-                  <Package className="w-5 h-5 text-blue-600" />
-                  <span>المخزون</span>
-                </Link>
-                <Link href="/store/orders" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
-                  <FileText className="w-5 h-5 text-blue-600" />
-                  <span>الطلبات</span>
-                </Link>
-                <Link href="/store/suppliers" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
-                  <Users className="w-5 h-5 text-blue-600" />
-                  <span>الموردين</span>
-                </Link>
-                <Link href="/store/invoices" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
-                  <FileText className="w-5 h-5 text-blue-600" />
-                  <span>الفواتير</span>
-                </Link>
-                <Link href="/store/analytics" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
-                  <Calculator className="w-5 h-5 text-blue-600" />
-                  <span>التحليلات</span>
-                </Link>
-              </div>
-            ) : userData?.account_type === 'user' || userData?.account_type === 'client' ? (
-              // Removed user dashboard links from mobile sidebar to avoid duplication
-              <></>
-            ) : (
-              <div className="space-y-2">
-                <Link href="/projects" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
-                  <Building2 className="w-5 h-5 text-blue-600" />
-                  <span>المشاريع</span>
-                </Link>
-                <Link href="/stores" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
-                  <Package className="w-5 h-5 text-blue-600" />
-                  <span>المتاجر</span>
-                </Link>
-                <Link href="/login" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
-                  <User className="w-5 h-5 text-blue-600" />
-                  <span>تسجيل الدخول</span>
-                </Link>
-                <Link href="/signup" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
-                  <User className="w-5 h-5 text-blue-600" />
-                  <span>إنشاء حساب</span>
-                </Link>
-              </div>
-            )}
-
-            {/* Construction Journey */}
-            {userData?.account_type !== 'store' && (
-              <div className="border-t pt-4">
-                <h3 className="font-semibold text-gray-800 mb-3">رحلة البناء</h3>
-                <div className="space-y-2 text-sm">
-                  <div className="p-2 bg-blue-50 rounded">اختيار الأرض</div>
-                  <div className="p-2 bg-blue-50 rounded">تخطيط المشروع</div>
-                  <div className="p-2 bg-blue-50 rounded">التصميم المعماري</div>
-                  <div className="p-2 bg-blue-50 rounded">الحصول على التراخيص</div>
-                  <div className="p-2 bg-blue-50 rounded">تنفيذ البناء</div>
-                  <div className="p-2 bg-blue-50 rounded">التشطيبات والتسليم</div>
+                  <Link href="/construction-journey/land-purchase" className="flex items-center gap-2 p-2 bg-blue-50 rounded hover:bg-blue-100 transition-colors" onClick={() => setIsMenuOpen(false)}>
+                    <MapPin className="w-4 h-4 text-blue-600" />
+                    <span>شراء الأرض</span>
+                  </Link>
+                  <Link href="/construction-journey/contractor-selection" className="flex items-center gap-2 p-2 bg-blue-50 rounded hover:bg-blue-100 transition-colors" onClick={() => setIsMenuOpen(false)}>
+                    <Users className="w-4 h-4 text-blue-600" />
+                    <span>اختيار المقاول</span>
+                  </Link>
+                  <Link href="/construction-journey/fencing" className="flex items-center gap-2 p-2 bg-blue-50 rounded hover:bg-blue-100 transition-colors" onClick={() => setIsMenuOpen(false)}>
+                    <Shield className="w-4 h-4 text-blue-600" />
+                    <span>التسوير</span>
+                  </Link>
+                  <Link href="/construction-journey/excavation" className="flex items-center gap-2 p-2 bg-blue-50 rounded hover:bg-blue-100 transition-colors" onClick={() => setIsMenuOpen(false)}>
+                    <Hammer className="w-4 h-4 text-blue-600" />
+                    <span>الحفر وتجهيز الأرض</span>
+                  </Link>
+                  <Link href="/construction-journey/insurance" className="flex items-center gap-2 p-2 bg-blue-50 rounded hover:bg-blue-100 transition-colors" onClick={() => setIsMenuOpen(false)}>
+                    <Shield className="w-4 h-4 text-blue-600" />
+                    <span>إصدار التأمين</span>
+                  </Link>
+                  <Link href="/construction-journey/waste-disposal" className="flex items-center gap-2 p-2 bg-blue-50 rounded hover:bg-blue-100 transition-colors" onClick={() => setIsMenuOpen(false)}>
+                    <Truck className="w-4 h-4 text-blue-600" />
+                    <span>مخلفات البناء</span>
+                  </Link>
+                  <Link href="/construction-journey/blueprint-approval" className="flex items-center gap-2 p-2 bg-blue-50 rounded hover:bg-blue-100 transition-colors" onClick={() => setIsMenuOpen(false)}>
+                    <FileCheck className="w-4 h-4 text-blue-600" />
+                    <span>مراجعة المخططات</span>
+                  </Link>
+                  <Link href="/construction-journey/execution" className="flex items-center gap-2 p-2 bg-blue-50 rounded hover:bg-blue-100 transition-colors" onClick={() => setIsMenuOpen(false)}>
+                    <Building2 className="w-4 h-4 text-blue-600" />
+                    <span>التنفيذ والمتابعة</span>
+                  </Link>
+                  <Link href="/construction-journey/completion" className="flex items-center gap-2 p-2 bg-blue-50 rounded hover:bg-blue-100 transition-colors" onClick={() => setIsMenuOpen(false)}>
+                    <Award className="w-4 h-4 text-blue-600" />
+                    <span>إنهاء المشروع</span>
+                  </Link>
+                  
+                  {/* Highlighted Advanced Project Link */}
+                  <div className="mt-3 pt-3 border-t border-gray-200">
+                    <Link href="/user/projects/create/construction" className="flex items-center gap-2 p-3 bg-gradient-to-r from-blue-100 to-indigo-100 rounded-lg hover:from-blue-200 hover:to-indigo-200 transition-all" onClick={() => setIsMenuOpen(false)}>
+                      <Building2 className="w-5 h-5 text-blue-700" />
+                      <div>
+                        <div className="font-semibold text-blue-800">مشروع بناء متكامل</div>
+                        <div className="text-xs text-blue-600">إنشاء مشروع بناء متقدم</div>
+                      </div>
+                    </Link>
+                  </div>
                 </div>
               </div>
             )}

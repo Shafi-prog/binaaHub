@@ -44,18 +44,11 @@ interface ConstructionStep {
 }
 
 export default function ConstructionDataPage() {
-  const [activePhase, setActivePhase] = useState<string>('planning');
-  const [selectedProject, setSelectedProject] = useState<'villa' | 'apartment' | 'commercial'>('villa');
+  const [activePhase, setActivePhase] = useState<string>('land-acquisition');
+  const [selectedProject, setSelectedProject] = useState<'residential' | 'commercial' | 'industrial'>('residential');
 
-  // Get construction phases from the service
-  const phases = ConstructionGuidanceService.getProjectPhases({
-    projectType: selectedProject,
-    area: 250,
-    floors: 2,
-    compliance: 'enhanced',
-    supervision: 'engineer',
-    location: 'الرياض'
-  });
+  // Get construction levels from the service
+  const phases = ConstructionGuidanceService.getConstructionLevels();
 
   const constructionSteps: Record<string, ConstructionStep[]> = {
     planning: [
@@ -191,9 +184,9 @@ export default function ConstructionDataPage() {
           <CardContent>
             <div className="flex justify-center gap-4">
               {[
-                { type: 'villa', title: 'فيلا سكنية', icon: <Building2 className="w-5 h-5" /> },
-                { type: 'apartment', title: 'شقة سكنية', icon: <Building2 className="w-5 h-5" /> },
-                { type: 'commercial', title: 'مبنى تجاري', icon: <Building2 className="w-5 h-5" /> }
+                { type: 'residential', title: 'مبنى سكني', icon: <Building2 className="w-5 h-5" /> },
+                { type: 'commercial', title: 'مبنى تجاري', icon: <Building2 className="w-5 h-5" /> },
+                { type: 'industrial', title: 'مبنى صناعي', icon: <Building2 className="w-5 h-5" /> }
               ].map(({ type, title, icon }) => (
                 <Button
                   key={type}
@@ -218,7 +211,7 @@ export default function ConstructionDataPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               {phases.map((phase, index) => (
                 <div 
                   key={phase.id}
@@ -231,10 +224,10 @@ export default function ConstructionDataPage() {
                 >
                   <div className="text-center">
                     <div className="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center mx-auto mb-2 text-sm font-bold">
-                      {index + 1}
+                      {phase.order}
                     </div>
-                    <h4 className="font-medium text-sm mb-1">{phase.name}</h4>
-                    <p className="text-xs text-gray-500">{phase.duration} يوم</p>
+                    <h4 className="font-medium text-sm mb-1">{phase.arabicTitle}</h4>
+                    <p className="text-xs text-gray-500">{phase.estimatedDuration}</p>
                   </div>
                 </div>
               ))}
@@ -253,7 +246,7 @@ export default function ConstructionDataPage() {
                   خطوات المرحلة التفصيلية
                 </CardTitle>
                 <p className="text-sm text-gray-600">
-                  المرحلة الحالية: {phases.find(p => p.id === activePhase)?.name}
+                  المرحلة الحالية: {phases.find(p => p.id === activePhase)?.arabicTitle}
                 </p>
               </CardHeader>
               <CardContent>
@@ -367,8 +360,8 @@ export default function ConstructionDataPage() {
                   {phases.map((phase) => (
                     <div key={phase.id}>
                       <div className="flex justify-between items-center mb-1">
-                        <span className="text-sm font-medium">{phase.name}</span>
-                        <span className="text-xs text-gray-500">{phase.duration} يوم</span>
+                        <span className="text-sm font-medium">{phase.arabicTitle}</span>
+                        <span className="text-xs text-gray-500">{phase.estimatedDuration}</span>
                       </div>
                       <Progress 
                         value={activePhase === phase.id ? 50 : 0} 

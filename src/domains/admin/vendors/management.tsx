@@ -247,7 +247,7 @@ export default function VendorManagement() {
                     <DollarSign className="w-5 h-5" />
                     <span className="text-sm font-medium">الإيرادات</span>
                   </div>
-                  <p className="text-2xl font-bold text-purple-900">{vendor.totalRevenue.toLocaleString()} ر.س</p>
+                  <p className="text-2xl font-bold text-purple-900">{vendor.totalRevenue.toLocaleString('en-US')} ر.س</p>
                 </div>
                 
                 <div className="bg-yellow-50 p-4 rounded-lg">
@@ -453,7 +453,7 @@ export default function VendorManagement() {
                       {vendor.totalProducts}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {vendor.totalRevenue.toLocaleString()} ر.س
+                      {vendor.totalRevenue.toLocaleString('en-US')} ر.س
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center gap-1">

@@ -21,7 +21,8 @@ import {
   Home,
   Calendar,
   TrendingUp,
-  AlertTriangle
+  AlertTriangle,
+  Trash2
 } from 'lucide-react';
 
 export default function ProjectsListPage() {
@@ -61,6 +62,25 @@ export default function ProjectsListPage() {
       console.error('Error loading projects:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDeleteProject = async (projectId: string, projectName: string) => {
+    const confirmed = window.confirm(`هل أنت متأكد من حذف المشروع "${projectName}"؟ هذا الإجراء لا يمكن التراجع عنه.`);
+    if (!confirmed) return;
+
+    try {
+      await ProjectTrackingService.deleteProject(projectId);
+      setProjects(prev => prev.filter(p => p.id !== projectId));
+      // Remove from summaries
+      setProjectSummaries(prev => {
+        const newSummaries = { ...prev };
+        delete newSummaries[projectId];
+        return newSummaries;
+      });
+    } catch (error) {
+      console.error('Error deleting project:', error);
+      alert('حدث خطأ في حذف المشروع');
     }
   };
 
@@ -164,7 +184,7 @@ export default function ProjectsListPage() {
                     </Badge>
                     <button 
                       className="text-blue-600 hover:text-blue-700"
-                      onClick={() => router.push(`/user/projects/${project.id}`)}
+                      onClick={() => router.push(`/user/comprehensive-construction-calculator?projectId=${project.id}`)}
                     >
                       <FileText className="w-5 h-5" />
                     </button>
@@ -190,15 +210,15 @@ export default function ProjectsListPage() {
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
                       <span className="text-gray-600">المقدر:</span>
-                      <span className="font-medium">{summary.totalEstimatedCost.toLocaleString()} ر.س</span>
+                      <span className="font-medium">{summary.totalEstimatedCost.toLocaleString('en-US')} ر.س</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">المنفق:</span>
-                      <span className="font-medium text-green-600">{summary.totalSpentCost.toLocaleString()} ر.س</span>
+                      <span className="font-medium text-green-600">{summary.totalSpentCost.toLocaleString('en-US')} ر.س</span>
                     </div>
                     <div className="flex justify-between border-t pt-2">
                       <span className="text-gray-600">متبقي:</span>
-                      <span className="font-bold text-orange-600">{summary.remainingCost.toLocaleString()} ر.س</span>
+                      <span className="font-bold text-orange-600">{summary.remainingCost.toLocaleString('en-US')} ر.س</span>
                     </div>
                   </div>
                 ) : (
@@ -213,20 +233,19 @@ export default function ProjectsListPage() {
                 <div className="mt-4 pt-4 border-t flex gap-2">
                   <Button
                     size="sm"
-                    onClick={() => router.push(`/user/projects/${project.id}`)}
+                    onClick={() => router.push(`/user/comprehensive-construction-calculator?projectId=${project.id}`)}
                     className="flex-1 flex items-center gap-1"
                   >
                     <Eye className="w-3 h-3" />
-                    عرض
+                    عرض المشروع
                   </Button>
                   <Button
                     size="sm"
                     variant="outline"
-                    onClick={() => router.push(`/user/comprehensive-construction-calculator?projectId=${project.id}`)}
-                    className="flex items-center gap-1"
+                    onClick={() => handleDeleteProject(project.id, project.name)}
+                    className="flex items-center gap-1 text-red-600 hover:text-red-700 hover:bg-red-50"
                   >
-                    <Calculator className="w-3 h-3" />
-                    حاسبة
+                    <Trash2 className="w-3 h-3" />
                   </Button>
                 </div>
               </EnhancedCard>

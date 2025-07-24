@@ -159,7 +159,7 @@ export default function ProjectCompletionPopup({
                 </h4>
                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
                   <div className="text-lg font-bold text-blue-800">
-                    {totalProjectCost.toLocaleString()} ريال سعودي
+                    {totalProjectCost.toLocaleString('en-US')} ريال سعودي
                   </div>
                   <p className="text-xs text-blue-600 mt-1">
                     شامل جميع المواد والعمالة والمعدات
@@ -274,11 +274,11 @@ export default function ProjectCompletionPopup({
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                     <div>
                       <p className="text-blue-700 font-medium">التكلفة الإجمالية:</p>
-                      <p className="text-lg font-bold text-blue-800">{totalProjectCost.toLocaleString()} ر.س</p>
+                      <p className="text-lg font-bold text-blue-800">{totalProjectCost.toLocaleString('en-US')} ر.س</p>
                     </div>
                     <div>
                       <p className="text-blue-700 font-medium">السعر المقترح (+{profitPercentage}%):</p>
-                      <p className="text-lg font-bold text-green-600">{calculatedSalePrice.toLocaleString()} ر.س</p>
+                      <p className="text-lg font-bold text-green-600">{calculatedSalePrice.toLocaleString('en-US')} ر.س</p>
                     </div>
                   </div>
                 </div>
@@ -359,12 +359,12 @@ export default function ProjectCompletionPopup({
                     <div className="mt-2 text-xs text-gray-600 space-y-1">
                       <div className="flex justify-between">
                         <span>عمولة المنصة (5%):</span>
-                        <span className="text-red-600">-{platformFee.toLocaleString()} ر.س</span>
+                        <span className="text-red-600">-{platformFee.toLocaleString('en-US')} ر.س</span>
                       </div>
                       <div className="flex justify-between">
                         <span>صافي الربح:</span>
                         <span className={netProfit >= 0 ? "text-green-600 font-medium" : "text-red-600 font-medium"}>
-                          {netProfit >= 0 ? '+' : ''}{netProfit.toLocaleString()} ر.س
+                          {netProfit >= 0 ? '+' : ''}{netProfit.toLocaleString('en-US')} ر.س
                         </span>
                       </div>
                     </div>
@@ -394,15 +394,15 @@ export default function ProjectCompletionPopup({
                     <h4 className="font-medium text-green-800 mb-2">معاينة الإعلان:</h4>
                     <div className="space-y-1 text-sm text-green-700">
                       <p><strong>المشروع:</strong> {project.name}</p>
-                      <p><strong>السعر:</strong> {parseFloat(salePrice).toLocaleString()} ريال سعودي</p>
+                      <p><strong>السعر:</strong> {parseFloat(salePrice).toLocaleString('en-US')} ريال سعودي</p>
                       {totalProjectCost > 0 && (
                         <>
-                          <p><strong>التكلفة الأساسية:</strong> {totalProjectCost.toLocaleString()} ر.س</p>
+                          <p><strong>التكلفة الأساسية:</strong> {totalProjectCost.toLocaleString('en-US')} ر.س</p>
                           <p><strong>نسبة الربح:</strong> {profitPercentage}%</p>
-                          <p><strong>صافي المبلغ بعد العمولة:</strong> {(parseFloat(salePrice) * 0.95).toLocaleString()} ريال سعودي</p>
+                          <p><strong>صافي المبلغ بعد العمولة:</strong> {(parseFloat(salePrice) * 0.95).toLocaleString('en-US')} ريال سعودي</p>
                           <p><strong>الربح الصافي:</strong> 
                             <span className={netProfit >= 0 ? "text-green-600 font-medium" : "text-red-600 font-medium"}>
-                              {' '}{netProfit >= 0 ? '+' : ''}{netProfit.toLocaleString()} ر.س
+                              {' '}{netProfit >= 0 ? '+' : ''}{netProfit.toLocaleString('en-US')} ر.س
                             </span>
                           </p>
                         </>

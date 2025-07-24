@@ -158,7 +158,7 @@ jobs:
       with:
         vercel-token: ${{ secrets.VERCEL_TOKEN }}
         vercel-org-id: ${{ secrets.ORG_ID }}
-        vercel-project-id: ${{ secrets[format('PROJECT_ID_{0}', upper(matrix.product.name))] }}
+        vercel-project-id: ${{ secrets[format('PROJECT_ID_{0}', toUpper(matrix.product.name))] }}
         vercel-args: '--prod'
         working-directory: ./src/standalone/${{ matrix.product.name }}
         scope: ${{ secrets.TEAM_ID }}

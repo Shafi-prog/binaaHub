@@ -147,6 +147,30 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     
+    - name: Set project ID
+      id: set-project-id
+      run: |
+        case "${{ matrix.product.name }}" in
+          "pos")
+            echo "project_id=${{ secrets.PROJECT_ID_POS }}" >> $GITHUB_OUTPUT
+            ;;
+          "inventory")
+            echo "project_id=${{ secrets.PROJECT_ID_INVENTORY }}" >> $GITHUB_OUTPUT
+            ;;
+          "accounting")
+            echo "project_id=${{ secrets.PROJECT_ID_ACCOUNTING }}" >> $GITHUB_OUTPUT
+            ;;
+          "crm")
+            echo "project_id=${{ secrets.PROJECT_ID_CRM }}" >> $GITHUB_OUTPUT
+            ;;
+          "analytics")
+            echo "project_id=${{ secrets.PROJECT_ID_ANALYTICS }}" >> $GITHUB_OUTPUT
+            ;;
+          *)
+            echo "project_id=${{ secrets.PROJECT_ID }}" >> $GITHUB_OUTPUT
+            ;;
+        esac
+    
     - name: Build ${{ matrix.product.name }}
       run: |
         cd src/standalone/${{ matrix.product.name }}
@@ -158,7 +182,7 @@ jobs:
       with:
         vercel-token: ${{ secrets.VERCEL_TOKEN }}
         vercel-org-id: ${{ secrets.ORG_ID }}
-        vercel-project-id: ${{ secrets[format('PROJECT_ID_{0}', toUpper(matrix.product.name))] }}
+        vercel-project-id: ${{ steps.set-project-id.outputs.project_id }}
         vercel-args: '--prod'
         working-directory: ./src/standalone/${{ matrix.product.name }}
         scope: ${{ secrets.TEAM_ID }}

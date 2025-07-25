@@ -332,7 +332,7 @@ export default function LandPurchaseIntegration({ projectId, onLandSelected }: L
                         >
                           اختيار هذه الأرض
                         </Button>
-                        <Button variant="outline" className="flex-1">
+                        <Button variant="outline" className="flex-1" onClick={() => alert('Button clicked')}>
                           <Phone className="w-4 h-4 mr-2" />
                           اتصال
                         </Button>

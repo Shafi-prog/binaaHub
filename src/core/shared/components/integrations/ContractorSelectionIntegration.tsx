@@ -387,7 +387,7 @@ export default function ContractorSelectionIntegration({
                                         <p className="text-xs text-gray-500">{planFile.format.toUpperCase()}</p>
                                       </div>
                                     </div>
-                                    <Button size="sm" variant="outline">
+                                    <Button size="sm" variant="outline" onClick={() => alert('Button clicked')}>
                                       <Download className="w-3 h-3 mr-1" />
                                       تحميل
                                     </Button>
@@ -406,7 +406,7 @@ export default function ContractorSelectionIntegration({
                               <CheckCircle className="w-4 h-4 mr-2" />
                               اختيار هذا المخطط
                             </Button>
-                            <Button variant="outline" className="flex-1">
+                            <Button variant="outline" className="flex-1" onClick={() => alert('Button clicked')}>
                               <Download className="w-4 h-4 mr-2" />
                               تحميل الملفات
                             </Button>
@@ -454,7 +454,7 @@ export default function ContractorSelectionIntegration({
           <Users className="w-16 h-16 text-gray-400 mx-auto mb-4" />
           <h3 className="text-xl font-semibold text-gray-700 mb-2">المقاولين المعتمدين</h3>
           <p className="text-gray-500 mb-4">قائمة بالمقاولين المعتمدين والمؤهلين لتنفيذ مشروعك</p>
-          <Button variant="outline">
+          <Button variant="outline" onClick={() => alert('Button clicked')}>
             عرض المقاولين المتاحين
           </Button>
         </Card>

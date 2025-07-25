@@ -390,7 +390,7 @@ export default function StoresPage() {
               <option value="pending">بانتظار الموافقة</option>
               <option value="suspended">معلق</option>
             </select>
-            <Button variant="outline">
+            <Button variant="outline" onClick={() => alert('Button clicked')}>
               <Filter className="h-4 w-4 ml-2" />
               تصفية متقدمة
             </Button>

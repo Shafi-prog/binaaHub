@@ -12,17 +12,16 @@ export const metadata: Metadata = {
 
 export default function AnalyticsPage() {
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">📊 تحليلات منصة بنا المتقدمة</h1>
-          <p className="text-gray-600 mt-2">
-            نظام التحليلات الشامل مع الذكاء الاصطناعي وتتبع الأسعار والتقارير المتقدمة
-          </p>
-          <div className="mt-4 flex items-center gap-2 text-sm text-green-600">
-            <span className="px-2 py-1 bg-green-100 rounded-full">🤖 الذكاء الاصطناعي</span>
-            <span className="px-2 py-1 bg-blue-100 rounded-full">📈 التحليلات الفورية</span>
-            <span className="px-2 py-1 bg-purple-100 rounded-full">🏆 Phase 2 - مكتمل</span>
+    <div className="p-6 space-y-6">
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-gray-900">📊 تحليلات منصة بنا المتقدمة</h1>
+        <p className="text-gray-600 mt-2">
+          نظام التحليلات الشامل مع الذكاء الاصطناعي وتتبع الأسعار والتقارير المتقدمة
+        </p>
+        <div className="mt-4 flex items-center gap-2 text-sm text-green-600">
+          <span className="px-2 py-1 bg-green-100 rounded-full">🤖 الذكاء الاصطناعي</span>
+          <span className="px-2 py-1 bg-blue-100 rounded-full">📈 التحليلات الفورية</span>
+          <span className="px-2 py-1 bg-purple-100 rounded-full">🏆 Phase 2 - مكتمل</span>
           </div>
         </div>
 
@@ -54,7 +53,6 @@ export default function AnalyticsPage() {
             <CityPriceTracking className="w-full" />
           </section>
         </div>
-      </div>
     </div>
   );
 }

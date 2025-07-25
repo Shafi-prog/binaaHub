@@ -2,7 +2,7 @@ import { ShippingLogisticsIntegration } from '@/core/shared/components/ShippingL
 
 export default function ShippingPage() {
   return (
-    <div className="container mx-auto p-6">
+    <div className="p-6 space-y-6">
       <ShippingLogisticsIntegration />
     </div>
   );

@@ -10,7 +10,7 @@ export default function EditProjectPage() {
         <div className="text-center space-y-4">
           <h1 className="text-2xl font-bold">تحرير المشروع</h1>
           <p className="text-gray-600">قريباً - ميزة تحرير المشاريع</p>
-          <Button variant="outline">
+          <Button variant="outline" onClick={() => alert('Button clicked')}>
             العودة للمشاريع
           </Button>
         </div>

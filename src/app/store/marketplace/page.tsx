@@ -230,7 +230,7 @@ export default function UserStorefront() {
 
   if (loading) {
     return (
-      <div className="container mx-auto p-6">
+      <div className="p-6 space-y-6">
         <div className="flex items-center justify-center h-64">
           <div className="text-lg">Loading store...</div>
         </div>
@@ -239,7 +239,7 @@ export default function UserStorefront() {
   }
 
   return (
-    <div className="container mx-auto p-6">
+    <div className="p-6 space-y-6">
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <div>

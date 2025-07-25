@@ -471,7 +471,7 @@ export default function CashRegisterManagement() {
   const activeSession = sessions.find(session => session.register_id === selectedRegister?.id);
 
   return (
-    <div className="container mx-auto py-8" dir="rtl">
+    <div className="p-6 space-y-6" dir="rtl">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">إدارة صناديق النقد</h1>
         <p className="text-gray-600">فتح وإغلاق صناديق النقد وتتبع المعاملات النقدية</p>

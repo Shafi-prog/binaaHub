@@ -181,7 +181,7 @@ export default function StoreWarrantyManagementPage() {
 
   if (!isClient) {
     return (
-      <div className="container mx-auto px-4 py-8 max-w-7xl" dir="rtl">
+      <div className="p-6 space-y-6" dir="rtl">
         <div className="flex items-center justify-center p-12">
           <div className="text-center">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
@@ -193,7 +193,7 @@ export default function StoreWarrantyManagementPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-7xl" dir="rtl">
+    <div className="p-6 space-y-6" dir="rtl">
       {/* Header */}
       <div className="mb-8">
         <Typography variant="heading" size="3xl" weight="bold" className="text-gray-900 mb-2 flex items-center gap-3">

@@ -142,7 +142,7 @@ export const OrderListTable: React.FC = () => {
         <div className="flex justify-between items-center">
           <CardTitle>قائمة الطلبات</CardTitle>
           <div className="flex gap-2">
-            <Button variant="outline">
+            <Button variant="outline" onClick={() => alert('Button clicked')}>
               <Download className="w-4 h-4 mr-2" />
               تصدير
             </Button>
@@ -199,10 +199,10 @@ export const OrderListTable: React.FC = () => {
                 </TableCell>
                 <TableCell className="text-right">
                   <div className="flex justify-end gap-2">
-                    <Button variant="outline" size="sm">
+                    <Button variant="outline" size="sm" onClick={() => alert('Button clicked')}>
                       <Eye className="w-4 h-4" />
                     </Button>
-                    <Button variant="outline" size="sm">
+                    <Button variant="outline" size="sm" onClick={() => alert('Button clicked')}>
                       <Edit className="w-4 h-4" />
                     </Button>
                   </div>

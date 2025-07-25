@@ -220,7 +220,7 @@ export default function WorkflowExecutionList() {
               <h1 className="text-2xl font-bold text-gray-900">سجل تنفيذ العمليات</h1>
               <p className="text-gray-600">مراقبة وإدارة تنفيذ العمليات التلقائية</p>
             </div>
-            <Button className="flex items-center gap-2">
+            <Button className="flex items-center gap-2" onClick={() => alert('Button clicked')}>
               <Settings size={16} />
               إدارة العمليات
             </Button>

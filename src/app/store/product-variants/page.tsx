@@ -54,17 +54,15 @@ export default function ProductVariantDetail() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 p-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="animate-pulse">
-            <div className="h-8 bg-gray-200 rounded w-1/3 mb-4"></div>
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <div className="lg:col-span-2 space-y-6">
-                <div className="h-64 bg-gray-200 rounded"></div>
-                <div className="h-48 bg-gray-200 rounded"></div>
-              </div>
-              <div className="h-96 bg-gray-200 rounded"></div>
+      <div className="p-6 space-y-6">
+        <div className="animate-pulse">
+          <div className="h-8 bg-gray-200 rounded w-1/3 mb-4"></div>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-2 space-y-6">
+              <div className="h-64 bg-gray-200 rounded"></div>
+              <div className="h-48 bg-gray-200 rounded"></div>
             </div>
+            <div className="h-96 bg-gray-200 rounded"></div>
           </div>
         </div>
       </div>
@@ -73,7 +71,7 @@ export default function ProductVariantDetail() {
 
   if (!variant) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="p-6 space-y-6 flex items-center justify-center min-h-[400px]">
         <div className="text-center">
           <h2 className="text-xl font-semibold text-gray-900 mb-2">البديل غير موجود</h2>
           <p className="text-gray-600">لم يتم العثور على البديل المطلوب</p>
@@ -83,25 +81,23 @@ export default function ProductVariantDetail() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="p-6 space-y-6">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="max-w-6xl mx-auto px-6 py-4">
-          <div className="flex justify-between items-center">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">{variant.title}</h1>
-              <p className="text-gray-600">رمز المنتج: {variant.sku}</p>
-            </div>
-            <Button className="flex items-center gap-2">
-              <Edit size={16} />
-              تعديل البديل
-            </Button>
+      <div className="mb-8">
+        <div className="flex justify-between items-center">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">{variant.title}</h1>
+            <p className="text-gray-600 mt-2">رمز المنتج: {variant.sku}</p>
           </div>
+          <Button className="flex items-center gap-2" onClick={() => alert('Button clicked')}>
+            <Edit size={16} />
+            تعديل البديل
+          </Button>
         </div>
       </div>
 
-      {/* Content */}
-      <div className="max-w-6xl mx-auto p-6">
+      <div className="space-y-6">
+        {/* Content */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">

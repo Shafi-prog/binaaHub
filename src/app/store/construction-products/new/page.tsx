@@ -58,32 +58,26 @@ export default function NewConstructionProductPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="p-6 space-y-6">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center gap-4">
-            <Button 
-              variant="ghost" 
-              onClick={() => router.back()}
-              className="flex items-center gap-2"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              رجوع
-            </Button>
-            <div className="flex-1">
-              <h1 className="text-2xl font-bold text-gray-900">إضافة منتج جديد</h1>
-              <p className="text-gray-600">إضافة منتج بناء وتشييد جديد للمخزون</p>
-            </div>
-            <Button onClick={handleSave} className="flex items-center gap-2">
-              <Save className="h-4 w-4" />
-              حفظ المنتج
-            </Button>
+      <div className="mb-8">
+        <div className="flex items-center gap-4">
+          <Button 
+            variant="ghost" 
+            onClick={() => router.back()}
+            className="flex items-center gap-2"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            رجوع
+          </Button>
+          <div className="flex-1">
+            <h1 className="text-3xl font-bold text-gray-900">إضافة منتج جديد</h1>
+            <p className="text-gray-600 mt-2">إضافة منتج جديد لمواد البناء والتشييد</p>
           </div>
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto p-6">
+      <div className="space-y-6">
         <Card>
           <CardHeader>
             <CardTitle>معلومات المنتج</CardTitle>
@@ -185,7 +179,7 @@ export default function NewConstructionProductPage() {
                   placeholder="أدخل الباركود أو اتركه فارغاً للتوليد التلقائي"
                   className="flex-1"
                 />
-                <Button variant="outline" type="button">
+                <Button variant="outline" type="button" onClick={() => alert('Button clicked')}>
                   مسح باركود
                 </Button>
               </div>

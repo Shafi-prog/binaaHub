@@ -100,7 +100,7 @@ export const CustomerListTable: React.FC = () => {
       <CardHeader>
         <div className="flex justify-between items-center">
           <CardTitle>قائمة العملاء</CardTitle>
-          <Button>
+          <Button onClick={() => alert('Button clicked')}>
             <Plus className="w-4 h-4 mr-2" />
             إضافة عميل جديد
           </Button>
@@ -157,10 +157,10 @@ export const CustomerListTable: React.FC = () => {
                 </TableCell>
                 <TableCell className="text-right">
                   <div className="flex justify-end gap-2">
-                    <Button variant="outline" size="sm">
+                    <Button variant="outline" size="sm" onClick={() => alert('Button clicked')}>
                       <Eye className="w-4 h-4" />
                     </Button>
-                    <Button variant="outline" size="sm">
+                    <Button variant="outline" size="sm" onClick={() => alert('Button clicked')}>
                       <Edit className="w-4 h-4" />
                     </Button>
                   </div>

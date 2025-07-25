@@ -1,45 +1,139 @@
+"use client"
+
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { Button } from '@/core/shared/components/ui/button'
+import { Input } from '@/core/shared/components/ui/input'
+import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card'
+
 export default function SignupPage() {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const router = useRouter()
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setError('')
+    
+    if (password !== confirmPassword) {
+      setError('كلمات المرور غير متطابقة')
+      return
+    }
+    
+    if (password.length < 6) {
+      setError('كلمة المرور يجب أن تكون 6 أحرف على الأقل')
+      return
+    }
+
+    setLoading(true)
+    
+    try {
+      // Simulate account creation
+      localStorage.setItem('user', JSON.stringify({
+        email,
+        userType: 'user',
+        createdAt: new Date().toISOString()
+      }))
+      
+      // Redirect to dashboard
+      router.push('/user/dashboard')
+    } catch (err) {
+      setError('حدث خطأ في إنشاء الحساب')
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Create your account
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Join BINNA Platform
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8" dir="rtl">
+      <Card className="w-full max-w-md">
+        <CardHeader className="text-center">
+          <CardTitle className="text-3xl font-bold text-gray-900">
+            إنشاء حساب جديد
+          </CardTitle>
+          <p className="text-gray-600 mt-2">
+            انضم إلى منصة بنّا
           </p>
-        </div>
-        <form className="mt-8 space-y-6">
-          <div className="rounded-md shadow-sm -space-y-px">
-            <div>
-              <input
-                type="email"
-                required
-                className="relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Email address"
-              />
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {error && (
+              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+                {error}
+              </div>
+            )}
+            
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  البريد الإلكتروني
+                </label>
+                <Input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="w-full"
+                  placeholder="أدخل بريدك الإلكتروني"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  كلمة المرور
+                </label>
+                <Input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="w-full"
+                  placeholder="أدخل كلمة المرور"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  تأكيد كلمة المرور
+                </label>
+                <Input
+                  type="password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                  className="w-full"
+                  placeholder="أكد كلمة المرور"
+                />
+              </div>
             </div>
-            <div>
-              <input
-                type="password"
-                required
-                className="relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Password"
-              />
-            </div>
-          </div>
-          
-          <div>
-            <button
+            
+            <Button
               type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              className="w-full bg-blue-600 hover:bg-blue-700"
+              disabled={loading}
+              loading={loading}
             >
-              Sign up
-            </button>
-          </div>
-        </form>
-      </div>
+              {loading ? 'جاري إنشاء الحساب...' : 'إنشاء حساب'}
+            </Button>
+            
+            <div className="text-center">
+              <p className="text-sm text-gray-600">
+                لديك حساب بالفعل؟{' '}
+                <Button
+                  variant="link"
+                  onClick={() => router.push('/login')}
+                  className="text-blue-600 hover:text-blue-700 p-0 h-auto"
+                >
+                  تسجيل الدخول
+                </Button>
+              </p>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
     </div>
   )
 }

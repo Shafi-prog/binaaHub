@@ -643,24 +643,30 @@ function POSSystemComponent() {
   const categories = [...new Set(products.map(p => p.category))];
 
   return (
-    <div className="h-screen bg-gray-100 flex flex-col" dir="rtl">
-      {/* Header */}
-      <div className="bg-white shadow-sm border-b p-4">
+    <div className="flex flex-col min-h-[calc(100vh-4rem)]" dir="rtl">
+      {/* Status Bar */}
+      <div className="bg-blue-50 border-b border-blue-200 p-3">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-gray-900">نقطة البيع</h1>
           <div className="flex items-center gap-4">
-            <Badge variant="outline" className="text-lg px-3 py-1">
+            <Badge variant="secondary" className="bg-blue-100 text-blue-700 border-blue-300">
               فاتورة: {currentSale.sale_number}
             </Badge>
-            <Button variant="outline" size="sm" onClick={() => setShowSuspendedDialog(true)}>
-              <Pause className="w-4 h-4 ml-1" />
-              المعلقة ({suspendedSales.length})
-            </Button>
+            <span className="text-sm text-blue-600">نقطة البيع</span>
           </div>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={() => setShowSuspendedDialog(true)}
+            className="border-blue-300 text-blue-700 hover:bg-blue-50"
+          >
+            <Pause className="w-4 h-4 ml-1" />
+            المعلقة ({suspendedSales.length})
+          </Button>
         </div>
       </div>
 
-      <div className="flex-1 flex overflow-hidden">
+      {/* Main Content */}
+      <div className="flex-1 flex overflow-hidden bg-gray-50">
         {/* Products Panel */}
         <div className="w-2/3 bg-white border-l p-4 overflow-hidden flex flex-col">
           {/* Search and Barcode */}

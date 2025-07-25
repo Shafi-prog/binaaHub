@@ -324,7 +324,7 @@ export default function PurchaseOrderManagement() {
   );
 
   return (
-    <div className="container mx-auto py-8" dir="rtl">
+    <div className="p-6 space-y-6" dir="rtl">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">إدارة أوامر الشراء</h1>
         <p className="text-gray-600">إدارة وتتبع أوامر الشراء من الموردين</p>

@@ -31,16 +31,16 @@ interface Product {
 const mockProducts: Product[] = [
   {
     id: 'prod_1',
-    name: 'أسمنت بورتلاندي عادي',
-    category: 'مواد البناء',
+    name: 'أسمنت بورتلاندي',
+    category: 'إسمنت ومواد لاصقة',
     sku: 'CEM-001',
     price: 25.50,
-    cost: 20.00,
+    cost: 22.00,
     stock_quantity: 150,
     status: 'active',
-    description: 'أسمنت بورتلاندي عادي 50 كيلوجرام',
+    description: 'أسمنت بورتلاندي عادي 50 كيلو',
     unit: 'كيس',
-    supplier: 'شركة الأسمنت السعودية',
+    supplier: 'مصنع أسمنت اليمامة',
     created_at: '2024-01-15',
     last_updated: '2024-03-10'
   },
@@ -73,44 +73,30 @@ const mockProducts: Product[] = [
     supplier: 'مقالع الرياض',
     created_at: '2024-02-01',
     last_updated: '2024-03-14'
-  },
-  {
-    id: 'prod_4',
-    name: 'بلاط سيراميك 60x60',
-    category: 'بلاط وسيراميك',
-    sku: 'TIL-6060',
-    price: 28.75,
-    cost: 22.00,
-    stock_quantity: 450,
-    status: 'active',
-    description: 'بلاط سيراميك أبيض 60x60 سم',
-    unit: 'متر مربع',
-    supplier: 'شركة السيراميك الحديث',
-    created_at: '2024-02-15',
-    last_updated: '2024-03-11'
   }
 ];
 
-export default function StoreProductsPage() {
-  const [products] = useState<Product[]>(mockProducts);
-  const [searchTerm, setSearchTerm] = useState('');
+export default function ProductsPage() {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [statusFilter, setStatusFilter] = useState<string>('all');
 
   const filteredProducts = useMemo(() => {
-    return products.filter(product =>
-      product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.sku.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.category.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  }, [products, searchTerm]);
+    return mockProducts.filter(product => {
+      const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                           product.sku.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesStatus = statusFilter === 'all' || product.status === statusFilter;
+      return matchesSearch && matchesStatus;
+    });
+  }, [searchQuery, statusFilter]);
 
   const productStats = useMemo(() => {
-    const totalProducts = products.length;
-    const activeProducts = products.filter(p => p.status === 'active').length;
-    const outOfStock = products.filter(p => p.status === 'out_of_stock').length;
-    const totalValue = products.reduce((sum, p) => sum + (p.price * p.stock_quantity), 0);
-    
-    return { totalProducts, activeProducts, outOfStock, totalValue };
-  }, [products]);
+    return {
+      totalProducts: mockProducts.length,
+      activeProducts: mockProducts.filter(p => p.status === 'active').length,
+      outOfStock: mockProducts.filter(p => p.status === 'out_of_stock').length,
+      totalValue: mockProducts.reduce((acc, p) => acc + (p.price * p.stock_quantity), 0)
+    };
+  }, []);
 
   const getStatusColor = (status: Product['status']) => {
     const colors = {
@@ -142,193 +128,181 @@ export default function StoreProductsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="p-6 space-y-6">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex justify-between items-center">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">إدارة المنتجات</h1>
-              <p className="text-gray-600">إدارة شاملة لمنتجات المتجر والمخزون</p>
-            </div>
-            <div className="flex gap-3">
-              <Link href="/store/products/construction/new">
-                <Button className="flex items-center gap-2">
-                  <Plus className="h-4 w-4" />
-                  إضافة منتج جديد
-                </Button>
-              </Link>
-              <Link href="/store/construction-products">
-                <Button variant="outline">
-                  منتجات البناء
-                </Button>
-              </Link>
-            </div>
-          </div>
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">إدارة المنتجات</h1>
+          <p className="text-gray-600">إدارة شاملة لمنتجات المتجر والمخزون</p>
+        </div>
+        <div className="flex gap-3">
+          <Link href="/store/products/create">
+            <Button className="flex items-center gap-2">
+              <Plus className="h-4 w-4" />
+              إضافة منتج جديد
+            </Button>
+          </Link>
+          <Link href="/store/products/import">
+            <Button variant="outline" className="flex items-center gap-2">
+              <Package className="h-4 w-4" />
+              استيراد منتجات
+            </Button>
+          </Link>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto p-6 space-y-6">
-        {/* Statistics */}
-        <div className="grid grid-cols-4 gap-4">
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <Package className="h-8 w-8 text-blue-600" />
-                <div className="mr-4">
-                  <p className="text-sm font-medium text-gray-600">إجمالي المنتجات</p>
-                  <p className="text-2xl font-bold">{productStats.totalProducts}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <ShoppingCart className="h-8 w-8 text-green-600" />
-                <div className="mr-4">
-                  <p className="text-sm font-medium text-gray-600">منتجات نشطة</p>
-                  <p className="text-2xl font-bold">{productStats.activeProducts}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <Layers className="h-8 w-8 text-red-600" />
-                <div className="mr-4">
-                  <p className="text-sm font-medium text-gray-600">نفذت الكمية</p>
-                  <p className="text-2xl font-bold">{productStats.outOfStock}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <DollarSign className="h-8 w-8 text-purple-600" />
-                <div className="mr-4">
-                  <p className="text-sm font-medium text-gray-600">قيمة المخزون</p>
-                  <p className="text-2xl font-bold">{formatCurrency(productStats.totalValue)}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Products Table */}
+      {/* Statistics */}
+      <div className="grid grid-cols-4 gap-4">
         <Card>
-          <CardHeader>
-            <div className="flex items-center gap-4">
-              <div className="flex-1 relative">
-                <Search className="h-4 w-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+          <CardContent className="p-6">
+            <div className="flex items-center">
+              <Package className="h-8 w-8 text-blue-600" />
+              <div className="mr-4">
+                <p className="text-sm font-medium text-gray-600">إجمالي المنتجات</p>
+                <p className="text-2xl font-bold">{productStats.totalProducts}</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center">
+              <ShoppingCart className="h-8 w-8 text-green-600" />
+              <div className="mr-4">
+                <p className="text-sm font-medium text-gray-600">منتجات نشطة</p>
+                <p className="text-2xl font-bold">{productStats.activeProducts}</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center">
+              <Layers className="h-8 w-8 text-red-600" />
+              <div className="mr-4">
+                <p className="text-sm font-medium text-gray-600">نفذت الكمية</p>
+                <p className="text-2xl font-bold">{productStats.outOfStock}</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center">
+              <DollarSign className="h-8 w-8 text-purple-600" />
+              <div className="mr-4">
+                <p className="text-sm font-medium text-gray-600">قيمة المخزون</p>
+                <p className="text-2xl font-bold">{formatCurrency(productStats.totalValue)}</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Filters and Search */}
+      <Card>
+        <CardHeader>
+          <CardTitle>البحث والتصفية</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex gap-4">
+            <div className="flex-1">
+              <div className="relative">
+                <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                 <Input
                   placeholder="البحث في المنتجات..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                   className="pr-10"
                 />
               </div>
             </div>
-          </CardHeader>
-          <CardContent>
-            {filteredProducts.length === 0 ? (
-              <div className="text-center py-12">
-                <Package className="h-12 w-12 mx-auto text-gray-400 mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">لا توجد منتجات</h3>
-                <p className="text-gray-600 mb-4">
-                  {searchTerm 
-                    ? 'لا توجد منتجات تطابق معايير البحث'
-                    : 'ابدأ بإضافة منتجات جديدة'
-                  }
-                </p>
-                <Button>
-                  <Plus className="h-4 w-4 ml-2" />
-                  إضافة منتج
-                </Button>
-              </div>
-            ) : (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>اسم المنتج</TableHead>
-                    <TableHead>الفئة</TableHead>
-                    <TableHead>رمز المنتج</TableHead>
-                    <TableHead>السعر</TableHead>
-                    <TableHead>التكلفة</TableHead>
-                    <TableHead>المخزون</TableHead>
-                    <TableHead>الوحدة</TableHead>
-                    <TableHead>الحالة</TableHead>
-                    <TableHead>آخر تحديث</TableHead>
-                    <TableHead>الإجراءات</TableHead>
+            <select
+              className="px-3 py-2 border border-gray-300 rounded-md"
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+            >
+              <option value="all">جميع الحالات</option>
+              <option value="active">نشط</option>
+              <option value="inactive">غير نشط</option>
+              <option value="out_of_stock">نفدت الكمية</option>
+            </select>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Products Table */}
+      <Card>
+        <CardHeader>
+          <CardTitle>قائمة المنتجات ({filteredProducts.length})</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {filteredProducts.length === 0 ? (
+            <div className="text-center py-8">
+              <Package className="mx-auto h-12 w-12 text-gray-400" />
+              <h3 className="mt-2 text-sm font-medium text-gray-900">لا توجد منتجات</h3>
+              <p className="mt-1 text-sm text-gray-500">ابدأ بإضافة منتج جديد</p>
+            </div>
+          ) : (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>المنتج</TableHead>
+                  <TableHead>رمز المنتج</TableHead>
+                  <TableHead>الفئة</TableHead>
+                  <TableHead>السعر</TableHead>
+                  <TableHead>المخزون</TableHead>
+                  <TableHead>الحالة</TableHead>
+                  <TableHead>آخر تحديث</TableHead>
+                  <TableHead>العمليات</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredProducts.map((product) => (
+                  <TableRow key={product.id}>
+                    <TableCell>
+                      <div>
+                        <p className="font-medium">{product.name}</p>
+                        <p className="text-sm text-gray-500">{product.description}</p>
+                      </div>
+                    </TableCell>
+                    <TableCell>{product.sku}</TableCell>
+                    <TableCell>{product.category}</TableCell>
+                    <TableCell>{formatCurrency(product.price)}</TableCell>
+                    <TableCell>
+                      <span className={`${product.stock_quantity <= 10 ? 'text-red-600' : 'text-gray-900'}`}>
+                        {product.stock_quantity} {product.unit}
+                      </span>
+                    </TableCell>
+                    <TableCell>
+                      <Badge className={getStatusColor(product.status)}>
+                        {getStatusText(product.status)}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>{formatDate(product.last_updated)}</TableCell>
+                    <TableCell>
+                      <div className="flex gap-2">
+                        <Button variant="ghost" size="sm">
+                          <Eye className="h-4 w-4" />
+                        </Button>
+                        <Button variant="ghost" size="sm">
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <Button variant="ghost" size="sm" className="text-red-600">
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </TableCell>
                   </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredProducts.map((product) => (
-                    <TableRow key={product.id}>
-                      <TableCell>
-                        <div>
-                          <div className="font-medium">{product.name}</div>
-                          <div className="text-sm text-gray-600">{product.description}</div>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant="outline">{product.category}</Badge>
-                      </TableCell>
-                      <TableCell>
-                        <div className="font-mono text-sm">{product.sku}</div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="font-medium text-green-600">
-                          {formatCurrency(product.price)}
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="text-gray-600">
-                          {formatCurrency(product.cost)}
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className={`font-medium ${product.stock_quantity <= 0 ? 'text-red-600' : 'text-gray-900'}`}>
-                          {product.stock_quantity.toLocaleString('ar-SA')}
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="text-sm">{product.unit}</div>
-                      </TableCell>
-                      <TableCell>
-                        <Badge className={getStatusColor(product.status)}>
-                          {getStatusText(product.status)}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <div className="text-sm">{formatDate(product.last_updated)}</div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-2">
-                          <Button variant="ghost" size="sm">
-                            <Eye className="h-4 w-4" />
-                          </Button>
-                          <Button variant="ghost" size="sm">
-                            <Edit className="h-4 w-4" />
-                          </Button>
-                          <Button variant="ghost" size="sm" className="text-red-600">
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            )}
-          </CardContent>
-        </Card>
-      </div>
+                ))}
+              </TableBody>
+            </Table>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }

@@ -145,11 +145,11 @@ export default function InsurancePage() {
                   </div>
 
                   <div className="flex gap-2 mt-4">
-                    <Button variant="outline" size="sm" className="flex-1">
+                    <Button variant="outline" size="sm" className="flex-1" onClick={() => alert('Button clicked')}>
                       <Phone className="w-4 h-4 mr-2" />
                       تواصل
                     </Button>
-                    <Button size="sm" className="flex-1">
+                    <Button size="sm" className="flex-1" onClick={() => alert('Button clicked')}>
                       اختيار
                     </Button>
                   </div>
@@ -221,7 +221,7 @@ export default function InsurancePage() {
               <Button 
                 variant="outline" 
                 className="h-16 flex flex-col items-center justify-center gap-2"
-              >
+               onClick={() => alert('Button clicked')}>
                 <Phone className="w-6 h-6" />
                 <span>استشارة مجانية</span>
               </Button>

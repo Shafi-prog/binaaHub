@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic'
 
 export default function CreateProductBundle() {
   return (
-    <div className="container mx-auto p-6">
+    <div className="p-6 space-y-6">
       <Card>
         <CardHeader>
           <CardTitle>Create Product Bundle</CardTitle>

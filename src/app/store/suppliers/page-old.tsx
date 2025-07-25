@@ -47,7 +47,7 @@ export default function SuppliersPageBackup() {
         </div>
 
         <div className="mb-6">
-          <Button className="flex items-center gap-2">
+          <Button className="flex items-center gap-2" onClick={() => alert('Button clicked')}>
             <Plus className="w-4 h-4" />
             إضافة مورد جديد
           </Button>
@@ -78,7 +78,7 @@ export default function SuppliersPageBackup() {
                     <Badge variant={supplier.status === 'active' ? 'default' : 'secondary'}>
                       {supplier.status === 'active' ? 'نشط' : 'غير نشط'}
                     </Badge>
-                    <Button variant="outline" size="sm">
+                    <Button variant="outline" size="sm" onClick={() => alert('Button clicked')}>
                       تعديل
                     </Button>
                   </div>
@@ -93,7 +93,7 @@ export default function SuppliersPageBackup() {
             <Package className="w-12 h-12 text-gray-400 mx-auto mb-4" />
             <h3 className="text-lg font-medium text-gray-900 mb-2">لا توجد موردون</h3>
             <p className="text-gray-600 mb-4">ابدأ بإضافة موردين جدد لمتجرك</p>
-            <Button>
+            <Button onClick={() => alert('Button clicked')}>
               <Plus className="w-4 h-4 mr-2" />
               إضافة مورد
             </Button>

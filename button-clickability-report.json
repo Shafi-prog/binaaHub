@@ -1,7 +1,7 @@
 {
-  "timestamp": "2025-07-23T02:08:05.691Z",
+  "timestamp": "2025-07-24T18:33:42.370Z",
   "summary": {
-    "totalFilesScanned": 2583,
+    "totalFilesScanned": 2611,
     "totalButtons": 112,
     "clickableButtons": 112,
     "nonClickableButtons": 0,
@@ -11,40 +11,40 @@
   "detailedResults": [
     {
       "file": "src\\app\\admin\\construction\\page.tsx",
-      "line": 415,
-      "content": "<Button size=\"sm\" onClick={() => alert('Button clicked')}>View Details</Button>",
+      "line": 414,
+      "content": "<Button size=\"sm\" onClick={() => alert('Button clicked')}>عرض التفاصيل</Button>",
       "isClickable": true,
       "interactionTypes": [
         "onClick"
       ],
-      "text": "alert('Button clicked')}>View Details",
+      "text": "alert('Button clicked')}>عرض التفاصيل",
+      "issues": []
+    },
+    {
+      "file": "src\\app\\admin\\construction\\page.tsx",
+      "line": 482,
+      "content": "<Button size=\"sm\" variant=\"outline\" onClick={() => alert('Button clicked')}>عرض المشاريع</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>عرض المشاريع",
       "issues": []
     },
     {
       "file": "src\\app\\admin\\construction\\page.tsx",
       "line": 483,
-      "content": "<Button size=\"sm\" variant=\"outline\" onClick={() => alert('Button clicked')}>View Portfolio</Button>",
+      "content": "<Button size=\"sm\" onClick={() => alert('Button clicked')}>طلب عرض سعر</Button>",
       "isClickable": true,
       "interactionTypes": [
         "onClick"
       ],
-      "text": "alert('Button clicked')}>View Portfolio",
-      "issues": []
-    },
-    {
-      "file": "src\\app\\admin\\construction\\page.tsx",
-      "line": 484,
-      "content": "<Button size=\"sm\" onClick={() => alert('Button clicked')}>Get Quote</Button>",
-      "isClickable": true,
-      "interactionTypes": [
-        "onClick"
-      ],
-      "text": "alert('Button clicked')}>Get Quote",
+      "text": "alert('Button clicked')}>طلب عرض سعر",
       "issues": []
     },
     {
       "file": "src\\app\\store\\marketplace\\page.tsx",
-      "line": 288,
+      "line": 287,
       "content": "<Button onClick={() => alert('Button clicked')}>Sign In</Button>",
       "isClickable": true,
       "interactionTypes": [
@@ -430,7 +430,7 @@
     },
     {
       "file": "src\\core\\shared\\components\\Navbar.tsx",
-      "line": 347,
+      "line": 474,
       "content": "<Button size=\"sm\" variant=\"ghost\" className=\"ml-2 text-red-600\" onClick={handleLogout}>تسجيل الخروج</Button>",
       "isClickable": true,
       "interactionTypes": [

@@ -1,26 +1,12 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState } from 'react';
 import { Button } from '@/core/shared/components/ui/button';
-import { Input } from '@/core/shared/components/ui/input';
-import { Label } from '@/core/shared/components/ui/label';
-import { Textarea } from '@/core/shared/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
 import { Badge } from '@/core/shared/components/ui/badge';
+import { Input } from '@/core/shared/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/core/shared/components/ui/table';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/core/shared/components/ui/dialog';
-import { 
-  Plus, 
-  Search, 
-  Edit, 
-  Trash2,
-  Phone,
-  Mail,
-  MapPin,
-  Building,
-  FileText,
-  DollarSign
-} from 'lucide-react';
+import { Plus, Search, Building, Phone, Mail, MapPin, Package, DollarSign } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
 
@@ -28,520 +14,269 @@ interface Supplier {
   id: string;
   name: string;
   contact_person: string;
-  phone: string;
   email: string;
+  phone: string;
   address: string;
-  tax_number?: string;
-  payment_terms: 'immediate' | 'net_30' | 'net_60' | 'net_90';
-  supplier_type: 'goods' | 'services' | 'both';
-  outstanding_balance: number;
-  total_purchases: number;
+  city: string;
   status: 'active' | 'inactive';
-  notes?: string;
-  created_at: string;
+  products_count: number;
+  total_orders: number;
+  rating: number;
 }
 
+// Mock data for suppliers
 const mockSuppliers: Supplier[] = [
   {
-    id: 'sup_001',
-    name: 'شركة البناء المتقدم',
-    contact_person: 'أحمد محمد',
+    id: 'sup_1',
+    name: 'مصنع أسمنت اليمامة',
+    contact_person: 'محمد أحمد الخليل',
+    email: 'info@yamama-cement.com',
+    phone: '+966112345678',
+    address: 'المنطقة الصناعية الثالثة',
+    city: 'الرياض',
+    status: 'active',
+    products_count: 15,
+    total_orders: 45,
+    rating: 4.8
+  },
+  {
+    id: 'sup_2',
+    name: 'مصنع حديد الخليج',
+    contact_person: 'عبدالرحمن السالم',
+    email: 'sales@gulf-steel.com',
+    phone: '+966133456789',
+    address: 'المنطقة الصناعية الثانية',
+    city: 'الدمام',
+    status: 'active',
+    products_count: 25,
+    total_orders: 78,
+    rating: 4.6
+  },
+  {
+    id: 'sup_3',
+    name: 'مقالع الرياض للرمل',
+    contact_person: 'سعد محمد العتيبي',
+    email: 'info@riyadh-quarries.com',
     phone: '+966501234567',
-    email: 'ahmed@advanced-construction.sa',
-    address: 'حي الملك فهد، الرياض',
-    tax_number: '1234567890',
-    payment_terms: 'net_30',
-    supplier_type: 'goods',
-    outstanding_balance: 25000,
-    total_purchases: 450000,
+    address: 'طريق الدرعية',
+    city: 'الرياض',
     status: 'active',
-    notes: 'مورد موثوق للمواد الإنشائية',
-    created_at: '2024-01-15'
-  },
-  {
-    id: 'sup_002',
-    name: 'مؤسسة الأثاث الحديث',
-    contact_person: 'سارة أحمد',
-    phone: '+966502345678',
-    email: 'sara@modern-furniture.sa',
-    address: 'طريق الملك عبدالعزيز، جدة',
-    tax_number: '2345678901',
-    payment_terms: 'net_60',
-    supplier_type: 'goods',
-    outstanding_balance: 15000,
-    total_purchases: 320000,
-    status: 'active',
-    notes: 'متخصص في الأثاث المكتبي',
-    created_at: '2024-01-10'
-  },
-  {
-    id: 'sup_003',
-    name: 'خدمات الصيانة السريعة',
-    contact_person: 'محمد علي',
-    phone: '+966503456789',
-    email: 'mohammed@quick-maintenance.sa',
-    address: 'الدمام، المنطقة الشرقية',
-    payment_terms: 'immediate',
-    supplier_type: 'services',
-    outstanding_balance: 0,
-    total_purchases: 85000,
-    status: 'active',
-    notes: 'خدمات صيانة فورية',
-    created_at: '2024-02-01'
+    products_count: 8,
+    total_orders: 23,
+    rating: 4.2
   }
 ];
 
 export default function SuppliersPage() {
-  const [suppliers, setSuppliers] = useState<Supplier[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [showAddDialog, setShowAddDialog] = useState(false);
-  const [editingSupplier, setEditingSupplier] = useState<Supplier | null>(null);
-  const [formData, setFormData] = useState<Partial<Supplier>>({});
+  const [searchQuery, setSearchQuery] = useState('');
+  const [statusFilter, setStatusFilter] = useState<string>('all');
 
-  useEffect(() => {
-    loadSuppliers();
-  }, []);
+  const filteredSuppliers = mockSuppliers.filter(supplier => {
+    const matchesSearch = supplier.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         supplier.contact_person.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesStatus = statusFilter === 'all' || supplier.status === statusFilter;
+    return matchesSearch && matchesStatus;
+  });
 
-  const loadSuppliers = async () => {
-    try {
-      setLoading(true);
-      // Simulate API call
-      setTimeout(() => {
-        setSuppliers(mockSuppliers);
-        setLoading(false);
-      }, 500);
-    } catch (error) {
-      console.error('Error loading suppliers:', error);
-      setLoading(false);
-    }
+  const supplierStats = {
+    totalSuppliers: mockSuppliers.length,
+    activeSuppliers: mockSuppliers.filter(s => s.status === 'active').length,
+    totalProducts: mockSuppliers.reduce((acc, s) => acc + s.products_count, 0),
+    totalOrders: mockSuppliers.reduce((acc, s) => acc + s.total_orders, 0)
   };
 
-  const filteredSuppliers = useMemo(() => {
-    if (!searchTerm) return suppliers;
-    
-    return suppliers.filter(supplier =>
-      supplier.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      supplier.contact_person.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      supplier.email.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  }, [suppliers, searchTerm]);
-
-  const handleSaveSupplier = async () => {
-    if (!formData.name?.trim()) {
-      alert('اسم المورد مطلوب');
-      return;
-    }
-
-    try {
-      if (editingSupplier) {
-        // Update existing supplier
-        const updatedSuppliers = suppliers.map(supplier =>
-          supplier.id === editingSupplier.id
-            ? { ...supplier, ...formData }
-            : supplier
-        );
-        setSuppliers(updatedSuppliers);
-      } else {
-        // Add new supplier
-        const newSupplier: Supplier = {
-          id: `sup_${Date.now()}`,
-          name: formData.name || '',
-          contact_person: formData.contact_person || '',
-          phone: formData.phone || '',
-          email: formData.email || '',
-          address: formData.address || '',
-          tax_number: formData.tax_number,
-          payment_terms: formData.payment_terms || 'net_30',
-          supplier_type: formData.supplier_type || 'goods',
-          outstanding_balance: 0,
-          total_purchases: 0,
-          status: 'active',
-          notes: formData.notes,
-          created_at: new Date().toISOString().split('T')[0]
-        };
-        setSuppliers([...suppliers, newSupplier]);
-      }
-
-      setShowAddDialog(false);
-      setEditingSupplier(null);
-      setFormData({});
-    } catch (error) {
-      console.error('Error saving supplier:', error);
-    }
+  const getStatusColor = (status: Supplier['status']) => {
+    return status === 'active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800';
   };
 
-  const handleDeleteSupplier = async (supplierId: string) => {
-    if (!confirm('هل أنت متأكد من حذف هذا المورد؟')) return;
-
-    try {
-      setSuppliers(suppliers.filter(s => s.id !== supplierId));
-    } catch (error) {
-      console.error('Error deleting supplier:', error);
-    }
+  const getStatusText = (status: Supplier['status']) => {
+    return status === 'active' ? 'نشط' : 'غير نشط';
   };
-
-  const openEditDialog = (supplier: Supplier) => {
-    setEditingSupplier(supplier);
-    setFormData(supplier);
-    setShowAddDialog(true);
-  };
-
-  const openAddDialog = () => {
-    setEditingSupplier(null);
-    setFormData({});
-    setShowAddDialog(true);
-  };
-
-  const getPaymentTermsLabel = (terms: string) => {
-    switch (terms) {
-      case 'immediate': return 'فوري';
-      case 'net_30': return '30 يوم';
-      case 'net_60': return '60 يوم';
-      case 'net_90': return '90 يوم';
-      default: return terms;
-    }
-  };
-
-  const getSupplierTypeLabel = (type: string) => {
-    switch (type) {
-      case 'goods': return 'سلع';
-      case 'services': return 'خدمات';
-      case 'both': return 'سلع وخدمات';
-      default: return type;
-    }
-  };
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('ar-SA', {
-      style: 'currency',
-      currency: 'SAR',
-      minimumFractionDigits: 0,
-    }).format(amount);
-  };
-
-  const totalStats = useMemo(() => {
-    return suppliers.reduce(
-      (acc, supplier) => ({
-        totalBalance: acc.totalBalance + supplier.outstanding_balance,
-        totalPurchases: acc.totalPurchases + supplier.total_purchases,
-        activeCount: acc.activeCount + (supplier.status === 'active' ? 1 : 0),
-      }),
-      { totalBalance: 0, totalPurchases: 0, activeCount: 0 }
-    );
-  }, [suppliers]);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 p-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="animate-pulse">
-            <div className="h-8 bg-gray-200 rounded w-1/3 mb-6"></div>
-            <div className="grid grid-cols-4 gap-4 mb-6">
-              {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="h-24 bg-gray-200 rounded"></div>
-              ))}
-            </div>
-            <div className="h-96 bg-gray-200 rounded"></div>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="p-6 space-y-6">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex justify-between items-center">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">إدارة الموردين</h1>
-              <p className="text-gray-600">إدارة قاعدة بيانات الموردين والشركاء التجاريين</p>
-            </div>
-            <Button onClick={openAddDialog} className="flex items-center gap-2">
-              <Plus size={16} />
-              إضافة مورد جديد
-            </Button>
-          </div>
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">إدارة الموردين</h1>
+          <p className="text-gray-600">إدارة قاعدة بيانات الموردين والشركاء التجاريين</p>
         </div>
+        <Button className="flex items-center gap-2">
+          <Plus className="h-4 w-4" />
+          إضافة مورد جديد
+        </Button>
       </div>
 
-      {/* Content */}
-      <div className="max-w-7xl mx-auto p-6 space-y-6">
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600">إجمالي الموردين</p>
-                  <p className="text-2xl font-bold">{suppliers.length}</p>
-                </div>
-                <Building className="h-8 w-8 text-blue-500" />
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600">الموردين النشطين</p>
-                  <p className="text-2xl font-bold">{totalStats.activeCount}</p>
-                </div>
-                <Building className="h-8 w-8 text-green-500" />
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600">إجمالي المشتريات</p>
-                  <p className="text-2xl font-bold">{formatCurrency(totalStats.totalPurchases)}</p>
-                </div>
-                <DollarSign className="h-8 w-8 text-purple-500" />
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600">الأرصدة المستحقة</p>
-                  <p className="text-2xl font-bold">{formatCurrency(totalStats.totalBalance)}</p>
-                </div>
-                <FileText className="h-8 w-8 text-orange-500" />
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Search */}
+      {/* Statistics */}
+      <div className="grid grid-cols-4 gap-4">
         <Card>
           <CardContent className="p-6">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
-              <Input
-                type="text"
-                placeholder="البحث في الموردين..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
-              />
+            <div className="flex items-center">
+              <Building className="h-8 w-8 text-blue-600" />
+              <div className="mr-4">
+                <p className="text-sm font-medium text-gray-600">إجمالي الموردين</p>
+                <p className="text-2xl font-bold">{supplierStats.totalSuppliers}</p>
+              </div>
             </div>
           </CardContent>
         </Card>
 
-        {/* Suppliers Table */}
         <Card>
-          <CardHeader>
-            <CardTitle>قائمة الموردين</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {filteredSuppliers.length === 0 ? (
-              <div className="text-center py-8">
-                <Building className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">
-                  {searchTerm ? 'لا توجد نتائج' : 'لا يوجد موردين'}
-                </h3>
-                <p className="text-gray-600">
-                  {searchTerm ? 'جرب مصطلح بحث مختلف' : 'ابدأ بإضافة مورد جديد'}
-                </p>
+          <CardContent className="p-6">
+            <div className="flex items-center">
+              <Building className="h-8 w-8 text-green-600" />
+              <div className="mr-4">
+                <p className="text-sm font-medium text-gray-600">موردون نشطون</p>
+                <p className="text-2xl font-bold">{supplierStats.activeSuppliers}</p>
               </div>
-            ) : (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>اسم المورد</TableHead>
-                    <TableHead>جهة الاتصال</TableHead>
-                    <TableHead>النوع</TableHead>
-                    <TableHead>شروط الدفع</TableHead>
-                    <TableHead>الرصيد المستحق</TableHead>
-                    <TableHead>الحالة</TableHead>
-                    <TableHead>الإجراءات</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredSuppliers.map((supplier) => (
-                    <TableRow key={supplier.id}>
-                      <TableCell>
-                        <div>
-                          <div className="font-medium">{supplier.name}</div>
-                          <div className="text-sm text-gray-500 flex items-center gap-1">
-                            <Mail size={12} />
-                            {supplier.email}
-                          </div>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div>
-                          <div className="text-sm">{supplier.contact_person}</div>
-                          <div className="text-sm text-gray-500 flex items-center gap-1">
-                            <Phone size={12} />
-                            {supplier.phone}
-                          </div>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant="secondary">
-                          {getSupplierTypeLabel(supplier.supplier_type)}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant="outline">
-                          {getPaymentTermsLabel(supplier.payment_terms)}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <span className={`font-medium ${
-                          supplier.outstanding_balance > 0 ? 'text-red-600' : 'text-green-600'
-                        }`}>
-                          {formatCurrency(supplier.outstanding_balance)}
-                        </span>
-                      </TableCell>
-                      <TableCell>
-                        <Badge 
-                          variant={supplier.status === 'active' ? 'default' : 'secondary'}
-                        >
-                          {supplier.status === 'active' ? 'نشط' : 'غير نشط'}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-2">
-                          <Button 
-                            variant="ghost" 
-                            size="sm"
-                            onClick={() => openEditDialog(supplier)}
-                          >
-                            <Edit size={16} />
-                          </Button>
-                          <Button 
-                            variant="ghost" 
-                            size="sm"
-                            onClick={() => handleDeleteSupplier(supplier.id)}
-                          >
-                            <Trash2 size={16} />
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            )}
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center">
+              <Package className="h-8 w-8 text-purple-600" />
+              <div className="mr-4">
+                <p className="text-sm font-medium text-gray-600">إجمالي المنتجات</p>
+                <p className="text-2xl font-bold">{supplierStats.totalProducts}</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center">
+              <DollarSign className="h-8 w-8 text-yellow-600" />
+              <div className="mr-4">
+                <p className="text-sm font-medium text-gray-600">إجمالي الطلبات</p>
+                <p className="text-2xl font-bold">{supplierStats.totalOrders}</p>
+              </div>
+            </div>
           </CardContent>
         </Card>
       </div>
 
-      {/* Add/Edit Dialog */}
-      <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
-        <DialogContent className="max-w-md">
-          <DialogHeader>
-            <DialogTitle>
-              {editingSupplier ? 'تعديل المورد' : 'إضافة مورد جديد'}
-            </DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4">
-            <div>
-              <Label htmlFor="name">اسم المورد *</Label>
-              <Input
-                id="name"
-                value={formData.name || ''}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                placeholder="أدخل اسم المورد"
-              />
+      {/* Filters and Search */}
+      <Card>
+        <CardHeader>
+          <CardTitle>البحث والتصفية</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex gap-4">
+            <div className="flex-1">
+              <div className="relative">
+                <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                <Input
+                  placeholder="البحث في الموردين..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pr-10"
+                />
+              </div>
             </div>
-            
-            <div>
-              <Label htmlFor="contact_person">جهة الاتصال</Label>
-              <Input
-                id="contact_person"
-                value={formData.contact_person || ''}
-                onChange={(e) => setFormData({ ...formData, contact_person: e.target.value })}
-                placeholder="اسم الشخص المسؤول"
-              />
-            </div>
-            
-            <div>
-              <Label htmlFor="phone">رقم الهاتف</Label>
-              <Input
-                id="phone"
-                value={formData.phone || ''}
-                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                placeholder="+966..."
-              />
-            </div>
-            
-            <div>
-              <Label htmlFor="email">البريد الإلكتروني</Label>
-              <Input
-                id="email"
-                type="email"
-                value={formData.email || ''}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                placeholder="email@domain.com"
-              />
-            </div>
-            
-            <div>
-              <Label htmlFor="supplier_type">نوع المورد</Label>
-              <select
-                id="supplier_type"
-                value={formData.supplier_type || 'goods'}
-                onChange={(e) => setFormData({ ...formData, supplier_type: e.target.value as any })}
-                className="w-full h-10 px-3 border border-gray-300 rounded-md"
-              >
-                <option value="goods">سلع</option>
-                <option value="services">خدمات</option>
-                <option value="both">سلع وخدمات</option>
-              </select>
-            </div>
-            
-            <div>
-              <Label htmlFor="payment_terms">شروط الدفع</Label>
-              <select
-                id="payment_terms"
-                value={formData.payment_terms || 'net_30'}
-                onChange={(e) => setFormData({ ...formData, payment_terms: e.target.value as any })}
-                className="w-full h-10 px-3 border border-gray-300 rounded-md"
-              >
-                <option value="immediate">فوري</option>
-                <option value="net_30">30 يوم</option>
-                <option value="net_60">60 يوم</option>
-                <option value="net_90">90 يوم</option>
-              </select>
-            </div>
-            
-            <div>
-              <Label htmlFor="notes">ملاحظات</Label>
-              <Textarea
-                id="notes"
-                value={formData.notes || ''}
-                onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                placeholder="ملاحظات إضافية..."
-                rows={3}
-              />
-            </div>
-            
-            <div className="flex gap-2 pt-4">
-              <Button onClick={handleSaveSupplier} className="flex-1">
-                {editingSupplier ? 'تحديث' : 'إضافة'}
-              </Button>
-              <Button 
-                variant="outline" 
-                onClick={() => setShowAddDialog(false)}
-                className="flex-1"
-              >
-                إلغاء
-              </Button>
-            </div>
+            <select
+              className="px-3 py-2 border border-gray-300 rounded-md"
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+            >
+              <option value="all">جميع الحالات</option>
+              <option value="active">نشط</option>
+              <option value="inactive">غير نشط</option>
+            </select>
           </div>
-        </DialogContent>
-      </Dialog>
+        </CardContent>
+      </Card>
+
+      {/* Suppliers Table */}
+      <Card>
+        <CardHeader>
+          <CardTitle>قائمة الموردين ({filteredSuppliers.length})</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {filteredSuppliers.length === 0 ? (
+            <div className="text-center py-8">
+              <Building className="mx-auto h-12 w-12 text-gray-400" />
+              <h3 className="mt-2 text-sm font-medium text-gray-900">لا توجد موردين</h3>
+              <p className="mt-1 text-sm text-gray-500">ابدأ بإضافة مورد جديد</p>
+            </div>
+          ) : (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>المورد</TableHead>
+                  <TableHead>الشخص المسؤول</TableHead>
+                  <TableHead>معلومات الاتصال</TableHead>
+                  <TableHead>العنوان</TableHead>
+                  <TableHead>عدد المنتجات</TableHead>
+                  <TableHead>إجمالي الطلبات</TableHead>
+                  <TableHead>التقييم</TableHead>
+                  <TableHead>الحالة</TableHead>
+                  <TableHead>العمليات</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredSuppliers.map((supplier) => (
+                  <TableRow key={supplier.id}>
+                    <TableCell>
+                      <div>
+                        <p className="font-medium">{supplier.name}</p>
+                        <p className="text-sm text-gray-500">#{supplier.id}</p>
+                      </div>
+                    </TableCell>
+                    <TableCell>{supplier.contact_person}</TableCell>
+                    <TableCell>
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-1">
+                          <Mail className="h-3 w-3 text-gray-400" />
+                          <span className="text-xs">{supplier.email}</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Phone className="h-3 w-3 text-gray-400" />
+                          <span className="text-xs">{supplier.phone}</span>
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-1">
+                        <MapPin className="h-3 w-3 text-gray-400" />
+                        <div className="text-sm">
+                          <p>{supplier.address}</p>
+                          <p className="text-gray-500">{supplier.city}</p>
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>{supplier.products_count} منتج</TableCell>
+                    <TableCell>{supplier.total_orders} طلب</TableCell>
+                    <TableCell>
+                      <div className="flex items-center">
+                        <span className="text-yellow-400 mr-1">★</span>
+                        <span>{supplier.rating}</span>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <Badge className={getStatusColor(supplier.status)}>
+                        {getStatusText(supplier.status)}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex gap-2">
+                        <Button variant="ghost" size="sm">
+                          عرض
+                        </Button>
+                        <Button variant="ghost" size="sm">
+                          تعديل
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }

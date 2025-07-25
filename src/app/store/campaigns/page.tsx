@@ -135,20 +135,18 @@ export default function CampaignsPage() {
   }, [campaigns]);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="p-6 space-y-6">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex justify-between items-center">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">الحملات التسويقية</h1>
-              <p className="text-gray-600">إدارة العروض والحملات الترويجية</p>
-            </div>
-            <Button className="flex items-center gap-2">
-              <Plus className="h-4 w-4" />
-              إضافة حملة جديدة
-            </Button>
+      <div className="mb-8">
+        <div className="flex justify-between items-center">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">الحملات التسويقية</h1>
+            <p className="text-gray-600 mt-2">إدارة العروض والحملات الترويجية</p>
           </div>
+          <Button className="flex items-center gap-2" onClick={() => alert('Button clicked')}>
+            <Plus className="h-4 w-4" />
+            إضافة حملة جديدة
+          </Button>
         </div>
       </div>
 
@@ -241,7 +239,7 @@ export default function CampaignsPage() {
                     : 'ابدأ بإضافة حملات تسويقية جديدة'
                   }
                 </p>
-                <Button>
+                <Button onClick={() => alert('Button clicked')}>
                   <Plus className="h-4 w-4 ml-2" />
                   إضافة حملة
                 </Button>
@@ -307,10 +305,10 @@ export default function CampaignsPage() {
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center gap-2">
-                          <Button variant="ghost" size="sm">
+                          <Button variant="ghost" size="sm" onClick={() => alert('Button clicked')}>
                             <Edit className="h-4 w-4" />
                           </Button>
-                          <Button variant="ghost" size="sm" className="text-red-600">
+                          <Button variant="ghost" size="sm" className="text-red-600" onClick={() => alert('Button clicked')}>
                             <Trash2 className="h-4 w-4" />
                           </Button>
                         </div>

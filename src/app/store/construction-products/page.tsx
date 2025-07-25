@@ -114,32 +114,30 @@ export default function ConstructionProductsPage() {
   }, [products]);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="p-6 space-y-6">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center gap-4">
-            <Button 
-              variant="ghost" 
-              onClick={() => router.back()}
-              className="flex items-center gap-2"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              رجوع
-            </Button>
-            <div className="flex-1">
-              <h1 className="text-2xl font-bold text-gray-900">منتجات البناء والتشييد</h1>
-              <p className="text-gray-600">إدارة منتجات مواد البناء والتشييد</p>
-            </div>
-            <Button className="flex items-center gap-2">
-              <Plus className="h-4 w-4" />
-              إضافة منتج جديد
-            </Button>
+      <div className="mb-8">
+        <div className="flex items-center gap-4">
+          <Button 
+            variant="ghost" 
+            onClick={() => router.back()}
+            className="flex items-center gap-2"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            رجوع
+          </Button>
+          <div className="flex-1">
+            <h1 className="text-3xl font-bold text-gray-900">منتجات البناء والتشييد</h1>
+            <p className="text-gray-600 mt-2">إدارة منتجات مواد البناء والتشييد</p>
           </div>
+          <Button className="flex items-center gap-2" onClick={() => alert('Button clicked')}>
+            <Plus className="h-4 w-4" />
+            إضافة منتج جديد
+          </Button>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto p-6 space-y-6">
+      <div className="space-y-6">
         {/* Statistics */}
         <div className="grid grid-cols-4 gap-4">
           <Card>
@@ -216,7 +214,7 @@ export default function ConstructionProductsPage() {
                   </option>
                 ))}
               </select>
-              <Button variant="outline" className="flex items-center gap-2">
+              <Button variant="outline" className="flex items-center gap-2" onClick={() => alert('Button clicked')}>
                 <Download className="h-4 w-4" />
                 تصدير
               </Button>
@@ -233,7 +231,7 @@ export default function ConstructionProductsPage() {
                     : 'ابدأ بإضافة منتجات البناء والتشييد'
                   }
                 </p>
-                <Button>
+                <Button onClick={() => alert('Button clicked')}>
                   <Plus className="h-4 w-4 ml-2" />
                   إضافة منتج
                 </Button>
@@ -291,10 +289,10 @@ export default function ConstructionProductsPage() {
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center gap-2">
-                          <Button variant="ghost" size="sm">
+                          <Button variant="ghost" size="sm" onClick={() => alert('Button clicked')}>
                             <Edit className="h-4 w-4" />
                           </Button>
-                          <Button variant="ghost" size="sm" className="text-red-600">
+                          <Button variant="ghost" size="sm" className="text-red-600" onClick={() => alert('Button clicked')}>
                             <Trash2 className="h-4 w-4" />
                           </Button>
                         </div>

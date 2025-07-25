@@ -218,7 +218,7 @@ export default function UserList() {
               <h1 className="text-2xl font-bold text-gray-900">إدارة المستخدمين</h1>
               <p className="text-gray-600">إدارة مستخدمي النظام والصلاحيات</p>
             </div>
-            <Button className="flex items-center gap-2">
+            <Button className="flex items-center gap-2" onClick={() => alert('Button clicked')}>
               <Plus size={16} />
               إضافة مستخدم جديد
             </Button>
@@ -395,7 +395,7 @@ export default function UserList() {
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center gap-2">
-                          <Button variant="ghost" size="sm">
+                          <Button variant="ghost" size="sm" onClick={() => alert('Button clicked')}>
                             <Edit size={16} />
                           </Button>
                           <Button 

@@ -55,20 +55,20 @@ export default function AdvancedSearchPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">🔍 البحث المتقدم الذكي</h1>
-          <p className="text-gray-600">
-            بحث ذكي مدعوم بالذكاء الاصطناعي مع اقتراحات تفاعلية ومشاركة النتائج
-          </p>
-          <div className="mt-4 flex items-center gap-2 text-sm">
-            <span className="px-2 py-1 bg-green-100 text-green-700 rounded-full">🤖 الذكاء الاصطناعي</span>
-            <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full">🔍 بحث فوري</span>
-            <span className="px-2 py-1 bg-purple-100 text-purple-700 rounded-full">🏆 Phase 2 - مكتمل</span>
-          </div>
+    <div className="p-6 space-y-6">
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">🔍 البحث المتقدم الذكي</h1>
+        <p className="text-gray-600">
+          بحث ذكي مدعوم بالذكاء الاصطناعي مع اقتراحات تفاعلية ومشاركة النتائج
+        </p>
+        <div className="mt-4 flex items-center gap-2 text-sm">
+          <span className="px-2 py-1 bg-green-100 text-green-700 rounded-full">🤖 الذكاء الاصطناعي</span>
+          <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full">🔍 بحث فوري</span>
+          <span className="px-2 py-1 bg-purple-100 text-purple-700 rounded-full">🏆 Phase 2 - مكتمل</span>
         </div>
+      </div>
 
+      <div className="space-y-6">
         {/* Search Section */}
         <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
           <div className="relative">

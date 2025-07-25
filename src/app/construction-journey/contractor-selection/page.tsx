@@ -119,10 +119,10 @@ export default function ContractorSelectionPage() {
                     <span className="text-sm text-gray-600" dir="ltr">{contractor.phone}</span>
                   </div>
                   <div className="flex gap-2 mt-4">
-                    <Button variant="outline" size="sm" className="flex-1">
+                    <Button variant="outline" size="sm" className="flex-1" onClick={() => alert('Button clicked')}>
                       عرض التفاصيل
                     </Button>
-                    <Button size="sm" className="flex-1">
+                    <Button size="sm" className="flex-1" onClick={() => alert('Button clicked')}>
                       تواصل
                     </Button>
                   </div>

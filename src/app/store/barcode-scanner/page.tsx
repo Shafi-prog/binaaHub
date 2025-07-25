@@ -97,27 +97,25 @@ export default function BarcodeScannerPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="py-6">
-          <div className="flex items-center justify-between">
-            <Link href="/stores">
-              <Button variant="secondary" className="mb-4" onClick={() => alert('Button clicked')}>
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back to Stores
-              </Button>
-            </Link>
-          </div>
-
-          <div className="mb-6">
-            <h1 className="text-3xl font-bold text-gray-900">Barcode Scanner</h1>
-            <p className="mt-2 text-gray-600">
-              Scan product barcodes to find items and compare prices across stores.
-            </p>
-          </div>
-
-          <BarcodeScanner />
+    <div className="p-6 space-y-6">
+      <div className="mb-8">
+        <div className="flex items-center justify-between">
+          <Link href="/stores">
+            <Button variant="secondary" className="mb-4" onClick={() => alert('Button clicked')}>
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back to Stores
+            </Button>
+          </Link>
         </div>
+
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold text-gray-900">Barcode Scanner</h1>
+          <p className="mt-2 text-gray-600">
+            Scan product barcodes to find items and compare prices across stores.
+          </p>
+        </div>
+
+        <BarcodeScanner />
       </div>
     </div>
   );

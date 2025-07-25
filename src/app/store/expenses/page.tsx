@@ -326,7 +326,7 @@ export default function ExpenseManagement() {
     .reduce((sum, expense) => sum + expense.amount, 0);
 
   return (
-    <div className="container mx-auto py-8" dir="rtl">
+    <div className="p-6 space-y-6" dir="rtl">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">إدارة المصروفات</h1>
         <p className="text-gray-600">تسجيل وتتبع جميع مصروفات الشركة</p>

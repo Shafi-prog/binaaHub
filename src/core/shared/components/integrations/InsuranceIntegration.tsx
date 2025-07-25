@@ -433,7 +433,7 @@ export default function InsuranceIntegration({
                               <CreditCard className="w-4 h-4 mr-2" />
                               اختيار هذا العرض
                             </Button>
-                            <Button variant="outline" className="flex-1">
+                            <Button variant="outline" className="flex-1" onClick={() => alert('Button clicked')}>
                               <Phone className="w-4 h-4 mr-2" />
                               اتصال
                             </Button>

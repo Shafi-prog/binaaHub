@@ -350,7 +350,7 @@ export default function ProjectPurchasesWarranties({
                     <div className="flex flex-col items-end gap-2">
                       <Shield className={`w-6 h-6 ${warranty.isActive ? 'text-green-500' : 'text-gray-400'}`} />
                       {warranty.warrantyDocument && (
-                        <Button size="sm" variant="outline">
+                        <Button size="sm" variant="outline" onClick={() => alert('Button clicked')}>
                           <FileText className="w-3 h-3 mr-1" />
                           عرض الوثيقة
                         </Button>

@@ -638,11 +638,11 @@ export default function ConstructionPhasesPage() {
             </div>
           </div>
           <div className="flex gap-2">
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" onClick={() => alert('Button clicked')}>
               <Share2 className="w-4 h-4 mr-2" />
               مشاركة
             </Button>
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" onClick={() => alert('Button clicked')}>
               <Download className="w-4 h-4 mr-2" />
               تصدير
             </Button>
@@ -898,7 +898,7 @@ export default function ConstructionPhasesPage() {
                                     </a>
                                   )}
                                 </div>
-                                <Button variant="outline" size="sm">
+                                <Button variant="outline" size="sm" onClick={() => alert('Button clicked')}>
                                   <Target className="w-4 h-4 mr-2" />
                                   ربط
                                 </Button>
@@ -926,17 +926,17 @@ export default function ConstructionPhasesPage() {
                                 <div className="flex gap-2">
                                   {document.uploadedAt ? (
                                     <>
-                                      <Button variant="outline" size="sm">
+                                      <Button variant="outline" size="sm" onClick={() => alert('Button clicked')}>
                                         <Eye className="w-4 h-4 mr-2" />
                                         عرض
                                       </Button>
-                                      <Button variant="outline" size="sm">
+                                      <Button variant="outline" size="sm" onClick={() => alert('Button clicked')}>
                                         <Download className="w-4 h-4 mr-2" />
                                         تحميل
                                       </Button>
                                     </>
                                   ) : (
-                                    <Button variant="outline" size="sm">
+                                    <Button variant="outline" size="sm" onClick={() => alert('Button clicked')}>
                                       <Upload className="w-4 h-4 mr-2" />
                                       رفع
                                     </Button>

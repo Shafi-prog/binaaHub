@@ -76,12 +76,11 @@ export default function StoreAdminDashboard() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Store Administration</h1>
-          <p className="text-gray-600">Manage your store operations and analytics</p>
-        </div>
+    <div className="p-6 space-y-6">
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">Store Administration</h1>
+        <p className="text-gray-600">Manage your store operations and analytics</p>
+      </div>
 
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
@@ -230,7 +229,6 @@ export default function StoreAdminDashboard() {
             </CardContent>
           </Card>
         </div>
-      </div>
     </div>
   );
 }

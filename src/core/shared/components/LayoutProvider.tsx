@@ -18,8 +18,8 @@ export default function LayoutProvider({ children }: LayoutProviderProps) {
 
   // Pages that should not show the navbar or onboarding
   const noNavbarPages = ['/login', '/auth/login', '/auth/signup', '/reset-password-confirm', '/clear-auth'];
-  // Hide Navbar for all /store/* admin pages except /store/storefront
-  const isStoreAdminPage = pathname ? (pathname.startsWith('/store/') && !pathname.startsWith('/store/storefront')) : false;
+  // Hide Navbar for all /store/* admin pages - these use their own layout
+  const isStoreAdminPage = pathname ? pathname.startsWith('/store') : false;
 
   if ((pathname && noNavbarPages.includes(pathname)) || isStoreAdminPage) {
     // Only render children, no providers or UI wrappers

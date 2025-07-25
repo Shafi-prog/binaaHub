@@ -2,7 +2,7 @@ import { ERPSystemIntegration } from '@/core/shared/components/ERPSystemIntegrat
 
 export default function ERPPage() {
   return (
-    <div className="container mx-auto p-6">
+    <div className="p-6 space-y-6">
       <ERPSystemIntegration />
     </div>
   );

@@ -114,15 +114,13 @@ export default function StorefrontPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 p-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="animate-pulse">
-            <div className="h-8 bg-gray-200 rounded w-1/3 mb-6"></div>
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {[1, 2, 3].map((i) => (
-                <div key={i} className="h-64 bg-gray-200 rounded"></div>
-              ))}
-            </div>
+      <div className="p-6 space-y-6">
+        <div className="animate-pulse">
+          <div className="h-8 bg-gray-200 rounded w-1/3 mb-6"></div>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="h-64 bg-gray-200 rounded"></div>
+            ))}
           </div>
         </div>
       </div>
@@ -130,31 +128,29 @@ export default function StorefrontPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="p-6 space-y-6">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex justify-between items-center">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">واجهة المتجر</h1>
-              <p className="text-gray-600">إدارة تصميم ومظهر متجرك الإلكتروني</p>
-            </div>
-            <div className="flex gap-3">
-              <Button variant="outline" className="flex items-center gap-2">
-                <Eye size={16} />
-                معاينة المتجر
-              </Button>
-              <Button className="flex items-center gap-2">
-                <Settings size={16} />
-                إعدادات متقدمة
-              </Button>
-            </div>
+      <div className="mb-8">
+        <div className="flex justify-between items-center">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">واجهة المتجر</h1>
+            <p className="text-gray-600 mt-2">إدارة تصميم ومظهر متجرك الإلكتروني</p>
+          </div>
+          <div className="flex gap-3">
+            <Button variant="outline" className="flex items-center gap-2" onClick={() => alert('Button clicked')}>
+              <Eye size={16} />
+              معاينة المتجر
+            </Button>
+            <Button className="flex items-center gap-2" onClick={() => alert('Button clicked')}>
+              <Settings size={16} />
+              إعدادات متقدمة
+            </Button>
           </div>
         </div>
       </div>
 
       {/* Content */}
-      <div className="max-w-7xl mx-auto p-6">
+      <div className="space-y-6">
         {/* Tabs */}
         <div className="flex space-x-1 mb-6">
           <button
@@ -235,7 +231,7 @@ export default function StorefrontPage() {
                               تفعيل
                             </Button>
                           )}
-                          <Button variant="outline" size="sm" className="flex-1">
+                          <Button variant="outline" size="sm" className="flex-1" onClick={() => alert('Button clicked')}>
                             معاينة
                           </Button>
                         </div>
@@ -399,7 +395,7 @@ export default function StorefrontPage() {
             </Card>
 
             <div className="flex justify-end">
-              <Button className="px-8">
+              <Button className="px-8" onClick={() => alert('Button clicked')}>
                 حفظ الإعدادات
               </Button>
             </div>
@@ -436,7 +432,7 @@ export default function StorefrontPage() {
                     <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-8 text-center">
                       <h2 className="text-2xl font-bold mb-2">مرحباً بك في {settings.store_name}</h2>
                       <p className="mb-4">اكتشف مجموعة واسعة من المنتجات عالية الجودة</p>
-                      <Button style={{ backgroundColor: settings.secondary_color }}>
+                      <Button style={{ backgroundColor: settings.secondary_color }} onClick={() => alert('Button clicked')}>
                         تسوق الآن
                       </Button>
                     </div>
@@ -454,7 +450,7 @@ export default function StorefrontPage() {
                             <p className="text-sm text-gray-600">وصف المنتج التجريبي</p>
                             <div className="flex justify-between items-center mt-2">
                               <span className="font-bold">299 ر.س</span>
-                              <Button size="sm" style={{ backgroundColor: settings.primary_color }}>
+                              <Button size="sm" style={{ backgroundColor: settings.primary_color }} onClick={() => alert('Button clicked')}>
                                 إضافة للسلة
                               </Button>
                             </div>

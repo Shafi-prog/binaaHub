@@ -4,11 +4,13 @@
 // Prevent static generation for admin routes
 export const dynamic = 'force-dynamic';
 
-import { ReactNode } from 'react'
+import { ReactNode, useState } from 'react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
+import { useAuth } from '@/contexts/AuthContext'
 import { cn } from '@/core/shared/utils'
 import { AuthProvider } from '@/core/shared/auth/AuthProvider'
+import { Button } from '@/core/shared/components/ui/button'
 import {
   LayoutDashboard,
   Store,
@@ -18,7 +20,8 @@ import {
   Building,
   Brain,
   DollarSign,
-  Users
+  Users,
+  LogOut
 } from 'lucide-react'
 
 const navigation = [
@@ -76,6 +79,58 @@ export default function AdminLayout({
   children: ReactNode
 }) {
   const pathname = usePathname()
+  const router = useRouter()
+  const [logoutLoading, setLogoutLoading] = useState(false)
+  
+  // Safe auth hook usage
+  let user: any = null
+  let logout: (() => Promise<void>) | null = null
+  try {
+    const authResult = useAuth()
+    user = authResult.user
+    logout = authResult.logout
+  } catch (error) {
+    user = null
+    logout = null
+  }
+
+  // Logout handler
+  const handleLogout = async () => {
+    try {
+      setLogoutLoading(true)
+      console.log('🚪 [Admin Layout] Starting logout process...')
+      
+      // Call our logout API
+      const response = await fetch('/api/auth/logout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      })
+      
+      if (response.ok) {
+        console.log('✅ [Admin Layout] Logout API successful')
+      } else {
+        console.warn('⚠️ [Admin Layout] Logout API failed, continuing with client-side cleanup')
+      }
+      
+      // Clear client-side auth state if logout function available
+      if (logout) {
+        await logout()
+      }
+      
+      // Redirect to login
+      router.push('/auth/login')
+      console.log('✅ [Admin Layout] Logout complete, redirecting to login')
+    } catch (error) {
+      console.error('❌ [Admin Layout] Logout error:', error)
+      // Even if API fails, clear client state and redirect
+      if (logout) {
+        await logout()
+      }
+      router.push('/auth/login')
+    } finally {
+      setLogoutLoading(false)
+    }
+  }
 
   return (
     <AuthProvider>
@@ -86,8 +141,20 @@ export default function AdminLayout({
             <h1 className="text-xl font-semibold text-gray-900">
               إدارة منصة بنّا
             </h1>
-            <div className="text-sm text-blue-600 font-medium">
-              المرحلة 3: توسع أسواق الخليج ونظام البناء المتطور
+            <div className="flex items-center gap-4">
+              <div className="text-sm text-blue-600 font-medium">
+                المرحلة 3: توسع أسواق الخليج ونظام البناء المتطور
+              </div>
+              <Button 
+                variant="ghost" 
+                size="sm"
+                onClick={handleLogout}
+                disabled={logoutLoading}
+                className="text-red-600 hover:text-red-700 hover:bg-red-50"
+              >
+                <LogOut className="h-4 w-4" />
+                {logoutLoading ? 'جاري تسجيل الخروج...' : 'تسجيل الخروج'}
+              </Button>
             </div>
           </div>
         </div>

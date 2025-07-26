@@ -4,7 +4,7 @@ import { UserDataProvider } from '@/core/shared/contexts/UserDataContext';
 import { AuthProvider } from '@/core/shared/auth/AuthProvider';
 
 import { useState, useEffect } from 'react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/core/shared/components/ui/button';
@@ -49,21 +49,26 @@ export default function UserLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const router = useRouter();
   
   // Safe auth hook usage
   let user: any = null;
   let isLoading = false;
+  let logout: (() => Promise<void>) | null = null;
   try {
     const authResult = useAuth();
     user = authResult.user;
     isLoading = authResult.isLoading;
+    logout = authResult.logout;
   } catch (error) {
     user = null;
     isLoading = false;
+    logout = null;
   }
   
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isClientSide, setIsClientSide] = useState(false);
+  const [logoutLoading, setLogoutLoading] = useState(false);
   const [expandedSections, setExpandedSections] = useState<{[key: string]: boolean}>({
     projects: false,
     finance: false
@@ -72,6 +77,44 @@ export default function UserLayout({
   useEffect(() => {
     setIsClientSide(true);
   }, []);
+
+  // Logout handler
+  const handleLogout = async () => {
+    try {
+      setLogoutLoading(true);
+      console.log('🚪 [User Layout] Starting logout process...');
+      
+      // Call our logout API
+      const response = await fetch('/api/auth/logout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      
+      if (response.ok) {
+        console.log('✅ [User Layout] Logout API successful');
+      } else {
+        console.warn('⚠️ [User Layout] Logout API failed, continuing with client-side cleanup');
+      }
+      
+      // Clear client-side auth state if logout function available
+      if (logout) {
+        await logout();
+      }
+      
+      // Redirect to login
+      router.push('/auth/login');
+      console.log('✅ [User Layout] Logout complete, redirecting to login');
+    } catch (error) {
+      console.error('❌ [User Layout] Logout error:', error);
+      // Even if API fails, clear client state and redirect
+      if (logout) {
+        await logout();
+      }
+      router.push('/auth/login');
+    } finally {
+      setLogoutLoading(false);
+    }
+  };
 
   // User navigation sections with similar structure to store
   const navSections = [
@@ -400,11 +443,16 @@ export default function UserLayout({
               <Button variant="ghost" size="sm">
                 <HelpCircle className="h-4 w-4" />
               </Button>
-              <Link href="/auth/login">
-                <Button variant="ghost" size="sm">
-                  <LogOut className="h-4 w-4" />
-                </Button>
-              </Link>
+              <Button 
+                variant="ghost" 
+                size="sm"
+                onClick={handleLogout}
+                disabled={logoutLoading}
+                className="text-red-600 hover:text-red-700"
+              >
+                <LogOut className="h-4 w-4" />
+                {logoutLoading && <span className="ml-1">...</span>}
+              </Button>
             </div>
           </div>
         </div>

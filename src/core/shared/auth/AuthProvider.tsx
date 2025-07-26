@@ -1,6 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { useRouter } from 'next/navigation';
 import { User, Session } from '@supabase/supabase-js';
 import { supabaseAuth, AuthUser, AuthState } from './supabase-auth';
 
@@ -26,6 +27,7 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+  const router = useRouter();
   const [authState, setAuthState] = useState<AuthState>({
     user: null,
     session: null,
@@ -37,23 +39,28 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       const { profile } = await supabaseAuth.getUserProfile(supabaseUser.id);
       
+      // Determine role from profile first, then user metadata, then default
+      const role = profile?.role || supabaseUser.user_metadata?.role || 'user';
+      
       return {
         id: supabaseUser.id,
         email: supabaseUser.email || '',
         name: profile?.display_name || supabaseUser.user_metadata?.name || supabaseUser.email?.split('@')[0] || 'مستخدم',
         avatar: supabaseUser.user_metadata?.avatar_url,
         phone: profile?.phone || supabaseUser.user_metadata?.phone,
-        role: supabaseUser.user_metadata?.role || 'user',
+        role: role,
         account_type: profile?.account_type || supabaseUser.user_metadata?.account_type || 'free',
       };
     } catch (error) {
       console.error('Error creating auth user:', error);
+      // Fallback to user metadata role if profile fetch fails
+      const role = supabaseUser.user_metadata?.role || 'user';
       return {
         id: supabaseUser.id,
         email: supabaseUser.email || '',
-        name: supabaseUser.email?.split('@')[0] || 'مستخدم',
-        role: 'user',
-        account_type: 'free',
+        name: supabaseUser.user_metadata?.name || supabaseUser.email?.split('@')[0] || 'مستخدم',
+        role: role,
+        account_type: supabaseUser.user_metadata?.account_type || 'free',
       };
     }
   };
@@ -70,6 +77,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     if (user) {
       const authUser = await createAuthUser(user);
+      console.log('User authenticated, created authUser:', authUser);
+      
       setAuthState({
         user: authUser,
         session,

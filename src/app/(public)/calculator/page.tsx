@@ -250,7 +250,7 @@ export default function PublicCalculatorPage() {
             <Link href="/stores-browse" className="bg-white/90 backdrop-blur-sm px-4 py-2 rounded-xl text-blue-600 hover:text-blue-700 hover:bg-white shadow-lg hover:shadow-xl transition-all border border-purple-200/30">تصفح المتاجر</Link>
             <Link href="/storefront" className="bg-white/90 backdrop-blur-sm px-4 py-2 rounded-xl text-blue-600 hover:text-blue-700 hover:bg-white shadow-lg hover:shadow-xl transition-all border border-purple-200/30">جميع المنتجات</Link>
             <Link href="/projects-for-sale" className="bg-white/90 backdrop-blur-sm px-4 py-2 rounded-xl text-blue-600 hover:text-blue-700 hover:bg-white shadow-lg hover:shadow-xl transition-all border border-purple-200/30">مشاريع للبيع</Link>
-            <Link href="/login" className="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-4 py-2 rounded-xl hover:from-green-600 hover:to-emerald-600 shadow-lg hover:shadow-xl transition-all">تسجيل الدخول</Link>
+            <Link href="/auth/login" className="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-4 py-2 rounded-xl hover:from-green-600 hover:to-emerald-600 shadow-lg hover:shadow-xl transition-all">تسجيل الدخول</Link>
           </div>
         </div>
 

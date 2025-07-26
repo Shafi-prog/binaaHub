@@ -350,15 +350,6 @@ export default function UserLayout({
             ))}
           </div>
           
-          {/* Scroll hint at bottom of navigation */}
-          <div className="text-center border-t border-gray-100 pt-3 mb-3">
-            <div className="inline-flex items-center text-xs text-gray-400 bg-gray-50 px-3 py-1 rounded-full">
-              <div className="w-1 h-1 bg-gray-400 rounded-full mr-2"></div>
-              اسحب لرؤية المزيد
-              <div className="w-1 h-1 bg-gray-400 rounded-full ml-2"></div>
-            </div>
-          </div>
-
           {/* User Profile Section */}
           <div className="mt-4 pt-3 border-t border-gray-200">
             <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-50">
@@ -409,7 +400,7 @@ export default function UserLayout({
               <Button variant="ghost" size="sm">
                 <HelpCircle className="h-4 w-4" />
               </Button>
-              <Link href="/login">
+              <Link href="/auth/login">
                 <Button variant="ghost" size="sm">
                   <LogOut className="h-4 w-4" />
                 </Button>

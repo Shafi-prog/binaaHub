@@ -16,7 +16,7 @@ interface MockSession {
 class MockSupabaseClient {
   private users: Map<string, MockUser> = new Map();
   private sessions: Map<string, MockSession> = new Map();
-  private data: Map<string, any[]> = new Map();
+  public data: Map<string, any[]> = new Map(); // Made public for external access
   private currentSession: MockSession | null = null;
 
   constructor() {
@@ -38,15 +38,25 @@ class MockSupabaseClient {
       this.data.set(table, []);
     });
 
-    // Create demo users
-    this.createDemoUser('demo.user@binna.sa', 'demo123456', {
+    // Create demo users matching the login component expectations
+    this.createDemoUser('user@binna', 'demo123456', {
       name: 'مستخدم تجريبي',
       role: 'user'
     });
 
-    this.createDemoUser('demo.store@binna.sa', 'demo123456', {
+    this.createDemoUser('store@binna', 'demo123456', {
       name: 'متجر تجريبي', 
       role: 'store_admin'
+    });
+
+    this.createDemoUser('provider@binna', 'demo123456', {
+      name: 'مقدم خدمة تجريبي',
+      role: 'service_provider'
+    });
+
+    this.createDemoUser('admin@binna', 'admin123456', {
+      name: 'مدير النظام',
+      role: 'admin'
     });
   }
 
@@ -71,6 +81,7 @@ class MockSupabaseClient {
       loyalty_points: 1250,
       current_level: 3,
       total_spent: 15750,
+      role: metadata.role, // Store role in profile
       created_at: new Date().toISOString()
     });
     this.data.set('user_profiles', userProfiles);
@@ -192,6 +203,19 @@ class MockSupabaseClient {
       this.sessions.set(userId, session);
       this.currentSession = session;
 
+      // Set local auth cookie for middleware compatibility
+      if (typeof window !== 'undefined') {
+        const localAuthUser = {
+          id: user.id,
+          email: user.email,
+          name: user.user_metadata.name,
+          role: user.user_metadata.role,
+          account_type: user.user_metadata.role === 'store_admin' ? 'store' : 'user'
+        };
+        document.cookie = `user-session=${JSON.stringify(localAuthUser)}; path=/; max-age=86400`;
+        console.log('🍪 [Mock Auth] Set local auth cookie for new user:', email);
+      }
+
       // Create user profile
       const userProfiles = this.data.get('user_profiles') || [];
       userProfiles.push({
@@ -233,6 +257,19 @@ class MockSupabaseClient {
       this.sessions.set(user.id, session);
       this.currentSession = session;
 
+      // Set local auth cookie for middleware compatibility
+      if (typeof window !== 'undefined') {
+        const localAuthUser = {
+          id: user.id,
+          email: user.email,
+          name: user.user_metadata.name,
+          role: user.user_metadata.role,
+          account_type: user.user_metadata.role === 'store_admin' ? 'store' : 'user'
+        };
+        document.cookie = `user-session=${JSON.stringify(localAuthUser)}; path=/; max-age=86400`;
+        console.log('🍪 [Mock Auth] Set local auth cookie for:', email);
+      }
+
       return {
         data: { user, session },
         error: null
@@ -241,6 +278,13 @@ class MockSupabaseClient {
 
     signOut: async () => {
       this.currentSession = null;
+      
+      // Clear local auth cookie
+      if (typeof window !== 'undefined') {
+        document.cookie = 'user-session=; path=/; max-age=0';
+        console.log('🍪 [Mock Auth] Cleared local auth cookie');
+      }
+      
       return { error: null };
     },
 

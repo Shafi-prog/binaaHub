@@ -69,7 +69,7 @@ export default function ConstructionDataDashboard() {
             setUser(cookieUser);
           } else {
             setError('Authentication session not found');
-            setTimeout(() => router.push('/login'), 2000);
+            setTimeout(() => router.push('/auth/login'), 2000);
             return;
           }
         }

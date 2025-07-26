@@ -34,15 +34,65 @@ export class ProjectTrackingService {
       const projects = await this.getProjects();
       const existingIndex = projects.findIndex(p => p.id === project.id);
       
+      const updatedProject = existingIndex >= 0 
+        ? { ...project, updatedAt: new Date().toISOString() }
+        : { ...project, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
+      
       if (existingIndex >= 0) {
-        projects[existingIndex] = { ...project, updatedAt: new Date().toISOString() };
+        projects[existingIndex] = updatedProject;
       } else {
-        projects.push({ ...project, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() });
+        projects.push(updatedProject);
       }
       
+      // Save to localStorage
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(projects));
+      
+      // Also save to mock database for consistency
+      await this.saveProjectToMockDatabase(updatedProject);
+      
     } catch (error) {
       console.error('Error saving project:', error);
+    }
+  }
+
+  private static async saveProjectToMockDatabase(project: Project): Promise<void> {
+    try {
+      // Import the mock supabase client
+      const { mockSupabaseClient } = await import('@/core/shared/services/mock-supabase');
+      
+      // Transform project to match database schema
+      const dbProject = {
+        id: project.id,
+        user_id: 'local_user', // Since we're using local auth
+        project_name: project.name,
+        description: project.description,
+        status: project.status,
+        start_date: project.startDate,
+        budget: project.budget || 0,
+        actual_cost: 0, // Default since spent property doesn't exist
+        completion_percentage: project.progress || 0,
+        location: { city: project.location || 'الرياض' },
+        project_type: project.projectType,
+        created_at: project.createdAt,
+        updated_at: project.updatedAt
+      };
+      
+      // Get existing projects from mock database
+      const constructionProjects = mockSupabaseClient.data?.get('construction_projects') || [];
+      const existingIndex = constructionProjects.findIndex((p: any) => p.id === project.id);
+      
+      if (existingIndex >= 0) {
+        constructionProjects[existingIndex] = dbProject;
+      } else {
+        constructionProjects.push(dbProject);
+      }
+      
+      // Save back to mock database
+      mockSupabaseClient.data?.set('construction_projects', constructionProjects);
+      
+      console.log('✅ Project saved to mock database:', project.name);
+    } catch (error) {
+      console.error('Error saving project to mock database:', error);
     }
   }
 

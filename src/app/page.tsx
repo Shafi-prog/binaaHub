@@ -3,6 +3,7 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import { cn } from "@/core/shared/utils";
+import { supabaseDataService } from "@/core/shared/services/supabase-data-service";
 import Link from 'next/link';
 import { 
   Store, 
@@ -51,43 +52,6 @@ interface PriceData {
   city: string;
   lastUpdated: string;
 }
-
-const mockPriceData: PriceData[] = [
-  // Metal Products
-  { product: "طن حديد", category: "معادن", price: 450, change: +12.5, store: "شركة الخليج للحديد", city: "الرياض", lastUpdated: "منذ ساعتين" },
-  { product: "كيلو نحاس", category: "معادن", price: 8.75, change: -3.2, store: "عالم المعادن", city: "دبي", lastUpdated: "منذ ساعة" },
-  { product: "طن ألمونيوم", category: "معادن", price: 2100, change: +5.8, store: "المنارة للمعادن", city: "الكويت", lastUpdated: "منذ 30 دقيقة" },
-  { product: "طن حديد تسليح", category: "معادن", price: 520, change: +8.2, store: "مملكة الحديد", city: "الرياض", lastUpdated: "منذ 3 ساعات" },
-  { product: "كيلو زنك", category: "معادن", price: 3.20, change: -1.5, store: "شركة الخليج للحديد", city: "دبي", lastUpdated: "منذ ساعة" },
-  
-  // Precious Metals
-  { product: "جرام ذهب", category: "معادن ثمينة", price: 235, change: +1.2, store: "قصر الذهب", city: "الدوحة", lastUpdated: "منذ 15 دقيقة" },
-  { product: "أونصة فضة", category: "معادن ثمينة", price: 24.50, change: -0.8, store: "نجمة الفضة", city: "المنامة", lastUpdated: "منذ 45 دقيقة" },
-  { product: "جرام بلاتين", category: "معادن ثمينة", price: 32.5, change: +2.1, store: "شركة المعادن الثمينة", city: "الرياض", lastUpdated: "منذ ساعتين" },
-  
-  // Construction Materials
-  { product: "كيس إسمنت 50كغ", category: "مواد بناء", price: 18.5, change: +3.4, store: "أساتذة البناء", city: "الرياض", lastUpdated: "منذ 4 ساعات" },
-  { product: "طن رمل", category: "مواد بناء", price: 45, change: +5.2, store: "البناء بلس", city: "دبي", lastUpdated: "منذ 3 ساعات" },
-  { product: "طن حصى", category: "مواد بناء", price: 55, change: -2.1, store: "أساتذة البناء", city: "الكويت", lastUpdated: "منذ ساعتين" },
-  { product: "1000 طوبة", category: "مواد بناء", price: 280, change: +4.5, store: "مصنع الطوب", city: "الدوحة", lastUpdated: "منذ 5 ساعات" },
-  { product: "بلاط للمتر المربع", category: "مواد بناء", price: 85, change: -1.2, store: "عالم البلاط", city: "المنامة", lastUpdated: "منذ 3 ساعات" },
-  
-  // Electronics
-  { product: "سلك نحاس 100م", category: "إلكترونيات", price: 125, change: +6.8, store: "الكهرباء المحترفة", city: "الرياض", lastUpdated: "منذ ساعة" },
-  { product: "لمبة LED", category: "إلكترونيات", price: 15.5, change: -2.3, store: "بيت الإضاءة", city: "دبي", lastUpdated: "منذ ساعتين" },
-  { product: "مفتاح كهرباء", category: "إلكترونيات", price: 25, change: +1.8, store: "الكهرباء المحترفة", city: "الكويت", lastUpdated: "منذ 4 ساعات" },
-  
-  // Textiles
-  { product: "متر قماش قطني", category: "منسوجات", price: 12.5, change: +2.8, store: "أرض الأقمشة", city: "الرياض", lastUpdated: "منذ 6 ساعات" },
-  { product: "متر قماش حريري", category: "منسوجات", price: 45, change: -1.5, store: "الأقمشة الفاخرة", city: "دبي", lastUpdated: "منذ 3 ساعات" },
-  { product: "متر قماش صوفي", category: "منسوجات", price: 28, change: +3.2, store: "أرض الأقمشة", city: "الدوحة", lastUpdated: "منذ 4 ساعات" },
-  
-  // Food & Commodities
-  { product: "طن قمح", category: "غذائيات", price: 320, change: +4.5, store: "سوق الحبوب", city: "الرياض", lastUpdated: "منذ 5 ساعات" },
-  { product: "طن أرز", category: "غذائيات", price: 580, change: -2.1, store: "مركز الغذاء", city: "دبي", lastUpdated: "منذ 3 ساعات" },
-  { product: "طن سكر", category: "غذائيات", price: 450, change: +1.8, store: "إمداد الحلويات", city: "الكويت", lastUpdated: "منذ ساعتين" },
-  { product: "Coffee Kg", category: "Food", price: 25, change: +5.2, store: "Coffee Masters", city: "Manama", lastUpdated: "1 hour ago" },
-];
 
 interface Feature {
   icon: React.ReactElement;
@@ -251,13 +215,41 @@ export default function HomePage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState<'price' | 'change' | 'updated'>('price');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  const [priceData, setPriceData] = useState<PriceData[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const cities = ['all', ...Array.from(new Set(mockPriceData.map(item => item.city)))];
-  const stores = ['all', ...Array.from(new Set(mockPriceData.map(item => item.store)))];
-  const categories = ['all', ...Array.from(new Set(mockPriceData.map(item => item.category)))];
+  // Load price data from Supabase
+  useEffect(() => {
+    const loadPriceData = async () => {
+      try {
+        setIsLoading(true);
+        const data = await supabaseDataService.getMaterialPrices();
+        
+        // Additional validation to ensure we have valid data
+        if (Array.isArray(data) && data.length > 0) {
+          setPriceData(data);
+        } else {
+          console.warn('Invalid price data received, using empty array');
+          setPriceData([]);
+        }
+      } catch (error) {
+        console.error('Error loading price data:', error);
+        // Set empty array as fallback to prevent display issues
+        setPriceData([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadPriceData();
+  }, []);
+
+  const cities = ['all', ...Array.from(new Set(priceData.map(item => item.city)))];
+  const stores = ['all', ...Array.from(new Set(priceData.map(item => item.store)))];
+  const categories = ['all', ...Array.from(new Set(priceData.map(item => item.category)))];
 
   // Filter and sort products
-  const filteredProducts = mockPriceData.filter(item => {
+  const filteredProducts = priceData.filter(item => {
     const matchesCity = selectedCity === 'all' || item.city === selectedCity;
     const matchesStore = selectedStore === 'all' || item.store === selectedStore;
     const matchesCategory = selectedCategory === 'all' || item.category === selectedCategory;
@@ -336,7 +328,7 @@ export default function HomePage() {
               </div>
               
               <Link 
-                href="/login"
+                href="/auth/login"
                 className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-2 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 flex items-center space-x-2 rtl:space-x-reverse"
               >
                 <Plus className="h-4 w-4" />
@@ -496,7 +488,7 @@ export default function HomePage() {
             </div>
 
             <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-200">
-              <span>عرض {filteredProducts.length} من أصل {mockPriceData.length} منتج</span>
+              <span>عرض {filteredProducts.length} من أصل {priceData.length} منتج</span>
               <button 
                 onClick={() => {
                   setSelectedCity('all');

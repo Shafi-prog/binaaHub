@@ -1,443 +1,427 @@
 'use client';
 
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import React, { useState, useEffect } from 'react';
+import { useAuth } from '@/core/shared/auth/AuthProvider';
+import { platformDataService } from '@/core/shared/services/platform-data-service';
+import { StoreDashboardData, Product, Order, WarrantyClaim } from '@/core/shared/types/platform-types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
+import { Badge } from '@/core/shared/components/ui/badge';
 import { Button } from '@/core/shared/components/ui/button';
+import { ErrorBoundary } from '@/core/shared/components/ErrorBoundary';
 import { 
-  BarChart3, 
   Package, 
   ShoppingCart, 
   Users, 
-  Settings, 
-  AlertTriangle, 
-  Store, 
-  LogOut, 
-  FileText, 
-  Calculator, 
-  DollarSign, 
-  Receipt,
+  DollarSign,
   TrendingUp,
-  Activity,
-  Clock,
-  CheckCircle,
-  ExternalLink,
+  AlertTriangle,
+  Plus,
   Eye,
   Edit,
-  Plus,
-  ArrowUp,
-  ArrowDown,
-  Calendar,
-  Target,
-  Zap,
-  Globe,
-  Smartphone,
-  Monitor,
-  Wifi,
-  Server
+  CheckCircle,
+  Clock,
+  Shield,
+  FileText
 } from 'lucide-react';
 
-export const dynamic = 'force-dynamic';
-
-interface DashboardStats {
-  current: number;
-  previous: number;
-  change: number;
-  trend: 'up' | 'down' | 'stable';
-}
-
-interface StatCard {
-  title: string;
-  value: string;
-  icon: React.ReactNode;
-  href: string;
-  color: string;
-  stats: DashboardStats;
-  description: string;
-}
-
-export default function StoreDashboardPage() {
-const supabase = createClientComponentClient();
-
+export default function StoreDashboard() {
+  const { user } = useAuth();
+  const [dashboardData, setDashboardData] = useState<StoreDashboardData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [medusaRunning, setMedusaRunning] = useState(false);
-  const [currentTime, setCurrentTime] = useState(new Date());
-  const router = useRouter();
+  const [selectedTab, setSelectedTab] = useState<'products' | 'orders' | 'warranty'>('products');
 
   useEffect(() => {
-    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
-    
-    // Check if Medusa admin is running
-    fetch('http://localhost:9000/admin', { 
-      method: 'HEAD',
-      mode: 'no-cors'
-    })
-    .then(() => setMedusaRunning(true))
-    .catch(() => setMedusaRunning(false));
+    const fetchDashboardData = async () => {
+      try {
+        setLoading(true);
+        const data = await platformDataService.getStoreDashboard(user?.id || '');
+        if (data.success && data.data) {
+          setDashboardData(data.data);
+        }
+      } catch (error) {
+        console.error('Error fetching store dashboard data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    return () => clearInterval(timer);
-  }, []);
-
-  const storeDashboardStats: StatCard[] = [
-    {
-      title: 'إجمالي المنتجات',
-      value: '248',
-      icon: <Package className="w-6 h-6" />,
-      href: '/store/products',
-      color: 'bg-blue-500',
-      stats: { current: 248, previous: 231, change: 7.4, trend: 'up' },
-      description: 'منتج نشط'
-    },
-    {
-      title: 'الطلبات اليوم',
-      value: '18',
-      icon: <ShoppingCart className="w-6 h-6" />,
-      href: '/store/orders',
-      color: 'bg-green-500',
-      stats: { current: 18, previous: 12, change: 50, trend: 'up' },
-      description: 'طلب جديد'
-    },
-    {
-      title: 'إجمالي العملاء',
-      value: '1,456',
-      icon: <Users className="w-6 h-6" />,
-      href: '/store/customers',
-      color: 'bg-purple-500',
-      stats: { current: 1456, previous: 1398, change: 4.1, trend: 'up' },
-      description: 'عميل مسجل'
-    },
-    {
-      title: 'مبيعات اليوم',
-      value: '24,580',
-      icon: <BarChart3 className="w-6 h-6" />,
-      href: '/store/analytics',
-      color: 'bg-orange-500',
-      stats: { current: 24580, previous: 21340, change: 15.2, trend: 'up' },
-      description: 'ريال سعودي'
-    },
-    {
-      title: 'أوامر الشراء',
-      value: '12',
-      icon: <FileText className="w-6 h-6" />,
-      href: '/store/purchase-orders',
-      color: 'bg-indigo-500',
-      stats: { current: 12, previous: 8, change: 50, trend: 'up' },
-      description: 'أمر نشط'
-    },
-    {
-      title: 'إجمالي المصروفات',
-      value: '8,750',
-      icon: <Calculator className="w-6 h-6" />,
-      href: '/store/expenses',
-      color: 'bg-red-500',
-      stats: { current: 8750, previous: 9200, change: -4.9, trend: 'down' },
-      description: 'ريال سعودي'
+    if (user) {
+      fetchDashboardData();
     }
-  ];
+  }, [user]);
 
-  const quickActions = [
-    { name: 'إضافة منتج جديد', href: '/store/products', icon: Package, color: 'bg-blue-500' },
-    { name: 'طلب شراء جديد', href: '/store/purchase-orders', icon: FileText, color: 'bg-indigo-500' },
-    { name: 'إضافة عميل', href: '/store/customers', icon: Users, color: 'bg-purple-500' },
-    { name: 'تسجيل مصروف', href: '/store/expenses', icon: Calculator, color: 'bg-red-500' }
-  ];
+  const handleCreateProduct = async () => {
+    try {
+      const newProduct: Omit<Product, 'id' | 'createdAt' | 'updatedAt'> = {
+        name: 'منتج جديد',
+        description: 'وصف المنتج',
+        price: 100,
+        category: 'عام',
+        storeId: user?.id || '',
+        storeName: user?.name || '',
+        inStock: true,
+        stockQuantity: 10,
+        images: [],
+        warrantyPeriod: 12,
+        specifications: {}
+      };
 
-  const systemStatus = [
-    { name: 'نقطة البيع', status: 'نشط', color: 'bg-green-500', icon: Receipt },
-    { name: 'إدارة المخزون', status: 'نشط', color: 'bg-green-500', icon: Package },
-    { name: 'نظام الدفع', status: 'نشط', color: 'bg-green-500', icon: DollarSign },
-    { name: 'النسخ الاحتياطي', status: 'نشط', color: 'bg-green-500', icon: Server }
-  ];
-
-  const recentActivities = [
-    { 
-      id: 1, 
-      action: 'طلب شراء جديد', 
-      details: 'أمر شراء #PO-2025-001 تم إنشاؤه',
-      time: '5 دقائق مضت',
-      icon: FileText,
-      color: 'text-indigo-600'
-    },
-    { 
-      id: 2, 
-      action: 'عميل جديد', 
-      details: 'أحمد محمد علي تم تسجيله كعميل',
-      time: '15 دقيقة مضت',
-      icon: Users,
-      color: 'text-purple-600'
-    },
-    { 
-      id: 3, 
-      action: 'بيع منتج', 
-      details: 'تم بيع 50 كيس أسمنت',
-      time: '30 دقيقة مضت',
-      icon: ShoppingCart,
-      color: 'text-green-600'
-    },
-    { 
-      id: 4, 
-      action: 'تحديث مخزون', 
-      details: 'تم تحديث مخزون الحديد 16 ملم',
-      time: '45 دقيقة مضت',
-      icon: Package,
-      color: 'text-blue-600'
+      const createdProduct = await platformDataService.createProduct(user?.id || '', newProduct);
+      if (createdProduct.success && createdProduct.data && dashboardData) {
+        setDashboardData({
+          ...dashboardData,
+          products: [...dashboardData.products, createdProduct.data]
+        });
+      }
+    } catch (error) {
+      console.error('Error creating product:', error);
     }
-  ];
-
-  const handleLogout = () => {
-    if (typeof window !== 'undefined') {
-      sessionStorage.clear();
-      localStorage.clear();
-      document.cookie.split(';').forEach(cookie => {
-        const eqPos = cookie.indexOf('=');
-        const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-        document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;';
-      });
-    }
-    router.push('/login');
   };
 
-  return (
-    <div className="p-6 space-y-6">
-      {/* Header Section */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">لوحة تحكم المتجر المتقدمة</h1>
-          <p className="text-gray-600">مرحباً بك في نظام إدارة المتجر الشامل</p>
-          <p className="text-sm text-gray-500 mt-1">{currentTime.toLocaleString('ar-SA')}</p>
-        </div>
-        
-        <div className="flex items-center gap-3">
-          <Button variant="outline" onClick={handleLogout}>
-            <LogOut className="h-4 w-4 mr-2" />
-            تسجيل الخروج
-          </Button>
-          <Button>
-            <Settings className="h-4 w-4 mr-2" />
-            الإعدادات
-          </Button>
+  const handleUpdateOrderStatus = async (orderId: string, newStatus: 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled') => {
+    try {
+      await platformDataService.updateOrderStatus(orderId, newStatus, 'Status updated by store');
+      if (dashboardData) {
+        setDashboardData({
+          ...dashboardData,
+          orders: dashboardData.orders.map(order =>
+            order.id === orderId ? { ...order, status: newStatus } : order
+          )
+        });
+      }
+    } catch (error) {
+      console.error('Error updating order status:', error);
+    }
+  };
+
+  const getStatusColor = (status: string, type: 'order' | 'warranty') => {
+    const colors = {
+      order: {
+        pending: 'bg-yellow-100 text-yellow-800',
+        confirmed: 'bg-blue-100 text-blue-800',
+        processing: 'bg-purple-100 text-purple-800',
+        shipped: 'bg-green-100 text-green-800',
+        delivered: 'bg-green-100 text-green-800',
+        cancelled: 'bg-red-100 text-red-800'
+      },
+      warranty: {
+        submitted: 'bg-yellow-100 text-yellow-800',
+        under_review: 'bg-blue-100 text-blue-800',
+        approved: 'bg-green-100 text-green-800',
+        rejected: 'bg-red-100 text-red-800'
+      }
+    };
+    return colors[type][status as keyof typeof colors[typeof type]] || 'bg-gray-100 text-gray-800';
+  };
+
+  const getStatusText = (status: string, type: 'order' | 'warranty') => {
+    const texts = {
+      order: {
+        pending: 'في الانتظار',
+        confirmed: 'مؤكد',
+        processing: 'قيد المعالجة',
+        shipped: 'تم الشحن',
+        delivered: 'تم التسليم',
+        cancelled: 'ملغي'
+      },
+      warranty: {
+        submitted: 'مُقدم',
+        under_review: 'قيد المراجعة',
+        approved: 'موافق عليه',
+        rejected: 'مرفوض'
+      }
+    };
+    return texts[type][status as keyof typeof texts[typeof type]] || status;
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">جاري تحميل لوحة التحكم...</p>
         </div>
       </div>
+    );
+  }
 
-      {/* System Status Alert */}
-      {!medusaRunning && (
-        <Card className="border-yellow-200 bg-yellow-50">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-4">
-              <AlertTriangle className="w-6 h-6 text-yellow-600" />
-              <div className="flex-1">
-                <h3 className="font-semibold text-yellow-800 mb-1">تنبيه النظام</h3>
-                <p className="text-sm text-yellow-700 mb-3">بعض الخدمات قد تكون غير متاحة</p>
-                <div className="flex gap-2">
-                  <Button size="sm" variant="outline">فحص الحالة</Button>
-                  <Button size="sm">دليل الإعداد</Button>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      )}
+  if (!dashboardData) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <AlertTriangle className="h-12 w-12 text-red-500 mx-auto mb-4" />
+          <p className="text-gray-600">حدث خطأ في تحميل البيانات</p>
+        </div>
+      </div>
+    );
+  }
 
-      {/* Statistics Dashboard */}
-      <div className="grid grid-cols-1 md:grid-cols-6 gap-6">
-        {storeDashboardStats.map((card, index) => (
-          <Link key={index} href={card.href}>
-            <Card className="hover:shadow-lg transition-shadow cursor-pointer">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-gray-600">{card.title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center justify-between mb-2">
-                  <div className={`${card.color} p-2 rounded-lg`}>
-                    <div className="text-white">{card.icon}</div>
+  return (
+    <ErrorBoundary>
+      <div className="min-h-screen bg-gray-50" dir="rtl">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {/* Header */}
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-gray-900">لوحة تحكم المتجر</h1>
+            <p className="text-gray-600 mt-2">
+              مرحباً {user?.name} - إدارة متجرك ومنتجاتك
+            </p>
+          </div>
+
+          {/* Analytics Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-600">إجمالي المنتجات</p>
+                    <p className="text-2xl font-bold text-gray-900">{dashboardData.products.length}</p>
                   </div>
-                  <div className="text-right">
-                    <div className="text-2xl font-bold">{card.value}</div>
-                    <p className="text-xs text-gray-500">{card.description}</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-center gap-1 text-xs">
-                  {card.stats.trend === 'up' ? (
-                    <ArrowUp className="h-3 w-3 text-green-600" />
-                  ) : card.stats.trend === 'down' ? (
-                    <ArrowDown className="h-3 w-3 text-red-600" />
-                  ) : (
-                    <div className="h-3 w-3 rounded-full bg-gray-400" />
-                  )}
-                  <span className={`${
-                    card.stats.trend === 'up' ? 'text-green-600' : 
-                    card.stats.trend === 'down' ? 'text-red-600' : 'text-gray-600'
-                  }`}>
-                    {Math.abs(card.stats.change)}%
-                  </span>
-                  <span className="text-gray-500">من الأمس</span>
+                  <Package className="h-8 w-8 text-blue-500" />
                 </div>
               </CardContent>
             </Card>
-          </Link>
-        ))}
-      </div>
 
-      {/* Main Content Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Quick Actions */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Zap className="h-5 w-5" />
-              الإجراءات السريعة
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            {quickActions.map((action, index) => {
-              const Icon = action.icon;
-              return (
-                <Link key={index} href={action.href}>
-                  <div className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
-                    <div className={`${action.color} p-2 rounded-lg`}>
-                      <Icon className="h-4 w-4 text-white" />
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-600">الطلبات الجديدة</p>
+                    <p className="text-2xl font-bold text-gray-900">
+                      {dashboardData.orders.filter(o => o.status === 'pending').length}
+                    </p>
+                  </div>
+                  <ShoppingCart className="h-8 w-8 text-green-500" />
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-600">إجمالي المبيعات</p>
+                    <p className="text-2xl font-bold text-gray-900">
+                      {dashboardData.orders.reduce((sum, order) => sum + order.totalAmount, 0).toLocaleString()} ر.س
+                    </p>
+                  </div>
+                  <DollarSign className="h-8 w-8 text-yellow-500" />
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-600">مطالبات الضمان</p>
+                    <p className="text-2xl font-bold text-gray-900">{dashboardData.warrantyClaims.length}</p>
+                  </div>
+                  <Shield className="h-8 w-8 text-purple-500" />
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Tabs */}
+          <div className="bg-white rounded-lg shadow">
+            <div className="border-b border-gray-200">
+              <nav className="flex space-x-8 space-x-reverse px-6">
+                {[
+                  { key: 'products', label: 'المنتجات', icon: Package, count: dashboardData?.products?.length || 0 },
+                  { key: 'orders', label: 'الطلبات', icon: ShoppingCart, count: dashboardData?.orders?.length || 0 },
+                  { key: 'warranty', label: 'الضمانات', icon: Shield, count: dashboardData?.warrantyClaims?.length || 0 }
+                ].map((tab) => (
+                  <button
+                    key={tab.key}
+                    onClick={() => setSelectedTab(tab.key as any)}
+                    className={`py-4 px-1 border-b-2 font-medium text-sm flex items-center gap-2 ${
+                      selectedTab === tab.key
+                        ? 'border-blue-500 text-blue-600'
+                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    }`}
+                  >
+                    <tab.icon className="h-4 w-4" />
+                    {tab.label}
+                    <Badge variant="secondary">{tab.count}</Badge>
+                  </button>
+                ))}
+              </nav>
+            </div>
+
+            <div className="p-6">
+              {/* Products Tab */}
+              {selectedTab === 'products' && (
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-lg font-semibold">منتجات المتجر</h3>
+                    <Button onClick={handleCreateProduct} className="flex items-center gap-2">
+                      <Plus className="h-4 w-4" />
+                      إضافة منتج جديد
+                    </Button>
+                  </div>
+                  
+                  {dashboardData.products.length === 0 ? (
+                    <div className="text-center py-8">
+                      <Package className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                      <p className="text-gray-600">لا توجد منتجات حتى الآن</p>
                     </div>
-                    <span className="font-medium">{action.name}</span>
-                    <ExternalLink className="h-4 w-4 text-gray-400 mr-auto" />
-                  </div>
-                </Link>
-              );
-            })}
-          </CardContent>
-        </Card>
-
-        {/* System Status */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Activity className="h-5 w-5" />
-              حالة النظام
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            {systemStatus.map((system, index) => {
-              const Icon = system.icon;
-              return (
-                <div key={index} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
-                  <div className="flex items-center gap-3">
-                    <Icon className="h-5 w-5 text-gray-600" />
-                    <span className="font-medium">{system.name}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className={`w-2 h-2 rounded-full ${system.color}`}></div>
-                    <span className="text-sm text-gray-600">{system.status}</span>
-                  </div>
+                  ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {dashboardData.products.map((product) => (
+                        <Card key={product.id}>
+                          <CardContent className="p-4">
+                            <div className="flex items-start justify-between mb-2">
+                              <h4 className="font-medium">{product.name}</h4>
+                              <Badge className={product.inStock ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}>
+                                {product.inStock ? 'متوفر' : 'نفد'}
+                              </Badge>
+                            </div>
+                            <p className="text-sm text-gray-600 mb-2">{product.description}</p>
+                            <div className="flex items-center justify-between">
+                              <span className="text-lg font-bold text-green-600">{product.price.toLocaleString()} ر.س</span>
+                              <div className="flex items-center gap-2">
+                                <Button size="sm" variant="outline">
+                                  <Edit className="h-4 w-4" />
+                                </Button>
+                                <Button size="sm" variant="outline">
+                                  <Eye className="h-4 w-4" />
+                                </Button>
+                              </div>
+                            </div>
+                            <div className="mt-2 text-xs text-gray-500">
+                              الكمية: {product.stockQuantity} | الفئة: {product.category}
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  )}
                 </div>
-              );
-            })}
-            
-            <div className="pt-3 border-t border-gray-200">
-              <Button variant="outline" size="sm" className="w-full">
-                <Monitor className="h-4 w-4 mr-2" />
-                عرض تفاصيل النظام
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+              )}
 
-        {/* Recent Activities */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Clock className="h-5 w-5" />
-              النشاطات الأخيرة
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            {recentActivities.map((activity) => {
-              const Icon = activity.icon;
-              return (
-                <div key={activity.id} className="flex items-start gap-3 p-3 border border-gray-200 rounded-lg">
-                  <Icon className={`h-5 w-5 mt-0.5 ${activity.color}`} />
-                  <div className="flex-1">
-                    <h4 className="font-medium text-sm">{activity.action}</h4>
-                    <p className="text-xs text-gray-600 mb-1">{activity.details}</p>
-                    <span className="text-xs text-gray-500">{activity.time}</span>
-                  </div>
+              {/* Orders Tab */}
+              {selectedTab === 'orders' && (
+                <div className="space-y-4">
+                  <h3 className="text-lg font-semibold">طلبات العملاء</h3>
+                  
+                  {dashboardData.orders.length === 0 ? (
+                    <div className="text-center py-8">
+                      <ShoppingCart className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                      <p className="text-gray-600">لا توجد طلبات حتى الآن</p>
+                    </div>
+                  ) : (
+                    dashboardData.orders.map((order) => (
+                      <Card key={order.id}>
+                        <CardContent className="p-4">
+                          <div className="flex items-center justify-between">
+                            <div className="flex-1">
+                              <div className="flex items-center gap-3 mb-2">
+                                <h4 className="font-medium">طلبية #{order.id}</h4>
+                                <Badge className={getStatusColor(order.status, 'order')}>
+                                  {getStatusText(order.status, 'order')}
+                                </Badge>
+                              </div>
+                              <p className="text-sm text-gray-600 mb-1">
+                                العميل: {order.userName}
+                              </p>
+                              <p className="text-sm text-gray-600">
+                                {order.products.length} منتج - {order.totalAmount.toLocaleString()} ر.س
+                              </p>
+                              <div className="text-xs text-gray-500 mt-1">
+                                {new Date(order.createdAt).toLocaleDateString('ar-SA')}
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              {order.status === 'pending' && (
+                                <Button
+                                  size="sm"
+                                  onClick={() => handleUpdateOrderStatus(order.id, 'confirmed')}
+                                >
+                                  تأكيد
+                                </Button>
+                              )}
+                              {order.status === 'confirmed' && (
+                                <Button
+                                  size="sm"
+                                  onClick={() => handleUpdateOrderStatus(order.id, 'processing')}
+                                >
+                                  معالجة
+                                </Button>
+                              )}
+                              {order.status === 'processing' && (
+                                <Button
+                                  size="sm"
+                                  onClick={() => handleUpdateOrderStatus(order.id, 'shipped')}
+                                >
+                                  شحن
+                                </Button>
+                              )}
+                              <Button size="sm" variant="outline">
+                                <Eye className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))
+                  )}
                 </div>
-              );
-            })}
-            
-            <div className="pt-3 border-t border-gray-200">
-              <Button variant="outline" size="sm" className="w-full">
-                <Eye className="h-4 w-4 mr-2" />
-                عرض جميع النشاطات
-              </Button>
+              )}
+
+              {/* Warranty Tab */}
+              {selectedTab === 'warranty' && (
+                <div className="space-y-4">
+                  <h3 className="text-lg font-semibold">مطالبات الضمان</h3>
+                  
+                  {dashboardData.warrantyClaims.length === 0 ? (
+                    <div className="text-center py-8">
+                      <Shield className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                      <p className="text-gray-600">لا توجد مطالبات ضمان</p>
+                    </div>
+                  ) : (
+                    dashboardData.warrantyClaims.map((claim) => (
+                      <Card key={claim.id}>
+                        <CardContent className="p-4">
+                          <div className="flex items-center justify-between">
+                            <div className="flex-1">
+                              <div className="flex items-center gap-3 mb-2">
+                                <h4 className="font-medium">{claim.productName}</h4>
+                                <Badge className={getStatusColor(claim.status, 'warranty')}>
+                                  {getStatusText(claim.status, 'warranty')}
+                                </Badge>
+                              </div>
+                              <p className="text-sm text-gray-600 mb-1">
+                                العميل: {claim.userName}
+                              </p>
+                              <p className="text-sm text-gray-600 mb-1">
+                                المشكلة: {claim.issueDescription}
+                              </p>
+                              <div className="text-xs text-gray-500">
+                                تم التقديم: {new Date(claim.submittedAt).toLocaleDateString('ar-SA')}
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              {claim.status === 'submitted' && (
+                                <Button size="sm">
+                                  مراجعة
+                                </Button>
+                              )}
+                              <Button size="sm" variant="outline">
+                                <Eye className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))
+                  )}
+                </div>
+              )}
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
-
-      {/* Performance Overview */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <TrendingUp className="h-5 w-5" />
-              أداء المبيعات الأسبوعي
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-600">هذا الأسبوع</span>
-                <span className="font-bold text-green-600">156,850 ريال</span>
-              </div>
-              <div className="w-full bg-gray-200 rounded-full h-2">
-                <div className="bg-green-600 h-2 rounded-full" style={{ width: '75%' }}></div>
-              </div>
-              <div className="grid grid-cols-2 gap-4 text-sm">
-                <div>
-                  <span className="text-gray-600">الهدف:</span>
-                  <span className="font-medium ml-2">200,000 ريال</span>
-                </div>
-                <div>
-                  <span className="text-gray-600">المتبقي:</span>
-                  <span className="font-medium ml-2">43,150 ريال</span>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Target className="h-5 w-5" />
-              الأهداف الشهرية
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-600">تقدم الشهر</span>
-                <span className="font-bold text-blue-600">42%</span>
-              </div>
-              <div className="w-full bg-gray-200 rounded-full h-2">
-                <div className="bg-blue-600 h-2 rounded-full" style={{ width: '42%' }}></div>
-              </div>
-              <div className="grid grid-cols-2 gap-4 text-sm">
-                <div>
-                  <span className="text-gray-600">المحقق:</span>
-                  <span className="font-medium ml-2">420,000 ريال</span>
-                </div>
-                <div>
-                  <span className="text-gray-600">الهدف:</span>
-                  <span className="font-medium ml-2">1,000,000 ريال</span>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
+    </ErrorBoundary>
   );
 }

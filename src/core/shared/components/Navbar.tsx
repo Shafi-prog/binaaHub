@@ -405,14 +405,14 @@ export default function Navbar({ user, accountType }: NavbarProps) {
       setIsUserMenuOpen(false);
       
       // Redirect to login
-      router.push('/login');
+      router.push('/auth/login');
       console.log('✅ [Navbar] Logout complete, redirecting to login');
     } catch (error) {
       console.error('❌ [Navbar] Logout error:', error);
       // Even if API fails, clear client state and redirect
       clearTempAuth();
       setUserData(null);
-      router.push('/login');
+      router.push('/auth/login');
     } finally {
       setLoading(false);
     }
@@ -509,7 +509,7 @@ export default function Navbar({ user, accountType }: NavbarProps) {
               <Button size="sm" variant="ghost" className="ml-2 text-red-600" onClick={handleLogout}>تسجيل الخروج</Button>
             </EnhancedCard>
           ) : (
-            <Link href="/login">
+            <Link href="/auth/login">
               <EnhancedCard variant="elevated" hover className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/80 text-blue-800 shadow-sm transition-all hover:scale-105">
                 <User className="w-5 h-5 text-blue-600" />
                 <Typography variant="body" size="md" weight="medium">تسجيل الدخول</Typography>
@@ -639,7 +639,7 @@ export default function Navbar({ user, accountType }: NavbarProps) {
                   <Package className="w-5 h-5 text-blue-600" />
                   <span>المتاجر</span>
                 </Link>
-                <Link href="/login" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
+                <Link href="/auth/login" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
                   <User className="w-5 h-5 text-blue-600" />
                   <span>تسجيل الدخول</span>
                 </Link>
@@ -647,11 +647,11 @@ export default function Navbar({ user, accountType }: NavbarProps) {
                   <User className="w-5 h-5 text-blue-600" />
                   <span>إنشاء حساب</span>
                 </Link>
-                <Link href="/register" className="flex items-center gap-3 p-3 rounded-lg hover:bg-green-100 bg-green-50" onClick={() => setIsMenuOpen(false)}>
+                <Link href="/auth/signup" className="flex items-center gap-3 p-3 rounded-lg hover:bg-green-100 bg-green-50" onClick={() => setIsMenuOpen(false)}>
                   <Building2 className="w-5 h-5 text-green-600" />
                   <span>تسجيل مقدم خدمة</span>
                 </Link>
-                <Link href="/provider/login" className="flex items-center gap-3 p-3 rounded-lg hover:bg-blue-100 bg-blue-50" onClick={() => setIsMenuOpen(false)}>
+                <Link href="/auth/login" className="flex items-center gap-3 p-3 rounded-lg hover:bg-blue-100 bg-blue-50" onClick={() => setIsMenuOpen(false)}>
                   <Users className="w-5 h-5 text-blue-600" />
                   <span>دخول مقدم خدمة</span>
                 </Link>

@@ -143,12 +143,12 @@ export default function PublicSupervisorsPage() {
             تعرف على أفضل المشرفين والخبراء في مجال البناء والتشييد
           </p>
           <div className="flex justify-center gap-4">
-            <Link href="/login">
+            <Link href="/auth/login">
               <Button size="lg" onClick={() => alert('Button clicked')}>
                 سجل دخولك للتواصل مع المشرفين
               </Button>
             </Link>
-            <Link href="/register">
+            <Link href="/auth/signup">
               <Button variant="outline" size="lg" onClick={() => alert('Button clicked')}>
                 إنشاء حساب جديد
               </Button>
@@ -254,7 +254,7 @@ export default function PublicSupervisorsPage() {
                 </div>
 
                 <div className="text-center">
-                  <Link href="/login">
+                  <Link href="/auth/login">
                     <Button variant="outline" className="w-full" onClick={() => alert('Button clicked')}>
                       سجل دخولك للتواصل
                     </Button>
@@ -274,7 +274,7 @@ export default function PublicSupervisorsPage() {
             <p className="text-gray-600 mb-6">
               انضم إلى منصة بنّاء واحصل على مشاريع جديدة وزد دخلك
             </p>
-            <Link href="/register">
+            <Link href="/auth/signup">
               <Button size="lg" onClick={() => alert('Button clicked')}>
                 انضم كمشرف بناء
               </Button>

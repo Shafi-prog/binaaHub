@@ -165,7 +165,7 @@ export default function ConstructionDataPage() {
           
           {/* Quick Actions */}
           <div className="flex justify-center gap-4 mt-6">
-            <Link href="/auth/register">
+            <Link href="/auth/signup">
               <Button className="flex items-center gap-2" onClick={() => alert('Button clicked')}>
                 <PlayCircle className="w-4 h-4" />
                 ابدأ مشروعك الآن

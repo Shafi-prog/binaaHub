@@ -69,7 +69,7 @@ return (
             <ul className="space-y-1 text-sm">
               <li><a href="/dashboard/bookings" className="text-blue-600 hover:underline">• تقويم الحجوزات الموحد</a></li>
               <li><a href="/ai-assistant" className="text-blue-600 hover:underline">• المساعد الذكي للبناء</a></li>
-              <li><a href="/register/service-provider" className="text-blue-600 hover:underline">• تسجيل مقدمي الخدمات</a></li>
+              <li><a href="/auth/signup" className="text-blue-600 hover:underline">• تسجيل مقدمي الخدمات</a></li>
             </ul>
           </div>
           

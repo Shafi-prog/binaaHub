@@ -1,10 +1,14 @@
 // @ts-nocheck
 'use client'
 
+// Prevent static generation for admin routes
+export const dynamic = 'force-dynamic';
+
 import { ReactNode } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/core/shared/utils'
+import { AuthProvider } from '@/core/shared/auth/AuthProvider'
 import {
   LayoutDashboard,
   Store,
@@ -74,7 +78,8 @@ export default function AdminLayout({
   const pathname = usePathname()
 
   return (
-    <div className="min-h-screen bg-gray-50" dir="rtl">
+    <AuthProvider>
+      <div className="min-h-screen bg-gray-50" dir="rtl">
       <header className="bg-white shadow-sm border-b">
         <div className="px-6 py-4">
           <div className="flex justify-between items-center">
@@ -159,6 +164,7 @@ export default function AdminLayout({
         </main>
       </div>
     </div>
+    </AuthProvider>
   )
 }
 

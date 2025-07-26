@@ -10,7 +10,7 @@ export interface AuthUser {
   name?: string;
   avatar?: string;
   phone?: string;
-  role: 'user' | 'store_admin' | 'admin';
+  role: 'user' | 'store_admin' | 'store_owner' | 'store' | 'admin' | 'service_provider';
   account_type: 'free' | 'premium' | 'enterprise';
 }
 

@@ -282,7 +282,7 @@ export default function ForumPage() {
               <p className="text-blue-800 mb-3">انضم إلى مجتمعنا لتتمكن من المشاركة والتفاعل</p>
               <div className="flex justify-center gap-4">
                 <Link
-                  href="/login"
+                  href="/auth/login"
                   className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors"
                 >
                   تسجيل الدخول

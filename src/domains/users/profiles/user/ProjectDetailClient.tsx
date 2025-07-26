@@ -92,11 +92,11 @@ function ProjectDetailClient() {
           setAuthError(null);
         } else {
           setAuthError('يرجى تسجيل الدخول للمتابعة');
-          router.push('/login');
+          router.push('/auth/login');
         }
       } catch (error) {
         setAuthError('خطأ في المصادقة');
-        router.push('/login');
+        router.push('/auth/login');
       } finally {
         setLoading(false);
       }
@@ -105,7 +105,7 @@ function ProjectDetailClient() {
       console.error('Error in ProjectDetailClient initAuth:', error);
       setAuthError('خطأ في المصادقة');
       setLoading(false);
-      router.push('/login');
+      router.push('/auth/login');
     });
   }, [router]);
 
@@ -131,7 +131,7 @@ function ProjectDetailClient() {
       const { data: { user: currentUser }, error: authError } = await freshSupabase.auth.getUser();
       if (authError || !currentUser) {
         setProjectError('خطأ في المصادقة - يرجى تسجيل الدخول مرة أخرى');
-        router.push('/login');
+        router.push('/auth/login');
         return;
       }
       const projectData = await getProjectById(projectId);
@@ -168,7 +168,7 @@ function ProjectDetailClient() {
         setProjectError('ليس لديك صلاحية للوصول إلى هذا المشروع. تأكد من تسجيل الدخول بالحساب الصحيح.');
       } else if (error.message && error.message.includes('تسجيل الدخول')) {
         setProjectError('يرجى تسجيل الدخول أولاً');
-        router.push('/login');
+        router.push('/auth/login');
         return;
       } else {
         setProjectError('حدث خطأ أثناء تحميل بيانات المشروع');

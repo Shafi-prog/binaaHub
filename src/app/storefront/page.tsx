@@ -617,7 +617,7 @@ export default function StorefrontMainPage() {
                 إتمام الطلب
               </Link>
               <Link
-                href="/login?redirect=/storefront"
+                href="/auth/login?redirect=/storefront"
                 className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold transition-colors"
               >
                 تسجيل الدخول

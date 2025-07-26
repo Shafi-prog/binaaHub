@@ -5,14 +5,84 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@/core/shared/components/ui/button'
 import { Input } from '@/core/shared/components/ui/input'
 import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card'
+import { Badge } from '@/core/shared/components/ui/badge'
+import { 
+  User, 
+  Building2, 
+  Truck, 
+  Store,
+  UserCheck,
+  ArrowRight,
+  ArrowLeft
+} from 'lucide-react'
+
+type UserType = 'user' | 'service-provider' | 'store' | 'admin'
+
+interface UserTypeOption {
+  value: UserType
+  label: string
+  description: string
+  icon: any
+  color: string
+  features: string[]
+}
+
+const userTypes: UserTypeOption[] = [
+  {
+    value: 'user',
+    label: 'مستخدم عادي',
+    description: 'للأفراد الباحثين عن خدمات البناء',
+    icon: User,
+    color: 'from-blue-500 to-blue-600',
+    features: ['إدارة المشاريع', 'حاسبة التكاليف', 'طلب الخدمات', 'متابعة التقدم']
+  },
+  {
+    value: 'service-provider',
+    label: 'مقدم خدمة',
+    description: 'للمقاولين ومكاتب التصميم وموردي المواد',
+    icon: Building2,
+    color: 'from-green-500 to-green-600',
+    features: ['لوحة تحكم متخصصة', 'إدارة الحجوزات', 'متابعة الطلبات', 'تقارير الأداء']
+  },
+  {
+    value: 'store',
+    label: 'متجر',
+    description: 'لأصحاب المتاجر ونقاط البيع',
+    icon: Store,
+    color: 'from-purple-500 to-purple-600',
+    features: ['نظام نقاط البيع', 'إدارة المخزون', 'تقارير المبيعات', 'إدارة العملاء']
+  },
+  {
+    value: 'admin',
+    label: 'مدير النظام',
+    description: 'للإدارة والإشراف على المنصة',
+    icon: UserCheck,
+    color: 'from-red-500 to-red-600',
+    features: ['إدارة شاملة', 'تحليلات متقدمة', 'إدارة المستخدمين', 'تقارير النظام']
+  }
+]
 
 export default function SignupPage() {
+  const [step, setStep] = useState<'type-selection' | 'form'>('type-selection')
+  const [selectedUserType, setSelectedUserType] = useState<UserType | null>(null)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
+  const [fullName, setFullName] = useState('')
+  const [phone, setPhone] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const router = useRouter()
+
+  const handleUserTypeSelect = (userType: UserType) => {
+    setSelectedUserType(userType)
+    setStep('form')
+  }
+
+  const handleBackToSelection = () => {
+    setStep('type-selection')
+    setSelectedUserType(null)
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -28,18 +98,42 @@ export default function SignupPage() {
       return
     }
 
+    if (!selectedUserType) {
+      setError('يرجى اختيار نوع الحساب')
+      return
+    }
+
     setLoading(true)
     
     try {
       // Simulate account creation
-      localStorage.setItem('user', JSON.stringify({
+      const userData = {
         email,
-        userType: 'user',
+        fullName,
+        phone,
+        userType: selectedUserType,
         createdAt: new Date().toISOString()
-      }))
+      }
       
-      // Redirect to dashboard
-      router.push('/user/dashboard')
+      localStorage.setItem('user', JSON.stringify(userData))
+      
+      // Redirect based on user type
+      switch (selectedUserType) {
+        case 'user':
+          router.push('/user/dashboard')
+          break
+        case 'service-provider':
+          router.push('/service-provider/dashboard')
+          break
+        case 'store':
+          router.push('/store/dashboard')
+          break
+        case 'admin':
+          router.push('/admin/dashboard')
+          break
+        default:
+          router.push('/user/dashboard')
+      }
     } catch (err) {
       setError('حدث خطأ في إنشاء الحساب')
     } finally {
@@ -47,15 +141,108 @@ export default function SignupPage() {
     }
   }
 
+  if (step === 'type-selection') {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8" dir="rtl">
+        <div className="w-full max-w-4xl">
+          <div className="text-center mb-8">
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">
+              انضم إلى منصة بنّا
+            </h1>
+            <p className="text-xl text-gray-600">
+              اختر نوع حسابك لتبدأ رحلتك معنا
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {userTypes.map((userType) => {
+              const IconComponent = userType.icon
+              return (
+                <Card 
+                  key={userType.value}
+                  className="cursor-pointer transition-all duration-300 hover:shadow-lg hover:scale-105 border-2 hover:border-blue-300"
+                  onClick={() => handleUserTypeSelect(userType.value)}
+                >
+                  <CardContent className="p-6">
+                    <div className="flex items-start space-x-4 space-x-reverse mb-4">
+                      <div className={`w-12 h-12 rounded-full bg-gradient-to-r ${userType.color} flex items-center justify-center`}>
+                        <IconComponent className="w-6 h-6 text-white" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="text-xl font-bold text-gray-900 mb-1">
+                          {userType.label}
+                        </h3>
+                        <p className="text-gray-600 text-sm">
+                          {userType.description}
+                        </p>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <h4 className="font-medium text-gray-800 text-sm">المميزات المتاحة:</h4>
+                      {userType.features.map((feature, index) => (
+                        <div key={index} className="flex items-center space-x-2 space-x-reverse">
+                          <div className="w-1.5 h-1.5 bg-blue-500 rounded-full"></div>
+                          <span className="text-sm text-gray-600">{feature}</span>
+                        </div>
+                      ))}
+                    </div>
+                    
+                    <div className="mt-4 flex items-center justify-between">
+                      <Badge variant="secondary" className="text-xs">
+                        ابدأ مجاناً
+                      </Badge>
+                      <ArrowRight className="w-5 h-5 text-gray-400" />
+                    </div>
+                  </CardContent>
+                </Card>
+              )
+            })}
+          </div>
+          
+          <div className="text-center mt-8">
+            <p className="text-sm text-gray-600">
+              لديك حساب بالفعل؟{' '}
+              <Button
+                variant="link"
+                onClick={() => router.push('/auth/login')}
+                className="text-blue-600 hover:text-blue-700 p-0 h-auto"
+              >
+                تسجيل الدخول
+              </Button>
+            </p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Form step
+  const selectedType = userTypes.find(t => t.value === selectedUserType)
+  const IconComponent = selectedType?.icon || User
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8" dir="rtl">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
+          <div className="flex items-center justify-center mb-4">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleBackToSelection}
+              className="absolute right-4 top-4"
+            >
+              <ArrowLeft className="w-4 h-4" />
+            </Button>
+            <div className={`w-16 h-16 rounded-full bg-gradient-to-r ${selectedType?.color} flex items-center justify-center`}>
+              <IconComponent className="w-8 h-8 text-white" />
+            </div>
+          </div>
           <CardTitle className="text-3xl font-bold text-gray-900">
-            إنشاء حساب جديد
+            إنشاء حساب {selectedType?.label}
           </CardTitle>
           <p className="text-gray-600 mt-2">
-            انضم إلى منصة بنّا
+            {selectedType?.description}
           </p>
         </CardHeader>
         <CardContent>
@@ -67,6 +254,34 @@ export default function SignupPage() {
             )}
             
             <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  الاسم الكامل
+                </label>
+                <Input
+                  type="text"
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                  required
+                  className="w-full"
+                  placeholder="أدخل اسمك الكامل"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  رقم الهاتف
+                </label>
+                <Input
+                  type="tel"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  required
+                  className="w-full"
+                  placeholder="05xxxxxxxx"
+                />
+              </div>
+              
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   البريد الإلكتروني
@@ -112,9 +327,8 @@ export default function SignupPage() {
             
             <Button
               type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-700"
+              className={`w-full bg-gradient-to-r ${selectedType?.color} hover:opacity-90 text-white`}
               disabled={loading}
-              loading={loading}
             >
               {loading ? 'جاري إنشاء الحساب...' : 'إنشاء حساب'}
             </Button>
@@ -124,7 +338,7 @@ export default function SignupPage() {
                 لديك حساب بالفعل؟{' '}
                 <Button
                   variant="link"
-                  onClick={() => router.push('/login')}
+                  onClick={() => router.push('/auth/login')}
                   className="text-blue-600 hover:text-blue-700 p-0 h-auto"
                 >
                   تسجيل الدخول

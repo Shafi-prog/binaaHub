@@ -29,7 +29,7 @@ const userTypes = [
     type: 'provider',
     title: 'مقدم خدمة',
     description: 'أقدم خدمات البناء (مقاول، مورد، معدات)',
-    href: '/provider/login',
+    href: '/auth/login',
     icon: <Users className="w-8 h-8" />,
     color: 'from-green-500 to-green-600'
   },
@@ -58,7 +58,7 @@ const quickFeatures = [
   },
   {
     title: 'تسجيل مقدم خدمة',
-    href: '/register',
+    href: '/auth/signup',
     icon: <Building2 className="w-6 h-6" />,
     description: 'انضم كمقدم خدمة في منصة بِنّا'
   }

@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
+import { AuthProvider } from '@/core/shared/auth/AuthProvider';
 import { Button } from '@/core/shared/components/ui/button';
 import { 
   Store,
@@ -279,14 +280,17 @@ export default function StoreLayout({
   // NOW we can do conditional rendering - all hooks have been called
   if (!isClientSide) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
-      </div>
+      <AuthProvider>
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+        </div>
+      </AuthProvider>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex" dir="rtl">
+    <AuthProvider>
+      <div className="min-h-screen bg-gray-50 flex" dir="rtl">
       {/* Mobile sidebar backdrop */}
       {sidebarOpen && (
         <div 
@@ -437,15 +441,6 @@ export default function StoreLayout({
             ))}
           </div>
           
-          {/* Scroll hint at bottom of navigation */}
-          <div className="text-center border-t border-gray-100 pt-3 mb-3">
-            <div className="inline-flex items-center text-xs text-gray-400 bg-gray-50 px-3 py-1 rounded-full">
-              <div className="w-1 h-1 bg-gray-400 rounded-full mr-2"></div>
-              اسحب لرؤية المزيد
-              <div className="w-1 h-1 bg-gray-400 rounded-full ml-2"></div>
-            </div>
-          </div>
-
           {/* Quick Access Section - More compact */}
           <div className="mt-4 pt-4 border-t border-gray-200">
             <div className="px-2 py-1">
@@ -546,7 +541,8 @@ export default function StoreLayout({
           {children}
         </main>
       </div>
-    </div>
+      </div>
+    </AuthProvider>
   );
 }
 

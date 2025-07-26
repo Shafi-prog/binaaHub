@@ -48,6 +48,8 @@ export class UserStatsCalculator {
       balanceAmount,
       aiInsights,
       communityPosts,
+      loyaltyPoints: profile?.loyaltyPoints || 0,
+      currentLevel: profile?.currentLevel || 1,
     };
   }
 

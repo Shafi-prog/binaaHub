@@ -75,7 +75,7 @@ export default function ArabicSignupForm({ onSignup }: { onSignup: (data: any) =
       
       <div className="text-center mt-4">
         <span className="text-gray-600 text-sm">لديك حساب بالفعل؟ </span>
-        <a href="/login" className="text-blue-600 hover:text-blue-800 text-sm touch-target inline-block p-2">
+        <a href="/auth/login" className="text-blue-600 hover:text-blue-800 text-sm touch-target inline-block p-2">
           تسجيل الدخول
         </a>
       </div>

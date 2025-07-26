@@ -98,7 +98,7 @@ export async function middleware(req: NextRequest) {
     return res;
   }
   // Exclude these routes from auth/protected logic
-  const alwaysAllowRoutes = ['/login', '/signup', '/auth/login', '/auth/signup', '/clear-auth', '/products/new', '/store/storefront'];
+  const alwaysAllowRoutes = ['/auth/login', '/auth/signup', '/clear-auth', '/products/new', '/store/storefront'];
   if (alwaysAllowRoutes.includes(url.pathname)) {
     return res;
   }
@@ -106,8 +106,7 @@ export async function middleware(req: NextRequest) {
   // Define protected and auth routes
   const isProtectedRoute = (url.pathname.startsWith('/user/') || url.pathname.startsWith('/store/')) && 
                            !url.pathname.startsWith('/store/storefront');
-  const isAuthRoute = (url.pathname.startsWith('/signup') || url.pathname.startsWith('/auth/login') || 
-                      url.pathname.startsWith('/auth/signup')) && !url.pathname.startsWith('/login');
+  const isAuthRoute = url.pathname.startsWith('/auth/login') || url.pathname.startsWith('/auth/signup');
   // Check if user is authenticated (Supabase session, local auth, or temp auth cookie)
   const isAuthenticated = !!(session || localAuthUser || tempAuthUser);
   const currentUser = session?.user || localAuthUser || tempAuthUser;  // Skip middleware for auth errors to prevent redirect loops (but allow local/temp auth)
@@ -119,14 +118,14 @@ export async function middleware(req: NextRequest) {
       return res;
     }
     if (isProtectedRoute) {
-      return NextResponse.redirect(new URL('/login', req.url));
+      return NextResponse.redirect(new URL('/auth/login', req.url));
     }
     return res;
   }
 
   // Handle protected routes
   if (isProtectedRoute && !isAuthenticated) {
-    return NextResponse.redirect(new URL('/login', req.url));
+    return NextResponse.redirect(new URL('/auth/login', req.url));
   }
   // Force user/store to complete profile after login
   if (isProtectedRoute && isAuthenticated) {
@@ -228,7 +227,18 @@ export async function middleware(req: NextRequest) {
         accountType = userData?.account_type;
       }
       
-      const redirectUrl = accountType === 'store' ? '/store/dashboard' : '/user/dashboard';
+      // Enhanced redirect logic for all user types
+      let redirectUrl = '/user/dashboard'; // default
+      if (accountType === 'store' || 
+          localAuthUser?.role === 'store_admin' || localAuthUser?.role === 'store_owner' ||
+          tempAuthUser?.role === 'store_admin' || tempAuthUser?.role === 'store_owner') {
+        redirectUrl = '/store/dashboard';
+      } else if (localAuthUser?.role === 'admin' || tempAuthUser?.role === 'admin') {
+        redirectUrl = '/admin/dashboard';
+      } else if (localAuthUser?.role === 'service_provider' || tempAuthUser?.role === 'service_provider') {
+        redirectUrl = '/service-provider/dashboard';
+      }
+      
       console.log('[MIDDLEWARE] Redirecting authenticated user from auth route to:', redirectUrl);
       return NextResponse.redirect(new URL(redirectUrl, req.url));
     } catch (dbError) {

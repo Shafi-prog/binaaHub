@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/enhanced-components';
 import { formatNumber, formatCurrency } from '@/core/shared/utils/formatting';
 import { useUserData } from '@/core/shared/contexts/UserDataContext';
+import { supabaseDataService } from '@/core/shared/services/supabase-data-service';
 import { 
   Calendar, 
   Wallet, 

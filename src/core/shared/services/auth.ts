@@ -5,8 +5,8 @@ export interface TempUser {
   id: string;
   email: string;
   name: string;
-  role: 'user' | 'admin' | 'store_owner' | 'store_admin';
-  type?: 'user' | 'store';
+  role: 'user' | 'admin' | 'store_owner' | 'store_admin' | 'service_provider';
+  type?: 'user' | 'store' | 'service_provider';
   isAuthenticated: boolean;
 }
 
@@ -22,26 +22,34 @@ class TempAuthService {
 
   // Real users for production (matching database seed data)
   private mockUsers: Record<string, TempUser> = {
-    'user@binaa.com': {
+    'user@binna': {
       id: 'real-user-001',
-      email: 'user@binaa.com',
-      name: 'محمد العبدالله',
+      email: 'user@binna',
+      name: 'مستخدم تجريبي',
       role: 'user',
       isAuthenticated: true
     },
-    'store@binaa.com': {
+    'store@binna': {
       id: 'real-store-001',
-      email: 'store@binaa.com',
-      name: 'أحمد التجاري',
+      email: 'store@binna',
+      name: 'متجر تجريبي',
       role: 'store_owner',
       isAuthenticated: true
     },
     // Keep admin for system administration
-    'admin@binaa.com': {
+    'admin@binna.com': {
       id: 'admin-001',
-      email: 'admin@binaa.com',
-      name: 'مدير النظام',
+      email: 'admin@binna.com',
+      name: 'المسئول تجريبي',
       role: 'admin',
+      isAuthenticated: true
+    },
+    // Service provider for testing
+    'provider@binna': {
+      id: 'provider-001',
+      email: 'provider@binna',
+      name: 'مقدم خدمة تجريبي',
+      role: 'service_provider',
       isAuthenticated: true
     }
   };
@@ -91,7 +99,12 @@ class TempAuthService {
 
   // Check if user is store owner
   isStoreOwner(): boolean {
-    return this.hasRole('store_owner');
+    return this.hasRole('store_owner') || this.hasRole('store_admin');
+  }
+
+  // Check if user is service provider
+  isServiceProvider(): boolean {
+    return this.hasRole('service_provider');
   }
 
   // Login with email and password

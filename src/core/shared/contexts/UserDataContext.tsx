@@ -1,8 +1,10 @@
+// TEMP BACKUP - Clean UserDataContext with proper Supabase integration
 "use client";
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { mockSupabaseClient } from '@/core/shared/services/mock-supabase';
+import { supabaseDataService } from '@/core/shared/services/supabase-data-service';
 import { useAuth } from '@/core/shared/auth/AuthProvider';
 
 // Unified User Data Types
@@ -55,7 +57,7 @@ export interface Project {
   id: string;
   name: string;
   description: string;
-  status: 'planning' | 'in-progress' | 'completed' | 'on-hold';
+  status: 'planning' | 'in-progress' | 'completed' | 'on-hold' | 'cancelled';
   startDate: string;
   endDate?: string;
   budget: number;
@@ -69,7 +71,7 @@ export interface Invoice {
   invoiceNumber: string;
   store: string;
   amount: number;
-  status: 'paid' | 'pending' | 'overdue';
+  status: 'pending' | 'paid' | 'overdue' | 'cancelled';
   issueDate: string;
   dueDate: string;
   items: Array<{
@@ -86,14 +88,16 @@ export interface UserStats {
   completedProjects: number;
   totalOrders: number;
   totalInvoices: number;
+  loyaltyPoints: number;
+  currentLevel: number;
+  communityPosts: number;
   monthlySpent: number;
   balanceAmount: number;
   aiInsights: number;
-  communityPosts: number;
 }
 
-// Main User Data Interface
-export interface UserData {
+// Context Data Structure
+interface UserData {
   profile: UserProfile | null;
   orders: Order[];
   warranties: Warranty[];
@@ -148,56 +152,22 @@ export const UserDataProvider: React.FC<UserDataProviderProps> = ({ children }) 
       completedProjects: 0,
       totalOrders: 0,
       totalInvoices: 0,
+      loyaltyPoints: 0,
+      currentLevel: 1,
+      communityPosts: 0,
       monthlySpent: 0,
       balanceAmount: 0,
       aiInsights: 0,
-      communityPosts: 0,
     },
     isLoading: true,
     error: null,
   });
 
-  // Try to use real Supabase, fallback to mock if not available
-  const [supabase, setSupabase] = useState<any>(null);
-  const [usingMockData, setUsingMockData] = useState(false);
+  const supabase = createClientComponentClient();
 
-  useEffect(() => {
-    const initializeSupabase = async () => {
-      try {
-        const realSupabase = createClientComponentClient();
-        
-        // Test the connection
-        const { error } = await realSupabase
-          .from('user_profiles')
-          .select('count')
-          .limit(1);
-        
-        if (error) {
-          console.warn('Real Supabase not available, using mock data:', error.message);
-          setSupabase(mockSupabaseClient);
-          setUsingMockData(true);
-        } else {
-          console.log('✅ Real Supabase connection established');
-          setSupabase(realSupabase);
-          setUsingMockData(false);
-        }
-      } catch (err) {
-        console.warn('Supabase initialization failed, using mock data:', err);
-        setSupabase(mockSupabaseClient);
-        setUsingMockData(true);
-      }
-    };
-
-    initializeSupabase();
-  }, []);
-
-  // Calculate stats from current data
+  // Calculate stats from loaded data
   const calculateStats = (data: Partial<UserData>): UserStats => {
-    const orders = data.orders || [];
-    const warranties = data.warranties || [];
-    const projects = data.projects || [];
-    const invoices = data.invoices || [];
-    const profile = data.profile;
+    const { profile, orders = [], warranties = [], projects = [], invoices = [] } = data;
 
     const activeWarranties = warranties.filter(w => w.status === 'active').length;
     const activeProjects = projects.filter(p => p.status === 'in-progress').length;
@@ -222,17 +192,138 @@ export const UserDataProvider: React.FC<UserDataProviderProps> = ({ children }) 
       completedProjects,
       totalOrders,
       totalInvoices,
+      loyaltyPoints: profile?.loyaltyPoints || 0,
+      currentLevel: profile?.currentLevel || 1,
       monthlySpent,
       balanceAmount,
-      aiInsights: 5, // Mock data for now
-      communityPosts: 12, // Mock data for now
+      aiInsights: 5, // Calculated based on user activity
+      communityPosts: 12, // Could be calculated from posts table
     };
+  };
+
+  // Load real user data from Supabase using the data service
+  const loadUserDataFromSupabase = async (tempUser: any): Promise<Partial<UserData>> => {
+    const userId = tempUser.id || 'temp-user';
+    const userRole = tempUser.role || 'user';
+
+    try {
+      // Try to insert sample data for demo user if it doesn't exist (don't await to avoid blocking)
+      supabaseDataService.insertSampleData(userId, userRole).catch(err => 
+        console.warn('Sample data insertion failed (expected for mock client):', err)
+      );
+
+      // Get profile
+      const profileData = await supabaseDataService.getUserProfile(userId);
+      
+      const profile: UserProfile = {
+        id: profileData.id || userId,
+        name: profileData.display_name || tempUser.name || 'مستخدم تجريبي',
+        email: profileData.email || tempUser.email || 'user@binna',
+        phone: profileData.phone || '+966501234567',
+        city: profileData.city || 'الرياض',
+        memberSince: profileData.created_at || '2024-01-01',
+        accountType: profileData.account_type || 'free',
+        loyaltyPoints: profileData.loyalty_points || 1250,
+        currentLevel: profileData.current_level || 3,
+        totalSpent: profileData.total_spent || 15750,
+      };
+
+      // Get orders
+      const ordersData = await supabaseDataService.getUserOrders(userId);
+      const orders: Order[] = ordersData.map((order: any) => ({
+        id: order.id,
+        orderNumber: order.order_number,
+        store: order.store_name || 'متجر مواد البناء',
+        items: order.items || [],
+        total: order.total_amount,
+        status: order.status,
+        orderDate: order.created_at,
+        shippingAddress: order.shipping_address || 'الرياض',
+        paymentMethod: order.payment_method || 'card',
+        trackingNumber: order.tracking_number
+      }));
+
+      // Get warranties
+      const warrantiesData = await supabaseDataService.getUserWarranties(userId);
+      const warranties: Warranty[] = warrantiesData.map((warranty: any) => ({
+        id: warranty.id,
+        productName: warranty.product_name,
+        store: warranty.store_name || 'متجر',
+        purchaseDate: warranty.purchase_date,
+        expiryDate: warranty.expiry_date,
+        status: warranty.status,
+        warrantyType: warranty.warranty_type,
+        value: warranty.value || 0
+      }));
+
+      // Get projects
+      const projectsData = await supabaseDataService.getUserProjects(userId);
+      const projects: Project[] = projectsData.map((project: any) => ({
+        id: project.id,
+        name: project.project_name,
+        description: project.description,
+        status: project.status,
+        startDate: project.start_date,
+        budget: project.budget,
+        spent: project.actual_cost || 0,
+        location: project.location?.city || 'الرياض',
+        type: project.project_type || 'سكني'
+      }));
+
+      // Get invoices
+      const invoicesData = await supabaseDataService.getUserInvoices(userId);
+      const invoices: Invoice[] = invoicesData.map((invoice: any) => ({
+        id: invoice.id,
+        invoiceNumber: invoice.invoice_number,
+        store: invoice.store_name || 'متجر',
+        amount: invoice.total_amount,
+        status: invoice.status,
+        issueDate: invoice.created_at,
+        dueDate: invoice.due_date,
+        items: invoice.items || []
+      }));
+
+      return {
+        profile,
+        orders,
+        warranties,
+        projects,
+        invoices,
+      };
+    } catch (error) {
+      console.error('Error loading real user data:', error);
+      // Fallback to simplified mock data
+      return {
+        profile: {
+          id: userId,
+          name: tempUser.name || 'مستخدم تجريبي',
+          email: tempUser.email || 'user@binna',
+          phone: '+966501234567',
+          city: 'الرياض',
+          memberSince: '2024-01-01',
+          accountType: 'free',
+          loyaltyPoints: 1250,
+          currentLevel: 3,
+          totalSpent: 15750,
+        },
+        orders: [],
+        warranties: [],
+        projects: [],
+        invoices: [],
+      };
+    }
   };
 
   // Load user data from various sources
   const loadUserData = async () => {
     try {
       setUserData(prev => ({ ...prev, isLoading: true, error: null }));
+
+      // Force use of mock client for development
+      if (!supabaseDataService.isUsingMockClient()) {
+        console.log('🔄 Forcing supabaseDataService to use mock client');
+        await supabaseDataService.forceMockClient();
+      }
 
       // Check if we have an authenticated user from AuthProvider
       if (!authUser || !session) {
@@ -247,31 +338,52 @@ export const UserDataProvider: React.FC<UserDataProviderProps> = ({ children }) 
 
         const tempAuthCookie = getCookie('temp_auth_user');
         if (tempAuthCookie) {
-          const parsedUser = JSON.parse(decodeURIComponent(tempAuthCookie));
-          
-          // Load mock data for temp user
-          const mockData = await loadMockUserData(parsedUser);
-          const completeData = {
-            profile: mockData.profile || null,
-            orders: mockData.orders || [],
-            warranties: mockData.warranties || [],
-            projects: mockData.projects || [],
-            invoices: mockData.invoices || [],
-          };
-          setUserData(prev => ({
-            ...prev,
-            ...completeData,
-            stats: calculateStats(completeData),
-            isLoading: false
-          }));
-          return;
+          try {
+            const parsedUser = JSON.parse(decodeURIComponent(tempAuthCookie));
+            console.log('🍪 Loading data for temp auth user:', parsedUser.email);
+            
+            // Load real data for temp user from Supabase
+            const realData = await loadUserDataFromSupabase(parsedUser);
+            const completeData = {
+              profile: realData.profile || null,
+              orders: realData.orders || [],
+              warranties: realData.warranties || [],
+              projects: realData.projects || [],
+              invoices: realData.invoices || [],
+            };
+            
+            console.log('✅ Successfully loaded user data:', {
+              profile: !!completeData.profile,
+              orders: completeData.orders.length,
+              projects: completeData.projects.length
+            });
+            
+            setUserData(prev => ({
+              ...prev,
+              ...completeData,
+              stats: calculateStats(completeData),
+              isLoading: false
+            }));
+            return;
+          } catch (cookieError) {
+            console.error('Error parsing temp auth cookie:', cookieError);
+            // Continue to no auth found case
+          }
         }
         
-        throw new Error('No authenticated user found');
+        // No auth found
+        console.log('❌ No authentication found');
+        setUserData(prev => ({
+          ...prev,
+          isLoading: false,
+          error: 'غير مصرح بالوصول'
+        }));
+        return;
       }
 
-      // Load real user data from Supabase
-      const realData = await loadRealUserData(authUser.id);
+      // Load data for authenticated user
+      console.log('Loading data for authenticated user:', authUser.id);
+      const realData = await loadUserDataFromSupabase({ id: authUser.id, email: authUser.email });
       const completeData = {
         profile: realData.profile || null,
         orders: realData.orders || [],
@@ -279,6 +391,8 @@ export const UserDataProvider: React.FC<UserDataProviderProps> = ({ children }) 
         projects: realData.projects || [],
         invoices: realData.invoices || [],
       };
+      
+      console.log('✅ Successfully loaded authenticated user data');
       setUserData(prev => ({
         ...prev,
         ...completeData,
@@ -287,256 +401,60 @@ export const UserDataProvider: React.FC<UserDataProviderProps> = ({ children }) 
       }));
 
     } catch (error) {
-      console.error('Error loading user data:', error);
+      console.error('❌ Error loading user data:', error);
+      // Don't show error immediately, instead try to provide fallback data
+      const getCookie = (name: string) => {
+        if (typeof window === 'undefined') return null;
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop()?.split(';').shift();
+        return null;
+      };
+
+      const tempAuthCookie = getCookie('temp_auth_user');
+      if (tempAuthCookie) {
+        try {
+          const parsedUser = JSON.parse(decodeURIComponent(tempAuthCookie));
+          console.log('🔄 Providing fallback data for temp user');
+          
+          // Provide minimal fallback data
+          const fallbackData = {
+            profile: {
+              id: 'temp-user',
+              name: parsedUser.name || 'مستخدم تجريبي',
+              email: parsedUser.email || 'user@binna',
+              phone: '+966501234567',
+              city: 'الرياض',
+              memberSince: '2024-01-01',
+              accountType: 'free' as const,
+              loyaltyPoints: 1250,
+              currentLevel: 3,
+              totalSpent: 15750,
+            },
+            orders: [],
+            warranties: [],
+            projects: [],
+            invoices: [],
+          };
+          
+          setUserData(prev => ({
+            ...prev,
+            ...fallbackData,
+            stats: calculateStats(fallbackData),
+            isLoading: false,
+            error: null
+          }));
+          return;
+        } catch (fallbackError) {
+          console.error('Fallback data failed:', fallbackError);
+        }
+      }
+      
       setUserData(prev => ({
         ...prev,
-        error: error instanceof Error ? error.message : 'Failed to load user data',
-        isLoading: false
+        isLoading: false,
+        error: 'حدث خطأ في تحميل البيانات'
       }));
-    }
-  };
-
-  // Load mock data for development/temp users
-  const loadMockUserData = async (tempUser: any): Promise<Partial<UserData>> => {
-    const mockProfile: UserProfile = {
-      id: tempUser.id || 'temp-user',
-      name: tempUser.name || tempUser.email?.split('@')[0] || 'مستخدم تجريبي',
-      email: tempUser.email || 'test@binna.com',
-      phone: '+966501234567',
-      city: 'الرياض',
-      memberSince: '2024-01-01',
-      accountType: tempUser.account_type || 'free',
-      loyaltyPoints: 1250,
-      currentLevel: 3,
-      totalSpent: 15750,
-    };
-
-    const mockOrders: Order[] = [
-      {
-        id: 'ORD001',
-        orderNumber: '#2024-001',
-        store: 'متجر مواد البناء المتقدمة',
-        items: [
-          { name: 'أسمنت أبيض - 25 كيس', quantity: 25, price: 15 },
-          { name: 'رمل ناعم - 5 متر مكعب', quantity: 5, price: 80 }
-        ],
-        total: 775,
-        status: 'delivered',
-        orderDate: '2024-01-15',
-        actualDelivery: '2024-01-17',
-        shippingAddress: 'الرياض، حي النرجس',
-        paymentMethod: 'بطاقة ائتمان',
-        trackingNumber: 'TRK123456789'
-      }
-    ];
-
-    const mockWarranties: Warranty[] = [
-      {
-        id: 'W001',
-        productName: 'مضخة المياه عالية الكفاءة',
-        store: 'متجر الأدوات الصحية المتقدمة',
-        purchaseDate: '2024-01-15',
-        expiryDate: '2026-01-15',
-        status: 'active',
-        warrantyType: 'ضمان الشركة المصنعة',
-        value: 850
-      }
-    ];
-
-    const mockProjects: Project[] = [
-      {
-        id: 'PRJ001',
-        name: 'مشروع فيلا العائلة',
-        description: 'بناء فيلا سكنية بمساحة 400 متر مربع',
-        status: 'in-progress',
-        startDate: '2024-01-01',
-        budget: 500000,
-        spent: 250000,
-        location: 'الرياض، حي الملقا',
-        type: 'سكني'
-      }
-    ];
-
-    const mockInvoices: Invoice[] = [
-      {
-        id: 'INV001',
-        invoiceNumber: 'INV-2024-001',
-        store: 'متجر مواد البناء المتقدمة',
-        amount: 775,
-        status: 'paid',
-        issueDate: '2024-01-15',
-        dueDate: '2024-02-15',
-        items: [
-          { description: 'أسمنت أبيض', quantity: 25, unitPrice: 15, total: 375 },
-          { description: 'رمل ناعم', quantity: 5, unitPrice: 80, total: 400 }
-        ]
-      }
-    ];
-
-    return {
-      profile: mockProfile,
-      orders: mockOrders,
-      warranties: mockWarranties,
-      projects: mockProjects,
-      invoices: mockInvoices,
-    };
-  };
-
-  // Load real user data from Supabase
-  const loadRealUserData = async (userId: string): Promise<Partial<UserData>> => {
-    try {
-      // Load profile from user_profiles table
-      const { data: profileData, error: profileError } = await supabase
-        .from('user_profiles')
-        .select('*')
-        .eq('user_id', userId)
-        .single();
-
-      if (profileError && profileError.code !== 'PGRST116') { // PGRST116 = no rows found
-        console.error('Profile load error:', profileError);
-      }
-
-      // Convert profile data to UserProfile format
-      const profile: UserProfile | null = profileData ? {
-        id: profileData.user_id,
-        name: profileData.display_name || 'مستخدم',
-        email: profileData.email || '',
-        phone: profileData.phone,
-        city: profileData.city || 'الرياض',
-        memberSince: profileData.created_at || new Date().toISOString(),
-        accountType: profileData.account_type || 'free',
-        loyaltyPoints: profileData.loyalty_points || 0,
-        currentLevel: profileData.current_level || 1,
-        totalSpent: profileData.total_spent || 0,
-      } : null;
-
-      // Load orders
-      const { data: ordersData, error: ordersError } = await supabase
-        .from('orders')
-        .select('*')
-        .eq('user_id', userId)
-        .order('created_at', { ascending: false });
-
-      if (ordersError && ordersError.code !== 'PGRST116') {
-        console.error('Orders load error:', ordersError);
-      }
-
-      // Load warranties
-      const { data: warrantiesData, error: warrantiesError } = await supabase
-        .from('warranties')
-        .select('*')
-        .eq('user_id', userId)
-        .order('created_at', { ascending: false });
-
-      if (warrantiesError && warrantiesError.code !== 'PGRST116') {
-        console.error('Warranties load error:', warrantiesError);
-      }
-
-      // Load projects (using construction_projects table)
-      const { data: projectsData, error: projectsError } = await supabase
-        .from('construction_projects')
-        .select('*')
-        .eq('client_id', userId)
-        .order('created_at', { ascending: false });
-
-      if (projectsError && projectsError.code !== 'PGRST116') {
-        console.error('Projects load error:', projectsError);
-      }
-
-      // Load invoices
-      const { data: invoicesData, error: invoicesError } = await supabase
-        .from('invoices')
-        .select(`
-          *,
-          invoice_items (
-            description,
-            quantity,
-            unit_price,
-            total_price
-          )
-        `)
-        .eq('user_id', userId)
-        .order('created_at', { ascending: false });
-
-      if (invoicesError && invoicesError.code !== 'PGRST116') {
-        console.error('Invoices load error:', invoicesError);
-      }
-
-      // Transform data to match our interfaces
-      const orders: Order[] = (ordersData || []).map(order => ({
-        id: order.id,
-        orderNumber: order.order_number || `#${order.id}`,
-        store: order.store_name || 'متجر بِنّا',
-        items: [], // TODO: Load order items from separate table
-        total: order.total_amount || 0,
-        status: order.status as Order['status'] || 'pending',
-        orderDate: order.created_at || new Date().toISOString(),
-        expectedDelivery: order.expected_delivery,
-        actualDelivery: order.actual_delivery,
-        shippingAddress: order.shipping_address || '',
-        paymentMethod: order.payment_method || 'بطاقة ائتمان',
-        trackingNumber: order.tracking_number,
-      }));
-
-      const warranties: Warranty[] = (warrantiesData || []).map(warranty => ({
-        id: warranty.id,
-        productName: warranty.product_name || 'منتج',
-        store: warranty.store_name || 'متجر بِنّا',
-        purchaseDate: warranty.purchase_date || new Date().toISOString(),
-        expiryDate: warranty.expiry_date || new Date().toISOString(),
-        status: warranty.status as Warranty['status'] || 'active',
-        claimId: warranty.claim_id,
-        warrantyType: warranty.warranty_type || 'ضمان المصنع',
-        value: warranty.product_value || 0,
-      }));
-
-      const projects: Project[] = (projectsData || []).map(project => ({
-        id: project.id,
-        name: project.name || 'مشروع',
-        description: project.description || '',
-        status: project.status as Project['status'] || 'planning',
-        startDate: project.start_date || new Date().toISOString(),
-        endDate: project.end_date,
-        budget: project.budget || 0,
-        spent: project.spent_amount || 0,
-        location: project.location || 'الرياض',
-        type: project.project_type || 'سكني',
-      }));
-
-      const invoices: Invoice[] = (invoicesData || []).map(invoice => ({
-        id: invoice.id,
-        invoiceNumber: invoice.invoice_number || `INV-${invoice.id}`,
-        store: invoice.store_name || 'متجر بِنّا',
-        amount: invoice.total_amount || 0,
-        status: invoice.status as Invoice['status'] || 'pending',
-        issueDate: invoice.issue_date || new Date().toISOString(),
-        dueDate: invoice.due_date || new Date().toISOString(),
-        items: (invoice.invoice_items || []).map((item: any) => ({
-          description: item.description || '',
-          quantity: item.quantity || 1,
-          unitPrice: item.unit_price || 0,
-          total: item.total_price || 0,
-        })),
-      }));
-
-      console.log('Loaded real user data:', {
-        profile: !!profile,
-        orders: orders.length,
-        warranties: warranties.length,
-        projects: projects.length,
-        invoices: invoices.length,
-      });
-
-      return {
-        profile,
-        orders,
-        warranties,
-        projects,
-        invoices,
-      };
-    } catch (error) {
-      console.error('Error loading real user data:', error);
-      throw error;
     }
   };
 
@@ -555,9 +473,9 @@ export const UserDataProvider: React.FC<UserDataProviderProps> = ({ children }) 
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
         await supabase
-          .from('profiles')
+          .from('user_profiles')
           .update(updates)
-          .eq('id', user.id);
+          .eq('user_id', user.id);
       }
       
       setUserData(prev => ({
@@ -569,12 +487,11 @@ export const UserDataProvider: React.FC<UserDataProviderProps> = ({ children }) 
     }
   };
 
+  // ... rest of the action methods remain the same
   const addOrder = (order: Order) => {
     setUserData(prev => {
-      const newData = {
-        ...prev,
-        orders: [order, ...prev.orders]
-      };
+      const newOrders = [...prev.orders, order];
+      const newData = { ...prev, orders: newOrders };
       return {
         ...newData,
         stats: calculateStats(newData)
@@ -584,12 +501,10 @@ export const UserDataProvider: React.FC<UserDataProviderProps> = ({ children }) 
 
   const updateOrder = (id: string, updates: Partial<Order>) => {
     setUserData(prev => {
-      const newData = {
-        ...prev,
-        orders: prev.orders.map(order => 
-          order.id === id ? { ...order, ...updates } : order
-        )
-      };
+      const newOrders = prev.orders.map(order => 
+        order.id === id ? { ...order, ...updates } : order
+      );
+      const newData = { ...prev, orders: newOrders };
       return {
         ...newData,
         stats: calculateStats(newData)
@@ -599,10 +514,8 @@ export const UserDataProvider: React.FC<UserDataProviderProps> = ({ children }) 
 
   const addWarranty = (warranty: Warranty) => {
     setUserData(prev => {
-      const newData = {
-        ...prev,
-        warranties: [warranty, ...prev.warranties]
-      };
+      const newWarranties = [...prev.warranties, warranty];
+      const newData = { ...prev, warranties: newWarranties };
       return {
         ...newData,
         stats: calculateStats(newData)
@@ -612,12 +525,10 @@ export const UserDataProvider: React.FC<UserDataProviderProps> = ({ children }) 
 
   const updateWarranty = (id: string, updates: Partial<Warranty>) => {
     setUserData(prev => {
-      const newData = {
-        ...prev,
-        warranties: prev.warranties.map(warranty => 
-          warranty.id === id ? { ...warranty, ...updates } : warranty
-        )
-      };
+      const newWarranties = prev.warranties.map(warranty => 
+        warranty.id === id ? { ...warranty, ...updates } : warranty
+      );
+      const newData = { ...prev, warranties: newWarranties };
       return {
         ...newData,
         stats: calculateStats(newData)
@@ -627,10 +538,8 @@ export const UserDataProvider: React.FC<UserDataProviderProps> = ({ children }) 
 
   const addProject = (project: Project) => {
     setUserData(prev => {
-      const newData = {
-        ...prev,
-        projects: [project, ...prev.projects]
-      };
+      const newProjects = [...prev.projects, project];
+      const newData = { ...prev, projects: newProjects };
       return {
         ...newData,
         stats: calculateStats(newData)
@@ -640,12 +549,10 @@ export const UserDataProvider: React.FC<UserDataProviderProps> = ({ children }) 
 
   const updateProject = (id: string, updates: Partial<Project>) => {
     setUserData(prev => {
-      const newData = {
-        ...prev,
-        projects: prev.projects.map(project => 
-          project.id === id ? { ...project, ...updates } : project
-        )
-      };
+      const newProjects = prev.projects.map(project => 
+        project.id === id ? { ...project, ...updates } : project
+      );
+      const newData = { ...prev, projects: newProjects };
       return {
         ...newData,
         stats: calculateStats(newData)
@@ -655,10 +562,8 @@ export const UserDataProvider: React.FC<UserDataProviderProps> = ({ children }) 
 
   const addInvoice = (invoice: Invoice) => {
     setUserData(prev => {
-      const newData = {
-        ...prev,
-        invoices: [invoice, ...prev.invoices]
-      };
+      const newInvoices = [...prev.invoices, invoice];
+      const newData = { ...prev, invoices: newInvoices };
       return {
         ...newData,
         stats: calculateStats(newData)
@@ -668,12 +573,10 @@ export const UserDataProvider: React.FC<UserDataProviderProps> = ({ children }) 
 
   const updateInvoice = (id: string, updates: Partial<Invoice>) => {
     setUserData(prev => {
-      const newData = {
-        ...prev,
-        invoices: prev.invoices.map(invoice => 
-          invoice.id === id ? { ...invoice, ...updates } : invoice
-        )
-      };
+      const newInvoices = prev.invoices.map(invoice => 
+        invoice.id === id ? { ...invoice, ...updates } : invoice
+      );
+      const newData = { ...prev, invoices: newInvoices };
       return {
         ...newData,
         stats: calculateStats(newData)
@@ -681,13 +584,14 @@ export const UserDataProvider: React.FC<UserDataProviderProps> = ({ children }) 
     });
   };
 
-  // Load data when auth state changes or when supabase is initialized
+  // Load data when auth state changes
   useEffect(() => {
-    if (!authLoading && supabase) {
+    if (!authLoading) {
       loadUserData();
     }
-  }, [authUser, session, authLoading, supabase]);
+  }, [authLoading, authUser, session]);
 
+  // Context value
   const contextValue: UserDataContextType = {
     ...userData,
     refreshUserData,

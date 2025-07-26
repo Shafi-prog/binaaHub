@@ -29,32 +29,32 @@ const features = [
     featured: true
   },
   {
-    title: 'نظام الحجز الموحد',
-    description: 'تقويم شامل لحجز جميع خدمات البناء من مكان واحد',
-    href: '/dashboard/bookings',
-    icon: <Calendar className="w-8 h-8" />,
+    title: 'إدارة المشاريع الذكية',
+    description: 'أدوات متقدمة لتخطيط وإدارة مشاريع البناء مع متابعة التقدم في الوقت الفعلي',
+    href: '/user/dashboard/projects',
+    icon: <Building2 className="w-8 h-8" />,
     color: 'from-blue-500 to-blue-600',
     featured: true
   },
   {
-    title: 'تسجيل مقدمي الخدمات',
-    description: 'نظام متكامل لتسجيل جميع أنواع مقدمي الخدمات في البناء',
-    href: '/register',
+    title: 'تسجيل دخول موحد',
+    description: 'نظام تسجيل دخول شامل مع تحديد نوع المستخدم والتوجيه التلقائي',
+    href: '/auth/login',
     icon: <UserPlus className="w-8 h-8" />,
     color: 'from-green-500 to-green-600'
   },
   {
-    title: 'لوحة موردي الخرسانة',
-    description: 'لوحة تحكم متخصصة لإدارة طلبات وإنتاج الخرسانة',
-    href: '/dashboard/concrete-supplier',
-    icon: <Building2 className="w-8 h-8" />,
+    title: 'منصة المتاجر المتكاملة',
+    description: 'نظام شامل لإدارة المتاجر والمنتجات مع نقاط البيع والمخزون',
+    href: '/stores',
+    icon: <Truck className="w-8 h-8" />,
     color: 'from-orange-500 to-orange-600'
   },
   {
-    title: 'دخول مقدمي الخدمات',
-    description: 'وصول سريع لجميع مقدمي الخدمات للوحات التحكم الخاصة بهم',
-    href: '/provider/login',
-    icon: <Users className="w-8 h-8" />,
+    title: 'حاسبة التكاليف الشاملة',
+    description: 'أداة ذكية لحساب تكاليف البناء بدقة مع تفاصيل المواد والعمالة',
+    href: '/user/comprehensive-construction-calculator',
+    icon: <Calculator className="w-8 h-8" />,
     color: 'from-indigo-500 to-indigo-600'
   },
   {

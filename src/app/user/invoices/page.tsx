@@ -6,21 +6,22 @@ import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/en
 import { FileText, Search, Download, Calendar, CreditCard, Store, Eye, Printer, Filter } from 'lucide-react';
 import { formatDateSafe, formatNumberSafe, useIsClient } from '../../../core/shared/utils/hydration-safe';
 import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
+import { useUserData } from '@/core/shared/contexts/UserDataContext';
 
 export const dynamic = 'force-dynamic'
 
-interface Invoice {
+interface ExtendedInvoice {
   id: string;
   invoiceNumber: string;
   store: string;
-  orderId: string;
+  amount: number;
+  status: 'paid' | 'pending' | 'overdue';
   issueDate: string;
   dueDate: string;
+  orderId?: string;
   paidDate?: string;
-  status: 'pending' | 'paid' | 'overdue' | 'cancelled';
-  amount: number;
-  tax: number;
-  total: number;
+  tax?: number;
+  total?: number;
   paymentMethod?: string;
   items: Array<{
     description: string;
@@ -31,9 +32,10 @@ interface Invoice {
 }
 
 export default function InvoicesPage() {
+  const { profile, orders, warranties, projects, invoices: userInvoices, stats, isLoading, error, refreshUserData } = useUserData();
   const isHydrated = useIsClient();
   
-  const [invoices, setInvoices] = useState<Invoice[]>([
+  const [invoices, setInvoices] = useState<ExtendedInvoice[]>([
     {
       id: 'INV001',
       invoiceNumber: 'INV-2024-001',
@@ -110,8 +112,7 @@ export default function InvoicesPage() {
 
   const filteredInvoices = invoices.filter(invoice => {
     const matchesSearch = invoice.invoiceNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         invoice.store.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         invoice.orderId.toLowerCase().includes(searchTerm.toLowerCase());
+                         invoice.store.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'all' || invoice.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
@@ -187,7 +188,7 @@ export default function InvoicesPage() {
           <div>
             <h3>تفاصيل المتجر:</h3>
             <p><strong>${invoice.store}</strong></p>
-            <p>رقم الطلب: ${invoice.orderId}</p>
+            ${invoice.orderId ? `<p>رقم الطلب: ${invoice.orderId}</p>` : ''}
           </div>
           <div>
             <h3>تفاصيل الفاتورة:</h3>
@@ -226,11 +227,11 @@ export default function InvoicesPage() {
           </div>
           <div class="total-row">
             <span>الضريبة (15%):</span>
-            <span>${formatNumberSafe(invoice.tax)} ر.س</span>
+            <span>${formatNumberSafe(invoice.tax || 0)} ر.س</span>
           </div>
           <div class="total-row final-total">
             <span>الإجمالي:</span>
-            <span>${formatNumberSafe(invoice.total)} ر.س</span>
+            <span>${formatNumberSafe(invoice.total || invoice.amount)} ر.س</span>
           </div>
         </div>
 
@@ -391,7 +392,7 @@ export default function InvoicesPage() {
             <div class="detail-section">
               <h3>معلومات المتجر</h3>
               <p><strong>${invoice.store}</strong></p>
-              <p><strong>رقم الطلب:</strong> ${invoice.orderId}</p>
+              ${invoice.orderId ? `<p><strong>رقم الطلب:</strong> ${invoice.orderId}</p>` : ''}
             </div>
             <div class="detail-section">
               <h3>تفاصيل الفاتورة</h3>
@@ -429,11 +430,11 @@ export default function InvoicesPage() {
             </div>
             <div class="total-row">
               <span>ضريبة القيمة المضافة (15%):</span>
-              <span>${formatNumberSafe(invoice.tax)} ر.س</span>
+              <span>${formatNumberSafe(invoice.tax || 0)} ر.س</span>
             </div>
             <div class="total-row final-total">
               <span>المبلغ الإجمالي:</span>
-              <span>${formatNumberSafe(invoice.total)} ر.س</span>
+              <span>${formatNumberSafe(invoice.total || invoice.amount)} ر.س</span>
             </div>
           </div>
 
@@ -495,7 +496,7 @@ export default function InvoicesPage() {
       type: 'invoice',
       invoiceId: invoice.id,
       invoiceNumber: invoice.invoiceNumber,
-      amount: invoice.total,
+      amount: invoice.total || invoice.amount,
       description: `دفع فاتورة ${invoice.invoiceNumber} - ${invoice.store}`,
       dueDate: invoice.dueDate,
       store: invoice.store
@@ -562,7 +563,7 @@ export default function InvoicesPage() {
           <div className="flex items-center justify-between">
             <div>
               <Typography variant="subheading" size="2xl" weight="bold" className="text-blue-600">
-                {formatNumberSafe(invoices.reduce((sum, i) => sum + i.total, 0))}
+                {formatNumberSafe(invoices.reduce((sum, i) => sum + (i.total || i.amount), 0))}
               </Typography>
               <Typography variant="caption" size="sm" className="text-gray-600">إجمالي المبلغ (ر.س)</Typography>
             </div>
@@ -614,9 +615,11 @@ export default function InvoicesPage() {
                         <Store className="w-4 h-4" />
                         {invoice.store}
                       </Typography>
-                      <Typography variant="caption" size="sm" className="text-gray-600">
-                        الطلب: {invoice.orderId}
-                      </Typography>
+                      {invoice.orderId && (
+                        <Typography variant="caption" size="sm" className="text-gray-600">
+                          الطلب: {invoice.orderId}
+                        </Typography>
+                      )}
                     </div>
                   </div>
                   <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(invoice.status)}`}>
@@ -692,11 +695,11 @@ export default function InvoicesPage() {
                     </div>
                     <div className="flex justify-between">
                       <Typography variant="caption" size="sm" className="text-gray-600">الضريبة:</Typography>
-                      <Typography variant="caption" size="sm" weight="medium">{formatNumberSafe(invoice.tax)} ر.س</Typography>
+                      <Typography variant="caption" size="sm" weight="medium">{formatNumberSafe(invoice.tax || 0)} ر.س</Typography>
                     </div>
                     <div className="flex justify-between border-t pt-2">
                       <Typography variant="body" size="lg" weight="semibold">الإجمالي:</Typography>
-                      <Typography variant="body" size="lg" weight="bold" className="text-blue-600">{formatNumberSafe(invoice.total)} ر.س</Typography>
+                      <Typography variant="body" size="lg" weight="bold" className="text-blue-600">{formatNumberSafe(invoice.total || invoice.amount)} ر.س</Typography>
                     </div>
                   </div>
                 </div>

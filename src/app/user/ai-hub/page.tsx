@@ -1,8 +1,9 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useUserData } from '@/core/shared/contexts/UserDataContext';
+import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/enhanced-components';
 import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
-import { Button } from '@/core/shared/components/ui/button';
 import { Badge } from '@/core/shared/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/core/shared/components/ui/tabs';
 import Link from 'next/link';
@@ -47,6 +48,7 @@ interface AIFeature {
 }
 
 export default function AIHubPage() {
+  const { profile, orders, warranties, projects, invoices, stats: userStats, isLoading, error, refreshUserData } = useUserData();
   const router = useRouter();
   const searchParams = useSearchParams();
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -211,32 +213,62 @@ export default function AIHubPage() {
     }
   };
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-indigo-50/20 font-tajawal">
+  
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-600 mb-4">حدث خطأ في تحميل البيانات</p>
+          <button 
+            onClick={refreshUserData}
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          >
+            إعادة المحاولة
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+return (
+    <main className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-indigo-50/20 font-tajawal" dir="rtl">
       <div className="container mx-auto px-6 py-8">
-        {/* Header */}
+        {/* Enhanced Header */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-3 mb-4">
             <div className="p-3 bg-gradient-to-r from-purple-500 to-blue-500 rounded-xl">
               <Brain className="w-8 h-8 text-white" />
             </div>
-            <h1 className="text-4xl font-bold text-gray-800">مركز الذكاء الاصطناعي</h1>
+            <Typography variant="heading" size="3xl" weight="bold" className="text-gray-800">
+              مركز الذكاء الاصطناعي
+            </Typography>
           </div>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-4">
+          <Typography variant="body" size="lg" className="text-gray-600 max-w-3xl mx-auto mb-4">
             مجموعة شاملة من أدوات الذكاء الاصطناعي لمساعدتك في جميع مراحل مشروع البناء
-          </p>
+          </Typography>
           
           {/* Testing Link */}
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 max-w-2xl mx-auto">
-            <p className="text-yellow-800 mb-2">
+          <EnhancedCard className="bg-yellow-50 border border-yellow-200 max-w-2xl mx-auto p-4">
+            <Typography variant="body" className="text-yellow-800 mb-2">
               🧪 نحن نعمل على تحسين الميزات الذكية - ساعدنا في الاختبار والتطوير
-            </p>
+            </Typography>
             <Link href="/user/ai-smart-features-test">
-              <Button className="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-lg" onClick={() => alert('Button clicked')}>
+              <Button className="bg-yellow-600 hover:bg-yellow-700 text-white">
+                <Brain className="w-4 h-4 mr-2" />
                 صفحة اختبار الميزات الذكية
               </Button>
             </Link>
-          </div>
+          </EnhancedCard>
         </div>
 
         {/* Stats Cards */}
@@ -289,7 +321,7 @@ export default function AIHubPage() {
               {categories.map((category) => (
                 <Button
                   key={category.id}
-                  variant={selectedCategory === category.id ? "default" : "outline"}
+                  variant={selectedCategory === category.id ? "filled" : "outline"}
                   onClick={() => setSelectedCategory(category.id)}
                   className="flex items-center gap-2"
                 >
@@ -458,6 +490,6 @@ export default function AIHubPage() {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </main>
   );
 }

@@ -1,8 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/enhanced-components';
-import { BarChart3, FileText, Users, DollarSign } from 'lucide-react';
+import { BarChart3, FileText, Users, DollarSign, ChevronLeft, Plus } from 'lucide-react';
 
 export default function ProjectsListPage() {
   const [activeTab, setActiveTab] = useState('all');
@@ -60,6 +62,31 @@ export default function ProjectsListPage() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-indigo-50/20 font-tajawal">
       <div className="container mx-auto px-6 py-8">
+        {/* Breadcrumb Navigation */}
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-2 text-sm text-gray-600">
+            <Link href="/user/dashboard" className="hover:text-blue-600 transition-colors">
+              لوحة التحكم
+            </Link>
+            <ChevronLeft className="w-4 h-4" />
+            <span className="text-gray-900 font-medium">مشاريعي</span>
+          </div>
+          <div className="flex gap-2">
+            <Link href="/user/projects/create">
+              <Button className="flex items-center gap-2">
+                <Plus className="w-4 h-4" />
+                مشروع جديد
+              </Button>
+            </Link>
+            <Link href="/user/projects/calculator">
+              <Button variant="outline" className="flex items-center gap-2">
+                <BarChart3 className="w-4 h-4" />
+                حاسبة التكلفة
+              </Button>
+            </Link>
+          </div>
+        </div>
+
         <Typography variant="heading" size="2xl" weight="bold" className="text-gray-800 mb-6">
           مشاريعي
         </Typography>

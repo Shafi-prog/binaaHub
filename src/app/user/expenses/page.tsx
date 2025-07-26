@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/enhanced-components';
 import { DollarSign, Plus, Search, Filter, Calendar, Tag, TrendingUp, TrendingDown, PieChart, BarChart3, Edit, Trash2 } from 'lucide-react';
+import { useUserData } from '@/core/shared/contexts/UserDataContext';
 
 export const dynamic = 'force-dynamic'
 
@@ -28,6 +29,7 @@ interface ExpenseCategory {
 }
 
 export default function ExpensesPage() {
+  const { profile, orders, warranties, projects: userProjects, invoices, stats, isLoading, error, refreshUserData } = useUserData();
   const [expenses, setExpenses] = useState<Expense[]>([
     {
       id: 'EXP001',
@@ -131,7 +133,7 @@ export default function ExpensesPage() {
     return expDate.getMonth() === currentDate.getMonth() && expDate.getFullYear() === currentDate.getFullYear();
   }).reduce((sum, exp) => sum + exp.amount, 0);
 
-  const projects = [...new Set(expenses.filter(exp => exp.project).map(exp => exp.project))];
+  const expenseProjects = [...new Set(expenses.filter(exp => exp.project).map(exp => exp.project))];
 
   const handleAddExpense = () => {
     if (newExpense.description && newExpense.amount && newExpense.category) {
@@ -164,7 +166,34 @@ export default function ExpensesPage() {
     setExpenses(expenses.filter(exp => exp.id !== expenseId));
   };
 
-  return (
+  
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-600 mb-4">حدث خطأ في تحميل البيانات</p>
+          <button 
+            onClick={refreshUserData}
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          >
+            إعادة المحاولة
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+return (
     <div className="container mx-auto px-4 py-8 max-w-7xl" dir="rtl">
       {/* Header */}
       <div className="mb-8">
@@ -272,14 +301,14 @@ export default function ExpensesPage() {
           ))}
         </select>
 
-        {projects.length > 0 && (
+        {expenseProjects.length > 0 && (
           <select
             value={projectFilter}
             onChange={(e) => setProjectFilter(e.target.value)}
             className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
             <option value="all">جميع المشاريع</option>
-            {projects.map(project => (
+            {expenseProjects.map(project => (
               <option key={project} value={project}>{project}</option>
             ))}
           </select>

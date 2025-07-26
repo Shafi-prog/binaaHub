@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
 import { Badge } from '@/core/shared/components/ui/badge';
 import { Button } from '@/core/shared/components/ui/button';
@@ -80,13 +81,46 @@ export default function UserList() {
   const [statusFilter, setStatusFilter] = useState<string>('all');
 
   useEffect(() => {
-    // Simulate loading users
-    const timer = setTimeout(() => {
-      setUsers(mockUsers);
-      setLoading(false);
-    }, 500);
+    const loadUsers = async () => {
+      try {
+        const supabase = createClientComponentClient();
+        
+        // Load users from Supabase
+        const { data: usersData, error: usersError } = await supabase
+          .from('users')
+          .select('*')
+          .order('created_at', { ascending: false });
 
-    return () => clearTimeout(timer);
+        if (usersError) {
+          throw new Error(`Failed to load users: ${usersError.message}`);
+        }
+
+        // Transform database data to match expected format
+        const transformedUsers: User[] = usersData?.map((user: any) => ({
+          id: user.id,
+          email: user.email,
+          first_name: user.name.split(' ')[0] || 'غير محدد',
+          last_name: user.name.split(' ').slice(1).join(' ') || '',
+          role: user.role,
+          status: user.status,
+          phone: user.phone,
+          last_login: user.last_login,
+          created_at: user.created_at,
+          permissions: user.role === 'admin' ? ['all'] : 
+                      user.role === 'store_owner' ? ['store.manage', 'products.manage', 'orders.manage'] :
+                      ['orders.view', 'profile.edit']
+        })) || [];
+
+        setUsers(transformedUsers);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error loading users:', error);
+        setUsers([]);
+        setLoading(false);
+      }
+    };
+
+    loadUsers();
   }, []);
 
   const filteredUsers = useMemo(() => {

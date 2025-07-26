@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/enhanced-components';
+import { useUserData } from '@/core/shared/contexts/UserDataContext';
 import { 
   Users, MessageSquare, Share2, Heart, Eye, ThumbsUp, 
   Camera, Image, Video, FileText, Building, Wrench,
@@ -42,6 +43,7 @@ interface CommunityStats {
 }
 
 export default function CommunityPage() {
+  const { profile, orders, warranties, projects, invoices, stats, isLoading, error, refreshUserData } = useUserData();
   const [posts, setPosts] = useState<Post[]>([
     {
       id: 'POST001',
@@ -231,7 +233,34 @@ export default function CommunityPage() {
     return 'text-green-600 bg-green-100';
   };
 
-  return (
+  
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-600 mb-4">حدث خطأ في تحميل البيانات</p>
+          <button 
+            onClick={refreshUserData}
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          >
+            إعادة المحاولة
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+return (
     <div className="container mx-auto px-4 py-8 max-w-7xl" dir="rtl">
       {/* Header */}
       <div className="mb-8">

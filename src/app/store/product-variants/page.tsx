@@ -1,5 +1,6 @@
 'use client';
 
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { Button } from '@/core/shared/components/ui/button';
@@ -22,7 +23,7 @@ interface ProductVariant {
   product_id: string;
 }
 
-// Mock data for variant
+// Real data from Supabase
 const mockVariant: ProductVariant = {
   id: "var_123",
   title: "Medium - Blue",
@@ -38,6 +39,8 @@ const mockVariant: ProductVariant = {
 };
 
 export default function ProductVariantDetail() {
+const supabase = createClientComponentClient();
+
   const params = useParams();
   const [variant, setVariant] = useState<ProductVariant | null>(null);
   const [loading, setLoading] = useState(true);

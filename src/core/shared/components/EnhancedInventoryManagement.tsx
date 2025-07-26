@@ -19,13 +19,17 @@ import {
   Upload,
   BarChart3,
   Eye,
-  RefreshCw
+  RefreshCw,
+  Users,
+  Navigation,
+  Info
 } from 'lucide-react';
 import { Card } from '@/core/shared/components/ui/card';
 import { Button } from '@/core/shared/components/ui/button';
 import { Input } from '@/core/shared/components/ui/input';
 import { Badge } from '@/core/shared/components/ui/badge';
 import { toast } from 'react-hot-toast';
+import { CustomerSearchWidget, CustomerDetailModal, type Customer } from '@/core/shared/components/store/CustomerSearchWidget';
 
 interface Product {
   id: string;
@@ -84,6 +88,12 @@ export default function EnhancedInventoryManagement() {
   const [adjustmentQuantity, setAdjustmentQuantity] = useState(0);
   const [adjustmentReason, setAdjustmentReason] = useState('');
   
+  // Customer search functionality
+  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
+  const [showCustomerDetail, setShowCustomerDetail] = useState(false);
+  const [customerDetailData, setCustomerDetailData] = useState<Customer | null>(null);
+  const [showCustomerSearch, setShowCustomerSearch] = useState(false);
+  
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
@@ -97,6 +107,21 @@ export default function EnhancedInventoryManagement() {
   useEffect(() => {
     filterProducts();
   }, [products, searchTerm, categoryFilter, statusFilter, stockFilter]);
+
+  // Customer handling functions
+  const handleCustomerSelect = (customer: Customer) => {
+    setSelectedCustomer(customer);
+    toast.success(`تم اختيار العميل: ${customer.name} - ${customer.projectType}`);
+  };
+
+  const handleShowCustomerDetails = (customer: Customer) => {
+    setCustomerDetailData(customer);
+    setShowCustomerDetail(true);
+  };
+
+  const clearCustomerSelection = () => {
+    setSelectedCustomer(null);
+  };
 
   // Load all inventory data
   const loadInventoryData = async () => {
@@ -374,8 +399,100 @@ export default function EnhancedInventoryManagement() {
             <Upload className="w-4 h-4 mr-2" />
             استيراد
           </Button>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={() => setShowCustomerSearch(!showCustomerSearch)}
+            className={showCustomerSearch ? 'bg-blue-50 text-blue-700' : ''}
+          >
+            <Users className="w-4 h-4 mr-2" />
+            البحث عن عميل
+          </Button>
         </div>
       </Card>
+
+      {/* Customer Search Section */}
+      {showCustomerSearch && (
+        <Card className="p-4">
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-medium">البحث عن العملاء لمعلومات المشروع والتسليم</h3>
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={() => setShowCustomerSearch(false)}
+              >
+                ✕
+              </Button>
+            </div>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <CustomerSearchWidget
+                onCustomerSelect={handleCustomerSelect}
+                showProjectDetails={true}
+                showDeliveryInfo={true}
+                compact={true}
+                placeholder="البحث عن العملاء لمعلومات المشروع والتسليم..."
+              />
+              
+              {selectedCustomer && (
+                <Card className="p-3 bg-green-50 border-green-200">
+                  <div className="flex items-center justify-between mb-3">
+                    <h4 className="font-medium text-green-900 flex items-center gap-2">
+                      <Navigation className="h-4 w-4" />
+                      معلومات التسليم للطلب
+                    </h4>
+                    <div className="flex gap-2">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleShowCustomerDetails(selectedCustomer)}
+                      >
+                        <Info className="h-3 w-3 mr-1" />
+                        تفاصيل كاملة
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={clearCustomerSelection}
+                      >
+                        ✕
+                      </Button>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-2 text-sm">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <p className="font-medium text-green-900">العميل:</p>
+                        <p className="text-green-800">{selectedCustomer.name}</p>
+                        <p className="text-green-700">{selectedCustomer.phone}</p>
+                      </div>
+                      <div>
+                        <p className="font-medium text-green-900">نوع المشروع:</p>
+                        <p className="text-green-800">{selectedCustomer.projectType}</p>
+                        <p className="text-green-700">{selectedCustomer.projectLocation}</p>
+                      </div>
+                    </div>
+                    
+                    {selectedCustomer.projectAddress && (
+                      <div className="pt-2 border-t border-green-200">
+                        <p className="font-medium text-green-900">عنوان التسليم:</p>
+                        <p className="text-green-800">{selectedCustomer.projectAddress}</p>
+                        {selectedCustomer.deliveryInstructions && (
+                          <p className="text-green-700 mt-1">
+                            <span className="font-medium">تعليمات:</span> {selectedCustomer.deliveryInstructions}
+                          </p>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </Card>
+              )}
+            </div>
+          </div>
+        </Card>
+      )}
 
       {/* Products Table */}
       <Card className="p-4">
@@ -530,6 +647,15 @@ export default function EnhancedInventoryManagement() {
             </div>
           </Card>
         </div>
+      )}
+
+      {/* Customer Detail Modal */}
+      {showCustomerDetail && customerDetailData && (
+        <CustomerDetailModal
+          customer={customerDetailData}
+          onClose={() => setShowCustomerDetail(false)}
+          showDeliveryInfo={true}
+        />
       )}
     </div>
   );

@@ -1,6 +1,37 @@
+'use client';
+
+import { useUserData } from '@/core/shared/contexts/UserDataContext';
 // User Help Center page with articles, guides, and video links
 export default function HelpCenterPage() {
-  return (
+  const { isLoading, error, refreshUserData } = useUserData();
+  
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-600 mb-4">حدث خطأ في تحميل البيانات</p>
+          <button 
+            onClick={refreshUserData}
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          >
+            إعادة المحاولة
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+return (
     <main className="max-w-3xl mx-auto p-6 space-y-6">    
       <h1 className="text-3xl font-bold text-blue-700 mb-4">مركز المساعدة</h1>
       <p className="text-lg text-gray-700 mb-6">كل ما تحتاج معرفته عن البناء واستخدام المنصة في مكان واحد.</p>      
@@ -26,6 +57,38 @@ export default function HelpCenterPage() {
         <li><a href="/user/help-center/articles/faq" className="text-blue-600 hover:underline">الأسئلة الشائعة</a></li>
         <li><a href="/user/ai-smart-features-test" className="text-purple-600 hover:underline font-medium">🤖 اختبار الميزات الذكية والذكاء الاصطناعي</a></li>
       </ul>
+
+      {/* New Construction Services Section */}
+      <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
+        <h2 className="text-xl font-bold text-blue-800 mb-4">🏗️ خدمات البناء الجديدة - استكشف الآن!</h2>
+        <p className="text-blue-700 mb-4">اكتشف خدماتنا الجديدة المتكاملة لإدارة مشروع البناء بالكامل</p>
+        
+        <div className="grid md:grid-cols-2 gap-4">
+          <div>
+            <h3 className="font-semibold text-blue-800 mb-2">📅 حجز وإدارة الخدمات</h3>
+            <ul className="space-y-1 text-sm">
+              <li><a href="/dashboard/bookings" className="text-blue-600 hover:underline">• تقويم الحجوزات الموحد</a></li>
+              <li><a href="/ai-assistant" className="text-blue-600 hover:underline">• المساعد الذكي للبناء</a></li>
+              <li><a href="/register/service-provider" className="text-blue-600 hover:underline">• تسجيل مقدمي الخدمات</a></li>
+            </ul>
+          </div>
+          
+          <div>
+            <h3 className="font-semibold text-blue-800 mb-2">🚛 خدمات متخصصة</h3>
+            <ul className="space-y-1 text-sm">
+              <li><a href="/dashboard/equipment-rental" className="text-blue-600 hover:underline">• تأجير المعدات والآليات</a></li>
+              <li><a href="/dashboard/waste-management" className="text-blue-600 hover:underline">• إدارة النفايات والمخلفات</a></li>
+              <li><a href="/dashboard/concrete-supplier" className="text-blue-600 hover:underline">• توريد الخرسانة الجاهزة</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded">
+          <p className="text-green-700 text-sm">
+            ✨ <strong>جديد:</strong> جميع هذه الخدمات مدمجة مع نظام إدارة المشاريع لتوفير تجربة شاملة ومتكاملة
+          </p>
+        </div>
+      </div>
       <div className="mt-8">
         <h2 className="text-xl font-bold mb-2">فيديوهات تعليمية</h2>
         <ul className="list-disc pl-6 space-y-2">

@@ -1,5 +1,6 @@
 "use client"
 
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card'
@@ -11,6 +12,8 @@ import { Switch } from '@/core/shared/components/ui/switch'
 import { ArrowLeft, Percent, Calendar, Target } from 'lucide-react'
 
 export default function CreatePromotionPage() {
+const supabase = createClientComponentClient();
+
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({

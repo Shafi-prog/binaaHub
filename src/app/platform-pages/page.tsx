@@ -190,6 +190,20 @@ const pagesSections = {
       { path: '/loans', name: 'Loan Services', description: 'Construction loan and financing services' }
     ]
   },
+  constructionServices: {
+    title: 'Construction Services Platform',
+    emoji: '🏗️',
+    description: '🆕 NEW: Comprehensive construction service ecosystem with equipment rental, waste management, concrete supply, unified booking, AI assistant, and specialized provider dashboards.',
+    pages: [
+      { path: '/dashboard/bookings', name: '🆕 Unified Booking Calendar', description: 'NEW: Multi-service booking calendar for all construction services' },
+      { path: '/ai-assistant', name: '🆕 AI Construction Assistant', description: 'NEW: Intelligent construction advisory system with recommendations' },
+      { path: '/register/service-provider', name: '🆕 Service Provider Registration', description: 'NEW: Multi-role registration portal for construction service providers' },
+      { path: '/dashboard/equipment-rental', name: '🆕 Equipment Rental Dashboard', description: 'NEW: Equipment rental company dashboard with booking management' },
+      { path: '/dashboard/waste-management', name: '🆕 Waste Management Dashboard', description: 'NEW: Waste management company dashboard with collection scheduling' },
+      { path: '/dashboard/concrete-supplier', name: '🆕 Concrete Supplier Dashboard', description: 'NEW: Concrete supplier dashboard with order and delivery management' },
+      { path: '/dashboard/service-provider', name: '🆕 General Service Provider Dashboard', description: 'NEW: Multi-purpose service provider dashboard' }
+    ]
+  },
   utility: {
     title: 'Utility & Development Pages',
     emoji: '🔧',

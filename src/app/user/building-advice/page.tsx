@@ -2,6 +2,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
 import { Button } from '@/core/shared/components/ui/button';
 import { Badge } from '@/core/shared/components/ui/badge';
@@ -405,6 +406,19 @@ export default function BuildingAdvicePage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-indigo-50/20 font-tajawal">
       <div className="container mx-auto px-6 py-8">
+        {/* Breadcrumb Navigation */}
+        <div className="flex items-center gap-2 mb-6 text-sm text-gray-600">
+          <Link href="/user/dashboard" className="hover:text-blue-600 transition-colors">
+            لوحة التحكم
+          </Link>
+          <ChevronLeft className="w-4 h-4" />
+          <Link href="/user/projects" className="hover:text-blue-600 transition-colors">
+            المشاريع
+          </Link>
+          <ChevronLeft className="w-4 h-4" />
+          <span className="text-gray-900 font-medium">نصائح البناء</span>
+        </div>
+        
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-gray-800 mb-4">

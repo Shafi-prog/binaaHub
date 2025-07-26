@@ -1,7 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useUserData } from '@/core/shared/contexts/UserDataContext';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { supabase } from '@/core/shared/utils/supabase/client';
 import { 
   Search, 
@@ -11,6 +13,7 @@ import {
   Tag,
   Building,
   ChevronDown,
+  ChevronLeft,
   Calendar
 } from 'lucide-react';
 
@@ -401,7 +404,25 @@ export default function ProjectsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50" dir="rtl">      {/* Header */}
+    <div className="min-h-screen bg-gray-50" dir="rtl">
+      {/* Breadcrumb Navigation */}
+      <div className="bg-white border-b border-gray-100">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-3">
+          <div className="flex items-center gap-2 text-sm text-gray-600">
+            <Link href="/user/dashboard" className="hover:text-blue-600 transition-colors">
+              لوحة التحكم
+            </Link>
+            <ChevronLeft className="w-4 h-4" />
+            <Link href="/user/projects" className="hover:text-blue-600 transition-colors">
+              المشاريع
+            </Link>
+            <ChevronLeft className="w-4 h-4" />
+            <span className="text-gray-900 font-medium">سوق المشاريع</span>
+          </div>
+        </div>
+      </div>
+      
+      {/* Header */}
       <div className="bg-white border-b">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-8">
           <div className="text-center">

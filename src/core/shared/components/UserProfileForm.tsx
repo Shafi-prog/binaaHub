@@ -52,19 +52,29 @@ const COUNTRY_CODES = [
 ];
 
 export default function UserProfileForm({ user }: { user: any }) {
+  // Early return if user is null or undefined
+  if (!user) {
+    return (
+      <div className="text-center py-8">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+        <p className="text-gray-600">جاري تحميل بيانات المستخدم...</p>
+      </div>
+    );
+  }
+
   const supabase = createClientComponentClient();
-  const [name, setName] = useState(user.name || '');
-  const [email, setEmail] = useState(user.email || '');
-  const [emailVerified, setEmailVerified] = useState(user.email_verified || false);
-  const [countryCode, setCountryCode] = useState(user.country_code || '+966');
-  const [phone, setPhone] = useState(user.phone || '');
-  const [phoneVerified, setPhoneVerified] = useState(user.phone_verified || false);
-  const [role, setRole] = useState(user.role || '');
-  const [trades, setTrades] = useState(user.trades || []);
-  const [region, setRegion] = useState(user.region || '');
-  const [city, setCity] = useState(user.city || '');
-  const [neighborhood, setNeighborhood] = useState(user.neighborhood || '');
-  const [location, setLocation] = useState(user.location || null);
+  const [name, setName] = useState(user?.name || '');
+  const [email, setEmail] = useState(user?.email || '');
+  const [emailVerified, setEmailVerified] = useState(user?.email_verified || false);
+  const [countryCode, setCountryCode] = useState(user?.country_code || '+966');
+  const [phone, setPhone] = useState(user?.phone || '');
+  const [phoneVerified, setPhoneVerified] = useState(user?.phone_verified || false);
+  const [role, setRole] = useState(user?.role || '');
+  const [trades, setTrades] = useState(user?.trades || []);
+  const [region, setRegion] = useState(user?.region || '');
+  const [city, setCity] = useState(user?.city || '');
+  const [neighborhood, setNeighborhood] = useState(user?.neighborhood || '');
+  const [location, setLocation] = useState(user?.location || null);
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);

@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
 import { Button } from '@/core/shared/components/ui/button';
 import { Input } from '@/core/shared/components/ui/input';
@@ -23,7 +25,8 @@ import {
   Target,
   Users,
   Zap,
-  Leaf
+  Leaf,
+  ChevronLeft
 } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
@@ -259,6 +262,19 @@ export default function IndividualHomeCalculator() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 p-6" dir="rtl">
       <div className="container mx-auto max-w-7xl">
+        {/* Breadcrumb Navigation */}
+        <div className="flex items-center gap-2 mb-6 text-sm text-gray-600">
+          <Link href="/user/dashboard" className="hover:text-blue-600 transition-colors">
+            لوحة التحكم
+          </Link>
+          <ChevronLeft className="w-4 h-4" />
+          <Link href="/user/projects" className="hover:text-blue-600 transition-colors">
+            المشاريع
+          </Link>
+          <ChevronLeft className="w-4 h-4" />
+          <span className="text-gray-900 font-medium">حاسبة المنزل الفردي</span>
+        </div>
+        
         {/* Header */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-3 mb-4">

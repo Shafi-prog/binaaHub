@@ -1,5 +1,6 @@
 "use client"
 
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card'
@@ -9,6 +10,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { ArrowLeft, User, Building, Phone, Mail, MapPin } from 'lucide-react'
 
 export default function CreateCustomerPage() {
+const supabase = createClientComponentClient();
+
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [customerType, setCustomerType] = useState<'individual' | 'company'>('individual')

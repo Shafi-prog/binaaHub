@@ -3,6 +3,7 @@
 export const dynamic = 'force-dynamic';
 
 import React, { useState } from 'react';
+import { useUserData } from '@/core/shared/contexts/UserDataContext';
 import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/enhanced-components';
 import { useRouter } from 'next/navigation';
 import { 
@@ -19,6 +20,7 @@ import {
 } from 'lucide-react';
 
 export default function SettingsPage() {
+  const { profile, orders, warranties, projects, invoices, stats, isLoading, error, refreshUserData } = useUserData();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState('profile');
   const [settings, setSettings] = useState({
@@ -46,7 +48,34 @@ export default function SettingsPage() {
   const renderTabContent = () => {
     switch (activeTab) {
       case 'profile':
-        return (
+        
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-600 mb-4">حدث خطأ في تحميل البيانات</p>
+          <button 
+            onClick={refreshUserData}
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          >
+            إعادة المحاولة
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+return (
           <div className="space-y-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">الاسم الكامل</label>

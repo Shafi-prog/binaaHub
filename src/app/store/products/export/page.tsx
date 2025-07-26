@@ -1,5 +1,6 @@
 "use client"
 
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card'
@@ -11,7 +12,10 @@ import { Progress } from '@/core/shared/components/ui/progress'
 import { ArrowLeft, Download, FileSpreadsheet, CheckCircle, Loader2 } from 'lucide-react'
 
 export default function ExportProductsPage() {
+const supabase = createClientComponentClient();
+
   const router = useRouter()
+  const [loading, setLoading] = useState(true);
   const [exportType, setExportType] = useState('products')
   const [format, setFormat] = useState('csv')
   const [exporting, setExporting] = useState(false)

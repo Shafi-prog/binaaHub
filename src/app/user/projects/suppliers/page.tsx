@@ -3,11 +3,13 @@
 export const dynamic = 'force-dynamic';
 
 import React, { useState } from 'react';
+import { useUserData } from '@/core/shared/contexts/UserDataContext';
 import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/enhanced-components';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Plus, Search, Phone, MessageCircle, Users } from 'lucide-react';
 
 export default function SuppliersPage() {
+  const { isLoading, error, refreshUserData } = useUserData();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState('supplier');
   const [searchQuery, setSearchQuery] = useState('');
@@ -48,7 +50,34 @@ export default function SuppliersPage() {
 
   const currentData = activeTab === 'supplier' ? suppliers : contractors;
 
-  return (
+  
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-600 mb-4">حدث خطأ في تحميل البيانات</p>
+          <button 
+            onClick={refreshUserData}
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          >
+            إعادة المحاولة
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+return (
     <main className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-indigo-50/20 font-tajawal">
       <div className="container mx-auto px-6 py-8">
         {/* Header */}

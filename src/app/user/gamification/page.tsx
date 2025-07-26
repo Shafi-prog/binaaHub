@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/enhanced-components';
+import { useUserData } from '@/core/shared/contexts/UserDataContext';
 import { 
   Trophy, Star, Award, Crown, Gift, Target, Zap, Flame, 
   Medal, ShoppingBag, TrendingUp, Calendar, Users, Sparkles,
@@ -53,6 +54,7 @@ interface Reward {
 }
 
 export default function GamificationPage() {
+  const { profile, orders, warranties, projects, invoices, stats, isLoading, error, refreshUserData } = useUserData();
   const [userStats] = useState<UserStats>({
     totalPoints: 12450,
     level: 8,
@@ -212,7 +214,34 @@ export default function GamificationPage() {
     const currentLevelMin = (userStats.level - 1) * 2000;
     const currentProgress = userStats.totalPoints - currentLevelMin;
     const levelRequirement = userStats.nextLevelPoints - currentLevelMin;
-    return (currentProgress / levelRequirement) * 100;
+    
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-600 mb-4">حدث خطأ في تحميل البيانات</p>
+          <button 
+            onClick={refreshUserData}
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          >
+            إعادة المحاولة
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+return (currentProgress / levelRequirement) * 100;
   };
 
   const getCategoryIcon = (category: string) => {

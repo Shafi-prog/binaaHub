@@ -15,6 +15,7 @@ import ProjectPurchasesWarranties from '@/core/shared/components/ui/ProjectPurch
 import { ProjectTrackingService } from '@/core/services/projectTrackingService';
 import { Project, ProjectEstimation, MaterialEstimation, LightingEstimation } from '@/core/shared/types/types';
 import { formatNumber, formatDate, formatCurrency, formatPercentage } from '@/core/shared/utils/formatting';
+import { useUserData } from '@/core/shared/contexts/UserDataContext';
 import { 
   Calculator, 
   FileText, 
@@ -113,6 +114,7 @@ interface PDFAnalysis {
 }
 
 export default function ProjectDetailPage() {
+  const { profile, orders, warranties, projects, invoices, stats, isLoading, error, refreshUserData } = useUserData();
   const params = useParams();
   const router = useRouter();
   const projectId = params?.id as string;

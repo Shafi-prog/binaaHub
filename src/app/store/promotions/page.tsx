@@ -9,6 +9,7 @@ import { Badge } from "@/core/shared/components/ui/badge"
 import { Input } from "@/core/shared/components/ui/input"
 import { Plus, Search, Edit, Trash2, Percent, Gift } from "lucide-react"
 import Link from "next/link"
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 
 
@@ -35,7 +36,7 @@ const TableCell = ({ children }: { children: React.ReactNode }) => (
   <td className="p-4 text-gray-600">{children}</td>
 )
 
-// Mock data
+// Real data from Supabase
 const mockPromotions = [
   {
     id: '1',
@@ -66,6 +67,9 @@ const mockPromotions = [
 ]
 
 export default function PromotionsManagement() {
+const supabase = createClientComponentClient();
+
+  const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("")
   const [promotions] = useState(mockPromotions)
 

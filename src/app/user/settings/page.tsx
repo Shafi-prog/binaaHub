@@ -3,7 +3,11 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/enhanced-components';
-import { User, Settings, Bell, Shield, Key, CreditCard, Globe, Moon, Sun, Smartphone, Monitor } from 'lucide-react';
+import { User, Settings, Bell, Shield, Key, CreditCard, Globe, Moon, Sun, Smartphone, Monitor, Building2 } from 'lucide-react';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import UserProfileForm from '@/core/shared/components/UserProfileForm';
+import ConstructionProfileAdvice from '@/core/shared/components/ConstructionProfileAdvice';
+import { useUserData } from '@/core/shared/contexts/UserDataContext';
 
 export const dynamic = 'force-dynamic'
 
@@ -33,12 +37,20 @@ interface SecuritySettings {
 }
 
 export default function SettingsPage() {
+  const { profile: userProfile, orders, warranties, projects, invoices, stats, isLoading, error, refreshUserData } = useUserData();
+  const supabase = createClientComponentClient();
+  
+  // All useState hooks must be at the top
+  const [user, setUser] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState('profile');
+  
   const [profile, setProfile] = useState<UserProfile>({
-    name: 'أحمد محمد السعيد',
-    email: 'ahmed.mohamed@example.com',
-    phone: '+966501234567',
-    city: 'الرياض',
-    memberSince: '2024-01-15',
+    name: '',
+    email: '',
+    phone: '',
+    city: '',
+    memberSince: '',
     accountType: 'free'
   });
 
@@ -57,14 +69,149 @@ export default function SettingsPage() {
     sessionTimeout: 60
   });
 
-  const [theme, setTheme] = useState<'light' | 'dark' | 'auto'>('light');
-  const [language, setLanguage] = useState('ar');
-  const [activeTab, setActiveTab] = useState('profile');
+  const [preferences, setPreferences] = useState({
+    language: 'ar',
+    notifications: true,
+    marketing: false,
+    theme: 'light',
+    autoSave: true
+  });
 
-  const handleProfileUpdate = () => {
-    // Handle profile update logic
-    console.log('Profile updated:', profile);
+  // Load user data
+  useEffect(() => {
+    const loadUserData = async () => {
+      try {
+        // First try Supabase auth
+        const { data: { user: authUser } } = await supabase.auth.getUser();
+        if (authUser) {
+          setUser(authUser);
+          // Load profile data
+          const { data: profileData } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('id', authUser.id)
+            .single();
+          
+          if (profileData) {
+            setProfile({
+              name: profileData.name || '',
+              email: authUser.email || '',
+              phone: profileData.phone || '',
+              city: profileData.city || '',
+              memberSince: profileData.created_at || authUser.created_at,
+              accountType: profileData.account_type || 'free'
+            });
+          }
+          
+          // Load user preferences
+          const { data: prefData } = await supabase
+            .from('user_preferences')
+            .select('*')
+            .eq('user_id', authUser.id)
+            .single();
+            
+          if (prefData) {
+            setPreferences({
+              language: prefData.language || 'ar',
+              notifications: prefData.notifications ?? true,
+              marketing: prefData.marketing ?? false,
+              theme: prefData.theme || 'light',
+              autoSave: prefData.auto_save ?? true
+            });
+          }
+        } else {
+          // Fallback to temp auth cookie
+          const getCookie = (name: string) => {
+            if (typeof window === 'undefined') return null;
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop()?.split(';').shift();
+            return null;
+          };
+
+          const tempAuthCookie = getCookie('temp_auth_user');
+          if (tempAuthCookie) {
+            try {
+              const parsedUser = JSON.parse(decodeURIComponent(tempAuthCookie));
+              setUser({
+                email: parsedUser.email,
+                account_type: parsedUser.account_type,
+                name: parsedUser.name || parsedUser.email?.split('@')[0]
+              });
+            } catch (e) {
+              console.warn('Failed to parse temp auth user:', e);
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Error loading user data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadUserData();
+  }, []);
+
+  const handleSaveProfile = async () => {
+    if (!user) return;
+    
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .upsert({
+          id: user.id,
+          name: userProfile?.name || profile.name,
+          phone: userProfile?.phone || profile.phone,
+          city: userProfile?.city || profile.city,
+          account_type: userProfile?.accountType || profile.accountType,
+          updated_at: new Date().toISOString()
+        });
+        
+      if (error) throw error;
+      alert('تم حفظ الملف الشخصي بنجاح');
+    } catch (error) {
+      console.error('Error saving profile:', error);
+      alert('حدث خطأ في حفظ الملف الشخصي');
+    }
   };
+
+  const handleSavePreferences = async () => {
+    if (!user) return;
+    
+    try {
+      const { error } = await supabase
+        .from('user_preferences')
+        .upsert({
+          user_id: user.id,
+          language: preferences.language,
+          notifications: preferences.notifications,
+          marketing: preferences.marketing,
+          theme: preferences.theme,
+          auto_save: preferences.autoSave,
+          updated_at: new Date().toISOString()
+        });
+        
+      if (error) throw error;
+      alert('تم حفظ التفضيلات بنجاح');
+    } catch (error) {
+      console.error('Error saving preferences:', error);
+      alert('حدث خطأ في حفظ التفضيلات');
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 p-4">
+        <div className="max-w-4xl mx-auto">
+          <div className="animate-pulse">
+            <div className="h-8 bg-gray-200 rounded mb-6"></div>
+            <div className="h-64 bg-gray-200 rounded"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const handleNotificationUpdate = (key: keyof NotificationSettings) => {
     setNotifications(prev => ({
@@ -100,6 +247,7 @@ export default function SettingsPage() {
 
   const tabs = [
     { id: 'profile', label: 'الملف الشخصي', icon: <User className="w-5 h-5" /> },
+    { id: 'construction', label: 'دليل البناء', icon: <Building2 className="w-5 h-5" /> },
     { id: 'notifications', label: 'الإشعارات', icon: <Bell className="w-5 h-5" /> },
     { id: 'security', label: 'الأمان', icon: <Shield className="w-5 h-5" /> },
     { id: 'preferences', label: 'التفضيلات', icon: <Settings className="w-5 h-5" /> }
@@ -146,82 +294,21 @@ export default function SettingsPage() {
           {/* Profile Tab */}
           {activeTab === 'profile' && (
             <EnhancedCard className="p-6">
-              <Typography variant="subheading" size="xl" weight="semibold" className="mb-6">الملف الشخصي</Typography>
-              
-              {/* Account Status */}
-              <div className="mb-6 p-4 bg-gray-50 rounded-lg">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <Typography variant="subheading" size="lg" weight="semibold" className="mb-1">نوع الحساب</Typography>
-                    <Typography variant="caption" size="sm" className="text-gray-600">
-                      عضو منذ {new Date(profile.memberSince).toLocaleDateString('en-US')}
-                    </Typography>
-                  </div>
-                  <span className={`px-3 py-1 rounded-full text-sm font-medium ${getAccountTypeColor(profile.accountType)}`}>
-                    {getAccountTypeText(profile.accountType)}
-                  </span>
+              {user ? (
+                <UserProfileForm user={user} />
+              ) : (
+                <div className="text-center py-8">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                  <Typography variant="body" className="text-gray-600">جاري تحميل البيانات...</Typography>
                 </div>
-              </div>
+              )}
+            </EnhancedCard>
+          )}
 
-              {/* Profile Form */}
-              <div className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">الاسم الكامل</label>
-                    <input
-                      type="text"
-                      value={profile.name}
-                      onChange={(e) => setProfile(prev => ({ ...prev, name: e.target.value }))}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">البريد الإلكتروني</label>
-                    <input
-                      type="email"
-                      value={profile.email}
-                      onChange={(e) => setProfile(prev => ({ ...prev, email: e.target.value }))}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">رقم الهاتف</label>
-                    <input
-                      type="tel"
-                      value={profile.phone}
-                      onChange={(e) => setProfile(prev => ({ ...prev, phone: e.target.value }))}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">المدينة</label>
-                    <select
-                      value={profile.city}
-                      onChange={(e) => setProfile(prev => ({ ...prev, city: e.target.value }))}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    >
-                      <option value="الرياض">الرياض</option>
-                      <option value="جدة">جدة</option>
-                      <option value="الدمام">الدمام</option>
-                      <option value="مكة المكرمة">مكة المكرمة</option>
-                      <option value="المدينة المنورة">المدينة المنورة</option>
-                      <option value="الطائف">الطائف</option>
-                      <option value="تبوك">تبوك</option>
-                      <option value="أخرى">أخرى</option>
-                    </select>
-                  </div>
-                </div>
-                
-                <Button
-                  onClick={handleProfileUpdate}
-                  className="bg-blue-600 hover:bg-blue-700 text-white"
-                >
-                  حفظ التغييرات
-                </Button>
-              </div>
+          {/* Construction Advice Tab */}
+          {activeTab === 'construction' && (
+            <EnhancedCard className="p-6">
+              <ConstructionProfileAdvice />
             </EnhancedCard>
           )}
 
@@ -388,9 +475,9 @@ export default function SettingsPage() {
                     ].map((option) => (
                       <div
                         key={option.value}
-                        onClick={() => setTheme(option.value as 'light' | 'dark' | 'auto')}
+                        onClick={() => setPreferences(prev => ({ ...prev, theme: option.value }))}
                         className={`p-4 border rounded-lg cursor-pointer transition-colors ${
-                          theme === option.value
+                          preferences.theme === option.value
                             ? 'border-blue-500 bg-blue-50'
                             : 'border-gray-200 hover:bg-gray-50'
                         }`}
@@ -407,13 +494,22 @@ export default function SettingsPage() {
                 <div>
                   <Typography variant="subheading" size="lg" weight="semibold" className="mb-4">اللغة</Typography>
                   <select
-                    value={language}
-                    onChange={(e) => setLanguage(e.target.value)}
+                    value={preferences.language}
+                    onChange={(e) => setPreferences(prev => ({ ...prev, language: e.target.value }))}
                     className="w-full max-w-xs px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   >
                     <option value="ar">العربية</option>
                     <option value="en">English</option>
                   </select>
+                </div>
+
+                <div className="pt-6 border-t">
+                  <Button
+                    onClick={handleSavePreferences}
+                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                  >
+                    حفظ التفضيلات
+                  </Button>
                 </div>
 
                 <div>

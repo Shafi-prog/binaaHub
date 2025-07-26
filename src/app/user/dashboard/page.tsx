@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/enhanced-components';
 import { formatNumber, formatCurrency } from '@/core/shared/utils/formatting';
+import { useUserData } from '@/core/shared/contexts/UserDataContext';
 import { 
   Calendar, 
   Wallet, 
@@ -23,12 +24,8 @@ import {
   Calculator, 
   Gift,
   Crown,
-  Home,
-  Folder,
-  UserIcon,
   Settings,
-  Store,
-  LogOut,
+  User as UserIcon,
   Building2,
   File,
   Trash2,
@@ -40,6 +37,7 @@ export const dynamic = 'force-dynamic'
 interface DashboardStats {
   activeWarranties: number;
   activeProjects: number;
+  completedProjects: number;
   totalOrders: number;
   totalInvoices: number;
   loyaltyPoints: number;
@@ -48,6 +46,9 @@ interface DashboardStats {
   monthlySpent: number;
   balanceAmount: number;
   aiInsights: number;
+  recentOrders?: any[];
+  recentProjects?: any[];
+  recentWarranties?: any[];
 }
 
 interface QuickInsight {
@@ -71,20 +72,9 @@ interface CommunityHighlight {
 export default function UserDashboardPage() {
   console.log('🚀 UserDashboard component is rendering!');
   
-  const [stats, setStats] = useState<DashboardStats>({
-    activeWarranties: 8,
-    activeProjects: 3,
-    totalOrders: 24,
-    totalInvoices: 6,
-    loyaltyPoints: 12450,
-    currentLevel: 8,
-    communityPosts: 15,
-    monthlySpent: 23500,
-    balanceAmount: 8750,
-    aiInsights: 12
-  });
-  const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState<any>(null);
+  // Use the unified user data context
+  const { profile, orders, warranties, projects, invoices, stats, isLoading, error, refreshUserData } = useUserData();
+  
   const [isHydrated, setIsHydrated] = useState(false);
   const [showAddCost, setShowAddCost] = useState(false);
   const [costForm, setCostForm] = useState({
@@ -94,71 +84,93 @@ export default function UserDashboardPage() {
     note: ''
   });
   const [costs, setCosts] = useState<any[]>([]);
-  const [quickInsights, setQuickInsights] = useState<QuickInsight[]>([
-    {
-      id: 'INS001',
-      title: 'توفير في أسعار الأسمنت',
-      description: 'يمكنك توفير 8,500 ر.س بالتبديل لمورد بديل',
-      type: 'saving',
-      impact: 8500,
-      confidence: 92
-    },
-    {
-      id: 'INS002', 
-      title: 'انخفاض أسعار الحديد',
-      description: 'أسعار الحديد متوقعة للانخفاض 8% الشهر القادم',
-      type: 'trend',
-      impact: 0,
-      confidence: 78
-    }
-  ]);
-  const [communityHighlights, setCommunityHighlights] = useState<CommunityHighlight[]>([
-    {
-      id: 'COM001',
-      author: 'محمد البناء',
-      content: 'انتهيت من مشروع فيلا سكنية في الرياض باستخدام أحدث تقنيات العزل',
-      likes: 45,
-      type: 'showcase',
-      timeAgo: 'منذ 3 ساعات'
-    },
-    {
-      id: 'COM002',
-      author: 'سارة المعمارية', 
-      content: 'نصيحة: تأكد من غسل الرمل جيداً قبل استخدامه في الخرسانة',
-      likes: 32,
-      type: 'tip',
-      timeAgo: 'منذ 5 ساعات'
-    }
-  ]);
+  const [quickInsights, setQuickInsights] = useState<QuickInsight[]>([]);
+  const [communityHighlights, setCommunityHighlights] = useState<CommunityHighlight[]>([]);
   const router = useRouter();
 
   useEffect(() => {
     setIsHydrated(true);
   }, []);
 
+  // Generate insights based on user data
   useEffect(() => {
-    if (!isHydrated) return;
-    
-    const loadUserData = async () => {
-      try {
-        // Try to get user from sessionStorage (our temporary auth)
-        const userData = sessionStorage.getItem('temp_user');
-        if (userData) {
-          setUser(JSON.parse(userData));
-        }
-        
-        // Simulate loading delay
-        setTimeout(() => {
-          setLoading(false);
-        }, 500);
-      } catch (error) {
-        console.error('Error loading user data:', error);
-        setLoading(false);
-      }
-    };
+    if (!profile || !stats) return;
 
-    loadUserData();
-  }, [isHydrated]);
+    const insights: QuickInsight[] = [];
+    
+    if (stats.activeProjects > 0) {
+      insights.push({
+        id: 'INS001',
+        title: 'توفير في تكاليف المشروع',
+        description: `يمكنك توفير حتى 15% من تكاليف مشاريعك الـ ${stats.activeProjects} النشطة`,
+        type: 'saving',
+        impact: stats.activeProjects * 2500,
+        confidence: 85
+      });
+    }
+    
+    if (stats.totalOrders > 5) {
+      insights.push({
+        id: 'INS002',
+        title: 'خصم ولاء متاح',
+        description: `مع ${stats.totalOrders} طلب، أصبحت مؤهلاً لخصم 10% على الطلب القادم`,
+        type: 'opportunity',
+        impact: 0,
+        confidence: 95
+      });
+    }
+    
+    if (insights.length === 0) {
+      insights.push({
+        id: 'INS001',
+        title: 'ابدأ مشروعك الأول',
+        description: 'استخدم حاسبة البناء الذكية لتقدير تكاليف مشروعك',
+        type: 'opportunity',
+        impact: 0,
+        confidence: 100
+      });
+    }
+    
+    setQuickInsights(insights);
+
+    // Generate community highlights
+    const highlights: CommunityHighlight[] = [];
+    
+    if (stats.completedProjects > 0) {
+      highlights.push({
+        id: 'COM001',
+        author: profile.name || 'مستخدم',
+        content: `تم إكمال ${stats.completedProjects} مشروع بنجاح باستخدام منصة بِنّا`,
+        likes: Math.max(stats.completedProjects * 8, 5),
+        type: 'showcase',
+        timeAgo: 'منذ يوم'
+      });
+    }
+    
+    if (stats.activeWarranties > 0) {
+      highlights.push({
+        id: 'COM002',
+        author: 'نصائح بِنّا',
+        content: `لديك ${stats.activeWarranties} ضمان نشط - تأكد من متابعة صلاحيتها`,
+        likes: 25,
+        type: 'tip',
+        timeAgo: 'منذ 3 ساعات'
+      });
+    }
+    
+    if (highlights.length === 0) {
+      highlights.push({
+        id: 'COM001',
+        author: 'مجتمع بِنّا',
+        content: 'مرحباً بك في منصة بِنّا للبناء الذكي! ابدأ رحلتك معنا',
+        likes: 50,
+        type: 'tip',
+        timeAgo: 'منذ يوم'
+      });
+    }
+    
+    setCommunityHighlights(highlights);
+  }, [profile, stats]);
 
   const handleAddCost = () => {
     setCosts([
@@ -169,23 +181,33 @@ export default function UserDashboardPage() {
     setShowAddCost(false);
   };
 
-  const handleLogout = () => {
-    // Clear all authentication data
-    if (typeof window !== 'undefined') {
-      sessionStorage.clear();
-      localStorage.clear();
-      // Remove all cookies
-      document.cookie.split(';').forEach(cookie => {
-        const eqPos = cookie.indexOf('=');
-        const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-        document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;';
-      });
-    }
-    // Redirect to login page
-    router.push('/login');
-  };
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
 
-  if (!isHydrated || loading) {
+  // Error state
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-600 mb-4">حدث خطأ في تحميل البيانات</p>
+          <button 
+            onClick={refreshUserData}
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          >
+            إعادة المحاولة
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isHydrated) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
@@ -196,8 +218,8 @@ export default function UserDashboardPage() {
   const dashboardCards = [
     {
       title: 'نقاط الولاء',
-      value: formatNumber(stats.loyaltyPoints),
-      subtitle: `مستوى ${stats.currentLevel}`,
+      value: formatNumber(profile?.loyaltyPoints || 0),
+      subtitle: `مستوى ${profile?.currentLevel || 1}`,
       icon: <Trophy className="w-6 h-6" />,
       href: '/user/gamification',
       color: 'bg-gradient-to-r from-yellow-500 to-yellow-600',
@@ -269,6 +291,7 @@ export default function UserDashboardPage() {
   ];
 
   const quickActions = [
+    { title: 'حجز الخدمات', href: '/dashboard/bookings', icon: <Calendar className="w-6 h-6" />, color: 'from-blue-50 to-blue-100', textColor: 'text-blue-700' },
     { title: 'مركز الذكاء الاصطناعي', href: '/user/ai-hub', icon: <Brain className="w-6 h-6" />, color: 'from-purple-50 to-purple-100', textColor: 'text-purple-700' },
     { title: 'حاسبة البناء الشاملة', href: '/user/comprehensive-construction-calculator', icon: <Calculator className="w-6 h-6" />, color: 'from-blue-50 to-blue-100', textColor: 'text-blue-700' },
     { title: 'مركز المكافآت', href: '/user/gamification', icon: <Gift className="w-6 h-6" />, color: 'from-yellow-50 to-yellow-100', textColor: 'text-yellow-700' },
@@ -280,76 +303,13 @@ export default function UserDashboardPage() {
     { title: 'إعدادات الحساب', href: '/user/settings', icon: <Settings className="w-6 h-6" />, color: 'from-gray-50 to-gray-100', textColor: 'text-gray-700' }
   ];
 
-  const userPanelLinks = [
-    { label: 'لوحة التحكم', href: '/user/dashboard', icon: <Home className="w-5 h-5" /> },
-    { label: 'مشاريعي', href: '/user/projects/list', icon: <Folder className="w-5 h-5" /> },
-    { label: 'مركز الذكاء الاصطناعي', href: '/user/ai-hub', icon: <Brain className="w-5 h-5" /> },
-    { label: 'مجتمع البناء', href: '/user/social-community', icon: <Users className="w-5 h-5" /> },
-    { label: 'مركز المكافآت', href: '/user/gamification', icon: <Trophy className="w-5 h-5" /> },
-    { label: 'إدارة الرصيد', href: '/user/balance', icon: <Wallet className="w-5 h-5" /> },
-    { label: 'خطط الاشتراك', href: '/user/subscriptions', icon: <Crown className="w-5 h-5" /> },
-    { label: 'إدارة الضمانات', href: '/user/warranties', icon: <Shield className="w-5 h-5" /> },
-    { label: 'الملف الشخصي', href: '/user/profile', icon: <UserIcon className="w-5 h-5" /> },
-    { label: 'تصفح المتاجر', href: '/stores', icon: <Store className="w-5 h-5" /> },
-    { label: 'الإعدادات', href: '/user/settings', icon: <Settings className="w-5 h-5" /> },
-    { label: 'تسجيل الخروج', action: 'logout', icon: <LogOut className="w-5 h-5 text-red-600" />, danger: true },
-  ];
-
   return (
     <main className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-indigo-50/20 font-tajawal" dir="rtl" style={{ fontFamily: "'Tajawal', 'Cairo', 'Arial Unicode MS', sans-serif" }}>
       <div className="container mx-auto px-6 py-8">
-        {/* Modern User Panel */}
-        <div className="mb-8">
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-4">
-            {userPanelLinks.map((item, idx) => (
-              item.action === 'logout' ? (
-                <button key={idx} onClick={handleLogout} className="block">
-                  <EnhancedCard
-                    variant="elevated"
-                    hover
-                    className="flex flex-col items-center justify-center gap-2 p-4 rounded-xl transition-all duration-300 hover:scale-105 border border-red-200 bg-red-50 hover:bg-red-100"
-                  >
-                    <div className="rounded-full p-2 bg-red-100">{item.icon}</div>
-                    <Typography variant="caption" size="sm" className="text-center text-red-700">{item.label}</Typography>
-                  </EnhancedCard>
-                </button>
-              ) : (
-                <Link key={idx} href={item.href || '#'} className="block">
-                  <EnhancedCard
-                    variant="elevated"
-                    hover
-                    className={`flex flex-col items-center justify-center gap-2 p-4 rounded-xl transition-all duration-300 hover:scale-105 ${item.danger ? 'border border-red-200 bg-red-50 hover:bg-red-100' : 'bg-white/80'}`}
-                  >
-                    <div className={`rounded-full p-2 ${item.danger ? 'bg-red-100' : 'bg-blue-100'}`}>{item.icon}</div>
-                    <Typography variant="caption" size="sm" className={`text-center ${item.danger ? 'text-red-700' : 'text-blue-800'}`}>{item.label}</Typography>
-                  </EnhancedCard>
-                </Link>
-              )
-            ))}
-          </div>
-        </div>
-
-        {/* Success Message */}
-        <EnhancedCard variant="elevated" className="mb-6 bg-gradient-to-r from-green-50 to-emerald-50 border-green-200">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-              <Shield className="w-5 h-5 text-green-600" />
-            </div>
-            <div>
-              <Typography variant="subheading" size="lg" weight="semibold" className="text-green-800 mb-1">
-                تم تسجيل الدخول بنجاح!
-              </Typography>
-              <Typography variant="body" size="sm" className="text-green-700">
-                أنت الآن في صفحة لوحة التحكم المحمية
-              </Typography>
-            </div>
-          </div>
-        </EnhancedCard>
-
         {/* Header */}
         <div className="mb-8">
           <Typography variant="heading" size="3xl" weight="bold" className="text-gray-800 mb-3">
-            مرحباً، {user?.name || user?.email?.split('@')[0] || 'المستخدم'}! 👋
+            مرحباً، {profile?.name || profile?.email?.split('@')[0] || 'المستخدم'}! 👋
           </Typography>
           <Typography variant="body" size="lg" className="text-gray-600">
             إليك نظرة عامة على حسابك ومشاريعك
@@ -467,13 +427,13 @@ export default function UserDashboardPage() {
                 </div>
               </Link>
               
-              <Link href="/user/ai-assistant">
+              <Link href="/ai-assistant">
                 <div className="bg-green-50 rounded-lg p-3 hover:bg-green-100 transition-colors cursor-pointer">
                   <div className="flex items-center gap-2 mb-1">
                     <Bot className="w-4 h-4 text-green-600" />
-                    <Typography variant="caption" size="sm" weight="medium" className="text-green-800">مساعد ذكي</Typography>
+                    <Typography variant="caption" size="sm" weight="medium" className="text-green-800">مساعد ذكي متقدم</Typography>
                   </div>
-                  <Typography variant="caption" size="xs" className="text-green-600">إجابات فورية</Typography>
+                  <Typography variant="caption" size="xs" className="text-green-600">إجابات ذكية ونصائح مخصصة</Typography>
                 </div>
               </Link>
               

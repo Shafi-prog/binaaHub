@@ -4,91 +4,62 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/enhanced-components';
 import { Package, Search, Filter, Calendar, MapPin, CreditCard, Truck, Eye, RotateCcw, MessageSquare } from 'lucide-react';
+import { useUserData } from '@/core/shared/contexts/UserDataContext';
 
 export const dynamic = 'force-dynamic'
 
-interface Order {
-  id: string;
-  orderNumber: string;
-  store: string;
-  items: Array<{
-    name: string;
-    quantity: number;
-    price: number;
-  }>;
-  total: number;
-  status: 'pending' | 'confirmed' | 'shipped' | 'delivered' | 'cancelled' | 'returned';
-  orderDate: string;
-  expectedDelivery?: string;
-  actualDelivery?: string;
-  shippingAddress: string;
-  paymentMethod: string;
-  trackingNumber?: string;
-}
-
 export default function OrdersPage() {
-  const [orders, setOrders] = useState<Order[]>([
-    {
-      id: 'ORD001',
-      orderNumber: '#2024-001',
-      store: 'متجر مواد البناء المتقدمة',
-      items: [
-        { name: 'أسمنت أبيض - 25 كيس', quantity: 25, price: 15 },
-        { name: 'رمل ناعم - 5 متر مكعب', quantity: 5, price: 80 }
-      ],
-      total: 775,
-      status: 'delivered',
-      orderDate: '2024-01-15',
-      expectedDelivery: '2024-01-18',
-      actualDelivery: '2024-01-17',
-      shippingAddress: 'الرياض، حي النرجس، شارع الأمير سلطان',
-      paymentMethod: 'بطاقة ائتمان',
-      trackingNumber: 'TRK123456789'
-    },
-    {
-      id: 'ORD002',
-      orderNumber: '#2024-002',
-      store: 'معرض الأدوات الصحية',
-      items: [
-        { name: 'مضخة مياه متوسطة القدرة', quantity: 1, price: 850 },
-        { name: 'أنابيب PVC - 6 بوصة', quantity: 10, price: 45 }
-      ],
-      total: 1300,
-      status: 'shipped',
-      orderDate: '2024-03-10',
-      expectedDelivery: '2024-03-15',
-      shippingAddress: 'جدة، حي الصفا، طريق الملك عبدالله',
-      paymentMethod: 'تحويل بنكي',
-      trackingNumber: 'TRK987654321'
-    },
-    {
-      id: 'ORD003',
-      orderNumber: '#2024-003',
-      store: 'متجر الكهربائيات المنزلية',
-      items: [
-        { name: 'مفاتيح كهربائية متنوعة', quantity: 15, price: 12 },
-        { name: 'كابلات كهربائية - 100 متر', quantity: 2, price: 95 }
-      ],
-      total: 370,
-      status: 'confirmed',
-      orderDate: '2024-03-20',
-      expectedDelivery: '2024-03-25',
-      shippingAddress: 'الدمام، حي الفيصلية، شارع الخليج',
-      paymentMethod: 'نقداً عند الاستلام'
-    }
-  ]);
+  // Use real data from UserDataContext
+  const { orders, isLoading, error, stats } = useUserData();
 
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
-  const [loading, setLoading] = useState(false);
 
-  const filteredOrders = orders.filter(order => {
-    const matchesSearch = order.orderNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         order.store.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         order.items.some(item => item.name.toLowerCase().includes(searchTerm.toLowerCase()));
+  // Show loading state
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-center justify-center h-64">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+              <Typography variant="body" className="text-gray-600">
+                جاري تحميل الطلبات...
+              </Typography>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Show error state
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-center justify-center h-64">
+            <div className="text-center">
+              <Typography variant="heading" className="text-red-600 mb-2">
+                خطأ في تحميل الطلبات
+              </Typography>
+              <Typography variant="body" className="text-gray-600">
+                {error}
+              </Typography>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const filteredOrders = orders?.filter(order => {
+    const matchesSearch = order.orderNumber?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         order.store?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         order.items?.some(item => item.name?.toLowerCase().includes(searchTerm.toLowerCase()));
     const matchesStatus = statusFilter === 'all' || order.status === statusFilter;
     return matchesSearch && matchesStatus;
-  });
+  }) || [];
 
   const getStatusIcon = (status: string) => {
     switch(status) {

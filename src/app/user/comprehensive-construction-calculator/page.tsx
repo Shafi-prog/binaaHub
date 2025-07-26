@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
 import { Button } from '@/core/shared/components/ui/button';
 import { Input } from '@/core/shared/components/ui/input';
@@ -15,6 +16,7 @@ import ProjectPurchasesWarranties from '@/core/shared/components/ui/ProjectPurch
 import { ProjectTrackingService } from '@/core/services/projectTrackingService';
 import { Project, ProjectEstimation, MaterialEstimation, LightingEstimation } from '@/core/shared/types/types';
 import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
+import { useUserData } from '@/core/shared/contexts/UserDataContext';
 import { 
   Calculator, 
   FileText, 
@@ -28,6 +30,7 @@ import {
   Download,
   Eye,
   Grid,
+  ChevronLeft,
   Ruler,
   Target,
   CheckCircle,
@@ -113,6 +116,7 @@ interface PDFAnalysis {
 }
 
 export default function ComprehensiveConstructionCalculator() {
+  const { profile, orders, warranties, projects, invoices, stats, isLoading, error, refreshUserData } = useUserData();
   const searchParams = useSearchParams();
   const router = useRouter();
   const projectId = searchParams?.get('projectId');
@@ -1016,6 +1020,19 @@ interface UnifiedMaterialsMap {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 p-6" dir="rtl">
       <div className="container mx-auto max-w-7xl">
+        {/* Breadcrumb Navigation */}
+        <div className="flex items-center gap-2 mb-6 text-sm text-gray-600">
+          <Link href="/user/dashboard" className="hover:text-blue-600 transition-colors">
+            لوحة التحكم
+          </Link>
+          <ChevronLeft className="w-4 h-4" />
+          <Link href="/user/projects" className="hover:text-blue-600 transition-colors">
+            المشاريع
+          </Link>
+          <ChevronLeft className="w-4 h-4" />
+          <span className="text-gray-900 font-medium">حاسبة البناء الشاملة</span>
+        </div>
+        
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div className="text-center flex-1">

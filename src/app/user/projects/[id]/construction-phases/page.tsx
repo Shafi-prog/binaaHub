@@ -46,6 +46,7 @@ import {
 import LandPurchaseIntegration from '@/core/shared/components/integrations/LandPurchaseIntegration';
 import ContractorSelectionIntegration from '@/core/shared/components/integrations/ContractorSelectionIntegration';
 import InsuranceIntegration from '@/core/shared/components/integrations/InsuranceIntegration';
+import { useUserData } from '@/core/shared/contexts/UserDataContext';
 
 interface PhaseAction {
   id: string;
@@ -97,6 +98,7 @@ interface ConstructionPhaseDetail {
 }
 
 export default function ConstructionPhasesPage() {
+  const { profile, orders, warranties, projects, invoices, stats, isLoading, error, refreshUserData } = useUserData();
   const params = useParams();
   const router = useRouter();
   const projectId = params?.id as string;

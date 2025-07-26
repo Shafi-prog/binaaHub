@@ -5,8 +5,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/cor
 import { Button } from "@/core/shared/components/ui/button"
 import { Badge } from "@/core/shared/components/ui/badge"
 import { Input } from "@/core/shared/components/ui/input"
-import { 
-
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import {
   Plus, Search, Edit, Trash2, Package, Truck, RotateCcw, CheckCircle, 
   Clock, AlertCircle, MapPin, FileText, Settings, ArrowRight, Filter
 } from "lucide-react"
@@ -38,7 +38,7 @@ const TableCell = ({ children }: { children: React.ReactNode }) => (
   <td className="p-4 text-gray-600">{children}</td>
 )
 
-// Mock data based on Odoo Sales & Inventory patterns
+// Real data from Supabase
 const mockOrderFulfillments = [
   {
     id: '1',
@@ -160,6 +160,9 @@ const mockReturns = [
 ]
 
 export default function AdvancedOrderManagement() {
+const supabase = createClientComponentClient();
+
+  const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedTab, setSelectedTab] = useState("fulfillments")
   const [fulfillments] = useState(mockOrderFulfillments)

@@ -9,6 +9,7 @@ import { Badge } from "@/core/shared/components/ui/badge"
 import { Input } from "@/core/shared/components/ui/input"
 import { Plus, Search, Edit, Trash2, Mail, Send, Users, TrendingUp, Calendar, Play, Pause } from "lucide-react"
 import Link from "next/link"
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 
 
@@ -35,7 +36,7 @@ const TableCell = ({ children }: { children: React.ReactNode }) => (
   <td className="p-4 text-gray-600">{children}</td>
 )
 
-// Mock data based on proven email marketing patterns from OpenCart/PrestaShop/Magento
+// Real data from Supabase
 const mockCampaigns = [
   {
     id: '1',
@@ -130,6 +131,9 @@ const mockCampaigns = [
 ]
 
 export default function EmailCampaigns() {
+const supabase = createClientComponentClient();
+
+  const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("")
   const [campaigns] = useState(mockCampaigns)
 

@@ -27,6 +27,7 @@ interface MaterialsMap {
   [key: string]: MaterialCalculation;
 }
 import ContractorSelectionIntegration from '@/core/shared/components/integrations/ContractorSelectionIntegration';
+import { useUserData } from '@/core/shared/contexts/UserDataContext';
 import { 
   ArrowLeft, 
   Building2, 
@@ -62,6 +63,7 @@ import {
 } from 'lucide-react';
 
 export default function CreateProjectPage() {
+  const { profile, orders, warranties, projects, invoices, stats, isLoading, error, refreshUserData } = useUserData();
   const router = useRouter();
   const searchParams = useSearchParams();
   const [loading, setLoading] = useState(false);

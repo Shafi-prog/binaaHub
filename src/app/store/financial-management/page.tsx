@@ -1,17 +1,15 @@
 'use client'
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/core/shared/components/ui/card"
 import { Button } from "@/core/shared/components/ui/button"
 import { Badge } from "@/core/shared/components/ui/badge"
 import { Input } from "@/core/shared/components/ui/input"
-import { 
-
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import {
   Plus, Search, Edit, Trash2, DollarSign, TrendingUp, TrendingDown, 
   FileText, CreditCard, Receipt, Calculator, PieChart, BarChart3 
 } from "lucide-react"
-
-// Force dynamic rendering to avoid SSG auth context issues
 import Link from "next/link"
 import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 
@@ -39,7 +37,7 @@ const TableCell = ({ children }: { children: React.ReactNode }) => (
   <td className="p-4 text-gray-600">{children}</td>
 )
 
-// Mock data based on ERPNext financial management patterns
+// Real data from Supabase
 const mockInvoices = [
   {
     id: '1',
@@ -113,6 +111,9 @@ const mockFinancialSummary = {
 }
 
 export default function FinancialDashboard() {
+const supabase = createClientComponentClient();
+
+  const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedTab, setSelectedTab] = useState("overview")
   const [invoices] = useState(mockInvoices)

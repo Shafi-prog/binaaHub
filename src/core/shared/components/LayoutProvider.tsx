@@ -18,13 +18,11 @@ export default function LayoutProvider({ children }: LayoutProviderProps) {
 
   // Pages that should not show the navbar or onboarding
   const noNavbarPages = ['/login', '/auth/login', '/auth/signup', '/reset-password-confirm', '/clear-auth'];
-  // Hide Navbar for all /store/* admin pages - these use their own layout
+  // Hide Navbar for all authenticated areas - they use their own layout
   const isStoreAdminPage = pathname ? pathname.startsWith('/store') : false;
-
-  if ((pathname && noNavbarPages.includes(pathname)) || isStoreAdminPage) {
-    // Only render children, no providers or UI wrappers
-    return <>{children}</>;
-  }
+  const isUserPage = pathname ? pathname.startsWith('/user') : false;
+  const isAdminPage = pathname ? pathname.startsWith('/admin') : false;
+  const isAuthenticatedPage = isStoreAdminPage || isUserPage || isAdminPage;
 
   const handleTourComplete = useCallback(() => {
     setShowTour(false);
@@ -36,13 +34,26 @@ export default function LayoutProvider({ children }: LayoutProviderProps) {
     if (
       pathname &&
       !noNavbarPages.includes(pathname) &&
-      !isStoreAdminPage &&
+      !isAuthenticatedPage &&
       typeof window !== 'undefined' &&
       localStorage.getItem('hasSeenOnboardingTour') !== 'true'
     ) {
       setShowTour(true);
     }
-  }, [pathname]);
+  }, [pathname, isAuthenticatedPage]);
+
+  // For auth pages and authenticated areas, provide minimal layout with providers but no navbar
+  if ((pathname && noNavbarPages.includes(pathname)) || isAuthenticatedPage) {
+    return (
+      <AuthProvider>
+        <CartProvider>
+          <NotificationProvider>
+            {children}
+          </NotificationProvider>
+        </CartProvider>
+      </AuthProvider>
+    );
+  }
 
   return (
     <AuthProvider>

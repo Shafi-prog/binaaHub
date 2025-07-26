@@ -1,5 +1,6 @@
 'use client';
 
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useState, useEffect, useMemo } from 'react';
 import { Button } from '@/core/shared/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
@@ -61,6 +62,8 @@ const mockCollections: Collection[] = [
 ];
 
 export default function CollectionList() {
+const supabase = createClientComponentClient();
+
   const [collections, setCollections] = useState<Collection[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);

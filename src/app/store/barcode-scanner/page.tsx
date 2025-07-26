@@ -18,10 +18,11 @@ export const dynamic = 'force-dynamic'
 
 
 export default function BarcodeScannerPage() {
+const supabase = createClientComponentClient();
+
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const supabase = createClientComponentClient<Database>();
   const router = useRouter();
 
   useEffect(() => {

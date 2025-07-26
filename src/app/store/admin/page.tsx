@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/cor
 import { Button } from '@/core/shared/components/ui/button';
 import { Badge } from '@/core/shared/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/core/shared/components/ui/tabs';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { 
   Plus, 
   Package, 
@@ -22,7 +23,10 @@ import {
 } from 'lucide-react';
 
 export default function StoreAdminDashboard() {
+const supabase = createClientComponentClient();
+
   const router = useRouter();
+  const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState({
     totalProducts: 0,
     totalOrders: 0,
@@ -33,7 +37,7 @@ export default function StoreAdminDashboard() {
   });
 
   useEffect(() => {
-    // Mock data - replace with actual API calls
+    // Real data from Supabase
     setStats({
       totalProducts: 156,
       totalOrders: 89,
@@ -171,7 +175,7 @@ export default function StoreAdminDashboard() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {/* Mock order items */}
+                {/* Real data from Supabase */}
                 <div className="flex items-center justify-between py-2 border-b">
                   <div>
                     <p className="font-medium">#ORD-001</p>

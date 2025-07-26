@@ -9,6 +9,7 @@ import { ProjectTrackingService } from '@/core/services/projectTrackingService';
 import { ConstructionGuidanceService, ConstructionLevel, ProjectLevel } from '@/core/services/constructionGuidanceService';
 import LandPurchaseIntegration from '@/core/shared/components/integrations/LandPurchaseIntegration';
 import ContractorSelectionIntegration from '@/core/shared/components/integrations/ContractorSelectionIntegration';
+import { useUserData } from '@/core/shared/contexts/UserDataContext';
 import { 
   ArrowLeft, 
   Building2, 
@@ -33,6 +34,7 @@ import {
 } from 'lucide-react';
 
 export default function EnhancedConstructionProjectPage() {
+  const { profile, orders, warranties, projects, invoices, stats, isLoading, error, refreshUserData } = useUserData();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<'project-info' | 'level-selection' | 'level-details' | 'guidance'>('project-info');

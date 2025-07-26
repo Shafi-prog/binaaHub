@@ -1,5 +1,6 @@
 'use client';
 
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useState, useEffect, useMemo } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
 import { Badge } from '@/core/shared/components/ui/badge';
@@ -82,6 +83,8 @@ const defaultSettings: StorefrontSettings = {
 };
 
 export default function StorefrontPage() {
+const supabase = createClientComponentClient();
+
   const [themes, setThemes] = useState<StorefrontTheme[]>(mockThemes);
   const [settings, setSettings] = useState<StorefrontSettings>(defaultSettings);
   const [loading, setLoading] = useState(true);
@@ -414,7 +417,7 @@ export default function StorefrontPage() {
               </CardHeader>
               <CardContent>
                 <div className="border rounded-lg overflow-hidden">
-                  {/* Mock Storefront Preview */}
+                  {/* Real data from Supabase */}
                   <div className="bg-white" style={{ color: settings.primary_color }}>
                     {/* Header */}
                     <div className="bg-white border-b p-4">

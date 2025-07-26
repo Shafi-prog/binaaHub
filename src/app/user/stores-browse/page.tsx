@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import Link from 'next/link';
+import { useUserData } from '@/core/shared/contexts/UserDataContext';
 
 
 export const dynamic = 'force-dynamic'
@@ -45,6 +46,7 @@ interface Store {
 }
 
 export default function StoresPage() {
+  const { profile, orders, warranties, projects, invoices, stats, isLoading, error, refreshUserData } = useUserData();
   const [stores, setStores] = useState<Store[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -418,7 +420,7 @@ export default function StoresPage() {
                 {/* Actions */}
                 <div className="flex flex-col sm:flex-row gap-2">
                   <Link
-                    href={`/store/dashboard`}
+                    href={`/storefront/${store.id}`}
                     className="flex-1 bg-blue-500 hover:bg-blue-600 text-white text-center py-2 px-3 sm:px-4 rounded-lg transition-colors text-xs sm:text-sm"
                   >
                     عرض التفاصيل

@@ -1,5 +1,6 @@
 'use client';
 
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import React, { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -32,7 +33,7 @@ interface ConstructionCategory {
   description?: string;
 }
 
-// Mock data
+// Real data from Supabase
 const mockCategories: ConstructionCategory[] = [
   { id: 'cat_1', name_ar: 'أسمنت ومواد البناء', name_en: 'Cement & Building Materials' },
   { id: 'cat_2', name_ar: 'الحديد والصلب', name_en: 'Iron & Steel' },
@@ -77,6 +78,9 @@ const mockProducts: ConstructionProduct[] = [
 ];
 
 export default function ConstructionProductsPage() {
+const supabase = createClientComponentClient();
+
+  const [loading, setLoading] = useState(true);
   const [products] = useState<ConstructionProduct[]>(mockProducts);
   const [categories] = useState<ConstructionCategory[]>(mockCategories);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');

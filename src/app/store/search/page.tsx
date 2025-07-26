@@ -1,244 +1,280 @@
 'use client';
 
-import { useState, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
-import { Input } from '@/core/shared/components/ui/input';
+export const dynamic = 'force-dynamic';
+
+import { useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
 import { Button } from '@/core/shared/components/ui/button';
-import { Card } from '@/core/shared/components/ui/card';
+import { Input } from '@/core/shared/components/ui/input';
 import { Badge } from '@/core/shared/components/ui/badge';
-import { Search, Filter, SortAsc, Star, Eye, Heart, Grid3X3, List as ListIcon } from 'lucide-react';
-import AISearchSuggestions from '@/core/shared/components/AISearchSuggestions';
-import SocialSharing from '@/core/shared/components/SocialSharing';
+import { 
+  Search, 
+  Filter, 
+  BarChart3, 
+  Eye, 
+  TrendingUp, 
+  Users,
+  Plus,
+  Download,
+  Info,
+  Zap,
+  Target
+} from 'lucide-react';
+import { CustomerSearchWidget, type Customer } from '@/core/shared/components/store/CustomerSearchWidget';
+import { toast } from 'sonner';
 
-
-export const dynamic = 'force-dynamic'
-// Force dynamic rendering to avoid SSG auth context issues
-
-
-export default function AdvancedSearchPage() {
+export default function SearchPage() {
+  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [showSuggestions, setShowSuggestions] = useState(false);
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-  const [results, setResults] = useState<any[]>([]);
 
-  const handleSearch = (query: string) => {
-    setSearchQuery(query);
-    setShowSuggestions(false);
-    
-    // Mock search results
-    const mockResults = [
-      {
-        id: 1,
-        name: 'طوب أحمر عالي الجودة',
-        price: 0.52,
-        image: '/placeholder-product.jpg',
-        rating: 4.5,
-        store: 'مؤسسة البناء المتقدم',
-        location: 'الرياض'
-      },
-      {
-        id: 2,
-        name: 'أسمنت بورتلاند',
-        price: 24.00,
-        image: '/placeholder-product.jpg',
-        rating: 4.8,
-        store: 'شركة الأسمنت السعودية',
-        location: 'جدة'
-      }
-    ];
-    
-    setResults(mockResults);
+  // Mock search data
+  const searchStats = {
+    totalSearches: 1250,
+    popularQueries: 45,
+    searchResults: 890,
+    averageTime: 0.8,
+    conversionRate: 23,
+    activeUsers: 156
   };
 
-  const handleSuggestionSelect = (suggestion: string) => {
-    handleSearch(suggestion);
-  };
+  const popularSearches = [
+    { query: 'كرسي مكتب', count: 89, trend: '+12%' },
+    { query: 'طاولة اجتماعات', count: 67, trend: '+8%' },
+    { query: 'مصباح LED', count: 54, trend: '+15%' },
+    { query: 'خزانة ملفات', count: 43, trend: '+5%' }
+  ];
+
+  const recentSearches = [
+    { id: 1, query: 'مكتب تنفيذي', user: 'أحمد محمد', time: '5 دقائق', results: 23 },
+    { id: 2, query: 'كرسي ألعاب', user: 'فاطمة علي', time: '10 دقائق', results: 15 },
+    { id: 3, query: 'مكتبة خشبية', user: 'محمد حسن', time: '15 دقيقة', results: 31 }
+  ];
 
   return (
     <div className="p-6 space-y-6">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">🔍 البحث المتقدم الذكي</h1>
-        <p className="text-gray-600">
-          بحث ذكي مدعوم بالذكاء الاصطناعي مع اقتراحات تفاعلية ومشاركة النتائج
-        </p>
-        <div className="mt-4 flex items-center gap-2 text-sm">
-          <span className="px-2 py-1 bg-green-100 text-green-700 rounded-full">🤖 الذكاء الاصطناعي</span>
-          <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full">🔍 بحث فوري</span>
-          <span className="px-2 py-1 bg-purple-100 text-purple-700 rounded-full">🏆 Phase 2 - مكتمل</span>
+      {/* Enhanced Header with Gradient Background */}
+      <div className="relative overflow-hidden rounded-xl bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-700 p-8 shadow-2xl">
+        <div className="absolute inset-0 bg-black/20"></div>
+        <div className="relative z-10">
+          <div className="flex items-center justify-between text-white">
+            <div>
+              <h1 className="text-3xl font-bold mb-2">محرك البحث المتقدم</h1>
+              <p className="text-blue-100 text-lg">نظام بحث ذكي مع تحليلات شاملة ونتائج مخصصة</p>
+            </div>
+            <div className="flex gap-3">
+              <Button variant="outline" className="bg-white/20 border-white/30 text-white hover:bg-white/30">
+                <Download className="h-4 w-4 mr-2" />
+                تصدير النتائج
+              </Button>
+              <Button variant="outline" className="bg-white/20 border-white/30 text-white hover:bg-white/30">
+                <Filter className="h-4 w-4 mr-2" />
+                تصفية متقدمة
+              </Button>
+              <Button className="bg-white text-purple-600 hover:bg-gray-50">
+                <Plus className="h-4 w-4 mr-2" />
+                بحث مخصص
+              </Button>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div className="space-y-6">
-        {/* Search Section */}
-        <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
-          <div className="relative">
-            <div className="flex items-center">
-              <div className="relative flex-1">
-                <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => {
-                    setSearchQuery(e.target.value);
-                    setShowSuggestions(true);
-                  }}
-                  onFocus={() => setShowSuggestions(true)}
-                  placeholder="ابحث عن المنتجات... (مثال: طوب، أسمنت، حديد)"
-                  className="w-full pr-12 pl-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-right"
-                />
-                
-                {/* AI Search Suggestions */}
-                {showSuggestions && (
-                  <AISearchSuggestions
-                    searchQuery={searchQuery}
-                    onSuggestionSelect={handleSuggestionSelect}
-                    className="mt-2"
-                  />
-                )}
-              </div>
-              
-              <button
-                onClick={() => handleSearch(searchQuery)}
-                className="mr-4 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg transition-colors"
-              >
-                بحث
-              </button>
+      {/* Customer Search Section */}
+      <Card className="border-l-4 border-l-purple-500 shadow-lg">
+        <CardHeader className="bg-gradient-to-r from-purple-50 to-blue-50">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-purple-500 rounded-lg">
+              <Info className="h-5 w-5 text-white" />
             </div>
-          </div>
-        </div>
-
-        {/* Results Section */}
-        {results.length > 0 && (
-          <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-            {/* Results Header */}
-            <div className="p-6 border-b border-gray-200">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h2 className="text-xl font-bold text-gray-900">نتائج البحث</h2>
-                  <p className="text-gray-600">تم العثور على {results.length} منتج</p>
-                </div>
-                
-                <div className="flex items-center gap-4">
-                  {/* View Mode Toggle */}
-                  <div className="flex items-center bg-gray-100 rounded-lg p-1">
-                    <button
-                      onClick={() => setViewMode('grid')}
-                      className={`p-2 rounded-md transition-colors ${
-                        viewMode === 'grid' 
-                          ? 'bg-white shadow text-green-600' 
-                          : 'text-gray-600 hover:text-gray-900'
-                      }`}
-                    >
-                      <Grid3X3 className="w-4 h-4" />
-                    </button>
-                    <button
-                      onClick={() => setViewMode('list')}
-                      className={`p-2 rounded-md transition-colors ${
-                        viewMode === 'list' 
-                          ? 'bg-white shadow text-green-600' 
-                          : 'text-gray-600 hover:text-gray-900'
-                      }`}
-                    >
-                      <ListIcon className="w-4 h-4" />
-                    </button>
-                  </div>
-
-                  {/* Share Results */}
-                  <SocialSharing
-                    title={`نتائج البحث: ${searchQuery}`}
-                    description={`تم العثور على ${results.length} منتج في منصة بنا`}
-                    hashtags={['بحث_المنتجات', 'مواد_البناء']}
-                    showBinnaWatermark={true}
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Results Grid/List */}
-            <div className="p-6">
-              {viewMode === 'grid' ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {results.map((product) => (
-                    <div key={product.id} className="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow">
-                      <div className="aspect-w-16 aspect-h-9 bg-gray-200">
-                        <img
-                          src={product.image}
-                          alt={product.name}
-                          className="w-full h-48 object-cover"
-                          onError={(e) => {
-                            e.currentTarget.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" fill="%23f3f4f6"/><text x="50%" y="50%" font-size="16" fill="%236b7280" text-anchor="middle" dy=".3em">صورة المنتج</text></svg>';
-                          }}
-                        />
-                      </div>
-                      <div className="p-4">
-                        <h3 className="font-semibold text-gray-900 mb-2">{product.name}</h3>
-                        <p className="text-2xl font-bold text-green-600 mb-2">{product.price} ريال</p>
-                        <div className="flex items-center justify-between text-sm text-gray-600">
-                          <span>⭐ {product.rating}</span>
-                          <span>{product.location}</span>
-                        </div>
-                        <p className="text-sm text-gray-500 mt-1">{product.store}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  {results.map((product) => (
-                    <div key={product.id} className="flex items-center gap-4 p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow">
-                      <img
-                        src={product.image}
-                        alt={product.name}
-                        className="w-20 h-20 object-cover rounded-lg"
-                        onError={(e) => {
-                          e.currentTarget.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80"><rect width="80" height="80" fill="%23f3f4f6"/><text x="50%" y="50%" font-size="12" fill="%236b7280" text-anchor="middle" dy=".3em">صورة</text></svg>';
-                        }}
-                      />
-                      <div className="flex-1">
-                        <h3 className="font-semibold text-gray-900">{product.name}</h3>
-                        <p className="text-gray-600">{product.store}</p>
-                        <div className="flex items-center gap-4 mt-2">
-                          <span className="text-2xl font-bold text-green-600">{product.price} ريال</span>
-                          <span className="text-sm text-gray-500">⭐ {product.rating}</span>
-                          <span className="text-sm text-gray-500">{product.location}</span>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* BinnaHub Watermark */}
-            <div className="px-6 py-4 bg-gray-50 border-t border-gray-200 text-center">
-              <p className="text-sm text-gray-500">
-                نتائج البحث مقدمة من <span className="font-semibold text-green-600">BinnaHub AI Search</span>
+            <div>
+              <CardTitle className="text-purple-700">البحث عن معلومات العملاء والمشاريع</CardTitle>
+              <p className="text-sm text-purple-600 mt-1">
+                يمكن للمتاجر رؤية معلومات المشاريع لتحديد أو تعريف المشروع للتسليم
               </p>
             </div>
           </div>
-        )}
+        </CardHeader>
+        <CardContent className="pt-6">
+          <CustomerSearchWidget
+            onCustomerSelect={(customer) => {
+              setSelectedCustomer(customer);
+              toast.success(`تم اختيار العميل: ${customer.name} للبحث`);
+            }}
+          />
+        </CardContent>
+      </Card>
 
-        {/* No Results */}
-        {searchQuery && results.length === 0 && (
-          <div className="bg-white rounded-lg shadow-lg p-12 text-center">
-            <Search className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">لم نجد أي نتائج</h3>
-            <p className="text-gray-600">جرب البحث بكلمات مختلفة أو استخدم الاقتراحات الذكية</p>
+      {/* Enhanced Statistics Dashboard */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
+        <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200 hover:shadow-lg transition-all duration-300">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm font-semibold text-blue-700">إجمالي البحثات</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-blue-500 rounded-lg">
+                <Search className="h-5 w-5 text-white" />
+              </div>
+              <div>
+                <span className="text-2xl font-bold text-blue-800">{searchStats.totalSearches}</span>
+                <p className="text-xs text-blue-600 mt-1">عملية بحث</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200 hover:shadow-lg transition-all duration-300">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm font-semibold text-purple-700">استعلامات شائعة</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-purple-500 rounded-lg">
+                <TrendingUp className="h-5 w-5 text-white" />
+              </div>
+              <div>
+                <span className="text-2xl font-bold text-purple-800">{searchStats.popularQueries}</span>
+                <p className="text-xs text-purple-600 mt-1">استعلام</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-gradient-to-br from-green-50 to-green-100 border-green-200 hover:shadow-lg transition-all duration-300">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm font-semibold text-green-700">نتائج البحث</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-green-500 rounded-lg">
+                <Eye className="h-5 w-5 text-white" />
+              </div>
+              <div>
+                <span className="text-2xl font-bold text-green-800">{searchStats.searchResults}</span>
+                <p className="text-xs text-green-600 mt-1">نتيجة</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-gradient-to-br from-orange-50 to-orange-100 border-orange-200 hover:shadow-lg transition-all duration-300">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm font-semibold text-orange-700">سرعة البحث</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-orange-500 rounded-lg">
+                <Zap className="h-5 w-5 text-white" />
+              </div>
+              <div>
+                <span className="text-2xl font-bold text-orange-800">{searchStats.averageTime}</span>
+                <p className="text-xs text-orange-600 mt-1">ثانية</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-gradient-to-br from-indigo-50 to-indigo-100 border-indigo-200 hover:shadow-lg transition-all duration-300">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm font-semibold text-indigo-700">معدل التحويل</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-indigo-500 rounded-lg">
+                <Target className="h-5 w-5 text-white" />
+              </div>
+              <div>
+                <span className="text-2xl font-bold text-indigo-800">{searchStats.conversionRate}%</span>
+                <p className="text-xs text-indigo-600 mt-1">تحويل</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-gradient-to-br from-teal-50 to-teal-100 border-teal-200 hover:shadow-lg transition-all duration-300">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm font-semibold text-teal-700">المستخدمون النشطون</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-teal-500 rounded-lg">
+                <Users className="h-5 w-5 text-white" />
+              </div>
+              <div>
+                <span className="text-2xl font-bold text-teal-800">{searchStats.activeUsers}</span>
+                <p className="text-xs text-teal-600 mt-1">مستخدم</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Advanced Search Box */}
+      <Card>
+        <CardHeader>
+          <CardTitle>البحث المتقدم</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex gap-4">
+            <div className="relative flex-1">
+              <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+              <Input
+                type="text"
+                placeholder="ابحث عن المنتجات، العملاء، الطلبات..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pr-12 py-3 text-lg"
+              />
+            </div>
+            <Button size="lg" className="px-8">
+              <Search className="h-5 w-5 mr-2" />
+              بحث
+            </Button>
           </div>
-        )}
+        </CardContent>
+      </Card>
 
-        {/* BinnaHub Branding */}
-        <div className="text-center py-8">
-          <p className="text-sm text-gray-500">
-            البحث الذكي مدعوم من <span className="font-semibold text-green-600">BinnaHub AI Technology</span>
-          </p>
-          <p className="text-xs text-gray-400 mt-1">
-            تقنية متقدمة للبحث والاقتراحات الذكية - Phase 2 مكتمل
-          </p>
-        </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Popular Searches */}
+        <Card>
+          <CardHeader>
+            <CardTitle>البحثات الشائعة</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {popularSearches.map((search, index) => (
+                <div key={index} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50">
+                  <div className="flex items-center gap-3">
+                    <div className="text-sm font-medium text-gray-900">{search.query}</div>
+                    <Badge variant="secondary">{search.count} بحث</Badge>
+                  </div>
+                  <div className="text-sm text-green-600 font-medium">{search.trend}</div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Recent Searches */}
+        <Card>
+          <CardHeader>
+            <CardTitle>البحثات الأخيرة</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {recentSearches.map((search) => (
+                <div key={search.id} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50">
+                  <div>
+                    <div className="font-medium text-gray-900">{search.query}</div>
+                    <div className="text-sm text-gray-600">بواسطة {search.user} • {search.time}</div>
+                  </div>
+                  <Badge variant="outline">{search.results} نتيجة</Badge>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
 }
-
-

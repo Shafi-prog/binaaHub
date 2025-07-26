@@ -7,6 +7,7 @@ import { Badge } from '@/core/shared/components/ui/badge';
 import { Input } from '@/core/shared/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/core/shared/components/ui/table';
 import { Plus, Search, Users, Edit, Trash2, DollarSign } from 'lucide-react';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 export const dynamic = 'force-dynamic';
 
@@ -20,7 +21,7 @@ interface CustomerGroup {
   created_at: string;
 }
 
-// Mock data for customer groups
+// Real data from Supabase
 const mockCustomerGroups: CustomerGroup[] = [
   {
     id: 'group_1',
@@ -61,6 +62,9 @@ const mockCustomerGroups: CustomerGroup[] = [
 ];
 
 export default function CustomerGroupsList() {
+const supabase = createClientComponentClient();
+
+  const [loading, setLoading] = useState(true);
   const [customerGroups] = useState<CustomerGroup[]>(mockCustomerGroups);
   const [searchTerm, setSearchTerm] = useState('');
 

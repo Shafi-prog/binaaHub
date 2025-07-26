@@ -6,6 +6,7 @@ import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/en
 import { Shield, DollarSign, TrendingUp, ArrowRight, Receipt, Eye, Calendar, Package, BarChart3, PieChart } from 'lucide-react';
 import { formatDateSafe, useIsClient } from '../../../core/shared/utils/hydration-safe';
 import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
+import { useUserData } from '@/core/shared/contexts/UserDataContext';
 
 export const dynamic = 'force-dynamic'
 
@@ -24,6 +25,7 @@ interface WarrantyExpense {
 }
 
 export default function WarrantyExpenseTrackingPage() {
+  const { profile, orders, warranties, projects, invoices, stats, isLoading, error, refreshUserData } = useUserData();
   const router = useRouter();
   const isClient = useIsClient();
   const [expenses, setExpenses] = useState<WarrantyExpense[]>([]);
@@ -80,7 +82,34 @@ export default function WarrantyExpenseTrackingPage() {
   }, {});
 
   if (!isClient) {
+    
+  // Loading state
+  if (isLoading) {
     return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-600 mb-4">حدث خطأ في تحميل البيانات</p>
+          <button 
+            onClick={refreshUserData}
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          >
+            إعادة المحاولة
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+return (
       <div className="container mx-auto px-4 py-8 max-w-6xl" dir="rtl">
         <div className="flex items-center justify-center p-12">
           <div className="text-center">

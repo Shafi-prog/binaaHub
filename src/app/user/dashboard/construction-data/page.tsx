@@ -7,6 +7,7 @@ import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/en
 import { Badge } from '@/core/shared/components/ui/badge';
 import ClientIcon, { type IconKey } from '@/core/shared/components/ClientIcon';
 import Link from 'next/link';
+import { useUserData } from '@/core/shared/contexts/UserDataContext';
 
 
 export const dynamic = 'force-dynamic'
@@ -25,6 +26,7 @@ interface ConstructionDashboardStats {
 }
 
 export default function ConstructionDataDashboard() {
+  const { profile, orders, warranties, projects, invoices, stats: userStats, isLoading, error: userError, refreshUserData } = useUserData();
   const [user, setUser] = useState<any>(null);
   const [stats, setStats] = useState<ConstructionDashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
@@ -128,31 +130,31 @@ export default function ConstructionDataDashboard() {
   const dashboardCards = [
     {
       title: 'إجمالي المشاريع',
-      value: stats.totalProjects,
+      value: (userStats?.activeProjects || 0) + (userStats?.completedProjects || 0),
       icon: 'dashboard' as IconKey,
       color: 'bg-blue-500',
     },
     {
       title: 'المشاريع النشطة',
-      value: stats.activeProjects,
+      value: userStats?.activeProjects || 0,
       icon: 'settings' as IconKey,
       color: 'bg-green-500',
     },
     {
       title: 'المشاريع المكتملة',
-      value: stats.completedProjects,
+      value: userStats?.completedProjects || 0,
       icon: 'shield' as IconKey,
       color: 'bg-purple-500',
     },
     {
       title: 'إجمالي المصروفات',
-      value: `${stats.totalExpenses.toLocaleString('en-US')} ريال`,
+      value: `${(userStats?.monthlySpent || 0).toLocaleString('en-US')} ريال`,
       icon: 'money' as IconKey,
       color: 'bg-orange-500',
     },
     {
       title: 'الإنفاق الشهري',
-      value: `${stats.monthlySpending.toLocaleString('en-US')} ريال`,
+      value: `${(userStats?.monthlySpent || 0).toLocaleString('en-US')} ريال`,
       icon: 'chart' as IconKey,
       color: 'bg-indigo-500',
     },
@@ -257,7 +259,7 @@ export default function ConstructionDataDashboard() {
             المشاريع الأخيرة
           </Typography>
           <div className="space-y-4">
-            {stats.recentProjects.length === 0 ? (
+            {(!stats?.recentProjects || stats.recentProjects.length === 0) ? (
               <div className="text-gray-500">لا توجد مشاريع حديثة</div>
             ) : (
               stats.recentProjects.map((project) => (
@@ -284,7 +286,7 @@ export default function ConstructionDataDashboard() {
             المصروفات الأخيرة
           </Typography>
           <div className="space-y-4">
-            {stats.recentExpenses.length === 0 ? (
+            {(!stats?.recentExpenses || stats.recentExpenses.length === 0) ? (
               <div className="text-gray-500">لا توجد مصروفات حديثة</div>
             ) : (
               stats.recentExpenses.map((expense) => (

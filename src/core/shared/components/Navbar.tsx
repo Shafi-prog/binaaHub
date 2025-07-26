@@ -27,7 +27,9 @@ import {
   Hammer,
   FileCheck,
   Truck,
-  Award
+  Award,
+  Bot,
+  Sparkles
 } from 'lucide-react';
 import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/enhanced-components';
 import { NotificationService } from '@/core/shared/services/notifications';
@@ -181,6 +183,17 @@ export default function Navbar({ user, accountType }: NavbarProps) {
       case 'engineer':
       case 'consultant':
         return '/dashboard/construction-data';
+      case 'concrete-supplier':
+      case 'concrete_supplier':
+        return '/dashboard/concrete-supplier';
+      case 'equipment-rental':
+      case 'equipment_rental':
+        return '/dashboard/equipment-rental';
+      case 'waste-management':
+      case 'waste_management':
+        return '/dashboard/waste-management';
+      case 'contractor':
+        return '/dashboard/contractor';
       default:
         return '/';
     }
@@ -270,9 +283,21 @@ export default function Navbar({ user, accountType }: NavbarProps) {
       ]
     },
     {
-      label: t('services'),
-      href: '/#features',
-      icon: Package,
+      label: 'المساعد الذكي',
+      href: '/ai-assistant',
+      icon: Bot,
+      requiresAuth: false
+    },
+    {
+      label: 'حجز الخدمات',
+      href: '/dashboard/bookings',
+      icon: Calendar,
+      requiresAuth: true
+    },
+    {
+      label: 'الميزات الجديدة',
+      href: '/features',
+      icon: Sparkles,
       requiresAuth: false
     },
     {
@@ -298,6 +323,16 @@ export default function Navbar({ user, accountType }: NavbarProps) {
       label: 'المشاريع',
       href: '/user/projects',
       icon: Building2
+    },
+    {
+      label: 'حجز الخدمات',
+      href: '/dashboard/bookings',
+      icon: Calendar
+    },
+    {
+      label: 'المساعد الذكي',
+      href: '/ai-assistant',
+      icon: Bot
     },
     {
       label: 'الطلبات',
@@ -611,6 +646,14 @@ export default function Navbar({ user, accountType }: NavbarProps) {
                 <Link href="/signup" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
                   <User className="w-5 h-5 text-blue-600" />
                   <span>إنشاء حساب</span>
+                </Link>
+                <Link href="/register" className="flex items-center gap-3 p-3 rounded-lg hover:bg-green-100 bg-green-50" onClick={() => setIsMenuOpen(false)}>
+                  <Building2 className="w-5 h-5 text-green-600" />
+                  <span>تسجيل مقدم خدمة</span>
+                </Link>
+                <Link href="/provider/login" className="flex items-center gap-3 p-3 rounded-lg hover:bg-blue-100 bg-blue-50" onClick={() => setIsMenuOpen(false)}>
+                  <Users className="w-5 h-5 text-blue-600" />
+                  <span>دخول مقدم خدمة</span>
                 </Link>
               </div>
             )}

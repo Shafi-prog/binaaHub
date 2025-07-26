@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState, Suspense } from 'react';
+import { useUserData } from '@/core/shared/contexts/UserDataContext';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { CheckCircle, FileText, ArrowRight, Download, Receipt } from 'lucide-react';
@@ -11,6 +12,7 @@ export const dynamic = 'force-dynamic'
 // Force dynamic rendering to avoid SSG auth context issues
 
 function PaymentSuccessContent() {
+  const { isLoading, error, refreshUserData } = useUserData();
   const searchParams = useSearchParams();
   const router = useRouter();
   const [paymentInfo, setPaymentInfo] = useState<{
@@ -30,7 +32,34 @@ function PaymentSuccessContent() {
     });
   }, [searchParams]);
 
-  return (
+  
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-600 mb-4">حدث خطأ في تحميل البيانات</p>
+          <button 
+            onClick={refreshUserData}
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          >
+            إعادة المحاولة
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+return (
     <div className="min-h-screen bg-gray-50 font-tajawal flex items-center justify-center p-4" dir="rtl">
       <Card className="max-w-md w-full p-8 text-center">
         {/* Success Icon */}

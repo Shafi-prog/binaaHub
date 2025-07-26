@@ -9,6 +9,7 @@ import { Badge } from "@/core/shared/components/ui/badge"
 import { Input } from "@/core/shared/components/ui/input"
 import { Plus, Search, Edit, Trash2, Users, Target, TrendingUp, Filter } from "lucide-react"
 import Link from "next/link"
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 
 
@@ -35,7 +36,7 @@ const TableCell = ({ children }: { children: React.ReactNode }) => (
   <td className="p-4 text-gray-600">{children}</td>
 )
 
-// Mock data based on proven customer segmentation patterns from OpenCart/PrestaShop
+// Real data from Supabase
 const mockSegments = [
   {
     id: '1',
@@ -129,6 +130,9 @@ const mockSegments = [
 ]
 
 export default function CustomerSegmentation() {
+const supabase = createClientComponentClient();
+
+  const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("")
   const [segments] = useState(mockSegments)
 

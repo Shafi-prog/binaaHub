@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/cor
 import { Button } from "@/core/shared/components/ui/button"
 import { Badge } from "@/core/shared/components/ui/badge"
 import { Input } from "@/core/shared/components/ui/input"
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 // Table component replacement since we don't have the shadcn table
 const Table = ({ children }: { children: React.ReactNode }) => (
@@ -34,7 +35,7 @@ import Link from "next/link"
 
 
 export const dynamic = 'force-dynamic'
-// Mock data - replace with actual API calls
+// Real data from Supabase
 const mockPriceLists = [
   {
     id: '1',
@@ -61,6 +62,9 @@ const mockPriceLists = [
 ]
 
 export default function PricingManagement() {
+const supabase = createClientComponentClient();
+
+  const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("")
   const [priceLists] = useState(mockPriceLists)
 

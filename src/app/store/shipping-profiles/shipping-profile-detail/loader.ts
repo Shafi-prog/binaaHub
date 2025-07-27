@@ -17,4 +17,3 @@ export const shippingProfileLoader = async ({ params }: LoaderFunctionArgs) => {
   return queryClient.ensureQueryData(query)
 }
 
-

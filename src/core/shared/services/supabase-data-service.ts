@@ -11,22 +11,13 @@ export class SupabaseDataService {
 
   private async initializeClient() {
     try {
-      // Try to create real Supabase client
+      // Always use real Supabase client for production data
       this.supabase = createClientComponentClient();
-      
-      // Test if Supabase is available by making a simple query
-      const { error } = await this.supabase.from('user_profiles').select('id').limit(1);
-      
-      if (error) {
-        console.log('Real Supabase not available, error:', error.message);
-        console.log('Switching to mock client');
-        await this.switchToMockClient();
-      } else {
-        console.log('✅ Using real Supabase client');
-      }
+      console.log('✅ Using real Supabase client');
+      this.usingMockClient = false;
     } catch (error) {
-      console.log('Supabase initialization failed, using mock client:', error);
-      await this.switchToMockClient();
+      console.error('❌ Failed to initialize Supabase client:', error);
+      throw error; // Don't fallback to mock, let the error propagate
     }
   }
 
@@ -68,9 +59,19 @@ export class SupabaseDataService {
         .eq('user_id', userId)
         .single();
 
-      if (error && error.code !== 'PGRST116') {
+      if (error) {
         console.error('Error fetching user profile:', error);
-        return this.getDefaultUserProfile(userId);
+        
+        // Handle specific Supabase RLS policy errors
+        if (error.code === '42P17' || error.message?.includes('infinite recursion')) {
+          console.warn('Supabase RLS policy error detected, using fallback data');
+          return this.getDefaultUserProfile(userId);
+        }
+        
+        if (error.code !== 'PGRST116') {
+          console.error('Supabase profile fetch error:', error.message);
+          return this.getDefaultUserProfile(userId);
+        }
       }
 
       return data || this.getDefaultUserProfile(userId);
@@ -91,6 +92,13 @@ export class SupabaseDataService {
 
       if (error) {
         console.error('Error fetching orders:', error);
+        
+        // Handle RLS policy errors
+        if (error.code === '42P17' || error.message?.includes('infinite recursion')) {
+          console.warn('Supabase RLS policy error for orders, using fallback data');
+          return this.getDefaultOrders();
+        }
+        
         return this.getDefaultOrders();
       }
 

@@ -38,7 +38,7 @@ interface StorefrontSettings {
   };
 }
 
-const mockThemes: StorefrontTheme[] = [
+const []: StorefrontTheme[] = [
   {
     id: 'modern-arabic',
     name: 'العربية الحديثة',
@@ -85,7 +85,7 @@ const defaultSettings: StorefrontSettings = {
 export default function StorefrontPage() {
 const supabase = createClientComponentClient();
 
-  const [themes, setThemes] = useState<StorefrontTheme[]>(mockThemes);
+  const [themes, setThemes] = useState<StorefrontTheme[]>([]);
   const [settings, setSettings] = useState<StorefrontSettings>(defaultSettings);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'themes' | 'settings' | 'preview'>('themes');

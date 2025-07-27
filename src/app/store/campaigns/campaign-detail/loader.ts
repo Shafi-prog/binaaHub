@@ -21,4 +21,3 @@ export const campaignLoader = async ({ params }: LoaderFunctionArgs) => {
   return queryClient.ensureQueryData(query)
 }
 
-

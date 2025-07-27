@@ -32,4 +32,3 @@ export const TaxRegionDetailBreadcrumb = (
   return <span>{isValid ? getProvinceByIso2(provinceCode) : provinceCode}</span>
 }
 
-

@@ -44,7 +44,7 @@ export default function WarehouseManagement() {
     try {
       setLoading(true);
       // Mock warehouses data with Arabic content
-      const mockWarehouses: WarehouseData[] = [
+      const []: WarehouseData[] = [
         {
           id: "wh_1",
           name: "المستودع الرئيسي - الرياض",
@@ -97,7 +97,7 @@ export default function WarehouseManagement() {
           created_at: "2024-02-01T14:00:00Z"
         }
       ];
-      setWarehouses(mockWarehouses);
+      setWarehouses([]);
     } catch (error) {
       console.error("Error loading warehouses:", error);
     } finally {
@@ -397,8 +397,4 @@ export default function WarehouseManagement() {
     </div>
   );
 }
-
-
-
-
 

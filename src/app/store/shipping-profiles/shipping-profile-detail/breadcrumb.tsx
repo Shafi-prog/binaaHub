@@ -27,4 +27,3 @@ export const ShippingProfileDetailBreadcrumb = (
   return <span>{shipping_profile.name}</span>
 }
 
-

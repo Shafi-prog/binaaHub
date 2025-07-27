@@ -3,6 +3,7 @@
 export const dynamic = 'force-dynamic';
 
 import { useState, useEffect } from 'react';
+
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { Button } from '@/core/shared/components/ui/button';
 import { Input } from '@/core/shared/components/ui/input';
@@ -160,39 +161,7 @@ export default function CashRegisterManagement() {
       if (error) {
         console.warn('Database error loading cash registers:', error);
         // Fall back to mock data if database isn't available
-        const mockRegisters: CashRegister[] = [
-          {
-            id: '1',
-            register_name: 'الصندوق الرئيسي',
-            location_id: 'main',
-            location_name: 'الفرع الرئيسي',
-            is_active: true,
-            opening_balance: 10000,
-            current_balance: 15000,
-            expected_balance: 15000,
-            status: 'open',
-            opened_by: 'admin',
-            opened_at: new Date().toISOString(),
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString()
-          },
-          {
-            id: '2',
-            register_name: 'صندوق المبيعات',
-            location_id: 'sales',
-            location_name: 'قسم المبيعات',
-            is_active: true,
-            opening_balance: 5000,
-            current_balance: 8500,
-            expected_balance: 8500,
-            status: 'open',
-            opened_by: 'admin',
-            opened_at: new Date().toISOString(),
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString()
-          }
-        ];
-        setRegisters(mockRegisters);
+                setRegisters([]);
         toast.info('تم تحميل بيانات تجريبية لصناديق النقد');
         return;
       }
@@ -234,26 +203,7 @@ export default function CashRegisterManagement() {
       if (error) {
         console.warn('Database error loading sessions:', error);
         // Fall back to mock data if database isn't available
-        const mockSessions: CashSession[] = [
-          {
-            id: '1',
-            register_id: '1',
-            session_number: 'SES001',
-            opening_balance: 10000,
-            expected_balance: 15000,
-            variance: 0,
-            total_sales: 5000,
-            total_cash_sales: 3000,
-            total_card_sales: 2000,
-            total_refunds: 0,
-            cash_additions: 0,
-            cash_withdrawals: 0,
-            opened_by: 'admin',
-            opened_at: new Date().toISOString(),
-            status: 'active'
-          }
-        ];
-        setSessions(mockSessions);
+                setSessions([]);
         toast.info('تم تحميل بيانات تجريبية للجلسات');
         return;
       }

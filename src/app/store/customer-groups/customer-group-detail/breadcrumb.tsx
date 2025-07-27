@@ -31,4 +31,3 @@ export const CustomerGroupDetailBreadcrumb = (
   return <span>{customer_group.name}</span>
 }
 
-

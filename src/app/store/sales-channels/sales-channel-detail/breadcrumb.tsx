@@ -23,4 +23,3 @@ export const SalesChannelDetailBreadcrumb = (
   return <span>{sales_channel.name}</span>
 }
 
-

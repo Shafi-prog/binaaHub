@@ -16,4 +16,3 @@ export const taxRegionLoader = async ({ params }: LoaderFunctionArgs) => {
   return queryClient.ensureQueryData(query)
 }
 
-

@@ -231,7 +231,6 @@ const supabase = createClientComponentClient();
 
   const categories = ['all', 'مواد البناء', 'حديد ومعادن', 'تشطيبات', 'أدوات', 'كهربائية', 'صحية'];
 
-  
   // Fetch products from Supabase
   const fetchProducts = async () => {
     try {
@@ -256,8 +255,6 @@ const supabase = createClientComponentClient();
     }
   };
 
-
-  
   // Fetch customers from Supabase
   const fetchCustomers = async () => {
     try {
@@ -281,7 +278,6 @@ const supabase = createClientComponentClient();
       setLoading(false);
     }
   };
-
 
   useEffect(() => {
     fetchCustomers();
@@ -750,8 +746,4 @@ const supabase = createClientComponentClient();
     </div>
   );
 }
-
-
-
-
 

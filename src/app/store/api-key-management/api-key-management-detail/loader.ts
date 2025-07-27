@@ -17,4 +17,3 @@ export const apiKeyLoader = async ({ params }: LoaderFunctionArgs) => {
   return queryClient.ensureQueryData(query)
 }
 
-

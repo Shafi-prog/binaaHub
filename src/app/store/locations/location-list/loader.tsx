@@ -36,4 +36,3 @@ export const shippingListLoader = async (_: LoaderFunctionArgs) => {
   )
 }
 
-

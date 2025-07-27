@@ -27,4 +27,3 @@ export const RegionDetailBreadcrumb = (props: RegionDetailBreadcrumbProps) => {
   return <span>{region.name}</span>
 }
 
-

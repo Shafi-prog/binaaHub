@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
 import { Button } from '@/core/shared/components/ui/button';
 import { 
@@ -166,6 +167,7 @@ export default function BarcodeGenerationPage() {
     }
   ]);
 
+  const [loading, setLoading] = useState(true);
   const [selectedTemplate, setSelectedTemplate] = useState<string>('');
   const [selectedType, setSelectedType] = useState<string>('all');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
@@ -231,7 +233,7 @@ export default function BarcodeGenerationPage() {
   const printedBarcodes = generatedBarcodes.filter(b => b.status === 'printed').length;
   const totalPrintCount = generatedBarcodes.reduce((sum, b) => sum + b.printedCount, 0);
 
-  // Mock barcode visualization component
+  // Barcode visualization component
   const BarcodePreview = ({ code, format, width, height }: { code: string, format: string, width: number, height: number }) => (
     <div className="border border-gray-300 rounded p-2 bg-white" style={{ width: `${width}mm`, height: `${height}mm` }}>
       <div className="h-full flex flex-col items-center justify-center">

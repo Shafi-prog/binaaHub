@@ -10,8 +10,6 @@ import { Badge } from "@/core/shared/components/ui/badge"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/core/shared/components/ui/table"
 import { Plus, Search, Edit, Trash2, Package, Eye } from "lucide-react"
 
-
-
 export const dynamic = 'force-dynamic'
 interface ProductBundle {
   id: string
@@ -25,6 +23,7 @@ interface ProductBundle {
 }
 
 export default function ProductBundles() {
+  
   const router = useRouter()
   const [bundles, setBundles] = useState<ProductBundle[]>([])
   const [loading, setLoading] = useState(true)
@@ -39,39 +38,7 @@ export default function ProductBundles() {
     try {
       setLoading(true)
       // TODO: Replace with actual API call
-      const mockBundles: ProductBundle[] = [
-        {
-          id: "pb_1",
-          title: "Construction Starter Kit",
-          handle: "construction-starter-kit",
-          bundle_type: "kit",
-          item_count: 5,
-          status: "active",
-          created_at: "2024-01-15T10:00:00Z",
-          updated_at: "2024-01-20T15:30:00Z"
-        },
-        {
-          id: "pb_2", 
-          title: "Premium Tool Bundle",
-          handle: "premium-tool-bundle",
-          bundle_type: "fixed",
-          item_count: 3,
-          status: "active",
-          created_at: "2024-01-10T08:00:00Z",
-          updated_at: "2024-01-18T12:15:00Z"
-        },
-        {
-          id: "pb_3",
-          title: "Building Materials Package",
-          handle: "building-materials-package", 
-          bundle_type: "dynamic",
-          item_count: 8,
-          status: "draft",
-          created_at: "2024-01-05T14:00:00Z",
-          updated_at: "2024-01-12T09:45:00Z"
-        }
-      ]
-      setBundles(mockBundles)
+            setBundles([])
     } catch (error) {
       console.error("Error loading bundles:", error)
     } finally {
@@ -284,8 +251,4 @@ export default function ProductBundles() {
     </div>
   )
 }
-
-
-
-
 

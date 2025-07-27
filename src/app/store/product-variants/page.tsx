@@ -24,7 +24,7 @@ interface ProductVariant {
 }
 
 // Real data from Supabase
-const mockVariant: ProductVariant = {
+const variant: ProductVariant = {
   id: "var_123",
   title: "Medium - Blue",
   sku: "SKU-MED-BLUE-001",
@@ -48,7 +48,7 @@ const supabase = createClientComponentClient();
   useEffect(() => {
     // Simulate loading variant data
     const timer = setTimeout(() => {
-      setVariant(mockVariant);
+      setVariant(null);
       setLoading(false);
     }, 500);
 

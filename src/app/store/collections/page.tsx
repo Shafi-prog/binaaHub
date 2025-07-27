@@ -1,6 +1,7 @@
 'use client';
 
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+
 import { useState, useEffect, useMemo } from 'react';
 import { Button } from '@/core/shared/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
@@ -22,45 +23,6 @@ interface Collection {
   status: 'published' | 'draft';
 }
 
-const mockCollections: Collection[] = [
-  {
-    id: 'col_001',
-    title: 'مجموعة الأثاث المكتبي',
-    handle: 'office-furniture',
-    description: 'كل ما تحتاجه لتأثيث مكتبك',
-    products_count: 24,
-    created_at: '2024-01-15',
-    status: 'published'
-  },
-  {
-    id: 'col_002',
-    title: 'أدوات البناء',
-    handle: 'construction-tools',
-    description: 'معدات وأدوات البناء الأساسية',
-    products_count: 15,
-    created_at: '2024-01-10',
-    status: 'published'
-  },
-  {
-    id: 'col_003',
-    title: 'الأجهزة الإلكترونية',
-    handle: 'electronics',
-    description: 'أحدث الأجهزة التقنية',
-    products_count: 8,
-    created_at: '2024-01-08',
-    status: 'draft'
-  },
-  {
-    id: 'col_004',
-    title: 'مستلزمات المنزل',
-    handle: 'home-essentials',
-    description: 'كل ما تحتاجه للمنزل',
-    products_count: 32,
-    created_at: '2024-01-05',
-    status: 'published'
-  }
-];
-
 export default function CollectionList() {
 const supabase = createClientComponentClient();
 
@@ -71,7 +33,7 @@ const supabase = createClientComponentClient();
   useEffect(() => {
     // Simulate loading collections
     const timer = setTimeout(() => {
-      setCollections(mockCollections);
+      setCollections([]);
       setLoading(false);
     }, 500);
 

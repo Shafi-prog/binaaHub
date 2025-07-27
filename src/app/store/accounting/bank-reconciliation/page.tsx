@@ -116,7 +116,6 @@ const supabase = createClientComponentClient();
     }
   };
 
-  
   // Fetch transactions from Supabase
   const fetchTransactions = async () => {
     try {
@@ -140,7 +139,6 @@ const supabase = createClientComponentClient();
       setLoading(false);
     }
   };
-
 
   useEffect(() => {
     fetchTransactions();

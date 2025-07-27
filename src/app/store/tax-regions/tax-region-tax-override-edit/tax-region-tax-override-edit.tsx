@@ -167,4 +167,3 @@ const useDefaultRulesValues = (
   return { initialValues: initialRulesValues, isPending: false }
 }
 
-

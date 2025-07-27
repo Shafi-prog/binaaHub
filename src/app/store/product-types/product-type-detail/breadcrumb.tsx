@@ -24,4 +24,3 @@ export const ProductTypeDetailBreadcrumb = (
   return <span>{product_type.value}</span>
 }
 
-

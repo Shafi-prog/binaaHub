@@ -7,4 +7,3 @@ export enum TaxRateRuleReferenceType {
   // CUSTOMER_GROUP = "customer_group",
 }
 
-

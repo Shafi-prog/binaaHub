@@ -31,4 +31,3 @@ export const ProductVariantDetailBreadcrumb = (
   return <span>{variant.title}</span>
 }
 
-

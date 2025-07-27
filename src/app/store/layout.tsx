@@ -602,7 +602,3 @@ export default function StoreLayout({
   );
 }
 
-
-
-
-

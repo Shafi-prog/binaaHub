@@ -106,7 +106,7 @@ async function executeSQLFile() {
       if (error) {
         console.log('⚠️  Tables may not be created yet. Please run the SQL manually in Supabase Dashboard.');
         console.log('📋 Steps:');
-        console.log('1. Go to https://qghcdswwagbwqqqtcrfq.supabase.co');
+        console.log('1. Go to https://lqhopwohuddhapkhhikf.supabase.co');
         console.log('2. Open SQL Editor');
         console.log('3. Copy and paste the contents of create-tables.sql');
         console.log('4. Click Run');
@@ -124,7 +124,7 @@ async function executeSQLFile() {
   } catch (error) {
     console.error('❌ Error reading or executing SQL file:', error.message);
     console.log('\n📋 Manual Setup Instructions:');
-    console.log('1. Go to your Supabase Dashboard: https://qghcdswwagbwqqqtcrfq.supabase.co');
+    console.log('1. Go to your Supabase Dashboard: https://lqhopwohuddhapkhhikf.supabase.co');
     console.log('2. Navigate to SQL Editor');
     console.log('3. Copy the contents of create-tables.sql');
     console.log('4. Paste and execute in the SQL Editor');

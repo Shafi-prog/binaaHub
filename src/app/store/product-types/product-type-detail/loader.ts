@@ -17,4 +17,3 @@ export const productTypeLoader = async ({ params }: LoaderFunctionArgs) => {
   return queryClient.ensureQueryData(query)
 }
 
-

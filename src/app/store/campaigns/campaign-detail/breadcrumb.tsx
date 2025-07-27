@@ -29,4 +29,3 @@ export const CampaignDetailBreadcrumb = (
   return <span>{campaign.name}</span>
 }
 
-

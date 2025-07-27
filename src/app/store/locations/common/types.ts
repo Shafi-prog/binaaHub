@@ -12,4 +12,3 @@ export type ConditionalPriceInfo = {
   currency: CurrencyInfo
 }
 
-

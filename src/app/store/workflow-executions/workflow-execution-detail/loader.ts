@@ -19,4 +19,3 @@ export const workflowExecutionLoader = async ({
   return queryClient.ensureQueryData(query)
 }
 
-

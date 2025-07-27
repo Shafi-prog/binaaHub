@@ -25,4 +25,3 @@ export const regionLoader = async ({ params }: LoaderFunctionArgs) => {
   )
 }
 
-

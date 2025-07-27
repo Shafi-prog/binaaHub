@@ -14,8 +14,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/core/shared/components/ui/select"
 import { Plus, Search, Edit, Trash2, Store, Users, DollarSign, Package, Eye, CheckCircle, XCircle } from "lucide-react"
 import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 export const dynamic = 'force-dynamic'
 interface MarketplaceVendor {
@@ -54,81 +54,7 @@ const supabase = createClientComponentClient();
     try {
       setLoading(true)
       // TODO: Replace with actual API call
-      const mockVendors: MarketplaceVendor[] = [
-        {
-          id: "vendor_1",
-          business_name: "Al-Salam Construction Supplies",
-          contact_person: "Ahmed Al-Mahmoud",
-          email: "ahmed@alsalam-construction.com",
-          phone: "+966-50-123-4567",
-          city: "Riyadh",
-          region: "Riyadh Province",
-          status: "approved",
-          is_verified: true,
-          commission_rate: 0.05,
-          total_sales: 2500000,
-          total_commission: 125000,
-          total_products: 145,
-          total_orders: 267,
-          rating: 4.8,
-          created_at: "2024-01-15T10:00:00Z"
-        },
-        {
-          id: "vendor_2",
-          business_name: "Jeddah Tools & Equipment",
-          contact_person: "Fatima Al-Zahrani",
-          email: "fatima@jeddah-tools.com",
-          phone: "+966-50-234-5678",
-          city: "Jeddah",
-          region: "Makkah Province",
-          status: "approved",
-          is_verified: true,
-          commission_rate: 0.06,
-          total_sales: 1800000,
-          total_commission: 108000,
-          total_products: 89,
-          total_orders: 198,
-          rating: 4.6,
-          created_at: "2024-01-20T08:00:00Z"
-        },
-        {
-          id: "vendor_3",
-          business_name: "Dammam Industrial Materials",
-          contact_person: "Omar Al-Qahtani",
-          email: "omar@dammam-industrial.com",
-          phone: "+966-50-345-6789",
-          city: "Dammam",
-          region: "Eastern Province",
-          status: "pending",
-          is_verified: false,
-          commission_rate: 0.05,
-          total_sales: 0,
-          total_commission: 0,
-          total_products: 23,
-          total_orders: 0,
-          rating: 0,
-          created_at: "2024-02-01T14:00:00Z"
-        },
-        {
-          id: "vendor_4",
-          business_name: "Northern Hardware Solutions",
-          contact_person: "Sarah Al-Rashid",
-          email: "sarah@northern-hardware.com",
-          phone: "+966-50-456-7890",
-          city: "Tabuk",
-          region: "Tabuk Province",
-          status: "suspended",
-          is_verified: true,
-          commission_rate: 0.07,
-          total_sales: 450000,
-          total_commission: 31500,
-          total_products: 34,
-          total_orders: 45,
-          rating: 3.2,
-          created_at: "2024-01-10T11:30:00Z"
-        }
-      ]
-      setVendors(mockVendors)
+            setVendors([])
     } catch (error) {
       console.error("Error loading vendors:", error)
     } finally {
@@ -441,8 +367,4 @@ const supabase = createClientComponentClient();
     </div>
   )
 }
-
-
-
-
 

@@ -17,4 +17,3 @@ export const salesChannelLoader = async ({ params }: LoaderFunctionArgs) => {
   return queryClient.ensureQueryData(query)
 }
 
-

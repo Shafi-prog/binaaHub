@@ -16,4 +16,3 @@ export const TaxRateRuleTargetSchema = z.object({
 
 export type TaxRateRuleTarget = z.infer<typeof TaxRateRuleTargetSchema>
 
-

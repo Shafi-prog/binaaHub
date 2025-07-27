@@ -1,30 +1,17 @@
 # Store Pages Data Analysis Report
 
-Generated on: 2025-07-26T02:15:21.792Z
+Generated on: 2025-07-27T02:50:23.324Z
 
 ## Executive Summary
 
 - **Total Store Pages**: 65
-- **Pages with Mock Data**: 35
-- **Pages with Real Data**: 8
+- **Pages with Mock Data**: 30
+- **Pages with Real Data**: 41
 - **Data Integration Status**: ❌ Incomplete
 
 ## Detailed Analysis
 
-### Pages Using Mock/Sample Data (35)
-
-
-#### src\app\store\admin\page.tsx
-- **Data Types**: products, customers, orders, stores, inventory
-- **Mock Patterns Found**: 2
-- **Real Data Integration**: ❌ None
-- **Dependencies**: 3 imports
-
-**Mock Data Patterns Detected**:
-- `// Mock`
-- `/* Mock`
-
-**Action Required**: Replace mock data with real Supabase queries
+### Pages Using Mock/Sample Data (30)
 
 
 #### src\app\store\campaigns\page.tsx
@@ -73,8 +60,8 @@ Generated on: 2025-07-26T02:15:21.792Z
 #### src\app\store\collections\page.tsx
 - **Data Types**: products
 - **Mock Patterns Found**: 1
-- **Real Data Integration**: ❌ None
-- **Dependencies**: 4 imports
+- **Real Data Integration**: ✅ Partial
+- **Dependencies**: 5 imports
 
 **Mock Data Patterns Detected**:
 - `mockC`
@@ -96,14 +83,13 @@ Generated on: 2025-07-26T02:15:21.792Z
 
 #### src\app\store\construction-products\page.tsx
 - **Data Types**: products
-- **Mock Patterns Found**: 3
-- **Real Data Integration**: ❌ None
+- **Mock Patterns Found**: 2
+- **Real Data Integration**: ✅ Partial
 - **Dependencies**: 5 imports
 
 **Mock Data Patterns Detected**:
 - `mockC`
 - `mockP`
-- `// Mock`
 
 **Action Required**: Replace mock data with real Supabase queries
 
@@ -124,26 +110,24 @@ Generated on: 2025-07-26T02:15:21.792Z
 
 #### src\app\store\customer-groups\page.tsx
 - **Data Types**: customers
-- **Mock Patterns Found**: 2
-- **Real Data Integration**: ❌ None
+- **Mock Patterns Found**: 1
+- **Real Data Integration**: ✅ Partial
 - **Dependencies**: 4 imports
 
 **Mock Data Patterns Detected**:
 - `mockC`
-- `// Mock`
 
 **Action Required**: Replace mock data with real Supabase queries
 
 
 #### src\app\store\customer-segmentation\page.tsx
 - **Data Types**: customers, orders
-- **Mock Patterns Found**: 2
-- **Real Data Integration**: ❌ None
+- **Mock Patterns Found**: 1
+- **Real Data Integration**: ✅ Partial
 - **Dependencies**: 4 imports
 
 **Mock Data Patterns Detected**:
 - `mockS`
-- `// Mock`
 
 **Action Required**: Replace mock data with real Supabase queries
 
@@ -162,51 +146,25 @@ Generated on: 2025-07-26T02:15:21.792Z
 
 #### src\app\store\email-campaigns\page.tsx
 - **Data Types**: products, customers, stores
-- **Mock Patterns Found**: 2
-- **Real Data Integration**: ❌ None
+- **Mock Patterns Found**: 1
+- **Real Data Integration**: ✅ Partial
 - **Dependencies**: 4 imports
 
 **Mock Data Patterns Detected**:
 - `mockC`
-- `// Mock`
-
-**Action Required**: Replace mock data with real Supabase queries
-
-
-#### src\app\store\erp\page.tsx
-- **Data Types**: customers
-- **Mock Patterns Found**: 1
-- **Real Data Integration**: ❌ None
-- **Dependencies**: 3 imports
-
-**Mock Data Patterns Detected**:
-- `// Mock`
 
 **Action Required**: Replace mock data with real Supabase queries
 
 
 #### src\app\store\financial-management\page.tsx
 - **Data Types**: customers, payments, reports
-- **Mock Patterns Found**: 3
-- **Real Data Integration**: ❌ None
+- **Mock Patterns Found**: 2
+- **Real Data Integration**: ✅ Partial
 - **Dependencies**: 4 imports
 
 **Mock Data Patterns Detected**:
 - `mockI`
 - `mockF`
-- `// Mock`
-
-**Action Required**: Replace mock data with real Supabase queries
-
-
-#### src\app\store\hr\attendance\page.tsx
-- **Data Types**: customers, employees
-- **Mock Patterns Found**: 1
-- **Real Data Integration**: ❌ None
-- **Dependencies**: 3 imports
-
-**Mock Data Patterns Detected**:
-- `// Mock`
 
 **Action Required**: Replace mock data with real Supabase queries
 
@@ -247,23 +205,11 @@ Generated on: 2025-07-26T02:15:21.792Z
 **Action Required**: Replace mock data with real Supabase queries
 
 
-#### src\app\store\inventory\page.tsx
-- **Data Types**: products, customers, stores, inventory
-- **Mock Patterns Found**: 1
-- **Real Data Integration**: ❌ None
-- **Dependencies**: 3 imports
-
-**Mock Data Patterns Detected**:
-- `// Mock`
-
-**Action Required**: Replace mock data with real Supabase queries
-
-
 #### src\app\store\marketplace-vendors\page.tsx
 - **Data Types**: stores
 - **Mock Patterns Found**: 1
-- **Real Data Integration**: ❌ None
-- **Dependencies**: 5 imports
+- **Real Data Integration**: ✅ Partial
+- **Dependencies**: 6 imports
 
 **Mock Data Patterns Detected**:
 - `mockV`
@@ -271,22 +217,10 @@ Generated on: 2025-07-26T02:15:21.792Z
 **Action Required**: Replace mock data with real Supabase queries
 
 
-#### src\app\store\notifications\page.tsx
-- **Data Types**: customers
-- **Mock Patterns Found**: 1
-- **Real Data Integration**: ❌ None
-- **Dependencies**: 4 imports
-
-**Mock Data Patterns Detected**:
-- `// Mock`
-
-**Action Required**: Replace mock data with real Supabase queries
-
-
 #### src\app\store\order-management\page.tsx
-- **Data Types**: customers, orders, inventory
-- **Mock Patterns Found**: 5
-- **Real Data Integration**: ❌ None
+- **Data Types**: customers, orders
+- **Mock Patterns Found**: 4
+- **Real Data Integration**: ✅ Partial
 - **Dependencies**: 4 imports
 
 **Mock Data Patterns Detected**:
@@ -294,7 +228,6 @@ Generated on: 2025-07-26T02:15:21.792Z
 - `mockS`
 - `mockR`
 - `const config = statusConfig[status as keyof typeof statusConfig] || {`
-- `// Mock`
 
 **Action Required**: Replace mock data with real Supabase queries
 
@@ -339,13 +272,12 @@ Generated on: 2025-07-26T02:15:21.792Z
 
 #### src\app\store\pricing\page.tsx
 - **Data Types**: products, customers, orders
-- **Mock Patterns Found**: 2
-- **Real Data Integration**: ❌ None
+- **Mock Patterns Found**: 1
+- **Real Data Integration**: ✅ Partial
 - **Dependencies**: 4 imports
 
 **Mock Data Patterns Detected**:
 - `mockP`
-- `// Mock`
 
 **Action Required**: Replace mock data with real Supabase queries
 
@@ -364,13 +296,12 @@ Generated on: 2025-07-26T02:15:21.792Z
 
 #### src\app\store\product-variants\page.tsx
 - **Data Types**: products, inventory
-- **Mock Patterns Found**: 2
-- **Real Data Integration**: ❌ None
-- **Dependencies**: 4 imports
+- **Mock Patterns Found**: 1
+- **Real Data Integration**: ✅ Partial
+- **Dependencies**: 5 imports
 
 **Mock Data Patterns Detected**:
 - `mockV`
-- `// Mock`
 
 **Action Required**: Replace mock data with real Supabase queries
 
@@ -378,7 +309,7 @@ Generated on: 2025-07-26T02:15:21.792Z
 #### src\app\store\products\export\page.tsx
 - **Data Types**: products, customers
 - **Mock Patterns Found**: 2
-- **Real Data Integration**: ❌ None
+- **Real Data Integration**: ✅ Partial
 - **Dependencies**: 5 imports
 
 **Mock Data Patterns Detected**:
@@ -391,7 +322,7 @@ Generated on: 2025-07-26T02:15:21.792Z
 #### src\app\store\products\import\page.tsx
 - **Data Types**: products
 - **Mock Patterns Found**: 2
-- **Real Data Integration**: ❌ None
+- **Real Data Integration**: ✅ Partial
 - **Dependencies**: 5 imports
 
 **Mock Data Patterns Detected**:
@@ -403,13 +334,12 @@ Generated on: 2025-07-26T02:15:21.792Z
 
 #### src\app\store\promotions\page.tsx
 - **Data Types**: Unknown
-- **Mock Patterns Found**: 2
-- **Real Data Integration**: ❌ None
+- **Mock Patterns Found**: 1
+- **Real Data Integration**: ✅ Partial
 - **Dependencies**: 4 imports
 
 **Mock Data Patterns Detected**:
 - `mockP`
-- `// Mock`
 
 **Action Required**: Replace mock data with real Supabase queries
 
@@ -440,13 +370,12 @@ Generated on: 2025-07-26T02:15:21.792Z
 
 #### src\app\store\storefront\page.tsx
 - **Data Types**: products, stores
-- **Mock Patterns Found**: 2
-- **Real Data Integration**: ❌ None
-- **Dependencies**: 3 imports
+- **Mock Patterns Found**: 1
+- **Real Data Integration**: ✅ Partial
+- **Dependencies**: 4 imports
 
 **Mock Data Patterns Detected**:
 - `mockT`
-- `/* Mock`
 
 **Action Required**: Replace mock data with real Supabase queries
 
@@ -464,7 +393,35 @@ Generated on: 2025-07-26T02:15:21.792Z
 **Action Required**: Replace mock data with real Supabase queries
 
 
-### Pages Using Real Data (8)
+### Pages Using Real Data (41)
+
+
+#### src\app\store\accounting\bank-reconciliation\page.tsx
+- **Data Types**: transactions
+- **Real Data Patterns**: 2
+- **Status**: ✅ Using real data integration
+
+**Real Data Patterns**:
+- `createClientComponentClient`
+- `.from(`
+
+
+#### src\app\store\accounting\vat-management\page.tsx
+- **Data Types**: suppliers, transactions
+- **Real Data Patterns**: 1
+- **Status**: ✅ Using real data integration
+
+**Real Data Patterns**:
+- `createClientComponentClient`
+
+
+#### src\app\store\admin\page.tsx
+- **Data Types**: products, customers, orders, stores, inventory
+- **Real Data Patterns**: 1
+- **Status**: ✅ Using real data integration
+
+**Real Data Patterns**:
+- `createClientComponentClient`
 
 
 #### src\app\store\barcode-scanner\page.tsx
@@ -487,17 +444,118 @@ Generated on: 2025-07-26T02:15:21.792Z
 - `.from(`
 
 
-#### src\app\store\dashboard\page.tsx
-- **Data Types**: stores
+#### src\app\store\collections\create\page.tsx
+- **Data Types**: Unknown
 - **Real Data Patterns**: 1
 - **Status**: ✅ Using real data integration
 
 **Real Data Patterns**:
-- `fetch(`
+- `createClientComponentClient`
+
+
+#### src\app\store\collections\page.tsx
+- **Data Types**: products
+- **Real Data Patterns**: 1
+- **Status**: ✅ Using real data integration
+
+**Real Data Patterns**:
+- `createClientComponentClient`
+
+
+#### src\app\store\construction-products\page.tsx
+- **Data Types**: products
+- **Real Data Patterns**: 1
+- **Status**: ✅ Using real data integration
+
+**Real Data Patterns**:
+- `createClientComponentClient`
+
+
+#### src\app\store\customer-groups\page.tsx
+- **Data Types**: customers
+- **Real Data Patterns**: 1
+- **Status**: ✅ Using real data integration
+
+**Real Data Patterns**:
+- `createClientComponentClient`
+
+
+#### src\app\store\customer-segmentation\page.tsx
+- **Data Types**: customers, orders
+- **Real Data Patterns**: 1
+- **Status**: ✅ Using real data integration
+
+**Real Data Patterns**:
+- `createClientComponentClient`
+
+
+#### src\app\store\customers\create\page.tsx
+- **Data Types**: customers, orders
+- **Real Data Patterns**: 1
+- **Status**: ✅ Using real data integration
+
+**Real Data Patterns**:
+- `createClientComponentClient`
+
+
+#### src\app\store\customers\page.tsx
+- **Data Types**: customers, orders, payments
+- **Real Data Patterns**: 2
+- **Status**: ✅ Using real data integration
+
+**Real Data Patterns**:
+- `createClientComponentClient`
+- `.from(`
+
+
+#### src\app\store\email-campaigns\page.tsx
+- **Data Types**: products, customers, stores
+- **Real Data Patterns**: 1
+- **Status**: ✅ Using real data integration
+
+**Real Data Patterns**:
+- `createClientComponentClient`
+
+
+#### src\app\store\erp\page.tsx
+- **Data Types**: customers
+- **Real Data Patterns**: 1
+- **Status**: ✅ Using real data integration
+
+**Real Data Patterns**:
+- `createClientComponentClient`
 
 
 #### src\app\store\expenses\page.tsx
 - **Data Types**: employees, payments
+- **Real Data Patterns**: 2
+- **Status**: ✅ Using real data integration
+
+**Real Data Patterns**:
+- `createClientComponentClient`
+- `.from(`
+
+
+#### src\app\store\financial-management\page.tsx
+- **Data Types**: customers, payments, reports
+- **Real Data Patterns**: 1
+- **Status**: ✅ Using real data integration
+
+**Real Data Patterns**:
+- `createClientComponentClient`
+
+
+#### src\app\store\hr\attendance\page.tsx
+- **Data Types**: customers, employees
+- **Real Data Patterns**: 1
+- **Status**: ✅ Using real data integration
+
+**Real Data Patterns**:
+- `createClientComponentClient`
+
+
+#### src\app\store\hr\payroll\page.tsx
+- **Data Types**: employees
 - **Real Data Patterns**: 2
 - **Status**: ✅ Using real data integration
 
@@ -515,6 +573,62 @@ Generated on: 2025-07-26T02:15:21.792Z
 - `.from(`
 
 
+#### src\app\store\inventory\page.tsx
+- **Data Types**: products, customers, stores, inventory
+- **Real Data Patterns**: 1
+- **Status**: ✅ Using real data integration
+
+**Real Data Patterns**:
+- `createClientComponentClient`
+
+
+#### src\app\store\marketplace\page.tsx
+- **Data Types**: products, customers, orders
+- **Real Data Patterns**: 2
+- **Status**: ✅ Using real data integration
+
+**Real Data Patterns**:
+- `createClientComponentClient`
+- `.from(`
+
+
+#### src\app\store\marketplace-vendors\page.tsx
+- **Data Types**: stores
+- **Real Data Patterns**: 1
+- **Status**: ✅ Using real data integration
+
+**Real Data Patterns**:
+- `createClientComponentClient`
+
+
+#### src\app\store\notifications\page.tsx
+- **Data Types**: customers
+- **Real Data Patterns**: 1
+- **Status**: ✅ Using real data integration
+
+**Real Data Patterns**:
+- `createClientComponentClient`
+
+
+#### src\app\store\order-management\page.tsx
+- **Data Types**: customers, orders
+- **Real Data Patterns**: 1
+- **Status**: ✅ Using real data integration
+
+**Real Data Patterns**:
+- `createClientComponentClient`
+
+
+#### src\app\store\orders\page.tsx
+- **Data Types**: customers, orders, payments
+- **Real Data Patterns**: 2
+- **Status**: ✅ Using real data integration
+
+**Real Data Patterns**:
+- `createClientComponentClient`
+- `.from(`
+
+
 #### src\app\store\pos\page.tsx
 - **Data Types**: products, customers, payments
 - **Real Data Patterns**: 2
@@ -523,6 +637,125 @@ Generated on: 2025-07-26T02:15:21.792Z
 **Real Data Patterns**:
 - `createClientComponentClient`
 - `.from(`
+
+
+#### src\app\store\pricing\page.tsx
+- **Data Types**: products, customers, orders
+- **Real Data Patterns**: 1
+- **Status**: ✅ Using real data integration
+
+**Real Data Patterns**:
+- `createClientComponentClient`
+
+
+#### src\app\store\product-variants\page.tsx
+- **Data Types**: products, inventory
+- **Real Data Patterns**: 1
+- **Status**: ✅ Using real data integration
+
+**Real Data Patterns**:
+- `createClientComponentClient`
+
+
+#### src\app\store\products\create\page.tsx
+- **Data Types**: products, inventory
+- **Real Data Patterns**: 1
+- **Status**: ✅ Using real data integration
+
+**Real Data Patterns**:
+- `createClientComponentClient`
+
+
+#### src\app\store\products\export\page.tsx
+- **Data Types**: products, customers
+- **Real Data Patterns**: 1
+- **Status**: ✅ Using real data integration
+
+**Real Data Patterns**:
+- `createClientComponentClient`
+
+
+#### src\app\store\products\import\page.tsx
+- **Data Types**: products
+- **Real Data Patterns**: 1
+- **Status**: ✅ Using real data integration
+
+**Real Data Patterns**:
+- `createClientComponentClient`
+
+
+#### src\app\store\products\page.tsx
+- **Data Types**: products, customers, inventory
+- **Real Data Patterns**: 2
+- **Status**: ✅ Using real data integration
+
+**Real Data Patterns**:
+- `createClientComponentClient`
+- `.from(`
+
+
+#### src\app\store\promotions\create\page.tsx
+- **Data Types**: products, customers
+- **Real Data Patterns**: 1
+- **Status**: ✅ Using real data integration
+
+**Real Data Patterns**:
+- `createClientComponentClient`
+
+
+#### src\app\store\promotions\page.tsx
+- **Data Types**: Unknown
+- **Real Data Patterns**: 1
+- **Status**: ✅ Using real data integration
+
+**Real Data Patterns**:
+- `createClientComponentClient`
+
+
+#### src\app\store\purchase-orders\page.tsx
+- **Data Types**: customers, orders, payments
+- **Real Data Patterns**: 1
+- **Status**: ✅ Using real data integration
+
+**Real Data Patterns**:
+- `createClientComponentClient`
+
+
+#### src\app\store\reports\page.tsx
+- **Data Types**: products, customers, reports
+- **Real Data Patterns**: 1
+- **Status**: ✅ Using real data integration
+
+**Real Data Patterns**:
+- `createClientComponentClient`
+
+
+#### src\app\store\sales-orders\page.tsx
+- **Data Types**: products, customers, orders
+- **Real Data Patterns**: 2
+- **Status**: ✅ Using real data integration
+
+**Real Data Patterns**:
+- `createClientComponentClient`
+- `.from(`
+
+
+#### src\app\store\storefront\page.tsx
+- **Data Types**: products, stores
+- **Real Data Patterns**: 1
+- **Status**: ✅ Using real data integration
+
+**Real Data Patterns**:
+- `createClientComponentClient`
+
+
+#### src\app\store\suppliers\page.tsx
+- **Data Types**: products, customers, orders, suppliers
+- **Real Data Patterns**: 1
+- **Status**: ✅ Using real data integration
+
+**Real Data Patterns**:
+- `createClientComponentClient`
 
 
 #### src\app\store\warranty-management\page.tsx
@@ -567,11 +800,10 @@ The store pages are well-connected through the layout navigation with the follow
 ### 1. Convert Mock Data to Real Data (HIGH Priority)
 
 **Category**: Data Integration
-**Description**: 35 pages are using mock/sample data
+**Description**: 30 pages are using mock/sample data
 **Action**: Replace useState arrays with Supabase queries or API calls
 
 **Affected Pages**:
-- src\app\store\admin\page.tsx
 - src\app\store\campaigns\page.tsx
 - src\app\store\cash-registers\page.tsx
 - src\app\store\categories\construction\page.tsx
@@ -583,15 +815,11 @@ The store pages are well-connected through the layout navigation with the follow
 - src\app\store\customer-segmentation\page.tsx
 - src\app\store\delivery\page.tsx
 - src\app\store\email-campaigns\page.tsx
-- src\app\store\erp\page.tsx
 - src\app\store\financial-management\page.tsx
-- src\app\store\hr\attendance\page.tsx
 - src\app\store\hr\claims\page.tsx
 - src\app\store\hr\leave-management\page.tsx
 - src\app\store\inventory\barcode-generation\page.tsx
-- src\app\store\inventory\page.tsx
 - src\app\store\marketplace-vendors\page.tsx
-- src\app\store\notifications\page.tsx
 - src\app\store\order-management\page.tsx
 - src\app\store\payments\page.tsx
 - src\app\store\permissions\page.tsx
@@ -618,7 +846,7 @@ The store pages are well-connected through the layout navigation with the follow
 
 
 
-**Data Types**: products, customers, orders, stores, inventory, transactions, payments, reports, employees
+**Data Types**: customers, transactions, products, orders, stores, payments, reports, inventory
 
 
 ### 3. Verify Navigation Links (MEDIUM Priority)

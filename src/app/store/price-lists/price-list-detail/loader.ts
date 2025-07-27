@@ -16,4 +16,3 @@ export const pricingLoader = async ({ params }: LoaderFunctionArgs) => {
   return queryClient.ensureQueryData(query)
 }
 
-

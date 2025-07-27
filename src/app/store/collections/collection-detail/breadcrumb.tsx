@@ -23,4 +23,3 @@ export const CollectionDetailBreadcrumb = (
   return <span>{collection.title}</span>
 }
 
-

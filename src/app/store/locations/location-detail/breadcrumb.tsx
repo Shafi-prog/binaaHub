@@ -31,4 +31,3 @@ export const LocationDetailBreadcrumb = (
   return <span>{stock_location.name}</span>
 }
 
-

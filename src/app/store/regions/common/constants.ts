@@ -4,4 +4,3 @@ export enum ShippingOptionPriceType {
   CALCULATED = "calculated",
 }
 
-

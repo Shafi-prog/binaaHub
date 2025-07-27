@@ -10,4 +10,3 @@ export type InitialRuleValues = {
   [TaxRateRuleReferenceType.CUSTOMER_GROUP]: TaxRateRuleReference[]
 }
 
-

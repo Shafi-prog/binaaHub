@@ -450,7 +450,7 @@ function POSSystemComponent() {
             id: 'demo-customer-2',
             name: 'شركة الاختبار',
             phone: '0501111111',
-            email: 'test@company.com',
+            email: '',
             tax_number: '123456789',
             customer_type: 'business',
             outstanding_balance: 0,
@@ -1409,5 +1409,4 @@ function POSSystemComponent() {
     </div>
   );
 }
-
 

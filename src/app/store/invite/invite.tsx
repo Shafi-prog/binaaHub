@@ -416,4 +416,3 @@ const validateDecodedInvite = (decoded: any): decoded is DecodedInvite => {
   return InviteSchema.safeParse(decoded).success
 }
 
-

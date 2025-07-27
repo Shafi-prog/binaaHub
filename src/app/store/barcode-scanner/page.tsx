@@ -12,10 +12,8 @@ import { Button } from '@/core/shared/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 
-
 export const dynamic = 'force-dynamic'
 // Force dynamic rendering to avoid SSG auth context issues
-
 
 export default function BarcodeScannerPage() {
 const supabase = createClientComponentClient();
@@ -121,8 +119,4 @@ const supabase = createClientComponentClient();
     </div>
   );
 }
-
-
-
-
 

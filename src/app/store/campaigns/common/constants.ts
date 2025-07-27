@@ -14,4 +14,3 @@ export const DEFAULT_CAMPAIGN_VALUES = {
   },
 }
 
-

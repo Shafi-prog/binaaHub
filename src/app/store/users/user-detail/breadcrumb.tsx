@@ -24,4 +24,3 @@ export const UserDetailBreadcrumb = (props: UserDetailBreadcrumbProps) => {
   return <span>{display}</span>
 }
 
-

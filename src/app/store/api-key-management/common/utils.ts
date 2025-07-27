@@ -62,4 +62,3 @@ export const prettifyRedactedToken = (token: string) => {
   return token.replace("***", `•••`)
 }
 
-

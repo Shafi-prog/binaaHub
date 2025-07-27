@@ -206,7 +206,6 @@ const supabase = createClientComponentClient();
   const averageOrderValue = customers.reduce((sum, c) => sum + c.averageOrderValue, 0) / customers.length;
   const outstandingAmount = customers.reduce((sum, c) => sum + c.financialInfo.outstandingAmount, 0);
 
-  
   // Fetch customers from Supabase
   const fetchCustomers = async () => {
     try {
@@ -230,7 +229,6 @@ const supabase = createClientComponentClient();
       setLoading(false);
     }
   };
-
 
   useEffect(() => {
     fetchCustomers();

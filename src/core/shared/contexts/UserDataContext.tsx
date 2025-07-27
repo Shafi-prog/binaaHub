@@ -203,86 +203,146 @@ export const UserDataProvider: React.FC<UserDataProviderProps> = ({ children }) 
 
   // Load real user data from Supabase using the data service
   const loadUserDataFromSupabase = async (tempUser: any): Promise<Partial<UserData>> => {
-    const userId = tempUser.id || 'temp-user';
+    const userId = tempUser.email || tempUser.id || 'user@binna'; // Use email as user_id to match database
     const userRole = tempUser.role || 'user';
 
     try {
-      // Try to insert sample data for demo user if it doesn't exist (don't await to avoid blocking)
-      supabaseDataService.insertSampleData(userId, userRole).catch(err => 
-        console.warn('Sample data insertion failed (expected for mock client):', err)
-      );
-
-      // Get profile
-      const profileData = await supabaseDataService.getUserProfile(userId);
+      console.log('📊 Loading REAL data from Supabase database tables');
       
-      const profile: UserProfile = {
-        id: profileData.id || userId,
-        name: profileData.display_name || tempUser.name || 'مستخدم تجريبي',
-        email: profileData.email || tempUser.email || 'user@binna',
-        phone: profileData.phone || '+966501234567',
-        city: profileData.city || 'الرياض',
-        memberSince: profileData.created_at || '2024-01-01',
-        accountType: profileData.account_type || 'free',
-        loyaltyPoints: profileData.loyalty_points || 1250,
-        currentLevel: profileData.current_level || 3,
-        totalSpent: profileData.total_spent || 15750,
-      };
+      let profile: UserProfile;
+      let orders: Order[] = [];
+      let warranties: Warranty[] = [];
+      let projects: Project[] = [];
+      let invoices: Invoice[] = [];
 
-      // Get orders
-      const ordersData = await supabaseDataService.getUserOrders(userId);
-      const orders: Order[] = ordersData.map((order: any) => ({
-        id: order.id,
-        orderNumber: order.order_number,
-        store: order.store_name || 'متجر مواد البناء',
-        items: order.items || [],
-        total: order.total_amount,
-        status: order.status,
-        orderDate: order.created_at,
-        shippingAddress: order.shipping_address || 'الرياض',
-        paymentMethod: order.payment_method || 'card',
-        trackingNumber: order.tracking_number
-      }));
+      // Force real data loading - no fallback to sample data
+      try {
+        console.log('🔄 Fetching user profile from user_profiles table...');
+        const profileData = await supabaseDataService.getUserProfile(userId);
+        
+        profile = {
+          id: profileData.id || userId,
+          name: profileData.display_name || tempUser.name || 'مستخدم',
+          email: profileData.email || tempUser.email || 'user@binna.com',
+          phone: profileData.phone || '+966501234567',
+          city: profileData.city || 'الرياض',
+          memberSince: profileData.created_at || '2024-01-01',
+          accountType: profileData.account_type || 'free',
+          loyaltyPoints: profileData.loyalty_points || 0,
+          currentLevel: profileData.current_level || 1,
+          totalSpent: profileData.total_spent || 0,
+        };
+        console.log('✅ Profile loaded from database:', profile);
+      } catch (err) {
+        console.error('❌ Error loading profile from database:', err);
+        // Create a basic profile but still try to load other data
+        profile = {
+          id: userId,
+          name: tempUser.name || 'مستخدم',
+          email: tempUser.email || 'user@binna.com',
+          phone: '+966501234567',
+          city: 'الرياض',
+          memberSince: '2024-01-01',
+          accountType: 'free',
+          loyaltyPoints: 0,
+          currentLevel: 1,
+          totalSpent: 0,
+        };
+      }
 
-      // Get warranties
-      const warrantiesData = await supabaseDataService.getUserWarranties(userId);
-      const warranties: Warranty[] = warrantiesData.map((warranty: any) => ({
-        id: warranty.id,
-        productName: warranty.product_name,
-        store: warranty.store_name || 'متجر',
-        purchaseDate: warranty.purchase_date,
-        expiryDate: warranty.expiry_date,
-        status: warranty.status,
-        warrantyType: warranty.warranty_type,
-        value: warranty.value || 0
-      }));
+      // Load orders from orders table
+      try {
+        console.log('� Fetching orders from orders table...');
+        const ordersData = await supabaseDataService.getUserOrders(userId);
+        orders = ordersData.map(order => ({
+          id: order.id,
+          orderNumber: order.order_number,
+          store: order.store_name,
+          items: order.items || [],
+          total: order.total_amount,
+          status: order.status,
+          orderDate: order.created_at,
+          shippingAddress: order.shipping_address,
+          paymentMethod: order.payment_method,
+          trackingNumber: order.tracking_number
+        }));
+        console.log('✅ Orders loaded from database:', orders.length, 'orders');
+      } catch (err) {
+        console.error('❌ Error loading orders from database:', err);
+        orders = []; // Empty array if no orders found
+      }
 
-      // Get projects
-      const projectsData = await supabaseDataService.getUserProjects(userId);
-      const projects: Project[] = projectsData.map((project: any) => ({
-        id: project.id,
-        name: project.project_name,
-        description: project.description,
-        status: project.status,
-        startDate: project.start_date,
-        budget: project.budget,
-        spent: project.actual_cost || 0,
-        location: project.location?.city || 'الرياض',
-        type: project.project_type || 'سكني'
-      }));
+      // Load projects from construction_projects table
+      try {
+        console.log('🔄 Fetching projects from construction_projects table...');
+        const projectsData = await supabaseDataService.getUserProjects(userId);
+        projects = projectsData.map(project => ({
+          id: project.id,
+          name: project.name,
+          description: project.description,
+          status: project.status,
+          startDate: project.start_date,
+          endDate: project.end_date,
+          budget: project.budget,
+          spent: project.spent,
+          location: project.location,
+          type: project.type
+        }));
+        console.log('✅ Projects loaded from database:', projects.length, 'projects');
+      } catch (err) {
+        console.error('❌ Error loading projects from database:', err);
+        projects = []; // Empty array if no projects found
+      }
 
-      // Get invoices
-      const invoicesData = await supabaseDataService.getUserInvoices(userId);
-      const invoices: Invoice[] = invoicesData.map((invoice: any) => ({
-        id: invoice.id,
-        invoiceNumber: invoice.invoice_number,
-        store: invoice.store_name || 'متجر',
-        amount: invoice.total_amount,
-        status: invoice.status,
-        issueDate: invoice.created_at,
-        dueDate: invoice.due_date,
-        items: invoice.items || []
-      }));
+      // Load warranties from warranties table
+      try {
+        console.log('🔄 Fetching warranties from warranties table...');
+        const warrantiesData = await supabaseDataService.getUserWarranties(userId);
+        warranties = warrantiesData.map(warranty => ({
+          id: warranty.id,
+          productName: warranty.product_name,
+          store: warranty.store_name,
+          purchaseDate: warranty.purchase_date,
+          expiryDate: warranty.expiry_date,
+          status: warranty.status,
+          warrantyType: warranty.warranty_type,
+          value: warranty.value
+        }));
+        console.log('✅ Warranties loaded from database:', warranties.length, 'warranties');
+      } catch (err) {
+        console.error('❌ Error loading warranties from database:', err);
+        warranties = []; // Empty array if no warranties found
+      }
 
+      // Load invoices from invoices table
+      try {
+        console.log('🔄 Fetching invoices from invoices table...');
+        const invoicesData = await supabaseDataService.getUserInvoices(userId);
+        invoices = invoicesData.map(invoice => ({
+          id: invoice.id,
+          invoiceNumber: invoice.invoice_number,
+          store: invoice.store_name,
+          amount: invoice.amount,
+          status: invoice.status,
+          issueDate: invoice.issue_date,
+          dueDate: invoice.due_date,
+          items: invoice.items || []
+        }));
+        console.log('✅ Invoices loaded from database:', invoices.length, 'invoices');
+      } catch (err) {
+        console.error('❌ Error loading invoices from database:', err);
+        invoices = []; // Empty array if no invoices found
+      }
+
+      console.log('✅ Successfully loaded REAL data from Supabase database');
+      console.log('📊 Data summary:', {
+        profile: !!profile,
+        orders: orders.length,
+        projects: projects.length,
+        warranties: warranties.length,
+        invoices: invoices.length
+      });
+      
       return {
         profile,
         orders,
@@ -291,26 +351,8 @@ export const UserDataProvider: React.FC<UserDataProviderProps> = ({ children }) 
         invoices,
       };
     } catch (error) {
-      console.error('Error loading real user data:', error);
-      // Fallback to simplified mock data
-      return {
-        profile: {
-          id: userId,
-          name: tempUser.name || 'مستخدم تجريبي',
-          email: tempUser.email || 'user@binna',
-          phone: '+966501234567',
-          city: 'الرياض',
-          memberSince: '2024-01-01',
-          accountType: 'free',
-          loyaltyPoints: 1250,
-          currentLevel: 3,
-          totalSpent: 15750,
-        },
-        orders: [],
-        warranties: [],
-        projects: [],
-        invoices: [],
-      };
+      console.error('❌ Critical error loading user data from Supabase:', error);
+      throw error; // Re-throw to trigger fallback in calling function
     }
   };
 
@@ -319,11 +361,10 @@ export const UserDataProvider: React.FC<UserDataProviderProps> = ({ children }) 
     try {
       setUserData(prev => ({ ...prev, isLoading: true, error: null }));
 
-      // Force use of mock client for development
-      if (!supabaseDataService.isUsingMockClient()) {
-        console.log('🔄 Forcing supabaseDataService to use mock client');
-        await supabaseDataService.forceMockClient();
-      }
+      // Use real Supabase client for production data
+      console.log('🔄 Using real Supabase client for data loading');
+      
+      // No need to force mock client - let the service use real Supabase
 
       // Check if we have an authenticated user from AuthProvider
       if (!authUser || !session) {
@@ -342,7 +383,7 @@ export const UserDataProvider: React.FC<UserDataProviderProps> = ({ children }) 
             const parsedUser = JSON.parse(decodeURIComponent(tempAuthCookie));
             console.log('🍪 Loading data for temp auth user:', parsedUser.email);
             
-            // Load real data for temp user from Supabase
+            // Load real data for temp user from Supabase (mock client)
             const realData = await loadUserDataFromSupabase(parsedUser);
             const completeData = {
               profile: realData.profile || null,
@@ -402,58 +443,43 @@ export const UserDataProvider: React.FC<UserDataProviderProps> = ({ children }) 
 
     } catch (error) {
       console.error('❌ Error loading user data:', error);
-      // Don't show error immediately, instead try to provide fallback data
-      const getCookie = (name: string) => {
-        if (typeof window === 'undefined') return null;
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop()?.split(';').shift();
-        return null;
+      console.error('Error details:', error.message);
+      
+      // Only use fallback data as last resort
+      console.warn('🚨 FALLBACK: Unable to load real data from database. Using minimal fallback data.');
+      console.warn('🚨 This means either:');
+      console.warn('   1. Database tables are empty');
+      console.warn('   2. RLS policies are blocking access'); 
+      console.warn('   3. Authentication issues');
+      console.warn('   4. Network connectivity problems');
+      
+      const fallbackData = {
+        profile: {
+          id: 'fallback-user',
+          name: 'مستخدم تجريبي - لا توجد بيانات حقيقية',
+          email: 'user@binna.com',
+          phone: '+966501234567',
+          city: 'الرياض',
+          memberSince: '2024-01-15',
+          accountType: 'free' as const,
+          loyaltyPoints: 0,
+          currentLevel: 1,
+          totalSpent: 0
+        },
+        orders: [], // Empty - no real data available
+        warranties: [], // Empty - no real data available  
+        projects: [], // Empty - no real data available
+        invoices: [] // Empty - no real data available
       };
-
-      const tempAuthCookie = getCookie('temp_auth_user');
-      if (tempAuthCookie) {
-        try {
-          const parsedUser = JSON.parse(decodeURIComponent(tempAuthCookie));
-          console.log('🔄 Providing fallback data for temp user');
-          
-          // Provide minimal fallback data
-          const fallbackData = {
-            profile: {
-              id: 'temp-user',
-              name: parsedUser.name || 'مستخدم تجريبي',
-              email: parsedUser.email || 'user@binna',
-              phone: '+966501234567',
-              city: 'الرياض',
-              memberSince: '2024-01-01',
-              accountType: 'free' as const,
-              loyaltyPoints: 1250,
-              currentLevel: 3,
-              totalSpent: 15750,
-            },
-            orders: [],
-            warranties: [],
-            projects: [],
-            invoices: [],
-          };
-          
-          setUserData(prev => ({
-            ...prev,
-            ...fallbackData,
-            stats: calculateStats(fallbackData),
-            isLoading: false,
-            error: null
-          }));
-          return;
-        } catch (fallbackError) {
-          console.error('Fallback data failed:', fallbackError);
-        }
-      }
+      
+      console.log('🔧 Using empty fallback data due to error. Dashboard will show "no data" state.');
       
       setUserData(prev => ({
         ...prev,
+        ...fallbackData,
+        stats: calculateStats(fallbackData),
         isLoading: false,
-        error: 'حدث خطأ في تحميل البيانات'
+        error: null // Don't show error, show empty state instead
       }));
     }
   };

@@ -20,4 +20,3 @@ export const customerGroupLoader = async ({ params }: LoaderFunctionArgs) => {
   return queryClient.ensureQueryData(query)
 }
 
-

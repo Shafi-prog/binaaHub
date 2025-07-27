@@ -237,7 +237,3 @@ const supabase = createClientComponentClient();
   );
 }
 
-
-
-
-

@@ -24,7 +24,7 @@ interface User {
   permissions: string[];
 }
 
-const mockUsers: User[] = [
+const []: User[] = [
   {
     id: 'user_001',
     email: 'admin@binna.com',

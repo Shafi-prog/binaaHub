@@ -159,7 +159,6 @@ const supabase = createClientComponentClient();
     .filter(record => record.month === selectedMonth && record.year === selectedYear && record.status === 'paid')
     .reduce((sum, record) => sum + record.netSalary, 0);
 
-  
   // Fetch employees from Supabase
   const fetchEmployees = async () => {
     try {
@@ -183,7 +182,6 @@ const supabase = createClientComponentClient();
       setLoading(false);
     }
   };
-
 
   useEffect(() => {
     fetchEmployees();

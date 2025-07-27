@@ -23,7 +23,7 @@ interface WorkflowExecution {
   progress_percentage: number;
 }
 
-const mockExecutions: WorkflowExecution[] = [
+const []: WorkflowExecution[] = [
   {
     id: 'exec_001',
     workflow_id: 'wf_001',
@@ -76,7 +76,7 @@ export default function WorkflowExecutionList() {
   useEffect(() => {
     // Simulate loading executions
     const timer = setTimeout(() => {
-      setExecutions(mockExecutions);
+      setExecutions([]);
       setLoading(false);
     }, 500);
 

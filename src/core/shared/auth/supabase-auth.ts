@@ -40,9 +40,17 @@ class SupabaseAuthService {
         .limit(1);
       
       if (error) {
-        console.warn('Real Supabase not available for auth, using mock data:', error.message);
-        this.supabase = mockSupabaseClient;
-        this.usingMockData = true;
+        // Handle RLS policy errors differently - they indicate connection but policy issues
+        if (error.code === '42P17' || error.message?.includes('infinite recursion')) {
+          console.warn('✅ Supabase connected but RLS policy needs fixing:', error.message);
+          console.log('🔧 Using real Supabase with fallback data handling');
+          this.supabase = realSupabase;
+          this.usingMockData = false; // Connection works, just policy issues
+        } else {
+          console.warn('Real Supabase not available for auth, using mock data:', error.message);
+          this.supabase = mockSupabaseClient;
+          this.usingMockData = true;
+        }
       } else {
         console.log('✅ Real Supabase auth connection established');
         this.supabase = realSupabase;

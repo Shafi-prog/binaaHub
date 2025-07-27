@@ -141,7 +141,6 @@ const supabase = createClientComponentClient();
   const totalInventoryValue = products.reduce((sum, p) => sum + (p.price * p.stockQuantity), 0);
   const totalRevenue = products.reduce((sum, p) => sum + p.revenue, 0);
 
-  
   // Fetch products from Supabase
   const fetchProducts = async () => {
     try {
@@ -165,7 +164,6 @@ const supabase = createClientComponentClient();
       setLoading(false);
     }
   };
-
 
   useEffect(() => {
     fetchProducts();

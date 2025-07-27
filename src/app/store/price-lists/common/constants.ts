@@ -20,4 +20,3 @@ export enum PriceListType {
   OVERRIDE = "override",
 }
 
-

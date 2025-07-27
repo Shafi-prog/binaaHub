@@ -38,4 +38,3 @@ export const TRANSACTION_IN_PROGRESS_STATES: HttpTypes.TransactionState[] = [
   TransactionState.COMPENSATING,
 ]
 
-

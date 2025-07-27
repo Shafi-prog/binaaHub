@@ -361,7 +361,6 @@ const supabase = createClientComponentClient();
   const totalSales = totalRevenue;
   const averageOrderValue = totalRevenue / totalOrders;
 
-  
   // Fetch products from Supabase
   const fetchProducts = async () => {
     try {
@@ -386,8 +385,6 @@ const supabase = createClientComponentClient();
     }
   };
 
-
-  
   // Fetch customers from Supabase
   const fetchCustomers = async () => {
     try {
@@ -411,7 +408,6 @@ const supabase = createClientComponentClient();
       setLoading(false);
     }
   };
-
 
   useEffect(() => {
     fetchCustomers();

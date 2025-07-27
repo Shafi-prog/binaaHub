@@ -34,4 +34,3 @@ export const productTagListLoader = async ({ request }: LoaderFunctionArgs) => {
   )
 }
 
-

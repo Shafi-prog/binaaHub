@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+
 import { Button } from '@/core/shared/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
 import { Badge } from '@/core/shared/components/ui/badge';
@@ -22,50 +23,12 @@ interface CustomerGroup {
 }
 
 // Real data from Supabase
-const mockCustomerGroups: CustomerGroup[] = [
-  {
-    id: 'group_1',
-    name: 'عملاء VIP',
-    description: 'العملاء المميزون مع خصومات خاصة',
-    discount_percentage: 15,
-    customer_count: 45,
-    status: 'active',
-    created_at: '2024-01-15'
-  },
-  {
-    id: 'group_2',
-    name: 'عملاء الجملة',
-    description: 'عملاء التجارة والجملة',
-    discount_percentage: 10,
-    customer_count: 128,
-    status: 'active',
-    created_at: '2024-02-01'
-  },
-  {
-    id: 'group_3',
-    name: 'العملاء الجدد',
-    description: 'عملاء جدد لأول 3 أشهر',
-    discount_percentage: 5,
-    customer_count: 89,
-    status: 'active',
-    created_at: '2024-03-10'
-  },
-  {
-    id: 'group_4',
-    name: 'عملاء الشركات',
-    description: 'عملاء شركات ومؤسسات',
-    discount_percentage: 12,
-    customer_count: 67,
-    status: 'active',
-    created_at: '2024-01-20'
-  }
-];
 
 export default function CustomerGroupsList() {
 const supabase = createClientComponentClient();
 
   const [loading, setLoading] = useState(true);
-  const [customerGroups] = useState<CustomerGroup[]>(mockCustomerGroups);
+  const [customerGroups] = useState<CustomerGroup[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
 
   const filteredGroups = useMemo(() => {
@@ -246,5 +209,4 @@ const supabase = createClientComponentClient();
     </div>
   );
 }
-
 

@@ -41,7 +41,7 @@ const supabase = createClientComponentClient();
   const downloadTemplate = () => {
     // Generate CSV template based on import type
     let headers: string[] = []
-    let sampleData: string[] = []
+    let []: string[] = []
 
     if (importType === 'products') {
       headers = [
@@ -49,31 +49,16 @@ const supabase = createClientComponentClient();
         'category', 'status', 'weight', 'length', 'width', 'height',
         'quantity', 'low_stock_alert', 'tags'
       ]
-      sampleData = [
-        'اسمنت بورتلاندي',
-        'اسمنت عالي الجودة للبناء',
-        'CEM-001',
-        '25.50',
-        '20.00',
-        'construction',
-        'active',
-        '50',
-        '60',
-        '40',
-        '10',
-        '100',
-        '10',
-        'اسمنت,بناء,مواد'
-      ]
+      
     } else if (importType === 'inventory') {
       headers = ['sku', 'quantity', 'location', 'notes']
-      sampleData = ['CEM-001', '150', 'المستودع الرئيسي', 'تحديث المخزون']
+      
     } else if (importType === 'prices') {
       headers = ['sku', 'price', 'cost_price', 'sale_price', 'currency']
-      sampleData = ['CEM-001', '25.50', '20.00', '23.00', 'SAR']
+      
     }
 
-    const csvContent = [headers.join(','), sampleData.join(',')].join('\n')
+    const csvContent = [headers.join(','), [].join(',')].join('\n')
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
     const link = document.createElement('a')
     link.href = URL.createObjectURL(blob)

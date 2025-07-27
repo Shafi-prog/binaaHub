@@ -1,74 +1,33 @@
-"use client"
+'use client'
 
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card'
 import { Button } from '@/core/shared/components/ui/button'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/core/shared/components/ui/select'
 import { Checkbox } from '@/core/shared/components/ui/checkbox'
-import { Alert, AlertDescription } from '@/core/shared/components/ui/alert'
-import { Progress } from '@/core/shared/components/ui/progress'
-import { ArrowLeft, Download, FileSpreadsheet, CheckCircle, Loader2 } from 'lucide-react'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/core/shared/components/ui/select'
+import { Input } from '@/core/shared/components/ui/input'
+import { Label } from '@/core/shared/components/ui/label'
 
-export default function ExportProductsPage() {
-const supabase = createClientComponentClient();
-
-  const router = useRouter()
-  const [loading, setLoading] = useState(true);
-  const [exportType, setExportType] = useState('products')
-  const [format, setFormat] = useState('csv')
+export default function ProductExportPage() {
+  const [selectedFields, setSelectedFields] = useState<string[]>(['title', 'price', 'sku'])
+  const [exportFormat, setExportFormat] = useState('csv')
   const [exporting, setExporting] = useState(false)
-  const [progress, setProgress] = useState(0)
-  const [exportComplete, setExportComplete] = useState(false)
-  const [selectedFields, setSelectedFields] = useState<string[]>([
-    'title', 'sku', 'price', 'category', 'status'
-  ])
 
-  const availableFields = {
-    products: [
-      { id: 'title', label: 'اسم المنتج' },
-      { id: 'description', label: 'الوصف' },
-      { id: 'sku', label: 'رمز المنتج' },
-      { id: 'price', label: 'السعر' },
-      { id: 'cost_price', label: 'سعر التكلفة' },
-      { id: 'category', label: 'الفئة' },
-      { id: 'status', label: 'الحالة' },
-      { id: 'quantity', label: 'الكمية' },
-      { id: 'weight', label: 'الوزن' },
-      { id: 'dimensions', label: 'الأبعاد' },
-      { id: 'tags', label: 'العلامات' },
-      { id: 'created_at', label: 'تاريخ الإنشاء' },
-      { id: 'updated_at', label: 'تاريخ التحديث' }
-    ],
-    inventory: [
-      { id: 'sku', label: 'رمز المنتج' },
-      { id: 'title', label: 'اسم المنتج' },
-      { id: 'quantity', label: 'الكمية المتاحة' },
-      { id: 'reserved', label: 'الكمية المحجوزة' },
-      { id: 'location', label: 'الموقع' },
-      { id: 'last_updated', label: 'آخر تحديث' }
-    ],
-    customers: [
-      { id: 'name', label: 'الاسم' },
-      { id: 'email', label: 'البريد الإلكتروني' },
-      { id: 'phone', label: 'رقم الهاتف' },
-      { id: 'type', label: 'النوع' },
-      { id: 'city', label: 'المدينة' },
-      { id: 'total_orders', label: 'إجمالي الطلبات' },
-      { id: 'total_spent', label: 'إجمالي المبلغ المنفق' },
-      { id: 'created_at', label: 'تاريخ التسجيل' }
-    ],
-    orders: [
-      { id: 'order_id', label: 'رقم الطلب' },
-      { id: 'customer_name', label: 'اسم العميل' },
-      { id: 'total', label: 'المبلغ الإجمالي' },
-      { id: 'status', label: 'الحالة' },
-      { id: 'payment_status', label: 'حالة الدفع' },
-      { id: 'created_at', label: 'تاريخ الطلب' },
-      { id: 'items_count', label: 'عدد العناصر' }
-    ]
-  }
+  const availableFields = [
+    { id: 'title', label: 'Product Title' },
+    { id: 'description', label: 'Description' },
+    { id: 'sku', label: 'SKU' },
+    { id: 'price', label: 'Price' },
+    { id: 'cost_price', label: 'Cost Price' },
+    { id: 'category', label: 'Category' },
+    { id: 'status', label: 'Status' },
+    { id: 'quantity', label: 'Quantity' },
+    { id: 'weight', label: 'Weight' },
+    { id: 'dimensions', label: 'Dimensions' },
+    { id: 'tags', label: 'Tags' },
+    { id: 'created_at', label: 'Created Date' },
+    { id: 'updated_at', label: 'Updated Date' }
+  ]
 
   const handleFieldToggle = (fieldId: string) => {
     setSelectedFields(prev => 
@@ -78,390 +37,170 @@ const supabase = createClientComponentClient();
     )
   }
 
-  const generateSampleData = (type: string) => {
-    const sampleData: any = []
-    
-    if (type === 'products') {
-      // Get from localStorage or create sample
-      const storedProducts = JSON.parse(localStorage.getItem('store_products') || '[]')
-      if (storedProducts.length > 0) {
-        return storedProducts.map((product: any) => ({
-          title: product.title || 'منتج تجريبي',
-          description: product.description || 'وصف المنتج',
-          sku: product.sku || `PRD-${Math.random().toString(36).substr(2, 9)}`,
-          price: product.price || '0',
-          cost_price: product.costPrice || '0',
-          category: product.category || 'عام',
-          status: product.status || 'نشط',
-          quantity: product.inventory?.quantity || '0',
-          weight: product.dimensions?.weight || '',
-          dimensions: `${product.dimensions?.length || ''}x${product.dimensions?.width || ''}x${product.dimensions?.height || ''}`,
-          tags: Array.isArray(product.tags) ? product.tags.join(';') : '',
-          created_at: product.createdAt || new Date().toISOString(),
-          updated_at: product.updatedAt || new Date().toISOString()
-        }))
-      }
-      
-      // Generate sample data
-      for (let i = 1; i <= 50; i++) {
-        sampleData.push({
-          title: `منتج تجريبي ${i}`,
-          description: `وصف المنتج التجريبي رقم ${i}`,
-          sku: `PRD-${String(i).padStart(3, '0')}`,
-          price: (Math.random() * 1000 + 10).toFixed(2),
-          cost_price: (Math.random() * 800 + 5).toFixed(2),
-          category: ['construction', 'tools', 'hardware'][Math.floor(Math.random() * 3)],
-          status: ['active', 'draft'][Math.floor(Math.random() * 2)],
-          quantity: Math.floor(Math.random() * 100),
-          weight: (Math.random() * 50 + 1).toFixed(2),
-          dimensions: `${Math.floor(Math.random() * 100)}x${Math.floor(Math.random() * 100)}x${Math.floor(Math.random() * 100)}`,
-          tags: 'تجريبي;عينة',
-          created_at: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString(),
-          updated_at: new Date().toISOString()
-        })
-      }
-    } else if (type === 'customers') {
-      const storedCustomers = JSON.parse(localStorage.getItem('store_customers') || '[]')
-      if (storedCustomers.length > 0) {
-        return storedCustomers.map((customer: any) => ({
-          name: customer.name || 'عميل تجريبي',
-          email: customer.email || 'test@example.com',
-          phone: customer.phone || '+966500000000',
-          type: customer.type || 'individual',
-          city: customer.address?.city || 'الرياض',
-          total_orders: Math.floor(Math.random() * 20),
-          total_spent: (Math.random() * 10000).toFixed(2),
-          created_at: customer.createdAt || new Date().toISOString()
-        }))
-      }
-    }
-
-    return sampleData
-  }
-
   const handleExport = async () => {
     if (selectedFields.length === 0) {
-      alert('يرجى اختيار حقل واحد على الأقل للتصدير')
+      alert('Please select at least one field to export')
       return
     }
 
     setExporting(true)
-    setProgress(0)
-    setExportComplete(false)
-
+    
     try {
-      // Generate data
-      const data = generateSampleData(exportType)
+      // Simulate export process
+      await new Promise(resolve => setTimeout(resolve, 2000))
       
-      // Simulate processing delay
-      for (let i = 0; i <= 100; i += 10) {
-        setProgress(i)
-        await new Promise(resolve => setTimeout(resolve, 100))
-      }
-
-      // Filter data by selected fields
-      const filteredData = data.map((item: any) => {
-        const filtered: any = {}
+      // Create sample export data
+      const exportData: any[] = []
+      for (let i = 1; i <= 10; i++) {
+        const row: any = {}
         selectedFields.forEach(field => {
-          filtered[field] = item[field] || ''
+          switch (field) {
+            case 'title':
+              row[field] = `Sample Product ${i}`
+              break
+            case 'price':
+              row[field] = (Math.random() * 1000).toFixed(2)
+              break
+            case 'sku':
+              row[field] = `SKU-${i.toString().padStart(3, '0')}`
+              break
+            case 'quantity':
+              row[field] = Math.floor(Math.random() * 100)
+              break
+            default:
+              row[field] = `Sample ${field} ${i}`
+          }
         })
-        return filtered
-      })
-
-      // Generate file content
-      let content = ''
-      let mimeType = ''
-      let extension = ''
-
-      if (format === 'csv') {
-        // Generate CSV
-        const headers = selectedFields.map(field => 
-          availableFields[exportType as keyof typeof availableFields]
-            .find(f => f.id === field)?.label || field
-        )
-        
-        const csvRows = [headers.join(',')]
-        filteredData.forEach((item: any) => {
-          const row = selectedFields.map(field => {
-            const value = item[field] || ''
-            // Escape commas and quotes
-            return value.toString().includes(',') || value.toString().includes('"') 
-              ? `"${value.toString().replace(/"/g, '""')}"` 
-              : value
-          })
-          csvRows.push(row.join(','))
-        })
-        
-        content = csvRows.join('\n')
-        mimeType = 'text/csv;charset=utf-8;'
-        extension = 'csv'
-      } else {
-        // Generate JSON
-        content = JSON.stringify(filteredData, null, 2)
-        mimeType = 'application/json;charset=utf-8;'
-        extension = 'json'
+        exportData.push(row)
       }
 
+      // Generate CSV content
+      const headers = selectedFields.map(field => 
+        availableFields.find(f => f.id === field)?.label || field
+      ).join(',')
+      
+      const rows = exportData.map(row => 
+        selectedFields.map(field => row[field] || '').join(',')
+      ).join('\n')
+      
+      const csvContent = headers + '\n' + rows
+      
       // Download file
-      const blob = new Blob([content], { type: mimeType })
-      const link = document.createElement('a')
-      link.href = URL.createObjectURL(blob)
-      link.download = `${exportType}_export_${new Date().toISOString().split('T')[0]}.${extension}`
-      link.click()
-
-      setExportComplete(true)
+      const blob = new Blob([csvContent], { type: 'text/csv' })
+      const url = window.URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `products_export_${new Date().getTime()}.${exportFormat}`
+      a.click()
+      window.URL.revokeObjectURL(url)
+      
+      alert('Export completed successfully!')
     } catch (error) {
-      console.error('Export error:', error)
-      alert('حدث خطأ أثناء التصدير')
+      alert('Export failed. Please try again.')
     } finally {
       setExporting(false)
     }
   }
 
   return (
-    <div className="p-6 space-y-6" dir="rtl">
-      <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="flex items-center gap-4 mb-6">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => router.back()}
-            className="flex items-center gap-2"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            العودة
-          </Button>
-          <div className="flex items-center gap-3">
-            <Download className="w-8 h-8 text-green-600" />
-            <h1 className="text-3xl font-bold text-gray-900">تصدير البيانات</h1>
-          </div>
-        </div>
+    <div className="p-6 space-y-6">
+      <div className="flex justify-between items-center">
+        <h1 className="text-3xl font-bold">Export Products</h1>
+      </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Main Content */}
-        <div className="lg:col-span-2 space-y-6">
-          {/* Export Settings */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <FileSpreadsheet className="w-5 h-5 text-blue-600" />
-                إعدادات التصدير
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    نوع البيانات
-                  </label>
-                  <Select value={exportType} onValueChange={(value) => {
-                    setExportType(value)
-                    setSelectedFields([]) // Reset selected fields
-                  }}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="products">المنتجات</SelectItem>
-                      <SelectItem value="inventory">المخزون</SelectItem>
-                      <SelectItem value="customers">العملاء</SelectItem>
-                      <SelectItem value="orders">الطلبات</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <Card>
+          <CardHeader>
+            <CardTitle>Export Settings</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div>
+              <Label htmlFor="format">Export Format</Label>
+              <Select value={exportFormat} onValueChange={setExportFormat}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select format" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="csv">CSV</SelectItem>
+                  <SelectItem value="xlsx">Excel (XLSX)</SelectItem>
+                  <SelectItem value="json">JSON</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    تنسيق الملف
-                  </label>
-                  <Select value={format} onValueChange={setFormat}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="csv">CSV</SelectItem>
-                      <SelectItem value="json">JSON</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Field Selection */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <CheckCircle className="w-5 h-5 text-green-600" />
-                اختيار الحقول
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {availableFields[exportType as keyof typeof availableFields]?.map((field) => (
-                  <div key={field.id} className="flex items-center space-x-2 space-x-reverse">
+            <div>
+              <Label>Fields to Export</Label>
+              <div className="grid grid-cols-2 gap-2 mt-2">
+                {availableFields.map((field) => (
+                  <div key={field.id} className="flex items-center space-x-2">
                     <Checkbox
                       id={field.id}
                       checked={selectedFields.includes(field.id)}
                       onCheckedChange={() => handleFieldToggle(field.id)}
                     />
-                    <label
-                      htmlFor={field.id}
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-gray-700"
-                    >
+                    <Label htmlFor={field.id} className="text-sm">
                       {field.label}
-                    </label>
+                    </Label>
                   </div>
                 ))}
               </div>
+            </div>
+          </CardContent>
+        </Card>
 
-              <div className="flex gap-3 mt-6">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setSelectedFields(
-                    availableFields[exportType as keyof typeof availableFields]?.map(f => f.id) || []
-                  )}
-                  className="border-blue-300 text-blue-700 hover:bg-blue-50"
-                >
-                  تحديد الكل
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setSelectedFields([])}
-                  className="border-red-300 text-red-700 hover:bg-red-50"
-                >
-                  إلغاء الكل
-                </Button>
+        <Card>
+          <CardHeader>
+            <CardTitle>Export Preview</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2">
+              <div className="text-sm text-gray-600">
+                Selected Fields ({selectedFields.length}):
               </div>
-            </CardContent>
-          </Card>
-
-          {/* Export Progress */}
-          {exporting && (
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Loader2 className="w-5 h-5 text-blue-600 animate-spin" />
-                  جارٍ التصدير...
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <Progress value={progress} className="w-full" />
-                <p className="text-sm text-gray-600 mt-2">
-                  {progress}% مكتمل
-                </p>
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Export Complete */}
-          {exportComplete && (
-            <Alert>
-              <CheckCircle className="h-4 w-4" />
-              <AlertDescription>
-                تم تصدير البيانات بنجاح! يجب أن يبدأ التحميل تلقائياً.
-              </AlertDescription>
-            </Alert>
-          )}
-        </div>
-
-        {/* Sidebar */}
-        <div className="space-y-6">
-          {/* Export Summary */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <FileSpreadsheet className="w-5 h-5 text-blue-600" />
-                ملخص التصدير
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3 text-sm">
-              <div className="flex justify-between">
-                <span>نوع البيانات:</span>
-                <span>
-                  {exportType === 'products' ? 'المنتجات' :
-                   exportType === 'inventory' ? 'المخزون' :
-                   exportType === 'customers' ? 'العملاء' : 'الطلبات'}
-                </span>
+              <div className="flex flex-wrap gap-2">
+                {selectedFields.map(field => (
+                  <span
+                    key={field}
+                    className="px-2 py-1 bg-blue-100 text-blue-800 rounded text-sm"
+                  >
+                    {availableFields.find(f => f.id === field)?.label || field}
+                  </span>
+                ))}
               </div>
-              <div className="flex justify-between">
-                <span>تنسيق الملف:</span>
-                <span>{format.toUpperCase()}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>عدد الحقول:</span>
-                <span>{selectedFields.length}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>عدد السзаписей المتوقع:</span>
-                <span>
-                  {exportType === 'products' ? 
-                    JSON.parse(localStorage.getItem('store_products') || '[]').length || '50' :
-                   exportType === 'customers' ?
-                    JSON.parse(localStorage.getItem('store_customers') || '[]').length || '25' :
-                   'متغير'}
-                </span>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Instructions */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <CheckCircle className="w-5 h-5 text-green-600" />
-                معلومات التصدير
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3 text-sm">
-              <div>
-                <h4 className="font-medium mb-2">تنسيقات الملفات:</h4>
-                <ul className="space-y-1 text-gray-600">
-                  <li>• CSV: للاستخدام في Excel والتطبيقات المكتبية</li>
-                  <li>• JSON: للاستخدام في التطبيقات والواجهات البرمجية</li>
-                </ul>
-              </div>
-
-              <div>
-                <h4 className="font-medium mb-2">ملاحظات:</h4>
-                <ul className="space-y-1 text-gray-600">
-                  <li>• يتم تشفير الملفات بترميز UTF-8</li>
-                  <li>• البيانات الحساسة محمية</li>
-                  <li>• الملفات صالحة للاستيراد مرة أخرى</li>
-                </ul>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Actions */}
-          <Card>
-            <CardContent className="pt-6">
-              <div className="space-y-3">
-                <Button 
-                  onClick={handleExport}
-                  disabled={selectedFields.length === 0 || exporting}
-                  className="w-full flex items-center gap-2"
-                >
-                  <FileSpreadsheet className="h-4 w-4" />
-                  {exporting ? 'جارٍ التصدير...' : 'تصدير البيانات'}
-                </Button>
-                
-                <Button 
-                  variant="outline" 
-                  onClick={() => router.back()}
-                  className="w-full"
-                >
-                  إلغاء
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+              
+              {selectedFields.length === 0 && (
+                <div className="text-red-500 text-sm">
+                  Please select at least one field to export.
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
       </div>
-      </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Start Export</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-600">
+                Ready to export products in {exportFormat.toUpperCase()} format
+              </p>
+              <p className="text-xs text-gray-500">
+                Selected {selectedFields.length} fields for export
+              </p>
+            </div>
+            <Button
+              onClick={handleExport}
+              disabled={selectedFields.length === 0 || exporting}
+            >
+              {exporting ? 'Exporting...' : 'Export Products'}
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }

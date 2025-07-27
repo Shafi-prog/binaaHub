@@ -16,4 +16,3 @@ export const reservationItemLoader = async ({ params }: LoaderFunctionArgs) => {
   return queryClient.ensureQueryData(query)
 }
 
-

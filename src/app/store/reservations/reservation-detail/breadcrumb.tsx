@@ -29,4 +29,3 @@ export const ReservationDetailBreadcrumb = (
   return <span>{display}</span>
 }
 
-

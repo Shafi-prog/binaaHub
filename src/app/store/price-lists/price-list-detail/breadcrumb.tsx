@@ -23,4 +23,3 @@ export const PriceListDetailBreadcrumb = (
   return <span>{price_list.title}</span>
 }
 
-

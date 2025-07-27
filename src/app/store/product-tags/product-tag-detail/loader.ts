@@ -17,4 +17,3 @@ export const productTagLoader = async ({ params }: LoaderFunctionArgs) => {
   return queryClient.ensureQueryData(query)
 }
 
-

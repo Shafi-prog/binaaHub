@@ -24,4 +24,3 @@ export const ApiKeyManagementDetailBreadcrumb = (
   return <span>{api_key.title}</span>
 }
 
-

@@ -17,4 +17,3 @@ export const collectionLoader = async ({ params }: LoaderFunctionArgs) => {
   return queryClient.ensureQueryData(query)
 }
 
-

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+
 import { Button } from '@/core/shared/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
 import { Badge } from '@/core/shared/components/ui/badge';
@@ -35,40 +36,9 @@ interface Campaign {
   created_at: string;
 }
 
-// Mock data for campaigns
-const mockCampaigns: Campaign[] = [
-  {
-    id: 'camp_1',
-    name: 'خصم الصيف 2024',
-    type: 'seasonal',
-    status: 'active',
-    discount_value: 25,
-    discount_type: 'percentage',
-    start_date: '2024-06-01',
-    end_date: '2024-08-31',
-    usage_count: 156,
-    usage_limit: 1000,
-    budget: 50000,
-    created_at: '2024-05-15'
-  },
-  {
-    id: 'camp_2', 
-    name: 'تصفية المخزون',
-    type: 'clearance',
-    status: 'active',
-    discount_value: 500,
-    discount_type: 'fixed',
-    start_date: '2024-07-01',
-    end_date: '2024-07-31',
-    usage_count: 89,
-    usage_limit: 500,
-    budget: 25000,
-    created_at: '2024-06-20'
-  }
-];
-
 export default function CampaignsPage() {
-  const [campaigns] = useState<Campaign[]>(mockCampaigns);
+  const [campaigns, setCampaigns] = useState<Campaign[]>([]);
+  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
 

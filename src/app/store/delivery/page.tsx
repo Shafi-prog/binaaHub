@@ -3,6 +3,7 @@
 export const dynamic = 'force-dynamic';
 
 import { useState } from 'react';
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
 import { Button } from '@/core/shared/components/ui/button';
 import { Badge } from '@/core/shared/components/ui/badge';
@@ -25,10 +26,10 @@ import { CustomerSearchWidget, type Customer } from '@/core/shared/components/st
 import { toast } from 'sonner';
 
 export default function DeliveryPage() {
+  const [loading, setLoading] = useState(true);
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
 
-  // Mock delivery data
-  const deliveryStats = {
+    const deliveryStats = {
     totalDeliveries: 45,
     inTransit: 12,
     delivered: 28,
@@ -275,5 +276,4 @@ export default function DeliveryPage() {
     </div>
   );
 }
-
 

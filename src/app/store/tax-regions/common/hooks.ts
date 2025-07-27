@@ -79,4 +79,3 @@ export const useDeleteTaxRateAction = (taxRate: HttpTypes.AdminTaxRate) => {
   return handleDelete
 }
 
-

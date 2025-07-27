@@ -1,0 +1,1248 @@
+{
+  "timestamp": "2025-07-24T18:33:42.370Z",
+  "summary": {
+    "totalFilesScanned": 2611,
+    "totalButtons": 112,
+    "clickableButtons": 112,
+    "nonClickableButtons": 0,
+    "clickabilityRate": 100
+  },
+  "issues": [],
+  "detailedResults": [
+    {
+      "file": "src\\app\\admin\\construction\\page.tsx",
+      "line": 414,
+      "content": "<Button size=\"sm\" onClick={() => alert('Button clicked')}>عرض التفاصيل</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>عرض التفاصيل",
+      "issues": []
+    },
+    {
+      "file": "src\\app\\admin\\construction\\page.tsx",
+      "line": 482,
+      "content": "<Button size=\"sm\" variant=\"outline\" onClick={() => alert('Button clicked')}>عرض المشاريع</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>عرض المشاريع",
+      "issues": []
+    },
+    {
+      "file": "src\\app\\admin\\construction\\page.tsx",
+      "line": 483,
+      "content": "<Button size=\"sm\" onClick={() => alert('Button clicked')}>طلب عرض سعر</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>طلب عرض سعر",
+      "issues": []
+    },
+    {
+      "file": "src\\app\\store\\marketplace\\page.tsx",
+      "line": 287,
+      "content": "<Button onClick={() => alert('Button clicked')}>Sign In</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>Sign In",
+      "issues": []
+    },
+    {
+      "file": "src\\app\\user\\building-advice\\page.tsx",
+      "line": 399,
+      "content": "<button type=\"button\" onClick={handleCalc} className=\"bg-blue-600 text-white rounded px-3 py-1 font-bold\">{lang === 'ar' ? 'احسب' : 'Calculate'}</button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "{lang === 'ar' ? 'احسب' : 'Calculate'}",
+      "issues": []
+    },
+    {
+      "file": "src\\app\\user\\feedback\\page.tsx",
+      "line": 9,
+      "content": "<button type=\"submit\" className=\"bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700\">إرسال</button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "type=\"submit\"",
+        "form-submit"
+      ],
+      "text": "إرسال",
+      "issues": []
+    },
+    {
+      "file": "src\\app\\user\\services\\calculators.tsx",
+      "line": 65,
+      "content": "<Button onClick={handleCalculate} className=\"bg-blue-600 text-white rounded px-4 py-2\">إضافة</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "إضافة",
+      "issues": []
+    },
+    {
+      "file": "src\\app\\user\\smart-construction-advisor\\page.tsx",
+      "line": 461,
+      "content": "<Button onClick={handleChatSubmit}>إرسال</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "إرسال",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\AdvancedReportingEngine.tsx",
+      "line": 27,
+      "content": "<Button onClick={() => alert('تم إنشاء التقرير بنجاح!')}>Generate Report</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('تم إنشاء التقرير بنجاح!')}>Generate Report",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\AnalyticsWidget.tsx",
+      "line": 25,
+      "content": "<button className=\"ml-4 text-white font-bold\" onClick={onClose} aria-label=\"إغلاق التنبيه\">×</button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "×",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\binna-books-app.tsx",
+      "line": 202,
+      "content": "<Button onClick={() => alert('سيتم فتح صفحة إنشاء فاتورة جديدة')}>فاتورة جديدة</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('سيتم فتح صفحة إنشاء فاتورة جديدة')}>فاتورة جديدة",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\binna-books-app.tsx",
+      "line": 203,
+      "content": "<Button variant=\"outline\" onClick={() => alert('سيتم فتح صفحة استيراد الفواتير')}>استيراد فواتير</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('سيتم فتح صفحة استيراد الفواتير')}>استيراد فواتير",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\binna-books-app.tsx",
+      "line": 252,
+      "content": "<Button variant=\"outline\" size=\"sm\" onClick={() => alert(`عرض تفاصيل الفاتورة ${invoice.number}`)}>عرض</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert(`عرض تفاصيل الفاتورة ${invoice.number}`)}>عرض",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\binna-books-app.tsx",
+      "line": 253,
+      "content": "<Button variant=\"outline\" size=\"sm\" onClick={() => alert(`تحرير الفاتورة ${invoice.number}`)}>تحرير</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert(`تحرير الفاتورة ${invoice.number}`)}>تحرير",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\binna-books-app.tsx",
+      "line": 254,
+      "content": "<Button variant=\"outline\" size=\"sm\" onClick={() => alert(`طباعة الفاتورة ${invoice.number}`)}>طباعة</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert(`طباعة الفاتورة ${invoice.number}`)}>طباعة",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\binna-books-app.tsx",
+      "line": 295,
+      "content": "<Button className=\"w-full mt-4\" onClick={() => alert('Button clicked')}>تحميل التقرير</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>تحميل التقرير",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\binna-books-app.tsx",
+      "line": 324,
+      "content": "<Button className=\"w-full mt-4\" onClick={() => alert('Button clicked')}>تحميل التقرير</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>تحميل التقرير",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\binna-books-app.tsx",
+      "line": 379,
+      "content": "<Button onClick={() => alert('Button clicked')}>إنشاء إقرار ضريبي</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>إنشاء إقرار ضريبي",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\binna-books-app.tsx",
+      "line": 380,
+      "content": "<Button variant=\"outline\" onClick={() => alert('Button clicked')}>تحميل تقرير الضريبة</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>تحميل تقرير الضريبة",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\binna-books-app.tsx",
+      "line": 434,
+      "content": "<Button onClick={() => alert('Button clicked')}>اختبار الاتصال مع الهيئة</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>اختبار الاتصال مع الهيئة",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\binna-books-app.tsx",
+      "line": 435,
+      "content": "<Button variant=\"outline\" className=\"mr-4\" onClick={() => alert('Button clicked')}>تحديث الإعدادات</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>تحديث الإعدادات",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\binna-stock-app.tsx",
+      "line": 249,
+      "content": "<Button variant=\"outline\" className=\"w-full\" onClick={() => alert('Button clicked')}>عرض التنبؤات</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>عرض التنبؤات",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\binna-stock-app.tsx",
+      "line": 261,
+      "content": "<Button variant=\"outline\" className=\"w-full\" onClick={() => alert('Button clicked')}>إدارة المواقع</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>إدارة المواقع",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\binna-stock-app.tsx",
+      "line": 273,
+      "content": "<Button variant=\"outline\" className=\"w-full\" onClick={() => alert('Button clicked')}>إعداد الموردين</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>إعداد الموردين",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\CartSidebar.tsx",
+      "line": 30,
+      "content": "<button onClick={() => onUpdate(item.product.id, item.quantity - 1)} className=\"px-2 py-1 bg-gray-200 rounded\">-</button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "onUpdate(item.product.id, item.quantity - 1)} className=\"px-2 py-1 bg-gray-200 rounded\">-",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\CartSidebar.tsx",
+      "line": 32,
+      "content": "<button onClick={() => onUpdate(item.product.id, item.quantity + 1)} className=\"px-2 py-1 bg-gray-200 rounded\">+</button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "onUpdate(item.product.id, item.quantity + 1)} className=\"px-2 py-1 bg-gray-200 rounded\">+",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\CartSidebar.tsx",
+      "line": 33,
+      "content": "<button onClick={() => onRemove(item.product.id)} className=\"ml-2 text-red-600\">Remove</button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "onRemove(item.product.id)} className=\"ml-2 text-red-600\">Remove",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\CartSidebar.tsx",
+      "line": 44,
+      "content": "<button onClick={onCheckout} className=\"w-full bg-green-500 text-white py-3 rounded-lg mt-6 hover:bg-green-600 transition-colors\">Checkout</button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "Checkout",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\CRMWidget.tsx",
+      "line": 27,
+      "content": "<button className=\"ml-4 text-white font-bold\" onClick={onClose} aria-label=\"إغلاق التنبيه\">×</button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "×",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\CRMWidget.tsx",
+      "line": 115,
+      "content": "<button className=\"px-3 py-1 rounded bg-gray-200\" onClick={() => setConfirmDisable(null)}>إلغاء</button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "setConfirmDisable(null)}>إلغاء",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\CRMWidget.tsx",
+      "line": 116,
+      "content": "<button className=\"px-3 py-1 rounded bg-red-600 text-white\" onClick={confirmDisableAction}>تعطيل</button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "تعطيل",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\CRMWidget.tsx",
+      "line": 189,
+      "content": "<button className=\"text-blue-600 hover:underline text-xs mr-2\" aria-label={`تعديل العميل ${customer.name}`} title=\"تعديل العميل\" onClick={() => alert('Button clicked')}>تعديل</button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>تعديل",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\CRMWidget.tsx",
+      "line": 190,
+      "content": "<button className=\"text-green-600 hover:underline text-xs mr-2\" aria-label={`مراسلة العميل ${customer.name}`} title=\"مراسلة العميل\" onClick={() => alert('Button clicked')}>مراسلة</button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>مراسلة",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\CRMWidget.tsx",
+      "line": 191,
+      "content": "<button className=\"text-red-600 hover:underline text-xs\" aria-label={`تعطيل العميل ${customer.name}`} title=\"تعطيل العميل\" onClick={() => handleDisable(customer.id)}>تعطيل</button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "handleDisable(customer.id)}>تعطيل",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\DriverAssignmentSystem.tsx",
+      "line": 31,
+      "content": "<Button size=\"sm\" onClick={() => alert('Button clicked')}>Assign</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>Assign",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\InventoryWidget.tsx",
+      "line": 16,
+      "content": "<button className=\"ml-4 text-white font-bold\" onClick={onClose} aria-label=\"إغلاق التنبيه\">×</button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "×",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\InventoryWidget.tsx",
+      "line": 112,
+      "content": "<button className=\"px-3 py-1 rounded bg-gray-200\" onClick={() => setConfirmDisable(null)}>إلغاء</button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "setConfirmDisable(null)}>إلغاء",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\InventoryWidget.tsx",
+      "line": 113,
+      "content": "<button className=\"px-3 py-1 rounded bg-red-600 text-white\" onClick={confirmDisableAction}>تعطيل</button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "تعطيل",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\Navbar.tsx",
+      "line": 474,
+      "content": "<Button size=\"sm\" variant=\"ghost\" className=\"ml-2 text-red-600\" onClick={handleLogout}>تسجيل الخروج</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "تسجيل الخروج",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\PaymentModal.tsx",
+      "line": 15,
+      "content": "<button onClick={() => onPay('cash')} className=\"w-full bg-gray-200 py-2 rounded\">Cash</button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "onPay('cash')} className=\"w-full bg-gray-200 py-2 rounded\">Cash",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\PaymentModal.tsx",
+      "line": 16,
+      "content": "<button onClick={() => onPay('card')} className=\"w-full bg-blue-600 text-white py-2 rounded\">Card</button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "onPay('card')} className=\"w-full bg-blue-600 text-white py-2 rounded\">Card",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\PaymentModal.tsx",
+      "line": 17,
+      "content": "<button onClick={() => onPay('mada')} className=\"w-full bg-green-600 text-white py-2 rounded\">Mada</button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "onPay('mada')} className=\"w-full bg-green-600 text-white py-2 rounded\">Mada",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\PaymentModal.tsx",
+      "line": 18,
+      "content": "<button onClick={() => onPay('stc_pay')} className=\"w-full bg-yellow-400 text-white py-2 rounded\">STC Pay</button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "onPay('stc_pay')} className=\"w-full bg-yellow-400 text-white py-2 rounded\">STC Pay",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\PaymentModal.tsx",
+      "line": 24,
+      "content": "<button onClick={onClose} className=\"mt-6 w-full bg-gray-300 py-2 rounded\">Cancel</button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "Cancel",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\payments\\PaymentGatewayIntegration.tsx",
+      "line": 316,
+      "content": "<Button onClick={() => alert('Button clicked')}>Save Configuration</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>Save Configuration",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\ProductSearch.tsx",
+      "line": 20,
+      "content": "<button type=\"submit\" className=\"bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition\">Search</button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "type=\"submit\"",
+        "form-submit"
+      ],
+      "text": "Search",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\PurchaseOrdersWidget.tsx",
+      "line": 26,
+      "content": "<button className=\"ml-4 text-white font-bold\" onClick={onClose} aria-label=\"إغلاق التنبيه\">×</button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "×",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\PurchaseOrdersWidget.tsx",
+      "line": 111,
+      "content": "<button className=\"px-3 py-1 rounded bg-gray-200\" onClick={() => setConfirmCancel(null)}>إلغاء</button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "setConfirmCancel(null)}>إلغاء",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\PurchaseOrdersWidget.tsx",
+      "line": 112,
+      "content": "<button className=\"px-3 py-1 rounded bg-red-600 text-white\" onClick={confirmCancelAction}>إلغاء الأمر</button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "إلغاء الأمر",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\PurchaseOrdersWidget.tsx",
+      "line": 188,
+      "content": "<button className=\"text-blue-600 hover:underline text-xs mr-2\" aria-label={`تعديل أمر الشراء ${order.id}`} title=\"تعديل أمر الشراء\" onClick={() => alert('Button clicked')}>تعديل</button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>تعديل",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\PurchaseOrdersWidget.tsx",
+      "line": 189,
+      "content": "<button className=\"text-red-600 hover:underline text-xs\" aria-label={`إلغاء أمر الشراء ${order.id}`} title=\"إلغاء أمر الشراء\" onClick={() => handleCancel(order.id)}>إلغاء</button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "handleCancel(order.id)}>إلغاء",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\shipping\\ShippingLogisticsIntegration.tsx",
+      "line": 470,
+      "content": "<Button onClick={() => alert('Button clicked')}>Save Configuration</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>Save Configuration",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\SupplierManagementWidget.tsx",
+      "line": 17,
+      "content": "<button className=\"ml-4 text-white font-bold\" onClick={onClose} aria-label=\"إغلاق التنبيه\">×</button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "×",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\SupplierManagementWidget.tsx",
+      "line": 111,
+      "content": "<button className=\"px-3 py-1 rounded bg-gray-200\" onClick={() => setConfirmDisable(null)}>إلغاء</button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "setConfirmDisable(null)}>إلغاء",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\SupplierManagementWidget.tsx",
+      "line": 112,
+      "content": "<button className=\"px-3 py-1 rounded bg-red-600 text-white\" onClick={confirmDisableAction}>تعطيل</button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "تعطيل",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\SupplierManagementWidget.tsx",
+      "line": 187,
+      "content": "<button className=\"text-blue-600 hover:underline text-xs mr-2\" aria-label={`تعديل المورد ${supplier.name}`} title=\"تعديل المورد\" onClick={() => alert('Button clicked')}>تعديل</button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>تعديل",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\SupplierManagementWidget.tsx",
+      "line": 188,
+      "content": "<button className=\"text-green-600 hover:underline text-xs mr-2\" aria-label={`مراسلة المورد ${supplier.name}`} title=\"مراسلة المورد\" onClick={() => alert('Button clicked')}>مراسلة</button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>مراسلة",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\SupplierManagementWidget.tsx",
+      "line": 189,
+      "content": "<button className=\"text-red-600 hover:underline text-xs\" aria-label={`تعطيل المورد ${supplier.name}`} title=\"تعطيل المورد\" onClick={() => handleDisable(supplier.id)}>تعطيل</button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "handleDisable(supplier.id)}>تعطيل",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\UserManagement.tsx",
+      "line": 31,
+      "content": "<button style={{ marginRight: 8 }} onClick={() => alert('Button clicked')}>Edit</button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>Edit",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\UserManagement.tsx",
+      "line": 32,
+      "content": "<button onClick={() => alert('Button clicked')}>Delete</button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>Delete",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\components\\UserManagement.tsx",
+      "line": 38,
+      "content": "<button style={{ marginTop: 16, padding: '8px 16px', borderRadius: 4, background: '#222', color: '#fff', border: 'none' }} onClick={() => alert('Button clicked')}>Add User</button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>Add User",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\services\\app-layer\\calculators.tsx",
+      "line": 65,
+      "content": "<Button onClick={handleCalculate} className=\"bg-blue-600 text-white rounded px-4 py-2\">إضافة</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "إضافة",
+      "issues": []
+    },
+    {
+      "file": "src\\core\\shared\\services\\calculators.tsx",
+      "line": 65,
+      "content": "<Button onClick={handleCalculate} className=\"bg-blue-600 text-white rounded px-4 py-2\">إضافة</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "إضافة",
+      "issues": []
+    },
+    {
+      "file": "src\\domains\\construction\\projects\\project-planner.tsx",
+      "line": 166,
+      "content": "<Button size=\"sm\" variant=\"outline\" onClick={() => alert(`عرض تفاصيل المشروع ${project.name}`)}>View Details</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert(`عرض تفاصيل المشروع ${project.name}`)}>View Details",
+      "issues": []
+    },
+    {
+      "file": "src\\domains\\construction\\projects\\project-planner.tsx",
+      "line": 167,
+      "content": "<Button size=\"sm\" variant=\"outline\" onClick={() => alert(`تحرير المشروع ${project.name}`)}>Edit</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert(`تحرير المشروع ${project.name}`)}>Edit",
+      "issues": []
+    },
+    {
+      "file": "src\\domains\\construction\\projects\\project-planner.tsx",
+      "line": 168,
+      "content": "<Button size=\"sm\" variant=\"outline\" onClick={() => alert(`عرض جدول المشروع ${project.name}`)}>Timeline</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert(`عرض جدول المشروع ${project.name}`)}>Timeline",
+      "issues": []
+    },
+    {
+      "file": "src\\domains\\construction\\projects\\project-planner.tsx",
+      "line": 169,
+      "content": "<Button size=\"sm\" variant=\"outline\" onClick={() => alert(`إدارة موارد المشروع ${project.name}`)}>Resources</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert(`إدارة موارد المشروع ${project.name}`)}>Resources",
+      "issues": []
+    },
+    {
+      "file": "src\\domains\\construction\\projects\\project-planner.tsx",
+      "line": 202,
+      "content": "<Button size=\"sm\" variant=\"outline\" onClick={() => alert('Button clicked')}>Manage</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>Manage",
+      "issues": []
+    },
+    {
+      "file": "src\\domains\\construction\\resources\\resource-management.tsx",
+      "line": 164,
+      "content": "<Button size=\"sm\" onClick={() => alert('Button clicked')}>Allocate</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>Allocate",
+      "issues": []
+    },
+    {
+      "file": "src\\domains\\construction\\resources\\resource-management.tsx",
+      "line": 165,
+      "content": "<Button size=\"sm\" variant=\"outline\" onClick={() => alert('Button clicked')}>Reorder</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>Reorder",
+      "issues": []
+    },
+    {
+      "file": "src\\domains\\construction\\resources\\resource-management.tsx",
+      "line": 166,
+      "content": "<Button size=\"sm\" variant=\"outline\" onClick={() => alert('Button clicked')}>Transfer</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>Transfer",
+      "issues": []
+    },
+    {
+      "file": "src\\domains\\construction\\resources\\resource-management.tsx",
+      "line": 167,
+      "content": "<Button size=\"sm\" variant=\"outline\" onClick={() => alert('Button clicked')}>View History</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>View History",
+      "issues": []
+    },
+    {
+      "file": "src\\domains\\construction\\resources\\resource-management.tsx",
+      "line": 208,
+      "content": "<Button size=\"sm\" onClick={() => alert('Button clicked')}>Schedule</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>Schedule",
+      "issues": []
+    },
+    {
+      "file": "src\\domains\\construction\\resources\\resource-management.tsx",
+      "line": 209,
+      "content": "<Button size=\"sm\" variant=\"outline\" onClick={() => alert('Button clicked')}>Maintenance</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>Maintenance",
+      "issues": []
+    },
+    {
+      "file": "src\\domains\\construction\\resources\\resource-management.tsx",
+      "line": 210,
+      "content": "<Button size=\"sm\" variant=\"outline\" onClick={() => alert('Button clicked')}>Transfer</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>Transfer",
+      "issues": []
+    },
+    {
+      "file": "src\\domains\\construction\\resources\\resource-management.tsx",
+      "line": 211,
+      "content": "<Button size=\"sm\" variant=\"outline\" onClick={() => alert('Button clicked')}>History</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>History",
+      "issues": []
+    },
+    {
+      "file": "src\\domains\\construction\\resources\\resource-management.tsx",
+      "line": 253,
+      "content": "<Button size=\"sm\" onClick={() => alert('Button clicked')}>Assign</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>Assign",
+      "issues": []
+    },
+    {
+      "file": "src\\domains\\construction\\resources\\resource-management.tsx",
+      "line": 254,
+      "content": "<Button size=\"sm\" variant=\"outline\" onClick={() => alert('Button clicked')}>Schedule</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>Schedule",
+      "issues": []
+    },
+    {
+      "file": "src\\domains\\construction\\resources\\resource-management.tsx",
+      "line": 255,
+      "content": "<Button size=\"sm\" variant=\"outline\" onClick={() => alert('Button clicked')}>Performance</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>Performance",
+      "issues": []
+    },
+    {
+      "file": "src\\domains\\construction\\resources\\resource-management.tsx",
+      "line": 256,
+      "content": "<Button size=\"sm\" variant=\"outline\" onClick={() => alert('Button clicked')}>Contact</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>Contact",
+      "issues": []
+    },
+    {
+      "file": "src\\domains\\construction\\resources\\resource-management.tsx",
+      "line": 267,
+      "content": "<Button onClick={() => alert('Button clicked')}>+ Add Resource</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>+ Add Resource",
+      "issues": []
+    },
+    {
+      "file": "src\\domains\\construction\\supervisors\\supervisor-dashboard.tsx",
+      "line": 531,
+      "content": "<Button size=\"sm\" variant=\"outline\" onClick={() => alert('Button clicked')}>View Details</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>View Details",
+      "issues": []
+    },
+    {
+      "file": "src\\domains\\construction\\supervisors\\supervisor-dashboard.tsx",
+      "line": 532,
+      "content": "<Button size=\"sm\" onClick={() => alert('Button clicked')}>Follow Up</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>Follow Up",
+      "issues": []
+    },
+    {
+      "file": "src\\domains\\construction\\supervisors\\supervisor-dashboard.tsx",
+      "line": 589,
+      "content": "<Button size=\"sm\" variant=\"outline\" onClick={() => alert('Button clicked')}>View Report</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>View Report",
+      "issues": []
+    },
+    {
+      "file": "src\\domains\\construction\\supervisors\\supervisor-dashboard.tsx",
+      "line": 590,
+      "content": "<Button size=\"sm\" onClick={() => alert('Button clicked')}>Update Status</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>Update Status",
+      "issues": []
+    },
+    {
+      "file": "src\\domains\\marketplace\\vendor\\dashboard\\vendor-dashboard.tsx",
+      "line": 56,
+      "content": "<Button onClick={() => alert('Button clicked')}>Export Report</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>Export Report",
+      "issues": []
+    },
+    {
+      "file": "src\\domains\\marketplace\\vendor\\dashboard\\vendor-dashboard.tsx",
+      "line": 105,
+      "content": "<Button variant=\"outline\" size=\"sm\" onClick={() => alert('Button clicked')}>View All</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>View All",
+      "issues": []
+    },
+    {
+      "file": "src\\domains\\marketplace\\vendor\\dashboard\\vendor-dashboard.tsx",
+      "line": 135,
+      "content": "<Button variant=\"outline\" size=\"sm\" onClick={() => alert('Button clicked')}>View All</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>View All",
+      "issues": []
+    },
+    {
+      "file": "src\\domains\\marketplace\\vendor\\dashboard\\vendor-dashboard.tsx",
+      "line": 185,
+      "content": "<Button size=\"sm\" className=\"mt-2\" onClick={() => alert('Button clicked')}>Update Products</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>Update Products",
+      "issues": []
+    },
+    {
+      "file": "src\\domains\\marketplace\\vendor\\dashboard\\vendor-dashboard.tsx",
+      "line": 198,
+      "content": "<Button size=\"sm\" variant=\"outline\" className=\"mt-2\" onClick={() => alert('Button clicked')}>Manage Inventory</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>Manage Inventory",
+      "issues": []
+    },
+    {
+      "file": "src\\domains\\users\\components\\UserDashboard.tsx",
+      "line": 400,
+      "content": "<Button onClick={() => setShowAddCost(true)} className=\"bg-blue-600 text-white rounded px-4 py-2\">إضافة تكلفة جديدة</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "setShowAddCost(true)} className=\"bg-blue-600 text-white rounded px-4 py-2\">إضافة تكلفة جديدة",
+      "issues": []
+    },
+    {
+      "file": "src\\domains\\users\\components\\UserDashboard.tsx",
+      "line": 420,
+      "content": "<Button onClick={handleAddCost} className=\"bg-green-600 text-white rounded px-4 py-2 mt-2\">إضافة</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "إضافة",
+      "issues": []
+    },
+    {
+      "file": "src\\domains\\users\\components\\UserDashboard.tsx",
+      "line": 421,
+      "content": "<Button onClick={() => setShowAddCost(false)} className=\"ml-2 bg-gray-200 text-gray-700 rounded px-4 py-2 mt-2\">إلغاء</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "setShowAddCost(false)} className=\"ml-2 bg-gray-200 text-gray-700 rounded px-4 py-2 mt-2\">إلغاء",
+      "issues": []
+    },
+    {
+      "file": "src\\products\\binna-books\\components\\binna-books-app.tsx",
+      "line": 202,
+      "content": "<Button onClick={() => alert('Button clicked')}>فاتورة جديدة</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>فاتورة جديدة",
+      "issues": []
+    },
+    {
+      "file": "src\\products\\binna-books\\components\\binna-books-app.tsx",
+      "line": 203,
+      "content": "<Button variant=\"outline\" onClick={() => alert('Button clicked')}>استيراد فواتير</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>استيراد فواتير",
+      "issues": []
+    },
+    {
+      "file": "src\\products\\binna-books\\components\\binna-books-app.tsx",
+      "line": 252,
+      "content": "<Button variant=\"outline\" size=\"sm\" onClick={() => alert('Button clicked')}>عرض</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>عرض",
+      "issues": []
+    },
+    {
+      "file": "src\\products\\binna-books\\components\\binna-books-app.tsx",
+      "line": 253,
+      "content": "<Button variant=\"outline\" size=\"sm\" onClick={() => alert('Button clicked')}>تحرير</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>تحرير",
+      "issues": []
+    },
+    {
+      "file": "src\\products\\binna-books\\components\\binna-books-app.tsx",
+      "line": 254,
+      "content": "<Button variant=\"outline\" size=\"sm\" onClick={() => alert('Button clicked')}>طباعة</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>طباعة",
+      "issues": []
+    },
+    {
+      "file": "src\\products\\binna-books\\components\\binna-books-app.tsx",
+      "line": 295,
+      "content": "<Button className=\"w-full mt-4\" onClick={() => alert('Button clicked')}>تحميل التقرير</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>تحميل التقرير",
+      "issues": []
+    },
+    {
+      "file": "src\\products\\binna-books\\components\\binna-books-app.tsx",
+      "line": 324,
+      "content": "<Button className=\"w-full mt-4\" onClick={() => alert('Button clicked')}>تحميل التقرير</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>تحميل التقرير",
+      "issues": []
+    },
+    {
+      "file": "src\\products\\binna-books\\components\\binna-books-app.tsx",
+      "line": 379,
+      "content": "<Button onClick={() => alert('Button clicked')}>إنشاء إقرار ضريبي</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>إنشاء إقرار ضريبي",
+      "issues": []
+    },
+    {
+      "file": "src\\products\\binna-books\\components\\binna-books-app.tsx",
+      "line": 380,
+      "content": "<Button variant=\"outline\" onClick={() => alert('Button clicked')}>تحميل تقرير الضريبة</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>تحميل تقرير الضريبة",
+      "issues": []
+    },
+    {
+      "file": "src\\products\\binna-books\\components\\binna-books-app.tsx",
+      "line": 434,
+      "content": "<Button onClick={() => alert('Button clicked')}>اختبار الاتصال مع الهيئة</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>اختبار الاتصال مع الهيئة",
+      "issues": []
+    },
+    {
+      "file": "src\\products\\binna-books\\components\\binna-books-app.tsx",
+      "line": 435,
+      "content": "<Button variant=\"outline\" className=\"mr-4\" onClick={() => alert('Button clicked')}>تحديث الإعدادات</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>تحديث الإعدادات",
+      "issues": []
+    },
+    {
+      "file": "src\\products\\binna-pos\\components\\UserManagement.tsx",
+      "line": 31,
+      "content": "<button style={{ marginRight: 8 }} onClick={() => alert('Button clicked')}>Edit</button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>Edit",
+      "issues": []
+    },
+    {
+      "file": "src\\products\\binna-pos\\components\\UserManagement.tsx",
+      "line": 32,
+      "content": "<button onClick={() => alert('Button clicked')}>Delete</button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>Delete",
+      "issues": []
+    },
+    {
+      "file": "src\\products\\binna-pos\\components\\UserManagement.tsx",
+      "line": 38,
+      "content": "<button style={{ marginTop: 16, padding: '8px 16px', borderRadius: 4, background: '#222', color: '#fff', border: 'none' }} onClick={() => alert('Button clicked')}>Add User</button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>Add User",
+      "issues": []
+    },
+    {
+      "file": "src\\products\\binna-pos\\pages\\login.tsx",
+      "line": 37,
+      "content": "<button type=\"submit\" className=\"w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition\">Login</button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "type=\"submit\"",
+        "form-submit"
+      ],
+      "text": "Login",
+      "issues": []
+    },
+    {
+      "file": "src\\products\\binna-pos\\pages\\settings.tsx",
+      "line": 26,
+      "content": "<button style={{ padding: '8px 16px', borderRadius: 4, background: '#222', color: '#fff', border: 'none' }} onClick={() => alert('Button clicked')}>Save Settings</button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>Save Settings",
+      "issues": []
+    },
+    {
+      "file": "src\\products\\binna-stock\\components\\binna-stock-app.tsx",
+      "line": 249,
+      "content": "<Button variant=\"outline\" className=\"w-full\" onClick={() => alert('Button clicked')}>عرض التنبؤات</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>عرض التنبؤات",
+      "issues": []
+    },
+    {
+      "file": "src\\products\\binna-stock\\components\\binna-stock-app.tsx",
+      "line": 261,
+      "content": "<Button variant=\"outline\" className=\"w-full\" onClick={() => alert('Button clicked')}>إدارة المواقع</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>إدارة المواقع",
+      "issues": []
+    },
+    {
+      "file": "src\\products\\binna-stock\\components\\binna-stock-app.tsx",
+      "line": 273,
+      "content": "<Button variant=\"outline\" className=\"w-full\" onClick={() => alert('Button clicked')}>إعداد الموردين</Button>",
+      "isClickable": true,
+      "interactionTypes": [
+        "onClick"
+      ],
+      "text": "alert('Button clicked')}>إعداد الموردين",
+      "issues": []
+    }
+  ]
+}

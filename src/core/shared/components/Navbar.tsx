@@ -201,16 +201,55 @@ export default function Navbar({ user, accountType }: NavbarProps) {
 
   const navigationItems = [
     {
-      label: t('home'),
+      label: 'الرئيسية',
       href: '/',
       icon: Home,
       requiresAuth: false
     },
     {
-      label: t('projects'),
+      label: 'المشاريع',
       href: '/projects',
       icon: Building2,
       requiresAuth: false
+    },
+    {
+      label: 'السوق',
+      href: '#',
+      icon: Package,
+      requiresAuth: false,
+      isDropdown: true,
+      dropdownItems: [
+        {
+          label: 'تصفح المتاجر',
+          href: '/stores-browse',
+          icon: Package,
+          description: 'تصفح متاجر مواد البناء'
+        },
+        {
+          label: 'السوق العام',
+          href: '/marketplace',
+          icon: Building2,
+          description: 'السوق العام لمواد البناء'
+        },
+        {
+          label: 'أسعار المواد',
+          href: '/material-prices',
+          icon: DollarSign,
+          description: 'أسعار مواد البناء المحدثة'
+        },
+        {
+          label: 'المشاريع للبيع',
+          href: '/projects-for-sale',
+          icon: Building2,
+          description: 'مشاريع بناء للبيع'
+        },
+        {
+          label: 'دليل المشرفين',
+          href: '/supervisors',
+          icon: Users,
+          description: 'دليل مشرفي البناء'
+        }
+      ]
     },
     {
       label: 'رحلة البناء',
@@ -283,27 +322,80 @@ export default function Navbar({ user, accountType }: NavbarProps) {
       ]
     },
     {
-      label: 'المساعد الذكي',
-      href: '/ai-assistant',
-      icon: Bot,
-      requiresAuth: false
+      label: 'الأدوات',
+      href: '#',
+      icon: Calculator,
+      requiresAuth: false,
+      isDropdown: true,
+      dropdownItems: [
+        {
+          label: 'حاسبة التكلفة',
+          href: '/calculator',
+          icon: Calculator,
+          description: 'حساب تكلفة البناء'
+        },
+        {
+          label: 'حاسبة البيت',
+          href: '/house-construction-calculator',
+          icon: Home,
+          description: 'حاسبة تكلفة بناء البيت'
+        },
+        {
+          label: 'المساعد الذكي',
+          href: '/ai-assistant',
+          icon: Bot,
+          description: 'مساعد ذكي للبناء'
+        },
+        {
+          label: 'بيانات البناء',
+          href: '/construction-data',
+          icon: FileText,
+          description: 'بيانات وإحصائيات البناء'
+        },
+        {
+          label: 'دليل المنصة',
+          href: '/platform-pages',
+          icon: FileText,
+          description: 'دليل شامل لصفحات المنصة'
+        }
+      ]
     },
     {
-      label: 'حجز الخدمات',
-      href: '/dashboard/bookings',
-      icon: Calendar,
-      requiresAuth: true
+      label: 'المجتمع',
+      href: '#',
+      icon: Users,
+      requiresAuth: false,
+      isDropdown: true,
+      dropdownItems: [
+        {
+          label: 'منتدى البناء',
+          href: '/forum',
+          icon: Users,
+          description: 'منتدى مجتمع البناء'
+        },
+        {
+          label: 'حجز الخدمات',
+          href: '/dashboard/bookings',
+          icon: Calendar,
+          description: 'حجز خدمات البناء'
+        },
+        {
+          label: 'الخدمات المالية',
+          href: '#',
+          icon: DollarSign,
+          description: 'خدمات مالية للبناء',
+          subItems: [
+            { label: 'الخدمات المصرفية', href: '/banking', icon: DollarSign },
+            { label: 'التأمين', href: '/insurance', icon: Shield },
+            { label: 'القروض', href: '/loans', icon: FileText }
+          ]
+        }
+      ]
     },
     {
-      label: 'الميزات الجديدة',
+      label: 'الميزات',
       href: '/features',
       icon: Sparkles,
-      requiresAuth: false
-    },
-    {
-      label: t('pricing'),
-      href: '/#pricing',
-      icon: DollarSign,
       requiresAuth: false
     }
   ];
@@ -631,29 +723,46 @@ export default function Navbar({ user, accountType }: NavbarProps) {
               <></>
             ) : (
               <div className="space-y-2">
+                <h3 className="font-semibold text-gray-800 mb-3">صفحات عامة</h3>
                 <Link href="/projects" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
                   <Building2 className="w-5 h-5 text-blue-600" />
                   <span>المشاريع</span>
                 </Link>
-                <Link href="/stores" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
+                <Link href="/marketplace" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
                   <Package className="w-5 h-5 text-blue-600" />
-                  <span>المتاجر</span>
+                  <span>السوق العام</span>
+                </Link>
+                <Link href="/stores-browse" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
+                  <Package className="w-5 h-5 text-blue-600" />
+                  <span>تصفح المتاجر</span>
+                </Link>
+                <Link href="/calculator" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
+                  <Calculator className="w-5 h-5 text-blue-600" />
+                  <span>حاسبة التكلفة</span>
+                </Link>
+                <Link href="/material-prices" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
+                  <DollarSign className="w-5 h-5 text-blue-600" />
+                  <span>أسعار المواد</span>
+                </Link>
+                <Link href="/forum" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
+                  <Users className="w-5 h-5 text-blue-600" />
+                  <span>منتدى البناء</span>
+                </Link>
+                <Link href="/platform-pages" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
+                  <FileText className="w-5 h-5 text-blue-600" />
+                  <span>دليل المنصة</span>
+                </Link>
+                <Link href="/features" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
+                  <Sparkles className="w-5 h-5 text-blue-600" />
+                  <span>الميزات</span>
                 </Link>
                 <Link href="/auth/login" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
                   <User className="w-5 h-5 text-blue-600" />
                   <span>تسجيل الدخول</span>
                 </Link>
-                <Link href="/signup" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
-                  <User className="w-5 h-5 text-blue-600" />
-                  <span>إنشاء حساب</span>
-                </Link>
                 <Link href="/auth/signup" className="flex items-center gap-3 p-3 rounded-lg hover:bg-green-100 bg-green-50" onClick={() => setIsMenuOpen(false)}>
                   <Building2 className="w-5 h-5 text-green-600" />
-                  <span>تسجيل مقدم خدمة</span>
-                </Link>
-                <Link href="/auth/login" className="flex items-center gap-3 p-3 rounded-lg hover:bg-blue-100 bg-blue-50" onClick={() => setIsMenuOpen(false)}>
-                  <Users className="w-5 h-5 text-blue-600" />
-                  <span>دخول مقدم خدمة</span>
+                  <span>إنشاء حساب</span>
                 </Link>
               </div>
             )}

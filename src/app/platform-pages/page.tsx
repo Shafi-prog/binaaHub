@@ -38,6 +38,17 @@ const EVALUATIONS_STORAGE_KEY = 'platform-pages-evaluations';
 
 // Pages data organized by sections
 const pagesSections = {
+  core: {
+    title: 'Core Platform Pages',
+    emoji: '🏠',
+    description: 'Main platform landing pages and core functionality.',
+    pages: [
+      { path: '/', name: 'Home Page', description: 'Platform landing page' },
+      { path: '/features', name: 'Features Page', description: 'Platform features showcase' },
+      { path: '/platform-pages', name: 'Platform Pages Directory', description: 'This comprehensive page directory and navigation hub' },
+      { path: '/success', name: 'Success Page', description: 'Success confirmation page' }
+    ]
+  },
   auth: {
     title: 'Authentication Pages',
     emoji: '🔐',
@@ -47,7 +58,8 @@ const pagesSections = {
       { path: '/auth/signup', name: 'Signup', description: 'User registration page' },
       { path: '/auth/forgot-password', name: 'Forgot Password', description: 'Password recovery page' },
       { path: '/auth/reset-password-confirm', name: 'Reset Password', description: 'Password reset confirmation' },
-      { path: '/login', name: 'Alternative Login', description: 'Alternative login entry point' }
+      { path: '/login', name: 'Alternative Login', description: 'Alternative login entry point' },
+      { path: '/register', name: 'Alternative Register', description: 'Alternative registration entry point' }
     ]
   },
   user: {
@@ -57,16 +69,33 @@ const pagesSections = {
     pages: [
       { path: '/user/dashboard', name: 'User Dashboard', description: 'Main user dashboard with stats and overview' },
       { path: '/user/dashboard/construction-data', name: 'Construction Data Dashboard', description: 'Construction-specific data dashboard' },
+      { path: '/user/dashboard/real', name: 'Real-Time Dashboard', description: 'Real-time dashboard with live data' },
       { path: '/user/profile', name: 'User Profile', description: 'User profile management and settings' },
+      { path: '/user/settings', name: 'User Settings', description: 'Account settings and preferences' },
+      { path: '/user/balance', name: 'Account Balance', description: 'Account balance and transactions' },
+      { path: '/user/subscriptions', name: 'Subscriptions', description: 'Manage active subscriptions' },
+      { path: '/user/documents', name: 'Documents', description: 'Personal document management' },
+      { path: '/user/expenses', name: 'Expense Tracking', description: 'Personal expense tracking and management' },
+      { path: '/user/invoices', name: 'Invoices', description: 'Invoice management and history' },
+      { path: '/user/feedback', name: 'Feedback', description: 'Submit feedback and suggestions' },
+      { path: '/user/favorites', name: 'Favorites', description: 'Saved items and favorites' },
+      { path: '/user/cart', name: 'Shopping Cart', description: 'Shopping cart management' },
+      { path: '/user/orders', name: 'Order History', description: 'Order history and tracking' },
+      { path: '/user/stores-browse', name: 'Browse Stores', description: 'Browse and discover stores' },
+      { path: '/user/payment/success', name: 'Payment Success', description: 'Payment success confirmation page' },
+      { path: '/user/payment/error', name: 'Payment Error', description: 'Payment error handling page' },
       { path: '/user/projects', name: 'Projects Dashboard', description: 'Project management dashboard' },
-      { path: '/user/projects/new', name: 'Create New Project', description: 'Create new construction project' },
       { path: '/user/projects/list', name: 'Projects List', description: 'List and manage all projects' },
+      { path: '/user/projects/create', name: 'Create Project', description: 'Create new construction project' },
+      { path: '/user/projects/create/construction', name: 'Create Construction Project', description: 'Construction-specific project creation' },
+      { path: '/user/projects/create/enhanced', name: 'Enhanced Project Creation', description: 'Enhanced project creation with advanced options' },
+      { path: '/user/projects/new', name: 'New Project', description: 'Alternative new project creation' },
       { path: '/user/projects/calculator', name: 'Project Calculator', description: 'Project cost calculation tools' },
       { path: '/user/projects/notebook', name: 'Project Notebook', description: 'Project notes and documentation' },
       { path: '/user/projects/settings', name: 'Project Settings', description: 'Configure project settings' },
       { path: '/user/projects/suppliers', name: 'Project Suppliers', description: 'Manage project suppliers' },
-      { path: '/user/projects/subscription', name: 'Project Subscriptions', description: 'Manage project-related subscriptions' },
-      { path: '/user/projects/create', name: 'Project Creation Wizard', description: 'Step-by-step project creation' },
+      { path: '/user/projects-marketplace', name: 'Projects Marketplace', description: 'Browse and purchase completed projects' },
+      { path: '/user/projects-marketplace/for-sale', name: 'Projects For Sale', description: 'Projects available for purchase' },
       { path: '/user/comprehensive-construction-calculator', name: 'Construction Calculator', description: 'Advanced construction cost calculator' },
       { path: '/user/individual-home-calculator', name: 'Home Calculator', description: 'Individual home construction calculator' },
       { path: '/user/company-bulk-optimizer', name: 'Company Bulk Optimizer', description: 'Bulk purchase optimization for companies' },
@@ -75,87 +104,96 @@ const pagesSections = {
       { path: '/user/ai-smart-features-test', name: 'AI Smart Features Test', description: 'Test AI-powered smart features' },
       { path: '/user/smart-construction-advisor', name: 'Smart Construction Advisor', description: 'AI-powered construction advice' },
       { path: '/user/smart-insights', name: 'Smart Insights', description: 'AI-driven project insights and analytics' },
-      { path: '/user/projects-marketplace', name: 'Projects Marketplace', description: 'Browse and purchase completed projects' },
-      { path: '/user/projects-marketplace/for-sale', name: 'Projects For Sale', description: 'Projects available for purchase' },
       { path: '/user/building-advice', name: 'Construction Advice', description: 'Construction tips and professional advice' },
-      { path: '/user/expenses', name: 'Expense Tracking', description: 'Personal expense tracking and management' },
       { path: '/user/warranty-expense-tracking', name: 'Warranty & Expense Tracking', description: 'Combined warranty and expense management' },
       { path: '/user/warranties', name: 'Warranty Management', description: 'Product warranty tracking and claims' },
       { path: '/user/warranties/new', name: 'Add New Warranty', description: 'Register new product warranty' },
       { path: '/user/warranties/tracking', name: 'Warranty Tracking', description: 'Track warranty status and claims' },
       { path: '/user/warranties/ai-extract', name: 'AI Warranty Extraction', description: 'AI-powered warranty information extraction' },
-      { path: '/user/orders', name: 'Order History', description: 'Order history and tracking' },
-      { path: '/user/cart', name: 'Shopping Cart', description: 'Shopping cart management' },
-      { path: '/user/favorites', name: 'Favorites', description: 'Saved items and favorites' },
-      { path: '/user/balance', name: 'Account Balance', description: 'Account balance and transactions' },
-      { path: '/user/payment-channels', name: 'Payment Methods', description: 'Manage payment methods and channels' },
-      { path: '/user/payment/success', name: 'Payment Success', description: 'Payment success confirmation page' },
-      { path: '/user/payment/error', name: 'Payment Error', description: 'Payment error handling page' },
-      { path: '/user/invoices', name: 'Invoices', description: 'Invoice management and history' },
-      { path: '/user/subscriptions', name: 'Subscriptions', description: 'Manage active subscriptions' },
       { path: '/user/social-community', name: 'Social Community', description: 'Community features and social interactions' },
       { path: '/user/chat', name: 'Chat & Messaging', description: 'Real-time chat and messaging' },
       { path: '/user/gamification', name: 'Gamification', description: 'Achievements, points, and gamification features' },
-      { path: '/user/stores-browse', name: 'Browse Stores', description: 'Browse and discover stores' },
       { path: '/user/support', name: 'Customer Support', description: 'Help and customer support' },
       { path: '/user/help-center', name: 'Help Center', description: 'Self-service help and documentation' },
-      { path: '/user/feedback', name: 'Feedback', description: 'Submit feedback and suggestions' },
-      { path: '/user/settings', name: 'User Settings', description: 'Account settings and preferences' },
-      { path: '/user/documents', name: 'Documents', description: 'Personal document management' }
+      { path: '/user/help-center/articles/documents', name: 'Help Articles', description: 'Help articles and documentation' }
     ]
   },
   store: {
     title: 'Store Management Pages',
     emoji: '🏪',
-    description: '🎉 ENHANCED: Comprehensive e-commerce store management with IDURAR-style enhanced sidebar, blue gradient header, professional navigation across products, orders, customers, POS, inventory, analytics, and business operations.',
+    description: 'Comprehensive e-commerce store management with products, orders, customers, POS, inventory, analytics, and business operations.',
     pages: [
-      { path: '/store/dashboard', name: '✅ Store Dashboard', description: '✅ ENHANCED SIDEBAR: Store management dashboard with key metrics and professional navigation' },
-      { path: '/store/pos', name: '✅ POS System', description: '✅ ENHANCED SIDEBAR: Point of sale system with enhanced store layout' },
-      { path: '/store/pos/arabic', name: 'Arabic POS', description: 'Arabic language POS system' },
-      { path: '/store/pos/offline', name: 'Offline POS', description: 'Offline-capable POS system' },
-      { path: '/store/construction-products', name: 'Construction Products', description: 'Construction product catalog and management' },
-      { path: '/store/construction-products/new', name: 'Add Construction Product', description: 'Add new construction products' },
-      { path: '/store/products', name: '✅ Products Management', description: '✅ ENHANCED SIDEBAR: Product catalog with enhanced store navigation' },
-      { path: '/store/products/construction/new', name: 'New Construction Product', description: 'Create new construction product listing' },
-      { path: '/store/orders', name: '✅ Order Management', description: '✅ ENHANCED SIDEBAR: Order processing with professional store layout' },
-      { path: '/store/order-management', name: 'Advanced Order Management', description: 'Advanced order processing and management' },
-      { path: '/store/customers', name: '✅ Customer Database', description: '✅ ENHANCED SIDEBAR: Customer management with enhanced navigation' },
-      { path: '/store/customer-segmentation', name: 'Customer Segmentation', description: 'Customer segmentation and targeting' },
-      { path: '/store/customer-groups', name: 'Customer Groups', description: 'Manage customer groups and categories' },
-      { path: '/store/inventory', name: '✅ Inventory Management', description: '✅ ENHANCED SIDEBAR: Inventory tracking with professional store layout' },
-      { path: '/store/analytics', name: 'Store Analytics', description: 'Store analytics, reports, and performance metrics' },
-      { path: '/store/reports', name: 'Reports', description: 'Detailed business reports and analytics' },
-      { path: '/store/financial-management', name: 'Financial Management', description: 'Financial overview, revenue, and expense tracking' },
-      { path: '/store/expenses', name: '✅ Expense Management', description: '✅ ENHANCED SIDEBAR: Store expense tracking with enhanced layout' },
-      { path: '/store/payments', name: '✅ Payment Management', description: '✅ ENHANCED SIDEBAR: Payment processing with professional navigation' },
-      { path: '/store/promotions', name: 'Promotions & Discounts', description: 'Promotional campaigns, discounts, and offers' },
-      { path: '/store/campaigns', name: 'Marketing Campaigns', description: 'Marketing campaign management' },
-      { path: '/store/email-campaigns', name: 'Email Campaigns', description: 'Email marketing and campaigns' },
-      { path: '/store/suppliers', name: 'Supplier Management', description: 'Supplier relationship and procurement management' },
-      { path: '/store/purchase-orders', name: '✅ Purchase Orders', description: '✅ ENHANCED SIDEBAR: Purchase order management with enhanced store layout' },
-      { path: '/store/warehouses', name: 'Warehouse Management', description: 'Warehouse operations and management' },
-      { path: '/store/delivery', name: 'Delivery Management', description: 'Delivery and logistics management' },
-      { path: '/store/shipping', name: '✅ Shipping Management', description: '✅ ENHANCED SIDEBAR: Shipping options with professional navigation' },
-      { path: '/store/collections', name: 'Product Collections', description: 'Product collections and categorization' },
-      { path: '/store/categories/construction', name: 'Construction Categories', description: 'Construction product categories' },
+      { path: '/store', name: 'Store Home', description: 'Store management portal home' },
+      { path: '/store/dashboard', name: 'Store Dashboard', description: 'Store management dashboard with key metrics' },
+      { path: '/store/admin', name: 'Store Admin', description: 'Store administration and management tools' },
+      { path: '/store/settings', name: 'Store Settings', description: 'Store configuration and preferences' },
+      { path: '/store/products', name: 'Products Management', description: 'Product catalog management' },
+      { path: '/store/products/create', name: 'Create Product', description: 'Create new product' },
+      { path: '/store/products/import', name: 'Import Products', description: 'Bulk product import' },
+      { path: '/store/products/export', name: 'Export Products', description: 'Product data export' },
+      { path: '/store/product-variants', name: 'Product Variants', description: 'Product variants and options management' },
       { path: '/store/product-bundles', name: 'Product Bundles', description: 'Product bundling and package deals' },
       { path: '/store/product-bundles/create', name: 'Create Product Bundle', description: 'Create new product bundles' },
-      { path: '/store/product-variants', name: 'Product Variants', description: 'Product variants and options management' },
+      { path: '/store/collections', name: 'Product Collections', description: 'Product collections and categorization' },
+      { path: '/store/collections/create', name: 'Create Collection', description: 'Create new product collection' },
+      { path: '/store/inventory', name: 'Inventory Management', description: 'Inventory tracking and management' },
+      { path: '/store/inventory/barcode-generation', name: 'Barcode Generation', description: 'Generate barcodes for products' },
+      { path: '/store/inventory/stock-adjustments', name: 'Stock Adjustments', description: 'Stock level adjustments and corrections' },
+      { path: '/store/inventory/stock-take', name: 'Stock Take', description: 'Stock counting and verification' },
+      { path: '/store/inventory/stock-transfers', name: 'Stock Transfers', description: 'Inter-warehouse stock transfers' },
+      { path: '/store/orders', name: 'Order Management', description: 'Order processing and fulfillment' },
+      { path: '/store/order-management', name: 'Advanced Order Management', description: 'Advanced order processing and management' },
+      { path: '/store/sales-orders', name: 'Sales Orders', description: 'Sales order processing and management' },
+      { path: '/store/purchase-orders', name: 'Purchase Orders', description: 'Purchase order management' },
+      { path: '/store/customers', name: 'Customer Database', description: 'Customer management system' },
+      { path: '/store/customers/create', name: 'Create Customer', description: 'Add new customer' },
+      { path: '/store/customer-segmentation', name: 'Customer Segmentation', description: 'Customer segmentation and targeting' },
+      { path: '/store/customer-groups', name: 'Customer Groups', description: 'Manage customer groups and categories' },
+      { path: '/store/pos', name: 'POS System', description: 'Point of sale system' },
+      { path: '/store/pos/offline', name: 'Offline POS', description: 'Offline-capable POS system' },
+      { path: '/store/cash-registers', name: 'Cash Registers', description: 'Cash register management' },
+      { path: '/store/barcode-scanner', name: 'Barcode Scanner', description: 'Barcode scanning functionality' },
+      { path: '/store/cart', name: 'Cart Management', description: 'Shopping cart management' },
+      { path: '/store/wishlist', name: 'Wishlist Management', description: 'Customer wishlist management' },
+      { path: '/store/financial-management', name: 'Financial Management', description: 'Financial overview, revenue, and expense tracking' },
+      { path: '/store/expenses', name: 'Expense Management', description: 'Store expense tracking' },
+      { path: '/store/payments', name: 'Payment Management', description: 'Payment processing and management' },
+      { path: '/store/accounting/bank-reconciliation', name: 'Bank Reconciliation', description: 'Bank statement reconciliation' },
+      { path: '/store/accounting/manual-journals', name: 'Manual Journals', description: 'Manual journal entries and adjustments' },
+      { path: '/store/accounting/vat-management', name: 'VAT Management', description: 'VAT calculation and management' },
+      { path: '/store/promotions', name: 'Promotions & Discounts', description: 'Promotional campaigns, discounts, and offers' },
+      { path: '/store/promotions/create', name: 'Create Promotion', description: 'Create new promotion' },
+      { path: '/store/campaigns', name: 'Marketing Campaigns', description: 'Marketing campaign management' },
+      { path: '/store/email-campaigns', name: 'Email Campaigns', description: 'Email marketing and campaigns' },
       { path: '/store/pricing', name: 'Pricing Management', description: 'Price management and strategies' },
       { path: '/store/pricing/create', name: 'Create Pricing Rule', description: 'Create new pricing rules' },
-      { path: '/store/marketplace', name: '✅ Marketplace Integration', description: '✅ ENHANCED SIDEBAR: Marketplace listings with enhanced layout' },
+      { path: '/store/suppliers', name: 'Supplier Management', description: 'Supplier relationship and procurement management' },
+      { path: '/store/warehouses', name: 'Warehouse Management', description: 'Warehouse operations and management' },
+      { path: '/store/delivery', name: 'Delivery Management', description: 'Delivery and logistics management' },
+      { path: '/store/shipping', name: 'Shipping Management', description: 'Shipping options and configuration' },
+      { path: '/store/marketplace', name: 'Marketplace Integration', description: 'Marketplace listings and integration' },
       { path: '/store/marketplace-vendors', name: 'Marketplace Vendors', description: 'Vendor management for marketplace' },
       { path: '/store/storefront', name: 'Storefront Customization', description: 'Customize store appearance and layout' },
-      { path: '/store/warranty-management', name: '✅ Warranty Management', description: '✅ ENHANCED SIDEBAR: Product warranty tracking with professional navigation' },
-      { path: '/store/cash-registers', name: '✅ Cash Registers', description: '✅ ENHANCED SIDEBAR: Cash register management with enhanced store layout' },
-      { path: '/store/barcode-scanner', name: 'Barcode Scanner', description: 'Barcode scanning functionality' },
+      { path: '/store/warranty-management', name: 'Warranty Management', description: 'Product warranty tracking' },
       { path: '/store/currency-region', name: 'Currency & Region', description: 'Multi-currency and regional settings' },
-      { path: '/store/erp', name: '✅ ERP Integration', description: '✅ ENHANCED SIDEBAR: Enterprise resource planning with enhanced navigation' },
-      { path: '/store/admin', name: 'Store Admin', description: 'Store administration and management tools' },
+      { path: '/store/erp', name: 'ERP Integration', description: 'Enterprise resource planning integration' },
       { path: '/store/permissions', name: 'User Permissions', description: 'Staff permissions and role management' },
       { path: '/store/notifications', name: 'Notifications', description: 'Store notification management' },
       { path: '/store/search', name: 'Product Search', description: 'Product search and discovery features' },
-      { path: '/store/settings', name: 'Store Settings', description: 'Store configuration and preferences' }
+      { path: '/store/reports', name: 'Reports', description: 'Detailed business reports and analytics' },
+      { path: '/store/hr/attendance', name: 'HR - Attendance', description: 'Employee attendance tracking' },
+      { path: '/store/hr/claims', name: 'HR - Claims', description: 'Employee claims and expense management' },
+      { path: '/store/hr/leave-management', name: 'HR - Leave Management', description: 'Employee leave request management' },
+      { path: '/store/hr/payroll', name: 'HR - Payroll', description: 'Employee payroll management' }
+    ]
+  },
+  storefront: {
+    title: 'Storefront Pages',
+    emoji: '🛍️',
+    description: 'Public-facing storefront pages for customers.',
+    pages: [
+      { path: '/storefront', name: 'Main Storefront', description: 'Main public storefront interface' },
+      { path: '/storefront/[id]', name: 'Individual Store', description: 'Individual store pages (dynamic routing)' }
     ]
   },
   admin: {
@@ -165,11 +203,11 @@ const pagesSections = {
     pages: [
       { path: '/admin/dashboard', name: 'Admin Dashboard', description: 'Platform administration dashboard with comprehensive overview' },
       { path: '/admin/analytics', name: 'Platform Analytics', description: 'Comprehensive platform analytics and performance metrics' },
+      { path: '/admin/ai-analytics', name: 'AI Analytics Dashboard', description: 'AI-powered analytics and insights' },
       { path: '/admin/stores', name: 'Store Management', description: 'Manage and monitor all stores on the platform' },
       { path: '/admin/finance', name: 'Finance & Commissions', description: 'Financial management and commission tracking' },
       { path: '/admin/construction', name: 'Construction Ecosystem', description: 'Advanced construction module administration' },
       { path: '/admin/gcc-markets', name: 'GCC Markets Management', description: 'Gulf Cooperation Council markets oversight' },
-      { path: '/admin/ai-analytics', name: 'AI Analytics Dashboard', description: 'AI-powered analytics and insights' },
       { path: '/admin/settings', name: 'System Settings', description: 'Platform-wide settings and configuration' },
       { path: '/admin/global', name: 'Global Settings', description: 'Global platform settings and configurations' }
     ]
@@ -177,40 +215,78 @@ const pagesSections = {
   public: {
     title: 'Public Access Pages',
     emoji: '🌍',
-    description: 'Public pages accessible without authentication including marketplace, forums, information services, and financial services.',
+    description: 'Public pages accessible without authentication including marketplace, forums, calculators, and information services.',
     pages: [
-      { path: '/marketplace', name: 'Public Marketplace', description: 'Public marketplace browsing and product discovery' },
-      { path: '/construction-data', name: 'Public Construction Data', description: 'Public construction data and insights' },
-      { path: '/material-prices', name: 'Public Material Prices', description: 'Public material price information and trends' },
-      { path: '/forum', name: 'Public Forum', description: 'Community forum and discussions' },
-      { path: '/projects', name: 'Public Projects', description: 'Public project showcase and inspiration' },
-      { path: '/supervisors', name: 'Supervisors Directory', description: 'Find and connect with construction supervisors' },
-      { path: '/banking', name: 'Banking Services', description: 'Banking and financial services integration' },
-      { path: '/insurance', name: 'Insurance Services', description: 'Insurance services and products for construction' },
-      { path: '/loans', name: 'Loan Services', description: 'Construction loan and financing services' }
+      { path: '/calculator', name: 'Public Calculator', description: 'Free construction cost calculator for public use' },
+      { path: '/house-construction-calculator', name: 'House Construction Calculator', description: 'Specialized calculator for house construction costs' },
+      { path: '/marketplace', name: 'Public Marketplace', description: 'Public marketplace browsing for construction services and products' },
+      { path: '/construction-data', name: 'Public Construction Data', description: 'Public construction data, insights, and market information' },
+      { path: '/material-prices', name: 'Material Prices', description: 'Current construction material prices and market trends' },
+      { path: '/forum', name: 'Community Forum', description: 'Public community forum for construction discussions' },
+      { path: '/projects', name: 'Public Projects Showcase', description: 'Public showcase of construction projects' },
+      { path: '/projects-for-sale', name: 'Projects For Sale', description: 'Construction projects available for purchase' },
+      { path: '/stores-browse', name: 'Browse Stores', description: 'Browse construction stores and suppliers directory' },
+      { path: '/supervisors', name: 'Supervisors Directory', description: 'Construction supervisors and professionals directory' },
+      { path: '/checkout', name: 'Public Checkout', description: 'Public checkout process for services and products' }
     ]
   },
-  constructionServices: {
-    title: 'Construction Services Platform',
-    emoji: '🏗️',
-    description: '🆕 NEW: Comprehensive construction service ecosystem with equipment rental, waste management, concrete supply, unified booking, AI assistant, and specialized provider dashboards.',
+  finance: {
+    title: 'Finance System',
+    emoji: '💰',
+    description: 'Financial services including banking, insurance, and loans.',
     pages: [
-      { path: '/dashboard/bookings', name: '🆕 Unified Booking Calendar', description: 'NEW: Multi-service booking calendar for all construction services' },
-      { path: '/ai-assistant', name: '🆕 AI Construction Assistant', description: 'NEW: Intelligent construction advisory system with recommendations' },
-      { path: '/register/service-provider', name: '🆕 Service Provider Registration', description: 'NEW: Multi-role registration portal for construction service providers' },
-      { path: '/dashboard/equipment-rental', name: '🆕 Equipment Rental Dashboard', description: 'NEW: Equipment rental company dashboard with booking management' },
-      { path: '/dashboard/waste-management', name: '🆕 Waste Management Dashboard', description: 'NEW: Waste management company dashboard with collection scheduling' },
-      { path: '/dashboard/concrete-supplier', name: '🆕 Concrete Supplier Dashboard', description: 'NEW: Concrete supplier dashboard with order and delivery management' },
-      { path: '/dashboard/service-provider', name: '🆕 General Service Provider Dashboard', description: 'NEW: Multi-purpose service provider dashboard' }
+      { path: '/banking', name: 'Banking Services', description: 'Banking services and integration' },
+      { path: '/insurance', name: 'Insurance Services', description: 'Insurance services and management' },
+      { path: '/loans', name: 'Loan Services', description: 'Loan services and applications' }
     ]
   },
-  utility: {
-    title: 'Utility & Development Pages',
+  constructionJourney: {
+    title: 'Construction Journey',
+    emoji: '🚧',
+    description: 'End-to-end construction process management from land purchase to completion.',
+    pages: [
+      { path: '/construction-journey/land-purchase', name: 'Land Purchase', description: 'Land purchase guidance and management' },
+      { path: '/construction-journey/blueprint-approval', name: 'Blueprint Approval', description: 'Blueprint approval process management' },
+      { path: '/construction-journey/excavation', name: 'Excavation', description: 'Excavation planning and management' },
+      { path: '/construction-journey/fencing', name: 'Fencing', description: 'Fencing installation and management' },
+      { path: '/construction-journey/execution', name: 'Execution', description: 'Construction execution and monitoring' },
+      { path: '/construction-journey/contractor-selection', name: 'Contractor Selection', description: 'Contractor selection and management' },
+      { path: '/construction-journey/insurance', name: 'Construction Insurance', description: 'Construction insurance management' },
+      { path: '/construction-journey/waste-disposal', name: 'Waste Disposal', description: 'Construction waste disposal management' }
+    ]
+  },
+  dashboard: {
+    title: 'Dashboard System',
+    emoji: '📊',
+    description: 'Various dashboard interfaces for different user types and services.',
+    pages: [
+      { path: '/dashboard', name: 'Main Dashboard', description: 'Main platform dashboard' },
+      { path: '/dashboard/bookings', name: 'Bookings Dashboard', description: 'Booking management dashboard' },
+      { path: '/dashboard/concrete-supplier', name: 'Concrete Supplier Dashboard', description: 'Concrete supplier dashboard' },
+      { path: '/dashboard/equipment-rental', name: 'Equipment Rental Dashboard', description: 'Equipment rental management dashboard' },
+      { path: '/dashboard/service-provider', name: 'Service Provider Dashboard', description: 'Service provider dashboard' },
+      { path: '/dashboard/waste-management', name: 'Waste Management Dashboard', description: 'Waste management dashboard' }
+    ]
+  },
+  serviceProvider: {
+    title: 'Service Provider System',
     emoji: '🔧',
-    description: 'Development utilities, testing pages, and specialized tools for platform management.',
+    description: 'Service provider dashboards and management interfaces.',
     pages: [
-      { path: '/platform-pages', name: 'Platform Pages Directory', description: 'This comprehensive page directory and navigation hub' },
-      { path: '/test-button', name: 'Test Button', description: 'UI component testing and button functionality tests' }
+      { path: '/service-provider/dashboard', name: 'Service Provider Main Dashboard', description: 'Main service provider dashboard' },
+      { path: '/service-provider/dashboard/bookings', name: 'Service Provider Bookings', description: 'Service provider booking management' },
+      { path: '/service-provider/dashboard/concrete-supply', name: 'Concrete Supply Management', description: 'Concrete supply management for service providers' }
+    ]
+  },
+  system: {
+    title: 'System Management',
+    emoji: '🛠️',
+    description: 'System administration, database management, and development tools.',
+    pages: [
+      { path: '/database-management', name: 'Database Management', description: 'Database administration and management' },
+      { path: '/quick-test', name: 'Quick Test', description: 'Quick testing interface for development' },
+      { path: '/test-login', name: 'Test Login', description: 'Login testing interface' },
+      { path: '/test-supabase', name: 'Test Supabase', description: 'Supabase connection testing' }
     ]
   }
 };
@@ -456,7 +532,7 @@ function Section({ title, emoji, description, pages, defaultExpanded = false, ev
       </button>
 
       {isExpanded && (
-        <div className="p-6 border-t border-gray-200 animate-in slide-in-from-top duration-200">
+        <div className="px-6 py-4 border-t border-gray-100">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {pages.map((page) => (
               <PageLink 
@@ -473,420 +549,221 @@ function Section({ title, emoji, description, pages, defaultExpanded = false, ev
   );
 }
 
-export default function PagesDocumentationPage() {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedSection, setSelectedSection] = useState<string>('all');
+export default function PlatformPagesPage() {
+  const [searchTerm, setSearchTerm] = useState('');
   const [evaluations, setEvaluations] = useState<Record<string, PageStatus>>({});
-
+  const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({});
+  
   // Load evaluations from localStorage on component mount
   useEffect(() => {
     try {
-      const saved = localStorage.getItem(EVALUATIONS_STORAGE_KEY);
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        setEvaluations(parsed);
+      const savedEvaluations = localStorage.getItem(EVALUATIONS_STORAGE_KEY);
+      if (savedEvaluations) {
+        setEvaluations(JSON.parse(savedEvaluations));
       }
     } catch (error) {
-      console.error('Failed to load saved evaluations:', error);
-      // Clear corrupted data
-      localStorage.removeItem(EVALUATIONS_STORAGE_KEY);
+      console.error('Failed to load evaluations from localStorage:', error);
     }
   }, []);
 
-  // Get all page paths for statistics
-  const allPagePaths = Object.values(pagesSections).flatMap(section => 
-    section.pages.map(page => page.path)
-  );
+  // Save evaluations to localStorage whenever they change
+  useEffect(() => {
+    try {
+      localStorage.setItem(EVALUATIONS_STORAGE_KEY, JSON.stringify(evaluations));
+    } catch (error) {
+      console.error('Failed to save evaluations to localStorage:', error);
+    }
+  }, [evaluations]);
 
-  // Calculate statistics
-  const stats = {
-    total: allPagePaths.length,
-    working: allPagePaths.filter(path => evaluations[path] === 'working').length,
-    needFix: allPagePaths.filter(path => evaluations[path] === 'needFix').length,
-    delete: allPagePaths.filter(path => evaluations[path] === 'delete').length,
-    duplicate: allPagePaths.filter(path => evaluations[path] === 'duplicate').length,
-    merge: allPagePaths.filter(path => evaluations[path] === 'merge').length,
-    notEvaluated: allPagePaths.filter(path => !evaluations[path]).length
-  };
-
-  // Update evaluation function
   const updateEvaluation = (pagePath: string, status: PageStatus) => {
-    try {
-      const newEvaluations = { ...evaluations, [pagePath]: status };
-      setEvaluations(newEvaluations);
-      localStorage.setItem(EVALUATIONS_STORAGE_KEY, JSON.stringify(newEvaluations));
-    } catch (error) {
-      console.error('Failed to save evaluation to localStorage:', error);
-      // Still update the state even if localStorage fails
-      setEvaluations({ ...evaluations, [pagePath]: status });
+    setEvaluations(prev => ({
+      ...prev,
+      [pagePath]: status
+    }));
+  };
+
+  const clearAllEvaluations = () => {
+    if (confirm('Are you sure you want to clear all evaluations?')) {
+      setEvaluations({});
+      localStorage.removeItem(EVALUATIONS_STORAGE_KEY);
     }
   };
 
-  // Export evaluations to JSON file
   const exportEvaluations = () => {
-    try {
-      const dataStr = JSON.stringify(evaluations, null, 2);
-      const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-      
-      const exportFileDefaultName = `platform-pages-evaluations-${new Date().toISOString().split('T')[0]}.json`;
-      
-      const linkElement = document.createElement('a');
-      linkElement.setAttribute('href', dataUri);
-      linkElement.setAttribute('download', exportFileDefaultName);
-      linkElement.click();
-    } catch (error) {
-      console.error('Failed to export evaluations:', error);
-      alert('خطأ في تصدير الملف');
-    }
+    const dataStr = JSON.stringify(evaluations, null, 2);
+    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+    
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(dataBlob);
+    link.download = `platform-pages-evaluations-${new Date().toISOString().split('T')[0]}.json`;
+    link.click();
   };
 
-  // Import evaluations from JSON file
   const importEvaluations = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        try {
-          const result = e.target?.result as string;
-          if (!result) {
-            throw new Error('فشل في قراءة الملف');
-          }
-          const imported = JSON.parse(result);
-          setEvaluations(imported);
-          localStorage.setItem(EVALUATIONS_STORAGE_KEY, JSON.stringify(imported));
-        } catch (error) {
-          console.error('Import error:', error);
-          alert('خطأ في استيراد الملف. تأكد من أن الملف بصيغة JSON صحيحة.');
-        }
-      };
-      reader.onerror = (error) => {
-        console.error('FileReader error:', error);
-        alert('خطأ في قراءة الملف');
-      };
-      reader.readAsText(file);
-    }
-    // Reset the input
-    event.target.value = '';
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const importedData = JSON.parse(e.target?.result as string);
+        setEvaluations(importedData);
+        alert('Evaluations imported successfully!');
+      } catch (error) {
+        alert('Failed to import evaluations. Please check the file format.');
+      }
+    };
+    reader.readAsText(file);
   };
 
-  // Calculate total pages
-  const totalPages = Object.values(pagesSections).reduce((total, section) => total + section.pages.length, 0) + 1; // +1 for landing page
-
-  // Filter pages based on search query
-  const filteredSections = Object.entries(pagesSections).reduce((acc, [key, section]) => {
-    if (selectedSection !== 'all' && selectedSection !== key) {
-      return acc;
-    }
-
-    const filteredPages = section.pages.filter(page => 
-      page.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      page.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      page.path.toLowerCase().includes(searchQuery.toLowerCase())
+  // Filter all pages based on search term
+  const filteredSections = Object.entries(pagesSections).map(([key, section]) => {
+    const filteredPages = section.pages.filter(page =>
+      page.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      page.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      page.path.toLowerCase().includes(searchTerm.toLowerCase())
     );
+    return { key, section: { ...section, pages: filteredPages } };
+  }).filter(({ section }) => section.pages.length > 0);
 
-    if (filteredPages.length > 0) {
-      acc[key] = { ...section, pages: filteredPages };
-    }
+  // Calculate statistics
+  const totalPages = Object.values(pagesSections).reduce((acc, section) => acc + section.pages.length, 0);
+  const evaluatedPages = Object.keys(evaluations).filter(key => evaluations[key] !== null).length;
+  const statusCounts = {
+    working: Object.values(evaluations).filter(status => status === 'working').length,
+    needFix: Object.values(evaluations).filter(status => status === 'needFix').length,
+    delete: Object.values(evaluations).filter(status => status === 'delete').length,
+    duplicate: Object.values(evaluations).filter(status => status === 'duplicate').length,
+    merge: Object.values(evaluations).filter(status => status === 'merge').length
+  };
 
-    return acc;
-  }, {} as typeof pagesSections);
+  const toggleAllSections = () => {
+    const allExpanded = Object.keys(pagesSections).every(key => expandedSections[key]);
+    const newState = Object.keys(pagesSections).reduce((acc, key) => {
+      acc[key] = !allExpanded;
+      return acc;
+    }, {} as Record<string, boolean>);
+    setExpandedSections(newState);
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
-      {/* Header */}
-      <div className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 py-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
-                <Book className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <h1 className="text-3xl font-bold text-gray-900">Pages Documentation</h1>
-                <p className="text-gray-600">Navigate all {totalPages} pages in the Binna platform</p>
-              </div>
-            </div>
-            <Link
-              href="/"
-              className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              <Home className="w-4 h-4" />
-              Back to Home
-            </Link>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Recent Enhancement Summary */}
-        <div className="bg-gradient-to-r from-green-50 via-blue-50 to-purple-50 rounded-xl shadow-lg p-6 mb-8 border border-green-200">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 bg-gradient-to-r from-green-600 to-blue-600 rounded-full flex items-center justify-center">
-              <Check className="w-5 h-5 text-white" />
-            </div>
-            <div>
-              <h2 className="text-xl font-bold text-gray-800">🎉 Recent Store Enhancement Completed</h2>
-              <p className="text-gray-600">Enhanced IDURAR-style sidebar successfully deployed across all store pages</p>
-            </div>
-          </div>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+      <div className="container mx-auto px-4 py-8">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold text-gray-800 mb-4">
+            🏗️ Binna Platform - Comprehensive Pages Directory
+          </h1>
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-6">
+            Complete navigation hub for all 145+ platform pages with status tracking, evaluation tools, and direct access links. 
+            Mark pages as working, need fix, delete, duplicate, or merge.
+          </p>
           
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="bg-white rounded-lg p-4 border border-green-200">
-              <h3 className="font-semibold text-green-800 mb-2 flex items-center gap-2">
-                <Check className="w-4 h-4" />
-                ✅ Enhanced Features Implemented
-              </h3>
-              <ul className="text-sm text-gray-700 space-y-1">
-                <li>• 🎨 Blue gradient header with "متجر بنا" branding</li>
-                <li>• 📊 Professional IDURAR-style navigation</li>
-                <li>• 📱 Mobile responsive sidebar with smooth transitions</li>
-                <li>• 👤 User profile section with account details</li>
-                <li>• 🔄 Dynamic page titles and breadcrumbs</li>
-                <li>• 🌐 Arabic RTL support with proper positioning</li>
-              </ul>
+          {/* Statistics */}
+          <div className="grid grid-cols-2 md:grid-cols-6 gap-4 mb-6">
+            <div className="bg-white rounded-lg p-4 shadow-sm border">
+              <div className="text-2xl font-bold text-blue-600">{totalPages}</div>
+              <div className="text-sm text-gray-600">Total Pages</div>
             </div>
-            
-            <div className="bg-white rounded-lg p-4 border border-blue-200">
-              <h3 className="font-semibold text-blue-800 mb-2 flex items-center gap-2">
-                <Shield className="w-4 h-4" />
-                📄 Pages Updated (15 total)
-              </h3>
-              <ul className="text-sm text-gray-700 space-y-1">
-                <li>• ✅ Cash Registers, Purchase Orders, Expenses</li>
-                <li>• ✅ Products, Inventory, POS System</li>
-                <li>• ✅ Payments, Shipping, ERP Integration</li>
-                <li>• ✅ Marketplace, Warranty Management</li>
-                <li>• ✅ Product Bundles, Collections Creation</li>
-                <li>• 🚫 Old basic sidebar completely removed</li>
-              </ul>
+            <div className="bg-white rounded-lg p-4 shadow-sm border">
+              <div className="text-2xl font-bold text-green-600">{statusCounts.working}</div>
+              <div className="text-sm text-gray-600">Working</div>
             </div>
-          </div>
-          
-          <div className="mt-4 p-3 bg-amber-50 rounded-lg border border-amber-200">
-            <p className="text-sm text-amber-800">
-              <strong>📝 Note:</strong> All store pages marked with ✅ now feature the enhanced sidebar. 
-              Old "الرئيسية، تصفح المنتجات، السلة، المفضلة" sidebar has been replaced with professional store navigation.
-            </p>
-          </div>
-        </div>
-
-        {/* Evaluation Statistics Dashboard */}
-        <div className="bg-white rounded-xl shadow-lg p-6 mb-8 border border-gray-200">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold text-gray-800">📊 تقييم الصفحات</h2>
-            <div className="flex items-center gap-2">
-              <button
-                onClick={exportEvaluations}
-                className="flex items-center gap-2 px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm"
-              >
-                <Download className="w-4 h-4" />
-                تصدير التقييمات
-              </button>
-              <label className="flex items-center gap-2 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm cursor-pointer">
-                <Upload className="w-4 h-4" />
-                استيراد التقييمات
-                <input
-                  type="file"
-                  accept=".json"
-                  onChange={importEvaluations}
-                  className="hidden"
-                />
-              </label>
+            <div className="bg-white rounded-lg p-4 shadow-sm border">
+              <div className="text-2xl font-bold text-yellow-600">{statusCounts.needFix}</div>
+              <div className="text-sm text-gray-600">Need Fix</div>
             </div>
-          </div>
-          
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-4">
-            <div className="bg-gray-50 rounded-lg p-4 text-center">
-              <div className="text-2xl font-bold text-gray-700">{stats.total}</div>
-              <div className="text-sm text-gray-600">إجمالي الصفحات</div>
+            <div className="bg-white rounded-lg p-4 shadow-sm border">
+              <div className="text-2xl font-bold text-red-600">{statusCounts.delete}</div>
+              <div className="text-sm text-gray-600">Delete</div>
             </div>
-            <div className="bg-green-50 rounded-lg p-4 text-center">
-              <div className="text-2xl font-bold text-green-700">{stats.working}</div>
-              <div className="text-sm text-green-600">تعمل بشكل صحيح</div>
+            <div className="bg-white rounded-lg p-4 shadow-sm border">
+              <div className="text-2xl font-bold text-orange-600">{statusCounts.duplicate}</div>
+              <div className="text-sm text-gray-600">Duplicate</div>
             </div>
-            <div className="bg-yellow-50 rounded-lg p-4 text-center">
-              <div className="text-2xl font-bold text-yellow-700">{stats.needFix}</div>
-              <div className="text-sm text-yellow-600">تحتاج إصلاح</div>
-            </div>
-            <div className="bg-red-50 rounded-lg p-4 text-center">
-              <div className="text-2xl font-bold text-red-700">{stats.delete}</div>
-              <div className="text-sm text-red-600">للحذف</div>
-            </div>
-            <div className="bg-orange-50 rounded-lg p-4 text-center">
-              <div className="text-2xl font-bold text-orange-700">{stats.duplicate}</div>
-              <div className="text-sm text-orange-600">مكرر</div>
-            </div>
-            <div className="bg-purple-50 rounded-lg p-4 text-center">
-              <div className="text-2xl font-bold text-purple-700">{stats.merge}</div>
-              <div className="text-sm text-purple-600">للدمج</div>
-            </div>
-            <div className="bg-blue-50 rounded-lg p-4 text-center">
-              <div className="text-2xl font-bold text-blue-700">{stats.notEvaluated}</div>
-              <div className="text-sm text-blue-600">غير مقيمة</div>
-            </div>
-          </div>
-
-          {/* Progress Bar */}
-          <div className="mt-4">
-            <div className="flex items-center justify-between text-sm text-gray-600 mb-2">
-              <span>التقدم في التقييم</span>
-              <span>{Math.round(((stats.total - stats.notEvaluated) / stats.total) * 100)}%</span>
-            </div>
-            <div className="w-full bg-gray-200 rounded-full h-2">
-              <div 
-                className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-                style={{ width: `${((stats.total - stats.notEvaluated) / stats.total) * 100}%` }}
-              ></div>
-            </div>
-          </div>
-        </div>
-        {/* Base URLs Info */}
-        <div className="bg-white rounded-xl shadow-lg p-6 mb-8 border border-gray-200">
-          <h2 className="text-xl font-bold text-gray-800 mb-4">🌐 Base URLs</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
-              <div className="flex items-center gap-2 mb-2">
-                <Home className="w-5 h-5 text-blue-600" />
-                <h3 className="font-semibold text-blue-800">Development Environment</h3>
-              </div>
-              <code className="text-sm text-blue-700 bg-blue-100 px-2 py-1 rounded">
-                http://localhost:3000
-              </code>
-            </div>
-            <div className="bg-green-50 rounded-lg p-4 border border-green-200">
-              <div className="flex items-center gap-2 mb-2">
-                <Globe className="w-5 h-5 text-green-600" />
-                <h3 className="font-semibold text-green-800">Production Environment (Vercel)</h3>
-              </div>
-              <code className="text-sm text-green-700 bg-green-100 px-2 py-1 rounded break-all">
-                https://binaa-hub-shafi-projs-projects.vercel.app
-              </code>
+            <div className="bg-white rounded-lg p-4 shadow-sm border">
+              <div className="text-2xl font-bold text-purple-600">{statusCounts.merge}</div>
+              <div className="text-sm text-gray-600">Merge</div>
             </div>
           </div>
         </div>
 
-        {/* Main Landing Page */}
-        <div className="bg-white rounded-xl shadow-lg p-6 mb-8 border border-gray-200">
-          <h2 className="text-xl font-bold text-gray-800 mb-4">🏠 Main Platform Page</h2>
-          <PageLink 
-            path="/"
-            name="Main Landing Page"
-            description="Comprehensive platform showcase with search, filtering, and feature overview"
-            evaluations={evaluations}
-            updateEvaluation={updateEvaluation}
-          />
-        </div>
-
-        {/* Search and Filter */}
-        <div className="bg-white rounded-xl shadow-lg p-6 mb-8 border border-gray-200">
-          <div className="flex flex-col md:flex-row gap-4">
-            <div className="flex-1 relative">
+        {/* Controls */}
+        <div className="flex flex-col md:flex-row gap-4 mb-8">
+          {/* Search */}
+          <div className="flex-1">
+            <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <input
                 type="text"
                 placeholder="Search pages by name, description, or path..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
-            <select
-              value={selectedSection}
-              onChange={(e) => setSelectedSection(e.target.value)}
-              className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          </div>
+          
+          {/* Action buttons */}
+          <div className="flex gap-2">
+            <button
+              onClick={toggleAllSections}
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
             >
-              <option value="all">All Sections</option>
-              <option value="auth">🔐 Authentication</option>
-              <option value="user">👤 User Portal</option>
-              <option value="store">🏪 Store Management</option>
-              <option value="admin">👑 Admin Portal</option>
-              <option value="public">🌍 Public Access</option>
-              <option value="utility">🔧 Utility & Development</option>
-            </select>
+              Toggle All
+            </button>
+            <button
+              onClick={exportEvaluations}
+              className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center gap-2"
+            >
+              <Download className="w-4 h-4" />
+              Export
+            </button>
+            <label className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors cursor-pointer flex items-center gap-2">
+              <Upload className="w-4 h-4" />
+              Import
+              <input
+                type="file"
+                accept=".json"
+                onChange={importEvaluations}
+                className="hidden"
+              />
+            </label>
+            <button
+              onClick={clearAllEvaluations}
+              className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+            >
+              Clear All
+            </button>
           </div>
         </div>
 
-        {/* Page Sections */}
+        {/* Sections */}
         <div className="space-y-6">
-          {Object.entries(filteredSections).map(([key, section]) => (
+          {filteredSections.map(({ key, section }) => (
             <Section
               key={key}
               title={section.title}
               emoji={section.emoji}
               description={section.description}
               pages={section.pages}
-              defaultExpanded={true}
+              defaultExpanded={expandedSections[key] || false}
               evaluations={evaluations}
               updateEvaluation={updateEvaluation}
             />
           ))}
         </div>
 
-        {/* Summary */}
-        <div className="bg-white rounded-xl shadow-lg p-6 mt-8 border border-gray-200">
-          <h2 className="text-xl font-bold text-gray-800 mb-4">📊 Platform Summary</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-4">
-            <div className="text-center">
-              <div className="text-2xl font-bold text-blue-600">{totalPages}</div>
-              <div className="text-sm text-gray-600">Total Pages</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-purple-600">{pagesSections.auth.pages.length}</div>
-              <div className="text-sm text-gray-600">Auth Pages</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-green-600">{pagesSections.user.pages.length}</div>
-              <div className="text-sm text-gray-600">User Pages</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-orange-600">{pagesSections.store.pages.length}</div>
-              <div className="text-sm text-gray-600">Store Pages</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-red-600">{pagesSections.admin.pages.length}</div>
-              <div className="text-sm text-gray-600">Admin Pages</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-cyan-600">{pagesSections.public.pages.length}</div>
-              <div className="text-sm text-gray-600">Public Pages</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-gray-600">{pagesSections.utility.pages.length}</div>
-              <div className="text-sm text-gray-600">Utility Pages</div>
-            </div>
+        {filteredSections.length === 0 && searchTerm && (
+          <div className="text-center py-12">
+            <p className="text-gray-500 text-lg">No pages found matching "{searchTerm}"</p>
           </div>
-        </div>
+        )}
 
-        {/* Testing Tips */}
-        <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6 mt-8 border border-blue-200">
-          <h2 className="text-xl font-bold text-gray-800 mb-4">🚀 Testing Instructions</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <h3 className="font-semibold text-gray-700">Development Testing</h3>
-              <p className="text-sm text-gray-600">Use localhost URLs when running <code className="bg-gray-200 px-1 rounded">npm run dev</code></p>
-            </div>
-            <div className="space-y-2">
-              <h3 className="font-semibold text-gray-700">Production Testing</h3>
-              <p className="text-sm text-gray-600">Use Vercel URLs to test the deployed version</p>
-            </div>
-            <div className="space-y-2">
-              <h3 className="font-semibold text-gray-700">Mobile Testing</h3>
-              <p className="text-sm text-gray-600">Vercel URLs work perfectly on mobile devices</p>
-            </div>
-            <div className="space-y-2">
-              <h3 className="font-semibold text-gray-700">Team Sharing</h3>
-              <p className="text-sm text-gray-600">Share Vercel URLs with team members for easy access</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Footer */}
-      <div className="bg-white border-t border-gray-200 mt-16">
-        <div className="max-w-7xl mx-auto px-4 py-6 text-center text-gray-500 text-sm">
-          <p>Last Updated: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
-          <p className="mt-1">Binna - Comprehensive Construction & E-commerce Platform</p>
+        {/* Footer */}
+        <div className="mt-12 text-center text-sm text-gray-500">
+          <p>Last Updated: January 2025 | Total Platform Pages: {totalPages}</p>
+          <p>Use the evaluation checkboxes to mark page status and track platform health</p>
         </div>
       </div>
     </div>

@@ -1,0 +1,45 @@
+{
+  "timestamp": "2025-07-26T13:14:44.912Z",
+  "credentials": [
+    {
+      "name": "مستخدم تجريبي",
+      "email": "user@binna",
+      "password": "demo123456",
+      "expectedRoute": "/user/dashboard",
+      "role": "user"
+    },
+    {
+      "name": "متجر تجريبي",
+      "email": "store@binna",
+      "password": "demo123456",
+      "expectedRoute": "/store/dashboard",
+      "role": "store"
+    },
+    {
+      "name": "المسئول تجريبي",
+      "email": "admin@binna.com",
+      "password": "demo123456",
+      "expectedRoute": "/admin/dashboard",
+      "role": "admin"
+    },
+    {
+      "name": "مقدم خدمة تجريبي",
+      "email": "provider@binna",
+      "password": "demo123456",
+      "expectedRoute": "/service-provider/dashboard",
+      "role": "service_provider"
+    }
+  ],
+  "features": [
+    "Updated test credentials (user@binna, store@binna, admin@binna.com, provider@binna)",
+    "Service provider authentication and dashboard",
+    "Enhanced admin dashboard",
+    "Removed sidebar scroll hints",
+    "Role-based routing in middleware",
+    "Three demo login buttons on login page"
+  ],
+  "testUrls": {
+    "development": "http://localhost:3000/login",
+    "production": "https://binaa-hub-shafi-projs-projects.vercel.app/login"
+  }
+}

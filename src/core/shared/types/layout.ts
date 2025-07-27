@@ -1,8 +1,8 @@
-// File: C:\Users\hp\BinnaCodes\binna\src\app\layout.tsx
-import * as entry from '@/app/layout'
+// File: C:\Users\hp\BinnaCodes\binna\src\app\user\layout.tsx
+import * as entry from '../../../../src/app/user/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
-type TEntry = typeof import('@/app/layout')
+type TEntry = typeof import('../../../../src/app/user/layout.js')
 
 type SegmentParams<T extends Object = any> = T extends Record<string, any>
   ? { [K in keyof T]: T[K] extends string ? string | string[] | undefined : never }

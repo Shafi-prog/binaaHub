@@ -1,3 +1,4 @@
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { Order, Warranty, Project, Invoice, UserStats, UserProfile } from '../contexts/UserDataContext';
 
 export class UserStatsCalculator {

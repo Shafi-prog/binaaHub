@@ -4,7 +4,7 @@ import React, { useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/enhanced-components';
 import { Upload, ArrowRight, Zap, CheckCircle, AlertCircle, Eye, Calendar, Shield, DollarSign, FileText, Loader2 } from 'lucide-react';
-import { useUserData } from '@/core/shared/contexts/UserDataContext';
+import { useAuth } from '@/core/shared/auth/AuthProvider';
 
 export const dynamic = 'force-dynamic'
 
@@ -19,13 +19,13 @@ interface ExtractedData {
 }
 
 export default function AIExtractionPage() {
-  const { profile, orders, warranties, projects, invoices, stats, isLoading, error: userError, refreshUserData } = useUserData();
+  const { user, session, isLoading, error } = useAuth();
   const router = useRouter();
   const [dragActive, setDragActive] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [extracting, setExtracting] = useState(false);
   const [extractedData, setExtractedData] = useState<ExtractedData | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [localError, setLocalError] = useState<string | null>(null);
 
   const handleDrag = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -59,17 +59,17 @@ export default function AIExtractionPage() {
     const maxSize = 10 * 1024 * 1024; // 10MB
 
     if (!validTypes.includes(selectedFile.type)) {
-      setError('نوع الملف غير مدعوم. يرجى استخدام JPG, PNG, أو PDF');
+      setLocalError('نوع الملف غير مدعوم. يرجى استخدام JPG, PNG, أو PDF');
       return;
     }
 
     if (selectedFile.size > maxSize) {
-      setError('حجم الملف كبير جداً. الحد الأقصى 10MB');
+      setLocalError('حجم الملف كبير جداً. الحد الأقصى 10MB');
       return;
     }
 
     setFile(selectedFile);
-    setError(null);
+    setLocalError(null);
   };
 
   const simulateAIExtraction = async (): Promise<ExtractedData> => {
@@ -92,13 +92,13 @@ export default function AIExtractionPage() {
     if (!file) return;
 
     setExtracting(true);
-    setError(null);
+    setLocalError(null);
 
     try {
       const data = await simulateAIExtraction();
       setExtractedData(data);
     } catch (err) {
-      setError('فشل في استخراج البيانات. يرجى المحاولة مرة أخرى.');
+      setLocalError('فشل في استخراج البيانات. يرجى المحاولة مرة أخرى.');
     } finally {
       setExtracting(false);
     }
@@ -137,7 +137,7 @@ export default function AIExtractionPage() {
         <div className="text-center">
           <p className="text-red-600 mb-4">حدث خطأ في تحميل البيانات</p>
           <button 
-            onClick={refreshUserData}
+            onClick={() => window.location.reload()}
             className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
           >
             إعادة المحاولة
@@ -387,7 +387,7 @@ return (
               onClick={() => {
                 setFile(null);
                 setExtractedData(null);
-                setError(null);
+                setLocalError(null);
               }}
               className="flex-1 border-gray-300 text-gray-700 hover:bg-gray-50 px-6 py-3 rounded-lg"
             >

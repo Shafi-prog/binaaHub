@@ -205,17 +205,17 @@ export default function DatabaseManagementPage() {
       // Infer table existence from stats
       results.currentSchema['stores'] = {
         exists: true,
-        recordCount: stats.totalStores || 'Available'
+        recordCount: stats?.totalStores || 'Available'
       };
       
       results.currentSchema['orders'] = {
         exists: true,
-        recordCount: stats.activeOrders || 'Available'
+        recordCount: stats?.activeOrders || 'Available'
       };
       
       results.currentSchema['service_providers'] = {
         exists: true,
-        recordCount: stats.totalServiceProviders || 'Available'
+        recordCount: stats?.totalServiceProviders || 'Available'
       };
       
       console.log(`✅ Additional tables verified through system stats`);

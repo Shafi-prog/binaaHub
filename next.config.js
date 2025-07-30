@@ -104,9 +104,36 @@ const nextConfig = {
     // Remove console logs in production
     removeConsole: process.env.NODE_ENV === 'production',
   },
+  serverExternalPackages: ['@supabase/auth-helpers-nextjs'],
   experimental: {
     optimizeCss: true,
     typedRoutes: false,
+  },
+  async headers() {
+    return [
+      {
+        // Apply CORS headers to all routes
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'Access-Control-Allow-Origin',
+            value: '*',
+          },
+          {
+            key: 'Access-Control-Allow-Methods',
+            value: 'GET, POST, PUT, DELETE, OPTIONS',
+          },
+          {
+            key: 'Access-Control-Allow-Headers',
+            value: 'Content-Type, Authorization, apikey, x-client-info',
+          },
+          {
+            key: 'Content-Security-Policy',
+            value: "default-src 'self'; connect-src 'self' https://*.supabase.co https://lqhopwohuddhapkhhikf.supabase.co http://localhost:* https://api.supabase.co wss://realtime.supabase.co; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https: blob:;",
+          },
+        ],
+      },
+    ];
   },
   eslint: {
     // Re-enable linting but ignore errors during build for now

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/enhanced-components';
-import { useUserData } from '@/core/shared/contexts/UserDataContext';
+import { useAuth } from '@/core/shared/auth/AuthProvider';
 import { 
   Brain, Lightbulb, MessageSquare, Calculator, FileText, 
   TrendingUp, Target, Zap, Sparkles, Clock, CheckCircle,
@@ -60,7 +60,7 @@ interface MarketAlert {
 }
 
 export default function SmartInsightsPage() {
-  const { profile, orders, warranties, projects, invoices, stats, isLoading, error, refreshUserData } = useUserData();
+  const { user, session, isLoading, error } = useAuth();
   const [insights, setInsights] = useState<InsightCard[]>([
     {
       id: 'INS001',
@@ -295,7 +295,7 @@ export default function SmartInsightsPage() {
         <div className="text-center">
           <p className="text-red-600 mb-4">حدث خطأ في تحميل البيانات</p>
           <button 
-            onClick={refreshUserData}
+            onClick={() => window.location.reload()}
             className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
           >
             إعادة المحاولة

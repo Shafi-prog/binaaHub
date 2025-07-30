@@ -1,7 +1,7 @@
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 "use client"
 
-import React, { useEffect } from 'react';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/enhanced-components';
@@ -67,6 +67,41 @@ const quickFeatures = [
 
 export default function DashboardHomePage() {
   const router = useRouter();
+  const supabase = createClientComponentClient();
+  const [dashboardStats, setDashboardStats] = useState({
+    totalUsers: 0,
+    totalProjects: 0,
+    totalOrders: 0
+  });
+
+  useEffect(() => {
+    const loadDashboardData = async () => {
+      try {
+        // Fetch real dashboard statistics from Supabase
+        const { data: users } = await supabase
+          .from('user_profiles')
+          .select('*', { count: 'exact' });
+
+        const { data: projects } = await supabase
+          .from('construction_projects')
+          .select('*', { count: 'exact' });
+
+        const { data: orders } = await supabase
+          .from('orders')
+          .select('*', { count: 'exact' });
+
+        setDashboardStats({
+          totalUsers: users?.length || 0,
+          totalProjects: projects?.length || 0,
+          totalOrders: orders?.length || 0
+        });
+      } catch (error) {
+        console.error('Error loading dashboard data:', error);
+      }
+    };
+
+    loadDashboardData();
+  }, []);
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-indigo-50/20" dir="rtl">

@@ -3,13 +3,13 @@
 export const dynamic = 'force-dynamic';
 
 import React, { useState } from 'react';
-import { useUserData } from '@/core/shared/contexts/UserDataContext';
+import { useAuth } from '@/core/shared/auth/AuthProvider';
 import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/enhanced-components';
 import { useRouter } from 'next/navigation';
 import { Calendar, BarChart3, Users, FileText, Settings, Bookmark, Store } from 'lucide-react';
 
 export default function NewProjectPage() {
-  const { isLoading, error, refreshUserData } = useUserData();
+  const { user, session, isLoading, error } = useAuth();
   const router = useRouter();
 
   const mainIcons = [
@@ -68,7 +68,7 @@ export default function NewProjectPage() {
         <div className="text-center">
           <p className="text-red-600 mb-4">حدث خطأ في تحميل البيانات</p>
           <button 
-            onClick={refreshUserData}
+            onClick={() => window.location.reload()}
             className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
           >
             إعادة المحاولة

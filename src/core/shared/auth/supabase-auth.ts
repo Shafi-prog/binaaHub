@@ -1,7 +1,6 @@
 // Supabase Authentication Service
 // Handles user authentication with Supabase
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { mockSupabaseClient } from '@/core/shared/services/mock-supabase';
 import { User, Session } from '@supabase/supabase-js';
 
 export interface AuthUser {
@@ -23,50 +22,13 @@ export interface AuthState {
 
 class SupabaseAuthService {
   private supabase: any;
-  private usingMockData = false;
 
   constructor() {
-    this.initializeSupabase();
+    this.supabase = createClientComponentClient();
   }
 
-  private async initializeSupabase() {
-    try {
-      const realSupabase = createClientComponentClient();
-      
-      // Test the connection
-      const { error } = await realSupabase
-        .from('user_profiles')
-        .select('count')
-        .limit(1);
-      
-      if (error) {
-        // Handle RLS policy errors differently - they indicate connection but policy issues
-        if (error.code === '42P17' || error.message?.includes('infinite recursion')) {
-          console.warn('✅ Supabase connected but RLS policy needs fixing:', error.message);
-          console.log('🔧 Using real Supabase with fallback data handling');
-          this.supabase = realSupabase;
-          this.usingMockData = false; // Connection works, just policy issues
-        } else {
-          console.warn('Real Supabase not available for auth, using mock data:', error.message);
-          this.supabase = mockSupabaseClient;
-          this.usingMockData = true;
-        }
-      } else {
-        console.log('✅ Real Supabase auth connection established');
-        this.supabase = realSupabase;
-        this.usingMockData = false;
-      }
-    } catch (err) {
-      console.warn('Supabase auth initialization failed, using mock data:', err);
-      this.supabase = mockSupabaseClient;
-      this.usingMockData = true;
-    }
-  }
-
-  private async ensureInitialized() {
-    if (!this.supabase) {
-      await this.initializeSupabase();
-    }
+  public getSupabase() {
+    return this.supabase;
   }
 
   // Sign up with email and password
@@ -77,8 +39,6 @@ class SupabaseAuthService {
     account_type?: string;
   }) {
     try {
-      await this.ensureInitialized();
-      
       const { data, error } = await this.supabase.auth.signUp({
         email,
         password,
@@ -94,8 +54,8 @@ class SupabaseAuthService {
 
       if (error) throw error;
 
-      // Create user profile in our custom table (only for real Supabase)
-      if (data.user && !this.usingMockData) {
+      // Create user profile in our custom table
+      if (data.user) {
         await this.createUserProfile(data.user, metadata);
       }
 
@@ -113,43 +73,22 @@ class SupabaseAuthService {
   // Sign in with email and password
   async signIn(email: string, password: string) {
     try {
-      await this.ensureInitialized();
-      
-      const { data, error } = await this.supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (error) throw error;
-
-      return { user: data.user, session: data.session, error: null };
-    } catch (error) {
-      console.error('Sign in error:', error);
-      return { 
-        user: null, 
-        session: null, 
-        error: error instanceof Error ? error.message : 'Failed to sign in' 
-      };
+      const { data, error } = await this.supabase.auth.signInWithPassword({ email, password });
+      if (error) return { success: false, error: error.message };
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
     }
   }
 
   // Sign out
   async signOut() {
-    try {
-      await this.ensureInitialized();
-      const { error } = await this.supabase.auth.signOut();
-      if (error) throw error;
-      return { error: null };
-    } catch (error) {
-      console.error('Sign out error:', error);
-      return { error: error instanceof Error ? error.message : 'Failed to sign out' };
-    }
+    await this.supabase.auth.signOut();
   }
 
   // Get current user
   async getCurrentUser(): Promise<{ user: User | null; error: string | null }> {
     try {
-      await this.ensureInitialized();
       const { data: { user }, error } = await this.supabase.auth.getUser();
       if (error) throw error;
       return { user, error: null };
@@ -162,10 +101,16 @@ class SupabaseAuthService {
   // Get current session
   async getSession(): Promise<{ session: Session | null; error: string | null }> {
     try {
-      await this.ensureInitialized();
-      const { data: { session }, error } = await this.supabase.auth.getSession();
-      if (error) throw error;
-      return { session, error: null };
+      // Try direct Supabase session first
+      try {
+        const { data: { session }, error } = await this.supabase.auth.getSession();
+        if (error) throw error;
+        if (session) return { session, error: null };
+      } catch (directError) {
+        console.log('Direct session check failed');
+      }
+      
+      return { session: null, error: null };
     } catch (error) {
       console.error('Get session error:', error);
       return { session: null, error: error instanceof Error ? error.message : 'Failed to get session' };
@@ -209,25 +154,22 @@ class SupabaseAuthService {
   // Get user profile data
   async getUserProfile(userId: string) {
     try {
-      await this.ensureInitialized();
       const { data, error } = await this.supabase
         .from('user_profiles')
         .select('*')
         .eq('user_id', userId)
         .single();
 
-      if (error) throw error;
-      return { profile: data, error: null };
-    } catch (error) {
-      console.error('Get user profile error:', error);
-      return { profile: null, error: error instanceof Error ? error.message : 'Failed to get profile' };
+      if (error) return { profile: null, error: error.message };
+      return { profile: data };
+    } catch (err: any) {
+      return { profile: null, error: err.message };
     }
   }
 
   // Update user profile
   async updateUserProfile(userId: string, updates: Partial<any>) {
     try {
-      await this.ensureInitialized();
       const { data, error } = await this.supabase
         .from('user_profiles')
         .update(updates)
@@ -244,25 +186,13 @@ class SupabaseAuthService {
   }
 
   // Test connection
-  async testConnection(): Promise<{ connected: boolean; error?: string; usingMock?: boolean }> {
+  async testConnection(): Promise<{ connected: boolean; error?: string }> {
     try {
-      await this.ensureInitialized();
-      const { data, error } = await this.supabase
-        .from('user_profiles')
-        .select('count')
-        .limit(1);
-
-      return { 
-        connected: !error, 
-        error: error?.message || undefined,
-        usingMock: this.usingMockData
-      };
-    } catch (error) {
-      return { 
-        connected: false, 
-        error: error instanceof Error ? error.message : 'Connection failed',
-        usingMock: this.usingMockData
-      };
+      const { error } = await this.supabase.from('user_profiles').select('id').limit(1);
+      if (error) return { connected: false, error: error.message };
+      return { connected: true };
+    } catch (err: any) {
+      return { connected: false, error: err.message };
     }
   }
 }

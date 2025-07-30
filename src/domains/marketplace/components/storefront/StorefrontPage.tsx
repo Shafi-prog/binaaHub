@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Search, ShoppingCart, User, Menu, Star, Filter, Heart } from 'lucide-react';
-import { useAuth } from '@/shared/hooks/use-auth';
 import { LoadingSpinner } from '@/core/shared/components/ui/loading-spinner';
+import { useAuth } from '@/core/shared/auth/AuthProvider';
 
 interface Product {
   id: string;
@@ -25,7 +25,8 @@ interface Category {
 }
 
 const StorefrontPage: React.FC = () => {
-  const { user, isAuthenticated } = useAuth();
+  const { user } = useAuth();
+  const isAuthenticated = !!user;
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [searchQuery, setSearchQuery] = useState('');

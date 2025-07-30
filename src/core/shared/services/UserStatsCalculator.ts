@@ -2,6 +2,37 @@ import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { Order, Warranty, Project, Invoice, UserStats, UserProfile } from '../contexts/UserDataContext';
 
 export class UserStatsCalculator {
+  private static supabase = createClientComponentClient();
+
+  // Get real user stats from Supabase
+  static async getUserStatsFromSupabase(userId: string): Promise<UserStats | null> {
+    try {
+      // Fetch real data from Supabase
+      const { data: orders } = await this.supabase
+        .from('orders')
+        .select('*')
+        .eq('user_id', userId);
+
+      const { data: projects } = await this.supabase
+        .from('construction_projects')
+        .select('*')
+        .eq('user_id', userId);
+
+      const { data: profile } = await this.supabase
+        .from('user_profiles')
+        .select('*')
+        .eq('user_id', userId)
+        .single();
+
+      if (orders && projects && profile) {
+        return this.calculateUserStats(orders, [], projects, [], profile);
+      }
+      return null;
+    } catch (error) {
+      console.error('Error fetching user stats from Supabase:', error);
+      return null;
+    }
+  }
   // Calculate comprehensive user statistics
   static calculateUserStats(
     orders: Order[],

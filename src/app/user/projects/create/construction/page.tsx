@@ -13,7 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/core/shared/componen
 import { useRouter } from 'next/navigation';
 import { ProjectTrackingService } from '@/core/services/projectTrackingService';
 import { Project } from '@/core/shared/types/types';
-import { useUserData } from '@/core/shared/contexts/UserDataContext';
+import { useAuth } from '@/core/shared/auth/AuthProvider';
 import { 
   ArrowLeft,
   MapPin,
@@ -61,7 +61,7 @@ interface ConstructionPhase {
 }
 
 export default function ConstructionProjectCreationPage() {
-  const { profile, orders, warranties, projects, invoices, stats, isLoading, error, refreshUserData } = useUserData();
+  const { user, session, isLoading, error } = useAuth();
   const router = useRouter();
   const [currentPhase, setCurrentPhase] = useState(0);
   const [loading, setLoading] = useState(false);

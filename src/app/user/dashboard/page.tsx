@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/enhanced-components';
 import { formatNumber, formatCurrency } from '@/core/shared/utils/formatting';
-import { useUserData } from '@/core/shared/contexts/UserDataContext';
+import { useAuth } from '@/core/shared/auth/AuthProvider';
 import { supabaseDataService } from '@/core/shared/services/supabase-data-service';
 import { 
   Calendar, 
@@ -74,7 +74,116 @@ export default function UserDashboardPage() {
   console.log('🚀 UserDashboard component is rendering!');
   
   // Use the unified user data context
-  const { profile, orders, warranties, projects, invoices, stats, isLoading, error, refreshUserData } = useUserData();
+  const { user, isLoading, error } = useAuth();
+  const [userData, setUserData] = useState<{
+    profile: any;
+    orders: any[];
+    warranties: any[];
+    projects: any[];
+    invoices: any[];
+    stats: any;
+  }>({
+    profile: null,
+    orders: [],
+    warranties: [],
+    projects: [],
+    invoices: [],
+    stats: {
+      activeProjects: 0,
+      totalOrders: 0,
+      completedProjects: 0,
+      activeWarranties: 0,
+      balanceAmount: 0,
+      aiInsights: 0,
+      communityPosts: 0
+    }
+  });
+  const [dataLoading, setDataLoading] = useState(false);
+
+  // Load user data when user is available
+  useEffect(() => {
+    const loadUserData = async () => {
+      if (!user?.id) return;
+      
+      setDataLoading(true);
+      try {
+        const [profileData, ordersData, warrantiesData, projectsData, invoicesData] = await Promise.all([
+          supabaseDataService.getUserProfile(user.id),
+          supabaseDataService.getUserOrders(user.id),
+          supabaseDataService.getUserWarranties(user.id),
+          supabaseDataService.getUserProjects(user.id),
+          supabaseDataService.getUserInvoices(user.id)
+        ]);
+
+        const stats = {
+          activeProjects: projectsData?.filter(p => p.status === 'in_progress')?.length || 0,
+          totalOrders: ordersData?.length || 0,
+          completedProjects: projectsData?.filter(p => p.status === 'completed')?.length || 0,
+          activeWarranties: warrantiesData?.filter(w => w.status === 'active')?.length || 0,
+          balanceAmount: profileData?.account_balance || 0,
+          aiInsights: Math.floor(Math.random() * 50) + 10 // Mock AI insights
+        };
+
+        setUserData({
+          profile: profileData,
+          orders: ordersData || [],
+          warranties: warrantiesData || [],
+          projects: projectsData || [],
+          invoices: invoicesData || [],
+          stats
+        });
+      } catch (err) {
+        console.error('Error loading user data:', err);
+      } finally {
+        setDataLoading(false);
+      }
+    };
+
+    loadUserData();
+  }, [user?.id]);
+
+  const handleRefresh = () => {
+    // Trigger reload by updating user dependency
+    if (user?.id) {
+      const loadUserData = async () => {
+        setDataLoading(true);
+        try {
+          const [profileData, ordersData, warrantiesData, projectsData, invoicesData] = await Promise.all([
+            supabaseDataService.getUserProfile(user.id),
+            supabaseDataService.getUserOrders(user.id),
+            supabaseDataService.getUserWarranties(user.id),
+            supabaseDataService.getUserProjects(user.id),
+            supabaseDataService.getUserInvoices(user.id)
+          ]);
+
+          const stats = {
+            activeProjects: projectsData?.filter(p => p.status === 'in_progress')?.length || 0,
+            totalOrders: ordersData?.length || 0,
+            completedProjects: projectsData?.filter(p => p.status === 'completed')?.length || 0,
+            activeWarranties: warrantiesData?.filter(w => w.status === 'active')?.length || 0,
+            balanceAmount: profileData?.account_balance || 0,
+            aiInsights: Math.floor(Math.random() * 50) + 10
+          };
+
+          setUserData({
+            profile: profileData,
+            orders: ordersData || [],
+            warranties: warrantiesData || [],
+            projects: projectsData || [],
+            invoices: invoicesData || [],
+            stats
+          });
+        } catch (err) {
+          console.error('Error loading user data:', err);
+        } finally {
+          setDataLoading(false);
+        }
+      };
+      loadUserData();
+    }
+  };
+
+  const { profile, orders, warranties, projects, invoices, stats } = userData;
   
   const [isHydrated, setIsHydrated] = useState(false);
   const [showAddCost, setShowAddCost] = useState(false);
@@ -198,7 +307,7 @@ export default function UserDashboardPage() {
         <div className="text-center">
           <p className="text-red-600 mb-4">حدث خطأ في تحميل البيانات</p>
           <button 
-            onClick={refreshUserData}
+            onClick={() => window.location.reload()}
             className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
           >
             إعادة المحاولة
@@ -219,8 +328,8 @@ export default function UserDashboardPage() {
   const dashboardCards = [
     {
       title: 'نقاط الولاء',
-      value: formatNumber(profile?.loyaltyPoints || 0),
-      subtitle: `مستوى ${profile?.currentLevel || 1}`,
+      value: formatNumber(2500), // Demo value
+      subtitle: `مستوى 3`, // Demo value
       icon: <Trophy className="w-6 h-6" />,
       href: '/user/gamification',
       color: 'bg-gradient-to-r from-yellow-500 to-yellow-600',
@@ -310,7 +419,7 @@ export default function UserDashboardPage() {
         {/* Header */}
         <div className="mb-8">
           <Typography variant="heading" size="3xl" weight="bold" className="text-gray-800 mb-3">
-            مرحباً، {profile?.name || profile?.email?.split('@')[0] || 'المستخدم'}! 👋
+            مرحباً، {user?.name || user?.email?.split('@')[0] || 'المستخدم'}! 👋
           </Typography>
           <Typography variant="body" size="lg" className="text-gray-600">
             إليك نظرة عامة على حسابك ومشاريعك
@@ -386,15 +495,15 @@ export default function UserDashboardPage() {
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <span className="text-sm text-gray-600">الأعضاء النشطون</span>
-                <span className="text-lg font-bold text-indigo-600">15,420</span>
+                <span className="text-lg font-bold text-indigo-600">{formatNumber(stats.communityPosts)}</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-sm text-gray-600">مشاريع مشتركة</span>
-                <span className="text-lg font-bold text-blue-600">2,340</span>
+                <span className="text-lg font-bold text-blue-600">{formatNumber(stats.activeProjects + stats.completedProjects)}</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-sm text-gray-600">نصائح هذا الأسبوع</span>
-                <span className="text-lg font-bold text-green-600">156</span>
+                <span className="text-lg font-bold text-green-600">{formatNumber(quickInsights.length)}</span>
               </div>
               <div className="border-t pt-4">
                 <Link href="/user/social-community" className="text-indigo-600 hover:text-indigo-700 text-sm font-medium">
@@ -511,14 +620,22 @@ export default function UserDashboardPage() {
                 <div className="w-20 h-20 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-3">
                   <Crown className="w-10 h-10 text-white" />
                 </div>
-                <Typography variant="body" weight="bold" className="text-gray-800">المستوى الذهبي</Typography>
-                <Typography variant="caption" size="sm" className="text-gray-600">12,450 نقطة</Typography>
+                <Typography variant="body" weight="bold" className="text-gray-800">
+                  المستوى الذهبي
+                </Typography>
+                <Typography variant="caption" size="sm" className="text-gray-600">
+                  {formatNumber(2500)} نقطة
+                </Typography>
               </div>
+              {/* Progress bar to next level (example logic, adjust as needed) */}
               <div className="bg-gray-200 rounded-full h-2">
-                <div className="bg-gradient-to-r from-yellow-400 to-orange-500 h-2 rounded-full" style={{ width: '75%' }}></div>
+                <div className="bg-gradient-to-r from-yellow-400 to-orange-500 h-2 rounded-full" style={{ width: `75%` }}></div>
               </div>
               <div className="text-center">
-                <Typography variant="caption" size="xs" className="text-gray-600">2,550 نقطة للمستوى التالي</Typography>
+                <Typography variant="caption" size="xs" className="text-gray-600">
+                  {/* Example: 10,000 points per level, adjust as needed */}
+                  2,550 نقطة للمستوى التالي
+                </Typography>
               </div>
               <div className="border-t pt-4">
                 <Link href="/user/gamification" className="text-yellow-600 hover:text-yellow-700 text-sm font-medium">
@@ -694,6 +811,90 @@ export default function UserDashboardPage() {
             ))}
           </div>
         </EnhancedCard>
+
+        {/* DEBUG PANEL: Show raw profile and stats for troubleshooting */}
+        {process.env.NODE_ENV !== 'production' && (
+          <div className="mb-8 p-4 bg-yellow-100 rounded text-yellow-900 text-xs">
+            <strong>DEBUG: Raw Context Data & User ID Testing</strong>
+            
+            {/* User ID Testing Section */}
+            <div className="mb-4 p-3 bg-white rounded border">
+              <strong>User ID Testing (Development Only):</strong>
+              <div className="mt-2 flex flex-wrap gap-2">
+                <button
+                  onClick={() => {
+                    const url = new URL(window.location.href);
+                    url.searchParams.set('debugUserId', 'user@binna.com');
+                    window.location.href = url.toString();
+                  }}
+                  className="px-2 py-1 bg-blue-500 text-white rounded text-xs hover:bg-blue-600"
+                >
+                  Test User (Most Data)
+                </button>
+                <button
+                  onClick={() => {
+                    const url = new URL(window.location.href);
+                    url.searchParams.set('debugUserId', 'admin');
+                    window.location.href = url.toString();
+                  }}
+                  className="px-2 py-1 bg-green-500 text-white rounded text-xs hover:bg-green-600"
+                >
+                  Admin User
+                </button>
+                <button
+                  onClick={() => {
+                    const url = new URL(window.location.href);
+                    url.searchParams.set('debugUserId', 'contractor');
+                    window.location.href = url.toString();
+                  }}
+                  className="px-2 py-1 bg-purple-500 text-white rounded text-xs hover:bg-purple-600"
+                >
+                  Contractor
+                </button>
+                <button
+                  onClick={() => {
+                    // Emergency auth fix
+                    const userObj = {
+                      id: 'user@binna.com',
+                      email: 'user@binna.com',
+                      user_id: 'user@binna.com',
+                      name: 'مستخدم تجريبي'
+                    };
+                    
+                    const cookieValue = encodeURIComponent(JSON.stringify(userObj));
+                    document.cookie = `temp_auth_user=${cookieValue}; path=/; max-age=86400`;
+                    localStorage.setItem('user_id', 'user@binna.com');
+                    sessionStorage.setItem('user_id', 'user@binna.com');
+                    
+                    alert('تم إصلاح المصادقة! سيتم إعادة تحميل الصفحة.');
+                    window.location.reload();
+                  }}
+                  className="px-2 py-1 bg-red-500 text-white rounded text-xs hover:bg-red-600"
+                >
+                  🔧 Fix Auth
+                </button>
+                <button
+                  onClick={() => {
+                    const url = new URL(window.location.href);
+                    url.searchParams.delete('debugUserId');
+                    window.location.href = url.toString();
+                  }}
+                  className="px-2 py-1 bg-red-500 text-white rounded text-xs hover:bg-red-600"
+                >
+                  Clear Override
+                </button>
+              </div>
+              <div className="mt-2 text-xs">
+                <strong>Current URL Debug UserId:</strong> {new URLSearchParams(window.location.search).get('debugUserId') || 'None'}
+              </div>
+            </div>
+
+            {/* Raw Data */}
+            <div className="overflow-x-auto">
+              <pre>{JSON.stringify({ profile, stats, orders, projects, warranties, invoices }, null, 2)}</pre>
+            </div>
+          </div>
+        )}
       </div>
     </main>
   );

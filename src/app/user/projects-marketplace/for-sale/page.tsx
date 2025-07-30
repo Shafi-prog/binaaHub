@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useUserData } from '@/core/shared/contexts/UserDataContext';
+import { useAuth } from '@/core/shared/auth/AuthProvider';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { Card } from '@/core/shared/components/ui/card';
 import { LoadingSpinner } from '@/core/shared/components/ui/loading-spinner';

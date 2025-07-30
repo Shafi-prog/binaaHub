@@ -4,16 +4,53 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/enhanced-components';
 import { Package, Search, Filter, Calendar, MapPin, CreditCard, Truck, Eye, RotateCcw, MessageSquare } from 'lucide-react';
-import { useUserData } from '@/core/shared/contexts/UserDataContext';
+import { useAuth } from '@/core/shared/auth/AuthProvider';
 
 export const dynamic = 'force-dynamic'
 
 export default function OrdersPage() {
   // Use real data from UserDataContext
-  const { orders, isLoading, error, stats } = useUserData();
+  const { user, session, isLoading, error } = useAuth();
 
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
+
+  // Mock orders data - in real app this would come from a context or API
+  const orders = [
+    {
+      id: '1',
+      orderNumber: 'ORD-2024-001',
+      store: 'متجر مواد البناء الحديث',
+      status: 'delivered',
+      total: 1250.00,
+      orderDate: '2024-03-15',
+      deliveryDate: '2024-03-18',
+      expectedDelivery: '2024-03-18',
+      shippingAddress: 'الرياض، حي النرجس، شارع الملك فهد',
+      paymentMethod: 'بطاقة ائتمانية',
+      trackingNumber: 'TRK123456789',
+      items: [
+        { name: 'أسمنت بورتلاند', quantity: 20, price: 25.00 },
+        { name: 'رمل ناعم', quantity: 5, price: 150.00 }
+      ]
+    },
+    {
+      id: '2',
+      orderNumber: 'ORD-2024-002',
+      store: 'متجر الكهرباء المتقدم',
+      status: 'shipped',
+      total: 875.50,
+      orderDate: '2024-03-20',
+      expectedDelivery: '2024-03-25',
+      shippingAddress: 'جدة، حي الصفا، شارع فلسطين',
+      paymentMethod: 'تحويل بنكي',
+      trackingNumber: 'TRK987654321',
+      items: [
+        { name: 'كابلات كهربائية', quantity: 10, price: 45.00 },
+        { name: 'مفاتيح كهربائية', quantity: 15, price: 30.50 }
+      ]
+    }
+  ];
 
   // Show loading state
   if (isLoading) {

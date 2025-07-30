@@ -3,7 +3,7 @@
 export const dynamic = 'force-dynamic';
 
 import React from 'react';
-import { useUserData } from '@/core/shared/contexts/UserDataContext';
+import { useAuth } from '@/core/shared/auth/AuthProvider';
 import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/enhanced-components';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -19,7 +19,7 @@ import {
 
 export default function ProjectsPage() {
   const router = useRouter();
-  const { isLoading, error, refreshUserData } = useUserData();
+  const { user, session, isLoading, error } = useAuth();
 
   // Project navigation cards
   const projectCards = [
@@ -89,7 +89,7 @@ export default function ProjectsPage() {
         <div className="text-center">
           <p className="text-red-600 mb-4">حدث خطأ في تحميل البيانات</p>
           <button 
-            onClick={refreshUserData}
+            onClick={() => window.location.reload()}
             className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
           >
             إعادة المحاولة

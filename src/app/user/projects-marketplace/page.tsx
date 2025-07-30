@@ -1,10 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useUserData } from '@/core/shared/contexts/UserDataContext';
+import { useAuth } from '@/core/shared/auth/AuthProvider';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { supabase } from '@/core/shared/utils/supabase/client';
+import { supabase } from '@/lib/supabase/client';
 import { 
   Search, 
   Filter, 

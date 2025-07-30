@@ -4,12 +4,12 @@ import React from 'react';
 import Link from 'next/link';
 import { Typography, EnhancedCard } from '@/core/shared/components/ui/enhanced-components';
 import { ArrowRight, FileText, Upload, Search, Shield, Tag, FolderOpen, Download } from 'lucide-react';
-import { useUserData } from '@/core/shared/contexts/UserDataContext';
+import { useAuth } from '@/core/shared/auth/AuthProvider';
 
 export const dynamic = 'force-dynamic'
 
 export default function DocumentsHelpPage() {
-  const { profile, orders, warranties, projects, invoices, stats, isLoading, error, refreshUserData } = useUserData();
+  const { user, session, isLoading, error } = useAuth();
   
   // Loading state
   if (isLoading) {
@@ -27,7 +27,7 @@ export default function DocumentsHelpPage() {
         <div className="text-center">
           <p className="text-red-600 mb-4">حدث خطأ في تحميل البيانات</p>
           <button 
-            onClick={refreshUserData}
+            onClick={() => window.location.reload()}
             className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
           >
             إعادة المحاولة

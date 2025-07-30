@@ -6,7 +6,7 @@ import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/en
 import { Shield, DollarSign, TrendingUp, ArrowRight, Receipt, Eye, Calendar, Package, BarChart3, PieChart } from 'lucide-react';
 import { formatDateSafe, useIsClient } from '../../../core/shared/utils/hydration-safe';
 import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
-import { useUserData } from '@/core/shared/contexts/UserDataContext';
+import { useAuth } from '@/core/shared/auth/AuthProvider';
 
 export const dynamic = 'force-dynamic'
 
@@ -25,7 +25,7 @@ interface WarrantyExpense {
 }
 
 export default function WarrantyExpenseTrackingPage() {
-  const { profile, orders, warranties, projects, invoices, stats, isLoading, error, refreshUserData } = useUserData();
+  const { user, session, isLoading, error } = useAuth();
   const router = useRouter();
   const isClient = useIsClient();
   const [expenses, setExpenses] = useState<WarrantyExpense[]>([]);
@@ -99,7 +99,7 @@ export default function WarrantyExpenseTrackingPage() {
         <div className="text-center">
           <p className="text-red-600 mb-4">حدث خطأ في تحميل البيانات</p>
           <button 
-            onClick={refreshUserData}
+            onClick={() => window.location.reload()}
             className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
           >
             إعادة المحاولة

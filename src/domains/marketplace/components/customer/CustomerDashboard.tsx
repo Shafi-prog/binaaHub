@@ -19,7 +19,7 @@ import {
   Eye,
   Download
 } from 'lucide-react';
-import { useAuth } from '@/shared/hooks/use-auth';
+import { useAuth } from '@/core/shared/auth/AuthProvider';
 
 interface Order {
   id: string;
@@ -74,7 +74,7 @@ interface WishlistItem {
 }
 
 const CustomerDashboard: React.FC = () => {
-  const { user, logout } = useAuth();
+  const { user, signOut } = useAuth();
   const [activeTab, setActiveTab] = useState('overview');
   const [orders, setOrders] = useState<Order[]>([]);
   const [addresses, setAddresses] = useState<Address[]>([]);
@@ -737,7 +737,7 @@ const CustomerDashboard: React.FC = () => {
                 ))}
                 
                 <button
-                  onClick={logout}
+                  onClick={signOut}
                   className="w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-left text-red-600 hover:bg-red-50 transition-colors"
                 >
                   <LogOut className="w-5 h-5" />

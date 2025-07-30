@@ -6,7 +6,7 @@ import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/en
 import { FileText, Search, Download, Calendar, CreditCard, Store, Eye, Printer, Filter } from 'lucide-react';
 import { formatDateSafe, formatNumberSafe, useIsClient } from '../../../core/shared/utils/hydration-safe';
 import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
-import { useUserData } from '@/core/shared/contexts/UserDataContext';
+import { useAuth } from '@/core/shared/auth/AuthProvider';
 
 export const dynamic = 'force-dynamic'
 
@@ -32,7 +32,7 @@ interface ExtendedInvoice {
 }
 
 export default function InvoicesPage() {
-  const { profile, orders, warranties, projects, invoices: userInvoices, stats, isLoading, error, refreshUserData } = useUserData();
+  const { user, session, isLoading, error } = useAuth();
   const isHydrated = useIsClient();
   
   const [invoices, setInvoices] = useState<ExtendedInvoice[]>([

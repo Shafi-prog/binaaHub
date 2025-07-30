@@ -57,8 +57,9 @@ export class ProjectTrackingService {
 
   private static async saveProjectToMockDatabase(project: Project): Promise<void> {
     try {
-      // Import the mock supabase client
-      const { mockSupabaseClient } = await import('@/core/shared/services/mock-supabase');
+      // Use real Supabase client instead of mock
+      const { createClientComponentClient } = await import('@supabase/auth-helpers-nextjs');
+      const supabase = createClientComponentClient();
       
       // Transform project to match database schema
       const dbProject = {
@@ -77,20 +78,16 @@ export class ProjectTrackingService {
         updated_at: project.updatedAt
       };
       
-      // Get existing projects from mock database
-      const constructionProjects = mockSupabaseClient.data?.get('construction_projects') || [];
-      const existingIndex = constructionProjects.findIndex((p: any) => p.id === project.id);
+      // Save to real Supabase database
+      const { error } = await supabase
+        .from('projects')
+        .upsert(dbProject);
       
-      if (existingIndex >= 0) {
-        constructionProjects[existingIndex] = dbProject;
+      if (error) {
+        console.error('Error saving project to database:', error);
       } else {
-        constructionProjects.push(dbProject);
+        console.log('✅ Project saved to database:', project.name);
       }
-      
-      // Save back to mock database
-      mockSupabaseClient.data?.set('construction_projects', constructionProjects);
-      
-      console.log('✅ Project saved to mock database:', project.name);
     } catch (error) {
       console.error('Error saving project to mock database:', error);
     }

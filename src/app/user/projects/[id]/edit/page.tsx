@@ -1,12 +1,11 @@
 'use client';
 
-import { useUserData } from '@/core/shared/contexts/UserDataContext';
-
+import { useAuth } from '@/core/shared/auth/AuthProvider';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 
 export default function EditProjectPage() {
-  const { isLoading, error, refreshUserData } = useUserData();
+  const { user, session, isLoading, error } = useAuth();
   
   // Loading state
   if (isLoading) {
@@ -24,7 +23,7 @@ export default function EditProjectPage() {
         <div className="text-center">
           <p className="text-red-600 mb-4">حدث خطأ في تحميل البيانات</p>
           <button 
-            onClick={refreshUserData}
+            onClick={() => window.location.reload()}
             className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
           >
             إعادة المحاولة

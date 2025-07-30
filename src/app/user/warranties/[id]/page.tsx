@@ -7,6 +7,7 @@ import { Shield, Calendar, FileText, ArrowRight, Package, DollarSign, AlertCircl
 import { formatDateSafe, useIsClient } from '../../../../core/shared/utils/hydration-safe';
 import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 import { useUserData } from '@/core/shared/contexts/UserDataContext';
+import { useAuth } from '@/core/shared/auth/AuthProvider';
 
 export const dynamic = 'force-dynamic'
 
@@ -36,7 +37,7 @@ interface WarrantyDetails {
 }
 
 export default function WarrantyDetailsPage() {
-  const { profile, orders, warranties, projects, invoices, stats, isLoading, error, refreshUserData } = useUserData();
+  const { user, session, isLoading, error } = useAuth();
   const router = useRouter();
   const params = useParams();
   const warrantyId = params?.id as string;
@@ -184,7 +185,7 @@ export default function WarrantyDetailsPage() {
         <div className="text-center">
           <p className="text-red-600 mb-4">حدث خطأ في تحميل البيانات</p>
           <button 
-            onClick={refreshUserData}
+            onClick={() => window.location.reload()}
             className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
           >
             إعادة المحاولة

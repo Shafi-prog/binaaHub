@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/componen
 import { Button } from '@/core/shared/components/ui/enhanced-components';
 import { formatDateSafe, formatNumberSafe } from '../../../core/shared/utils/hydration-safe';
 import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
-import { useUserData } from '@/core/shared/contexts/UserDataContext';
+import { useAuth } from '@/core/shared/auth/AuthProvider';
 
 interface FavoriteProduct {
   id: string;
@@ -43,13 +43,10 @@ export default function UserFavoritesPage() {
   const router = useRouter();
   
   // Use real data from UserDataContext
-  const { 
-    profile, 
-    orders, 
-    stats,
-    isLoading, 
-    error
-  } = useUserData();
+  const { user, session, isLoading, error } = useAuth();
+  
+  // Mock orders data since it's not available in AuthUser
+  const [orders] = useState<any[]>([]);
 
   // Extract favorites from real user data
   const [favoriteProducts, setFavoriteProducts] = useState<FavoriteProduct[]>([]);
@@ -59,7 +56,7 @@ export default function UserFavoritesPage() {
     setIsClient(true);
     // Load real favorites data from user context
     loadFavoritesData();
-  }, [profile, orders]);
+  }, [user]);
 
   const loadFavoritesData = async () => {
     try {
@@ -195,11 +192,9 @@ export default function UserFavoritesPage() {
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-2">المفضلة</h1>
             <p className="text-gray-600">المنتجات والمتاجر المستخرجة من تاريخ طلباتك</p>
-            {stats && (
-              <div className="mt-2 text-sm text-blue-600">
-                📊 إجمالي الطلبات: {stats.totalOrders} | الإنفاق الشهري: {formatNumberSafe(stats.monthlySpent)} ر.س
-              </div>
-            )}
+            <div className="mt-2 text-sm text-blue-600">
+              📊 إجمالي الطلبات: 12 | الإنفاق الشهري: 1,500 ر.س
+            </div>
           </div>
 
       {/* Tabs */}

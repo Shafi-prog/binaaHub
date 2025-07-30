@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState, Suspense } from 'react';
-import { useUserData } from '@/core/shared/contexts/UserDataContext';
+import { useAuth } from '@/core/shared/auth/AuthProvider';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { XCircle, RefreshCw, ArrowRight, AlertTriangle, CreditCard } from 'lucide-react';
@@ -12,7 +12,7 @@ export const dynamic = 'force-dynamic'
 // Force dynamic rendering to avoid SSG auth context issues
 
 function PaymentErrorContent() {
-  const { isLoading, error, refreshUserData } = useUserData();
+  const { user, session, isLoading, error } = useAuth();
   const searchParams = useSearchParams();
   const router = useRouter();
   const [errorInfo, setErrorInfo] = useState<{
@@ -100,7 +100,7 @@ function PaymentErrorContent() {
         <div className="text-center">
           <p className="text-red-600 mb-4">حدث خطأ في تحميل البيانات</p>
           <button 
-            onClick={refreshUserData}
+            onClick={() => window.location.reload()}
             className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
           >
             إعادة المحاولة

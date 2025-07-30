@@ -3,7 +3,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { supabase } from '@/core/shared/utils/supabase/client';
+import { supabase } from '@/lib/supabase/client';
 
 export default function ProjectsDebugger() {
   const [debugInfo, setDebugInfo] = useState<any>(null);

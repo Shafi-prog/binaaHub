@@ -16,7 +16,7 @@ import ProjectPurchasesWarranties from '@/core/shared/components/ui/ProjectPurch
 import { ProjectTrackingService } from '@/core/services/projectTrackingService';
 import { Project, ProjectEstimation, MaterialEstimation, LightingEstimation } from '@/core/shared/types/types';
 import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
-import { useUserData } from '@/core/shared/contexts/UserDataContext';
+import { useAuth } from '@/core/shared/auth/AuthProvider';
 import { 
   Calculator, 
   FileText, 
@@ -116,7 +116,7 @@ interface PDFAnalysis {
 }
 
 export default function ComprehensiveConstructionCalculator() {
-  const { profile, orders, warranties, projects, invoices, stats, isLoading, error, refreshUserData } = useUserData();
+  const { user, session, isLoading, error } = useAuth();
   const searchParams = useSearchParams();
   const router = useRouter();
   const projectId = searchParams?.get('projectId');

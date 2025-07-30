@@ -3,13 +3,13 @@
 export const dynamic = 'force-dynamic';
 
 import React, { useState } from 'react';
-import { useUserData } from '@/core/shared/contexts/UserDataContext';
+import { useAuth } from '@/core/shared/auth/AuthProvider';
 import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/enhanced-components';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Plus, Search, Phone, MessageCircle, Users } from 'lucide-react';
 
 export default function SuppliersPage() {
-  const { isLoading, error, refreshUserData } = useUserData();
+  const { user, session, isLoading, error } = useAuth();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState('supplier');
   const [searchQuery, setSearchQuery] = useState('');
@@ -67,7 +67,7 @@ export default function SuppliersPage() {
         <div className="text-center">
           <p className="text-red-600 mb-4">حدث خطأ في تحميل البيانات</p>
           <button 
-            onClick={refreshUserData}
+            onClick={() => window.location.reload()}
             className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
           >
             إعادة المحاولة

@@ -3,7 +3,6 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { mockSupabaseClient } from '@/core/shared/services/mock-supabase';
 import { supabaseDataService } from '@/core/shared/services/supabase-data-service';
 import { useAuth } from '@/core/shared/auth/AuthProvider';
 
@@ -110,7 +109,7 @@ interface UserData {
 
 // Context Actions
 interface UserDataActions {
-  refreshUserData: () => Promise<void>;
+  refreshData: () => Promise<void>;
   updateProfile: (profile: Partial<UserProfile>) => Promise<void>;
   addOrder: (order: Order) => void;
   updateOrder: (id: string, updates: Partial<Order>) => void;
@@ -203,11 +202,11 @@ export const UserDataProvider: React.FC<UserDataProviderProps> = ({ children }) 
 
   // Load real user data from Supabase using the data service
   const loadUserDataFromSupabase = async (tempUser: any): Promise<Partial<UserData>> => {
-    const userId = tempUser.email || tempUser.id || 'user@binna'; // Use email as user_id to match database
+    const userId = tempUser.email || tempUser.id || 'user@binna.com'; // Use email as user_id to match database
     const userRole = tempUser.role || 'user';
 
     try {
-      console.log('📊 Loading REAL data from Supabase database tables');
+      console.log('📊 Loading REAL data from Supabase database tables for:', userId);
       
       let profile: UserProfile;
       let orders: Order[] = [];
@@ -215,35 +214,43 @@ export const UserDataProvider: React.FC<UserDataProviderProps> = ({ children }) 
       let projects: Project[] = [];
       let invoices: Invoice[] = [];
 
-      // Force real data loading - no fallback to sample data
+      // Direct Supabase queries to bypass any service layer issues
       try {
-        console.log('🔄 Fetching user profile from user_profiles table...');
-        const profileData = await supabaseDataService.getUserProfile(userId);
+        console.log('🔄 Direct fetch from user_profiles table...');
+        const { data: profileData, error: profileError } = await supabase
+          .from('user_profiles')
+          .select('*')
+          .eq('user_id', userId)
+          .single();
+        
+        if (profileError && profileError.code !== 'PGRST116') {
+          console.error('Profile query error:', profileError);
+        }
         
         profile = {
-          id: profileData.id || userId,
-          name: profileData.display_name || tempUser.name || 'مستخدم',
-          email: profileData.email || tempUser.email || 'user@binna.com',
-          phone: profileData.phone || '+966501234567',
-          city: profileData.city || 'الرياض',
-          memberSince: profileData.created_at || '2024-01-01',
-          accountType: profileData.account_type || 'free',
-          loyaltyPoints: profileData.loyalty_points || 0,
-          currentLevel: profileData.current_level || 1,
-          totalSpent: profileData.total_spent || 0,
+          id: profileData?.id || userId,
+          name: profileData?.display_name || tempUser.name || 'مستخدم تجريبي',
+          email: profileData?.email || tempUser.email || 'user@binna.com',
+          phone: profileData?.phone || '+966501234567',
+          city: profileData?.city || 'الرياض',
+          memberSince: profileData?.created_at || '2024-01-01',
+          accountType: profileData?.account_type || 'premium',
+          loyaltyPoints: profileData?.loyalty_points || 0,
+          currentLevel: profileData?.current_level || 1,
+          totalSpent: profileData?.total_spent || 0,
         };
-        console.log('✅ Profile loaded from database:', profile);
+        console.log('✅ Profile loaded successfully:', profile);
       } catch (err) {
-        console.error('❌ Error loading profile from database:', err);
-        // Create a basic profile but still try to load other data
+        console.error('❌ Error loading profile:', err);
+        // Create a fallback profile
         profile = {
           id: userId,
-          name: tempUser.name || 'مستخدم',
-          email: tempUser.email || 'user@binna.com',
+          name: 'مستخدم تجريبي',
+          email: 'user@binna.com',
           phone: '+966501234567',
           city: 'الرياض',
           memberSince: '2024-01-01',
-          accountType: 'free',
+          accountType: 'premium',
           loyaltyPoints: 0,
           currentLevel: 1,
           totalSpent: 0,
@@ -485,7 +492,7 @@ export const UserDataProvider: React.FC<UserDataProviderProps> = ({ children }) 
   };
 
   // Actions
-  const refreshUserData = async () => {
+  const refreshData = async () => {
     await loadUserData();
   };
 
@@ -496,12 +503,12 @@ export const UserDataProvider: React.FC<UserDataProviderProps> = ({ children }) 
       const updatedProfile = { ...userData.profile, ...updates };
       
       // Update in database if real user
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
+      const { data: { user: authUser } } = await supabase.auth.getUser();
+      if (authUser) {
         await supabase
           .from('user_profiles')
           .update(updates)
-          .eq('user_id', user.id);
+          .eq('user_id', authUser.id);
       }
       
       setUserData(prev => ({
@@ -620,7 +627,7 @@ export const UserDataProvider: React.FC<UserDataProviderProps> = ({ children }) 
   // Context value
   const contextValue: UserDataContextType = {
     ...userData,
-    refreshUserData,
+    refreshData,
     updateProfile,
     addOrder,
     updateOrder,

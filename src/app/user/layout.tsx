@@ -1,12 +1,11 @@
 "use client"
 
-import { UserDataProvider } from '@/core/shared/contexts/UserDataContext';
 import { AuthProvider } from '@/core/shared/auth/AuthProvider';
 
 import { useState, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/core/shared/auth/AuthProvider';
 import { Button } from '@/core/shared/components/ui/button';
 import { 
   User,
@@ -54,16 +53,16 @@ export default function UserLayout({
   // Safe auth hook usage
   let user: any = null;
   let isLoading = false;
-  let logout: (() => Promise<void>) | null = null;
+  let signOut: (() => Promise<void>) | null = null;
   try {
     const authResult = useAuth();
     user = authResult.user;
     isLoading = authResult.isLoading;
-    logout = authResult.logout;
+    signOut = authResult.signOut;
   } catch (error) {
     user = null;
     isLoading = false;
-    logout = null;
+    signOut = null;
   }
   
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -96,9 +95,9 @@ export default function UserLayout({
         console.warn('⚠️ [User Layout] Logout API failed, continuing with client-side cleanup');
       }
       
-      // Clear client-side auth state if logout function available
-      if (logout) {
-        await logout();
+      // Clear client-side auth state if signOut function available
+      if (signOut) {
+        await signOut();
       }
       
       // Redirect to login
@@ -107,8 +106,8 @@ export default function UserLayout({
     } catch (error) {
       console.error('❌ [User Layout] Logout error:', error);
       // Even if API fails, clear client state and redirect
-      if (logout) {
-        await logout();
+      if (signOut) {
+        await signOut();
       }
       router.push('/auth/login');
     } finally {
@@ -242,8 +241,7 @@ export default function UserLayout({
 
   return (
     <AuthProvider>
-      <UserDataProvider>
-        <div className="min-h-screen bg-gray-50 flex" dir="rtl">
+      <div className="min-h-screen bg-gray-50 flex" dir="rtl">
           {/* Mobile sidebar backdrop */}
           {sidebarOpen && (
             <div 
@@ -463,7 +461,6 @@ export default function UserLayout({
         </main>
       </div>
     </div>
-      </UserDataProvider>
     </AuthProvider>
   );
 }

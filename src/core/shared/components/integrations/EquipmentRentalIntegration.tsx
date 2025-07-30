@@ -11,7 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Calendar } from '@/core/shared/components/ui/calendar';
 import { Popover, PopoverContent } from '@/core/shared/components/ui/popover';
 import { equipmentRentalService, EquipmentType, EquipmentBooking, BookingFilters } from '@/core/services/equipmentRentalService';
-import { useUserData } from '@/core/shared/contexts/UserDataContext';
+import { useAuth } from '@/core/shared/auth/AuthProvider';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { ar } from 'date-fns/locale';
@@ -42,7 +42,7 @@ interface EquipmentRentalIntegrationProps {
 }
 
 export default function EquipmentRentalIntegration({ projectId, onEquipmentBooked }: EquipmentRentalIntegrationProps) {
-  const { profile } = useUserData();
+  const { user, session, isLoading, error } = useAuth();
   const [equipment, setEquipment] = useState<EquipmentType[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedEquipment, setSelectedEquipment] = useState<EquipmentType | null>(null);
@@ -53,7 +53,7 @@ export default function EquipmentRentalIntegration({ projectId, onEquipmentBooke
   const [filters, setFilters] = useState<BookingFilters>({
     startDate: new Date(),
     endDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days from now
-    city: profile?.city || 'الرياض'
+    city: 'الرياض' // Default city since user doesn't have city property
   });
 
   const [bookingForm, setBookingForm] = useState({
@@ -77,10 +77,10 @@ export default function EquipmentRentalIntegration({ projectId, onEquipmentBooke
 
   useEffect(() => {
     searchEquipment();
-    if (profile?.id) {
+    if (user?.id) {
       loadUserBookings();
     }
-  }, [profile]);
+  }, [user]);
 
   const searchEquipment = async () => {
     try {
@@ -95,9 +95,9 @@ export default function EquipmentRentalIntegration({ projectId, onEquipmentBooke
   };
 
   const loadUserBookings = async () => {
-    if (profile?.id) {
+    if (user?.id) {
       try {
-        const bookings = await equipmentRentalService.getUserBookings(profile.id);
+        const bookings = await equipmentRentalService.getUserBookings(user.id);
         setUserBookings(bookings);
       } catch (error) {
         console.error('Error loading bookings:', error);
@@ -106,7 +106,7 @@ export default function EquipmentRentalIntegration({ projectId, onEquipmentBooke
   };
 
   const handleBookEquipment = async () => {
-    if (!selectedEquipment || !profile?.id) return;
+    if (!selectedEquipment || !user?.id) return;
 
     try {
       setLoading(true);
@@ -118,7 +118,7 @@ export default function EquipmentRentalIntegration({ projectId, onEquipmentBooke
         equipmentId: selectedEquipment.id,
         providerId: 'provider-1', // This should come from selectedEquipment
         projectId,
-        userId: profile.id,
+        userId: user.id,
         startDate: filters.startDate,
         endDate: filters.endDate,
         deliveryAddress: bookingForm.deliveryAddress,
@@ -388,7 +388,7 @@ export default function EquipmentRentalIntegration({ projectId, onEquipmentBooke
             <Button variant="outline" onClick={() => setFilters({
               startDate: new Date(),
               endDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-              city: profile?.city || 'الرياض'
+              city: 'الرياض' // Default city
             })}>
               إعادة تعيين البحث
             </Button>

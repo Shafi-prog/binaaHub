@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { Button } from '@/core/shared/components/ui/button'
 import { Input } from '@/core/shared/components/ui/input'
 import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card'
@@ -73,6 +74,7 @@ export default function SignupPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const router = useRouter()
+  const supabase = createClientComponentClient()
 
   const handleUserTypeSelect = (userType: UserType) => {
     setSelectedUserType(userType)
@@ -106,33 +108,59 @@ export default function SignupPage() {
     setLoading(true)
     
     try {
-      // Simulate account creation
-      const userData = {
+      // Create user with Supabase Auth
+      const { data: authData, error: authError } = await supabase.auth.signUp({
         email,
-        fullName,
-        phone,
-        userType: selectedUserType,
-        createdAt: new Date().toISOString()
+        password,
+        options: {
+          data: {
+            full_name: fullName,
+            phone: phone,
+            user_type: selectedUserType
+          }
+        }
+      })
+
+      if (authError) {
+        setError('حدث خطأ في إنشاء الحساب: ' + authError.message)
+        return
       }
-      
-      localStorage.setItem('user', JSON.stringify(userData))
-      
-      // Redirect based on user type
-      switch (selectedUserType) {
-        case 'user':
-          router.push('/user/dashboard')
-          break
-        case 'service-provider':
-          router.push('/service-provider/dashboard')
-          break
-        case 'store':
-          router.push('/store/dashboard')
-          break
-        case 'admin':
-          router.push('/admin/dashboard')
-          break
-        default:
-          router.push('/user/dashboard')
+
+      if (authData.user) {
+        // Create user profile in database
+        const { error: profileError } = await supabase
+          .from('user_profiles')
+          .insert({
+            user_id: authData.user.id,
+            email: email,
+            full_name: fullName,
+            phone: phone,
+            user_type: selectedUserType,
+            created_at: new Date().toISOString()
+          })
+
+        if (profileError) {
+          console.error('Error creating profile:', profileError)
+          // Continue anyway, profile might already exist
+        }
+
+        // Redirect based on user type
+        switch (selectedUserType) {
+          case 'user':
+            router.push('/user/dashboard')
+            break
+          case 'service-provider':
+            router.push('/service-provider/dashboard')
+            break
+          case 'store':
+            router.push('/store/dashboard')
+            break
+          case 'admin':
+            router.push('/admin/dashboard')
+            break
+          default:
+            router.push('/user/dashboard')
+        }
       }
     } catch (err) {
       setError('حدث خطأ في إنشاء الحساب')

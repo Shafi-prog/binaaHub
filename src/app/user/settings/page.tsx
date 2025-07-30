@@ -7,7 +7,7 @@ import { User, Settings, Bell, Shield, Key, CreditCard, Globe, Moon, Sun, Smartp
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import UserProfileForm from '@/core/shared/components/UserProfileForm';
 import ConstructionProfileAdvice from '@/core/shared/components/ConstructionProfileAdvice';
-import { useUserData } from '@/core/shared/contexts/UserDataContext';
+import { useAuth } from '@/core/shared/auth/AuthProvider';
 
 export const dynamic = 'force-dynamic'
 
@@ -37,11 +37,11 @@ interface SecuritySettings {
 }
 
 export default function SettingsPage() {
-  const { profile: userProfile, orders, warranties, projects, invoices, stats, isLoading, error, refreshUserData } = useUserData();
+  const { user, session, isLoading, error } = useAuth();
   const supabase = createClientComponentClient();
   
   // All useState hooks must be at the top
-  const [user, setUser] = useState<any>(null);
+  const [localUser, setLocalUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('profile');
   
@@ -84,7 +84,7 @@ export default function SettingsPage() {
         // First try Supabase auth
         const { data: { user: authUser } } = await supabase.auth.getUser();
         if (authUser) {
-          setUser(authUser);
+          setLocalUser(authUser);
           // Load profile data
           const { data: profileData } = await supabase
             .from('profiles')
@@ -133,7 +133,7 @@ export default function SettingsPage() {
           if (tempAuthCookie) {
             try {
               const parsedUser = JSON.parse(decodeURIComponent(tempAuthCookie));
-              setUser({
+              setLocalUser({
                 email: parsedUser.email,
                 account_type: parsedUser.account_type,
                 name: parsedUser.name || parsedUser.email?.split('@')[0]
@@ -161,10 +161,10 @@ export default function SettingsPage() {
         .from('profiles')
         .upsert({
           id: user.id,
-          name: userProfile?.name || profile.name,
-          phone: userProfile?.phone || profile.phone,
-          city: userProfile?.city || profile.city,
-          account_type: userProfile?.accountType || profile.accountType,
+          name: profile?.name || profile.name,
+          phone: profile?.phone || profile.phone,
+          city: profile?.city || profile.city,
+          account_type: profile?.accountType || profile.accountType,
           updated_at: new Date().toISOString()
         });
         

@@ -7,7 +7,7 @@ import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/en
 import { Badge } from '@/core/shared/components/ui/badge';
 import ClientIcon, { type IconKey } from '@/core/shared/components/ClientIcon';
 import Link from 'next/link';
-import { useUserData } from '@/core/shared/contexts/UserDataContext';
+import { useAuth } from '@/core/shared/auth/AuthProvider';
 
 
 export const dynamic = 'force-dynamic'
@@ -19,18 +19,20 @@ interface ConstructionDashboardStats {
   totalProjects: number;
   activeProjects: number;
   completedProjects: number;
+  totalInvestment: number;
+  monthlySpent: number;
   totalExpenses: number;
   monthlySpending: number;
-  recentProjects: any[];
-  recentExpenses: any[];
+  recentProjects: Array<{ id: number; name: string; status: string }>;
+  recentExpenses: Array<{ id: number; category: string; amount: number }>;
 }
 
 export default function ConstructionDataDashboard() {
-  const { profile, orders, warranties, projects, invoices, stats: userStats, isLoading, error: userError, refreshUserData } = useUserData();
-  const [user, setUser] = useState<any>(null);
+  const { user, session, isLoading, error } = useAuth();
+  const [userData, setUserData] = useState<any>(null);
   const [stats, setStats] = useState<ConstructionDashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [localError, setLocalError] = useState<string | null>(null);
   const [isHydrated, setIsHydrated] = useState(false);
   const [cookieInfo, setCookieInfo] = useState<string[]>([]);
   const [showDebug, setShowDebug] = useState(false);
@@ -46,7 +48,7 @@ export default function ConstructionDataDashboard() {
     const loadDashboard = async () => {
       try {
         setLoading(true);
-        setError(null);
+        setLocalError(null);
         const cookies = document.cookie.split(';').map((c) => c.trim());
         setCookieInfo(cookies);
         
@@ -55,7 +57,7 @@ export default function ConstructionDataDashboard() {
         if (userData) {
           const parsedUser = JSON.parse(userData);
           console.log('✅ [Construction Data] Found temp user:', parsedUser);
-          setUser(parsedUser);
+          setUserData(parsedUser);
         } else {
           // Try cookie auth as fallback
           const tempAuthCookie = document.cookie
@@ -66,9 +68,9 @@ export default function ConstructionDataDashboard() {
             const cookieValue = tempAuthCookie.split('=')[1];
             const cookieUser = JSON.parse(decodeURIComponent(cookieValue));
             console.log('✅ [Construction Data] Found cookie user:', cookieUser);
-            setUser(cookieUser);
+            setUserData(cookieUser);
           } else {
-            setError('Authentication session not found');
+            setLocalError('Authentication session not found');
             setTimeout(() => router.push('/auth/login'), 2000);
             return;
           }
@@ -79,7 +81,9 @@ export default function ConstructionDataDashboard() {
           totalProjects: 3,
           activeProjects: 2,
           completedProjects: 1,
+          totalInvestment: 120000,
           totalExpenses: 120000,
+          monthlySpent: 15000,
           monthlySpending: 15000,
           recentProjects: [
             { id: 1, name: 'مشروع فيلا سكنية', status: 'active' },
@@ -91,7 +95,7 @@ export default function ConstructionDataDashboard() {
           ]
         });
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Error loading dashboard');
+        setLocalError(err instanceof Error ? err.message : 'Error loading dashboard');
       } finally {
         setLoading(false);
       }
@@ -130,31 +134,31 @@ export default function ConstructionDataDashboard() {
   const dashboardCards = [
     {
       title: 'إجمالي المشاريع',
-      value: (userStats?.activeProjects || 0) + (userStats?.completedProjects || 0),
+      value: (stats?.activeProjects || 0) + (stats?.completedProjects || 0),
       icon: 'dashboard' as IconKey,
       color: 'bg-blue-500',
     },
     {
       title: 'المشاريع النشطة',
-      value: userStats?.activeProjects || 0,
+      value: stats?.activeProjects || 0,
       icon: 'settings' as IconKey,
       color: 'bg-green-500',
     },
     {
       title: 'المشاريع المكتملة',
-      value: userStats?.completedProjects || 0,
+      value: stats?.completedProjects || 0,
       icon: 'shield' as IconKey,
       color: 'bg-purple-500',
     },
     {
       title: 'إجمالي المصروفات',
-      value: `${(userStats?.monthlySpent || 0).toLocaleString('en-US')} ريال`,
+      value: `${(stats?.monthlySpent || 0).toLocaleString('en-US')} ريال`,
       icon: 'money' as IconKey,
       color: 'bg-orange-500',
     },
     {
       title: 'الإنفاق الشهري',
-      value: `${(userStats?.monthlySpent || 0).toLocaleString('en-US')} ريال`,
+      value: `${(stats?.monthlySpent || 0).toLocaleString('en-US')} ريال`,
       icon: 'chart' as IconKey,
       color: 'bg-indigo-500',
     },
@@ -181,7 +185,7 @@ export default function ConstructionDataDashboard() {
 
         <div className="mb-8">
           <Typography variant="heading" size="3xl" weight="bold" className="text-gray-800 mb-3">
-            مرحباً، {user?.user_metadata?.name || user?.email?.split('@')[0] || 'المستخدم'}! 🏗️
+            مرحباً، {user?.name || user?.email?.split('@')[0] || 'المستخدم'}! 🏗️
           </Typography>
           <Typography variant="body" size="lg" className="text-gray-600">
             إليك نظرة عامة على مشاريعك ومصروفاتك

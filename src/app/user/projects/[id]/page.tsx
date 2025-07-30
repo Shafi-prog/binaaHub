@@ -655,44 +655,6 @@ interface UnifiedMaterialsMap {
     // Simulate processing time
     await new Promise(resolve => setTimeout(resolve, 3000));
     
-    // Mock PDF analysis results
-    const mockAnalysis: PDFAnalysis = {
-      fileName: file.name,
-      extractedData: {
-        projectType: 'فيلا سكنية',
-        totalArea: 350,
-        rooms: [
-          { name: 'صالة رئيسية', area: 60, type: 'living' },
-          { name: 'غرفة نوم ماستر', area: 40, type: 'bedroom' },
-          { name: 'غرفة نوم أطفال', area: 25, type: 'bedroom' },
-          { name: 'مطبخ', area: 20, type: 'kitchen' },
-          { name: 'حمام رئيسي', area: 12, type: 'bathroom' }
-        ],
-        specifications: [
-          'أساسات خرسانية مسلحة',
-          'جدران بلوك خرساني',
-          'عزل حراري ومائي',
-          'تشطيبات راقية'
-        ],
-        materials: [
-          'خرسانة مسلحة للأساسات',
-          'بلوك خرساني للجدران',
-          'حديد تسليح درجة 60',
-          'عوازل حرارية ومائية',
-          'بلاط سيراميك للأرضيات',
-          'دهانات أكريليك للجدران'
-        ]
-      },
-      calculations: {
-        'أسمنت بورتلاند': { quantity: 280, unit: 'كيس 50كغ', totalCost: 6300 }, // 280 * 22.50
-        'حديد التسليح': { quantity: 42, unit: 'طن', totalCost: 199500 }, // 42 * 4750
-        'بلوك خرساني': { quantity: 4200, unit: 'قطعة', totalCost: 13650 }, // 4200 * 3.25
-        'بلاط سيراميك': { quantity: 385, unit: 'متر مربع', totalCost: 17325 },
-        'دهان أكريليك': { quantity: 53, unit: 'جالون 4 لتر', totalCost: 6360 }
-      }
-    };
-    
-    setPdfAnalysis(mockAnalysis);
     setAnalyzing(false);
   };
 
@@ -710,12 +672,23 @@ interface UnifiedMaterialsMap {
     if (!currentProject) return;
     
     try {
+      // Map custom projectType to allowed values for edits
+      let mappedProjectType: 'residential' | 'commercial' | 'industrial' = 'residential';
+      if (['residential', 'commercial', 'industrial'].includes(editProjectData.projectType)) {
+        mappedProjectType = editProjectData.projectType as 'residential' | 'commercial' | 'industrial';
+      } else if (['villa', 'apartment', 'house', 'flat'].includes(editProjectData.projectType)) {
+        mappedProjectType = 'residential' as 'residential';
+      } else if (['shop', 'mall', 'office'].includes(editProjectData.projectType)) {
+        mappedProjectType = 'commercial' as 'commercial';
+      } else if (['factory', 'warehouse'].includes(editProjectData.projectType)) {
+        mappedProjectType = 'industrial' as 'industrial';
+      }
       const updatedProject = {
         ...currentProject,
         name: editProjectData.name,
         description: editProjectData.description,
         area: editProjectData.area,
-        projectType: editProjectData.projectType,
+        projectType: mappedProjectType,
         floorCount: editProjectData.floorCount,
         roomCount: editProjectData.roomCount,
         location: editProjectData.location,
@@ -739,29 +712,27 @@ interface UnifiedMaterialsMap {
     }
   };
 
-  useEffect(() => {
-    calculateMaterials();
-  }, [projectArea, floorCount, projectType]);
-
-  useEffect(() => {
-    if (lightCalc.length > 0 && lightCalc.width > 0) {
-      calculateLighting();
-    }
-  }, [lightCalc.length, lightCalc.width, lightCalc.roomType, lightCalc.firstRowLights.product, lightCalc.secondRowLights.product]);
-
-  // Save estimation to project
   const saveEstimationToProject = async () => {
     try {
       let targetProjectId = projectId;
-      
-      // If no project exists, create a new one
+      // Map custom projectType to allowed values for new project creation
+      let mappedNewProjectType: 'residential' | 'commercial' | 'industrial' = 'residential';
+      if (['residential', 'commercial', 'industrial'].includes(projectType)) {
+        mappedNewProjectType = projectType as 'residential' | 'commercial' | 'industrial';
+      } else if (['villa', 'apartment', 'house', 'flat'].includes(projectType)) {
+        mappedNewProjectType = 'residential' as 'residential';
+      } else if (['shop', 'mall', 'office'].includes(projectType)) {
+        mappedNewProjectType = 'commercial' as 'commercial';
+      } else if (['factory', 'warehouse'].includes(projectType)) {
+        mappedNewProjectType = 'industrial' as 'industrial';
+      }
       if (!projectId && projectName) {
         const newProject: Project = {
           id: Date.now().toString(),
           name: projectName,
           description: projectDescription,
           area: projectArea,
-          projectType,
+          projectType: mappedNewProjectType,
           floorCount,
           roomCount,
           stage: 'تخطيط',
@@ -770,7 +741,6 @@ interface UnifiedMaterialsMap {
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString()
         };
-        
         await ProjectTrackingService.saveProject(newProject);
         setCurrentProject(newProject);
         targetProjectId = newProject.id;

@@ -94,11 +94,30 @@ export default function UserDashboardPage() {
       completedProjects: 0,
       activeWarranties: 0,
       balanceAmount: 0,
+      loyaltyPoints: 0,
+      monthlySpent: 0,
       aiInsights: 0,
       communityPosts: 0
     }
   });
   const [dataLoading, setDataLoading] = useState(false);
+
+  // Calculate AI insights based on user data
+  const calculateAIInsights = (profile: any, orders: any[], projects: any[], warranties: any[]) => {
+    let insights = 0;
+    
+    // Add insights based on user activity
+    if (profile?.loyalty_points > 0) insights += 1; // Has loyalty points
+    if (orders?.length > 0) insights += Math.min(orders.length, 3); // Max 3 from orders
+    if (projects?.length > 0) insights += Math.min(projects.length, 3); // Max 3 from projects
+    if (warranties?.length > 0) insights += Math.min(warranties.length, 2); // Max 2 from warranties
+    
+    // Add insights based on data completeness
+    if (profile?.phone) insights += 1; // Has phone
+    if (profile?.city) insights += 1; // Has location
+    
+    return insights;
+  };
 
   // Load user data when user is available
   useEffect(() => {
@@ -121,7 +140,15 @@ export default function UserDashboardPage() {
           completedProjects: projectsData?.filter(p => p.status === 'completed')?.length || 0,
           activeWarranties: warrantiesData?.filter(w => w.status === 'active')?.length || 0,
           balanceAmount: profileData?.account_balance || 0,
-          aiInsights: Math.floor(Math.random() * 50) + 10 // Mock AI insights
+          loyaltyPoints: profileData?.loyalty_points || 0,
+          monthlySpent: ordersData?.filter(o => {
+            const orderDate = new Date(o.created_at);
+            const currentMonth = new Date().getMonth();
+            const currentYear = new Date().getFullYear();
+            return orderDate.getMonth() === currentMonth && orderDate.getFullYear() === currentYear;
+          }).reduce((sum, order) => sum + (order.total_amount || 0), 0) || 0,
+          communityPosts: 0, // This would come from a community_posts table
+          aiInsights: calculateAIInsights(profileData, ordersData, projectsData, warrantiesData)
         };
 
         setUserData({
@@ -162,7 +189,7 @@ export default function UserDashboardPage() {
             completedProjects: projectsData?.filter(p => p.status === 'completed')?.length || 0,
             activeWarranties: warrantiesData?.filter(w => w.status === 'active')?.length || 0,
             balanceAmount: profileData?.account_balance || 0,
-            aiInsights: Math.floor(Math.random() * 50) + 10
+            aiInsights: calculateAIInsights(profileData, ordersData, projectsData, warrantiesData)
           };
 
           setUserData({
@@ -214,7 +241,7 @@ export default function UserDashboardPage() {
         title: 'توفير في تكاليف المشروع',
         description: `يمكنك توفير حتى 15% من تكاليف مشاريعك الـ ${stats.activeProjects} النشطة`,
         type: 'saving',
-        impact: stats.activeProjects * 2500,
+        impact: stats.activeProjects * (stats.monthlySpent / stats.activeProjects || 1000),
         confidence: 85
       });
     }
@@ -328,8 +355,8 @@ export default function UserDashboardPage() {
   const dashboardCards = [
     {
       title: 'نقاط الولاء',
-      value: formatNumber(2500), // Demo value
-      subtitle: `مستوى 3`, // Demo value
+      value: formatNumber(userData.profile?.loyalty_points || 0),
+      subtitle: `مستوى ${Math.floor((userData.profile?.loyalty_points || 0) / 1000) + 1}`,
       icon: <Trophy className="w-6 h-6" />,
       href: '/user/gamification',
       color: 'bg-gradient-to-r from-yellow-500 to-yellow-600',
@@ -337,7 +364,7 @@ export default function UserDashboardPage() {
     },
     {
       title: 'الرصيد المتاح',
-      value: formatCurrency(stats.balanceAmount),
+      value: formatCurrency(userData.stats.balanceAmount),
       subtitle: 'جاهز للاستخدام',
       icon: <Wallet className="w-6 h-6" />,
       href: '/user/balance',
@@ -346,7 +373,7 @@ export default function UserDashboardPage() {
     },
     {
       title: 'الرؤى الذكية',
-      value: formatNumber(stats.aiInsights),
+      value: formatNumber(userData.stats.aiInsights),
       subtitle: 'توصية جديدة',
       icon: <Brain className="w-6 h-6" />,
       href: '/user/smart-insights',
@@ -355,7 +382,7 @@ export default function UserDashboardPage() {
     },
     {
       title: 'المجتمع',
-      value: formatNumber(stats.communityPosts),
+      value: formatNumber(userData.stats.communityPosts),
       subtitle: 'منشورات هذا الشهر',
       icon: <Users className="w-6 h-6" />,
       href: '/user/social-community',
@@ -364,7 +391,7 @@ export default function UserDashboardPage() {
     },
     {
       title: 'المشاريع النشطة',
-      value: formatNumber(stats.activeProjects),
+      value: formatNumber(userData.stats.activeProjects),
       subtitle: 'قيد التنفيذ',
       icon: <Calendar className="w-6 h-6" />,
       href: '/user/projects/list',
@@ -373,7 +400,7 @@ export default function UserDashboardPage() {
     },
     {
       title: 'الضمانات النشطة',
-      value: formatNumber(stats.activeWarranties),
+      value: formatNumber(userData.stats.activeWarranties),
       subtitle: 'سارية المفعول',
       icon: <Shield className="w-6 h-6" />,
       href: '/user/warranties',
@@ -382,7 +409,7 @@ export default function UserDashboardPage() {
     },
     {
       title: 'إجمالي الطلبات',
-      value: formatNumber(stats.totalOrders),
+      value: formatNumber(userData.stats.totalOrders),
       subtitle: 'طلب مكتمل',
       icon: <Box className="w-6 h-6" />,
       href: '/user/orders',
@@ -391,7 +418,7 @@ export default function UserDashboardPage() {
     },
     {
       title: 'الإنفاق الشهري',
-      value: formatCurrency(stats.monthlySpent),
+      value: formatCurrency(userData.stats.monthlySpent),
       subtitle: 'هذا الشهر',
       icon: <TrendingUp className="w-6 h-6" />,
       href: '/user/expenses',
@@ -621,20 +648,26 @@ export default function UserDashboardPage() {
                   <Crown className="w-10 h-10 text-white" />
                 </div>
                 <Typography variant="body" weight="bold" className="text-gray-800">
-                  المستوى الذهبي
+                  {userData.profile?.loyalty_points >= 5000 ? 'المستوى الماسي' : 
+                   userData.profile?.loyalty_points >= 2500 ? 'المستوى الذهبي' : 
+                   userData.profile?.loyalty_points >= 1000 ? 'المستوى الفضي' : 'المستوى البرونزي'}
                 </Typography>
                 <Typography variant="caption" size="sm" className="text-gray-600">
-                  {formatNumber(2500)} نقطة
+                  {formatNumber(userData.profile?.loyalty_points || 0)} نقطة
                 </Typography>
               </div>
-              {/* Progress bar to next level (example logic, adjust as needed) */}
+              {/* Progress bar to next level */}
               <div className="bg-gray-200 rounded-full h-2">
-                <div className="bg-gradient-to-r from-yellow-400 to-orange-500 h-2 rounded-full" style={{ width: `75%` }}></div>
+                <div 
+                  className="bg-gradient-to-r from-yellow-400 to-orange-500 h-2 rounded-full" 
+                  style={{ 
+                    width: `${Math.min(100, ((userData.profile?.loyalty_points || 0) % 1000) / 10)}%` 
+                  }}
+                ></div>
               </div>
               <div className="text-center">
                 <Typography variant="caption" size="xs" className="text-gray-600">
-                  {/* Example: 10,000 points per level, adjust as needed */}
-                  2,550 نقطة للمستوى التالي
+                  {1000 - ((userData.profile?.loyalty_points || 0) % 1000)} نقطة للمستوى التالي
                 </Typography>
               </div>
               <div className="border-t pt-4">
@@ -863,8 +896,6 @@ export default function UserDashboardPage() {
                     
                     const cookieValue = encodeURIComponent(JSON.stringify(userObj));
                     document.cookie = `temp_auth_user=${cookieValue}; path=/; max-age=86400`;
-                    localStorage.setItem('user_id', 'user@binna.com');
-                    sessionStorage.setItem('user_id', 'user@binna.com');
                     
                     alert('تم إصلاح المصادقة! سيتم إعادة تحميل الصفحة.');
                     window.location.reload();

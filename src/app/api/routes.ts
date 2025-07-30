@@ -120,29 +120,17 @@ apiLayer.registerRoute({
   method: 'GET',
   path: '/api/v1/stores',
   handler: createHandler(async (request: AuthenticatedRequest) => {
-    // Mock store data
-    const stores = [
-      {
-        id: '1',
-        name: 'متجر البناء السعودي',
-        description: 'متجر متخصص في مواد البناء والإنشاء',
-        category: 'مواد البناء',
-        rating: 4.5,
-        location: 'الرياض',
-        verified: true,
-      },
-      {
-        id: '2',
-        name: 'شركة الحديد المتطور',
-        description: 'توريد وتوزيع الحديد والمعادن',
-        category: 'مواد البناء',
-        rating: 4.8,
-        location: 'جدة',
-        verified: true,
-      },
-    ];
-    
-    return APIResponse.success(stores, 'Stores retrieved successfully');
+    // Fetch real store data from Supabase
+    const { createClientComponentClient } = await import('@supabase/auth-helpers-nextjs');
+    const supabase = createClientComponentClient();
+    const { data, error } = await supabase
+      .from('stores')
+      .select('*')
+      .order('created_at', { ascending: false });
+    if (error) {
+      return APIResponse.error('Failed to fetch stores', '500');
+    }
+    return APIResponse.success(data || [], 'Stores retrieved successfully');
   }),
   rateLimit: 'public',
   validation: {

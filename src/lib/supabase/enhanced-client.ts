@@ -117,3 +117,18 @@ export async function testSupabaseConnection() {
     };
   }
 }
+
+// Add a generic warehouse fetcher for future use
+export async function fetchWarehouseById(id: string) {
+  const client = createEnhancedSupabaseClient();
+  const { data, error } = await client.from('warehouses').select('*').eq('id', id).single();
+  if (error) throw error;
+  return data;
+}
+
+export async function fetchAllWarehouses() {
+  const client = createEnhancedSupabaseClient();
+  const { data, error } = await client.from('warehouses').select('*');
+  if (error) throw error;
+  return data;
+}

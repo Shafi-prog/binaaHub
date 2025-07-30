@@ -49,13 +49,6 @@ export default function DatabaseManagementPage() {
         { name: 'city', type: 'VARCHAR(100) NOT NULL' },
         { name: 'last_updated', type: 'TIMESTAMP WITH TIME ZONE DEFAULT NOW()' },
         { name: 'created_at', type: 'TIMESTAMP WITH TIME ZONE DEFAULT NOW()' }
-      ],
-      sampleData: [
-        { product_name: "طن حديد", category: "معادن", price: 450, price_change_percentage: 12.5, store_name: "شركة الخليج للحديد", city: "الرياض" },
-        { product_name: "كيلو نحاس", category: "معادن", price: 8.75, price_change_percentage: -3.2, store_name: "عالم المعادن", city: "دبي" },
-        { product_name: "طن ألمونيوم", category: "معادن", price: 2100, price_change_percentage: 5.8, store_name: "المنارة للمعادن", city: "الكويت" },
-        { product_name: "كيس إسمنت 50كغ", category: "مواد بناء", price: 18.5, price_change_percentage: 3.4, store_name: "أساتذة البناء", city: "الرياض" },
-        { product_name: "طن رمل", category: "مواد بناء", price: 45, price_change_percentage: 5.2, store_name: "البناء بلس", city: "دبي" }
       ]
     },
     user_profiles: {
@@ -65,18 +58,14 @@ export default function DatabaseManagementPage() {
         { name: 'email', type: 'VARCHAR(255) UNIQUE NOT NULL' },
         { name: 'display_name', type: 'VARCHAR(255) NOT NULL' },
         { name: 'city', type: 'VARCHAR(100)' },
-        { name: 'account_type', type: 'VARCHAR(50) DEFAULT \'free\'' },
+        { name: 'account_type', type: "VARCHAR(50) DEFAULT 'free'" },
         { name: 'loyalty_points', type: 'INTEGER DEFAULT 0' },
         { name: 'current_level', type: 'INTEGER DEFAULT 1' },
         { name: 'total_spent', type: 'DECIMAL(12,2) DEFAULT 0' },
-        { name: 'role', type: 'VARCHAR(50) DEFAULT \'user\'' },
+        { name: 'role', type: "VARCHAR(50) DEFAULT 'user'" },
         { name: 'member_since', type: 'DATE DEFAULT CURRENT_DATE' },
         { name: 'created_at', type: 'TIMESTAMP WITH TIME ZONE DEFAULT NOW()' },
         { name: 'updated_at', type: 'TIMESTAMP WITH TIME ZONE DEFAULT NOW()' }
-      ],
-      sampleData: [
-        { user_id: 'test-user-1', email: 'user@binna.com', display_name: 'مستخدم تجريبي', city: 'الرياض', account_type: 'free', loyalty_points: 1250, current_level: 3, total_spent: 15750, role: 'user' },
-        { user_id: 'test-admin-1', email: 'admin@binna.com', display_name: 'المسئول تجريبي', city: 'الرياض', account_type: 'premium', loyalty_points: 5000, current_level: 5, total_spent: 50000, role: 'admin' }
       ]
     },
     stores: {
@@ -93,13 +82,10 @@ export default function DatabaseManagementPage() {
         { name: 'review_count', type: 'INTEGER DEFAULT 0' },
         { name: 'total_sales', type: 'DECIMAL(15,2) DEFAULT 0' },
         { name: 'total_orders', type: 'INTEGER DEFAULT 0' },
-        { name: 'verification_status', type: 'VARCHAR(50) DEFAULT \'pending\'' },
+        { name: 'verification_status', type: "VARCHAR(50) DEFAULT 'pending'" },
         { name: 'location', type: 'JSONB' },
         { name: 'created_at', type: 'TIMESTAMP WITH TIME ZONE DEFAULT NOW()' },
         { name: 'updated_at', type: 'TIMESTAMP WITH TIME ZONE DEFAULT NOW()' }
-      ],
-      sampleData: [
-        { user_id: 'test-store-1', store_name: 'متجر مواد البناء الحديث', owner_name: 'متجر تجريبي', email: 'store@binna.com', phone: '+966501234567', business_type: 'building_materials', description: 'متجر متخصص في بيع مواد البناء والتشطيب', rating: 4.5, review_count: 234, total_sales: 1250000.00, total_orders: 567, verification_status: 'verified', location: { city: 'الرياض', area: 'الصناعية' } }
       ]
     },
     orders: {
@@ -107,18 +93,14 @@ export default function DatabaseManagementPage() {
         { name: 'id', type: 'SERIAL PRIMARY KEY' },
         { name: 'user_id', type: 'VARCHAR(255)' },
         { name: 'order_number', type: 'VARCHAR(100) UNIQUE NOT NULL' },
-        { name: 'status', type: 'VARCHAR(50) DEFAULT \'pending\'' },
+        { name: 'status', type: "VARCHAR(50) DEFAULT 'pending'" },
         { name: 'total_amount', type: 'DECIMAL(12,2) NOT NULL' },
-        { name: 'currency', type: 'VARCHAR(3) DEFAULT \'SAR\'' },
+        { name: "currency", type: "VARCHAR(3) DEFAULT 'SAR'" },
         { name: 'items', type: 'JSONB' },
         { name: 'payment_method', type: 'VARCHAR(50)' },
-        { name: 'payment_status', type: 'VARCHAR(50) DEFAULT \'pending\'' },
+        { name: 'payment_status', type: "VARCHAR(50) DEFAULT 'pending'" },
         { name: 'created_at', type: 'TIMESTAMP WITH TIME ZONE DEFAULT NOW()' },
         { name: 'updated_at', type: 'TIMESTAMP WITH TIME ZONE DEFAULT NOW()' }
-      ],
-      sampleData: [
-        { user_id: 'test-user-1', order_number: 'ORD-2025-001', status: 'delivered', total_amount: 1250.00, currency: 'SAR', items: [{ name: 'إسمنت أبيض', quantity: 10, price: 125.00 }], payment_method: 'card', payment_status: 'paid' },
-        { user_id: 'test-user-1', order_number: 'ORD-2025-002', status: 'processing', total_amount: 850.00, currency: 'SAR', items: [{ name: 'رمل ناعم', quantity: 5, price: 170.00 }], payment_method: 'transfer', payment_status: 'paid' }
       ]
     }
   };
@@ -321,35 +303,8 @@ export default function DatabaseManagementPage() {
   };
 
   const insertSampleData = async (results: DatabaseResults) => {
-    for (const [tableName, schema] of Object.entries(expectedSchema)) {
-      if (results.currentSchema[tableName]?.exists) {
-        try {
-          // Try to insert data with error handling for RLS
-          const { data, error } = await supabase
-            .from(tableName)
-            .upsert(schema.sampleData.map(item => ({
-              ...item,
-              created_at: new Date().toISOString(),
-              updated_at: new Date().toISOString()
-            })));
-
-          if (!error) {
-            console.log(`✅ Sample data inserted into '${tableName}'`);
-          } else if (error.code === '42501' || error.message.includes('permission denied')) {
-            results.errors.push(`RLS Policy needed for ${tableName}: Cannot insert without proper policies`);
-            console.log(`⚠️ ${tableName}: RLS policies need to be configured for data insertion`);
-          } else {
-            results.errors.push(`Error inserting data into ${tableName}: ${error.message}`);
-          }
-        } catch (error) {
-          if (error.message.includes('Failed to fetch')) {
-            console.log(`⚠️ ${tableName}: Network issue during data insertion`);
-          } else {
-            results.errors.push(`Error inserting sample data into ${tableName}: ${error.message}`);
-          }
-        }
-      }
-    }
+    // All sampleData removed, so skip inserting sample data
+    return;
   };
 
   const fetchDataSamples = async (results: DatabaseResults) => {

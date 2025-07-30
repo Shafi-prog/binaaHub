@@ -326,12 +326,23 @@ export default function ConstructionProjectCreationPage() {
     try {
       setLoading(true);
       
+      // Map custom plotType to allowed values
+      let mappedProjectType: 'residential' | 'commercial' | 'industrial' = 'residential';
+      if (['residential', 'commercial', 'industrial'].includes(projectData.plotType)) {
+        mappedProjectType = projectData.plotType as 'residential' | 'commercial' | 'industrial';
+      } else if (['villa', 'apartment', 'house', 'flat'].includes(projectData.plotType)) {
+        mappedProjectType = 'residential' as 'residential';
+      } else if (['shop', 'mall', 'office'].includes(projectData.plotType)) {
+        mappedProjectType = 'commercial' as 'commercial';
+      } else if (['factory', 'warehouse'].includes(projectData.plotType)) {
+        mappedProjectType = 'industrial' as 'industrial';
+      }
       const newProject: Project = {
         id: Date.now().toString(),
         name: projectData.name.trim(),
         description: projectData.description.trim(),
         area: parseFloat(projectData.landSize) || 0,
-        projectType: projectData.plotType,
+        projectType: mappedProjectType,
         floorCount: 1,
         roomCount: 4,
         stage: 'تخطيط',

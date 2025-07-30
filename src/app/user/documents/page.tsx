@@ -7,81 +7,39 @@ import { FileText, Upload, Search, Filter, FolderOpen, Download, Eye, Edit, Tras
 import { formatDateSafe, useIsClient } from '../../../core/shared/utils/hydration-safe';
 import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 import { useAuth } from '@/core/shared/auth/AuthProvider';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 export const dynamic = 'force-dynamic'
-
-interface Document {
-  id: string;
-  name: string;
-  type: 'warranty' | 'contract' | 'receipt' | 'certificate' | 'manual' | 'other';
-  category: string;
-  project?: string;
-  uploadDate: string;
-  size: string;
-  tags: string[];
-  description?: string;
-  linkedToWarranty?: boolean;
-  linkedToInvoice?: boolean;
-}
 
 export default function UserDocumentsPage() {
   const { user, session, isLoading, error } = useAuth();
   const isClient = useIsClient();
-  const [documents, setDocuments] = useState<Document[]>([]);
+  const [documents, setDocuments] = useState<any[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [typeFilter, setTypeFilter] = useState('all');
   const [showUpload, setShowUpload] = useState(false);
 
   useEffect(() => {
-    // Mock data - in real app, this would come from an API
-    setDocuments([
-      {
-        id: 'DOC001',
-        name: 'ضمان مضخة المياه',
-        type: 'warranty',
-        category: 'ضمانات',
-        project: 'مشروع الفيلا الجديدة',
-        uploadDate: '2024-01-15',
-        size: '2.3 MB',
-        tags: ['ضمان', 'مضخة', 'مياه'],
-        description: 'شهادة ضمان مضخة المياه عالية الكفاءة',
-        linkedToWarranty: true
-      },
-      {
-        id: 'DOC002',
-        name: 'عقد المقاول الرئيسي',
-        type: 'contract',
-        category: 'عقود',
-        project: 'مشروع الفيلا الجديدة',
-        uploadDate: '2024-01-10',
-        size: '5.1 MB',
-        tags: ['عقد', 'مقاول', 'بناء'],
-        description: 'عقد المقاول الرئيسي لمشروع الفيلا'
-      },
-      {
-        id: 'DOC003',
-        name: 'دليل صيانة المكيف',
-        type: 'manual',
-        category: 'أدلة التشغيل',
-        uploadDate: '2024-03-10',
-        size: '8.7 MB',
-        tags: ['دليل', 'صيانة', 'مكيف'],
-        description: 'دليل التشغيل والصيانة لمكيف الهواء',
-        linkedToWarranty: true
-      },
-      {
-        id: 'DOC004',
-        name: 'شهادة جودة الأسمنت',
-        type: 'certificate',
-        category: 'شهادات',
-        project: 'مشروع الفيلا الجديدة',
-        uploadDate: '2024-02-05',
-        size: '1.2 MB',
-        tags: ['شهادة', 'جودة', 'أسمنت'],
-        description: 'شهادة جودة ومطابقة الأسمنت للمواصفات'
-      }
-    ]);
-  }, []);
+    if (user?.id) {
+      fetchDocuments(user.id);
+    }
+  }, [user]);
+
+  const fetchDocuments = async (userId: string) => {
+    try {
+      const supabase = createClientComponentClient();
+      const { data, error } = await supabase
+        .from('documents')
+        .select('*')
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false });
+      if (error) throw error;
+      setDocuments(data || []);
+    } catch (error) {
+      console.error('Error fetching documents:', error);
+      setDocuments([]);
+    }
+  };
 
   const filteredDocuments = documents.filter(doc => {
     const matchesSearch = doc.name.toLowerCase().includes(searchTerm.toLowerCase()) ||

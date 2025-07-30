@@ -15,72 +15,76 @@ export class ProjectTrackingService {
   private static readonly PURCHASES_KEY = 'binna_purchases';
 
   // إدارة المشاريع
-  static async getProjects(): Promise<Project[]> {
-    if (typeof window === 'undefined') return [];
-    
+  static async getProjects(userId?: string): Promise<Project[]> {
     try {
-      const stored = localStorage.getItem(this.STORAGE_KEY);
-      return stored ? JSON.parse(stored) : this.getDefaultProjects();
+      const { createClientComponentClient } = await import('@supabase/auth-helpers-nextjs');
+      const supabase = createClientComponentClient();
+      if (!userId) return [];
+      const { data, error } = await supabase
+        .from('construction_projects')
+        .select('*')
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false });
+      if (error) {
+        console.error('Error loading projects:', error);
+        return [];
+      }
+      return data || [];
     } catch (error) {
       console.error('Error loading projects:', error);
-      return this.getDefaultProjects();
+      return [];
     }
   }
 
-  static async saveProject(project: Project): Promise<void> {
-    if (typeof window === 'undefined') return;
-    
+  static async saveProject(project: Project, userId?: string): Promise<void> {
     try {
-      const projects = await this.getProjects();
-      const existingIndex = projects.findIndex(p => p.id === project.id);
-      
-      const updatedProject = existingIndex >= 0 
-        ? { ...project, updatedAt: new Date().toISOString() }
-        : { ...project, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
-      
-      if (existingIndex >= 0) {
-        projects[existingIndex] = updatedProject;
-      } else {
-        projects.push(updatedProject);
-      }
-      
-      // Save to localStorage
-      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(projects));
-      
-      // Also save to mock database for consistency
-      await this.saveProjectToMockDatabase(updatedProject);
-      
+      // Always save to Supabase
+      await this.saveProjectToMockDatabase(project, userId);
     } catch (error) {
       console.error('Error saving project:', error);
     }
   }
 
-  private static async saveProjectToMockDatabase(project: Project): Promise<void> {
+  private static async saveProjectToMockDatabase(project: Project, userId?: string): Promise<void> {
     try {
       // Use real Supabase client instead of mock
       const { createClientComponentClient } = await import('@supabase/auth-helpers-nextjs');
       const supabase = createClientComponentClient();
       
       // Transform project to match database schema
+      if (!project.location) {
+        throw new Error('Project location is required.');
+      }
       const dbProject = {
         id: project.id,
-        user_id: 'local_user', // Since we're using local auth
+        user_id: userId || 'local_user', // Use provided userId or fallback
         project_name: project.name,
         description: project.description,
         status: project.status,
         start_date: project.startDate,
-        budget: project.budget || 0,
-        actual_cost: 0, // Default since spent property doesn't exist
+        estimated_cost: project.budget || 0,
+        spent_cost: 0, // Default since spent property doesn't exist
         completion_percentage: project.progress || 0,
-        location: { city: project.location || 'الرياض' },
-        project_type: project.projectType,
+        location: project.location, // Now required
+        project_type: ((): 'residential' | 'commercial' | 'industrial' => {
+          if (['residential', 'commercial', 'industrial'].includes(project.projectType)) {
+            return project.projectType as 'residential' | 'commercial' | 'industrial';
+          } else if (['villa', 'apartment', 'house', 'flat'].includes(project.projectType)) {
+            return 'residential';
+          } else if (['shop', 'mall', 'office'].includes(project.projectType)) {
+            return 'commercial';
+          } else if (['factory', 'warehouse'].includes(project.projectType)) {
+            return 'industrial';
+          }
+          return 'residential';
+        })(),
         created_at: project.createdAt,
         updated_at: project.updatedAt
       };
       
-      // Save to real Supabase database
+      // Save to real Supabase database using correct table name
       const { error } = await supabase
-        .from('projects')
+        .from('construction_projects')
         .upsert(dbProject);
       
       if (error) {
@@ -290,7 +294,7 @@ export class ProjectTrackingService {
         updatedAt: '2024-02-20T00:00:00.000Z',
         description: 'فيلا سكنية بمساحة 300 متر مربع',
         area: 300,
-        projectType: 'villa',
+        projectType: 'residential',
         floorCount: 2,
         roomCount: 6,
         status: 'in-progress'
@@ -304,7 +308,7 @@ export class ProjectTrackingService {
         updatedAt: '2024-02-25T00:00:00.000Z',
         description: 'شقة سكنية 150 متر مربع',
         area: 150,
-        projectType: 'apartment',
+        projectType: 'residential',
         floorCount: 1,
         roomCount: 4,
         status: 'in-progress'

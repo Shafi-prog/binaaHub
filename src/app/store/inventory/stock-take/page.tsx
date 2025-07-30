@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
 import { Button } from '@/core/shared/components/ui/button';
 import { 
@@ -61,186 +61,49 @@ interface StockTakeDetails extends StockTake {
 }
 
 export default function StockTakePage() {
-  const [stockTakes] = useState<StockTake[]>([
-    {
-      id: '1',
-      stockTakeNumber: 'ST-2025-001',
-      location: 'المستودع الرئيسي',
-      category: 'إلكترونيات',
-      status: 'completed',
-      scheduledDate: '2025-01-10',
-      startedDate: '2025-01-10',
-      completedDate: '2025-01-11',
-      assignedTo: ['أحمد محمد', 'سارة أحمد'],
-      totalItems: 125,
-      countedItems: 125,
-      discrepancies: 8,
-      totalVariance: -2500,
-      notes: 'جرد شهري للإلكترونيات'
-    },
-    {
-      id: '2',
-      stockTakeNumber: 'ST-2025-002',
-      location: 'فرع الرياض',
-      status: 'in_progress',
-      scheduledDate: '2025-01-15',
-      startedDate: '2025-01-15',
-      assignedTo: ['محمد علي'],
-      totalItems: 75,
-      countedItems: 45,
-      discrepancies: 3,
-      totalVariance: 150,
-      notes: 'جرد نصف شهري'
-    },
-    {
-      id: '3',
-      stockTakeNumber: 'ST-2025-003',
-      location: 'فرع جدة',
-      category: 'قرطاسية',
-      status: 'scheduled',
-      scheduledDate: '2025-01-20',
-      assignedTo: ['سارة أحمد', 'عبدالله السعد'],
-      totalItems: 200,
-      countedItems: 0,
-      discrepancies: 0,
-      totalVariance: 0,
-      notes: 'جرد ربع سنوي للقرطاسية'
-    }
-  ]);
-
-  const [stockTakeDetails] = useState<StockTakeDetails>({
-    id: '1',
-    stockTakeNumber: 'ST-2025-001',
-    location: 'المستودع الرئيسي',
-    category: 'إلكترونيات',
-    status: 'completed',
-    scheduledDate: '2025-01-10',
-    startedDate: '2025-01-10',
-    completedDate: '2025-01-11',
-    assignedTo: ['أحمد محمد', 'سارة أحمد'],
-    totalItems: 8,
-    countedItems: 8,
-    discrepancies: 3,
-    totalVariance: -2500,
-    notes: 'جرد شهري للإلكترونيات',
-    items: [
-      {
-        id: '1',
-        productName: 'لابتوب HP EliteBook',
-        sku: 'HP-001',
-        systemQuantity: 20,
-        countedQuantity: 18,
-        variance: -2,
-        unit: 'قطعة',
-        unitCost: 2500,
-        varianceValue: -5000,
-        location: 'رف A-01',
-        counted: true,
-        notes: 'نقص قطعتين - تحتاج مراجعة'
-      },
-      {
-        id: '2',
-        productName: 'ماوس لوجيتك',
-        sku: 'LG-002',
-        systemQuantity: 50,
-        countedQuantity: 52,
-        variance: 2,
-        unit: 'قطعة',
-        unitCost: 75,
-        varianceValue: 150,
-        location: 'رف B-03',
-        counted: true,
-        notes: 'زيادة قطعتين'
-      },
-      {
-        id: '3',
-        productName: 'كيبورد ميكانيكي',
-        sku: 'KB-003',
-        systemQuantity: 15,
-        countedQuantity: 15,
-        variance: 0,
-        unit: 'قطعة',
-        unitCost: 150,
-        varianceValue: 0,
-        location: 'رف C-02',
-        counted: true,
-        notes: 'صحيح'
-      },
-      {
-        id: '4',
-        productName: 'شاشة 4K Dell',
-        sku: 'DL-004',
-        systemQuantity: 8,
-        countedQuantity: 6,
-        variance: -2,
-        unit: 'قطعة',
-        unitCost: 800,
-        varianceValue: -1600,
-        location: 'رف D-01',
-        counted: true,
-        notes: 'نقص شاشتين - تحقق من السجلات'
-      },
-      {
-        id: '5',
-        productName: 'طابعة HP LaserJet',
-        sku: 'HP-002',
-        systemQuantity: 12,
-        countedQuantity: 13,
-        variance: 1,
-        unit: 'قطعة',
-        unitCost: 600,
-        varianceValue: 600,
-        location: 'رف E-02',
-        counted: true,
-        notes: 'زيادة طابعة واحدة'
-      },
-      {
-        id: '6',
-        productName: 'سماعات بلوتوث',
-        sku: 'BT-001',
-        systemQuantity: 30,
-        countedQuantity: 28,
-        variance: -2,
-        unit: 'قطعة',
-        unitCost: 120,
-        varianceValue: -240,
-        location: 'رف F-01',
-        counted: true,
-        notes: 'نقص سماعتين'
-      },
-      {
-        id: '7',
-        productName: 'هارد ديسك خارجي',
-        sku: 'HD-001',
-        systemQuantity: 25,
-        countedQuantity: 25,
-        variance: 0,
-        unit: 'قطعة',
-        unitCost: 200,
-        varianceValue: 0,
-        location: 'رف G-03',
-        counted: true,
-        notes: 'صحيح'
-      },
-      {
-        id: '8',
-        productName: 'كابل USB-C',
-        sku: 'CB-001',
-        systemQuantity: 100,
-        countedQuantity: 105,
-        variance: 5,
-        unit: 'قطعة',
-        unitCost: 25,
-        varianceValue: 125,
-        location: 'رف H-02',
-        counted: true,
-        notes: 'زيادة 5 كابلات'
-      }
-    ]
-  });
-
+  const [stockTakes, setStockTakes] = useState<StockTake[]>([]);
+  const [stockTakeDetails, setStockTakeDetails] = useState<StockTakeDetails | null>(null);
   const [selectedStatus, setSelectedStatus] = useState<string>('all');
   const [viewMode, setViewMode] = useState<'list' | 'details'>('list');
+
+  useEffect(() => {
+    loadStockTakes();
+  }, []);
+
+  const loadStockTakes = async () => {
+    try {
+      const { createClientComponentClient } = await import('@supabase/auth-helpers-nextjs');
+      const supabase = createClientComponentClient();
+      const { data, error } = await supabase
+        .from('stock_takes')
+        .select('*')
+        .order('scheduledDate', { ascending: false });
+      if (error) throw error;
+      setStockTakes(data || []);
+      // Optionally, fetch details for the first stock take
+      if (data && data.length > 0) {
+        loadStockTakeDetails(data[0].id);
+      }
+    } catch (error) {
+      setStockTakes([]);
+    }
+  };
+
+  const loadStockTakeDetails = async (id: string) => {
+    try {
+      const { createClientComponentClient } = await import('@supabase/auth-helpers-nextjs');
+      const supabase = createClientComponentClient();
+      const { data, error } = await supabase
+        .from('stock_take_details')
+        .select('*')
+        .eq('stockTakeId', id)
+        .single();
+      if (error) throw error;
+      setStockTakeDetails(data);
+    } catch (error) {
+      setStockTakeDetails(null);
+    }
+  };
 
   const filteredStockTakes = stockTakes.filter(stockTake => 
     selectedStatus === 'all' || stockTake.status === selectedStatus
@@ -288,7 +151,7 @@ export default function StockTakePage() {
     return 'text-gray-600';
   };
 
-  const countedPercentage = stockTakeDetails.totalItems > 0 
+  const countedPercentage = stockTakeDetails && stockTakeDetails.totalItems > 0 
     ? Math.round((stockTakeDetails.countedItems / stockTakeDetails.totalItems) * 100)
     : 0;
 
@@ -516,110 +379,112 @@ export default function StockTakePage() {
         </Card>
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2">
-            <Card>
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <CardTitle>{stockTakeDetails.stockTakeNumber}</CardTitle>
-                    <p className="text-gray-600">{stockTakeDetails.location} - {stockTakeDetails.category}</p>
+          {viewMode === 'details' && stockTakeDetails && (
+            <div className="lg:col-span-2">
+              <Card>
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <CardTitle>{stockTakeDetails?.stockTakeNumber}</CardTitle>
+                      <p className="text-gray-600">{stockTakeDetails?.location} - {stockTakeDetails?.category}</p>
+                    </div>
+                    <span className={`px-3 py-1 rounded-full text-sm font-medium flex items-center gap-2 ${getStatusColor(stockTakeDetails?.status || '')}`}>
+                      {getStatusIcon(stockTakeDetails?.status || '')}
+                      {getStatusText(stockTakeDetails?.status || '')}
+                    </span>
                   </div>
-                  <span className={`px-3 py-1 rounded-full text-sm font-medium flex items-center gap-2 ${getStatusColor(stockTakeDetails.status)}`}>
-                    {getStatusIcon(stockTakeDetails.status)}
-                    {getStatusText(stockTakeDetails.status)}
-                  </span>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-6">
-                  <div className="grid grid-cols-3 gap-4">
-                    <div className="text-center p-4 bg-blue-50 rounded-lg">
-                      <p className="text-3xl font-bold text-blue-600">{countedPercentage}%</p>
-                      <p className="text-sm text-blue-800">مكتمل</p>
-                      <div className="w-full bg-blue-200 rounded-full h-2 mt-2">
-                        <div 
-                          className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-                          style={{ width: `${countedPercentage}%` }}
-                        ></div>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-6">
+                    <div className="grid grid-cols-3 gap-4">
+                      <div className="text-center p-4 bg-blue-50 rounded-lg">
+                        <p className="text-3xl font-bold text-blue-600">{countedPercentage}%</p>
+                        <p className="text-sm text-blue-800">مكتمل</p>
+                        <div className="w-full bg-blue-200 rounded-full h-2 mt-2">
+                          <div 
+                            className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                            style={{ width: `${countedPercentage}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                      <div className="text-center p-4 bg-green-50 rounded-lg">
+                        <p className="text-3xl font-bold text-green-600">{stockTakeDetails?.countedItems}</p>
+                        <p className="text-sm text-green-800">تم العد</p>
+                        <p className="text-xs text-gray-500 mt-1">من أصل {stockTakeDetails?.totalItems}</p>
+                      </div>
+                      <div className="text-center p-4 bg-red-50 rounded-lg">
+                        <p className="text-3xl font-bold text-red-600">{stockTakeDetails?.discrepancies}</p>
+                        <p className="text-sm text-red-800">اختلافات</p>
+                        <p className={`text-xs mt-1 ${getVarianceColor(stockTakeDetails?.totalVariance || 0)}`}>
+                          {stockTakeDetails?.totalVariance >= 0 ? '+' : ''}{stockTakeDetails?.totalVariance.toLocaleString()} ريال
+                        </p>
                       </div>
                     </div>
-                    <div className="text-center p-4 bg-green-50 rounded-lg">
-                      <p className="text-3xl font-bold text-green-600">{stockTakeDetails.countedItems}</p>
-                      <p className="text-sm text-green-800">تم العد</p>
-                      <p className="text-xs text-gray-500 mt-1">من أصل {stockTakeDetails.totalItems}</p>
-                    </div>
-                    <div className="text-center p-4 bg-red-50 rounded-lg">
-                      <p className="text-3xl font-bold text-red-600">{stockTakeDetails.discrepancies}</p>
-                      <p className="text-sm text-red-800">اختلافات</p>
-                      <p className={`text-xs mt-1 ${getVarianceColor(stockTakeDetails.totalVariance)}`}>
-                        {stockTakeDetails.totalVariance >= 0 ? '+' : ''}{stockTakeDetails.totalVariance.toLocaleString()} ريال
-                      </p>
-                    </div>
-                  </div>
 
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-sm">
-                      <thead>
-                        <tr className="border-b border-gray-200">
-                          <th className="text-right py-3 px-3 font-medium text-gray-600">المنتج</th>
-                          <th className="text-right py-3 px-3 font-medium text-gray-600">الموقع</th>
-                          <th className="text-right py-3 px-3 font-medium text-gray-600">المخزون بالنظام</th>
-                          <th className="text-right py-3 px-3 font-medium text-gray-600">الكمية المعدودة</th>
-                          <th className="text-right py-3 px-3 font-medium text-gray-600">التباين</th>
-                          <th className="text-right py-3 px-3 font-medium text-gray-600">قيمة التباين</th>
-                          <th className="text-right py-3 px-3 font-medium text-gray-600">الحالة</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {stockTakeDetails.items.map((item) => (
-                          <tr key={item.id} className="border-b border-gray-100 hover:bg-gray-50">
-                            <td className="py-3 px-3">
-                              <div>
-                                <p className="font-medium">{item.productName}</p>
-                                <p className="text-gray-600 text-xs">{item.sku}</p>
-                              </div>
-                            </td>
-                            <td className="py-3 px-3 text-gray-600">{item.location}</td>
-                            <td className="py-3 px-3">{item.systemQuantity} {item.unit}</td>
-                            <td className="py-3 px-3">
-                              {item.countedQuantity !== undefined ? (
-                                <span className="font-medium">{item.countedQuantity} {item.unit}</span>
-                              ) : (
-                                <span className="text-gray-400">لم يتم العد</span>
-                              )}
-                            </td>
-                            <td className="py-3 px-3">
-                              <span className={`font-medium ${getVarianceColor(item.variance)}`}>
-                                {item.variance !== 0 && (item.variance > 0 ? '+' : '')}{item.variance} {item.unit}
-                              </span>
-                            </td>
-                            <td className="py-3 px-3">
-                              <span className={`font-medium ${getVarianceColor(item.varianceValue)}`}>
-                                {item.varianceValue !== 0 && (item.varianceValue > 0 ? '+' : '')}{item.varianceValue.toLocaleString()} ريال
-                              </span>
-                            </td>
-                            <td className="py-3 px-3">
-                              {item.counted ? (
-                                <span className="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 flex items-center gap-1 w-fit">
-                                  <CheckCircle className="h-3 w-3" />
-                                  مكتمل
-                                </span>
-                              ) : (
-                                <span className="px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 flex items-center gap-1 w-fit">
-                                  <Clock className="h-3 w-3" />
-                                  معلق
-                                </span>
-                              )}
-                            </td>
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-sm">
+                        <thead>
+                          <tr className="border-b border-gray-200">
+                            <th className="text-right py-3 px-3 font-medium text-gray-600">المنتج</th>
+                            <th className="text-right py-3 px-3 font-medium text-gray-600">الموقع</th>
+                            <th className="text-right py-3 px-3 font-medium text-gray-600">المخزون بالنظام</th>
+                            <th className="text-right py-3 px-3 font-medium text-gray-600">الكمية المعدودة</th>
+                            <th className="text-right py-3 px-3 font-medium text-gray-600">التباين</th>
+                            <th className="text-right py-3 px-3 font-medium text-gray-600">قيمة التباين</th>
+                            <th className="text-right py-3 px-3 font-medium text-gray-600">الحالة</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                        </thead>
+                        <tbody>
+                          {stockTakeDetails?.items.map((item) => (
+                            <tr key={item.id} className="border-b border-gray-100 hover:bg-gray-50">
+                              <td className="py-3 px-3">
+                                <div>
+                                  <p className="font-medium">{item.productName}</p>
+                                  <p className="text-gray-600 text-xs">{item.sku}</p>
+                                </div>
+                              </td>
+                              <td className="py-3 px-3 text-gray-600">{item.location}</td>
+                              <td className="py-3 px-3">{item.systemQuantity} {item.unit}</td>
+                              <td className="py-3 px-3">
+                                {item.countedQuantity !== undefined ? (
+                                  <span className="font-medium">{item.countedQuantity} {item.unit}</span>
+                                ) : (
+                                  <span className="text-gray-400">لم يتم العد</span>
+                                )}
+                              </td>
+                              <td className="py-3 px-3">
+                                <span className={`font-medium ${getVarianceColor(item.variance)}`}>
+                                  {item.variance !== 0 && (item.variance > 0 ? '+' : '')}{item.variance} {item.unit}
+                                </span>
+                              </td>
+                              <td className="py-3 px-3">
+                                <span className={`font-medium ${getVarianceColor(item.varianceValue)}`}>
+                                  {item.varianceValue !== 0 && (item.varianceValue > 0 ? '+' : '')}{item.varianceValue.toLocaleString()} ريال
+                                </span>
+                              </td>
+                              <td className="py-3 px-3">
+                                {item.counted ? (
+                                  <span className="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 flex items-center gap-1 w-fit">
+                                    <CheckCircle className="h-3 w-3" />
+                                    مكتمل
+                                  </span>
+                                ) : (
+                                  <span className="px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 flex items-center gap-1 w-fit">
+                                    <Clock className="h-3 w-3" />
+                                    معلق
+                                  </span>
+                                )}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+                </CardContent>
+              </Card>
+            </div>
+          )}
 
           <div className="space-y-6">
             <Card>
@@ -629,15 +494,15 @@ export default function StockTakePage() {
               <CardContent className="space-y-4">
                 <div>
                   <p className="text-sm text-gray-600">التاريخ المجدول:</p>
-                  <p className="font-medium">{stockTakeDetails.scheduledDate}</p>
+                  <p className="font-medium">{stockTakeDetails?.scheduledDate}</p>
                 </div>
-                {stockTakeDetails.startedDate && (
+                {stockTakeDetails?.startedDate && (
                   <div>
                     <p className="text-sm text-gray-600">تاريخ البداية:</p>
                     <p className="font-medium">{stockTakeDetails.startedDate}</p>
                   </div>
                 )}
-                {stockTakeDetails.completedDate && (
+                {stockTakeDetails?.completedDate && (
                   <div>
                     <p className="text-sm text-gray-600">تاريخ الإكمال:</p>
                     <p className="font-medium">{stockTakeDetails.completedDate}</p>
@@ -646,14 +511,14 @@ export default function StockTakePage() {
                 <div>
                   <p className="text-sm text-gray-600">المكلفون بالجرد:</p>
                   <div className="flex flex-wrap gap-1 mt-1">
-                    {stockTakeDetails.assignedTo.map((person, index) => (
+                    {stockTakeDetails?.assignedTo.map((person, index) => (
                       <span key={index} className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">
                         {person}
                       </span>
                     ))}
                   </div>
                 </div>
-                {stockTakeDetails.notes && (
+                {stockTakeDetails?.notes && (
                   <div>
                     <p className="text-sm text-gray-600">ملاحظات:</p>
                     <p className="text-sm bg-yellow-50 p-2 rounded">{stockTakeDetails.notes}</p>
@@ -671,19 +536,19 @@ export default function StockTakePage() {
                   <div className="flex justify-between items-center p-2 bg-green-50 rounded">
                     <span className="text-sm text-green-800">منتجات صحيحة:</span>
                     <span className="font-medium text-green-600">
-                      {stockTakeDetails.items.filter(item => item.variance === 0).length}
+                      {stockTakeDetails?.items.filter(item => item.variance === 0).length}
                     </span>
                   </div>
                   <div className="flex justify-between items-center p-2 bg-red-50 rounded">
                     <span className="text-sm text-red-800">منتجات ناقصة:</span>
                     <span className="font-medium text-red-600">
-                      {stockTakeDetails.items.filter(item => item.variance < 0).length}
+                      {stockTakeDetails?.items.filter(item => item.variance < 0).length}
                     </span>
                   </div>
                   <div className="flex justify-between items-center p-2 bg-blue-50 rounded">
                     <span className="text-sm text-blue-800">منتجات زائدة:</span>
                     <span className="font-medium text-blue-600">
-                      {stockTakeDetails.items.filter(item => item.variance > 0).length}
+                      {stockTakeDetails?.items.filter(item => item.variance > 0).length}
                     </span>
                   </div>
                 </div>
@@ -707,7 +572,7 @@ export default function StockTakePage() {
                   <Upload className="h-4 w-4 mr-2" />
                   رفع ملف العد
                 </Button>
-                {stockTakeDetails.status === 'completed' && (
+                {stockTakeDetails?.status === 'completed' && (
                   <Button variant="outline" className="w-full text-green-600">
                     <CheckCircle className="h-4 w-4 mr-2" />
                     تطبيق التعديلات

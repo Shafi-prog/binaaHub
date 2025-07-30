@@ -274,12 +274,12 @@ export default function CreateProjectPage() {
         updatedAt: new Date().toISOString()
       };
 
-      await ProjectTrackingService.saveProject(projectPayload);
+      await ProjectTrackingService.saveProject(projectPayload, user?.id);
 
       if (editMode) {
         router.push(`/user/comprehensive-construction-calculator?projectId=${editProjectId}`);
       } else {
-        router.push('/user/projects');
+        router.push('/user/projects/list');
       }
     } catch (error) {
       console.error(`Error ${editMode ? 'updating' : 'creating'} project:`, error);

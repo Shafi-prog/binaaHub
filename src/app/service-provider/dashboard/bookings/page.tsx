@@ -60,45 +60,29 @@ function BookingsContent() {
   const loadBookings = async () => {
     try {
       setIsLoading(true);
-      // Simulate loading bookings data
-      const mockBookings = [
-        {
-          id: 1,
-          clientName: 'أحمد محمد',
-          service: 'توريد خرسانة',
-          date: '2025-07-28',
-          time: '08:00',
-          status: 'confirmed',
-          location: 'الرياض، حي النرجس',
-          phone: '+966501234567',
-          amount: 15000
-        },
-        {
-          id: 2,
-          clientName: 'سارة العلي',
-          service: 'تأجير معدات',
-          date: '2025-07-29',
-          time: '10:00',
-          status: 'pending',
-          location: 'جدة، حي الصفا',
-          phone: '+966501234568',
-          amount: 8500
-        },
-        {
-          id: 3,
-          clientName: 'محمد السعد',
-          service: 'مقاولات',
-          date: '2025-07-30',
-          time: '14:00',
-          status: 'completed',
-          location: 'الدمام، حي الفيصلية',
-          phone: '+966501234569',
-          amount: 25000
-        }
-      ];
-      setBookings(mockBookings);
+      // Fetch real bookings from Supabase
+      const { createClientComponentClient } = await import('@supabase/auth-helpers-nextjs');
+      const supabase = createClientComponentClient();
+      const { data, error } = await supabase
+        .from('service_provider_bookings')
+        .select('*')
+        .order('date', { ascending: false });
+      if (error) throw error;
+      setBookings((data || []).map((b: any) => ({
+        ...b,
+        id: b.id,
+        clientName: b.client_name,
+        service: b.service,
+        date: b.date,
+        time: b.time,
+        status: b.status,
+        location: b.location,
+        phone: b.phone,
+        amount: b.amount
+      })));
     } catch (error) {
       console.error('Error loading bookings:', error);
+      setBookings([]);
     } finally {
       setIsLoading(false);
     }

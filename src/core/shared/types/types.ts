@@ -40,7 +40,7 @@ export type Project = {
   updatedAt: string;
   description?: string;
   area: number;
-  projectType: string;
+  projectType: 'residential' | 'commercial' | 'industrial';
   floorCount: number;
   roomCount: number;
   estimations?: ProjectEstimation;

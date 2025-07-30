@@ -7,6 +7,7 @@ import { Shield, Calendar, Package, AlertCircle, CheckCircle, Clock, Eye, Messag
 import { formatDateSafe } from '../../../../core/shared/utils/hydration-safe';
 import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 import { useAuth } from '@/core/shared/auth/AuthProvider';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 export const dynamic = 'force-dynamic'
 
@@ -36,75 +37,46 @@ export default function WarrantyTrackingPage() {
   const [claims, setClaims] = useState<WarrantyClaim[]>([]);
   const [selectedClaim, setSelectedClaim] = useState<WarrantyClaim | null>(null);
   const [isClient, setIsClient] = useState(false);
+  const [warranties, setWarranties] = useState<any[]>([]);
 
   useEffect(() => {
     setIsClient(true);
-    // Mock data - in real app, this would come from API
-    setClaims([
-      {
-        id: 'CLAIM-2024-W001-5678',
-        warrantyId: 'W001',
-        productName: 'مضخة المياه عالية الكفاءة',
-        store: 'متجر الأدوات الصحية المتقدمة',
-        claimDate: '2024-07-23',
-        status: 'pending',
-        issueType: 'manufacturing_defect',
-        quantityAffected: 1,
-        totalQuantity: 1,
-        quantityUsed: 1,
-        quantityRemaining: 0,
-        resolution: 'replacement',
-        trackingNumber: 'CLAIM-2024-W001-5678'
-      },
-      {
-        id: 'CLAIM-001',
-        warrantyId: 'W001',
-        productName: 'مصابيح LED عالية الكفاءة - عبوة 4 قطع',
-        store: 'متجر الإضاءة المتطورة',
-        claimDate: '2024-07-20',
-        status: 'in_progress',
-        issueType: 'manufacturing_defect',
-        quantityAffected: 1,
-        totalQuantity: 4,
-        quantityUsed: 1, // Previously claimed 1 item
-        quantityRemaining: 2, // 2 items still under warranty (4 - 1 current - 1 previous)
-        resolution: 'replacement',
-        storeResponse: 'تم استلام المطالبة وسيتم التواصل معك خلال 24 ساعة لفحص المنتج',
-        estimatedCompletion: '2024-07-25',
-        trackingNumber: 'TRK-2024-789'
-      },
-      {
-        id: 'CLAIM-002',
-        warrantyId: 'W002',
-        productName: 'مضخة المياه عالية الكفاءة',
-        store: 'متجر الأدوات الصحية المتقدمة',
-        claimDate: '2024-07-18',
-        status: 'completed',
-        issueType: 'performance_issue',
-        quantityAffected: 1,
-        totalQuantity: 1,
-        quantityUsed: 1,
-        quantityRemaining: 0,
-        resolution: 'repair',
-        storeResponse: 'تم إصلاح المضخة بنجاح واستبدال القطع التالفة',
-        trackingNumber: 'TRK-2024-456'
-      },
-      {
-        id: 'CLAIM-003',
-        warrantyId: 'W003',
-        productName: 'أدوات كهربائية متنوعة - طقم 6 قطع',
-        store: 'متجر العدد والأدوات',
-        claimDate: '2024-07-15',
-        status: 'pending',
-        issueType: 'not_working',
-        quantityAffected: 2,
-        totalQuantity: 6,
-        quantityUsed: 2, // Current claim
-        quantityRemaining: 4, // 4 items still available for warranty
-        resolution: 'replacement'
-      }
-    ]);
-  }, []);
+    if (user?.id) {
+      fetchClaims(user.id);
+    }
+  }, [user]);
+
+  const fetchClaims = async (userId: string) => {
+    try {
+      const supabase = createClientComponentClient();
+      const { data, error } = await supabase
+        .from('warranty_claims')
+        .select('*')
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false });
+      if (error) throw error;
+      setClaims(data || []);
+    } catch (error) {
+      console.error('Error fetching warranty claims:', error);
+      setClaims([]);
+    }
+  };
+
+  const fetchWarranties = async (userId: string) => {
+    try {
+      const supabase = createClientComponentClient();
+      const { data, error } = await supabase
+        .from('warranties')
+        .select('*')
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false });
+      if (error) throw error;
+      setWarranties(data || []);
+    } catch (error) {
+      console.error('Error fetching warranties:', error);
+      setWarranties([]);
+    }
+  };
 
   const getStatusIcon = (status: string) => {
     switch (status) {

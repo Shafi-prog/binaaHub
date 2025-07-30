@@ -709,10 +709,10 @@ class WasteManagementService {
 
   async getProviderVehicles(providerId: string): Promise<any[]> {
     try {
-      // Mock data - in real implementation, fetch from vehicles table
+      //  - in real implementation, fetch from vehicles table
       return [
         { id: '1', type: 'truck', capacity: '20m³', status: 'available', location: 'الرياض' },
-        { id: '2', type: 'compactor', capacity: '15m³', status: 'in_use', location: 'جدة' }
+        { id: '2', type: 'compMock dataactor', capacity: '15m³', status: 'in_use', location: 'جدة' }
       ];
     } catch (error) {
       console.error('Error fetching provider vehicles:', error);

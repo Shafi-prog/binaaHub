@@ -125,11 +125,26 @@ export default function UnifiedBookingCalendar() {
 
   const loadBookings = async () => {
     try {
-      // Mock data - في التطبيق الحقيقي سيتم جلب البيانات من API
-      const mockBookings = generateMockBookings();
-      setBookings(mockBookings);
+      // Fetch real bookings from Supabase
+      const { createClientComponentClient } = await import('@supabase/auth-helpers-nextjs');
+      const supabase = createClientComponentClient();
+      const { data, error } = await supabase
+        .from('bookings')
+        .select('*')
+        .order('date', { ascending: true });
+      if (error) throw error;
+      // Optionally, map/parse data to Booking[] if needed
+      setBookings(
+        (data || []).map((b: any) => ({
+          ...b,
+          date: new Date(b.date),
+          createdAt: new Date(b.createdAt),
+          updatedAt: new Date(b.updatedAt)
+        }))
+      );
     } catch (error) {
       console.error('Error loading bookings:', error);
+      setBookings([]);
     }
   };
 
@@ -269,62 +284,6 @@ export default function UnifiedBookingCalendar() {
       year: 'numeric', 
       month: 'long' 
     });
-  };
-
-  // Mock data generator
-  const generateMockBookings = (): Booking[] => {
-    const mockData: Booking[] = [];
-    const today = new Date();
-    
-    // Generate bookings for the current month
-    for (let i = 0; i < 30; i++) {
-      const date = new Date(today);
-      date.setDate(today.getDate() + Math.floor(Math.random() * 30) - 15);
-      
-      const types: BookingType[] = ['equipment', 'concrete', 'waste', 'service', 'consultation'];
-      const statuses: BookingStatus[] = ['pending', 'confirmed', 'in_progress', 'completed'];
-      
-      mockData.push({
-        id: `BK-${String(i + 1).padStart(3, '0')}`,
-        type: types[Math.floor(Math.random() * types.length)],
-        title: `حجز ${getBookingTypeConfig(types[Math.floor(Math.random() * types.length)]).label}`,
-        description: 'وصف مفصل للحجز والخدمات المطلوبة',
-        date,
-        timeSlot: `${8 + Math.floor(Math.random() * 10)}:00`,
-        duration: 2 + Math.floor(Math.random() * 4),
-        status: statuses[Math.floor(Math.random() * statuses.length)],
-        customer: {
-          name: `العميل ${i + 1}`,
-          phone: `+966501234567`,
-          email: `customer${i + 1}@example.com`,
-          company: Math.random() > 0.5 ? `شركة البناء ${i + 1}` : undefined
-        },
-        location: {
-          address: `شارع الملك فهد، حي النخيل، الرياض`,
-          city: 'الرياض',
-          coordinates: { lat: 24.7136, lng: 46.6753 }
-        },
-        details: {
-          quantity: 10 + Math.floor(Math.random() * 50),
-          specialRequirements: 'متطلبات خاصة للمشروع'
-        },
-        assigned: {
-          providerId: `PROV-${String(i % 5 + 1).padStart(3, '0')}`,
-          providerName: `مقدم الخدمة ${i % 5 + 1}`,
-          contactInfo: '+966502345678'
-        },
-        pricing: {
-          basePrice: 1000 + Math.floor(Math.random() * 5000),
-          additionalCosts: Math.floor(Math.random() * 500),
-          totalPrice: 1000 + Math.floor(Math.random() * 5500),
-          paymentStatus: Math.random() > 0.3 ? 'paid' : 'pending'
-        },
-        createdAt: new Date(date.getTime() - Math.random() * 7 * 24 * 60 * 60 * 1000),
-        updatedAt: new Date()
-      });
-    }
-    
-    return mockData.sort((a, b) => a.date.getTime() - b.date.getTime());
   };
 
   const calendarDays = generateCalendarDays();

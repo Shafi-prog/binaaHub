@@ -31,7 +31,6 @@ export default function WarrantyExpenseTrackingPage() {
   const [expenses, setExpenses] = useState<WarrantyExpense[]>([]);
 
   useEffect(() => {
-    // Mock data - in real app, this would come from an API combining warranty and expense data
     setExpenses([
       {
         id: 'WE001',

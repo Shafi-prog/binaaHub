@@ -10,9 +10,11 @@ import { Textarea } from '@/core/shared/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/core/shared/components/ui/select'
 import { Switch } from '@/core/shared/components/ui/switch'
 import { ArrowLeft, Percent, Calendar, Target } from 'lucide-react'
+import { useAuth } from '@/core/shared/auth/AuthProvider';
 
 export default function CreatePromotionPage() {
 const supabase = createClientComponentClient();
+const { user } = useAuth();
 
   const router = useRouter()
   const [loading, setLoading] = useState(false)
@@ -39,32 +41,27 @@ const supabase = createClientComponentClient();
     setLoading(true)
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500))
-      
       // Generate promotion ID
       const promotionId = `PROMO-${Date.now()}`
-      
-      // Save to localStorage for demo
-      const savedPromotions = JSON.parse(localStorage.getItem('store_promotions') || '[]')
       const newPromotion = {
         id: promotionId,
+        user_id: user?.id || null,
         ...formData,
         value: parseFloat(formData.value),
-        minimumAmount: formData.minimumAmount ? parseFloat(formData.minimumAmount) : null,
-        maximumDiscount: formData.maximumDiscount ? parseFloat(formData.maximumDiscount) : null,
-        usageLimit: formData.usageLimit ? parseInt(formData.usageLimit) : null,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
+        minimum_amount: formData.minimumAmount ? parseFloat(formData.minimumAmount) : null,
+        maximum_discount: formData.maximumDiscount ? parseFloat(formData.maximumDiscount) : null,
+        usage_limit: formData.usageLimit ? parseInt(formData.usageLimit) : null,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
       }
-      
-      savedPromotions.push(newPromotion)
-      localStorage.setItem('store_promotions', JSON.stringify(savedPromotions))
-      
+      // Save to Supabase
+      const { error } = await supabase.from('store_promotions').insert([newPromotion]);
+      if (error) throw error;
       // Redirect to promotions list with success message
       router.push('/store/promotions?created=true')
     } catch (error) {
       console.error('Error creating promotion:', error)
+      alert('حدث خطأ أثناء إنشاء العرض')
     } finally {
       setLoading(false)
     }

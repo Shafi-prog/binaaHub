@@ -41,7 +41,6 @@ interface ServiceProviderDashboardProps {
 export default function ServiceProviderDashboard({
   providerType = 'general'
 }: ServiceProviderDashboardProps) {
-  // State management
   const [activeTab, setActiveTab] = useState<'overview' | 'requests' | 'portfolio' | 'reviews' | 'settings'>('overview');
   const [providerData, setProviderData] = useState<any>(null);
   const [serviceRequests, setServiceRequests] = useState<any[]>([]);
@@ -50,7 +49,6 @@ export default function ServiceProviderDashboard({
   const [analytics, setAnalytics] = useState<any>(null);
   const [loading, setLoading] = useState(false);
 
-  // Load dashboard data
   useEffect(() => {
     loadDashboardData();
   }, []);
@@ -58,95 +56,16 @@ export default function ServiceProviderDashboard({
   const loadDashboardData = async () => {
     try {
       setLoading(true);
-      
-      // Mock data for now
-      const mockData = {
-        provider: {
-          businessNameAr: 'شركة البناء الحديث',
-          ownerName: 'أحمد محمد',
-          phone: '+966501234567',
-          email: 'info@modernbuilding.sa',
-          city: 'الرياض',
-          experienceYears: 10,
-          teamSize: 25,
-          maxServiceRadius: 50,
-          serviceDescriptionAr: 'نقدم خدمات البناء والتشييد وإدارة المشاريع بجودة عالية',
-          verificationStatus: 'verified',
-          specializations: ['البناء', 'التشطيب', 'إدارة المشاريع'],
-          certifications: ['ISO 9001', 'شهادة المقاولين'],
-          portfolioImages: ['image1.jpg', 'image2.jpg', 'image3.jpg']
-        },
-        recentRequests: [
-          {
-            id: '1',
-            projectTitle: 'بناء فيلا سكنية',
-            projectLocation: 'الرياض - حي النرجس',
-            projectDescription: 'مطلوب بناء فيلا سكنية من دورين بمساحة 400 متر مربع',
-            estimatedBudget: { min: 800000, max: 1000000 },
-            preferredStartDate: new Date('2025-08-01'),
-            estimatedDuration: 180,
-            status: 'open',
-            urgency: 'normal',
-            requiredSkills: ['البناء', 'التشطيب', 'السباكة', 'الكهرباء']
-          },
-          {
-            id: '2',
-            projectTitle: 'تجديد مكتب تجاري',
-            projectLocation: 'جدة - حي الزهراء',
-            projectDescription: 'تجديد وتطوير مكتب تجاري بمساحة 200 متر مربع',
-            estimatedBudget: { min: 150000, max: 200000 },
-            preferredStartDate: new Date('2025-07-15'),
-            estimatedDuration: 45,
-            status: 'proposals-received',
-            urgency: 'high',
-            requiredSkills: ['التشطيب', 'الديكور', 'الكهرباء']
-          }
-        ],
-        recentReviews: [
-          {
-            id: '1',
-            customerName: 'خالد العتيبي',
-            rating: 5,
-            reviewText: 'خدمة ممتازة والعمل تم بجودة عالية وفي الوقت المحدد',
-            projectType: 'بناء فيلا',
-            createdAt: new Date('2025-07-01'),
-            ratings: {
-              quality: 5,
-              timeliness: 5,
-              communication: 4,
-              professionalism: 5,
-              valueForMoney: 4
-            }
-          },
-          {
-            id: '2',
-            customerName: 'فاطمة الزهراني',
-            rating: 4,
-            reviewText: 'عمل جيد لكن كان هناك تأخير طفيف في التسليم',
-            projectType: 'تجديد شقة',
-            createdAt: new Date('2025-06-15'),
-            ratings: {
-              quality: 4,
-              timeliness: 3,
-              communication: 4,
-              professionalism: 4,
-              valueForMoney: 4
-            }
-          }
-        ],
-        stats: {
-          totalRequests: 25,
-          activeProposals: 8,
-          completedProjects: 42,
-          monthlyEarnings: 250000,
-          averageRating: 4.6
-        }
-      };
-
-      setProviderData(mockData.provider);
-      setServiceRequests(mockData.recentRequests);
-      setReviews(mockData.recentReviews);
-      setAnalytics(mockData.stats);
+      // TODO: Replace with real data fetching from Supabase or API
+      // Example: const realData = await fetchProviderDashboardData();
+      // setProviderData(realData.provider);
+      // setServiceRequests(realData.recentRequests);
+      // setReviews(realData.recentReviews);
+      // setAnalytics(realData.stats);
+      setProviderData(null);
+      setServiceRequests([]);
+      setReviews([]);
+      setAnalytics(null);
     } catch (error) {
       console.error('Error loading dashboard data:', error);
       toast.error('فشل في تحميل بيانات اللوحة');
@@ -157,7 +76,6 @@ export default function ServiceProviderDashboard({
 
   const submitProposal = async (requestId: string, proposalData: any) => {
     try {
-      // Mock proposal submission
       toast.success('تم إرسال العرض بنجاح');
       loadDashboardData();
     } catch (error) {
@@ -203,7 +121,6 @@ export default function ServiceProviderDashboard({
 
   return (
     <div className="max-w-7xl mx-auto p-6 space-y-6" dir="rtl">
-      {/* Header */}
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold flex items-center gap-2">
@@ -231,9 +148,7 @@ export default function ServiceProviderDashboard({
           <TabsTrigger value="settings">الإعدادات</TabsTrigger>
         </TabsList>
 
-        {/* Overview Tab */}
         <TabsContent value="overview" className="space-y-6">
-          {/* Key Metrics */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -293,7 +208,6 @@ export default function ServiceProviderDashboard({
             </Card>
           </div>
 
-          {/* Recent Service Requests */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -366,7 +280,6 @@ export default function ServiceProviderDashboard({
           </Card>
         </TabsContent>
 
-        {/* Other tabs would go here - keeping it concise for now */}
         <TabsContent value="requests">
           <Card>
             <CardHeader>

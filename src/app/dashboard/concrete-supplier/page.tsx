@@ -122,12 +122,23 @@ export default function ConcreteSupplierDashboard() {
   const loadDashboardData = async () => {
     try {
       setLoading(true);
-      
-      // Load mock data
-      setOrders(getMockOrders());
-      setProductionSchedule(getMockProductionSchedule());
-      setTrucks(getMockTrucks());
-      setMetrics(getMockMetrics());
+      // Load real orders from Supabase
+      const { createClientComponentClient } = await import('@supabase/auth-helpers-nextjs');
+      const supabase = createClientComponentClient();
+      const { data: ordersData, error: ordersError } = await supabase
+        .from('concrete_orders')
+        .select('*')
+        .order('createdAt', { ascending: false });
+      if (ordersError) throw ordersError;
+      setOrders((ordersData || []).map((o: any) => ({
+        ...o,
+        deliveryDate: new Date(o.deliveryDate),
+        createdAt: new Date(o.createdAt)
+      })));
+      // You can similarly load productionSchedule, trucks, metrics from Supabase if available
+      // setProductionSchedule(...)
+      // setTrucks(...)
+      // setMetrics(...)
     } catch (error) {
       setError('فشل في تحميل بيانات اللوحة');
       console.error('Error loading dashboard data:', error);

@@ -93,50 +93,19 @@ export default function ConstructionGuidance({ project, onPhaseUpdate }: Constru
     const settings: ProjectGuidanceSettings = {
       projectType: project.projectType as any,
       area: project.area,
-      floors: project.floorCount,
+      floors: project.floorCount || 1, // fallback to 1 if undefined
       compliance: 'enhanced',
       supervision: 'engineer',
-      location: 'الرياض'
+      location: project.location || '' // fallback to empty string if undefined
     };
 
-    const phases = ConstructionGuidanceService.getProjectPhases(settings);
-    setProjectPhases(phases);
+    ConstructionGuidanceService.getProjectPhases(settings).then(setProjectPhases);
 
-    const checklist = ConstructionGuidanceService.getComplianceChecklist(project.projectType);
+    const checklist = ConstructionGuidanceService.getComplianceChecklist(project.projectType as any);
     console.log('Loaded compliance checklist:', checklist); // Debug log
-    
     // Ensure we have data, provide fallback if needed
     if (checklist && checklist.length > 0) {
       setComplianceChecklist(checklist);
-    } else {
-      // Provide default compliance checklist if service fails
-      const defaultChecklist = [
-        {
-          category: 'التراخيص والموافقات',
-          items: [
-            { id: 'building_permit', description: 'رخصة البناء', completed: false, required: true },
-            { id: 'civil_defense', description: 'موافقة الدفاع المدني', completed: false, required: true },
-            { id: 'municipality', description: 'موافقة الأمانة', completed: false, required: true }
-          ]
-        },
-        {
-          category: 'المواصفات الفنية',
-          items: [
-            { id: 'sbc_compliance', description: 'مطابقة الكود السعودي للبناء', completed: false, required: true },
-            { id: 'structural_calc', description: 'الحسابات الإنشائية', completed: false, required: true },
-            { id: 'architectural_plans', description: 'المخططات المعمارية', completed: false, required: true }
-          ]
-        },
-        {
-          category: 'السلامة والأمان',
-          items: [
-            { id: 'fire_safety', description: 'أنظمة مكافحة الحريق', completed: false, required: true },
-            { id: 'electrical_safety', description: 'السلامة الكهربائية', completed: false, required: true },
-            { id: 'structural_safety', description: 'السلامة الإنشائية', completed: false, required: true }
-          ]
-        }
-      ];
-      setComplianceChecklist(defaultChecklist);
     }
   }, [project]);
 
@@ -547,120 +516,28 @@ export default function ConstructionGuidance({ project, onPhaseUpdate }: Constru
         </CardHeader>
         <CardContent>
           {complianceChecklist.length === 0 ? (
-            <div className="text-center py-8">
-              <p className="text-gray-500">جاري تحميل قائمة مراجعة الامتثال...</p>
-            </div>
+            <div className="text-gray-500 text-center py-8">لا توجد عناصر في قائمة المراجعة حالياً.</div>
           ) : (
-            <div className="space-y-6">
-              {complianceChecklist.map((category, categoryIndex) => (
-                <div key={categoryIndex} className="border rounded-lg p-4 bg-gray-50">
-                <h4 className="font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                  <BookOpen className="w-4 h-4" />
-                  {category.category}
-                </h4>
-                <div className="space-y-4">
-                  {category.items.map((item: any) => (
-                    <div key={item.id} className="bg-white border rounded-lg p-4 shadow-sm">
-                      <div className="flex items-start gap-3">
-                        <div className="flex items-center">
-                          <input 
-                            type="checkbox" 
-                            checked={item.completed}
-                            className="w-5 h-5 rounded border-gray-300 text-green-600 focus:ring-green-500"
-                            onChange={() => handleComplianceToggle(categoryIndex, item.id)}
-                          />
-                        </div>
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-2">
-                            <span className={`font-medium ${item.completed ? 'line-through text-gray-500' : 'text-gray-800'}`}>
-                              {item.description}
-                            </span>
-                            {item.required && (
-                              <Badge variant="destructive" className="text-xs">مطلوب</Badge>
-                            )}
-                            {item.completed && (
-                              <Badge variant="default" className="text-xs bg-green-100 text-green-800">مكتمل</Badge>
-                            )}
-                          </div>
-                          
-                          {/* Document Upload Section */}
-                          <div className="mt-3 space-y-2">
-                            <div className="flex items-center gap-2">
-                              <label 
-                                htmlFor={`upload-${item.id}`}
-                                className="cursor-pointer inline-flex items-center gap-2 px-3 py-2 text-sm bg-blue-50 text-blue-700 border border-blue-200 rounded-md hover:bg-blue-100 transition-colors"
-                              >
-                                <Upload className="w-4 h-4" />
-                                رفع مستند
-                              </label>
-                              <input
-                                id={`upload-${item.id}`}
-                                type="file"
-                                multiple
-                                accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
-                                className="hidden"
-                                onChange={(e) => handleDocumentUpload(item.id, e.target.files)}
-                              />
-                              <span className="text-xs text-gray-500">
-                                PDF, صور, أو مستندات Word
-                              </span>
-                            </div>
-                            
-                            {/* Uploaded Documents List */}
-                            {uploadedDocuments[item.id] && uploadedDocuments[item.id].length > 0 && (
-                              <div className="bg-gray-50 p-3 rounded-md">
-                                <h6 className="text-sm font-medium text-gray-700 mb-2">المستندات المرفوعة:</h6>
-                                <div className="space-y-1">
-                                  {uploadedDocuments[item.id].map((file, fileIndex) => (
-                                    <div key={fileIndex} className="flex items-center justify-between text-sm">
-                                      <div className="flex items-center gap-2">
-                                        <FileText className="w-4 h-4 text-blue-500" />
-                                        <span className="text-gray-700">{file.name}</span>
-                                        <span className="text-gray-500">({(file.size / 1024).toFixed(1)} KB)</span>
-                                      </div>
-                                      <button
-                                        onClick={() => removeDocument(item.id, fileIndex)}
-                                        className="text-red-500 hover:text-red-700 transition-colors"
-                                        title="حذف المستند"
-                                      >
-                                        ✕
-                                      </button>
-                                    </div>
-                                  ))}
-                                </div>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
+            <div className="space-y-4">
+              {complianceChecklist.map((category, catIdx) => (
+                <div key={catIdx} className="border rounded-lg p-4">
+                  <h4 className="font-semibold mb-2">{category.category}</h4>
+                  <ul className="space-y-2">
+                    {category.items.map((item: any) => (
+                      <li key={item.id} className="flex items-center gap-2">
+                        <input
+                          type="checkbox"
+                          checked={item.completed}
+                          onChange={() => handleComplianceToggle(catIdx, item.id)}
+                          className="form-checkbox h-4 w-4 text-blue-600"
+                        />
+                        <span className={item.completed ? 'line-through text-gray-400' : ''}>{item.name}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-              </div>
-            ))}
-            
-            {/* Progress Summary */}
-            {complianceChecklist.length > 0 && (
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <h5 className="font-medium text-blue-800 mb-2">ملخص التقدم</h5>
-                {complianceChecklist.map((category, categoryIndex) => {
-                  const totalItems = category.items.length;
-                  const completedItems = category.items.filter((item: any) => item.completed).length;
-                  const progress = (completedItems / totalItems) * 100;
-                  
-                  return (
-                    <div key={categoryIndex} className="mb-3 last:mb-0">
-                      <div className="flex justify-between text-sm mb-1">
-                        <span className="text-blue-700">{category.category}</span>
-                        <span className="text-blue-600">{completedItems}/{totalItems}</span>
-                      </div>
-                      <Progress value={progress} className="h-2" />
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>
+              ))}
+            </div>
           )}
         </CardContent>
       </Card>

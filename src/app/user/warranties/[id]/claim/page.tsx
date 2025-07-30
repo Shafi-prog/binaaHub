@@ -8,6 +8,7 @@ import { formatDateSafe, generateSafeId } from '../../../../../core/shared/utils
 import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 import { useUserData } from '@/core/shared/contexts/UserDataContext';
 import { useAuth } from '@/core/shared/auth/AuthProvider';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 export const dynamic = 'force-dynamic'
 
@@ -26,7 +27,8 @@ export default function WarrantyClaimPage() {
   const { user, session, isLoading, error } = useAuth();
   const router = useRouter();
   const params = useParams();
-  const warrantyId = params?.id as string;
+  // Ensure params.id is always a string
+  const warrantyId = Array.isArray(params?.id) ? params.id[0] : params?.id || '';
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
@@ -44,17 +46,27 @@ export default function WarrantyClaimPage() {
     additionalNotes: ''
   });
 
-  // Mock warranty data
-  const warranty = {
-    id: warrantyId || 'W001',
-    productName: 'مصابيح LED عالية الكفاءة - عبوة 4 قطع',
-    store: 'متجر الإضاءة المتطورة',
-    purchaseDate: '2024-01-15',
-    expiryDate: '2026-01-15',
-    value: 450,
-    totalQuantity: 4,
-    quantityUsedPreviously: 1, // Already claimed 1 item before
-    quantityAvailable: 3 // Total - Used = Available for claims
+  const [claim, setClaim] = useState<any>(null);
+  useEffect(() => {
+    if (warrantyId) {
+      fetchClaim(warrantyId);
+    }
+  }, [warrantyId]);
+
+  const fetchClaim = async (claimId: string) => {
+    try {
+      const supabase = createClientComponentClient();
+      const { data, error } = await supabase
+        .from('warranty_claims')
+        .select('*')
+        .eq('warranty_id', claimId)
+        .single();
+      if (error) throw error;
+      setClaim(data);
+    } catch (error) {
+      console.error('Error fetching warranty claim:', error);
+      setClaim(null);
+    }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -94,27 +106,27 @@ export default function WarrantyClaimPage() {
       return;
     }
 
-    if (formData.quantityAffected > warranty.quantityAvailable) {
-      alert(`لا يمكن المطالبة بأكثر من ${warranty.quantityAvailable} قطع`);
+    if (formData.quantityAffected > claim.quantityAvailable) {
+      alert(`لا يمكن المطالبة بأكثر من ${claim.quantityAvailable} قطع`);
       return;
     }
 
     const claimId = generateSafeId('CLAIM');
     
     // Show success message
-    alert(`تم إرسال طلب المطالبة بنجاح!\n\nرقم المطالبة: ${claimId}\nالمنتج: ${warranty.productName}\nالكمية المطالب بها: ${formData.quantityAffected} من أصل ${warranty.quantityAvailable} متاح\nالكمية المستخدمة سابقاً: ${warranty.quantityUsedPreviously}\nإجمالي القطع: ${warranty.totalQuantity}\n\nسيتم التواصل معك من قبل "${warranty.store}" خلال 48 ساعة لمراجعة الطلب وتقديم الحل المناسب.`);
+    alert(`تم إرسال طلب المطالبة بنجاح!\n\nرقم المطالبة: ${claimId}\nالمنتج: ${claim.productName}\nالكمية المطالب بها: ${formData.quantityAffected} من أصل ${claim.quantityAvailable} متاح\nالكمية المستخدمة سابقاً: ${claim.quantityUsedPreviously}\nإجمالي القطع: ${claim.totalQuantity}\n\nسيتم التواصل معك من قبل "${claim.store}" خلال 48 ساعة لمراجعة الطلب وتقديم الحل المناسب.`);
     
     console.log('Warranty claim submitted:', {
       warrantyId,
       claimId,
       formData,
-      warranty,
+      claim,
       quantityTracking: {
-        totalQuantity: warranty.totalQuantity,
-        quantityUsedPreviously: warranty.quantityUsedPreviously,
-        quantityAvailable: warranty.quantityAvailable,
+        totalQuantity: claim.totalQuantity,
+        quantityUsedPreviously: claim.quantityUsedPreviously,
+        quantityAvailable: claim.quantityAvailable,
         quantityAffected: formData.quantityAffected,
-        quantityRemaining: warranty.quantityAvailable - formData.quantityAffected
+        quantityRemaining: claim.quantityAvailable - formData.quantityAffected
       }
     });
 
@@ -190,27 +202,27 @@ return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-blue-800">
           <div>
             <Typography variant="caption" size="sm" className="text-blue-600">المنتج</Typography>
-            <Typography variant="body" size="lg" weight="medium">{warranty.productName}</Typography>
+            <Typography variant="body" size="lg" weight="medium">{claim?.productName}</Typography>
           </div>
           <div>
             <Typography variant="caption" size="sm" className="text-blue-600">المتجر</Typography>
-            <Typography variant="body" size="lg" weight="medium">{warranty.store}</Typography>
+            <Typography variant="body" size="lg" weight="medium">{claim?.store}</Typography>
           </div>
           <div>
             <Typography variant="caption" size="sm" className="text-blue-600">تاريخ الشراء</Typography>
-            <Typography variant="body" size="lg" weight="medium">{formatDateSafe(warranty.purchaseDate, { format: 'medium' })}</Typography>
+            <Typography variant="body" size="lg" weight="medium">{formatDateSafe(claim?.purchaseDate, { format: 'medium' })}</Typography>
           </div>
           <div>
             <Typography variant="caption" size="sm" className="text-blue-600">إجمالي القطع</Typography>
-            <Typography variant="body" size="lg" weight="medium">{warranty.totalQuantity}</Typography>
+            <Typography variant="body" size="lg" weight="medium">{claim?.totalQuantity}</Typography>
           </div>
           <div>
             <Typography variant="caption" size="sm" className="text-blue-600">مستخدمة سابقاً</Typography>
-            <Typography variant="body" size="lg" weight="medium">{warranty.quantityUsedPreviously}</Typography>
+            <Typography variant="body" size="lg" weight="medium">{claim?.quantityUsedPreviously}</Typography>
           </div>
           <div>
             <Typography variant="caption" size="sm" className="text-blue-600">متاحة للمطالبة</Typography>
-            <Typography variant="body" size="lg" weight="medium">{warranty.quantityAvailable}</Typography>
+            <Typography variant="body" size="lg" weight="medium">{claim?.quantityAvailable}</Typography>
           </div>
         </div>
       </EnhancedCard>
@@ -257,16 +269,16 @@ return (
                     value={formData.quantityAffected}
                     onChange={handleInputChange}
                     min="1"
-                    max={warranty.quantityAvailable}
+                    max={claim?.quantityAvailable}
                     className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     required
                   />
                   <span className="flex items-center px-4 bg-gray-100 rounded-lg text-gray-600">
-                    من {warranty.quantityAvailable} متاح
+                    من {claim?.quantityAvailable} متاح
                   </span>
                 </div>
                 <Typography variant="caption" size="sm" className="text-gray-500 mt-1">
-                  إجمالي القطع المشتراة: {warranty.totalQuantity} | مستخدمة سابقاً: {warranty.quantityUsedPreviously} | متاحة للمطالبة: {warranty.quantityAvailable}
+                  إجمالي القطع المشتراة: {claim?.totalQuantity} | مستخدمة سابقاً: {claim?.quantityUsedPreviously} | متاحة للمطالبة: {claim?.quantityAvailable}
                 </Typography>
               </div>
             </div>

@@ -76,7 +76,7 @@ export default function AIExtractionPage() {
     // Simulate AI processing delay
     await new Promise(resolve => setTimeout(resolve, 3000));
     
-    // Mock extracted data
+    // TODO: Integrate with real AI extraction or Supabase data
     return {
       productName: 'مضخة المياه الذكية عالية الكفاءة',
       store: 'متجر الأدوات الصحية المتقدمة',

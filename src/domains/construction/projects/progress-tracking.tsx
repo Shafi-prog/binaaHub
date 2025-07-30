@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
 import ProjectCompletionPopup from '@/core/shared/components/ProjectCompletionPopup';
+import { Project } from '@/core/shared/types/types';
 import { 
   CheckCircle, 
   Clock, 
@@ -174,19 +175,19 @@ export default function ProgressTracking() {
   const [previousProgress, setPreviousProgress] = useState(0);
 
   // Mock project data for the popup
-  const mockProject = {
+  const mockProject: Project = {
     id: 'current-project',
     name: 'مشروع فيلا الأحلام',
     location: 'الرياض - حي الملك فهد',
     startDate: '2024-01-15',
     progress: 100,
-    status: 'completed' as const,
+    status: 'completed',
     images: [],
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
     stage: 'تشطيبات نهائية',
     area: 400,
-    projectType: 'فيلا سكنية',
+    projectType: 'residential',
     floorCount: 2,
     roomCount: 5,
     estimations: {

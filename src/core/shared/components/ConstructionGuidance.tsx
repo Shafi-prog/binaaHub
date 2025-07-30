@@ -49,14 +49,20 @@ export default function ConstructionGuidance({ project, onPhaseUpdate }: Constru
   const [guidanceData, setGuidanceData] = useState<any>({});
 
   useEffect(() => {
-    // Get construction levels from the service
-    const levels = ConstructionGuidanceService.getConstructionLevels();
-    setProjectPhases(levels);
-
-    // Set initial current phase to first level
-    if (levels.length > 0) {
-      setCurrentPhase(levels[0].id);
-    }
+    // Get construction phases based on project settings (async)
+    ConstructionGuidanceService.getProjectPhases({
+      projectType: project.projectType,
+      area: project.area,
+      floors: project.floorCount,
+      compliance: 'enhanced',
+      supervision: 'engineer',
+      location: project.location || ''
+    }).then(phases => {
+      setProjectPhases(phases as unknown as ConstructionLevel[]);
+      if (phases.length > 0) {
+        setCurrentPhase(phases[0].id);
+      }
+    });
   }, [project]);
 
   const handlePhaseComplete = (phaseId: string) => {

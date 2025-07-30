@@ -154,7 +154,7 @@ const constructionPDFGuides: PDFGuide[] = [
 
 // --- Enhanced Stage Advice ---
 function getStageAdvice(stageKey: string, projectType: string) {
-  const guidance = ConstructionGuidanceService.getProjectPhases({
+  const guidancePromise = ConstructionGuidanceService.getProjectPhases({
     projectType: projectType as any,
     area: 300,
     floors: 2,
@@ -163,23 +163,25 @@ function getStageAdvice(stageKey: string, projectType: string) {
     location: 'الرياض'
   });
 
-  const phase = guidance.find(p => p.id === stageKey);
-  
-  if (!phase) {
-    return {
-      title: 'نصائح عامة',
-      tips: ['تأكد من جودة العمل', 'اتبع المعايير السعودية', 'استشر خبير إذا لزم الأمر'],
-      checklist: ['مراجعة الجودة', 'التأكد من المطابقة', 'توثيق المرحلة'],
-      resources: []
-    };
-  }
+  // Await the promise before using .find
+  return guidancePromise.then(guidance => {
+    const phase = guidance.find(p => p.id === stageKey);
+    if (!phase) {
+      return {
+        title: 'نصائح عامة',
+        tips: ['تأكد من جودة العمل', 'اتبع المعايير السعودية', 'استشر خبير إذا لزم الأمر'],
+        checklist: ['مراجعة الجودة', 'التأكد من المطابقة', 'توثيق المرحلة'],
+        resources: []
+      };
+    }
 
-  return {
-    title: `نصائح مرحلة ${phase.name}`,
-    tips: phase.tips || ['اتبع خطة العمل المحددة', 'تأكد من توفر جميع المواد', 'راجع مع المهندس المشرف'],
-    checklist: (phase.checkpoints || []).map(checkpoint => checkpoint.name),
-    resources: phase.documents || []
-  };
+    return {
+      title: `نصائح مرحلة ${phase.name}`,
+      tips: phase.tips || ['اتبع خطة العمل المحددة', 'تأكد من توفر جميع المواد', 'راجع مع المهندس المشرف'],
+      checklist: (phase.checkpoints || []).map(checkpoint => checkpoint.name),
+      resources: phase.documents || []
+    };
+  });
 }
 
 export default function BuildingAdvicePage() {
@@ -210,15 +212,14 @@ export default function BuildingAdvicePage() {
   
   useEffect(() => {
     if (projectType) {
-      const phases = ConstructionGuidanceService.getProjectPhases({
+      ConstructionGuidanceService.getProjectPhases({
         projectType: projectType as any,
         area: 300,
         floors: 2,
         compliance: 'enhanced',
         supervision: 'engineer',
         location: 'الرياض'
-      });
-      setConstructionPhases(phases);
+      }).then(phases => setConstructionPhases(phases));
     }
   }, [projectType]);
 
@@ -502,9 +503,11 @@ export default function BuildingAdvicePage() {
                   <CardContent>
                     <div className="space-y-4">
                       {constructionPhases.map((phase, index) => {
-                        const advice = getStageAdvice(phase.id, projectType);
+                        const [advice, setAdvice] = React.useState<any>(null);
+                        React.useEffect(() => {
+                          getStageAdvice(phase.id, projectType).then(setAdvice);
+                        }, [phase.id, projectType]);
                         const isActive = index === stageIdx;
-                        
                         return (
                           <div key={phase.id} className={`border rounded-lg p-4 cursor-pointer transition-all ${
                             isActive ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'
@@ -518,8 +521,7 @@ export default function BuildingAdvicePage() {
                               <h3 className="font-semibold">{phase.name}</h3>
                               <Badge variant="outline">{phase.duration} يوم</Badge>
                             </div>
-                            
-                            {isActive && (
+                            {isActive && advice && (
                               <div className="mt-4 space-y-3">
                                 <div>
                                   <h4 className="font-medium mb-2 flex items-center gap-2">
@@ -532,7 +534,6 @@ export default function BuildingAdvicePage() {
                                     ))}
                                   </ul>
                                 </div>
-                                
                                 <div>
                                   <h4 className="font-medium mb-2 flex items-center gap-2">
                                     <AlertTriangle className="w-4 h-4 text-yellow-500" />

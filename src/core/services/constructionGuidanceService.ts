@@ -527,27 +527,22 @@ export class ConstructionGuidanceService {
     return guidanceMap[levelId] || { tips: [], warnings: [], bestPractices: [] };
   }
 
-  static getProjectPhases(settings: ProjectGuidanceSettings): ConstructionPhase[] {
-    // Mock data for project phases
-    return [
-      {
-        id: 'planning',
-        name: 'Planning Phase',
-        arabicName: 'مرحلة التخطيط',
-        description: 'Initial planning and design phase',
-        order: 1,
-        status: 'not-started',
-        progress: 0,
-        estimatedDuration: '2-4 weeks',
-        duration: 28,
-        checkpoints: [],
-        tips: ['Plan thoroughly', 'Consider future expansion'],
-        warnings: ['Do not rush planning', 'Get proper approvals'],
-        documents: [],
-        materials: [],
-        regulations: []
-      }
-    ];
+  static async getProjectPhases(settings: ProjectGuidanceSettings): Promise<ConstructionPhase[]> {
+    // Fetch project phases from real API or Supabase
+    try {
+      // Example: Replace with your actual API endpoint or Supabase query
+      // const response = await fetch('/api/project-phases', { method: 'POST', body: JSON.stringify(settings) });
+      // const data = await response.json();
+      // return data.phases;
+      // Or, if using Supabase:
+      // const { data, error } = await supabase.from('project_phases').select('*').eq('projectType', settings.projectType);
+      // if (error) throw error;
+      // return data;
+      throw new Error('getProjectPhases: Real API integration required');
+    } catch (error) {
+      console.error('Error fetching project phases:', error);
+      return [];
+    }
   }
 
   static getComplianceChecklist(projectType: string): any[] {
@@ -572,5 +567,23 @@ export class ConstructionGuidanceService {
   static getNextPhase(currentPhaseId: string, phases: ConstructionPhase[]): ConstructionPhase | null {
     const currentIndex = phases.findIndex(p => p.id === currentPhaseId);
     return currentIndex >= 0 && currentIndex < phases.length - 1 ? phases[currentIndex + 1] : null;
+  }
+
+  // Example real implementation for fetching vehicles
+  static async getVehicles(): Promise<any[]> {
+    try {
+      // Example: Replace with your actual API endpoint or Supabase query
+      // const response = await fetch('/api/vehicles');
+      // const data = await response.json();
+      // return data.vehicles;
+      // Or, if using Supabase:
+      // const { data, error } = await supabase.from('vehicles').select('*');
+      // if (error) throw error;
+      // return data;
+      throw new Error('getVehicles: Real API integration required');
+    } catch (error) {
+      console.error('Error fetching vehicles:', error);
+      return [];
+    }
   }
 }

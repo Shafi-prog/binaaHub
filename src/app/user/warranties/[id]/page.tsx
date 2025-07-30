@@ -8,68 +8,39 @@ import { formatDateSafe, useIsClient } from '../../../../core/shared/utils/hydra
 import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 import { useUserData } from '@/core/shared/contexts/UserDataContext';
 import { useAuth } from '@/core/shared/auth/AuthProvider';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 export const dynamic = 'force-dynamic'
 
-interface WarrantyDetails {
-  id: string;
-  productName: string;
-  store: string;
-  storeContact: {
-    phone: string;
-    email: string;
-    address: string;
-  };
-  purchaseDate: string;
-  expiryDate: string;
-  status: 'active' | 'expired' | 'claimed';
-  claimId?: string;
-  warrantyType: string;
-  value: number;
-  receiptNumber: string;
-  description: string;
-  claimHistory: Array<{
-    date: string;
-    action: string;
-    status: string;
-    notes?: string;
-  }>;
-}
-
-export default function WarrantyDetailsPage() {
+export default function WarrantyDetailPage({ params }) {
   const { user, session, isLoading, error } = useAuth();
   const router = useRouter();
-  const params = useParams();
   const warrantyId = params?.id as string;
   const isClient = useIsClient();
 
-  // Mock data - in real app, this would come from an API
-  const [warranty] = useState<WarrantyDetails>({
-    id: warrantyId || 'W001',
-    productName: 'مضخة المياه عالية الكفاءة',
-    store: 'متجر الأدوات الصحية المتقدمة',
-    storeContact: {
-      phone: '+966 11 123 4567',
-      email: 'info@sanitary-tools.sa',
-      address: 'الرياض، حي الملز، شارع الأمير محمد بن عبدالعزيز'
-    },
-    purchaseDate: '2024-01-15',
-    expiryDate: '2026-01-15',
-    status: 'claimed' as const,
-    claimId: 'CLAIM-2024-W001-5678',
-    warrantyType: 'ضمان الشركة المصنعة',
-    value: 850,
-    receiptNumber: 'REC-2024-001234',
-    description: 'مضخة مياه عالية الكفاءة 1.5 حصان، مقاومة للتآكل، مناسبة للاستخدام المنزلي والتجاري',
-    claimHistory: [
-      {
-        date: '2024-01-15',
-        action: 'تسجيل الضمان',
-        status: 'مكتمل',
-        notes: 'تم تسجيل الضمان بنجاح'
-      }
-    ]
-  });
+  const [warranty, setWarranty] = useState<any>(null);
+
+  useEffect(() => {
+    if (params?.id) {
+      fetchWarranty(params.id);
+    }
+  }, [params?.id]);
+
+  const fetchWarranty = async (warrantyId: string) => {
+    try {
+      const supabase = createClientComponentClient();
+      const { data, error } = await supabase
+        .from('warranties')
+        .select('*')
+        .eq('id', warrantyId)
+        .single();
+      if (error) throw error;
+      setWarranty(data);
+    } catch (error) {
+      console.error('Error fetching warranty:', error);
+      setWarranty(null);
+    }
+  };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
@@ -164,8 +135,8 @@ export default function WarrantyDetailsPage() {
     router.push(`/user/chat?${chatParams.toString()}`);
   };
 
-  const isExpired = new Date(warranty.expiryDate) < new Date();
-  const daysUntilExpiry = Math.ceil((new Date(warranty.expiryDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
+  const isExpired = new Date(warranty?.expiryDate) < new Date();
+  const daysUntilExpiry = Math.ceil((new Date(warranty?.expiryDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
 
   if (!isClient) {
     

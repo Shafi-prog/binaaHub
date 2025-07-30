@@ -64,6 +64,23 @@ export default function SmartConstructionAdvisor() {
   const [loading, setLoading] = useState(false);
   const [chatInput, setChatInput] = useState('');
 
+  // Store all form values as strings for compatibility with <Input />
+  const [individualForm, setIndividualForm] = useState({
+    area: '300',
+    floors: '2',
+    budget: '500000',
+    timeline: '12',
+    location: 'الرياض',
+  });
+  const [companyForm, setCompanyForm] = useState({
+    projectCount: '5',
+    area: '200',
+    floors: '2',
+    budget: '400000',
+    timeline: '8',
+    location: 'جدة',
+  });
+
   // AI-powered recommendations based on project type
   const generateRecommendations = async (project: ProjectScenario) => {
     setLoading(true);
@@ -154,12 +171,12 @@ export default function SmartConstructionAdvisor() {
         name: 'فيلا سكنية',
         type: 'individual',
         details: {
-          area: 300,
-          floors: 2,
-          budget: 500000,
-          timeline: 12,
-          location: 'الرياض'
-        }
+          area: Number(individualForm.area),
+          floors: Number(individualForm.floors),
+          budget: Number(individualForm.budget),
+          timeline: Number(individualForm.timeline),
+          location: individualForm.location,
+        },
       };
       setCurrentProject(project);
       generateRecommendations(project);
@@ -169,13 +186,13 @@ export default function SmartConstructionAdvisor() {
         name: 'مجمع سكني',
         type: 'company',
         details: {
-          area: 200,
-          floors: 2,
-          budget: 400000,
-          timeline: 8,
-          location: 'جدة',
-          projectCount: 5
-        }
+          area: Number(companyForm.area),
+          floors: Number(companyForm.floors),
+          budget: Number(companyForm.budget),
+          timeline: Number(companyForm.timeline),
+          location: companyForm.location,
+          projectCount: Number(companyForm.projectCount),
+        },
       };
       setCurrentProject(project);
       generateRecommendations(project);
@@ -271,38 +288,46 @@ export default function SmartConstructionAdvisor() {
                     <>
                       <div>
                         <label className="block text-sm font-medium mb-2">مساحة الأرض (م²)</label>
-                        <Input placeholder="300" defaultValue="300" />
+                        <Input placeholder="300" value={individualForm.area} onChange={e => setIndividualForm(f => ({ ...f, area: e.target.value }))} />
                       </div>
                       <div>
                         <label className="block text-sm font-medium mb-2">عدد الأدوار</label>
-                        <Input placeholder="2" defaultValue="2" />
+                        <Input placeholder="2" value={individualForm.floors} onChange={e => setIndividualForm(f => ({ ...f, floors: e.target.value }))} />
                       </div>
                       <div>
                         <label className="block text-sm font-medium mb-2">الميزانية (ر.س)</label>
-                        <Input placeholder="500000" defaultValue="500000" />
+                        <Input placeholder="500000" value={individualForm.budget} onChange={e => setIndividualForm(f => ({ ...f, budget: e.target.value }))} />
                       </div>
                       <div>
                         <label className="block text-sm font-medium mb-2">المدة المطلوبة (شهر)</label>
-                        <Input placeholder="12" defaultValue="12" />
+                        <Input placeholder="12" value={individualForm.timeline} onChange={e => setIndividualForm(f => ({ ...f, timeline: e.target.value }))} />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">المدينة</label>
+                        <Input placeholder="الرياض" value={individualForm.location} onChange={e => setIndividualForm(f => ({ ...f, location: e.target.value }))} />
                       </div>
                     </>
                   ) : (
                     <>
                       <div>
                         <label className="block text-sm font-medium mb-2">عدد المشاريع</label>
-                        <Input placeholder="5" defaultValue="5" />
+                        <Input placeholder="5" value={companyForm.projectCount} onChange={e => setCompanyForm(f => ({ ...f, projectCount: e.target.value }))} />
                       </div>
                       <div>
                         <label className="block text-sm font-medium mb-2">متوسط مساحة الوحدة (م²)</label>
-                        <Input placeholder="200" defaultValue="200" />
+                        <Input placeholder="200" value={companyForm.area} onChange={e => setCompanyForm(f => ({ ...f, area: e.target.value }))} />
                       </div>
                       <div>
                         <label className="block text-sm font-medium mb-2">ميزانية كل وحدة (ر.س)</label>
-                        <Input placeholder="400000" defaultValue="400000" />
+                        <Input placeholder="400000" value={companyForm.budget} onChange={e => setCompanyForm(f => ({ ...f, budget: e.target.value }))} />
                       </div>
                       <div>
                         <label className="block text-sm font-medium mb-2">الجدول الزمني (شهر)</label>
-                        <Input placeholder="8" defaultValue="8" />
+                        <Input placeholder="8" value={companyForm.timeline} onChange={e => setCompanyForm(f => ({ ...f, timeline: e.target.value }))} />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">المدينة</label>
+                        <Input placeholder="جدة" value={companyForm.location} onChange={e => setCompanyForm(f => ({ ...f, location: e.target.value }))} />
                       </div>
                     </>
                   )}

@@ -116,155 +116,39 @@ export default function AdvancedProjectManagement() {
   const [filterStatus, setFilterStatus] = useState('all');
   const [isRTL] = useState(false);
 
-  // Mock data
+  // Fetch real project data from your API or Supabase
   useEffect(() => {
-    const mockProjects: Project[] = [
-      {
-        id: '1',
-        name: 'مجمع الفلل السكنية الراقية',
-        description: 'بناء مجمع سكني متكامل يضم 50 فيلا فاخرة',
-        client: 'شركة التطوير العقاري الحديث',
-        manager: 'المهندس أحمد محمد',
-        startDate: '2024-01-01',
-        endDate: '2024-12-31',
-        budget: 15000000,
-        spent: 4500000,
-        progress: 30,
-        status: 'in_progress',
-        priority: 'high',
-        team: [
-          { id: '1', name: 'أحمد محمد', role: 'مدير المشروع' },
-          { id: '2', name: 'فاطمة علي', role: 'مهندسة معمارية' },
-          { id: '3', name: 'خالد السعد', role: 'مهندس مدني' },
-          { id: '4', name: 'سارة أحمد', role: 'مهندسة كهرباء' }
-        ],
-        tasks: [
-          {
-            id: '1',
-            title: 'التخطيط المعماري',
-            description: 'إعداد المخططات المعمارية الأولية',
-            assignee: 'فاطمة علي',
-            startDate: '2024-01-01',
-            dueDate: '2024-02-15',
-            status: 'completed',
-            priority: 'high',
-            estimatedHours: 240,
-            actualHours: 220
-          },
-          {
-            id: '2',
-            title: 'التصاميم الإنشائية',
-            description: 'إعداد التصاميم الإنشائية والحسابات',
-            assignee: 'خالد السعد',
-            startDate: '2024-02-01',
-            dueDate: '2024-03-30',
-            status: 'in_progress',
-            priority: 'high',
-            estimatedHours: 320,
-            actualHours: 180
-          }
-        ],
-        milestones: [
-          {
-            id: '1',
-            title: 'الحصول على التراخيص',
-            description: 'الحصول على جميع التراخيص المطلوبة من البلدية',
-            dueDate: '2024-03-31',
-            completed: true
-          },
-          {
-            id: '2',
-            title: 'بداية أعمال الحفر',
-            description: 'بداية أعمال الحفر والتسوية',
-            dueDate: '2024-05-01',
-            completed: false
-          }
-        ]
-      },
-      {
-        id: '2',
-        name: 'مول تجاري عصري',
-        description: 'إنشاء مول تجاري بمساحة 50,000 متر مربع',
-        client: 'شركة الاستثمارات التجارية',
-        manager: 'المهندسة نورا سالم',
-        startDate: '2024-03-01',
-        endDate: '2025-02-28',
-        budget: 25000000,
-        spent: 2000000,
-        progress: 8,
-        status: 'planning',
-        priority: 'medium',
-        team: [
-          { id: '5', name: 'نورا سالم', role: 'مديرة المشروع' },
-          { id: '6', name: 'محمد الغامدي', role: 'مهندس معماري' },
-          { id: '7', name: 'عائشة الزهراني', role: 'مهندسة مدنية' }
-        ],
-        tasks: [
-          {
-            id: '3',
-            title: 'دراسة الجدوى',
-            description: 'إعداد دراسة جدوى اقتصادية شاملة',
-            assignee: 'محمد الغامدي',
-            startDate: '2024-03-01',
-            dueDate: '2024-04-15',
-            status: 'in_progress',
-            priority: 'medium',
-            estimatedHours: 160,
-            actualHours: 80
-          }
-        ],
-        milestones: [
-          {
-            id: '3',
-            title: 'اعتماد التصميم الأولي',
-            description: 'اعتماد التصميم المعماري الأولي من العميل',
-            dueDate: '2024-05-31',
-            completed: false
-          }
-        ]
-      },
-      {
-        id: '3',
-        name: 'مجمع مكاتب إدارية',
-        description: 'برج مكاتب بارتفاع 20 طابق',
-        client: 'شركة الأعمال الرائدة',
-        manager: 'المهندس سعد الحربي',
-        startDate: '2023-06-01',
-        endDate: '2024-03-31',
-        budget: 18000000,
-        spent: 17500000,
-        progress: 95,
-        status: 'completed',
-        priority: 'high',
-        team: [
-          { id: '8', name: 'سعد الحربي', role: 'مدير المشروع' },
-          { id: '9', name: 'منى القحطاني', role: 'مهندسة معمارية' }
-        ],
-        tasks: [],
-        milestones: [
-          {
-            id: '4',
-            title: 'تسليم المشروع',
-            description: 'تسليم المشروع نهائياً للعميل',
-            dueDate: '2024-03-31',
-            completed: true
-          }
-        ]
+    async function fetchProjects() {
+      try {
+        // Example: Replace with your actual API or Supabase query
+        // const { data, error } = await supabase.from('projects').select('*');
+        // if (error) throw error;
+        // setProjects(data);
+        // Calculate metrics based on real data
+        // const calculatedMetrics: ProjectMetrics = {
+        //   totalProjects: data.length,
+        //   activeProjects: data.filter(p => p.status === 'in_progress' || p.status === 'planning').length,
+        //   completedProjects: data.filter(p => p.status === 'completed').length,
+        //   totalBudget: data.reduce((sum, p) => sum + p.budget, 0),
+        //   totalSpent: data.reduce((sum, p) => sum + p.spent, 0),
+        //   averageProgress: data.reduce((sum, p) => sum + p.progress, 0) / data.length
+        // };
+        // setMetrics(calculatedMetrics);
+        throw new Error('fetchProjects: Real API integration required');
+      } catch (error) {
+        console.error('Error fetching projects:', error);
+        setProjects([]);
+        setMetrics({
+          totalProjects: 0,
+          activeProjects: 0,
+          completedProjects: 0,
+          totalBudget: 0,
+          totalSpent: 0,
+          averageProgress: 0
+        });
       }
-    ];
-
-    setProjects(mockProjects);
-
-    // Calculate metrics
-    const calculatedMetrics: ProjectMetrics = {
-      totalProjects: mockProjects.length,
-      activeProjects: mockProjects.filter(p => p.status === 'in_progress' || p.status === 'planning').length,
-      completedProjects: mockProjects.filter(p => p.status === 'completed').length,
-      totalBudget: mockProjects.reduce((sum, p) => sum + p.budget, 0),
-      totalSpent: mockProjects.reduce((sum, p) => sum + p.spent, 0),
-      averageProgress: mockProjects.reduce((sum, p) => sum + p.progress, 0) / mockProjects.length
-    };
-    setMetrics(calculatedMetrics);
+    }
+    fetchProjects();
   }, []);
 
   const getStatusColor = (status: Project['status']) => {
@@ -456,7 +340,7 @@ export default function AdvancedProjectManagement() {
 
       {/* Navigation Tabs */}
       <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg">
-        {[
+        {[ 
           { key: 'overview', label: 'نظرة عامة', icon: Target },
           { key: 'projects', label: 'المشاريع', icon: Briefcase },
           { key: 'tasks', label: 'المهام', icon: CheckCircle },
@@ -680,7 +564,7 @@ export default function AdvancedProjectManagement() {
                   </tr>
                 </thead>
                 <tbody>
-                  {projects.flatMap(project => 
+                  {projects.flatMap(project =>
                     project.tasks.map(task => (
                       <tr key={task.id} className="border-b hover:bg-gray-50">
                         <td className="p-3">
@@ -713,7 +597,8 @@ export default function AdvancedProjectManagement() {
                               <Edit className="w-4 h-4" />
                             </Button>
                           </div>
-                        </td>                      </tr>
+                        </td>
+                      </tr>
                     ))
                   )}
                 </tbody>
@@ -850,8 +735,3 @@ export default function AdvancedProjectManagement() {
     </div>
   );
 }
-
-
-
-
-

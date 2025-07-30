@@ -10,9 +10,11 @@ import { Textarea } from '@/core/shared/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/core/shared/components/ui/select'
 import { Badge } from '@/core/shared/components/ui/badge'
 import { ArrowLeft, Upload, Plus, X } from 'lucide-react'
+import { useAuth } from '@/core/shared/auth/AuthProvider';
 
 export default function CreateProductPage() {
 const supabase = createClientComponentClient();
+const { user } = useAuth();
 
   const router = useRouter()
   const [loading, setLoading] = useState(false)
@@ -54,30 +56,25 @@ const supabase = createClientComponentClient();
     setLoading(true)
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500))
-      
       // Generate product ID
       const productId = `PRD-${Date.now()}`
-      
-      // Save to localStorage for demo
-      const savedProducts = JSON.parse(localStorage.getItem('store_products') || '[]')
       const newProduct = {
         id: productId,
+        user_id: user?.id || null,
         ...formData,
         price: parseFloat(formData.price),
-        costPrice: parseFloat(formData.costPrice),
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
+        cost_price: parseFloat(formData.costPrice),
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
       }
-      
-      savedProducts.push(newProduct)
-      localStorage.setItem('store_products', JSON.stringify(savedProducts))
-      
+      // Save to Supabase
+      const { error } = await supabase.from('store_products').insert([newProduct]);
+      if (error) throw error;
       // Redirect to products list with success message
       router.push('/store/products?created=true')
     } catch (error) {
       console.error('Error creating product:', error)
+      alert('حدث خطأ أثناء إنشاء المنتج')
     } finally {
       setLoading(false)
     }

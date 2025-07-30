@@ -1,11 +1,12 @@
 "use client"
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/enhanced-components';
 import { Shield, Upload, Calendar, DollarSign, Package, ArrowRight, FileText, Search, Bot, Sparkles } from 'lucide-react';
 import StoreSearch from '../../../../components/warranty/StoreSearch';
 import { useAuth } from '@/core/shared/auth/AuthProvider';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 export const dynamic = 'force-dynamic'
 
@@ -39,6 +40,29 @@ export default function NewWarrantyPage() {
     description: '',
     receiptImage: null as File | null
   });
+  const [warranties, setWarranties] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (user?.id) {
+      fetchWarranties(user.id);
+    }
+  }, [user]);
+
+  const fetchWarranties = async (userId: string) => {
+    try {
+      const supabase = createClientComponentClient();
+      const { data, error } = await supabase
+        .from('warranties')
+        .select('*')
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false });
+      if (error) throw error;
+      setWarranties(data || []);
+    } catch (error) {
+      console.error('Error fetching warranties:', error);
+      setWarranties([]);
+    }
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -81,7 +105,7 @@ export default function NewWarrantyPage() {
       // Simulate AI processing
       await new Promise(resolve => setTimeout(resolve, 3000));
       
-      // Mock AI extracted data
+      // TODO: Integrate with real AI extraction or Supabase data
       const extractedData = {
         productName: 'مصابيح LED عالية الكفاءة - عبوة 3 قطع',
         store: 'متجر الإضاءة المتطورة',

@@ -8,9 +8,11 @@ import { Button } from '@/core/shared/components/ui/button'
 import { Input } from '@/core/shared/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/core/shared/components/ui/select'
 import { ArrowLeft, User, Building, Phone, Mail, MapPin } from 'lucide-react'
+import { useAuth } from '@/core/shared/auth/AuthProvider';
 
 export default function CreateCustomerPage() {
 const supabase = createClientComponentClient();
+const { user } = useAuth();
 
   const router = useRouter()
   const [loading, setLoading] = useState(false)
@@ -63,31 +65,26 @@ const supabase = createClientComponentClient();
     setLoading(true)
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500))
-      
       // Generate customer ID
       const customerId = `CUST-${Date.now()}`
-      
-      // Save to localStorage for demo
-      const savedCustomers = JSON.parse(localStorage.getItem('store_customers') || '[]')
       const newCustomer = {
         id: customerId,
+        user_id: user?.id || null,
         type: customerType,
         ...formData,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        totalOrders: 0,
-        totalSpent: 0
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        total_orders: 0,
+        total_spent: 0
       }
-      
-      savedCustomers.push(newCustomer)
-      localStorage.setItem('store_customers', JSON.stringify(savedCustomers))
-      
+      // Save to Supabase
+      const { error } = await supabase.from('store_customers').insert([newCustomer]);
+      if (error) throw error;
       // Redirect to customers list with success message
       router.push('/store/customers?created=true')
     } catch (error) {
       console.error('Error creating customer:', error)
+      alert('حدث خطأ أثناء إنشاء العميل')
     } finally {
       setLoading(false)
     }

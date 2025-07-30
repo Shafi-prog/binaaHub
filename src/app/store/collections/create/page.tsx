@@ -9,9 +9,11 @@ import { Input } from '@/core/shared/components/ui/input'
 import { Textarea } from '@/core/shared/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/core/shared/components/ui/select'
 import { ArrowLeft, FolderPlus, Tag } from 'lucide-react'
+import { useAuth } from '@/core/shared/auth/AuthProvider';
 
 export default function CreateCollectionPage() {
 const supabase = createClientComponentClient();
+const { user } = useAuth();
 
   const router = useRouter()
   const [loading, setLoading] = useState(false)
@@ -32,29 +34,24 @@ const supabase = createClientComponentClient();
     setLoading(true)
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500))
-      
       // Generate collection ID
       const collectionId = `COL-${Date.now()}`
-      
-      // Save to localStorage for demo
-      const savedCollections = JSON.parse(localStorage.getItem('store_collections') || '[]')
       const newCollection = {
         id: collectionId,
+        user_id: user?.id || null,
         ...formData,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        productsCount: 0
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        products_count: 0
       }
-      
-      savedCollections.push(newCollection)
-      localStorage.setItem('store_collections', JSON.stringify(savedCollections))
-      
+      // Save to Supabase
+      const { error } = await supabase.from('store_collections').insert([newCollection]);
+      if (error) throw error;
       // Redirect to collections list with success message
       router.push('/store/collections?created=true')
     } catch (error) {
       console.error('Error creating collection:', error)
+      alert('حدث خطأ أثناء إنشاء المجموعة')
     } finally {
       setLoading(false)
     }

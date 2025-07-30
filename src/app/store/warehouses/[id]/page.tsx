@@ -24,6 +24,7 @@ import {
   Clock
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { fetchWarehouseById } from '@/lib/supabase/enhanced-client';
 
 export default function WarehouseDetailPage() {
   const params = useParams();
@@ -32,87 +33,15 @@ export default function WarehouseDetailPage() {
 
   const [warehouse, setWarehouse] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Mock warehouse data
   useEffect(() => {
-    setTimeout(() => {
-      const mockWarehouse = {
-        id: warehouseId,
-        name: 'مستودع الرياض الرئيسي',
-        code: 'RYD-MAIN-001',
-        type: 'مستودع رئيسي',
-        status: 'active',
-        manager: 'أحمد محمد السعيد',
-        managerPhone: '+966 50 123 4567',
-        address: 'شارع الصناعية، حي السلي، الرياض 12345',
-        city: 'الرياض',
-        region: 'منطقة الرياض',
-        area: 2500, // متر مربع
-        capacity: 5000, // وحدة تخزين
-        currentStock: 3750,
-        utilizationRate: 75,
-        zones: [
-          { id: 1, name: 'منطقة A', type: 'مواد البناء الثقيلة', capacity: 1500, current: 1200 },
-          { id: 2, name: 'منطقة B', type: 'مواد التشطيب', capacity: 1000, current: 800 },
-          { id: 3, name: 'منطقة C', type: 'الأدوات والمعدات', capacity: 1500, current: 1000 },
-          { id: 4, name: 'منطقة D', type: 'المواد سريعة التلف', capacity: 1000, current: 750 }
-        ],
-        recentMovements: [
-          {
-            id: 1,
-            type: 'in',
-            product: 'أسمنت بورتلاند',
-            quantity: 100,
-            date: '2025-07-28',
-            reference: 'PO-2025-001'
-          },
-          {
-            id: 2,
-            type: 'out',
-            product: 'حديد تسليح 12مم',
-            quantity: 50,
-            date: '2025-07-27',
-            reference: 'SO-2025-045'
-          },
-          {
-            id: 3,
-            type: 'in',
-            product: 'بلاط سيراميك',
-            quantity: 200,
-            date: '2025-07-26',
-            reference: 'PO-2025-002'
-          }
-        ],
-        topProducts: [
-          { name: 'أسمنت بورتلاند', quantity: 500, value: 75000, percentage: 13.3 },
-          { name: 'حديد تسليح 12مم', quantity: 300, value: 120000, percentage: 8.0 },
-          { name: 'بلاط سيراميك', quantity: 800, value: 96000, percentage: 21.3 },
-          { name: 'دهانات داخلية', quantity: 150, value: 45000, percentage: 4.0 },
-          { name: 'أبواب خشبية', quantity: 50, value: 60000, percentage: 1.3 }
-        ],
-        alerts: [
-          { type: 'low_stock', message: 'مخزون منخفض: حديد تسليح 8مم', severity: 'warning' },
-          { type: 'expired', message: 'انتهاء صلاحية: مواد لاصقة - منطقة B', severity: 'error' },
-          { type: 'overstocked', message: 'مخزون زائد: بلاط رخام - منطقة A', severity: 'info' }
-        ],
-        facilities: [
-          'نظام تكييف مركزي',
-          'أنظمة إنذار حريق',
-          'كاميرات مراقبة 24/7',
-          'رافعات شوكية',
-          'منطقة تحميل وتفريغ',
-          'مكاتب إدارية',
-          'غرف استراحة للعمال'
-        ],
-        operatingHours: 'من 6 صباحاً إلى 10 مساءً',
-        establishedDate: '2020-03-15',
-        lastInspection: '2025-07-15',
-        nextInspection: '2025-10-15'
-      };
-      
-      setWarehouse(mockWarehouse);
-      setLoading(false);
-    }, 1000);
+    setLoading(true);
+    setError(null);
+    fetchWarehouseById(warehouseId)
+      .then((data) => setWarehouse(data))
+      .catch((err) => setError(err.message || 'حدث خطأ أثناء تحميل بيانات المستودع'))
+      .finally(() => setLoading(false));
   }, [warehouseId]);
 
   const handleEdit = () => {
@@ -180,14 +109,22 @@ export default function WarehouseDetailPage() {
       </div>
     );
   }
-
+  if (error) {
+    return (
+      <div className="max-w-6xl mx-auto p-6 text-center text-red-600" dir="rtl">
+        <h1 className="text-2xl font-bold mb-4">{error}</h1>
+        <Button onClick={() => router.push('/store/warehouses')}>
+          <ArrowRight className="h-4 w-4 mr-2" /> العودة للمستودعات
+        </Button>
+      </div>
+    );
+  }
   if (!warehouse) {
     return (
       <div className="max-w-6xl mx-auto p-6 text-center" dir="rtl">
         <h1 className="text-2xl font-bold text-gray-900 mb-4">المستودع غير موجود</h1>
         <Button onClick={() => router.push('/store/warehouses')}>
-          <ArrowRight className="h-4 w-4 mr-2" />
-          العودة للمستودعات
+          <ArrowRight className="h-4 w-4 mr-2" /> العودة للمستودعات
         </Button>
       </div>
     );

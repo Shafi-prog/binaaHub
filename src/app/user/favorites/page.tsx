@@ -9,6 +9,7 @@ import { Button } from '@/core/shared/components/ui/enhanced-components';
 import { formatDateSafe, formatNumberSafe } from '../../../core/shared/utils/hydration-safe';
 import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 import { useAuth } from '@/core/shared/auth/AuthProvider';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 interface FavoriteProduct {
   id: string;
@@ -40,30 +41,46 @@ interface FavoriteStore {
 export default function UserFavoritesPage() {
   const [activeTab, setActiveTab] = useState<'products' | 'stores'>('products');
   const [isClient, setIsClient] = useState(false);
+  const [orders, setOrders] = useState<any[]>([]);
   const router = useRouter();
   
   // Use real data from UserDataContext
   const { user, session, isLoading, error } = useAuth();
   
-  // Mock orders data since it's not available in AuthUser
-  const [orders] = useState<any[]>([]);
-
   // Extract favorites from real user data
   const [favoriteProducts, setFavoriteProducts] = useState<FavoriteProduct[]>([]);
   const [favoriteStores, setFavoriteStores] = useState<FavoriteStore[]>([]);
 
   useEffect(() => {
     setIsClient(true);
-    // Load real favorites data from user context
-    loadFavoritesData();
+    if (user?.id) {
+      fetchOrders(user.id);
+    }
   }, [user]);
 
-  const loadFavoritesData = async () => {
+  const fetchOrders = async (userId: string) => {
     try {
-      // Extract favorite products from user's order history and profile
-      const favProducts = extractFavoriteProducts();
-      const favStores = extractFavoriteStores();
-      
+      const supabase = createClientComponentClient();
+      const { data, error } = await supabase
+        .from('orders')
+        .select('*')
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false });
+      if (error) throw error;
+      setOrders(data || []);
+      loadFavoritesData(data || []);
+    } catch (error) {
+      console.error('Error fetching orders:', error);
+      setOrders([]);
+      setFavoriteProducts([]);
+      setFavoriteStores([]);
+    }
+  };
+
+  const loadFavoritesData = (ordersData: any[]) => {
+    try {
+      const favProducts = extractFavoriteProducts(ordersData);
+      const favStores = extractFavoriteStores(ordersData);
       setFavoriteProducts(favProducts);
       setFavoriteStores(favStores);
     } catch (error) {
@@ -74,63 +91,54 @@ export default function UserFavoritesPage() {
   };
 
   // Extract favorite products from real data
-  const extractFavoriteProducts = (): FavoriteProduct[] => {
-    if (!orders || orders.length === 0) return [];
-    
-    // Get unique products from order history as "favorites"
+  const extractFavoriteProducts = (ordersData: any[]): FavoriteProduct[] => {
+    if (!ordersData || ordersData.length === 0) return [];
     const productMap = new Map<string, FavoriteProduct>();
-    
-    orders.forEach(order => {
+    ordersData.forEach(order => {
       if (order.items) {
-        order.items.forEach((item, index) => {
-          const productId = `${order.id}_${index}_${item.name.replace(/\s+/g, '_')}`;
+        order.items.forEach((item: any, index: number) => {
+          const productId = `${order.id}_${index}_${item.name?.replace(/\s+/g, '_')}`;
           if (!productMap.has(productId)) {
             productMap.set(productId, {
               id: productId,
               name: item.name || 'منتج غير محدد',
               price: item.price || 0,
-              originalPrice: item.price > 100 ? item.price + 50 : undefined, // Mock original price
-              image: '/api/placeholder/300/200',
+              image: item.image_url || '/api/placeholder/300/200',
               store: order.store || 'متجر غير محدد',
-              rating: 4.2 + Math.random() * 0.6, // Random rating between 4.2 and 4.8
-              reviews: Math.floor(Math.random() * 500) + 50,
-              category: 'مواد البناء', // Default category
+              rating: item.rating || 4.5,
+              reviews: item.reviews || 100,
+              category: item.category || 'مواد البناء',
               inStock: order.status !== 'cancelled',
-              addedDate: order.orderDate || new Date().toISOString()
+              addedDate: order.orderDate || order.created_at || new Date().toISOString()
             });
           }
         });
       }
     });
-    
-    return Array.from(productMap.values()).slice(0, 10); // Limit to 10 favorites
+    return Array.from(productMap.values()).slice(0, 10);
   };
 
   // Extract favorite stores from real data
-  const extractFavoriteStores = (): FavoriteStore[] => {
-    if (!orders || orders.length === 0) return [];
-    
-    // Get unique stores from order history as "favorites"
+  const extractFavoriteStores = (ordersData: any[]): FavoriteStore[] => {
+    if (!ordersData || ordersData.length === 0) return [];
     const storeMap = new Map<string, FavoriteStore>();
-    
-    orders.forEach(order => {
+    ordersData.forEach(order => {
       if (order.store && !storeMap.has(order.store)) {
         storeMap.set(order.store, {
           id: order.store.replace(/\s+/g, '_').toLowerCase(),
           name: order.store,
           description: `متجر موثوق متخصص في مواد البناء والتشييد`,
-          rating: 4.2 + Math.random() * 0.6, // Random rating between 4.2 and 4.8
-          reviews: Math.floor(Math.random() * 1000) + 100,
-          location: 'المملكة العربية السعودية',
-          category: 'مواد البناء',
-          image: '/api/placeholder/300/200',
-          verified: Math.random() > 0.3, // 70% chance of being verified
-          addedDate: order.orderDate || new Date().toISOString()
+          rating: order.store_rating || 4.5,
+          reviews: order.store_reviews || 200,
+          location: order.store_location || 'المملكة العربية السعودية',
+          category: order.store_category || 'مواد البناء',
+          image: order.store_image || '/api/placeholder/300/200',
+          verified: order.store_verified ?? true,
+          addedDate: order.orderDate || order.created_at || new Date().toISOString()
         });
       }
     });
-    
-    return Array.from(storeMap.values()).slice(0, 8); // Limit to 8 favorites
+    return Array.from(storeMap.values()).slice(0, 8);
   };
 
   const removeFromFavorites = (type: 'product' | 'store', id: string) => {

@@ -9,6 +9,7 @@ import { Badge } from '@/core/shared/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/core/shared/components/ui/table';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/core/shared/components/ui/select';
 import { Plus, Search, Edit, Trash2, Warehouse, MapPin, Package, TrendingUp } from 'lucide-react';
+import { fetchAllWarehouses } from '@/lib/supabase/enhanced-client';
 
 export const dynamic = 'force-dynamic';
 interface WarehouseData {
@@ -37,73 +38,15 @@ export default function WarehouseManagement() {
   const [typeFilter, setTypeFilter] = useState('all');
 
   useEffect(() => {
-    loadWarehouses();
+    setLoading(true);
+    fetchAllWarehouses()
+      .then((data) => setWarehouses(data || []))
+      .catch((err) => {
+        setWarehouses([]);
+        console.error('Error loading warehouses:', err);
+      })
+      .finally(() => setLoading(false));
   }, []);
-
-  const loadWarehouses = async () => {
-    try {
-      setLoading(true);
-      // Mock warehouses data with Arabic content
-      const []: WarehouseData[] = [
-        {
-          id: "wh_1",
-          name: "المستودع الرئيسي - الرياض",
-          code: "WH-RYD-001",
-          address: "المنطقة الصناعية، مخرج 18",
-          city: "الرياض",
-          region: "منطقة الرياض",
-          country_code: "SA",
-          warehouse_type: "main",
-          is_active: true,
-          is_default: true,
-          capacity: 10000,
-          current_utilization: 7500,
-          total_items: 1250,
-          total_value: 850000,
-          created_at: "2024-01-15T10:00:00Z"
-        },
-        {
-          id: "wh_2", 
-          name: "مركز التوزيع - جدة",
-          code: "WH-JED-002",
-          address: "المدينة الاقتصادية الملك عبدالله",
-          city: "جدة",
-          region: "منطقة مكة المكرمة",
-          country_code: "SA",
-          warehouse_type: "distribution",
-          is_active: true,
-          is_default: false,
-          capacity: 7500,
-          current_utilization: 4200,
-          total_items: 890,
-          total_value: 420000,
-          created_at: "2024-01-20T08:00:00Z"
-        },
-        {
-          id: "wh_3",
-          name: "مركز معالجة المرتجعات - الدمام",
-          code: "WH-DMM-003", 
-          address: "المدينة الصناعية الثانية",
-          city: "الدمام",
-          region: "المنطقة الشرقية",
-          country_code: "SA",
-          warehouse_type: "returns",
-          is_active: true,
-          is_default: false,
-          capacity: 2000,
-          current_utilization: 350,
-          total_items: 125,
-          total_value: 45000,
-          created_at: "2024-02-01T14:00:00Z"
-        }
-      ];
-      setWarehouses([]);
-    } catch (error) {
-      console.error("Error loading warehouses:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const filteredWarehouses = useMemo(() => {
     return warehouses.filter(warehouse => {

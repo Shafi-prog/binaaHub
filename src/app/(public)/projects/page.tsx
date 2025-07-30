@@ -48,7 +48,7 @@ export default function PublicProjectsPage() {
         updatedAt: '2024-07-15',
         description: 'فيلا فاخرة بتصميم عصري على مساحة 500 متر مربع',
         area: 500,
-        projectType: 'villa',
+        projectType: 'residential',
         floorCount: 2,
         roomCount: 6,
         status: 'in-progress',

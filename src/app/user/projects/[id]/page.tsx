@@ -1,487 +1,407 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import { useAuth } from '@/core/shared/auth/AuthProvider';
-import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
-import { Button } from '@/core/shared/components/ui/button';
-import { Input } from '@/core/shared/components/ui/input';
-import { Select } from '@/core/shared/components/ui/select';
-import { Textarea } from '@/core/shared/components/ui/textarea';
-import { Badge } from '@/core/shared/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/core/shared/components/ui/tabs';
-import { Progress } from '@/core/shared/components/ui/progress';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/core/shared/components/ui/dialog';
-import ProjectPurchasesWarranties from '@/core/shared/components/ui/ProjectPurchasesWarranties';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/components/ui/progress';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { ProjectTrackingService } from '@/core/services/projectTrackingService';
-import { Project, ProjectEstimation, MaterialEstimation, LightingEstimation } from '@/core/shared/types/types';
-import { formatNumber, formatDate, formatCurrency, formatPercentage } from '@/core/shared/utils/formatting';
-import { useUserData } from '@/core/shared/contexts/UserDataContext';
+import { ConstructionGuidanceService, ConstructionLevel, ProjectLevel } from '@/core/services/constructionGuidanceService';
+import LandPurchaseIntegration from '@/core/shared/components/integrations/LandPurchaseIntegration';
+
+// Material type definition
+interface MaterialCalculation {
+  name: string;
+  quantity: number;
+  unit: string;
+  estimatedCost: number;
+  description: string;
+}
+
+interface MaterialsMap {
+  [key: string]: MaterialCalculation;
+}
+import ContractorSelectionIntegration from '@/core/shared/components/integrations/ContractorSelectionIntegration';
 import { 
-  Calculator, 
-  FileText, 
-  Lightbulb, 
-  Home, 
-  Hammer,
-  Package,
-  PaintBucket,
-  Zap,
-  Upload,
-  Download,
-  Eye,
-  Grid,
-  Ruler,
-  Target,
-  CheckCircle,
-  AlertTriangle,
-  Info,
-  Save,
-  Plus,
-  DollarSign,
-  Clock,
-  TrendingUp,
-  Trash2,
-  Edit,
-  Building,
+  ArrowLeft, 
+  Building2, 
   MapPin,
   Users,
-  Calendar,
-  Award,
-  Globe,
   Shield,
-  ShoppingCart
+  Hammer,
+  Truck,
+  FileCheck,
+  Award,
+  ExternalLink,
+  CheckCircle,
+  Clock,
+  DollarSign,
+  Globe,
+  Download,
+  AlertTriangle,
+  Lightbulb,
+  Target,
+  Calendar,
+  FileText,
+  Calculator,
+  Package,
+  Ruler,
+  Home,
+  Trash2,
+  Copy,
+  Camera,
+  Upload,
+  Map,
+  ShoppingCart,
+  BookOpen
 } from 'lucide-react';
 
-export const dynamic = 'force-dynamic';
-
-interface Material {
-  id: string;
-  name: string;
-  nameEn: string;
-  unit: string;
-  category: string;
-  standardQuantity: number; // per square meter
-  price: number; // SAR per unit
-  specifications: string[];
-  suppliers: string[];
-}
-
-interface LightCalculation {
-  roomType: string;
-  roomName: string;
-  length: number;
-  width: number;
-  area: number;
-  requiredLux: number;
-  rowCount: number;
-  hiddenLighting: boolean;
-  hiddenLightDistance: number;
-  firstRowLights: {
-    widthCount: number;
-    lengthCount: number;
-    widthSpacing: number;
-    lengthSpacing: number;
-    product: string;
-  };
-  secondRowLights: {
-    widthCount: number;
-    lengthCount: number;
-    widthSpacing: number;
-    lengthSpacing: number;
-    product: string;
-  };
-}
-
-interface PDFAnalysis {
-  fileName: string;
-  extractedData: {
-    projectType: string;
-    totalArea: number;
-    rooms: Array<{
-      name: string;
-      area: number;
-      type: string;
-    }>;
-    specifications: string[];
-    materials: string[];
-  };
-  calculations: {
-    [key: string]: {
-      quantity: number;
-      unit: string;
-      totalCost: number;
-    };
-  };
-}
-
-export default function ProjectDetailPage() {
-  const { user, session, isLoading, error } = useAuth();
-  const params = useParams();
+export default function CreateProjectPage() {
   const router = useRouter();
-  const projectId = params?.id as string;
-  
-  const [activeTab, setActiveTab] = useState(projectId ? 'overview' : 'materials');
-  const [projectArea, setProjectArea] = useState<number>(200);
-  const [projectType, setProjectType] = useState<string>('villa');
-  const [floorCount, setFloorCount] = useState<number>(1);
-  const [roomCount, setRoomCount] = useState<number>(4);
-  const [isClient, setIsClient] = useState(false);
-  
-  // Set client-side flag
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
+  const searchParams = useSearchParams();
+  const [loading, setLoading] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+  const [editProjectId, setEditProjectId] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<'project-info' | 'location' | 'bulk-construction' | 'sale-booking' | 'level-selection' | 'level-details' | 'materials' | 'guidance'>('project-info');
+  const [selectedLevels, setSelectedLevels] = useState<string[]>([]);
+  const [currentLevelView, setCurrentLevelView] = useState<string>('');
+  const [materialsCalculated, setMaterialsCalculated] = useState(false);
 
-  // Load project data if projectId is provided
+  // Check for edit mode on component mount
   useEffect(() => {
-    if (projectId) {
-      loadProjectData();
+    const editId = searchParams?.get('editId');
+    if (editId) {
+      setEditMode(true);
+      setEditProjectId(editId);
+      loadProjectForEdit(editId);
     }
-  }, [projectId]);
+  }, [searchParams]);
 
-  const loadProjectData = async () => {
-    if (!projectId) return;
-    
+  // Load project data for editing
+  const loadProjectForEdit = async (projectId: string) => {
     try {
       const project = await ProjectTrackingService.getProjectById(projectId);
       if (project) {
-        setCurrentProject(project);
-        setProjectArea(project.area);
-        setProjectType(project.projectType || 'villa');
-        setFloorCount(project.floorCount || 1);
-        setRoomCount(project.roomCount || 4);
-        setProjectName(project.name);
-        setProjectDescription(project.description || '');
-        
-        // Populate edit form data
-        setEditProjectData({
+        setProjectData({
           name: project.name,
+          location: project.location || '',
+          area: project.area.toString(),
+          budget: project.budget?.toString() || '',
           description: project.description || '',
-          area: project.area,
-          projectType: project.projectType || 'residential',
-          floorCount: project.floorCount || 1,
-          roomCount: project.roomCount || 4,
-          location: project.location || ''
+          projectType: (project.projectType as 'residential' | 'commercial' | 'industrial') || 'residential',
+          floors: project.floorCount || 1,
+          rooms: project.roomCount || 4,
+          bathrooms: 3,
+          kitchens: 1,
+          livingArea: 30,
+          estimatedBudget: project.budget?.toString() || '',
+          finishQuality: 'standard',
+          pdfFile: null,
+          pdfAnalyzed: false,
+          exactLocation: {
+            latitude: '',
+            longitude: '',
+            address: project.location || '',
+            mapUrl: ''
+          },
+          locationImages: [],
+          isBulkProject: false,
+          bulkDetails: {
+            unitCount: 1,
+            unitType: 'villa',
+            isIdentical: true,
+            constructionCompany: '',
+            masterPlan: null
+          },
+          saleModel: {
+            isForSale: false,
+            isForBooking: false,
+            pricePerUnit: '',
+            bookingDeposit: '',
+            paymentPlan: 'cash',
+            completionDate: '',
+            features: [],
+            priceMarks: []
+          }
         });
-        
-        // Load project summary
-        const summary = await ProjectTrackingService.calculateProjectSummary(projectId);
-        if (summary) {
-          setProjectSummary(summary);
-        }
+        setSelectedLevels(project.selectedPhases || []);
       }
     } catch (error) {
-      console.error('Error loading project:', error);
+      console.error('Error loading project for edit:', error);
+      alert('حدث خطأ في تحميل بيانات المشروع');
     }
   };
-  
-  // Project and estimation data
-  const [currentProject, setCurrentProject] = useState<Project | null>(null);
-  const [projectSummary, setProjectSummary] = useState<any>(null);
-  const [showSaveDialog, setShowSaveDialog] = useState(false);
-  const [projectName, setProjectName] = useState('');
-  const [projectDescription, setProjectDescription] = useState('');
-  
-  // Edit project information state
-  const [isEditingProject, setIsEditingProject] = useState(false);
-  const [editProjectData, setEditProjectData] = useState({
+  const [projectData, setProjectData] = useState({
     name: '',
+    location: '',
+    area: '',
+    budget: '',
     description: '',
-    area: 0,
-    projectType: 'residential',
-    floorCount: 1,
-    roomCount: 4,
-    location: ''
-  });
-  
-  // Light Distribution States
-  const [lightCalc, setLightCalc] = useState<LightCalculation>({
-    roomType: 'living',
-    roomName: '',
-    length: 5,
-    width: 4,
-    area: 20,
-    requiredLux: 150,
-    rowCount: 2,
-    hiddenLighting: false,
-    hiddenLightDistance: 30,
-    firstRowLights: {
-      widthCount: 0,
-      lengthCount: 0,
-      widthSpacing: 0,
-      lengthSpacing: 0,
-      product: 'LED-18W'
+    projectType: 'residential' as 'residential' | 'commercial' | 'industrial',
+    floors: 1,
+    rooms: 4,
+    bathrooms: 3,
+    kitchens: 1,
+    livingArea: 30,
+    estimatedBudget: '',
+    finishQuality: 'standard',
+    pdfFile: null as File | null,
+    pdfAnalyzed: false,
+    // New fields
+    exactLocation: {
+      latitude: '',
+      longitude: '',
+      address: '',
+      mapUrl: ''
     },
-    secondRowLights: {
-      widthCount: 0,
-      lengthCount: 0,
-      widthSpacing: 0,
-      lengthSpacing: 0,
-      product: 'LED-24W'
+    locationImages: [] as File[],
+    isBulkProject: false,
+    bulkDetails: {
+      unitCount: 1,
+      unitType: 'villa',
+      isIdentical: true,
+      constructionCompany: '',
+      masterPlan: null as File | null
+    },
+    saleModel: {
+      isForSale: false,
+      isForBooking: false,
+      pricePerUnit: '',
+      bookingDeposit: '',
+      paymentPlan: 'cash',
+      completionDate: '',
+      features: [] as string[],
+      priceMarks: [] as string[]
     }
   });
 
-  // Saved rooms for lighting
-  const [savedRooms, setSavedRooms] = useState<LightCalculation[]>([]);
+  const constructionLevels = ConstructionGuidanceService.getConstructionLevels();
 
-  // PDF Analysis States
-  const [pdfFile, setPdfFile] = useState<File | null>(null);
-  const [pdfAnalysis, setPdfAnalysis] = useState<PDFAnalysis | null>(null);
-  const [analyzing, setAnalyzing] = useState<boolean>(false);
+  const handleLevelToggle = (levelId: string) => {
+    setSelectedLevels(prev => {
+      const level = constructionLevels.find(l => l.id === levelId);
+      if (!level) return prev;
 
-  // Materials Database
-  const [materials] = useState<Material[]>([
-    {
-      id: 'cement',
-      name: 'أسمنت بورتلاند',
-      nameEn: 'Portland Cement',
-      unit: 'كيس 50كغ',
-      category: 'خرسانة',
-      standardQuantity: 7.5, // bags per sqm (more realistic for construction)
-      price: 22.50, // Updated to match real data pricing
-      specifications: ['مقاومة 42.5N/mm²', 'مطابق للمواصفات السعودية', 'سريع التصلب'],
-      suppliers: ['شركة أسمنت الرياض', 'أسمنت اليمامة', 'أسمنت الشرقية']
-    },
-    {
-      id: 'steel',
-      name: 'حديد التسليح',
-      nameEn: 'Reinforcement Steel',
-      unit: 'طن',
-      category: 'حديد',
-      standardQuantity: 0.18, // tons per sqm (increased for realistic construction)
-      price: 4750, // Updated to match real data pricing (per ton)
-      specifications: ['درجة 60', 'قطر 8-32 مم', 'مقاوم للصدأ'],
-      suppliers: ['حديد السعودية', 'الراجحي للحديد', 'صناعات الحديد المتطورة']
-    },
-    {
-      id: 'blocks',
-      name: 'بلوك خرساني',
-      nameEn: 'Concrete Blocks',
-      unit: 'قطعة',
-      category: 'بناء',
-      standardQuantity: 15, // pieces per sqm (increased)
-      price: 3.25, // Updated to match real data pricing
-      specifications: ['20×20×40 سم', 'مقاومة ضغط 5N/mm²', 'عازل حراري'],
-      suppliers: ['مصنع البلوك الحديث', 'شركة الخرسانة السعودية', 'مصانع البناء المتقدمة']
-    },
-    {
-      id: 'tiles',
-      name: 'بلاط سيراميك',
-      nameEn: 'Ceramic Tiles',
-      unit: 'متر مربع',
-      category: 'تشطيبات',
-      standardQuantity: 1.1, // sqm per sqm (including waste)
-      price: 45,
-      specifications: ['60×60 سم', 'مقاوم للماء', 'مضاد للانزلاق'],
-      suppliers: ['الجوهرة للسيراميك', 'شركة السيراميك السعودية', 'مصانع الفخار الحديثة']
-    },
-    {
-      id: 'paint',
-      name: 'دهان أكريليك',
-      nameEn: 'Acrylic Paint',
-      unit: 'جالون 4 لتر',
-      category: 'دهانات',
-      standardQuantity: 0.15, // gallons per sqm
-      price: 120,
-      specifications: ['مقاوم للطقس', 'سهل التنظيف', 'متوفر بجميع الألوان'],
-      suppliers: ['دهانات الجزيرة', 'شركة الدهانات السعودية', 'بويات ناشيونال']
-    },
-    {
-      id: 'sand',
-      name: 'رمل بناء',
-      nameEn: 'Construction Sand',
-      unit: 'متر مكعب',
-      category: 'خرسانة',
-      standardQuantity: 0.5, // cubic meters per sqm
-      price: 35,
-      specifications: ['مغسول ومنخل', 'خالي من الشوائب', 'حبيبات متوسطة'],
-      suppliers: ['محاجر الرياض', 'شركة الرمل المتخصصة', 'مقاولو الحفر والردم']
-    },
-    {
-      id: 'gravel',
-      name: 'حصى مدرج',
-      nameEn: 'Graded Gravel',
-      unit: 'متر مكعب',
-      category: 'خرسانة',
-      standardQuantity: 0.7, // cubic meters per sqm
-      price: 40,
-      specifications: ['مدرج 5-20 مم', 'نظيف ومغسول', 'مقاوم للتآكل'],
-      suppliers: ['محاجر الشرقية', 'شركة الحصى السعودية', 'مصانع الخرسانة الجاهزة']
-    },
-    {
-      id: 'insulation',
-      name: 'عازل حراري',
-      nameEn: 'Thermal Insulation',
-      unit: 'متر مربع',
-      category: 'عزل',
-      standardQuantity: 1.0, // sqm per sqm
-      price: 25,
-      specifications: ['سماكة 5 سم', 'مقاوم للحريق', 'صديق للبيئة'],
-      suppliers: ['شركة العزل المتطور', 'مصانع العزل الحراري', 'تقنيات البناء الحديثة']
-    }
-  ]);
-
-  const [calculatedMaterials, setCalculatedMaterials] = useState<any[]>([]);
-  const [totalCost, setTotalCost] = useState<number>(0);
-
-  // Room types for lighting
-  const roomTypes = [
-    { value: 'living', label: 'صالة معيشة', lux: 150 },
-    { value: 'bedroom', label: 'غرفة نوم', lux: 100 },
-    { value: 'kitchen', label: 'مطبخ', lux: 300 },
-    { value: 'bathroom', label: 'حمام', lux: 200 },
-    { value: 'office', label: 'مكتب', lux: 500 },
-    { value: 'dining', label: 'غرفة طعام', lux: 150 },
-    { value: 'corridor', label: 'ممر', lux: 75 }
-  ];
-
-  const lightProducts = [
-    { value: 'LED-9W', label: 'LED 9W - 900 لومن', lumens: 900, price: 45 },
-    { value: 'LED-12W', label: 'LED 12W - 1200 لومن', lumens: 1200, price: 60 },
-    { value: 'LED-18W', label: 'LED 18W - 1800 لومن', lumens: 1800, price: 85 },
-    { value: 'LED-24W', label: 'LED 24W - 2400 لومن', lumens: 2400, price: 110 },
-    { value: 'LED-36W', label: 'LED 36W - 3600 لومن', lumens: 3600, price: 150 }
-  ];
-
-  // Hydration-safe number formatter - Always use English numerals
-  const formatNumber = (num: number): string => {
-    if (!isClient) {
-      // Server-side or before hydration: return simple format with English numerals
-      return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    }
-    // Client-side: use English locale to ensure English numerals
-    return num.toLocaleString('en-US');
-  };
-
-  // Date formatter - Always use Georgian calendar with English numerals
-  const formatDate = (date: string | Date): string => {
-    const dateObj = typeof date === 'string' ? new Date(date) : date;
-    if (!isClient) {
-      return dateObj.toISOString().split('T')[0];
-    }
-    // Use English locale for Georgian calendar with English numerals
-    return dateObj.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit'
+      if (prev.includes(levelId)) {
+        // Remove level and all dependent levels
+        const levelsToRemove = constructionLevels
+          .filter(l => l.dependencies?.includes(levelId) || l.id === levelId)
+          .map(l => l.id);
+        return prev.filter(id => !levelsToRemove.includes(id));
+      } else {
+        // Add level and all dependencies
+        const levelsToAdd = new Set([levelId]);
+        
+        // Add dependencies recursively
+        const addDependencies = (id: string) => {
+          const currentLevel = constructionLevels.find(l => l.id === id);
+          if (currentLevel?.dependencies) {
+            currentLevel.dependencies.forEach(dep => {
+              levelsToAdd.add(dep);
+              addDependencies(dep);
+            });
+          }
+        };
+        
+        addDependencies(levelId);
+        return [...prev, ...Array.from(levelsToAdd)].filter((id, index, arr) => arr.indexOf(id) === index);
+      }
     });
   };
 
-// Material calculation interface
-interface UnifiedMaterial {
-  id: string;
-  name: string;
-  nameEn: string;
-  quantity: number;
-  unit: string;
-  category: string;
-  categoryAr: string;
-  description: string;
-  totalCost: number;
-  purchased?: number;
-  remaining?: number;
-  remainingCost?: number;
-}
+  const calculateMaterials = () => {
+    setMaterialsCalculated(true);
+    setActiveTab('materials');
+  };
 
-interface UnifiedMaterialsMap {
-  [key: string]: UnifiedMaterial;
-}
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!projectData.name.trim()) {
+      alert('يرجى إدخال اسم المشروع');
+      return;
+    }
 
-  // Unified Materials Calculation - CONSISTENT ACROSS ALL CALCULATIONS
-  const calculateUnifiedMaterials = (area: number, projectType: string = 'residential', floorCount: number = 1): UnifiedMaterialsMap => {
-    // Base calculations per square meter (standardized formulas)
+    if (selectedLevels.length === 0) {
+      alert('يرجى اختيار مستوى واحد على الأقل');
+      return;
+    }
+
+    // Calculate actual materials cost for the project
+    const calculatedMaterialsCost = Object.values(getMaterialsForProject())
+      .reduce((sum, material) => sum + material.estimatedCost, 0);
+
+    // Confirm with user before saving
+    const confirmed = confirm(
+      editMode 
+        ? `سيتم تحديث المشروع بالتكلفة المحسوبة: ${calculatedMaterialsCost.toLocaleString('en-US')} ريال\n\nهل تريد المتابعة؟`
+        : `سيتم إنشاء المشروع بالتكلفة المحسوبة: ${calculatedMaterialsCost.toLocaleString('en-US')} ريال\n\nهل تريد المتابعة؟`
+    );
+
+    if (!confirmed) return;
+
+    setLoading(true);
+    try {
+      const projectLevels: ProjectLevel[] = selectedLevels.map(levelId => ({
+        levelId,
+        status: 'not-started',
+        progress: 0
+      }));
+
+      const projectPayload = {
+        id: editMode ? editProjectId! : Date.now().toString(),
+        name: projectData.name,
+        description: projectData.description,
+        area: parseInt(projectData.area) || 0,
+        projectType: projectData.projectType,
+        floorCount: projectData.floors || 1,
+        roomCount: (projectData.rooms || 0) + (projectData.bathrooms || 0) + (projectData.kitchens || 0),
+        stage: 'تخطيط',
+        progress: 0,
+        status: 'planning' as const,
+        location: projectData.location,
+        budget: calculatedMaterialsCost, // Use calculated materials cost instead of user budget
+        selectedPhases: selectedLevels,
+        enablePhotoTracking: true,
+        enableProgressTracking: true,
+        createdAt: editMode ? (new Date().toISOString()) : new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+
+      await ProjectTrackingService.saveProject(projectPayload);
+
+      if (editMode) {
+        router.push(`/user/comprehensive-construction-calculator?projectId=${editProjectId}`);
+      } else {
+        router.push('/user/projects');
+      }
+    } catch (error) {
+      console.error(`Error ${editMode ? 'updating' : 'creating'} project:`, error);
+      alert(`حدث خطأ في ${editMode ? 'تحديث' : 'إنشاء'} المشروع`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const canStartLevel = (levelId: string) => {
+    return ConstructionGuidanceService.canStartLevel(levelId, selectedLevels);
+  };
+
+  const renderLevelIntegration = (level: ConstructionLevel) => {
+    if (!level.hasExternalIntegration) return null;
+
+    switch (level.id) {
+      case 'land-acquisition':
+        return (
+          <LandPurchaseIntegration 
+            projectId="new-project"
+            onLandSelected={(land) => console.log('Land selected:', land)}
+          />
+        );
+      case 'contractor-selection':
+        return (
+          <ContractorSelectionIntegration 
+            projectId="new-project"
+            projectArea={parseInt(projectData.area) || 500}
+            projectType={projectData.projectType}
+            onContractorSelected={(contractor) => console.log('Contractor selected:', contractor)}
+          />
+        );
+      default:
+        return (
+          <Card className="bg-blue-50 border-blue-200">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <Globe className="w-6 h-6 text-blue-600" />
+                <div>
+                  <h4 className="font-semibold text-blue-800">تكامل خارجي متاح</h4>
+                  <p className="text-sm text-blue-600">
+                    سيتم توفير التكامل مع: {level.externalPlatforms?.join(', ')}
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        );
+    }
+  };
+
+  const getMaterialsForProject = (): MaterialsMap => {
+    const area = parseInt(projectData.area) || 0;
+    const projectType = projectData.projectType;
+    const floors = projectData.floors || 1;
+    
+    // Use the same unified calculation logic as comprehensive calculator
     const baseCalculations = {
       'concrete': {
         name: 'خرسانة',
-        nameEn: 'concrete',
-        quantityPerSqm: 0.3, // 0.3 cubic meters per sqm
-        unitPrice: 350, // SAR per cubic meter
+        quantityPerSqm: 0.3,
+        unitPrice: 350,
         unit: 'متر مكعب',
-        category: 'foundation',
-        categoryAr: 'أساسات',
         description: 'خرسانة للأساسات والأعمدة والسقف'
       },
       'steel': {
         name: 'حديد التسليح',
-        nameEn: 'steel',
-        quantityPerSqm: 120, // 120 kg per sqm
-        unitPrice: 4.5, // SAR per kg
+        quantityPerSqm: 120,
+        unitPrice: 4.5,
         unit: 'كيلوجرام',
-        category: 'structure',
-        categoryAr: 'هيكل',
         description: 'حديد التسليح للمنشأ'
       },
       'cement': {
         name: 'إسمنت بورتلاند',
-        nameEn: 'cement',
-        quantityPerSqm: 2, // 2 bags per sqm
-        unitPrice: 18, // SAR per 50kg bag
+        quantityPerSqm: 2,
+        unitPrice: 18,
         unit: 'كيس 50كغ',
-        category: 'foundation',
-        categoryAr: 'أساسات',
         description: 'إسمنت بورتلاندي للبناء'
       },
       'blocks': {
         name: 'بلوك خرساني',
-        nameEn: 'blocks',
-        quantityPerSqm: 45, // 45 blocks per sqm
-        unitPrice: 3.5, // SAR per block
+        quantityPerSqm: 45,
+        unitPrice: 3.5,
         unit: 'قطعة',
-        category: 'structure',
-        categoryAr: 'بناء',
         description: 'بلوك خرساني للجدران'
       },
       'sand': {
         name: 'رمل بناء',
-        nameEn: 'sand',
-        quantityPerSqm: 0.5, // 0.5 cubic meters per sqm
-        unitPrice: 80, // SAR per cubic meter
+        quantityPerSqm: 0.5,
+        unitPrice: 80,
         unit: 'متر مكعب',
-        category: 'foundation',
-        categoryAr: 'خرسانة',
         description: 'رمل للملاط والخرسانة'
       },
       'gravel': {
         name: 'حصى مدرج',
-        nameEn: 'gravel',
-        quantityPerSqm: 0.4, // 0.4 cubic meters per sqm
-        unitPrice: 90, // SAR per cubic meter
+        quantityPerSqm: 0.4,
+        unitPrice: 90,
         unit: 'متر مكعب',
-        category: 'foundation',
-        categoryAr: 'خرسانة',
         description: 'حصى للخرسانة والأساسات'
       },
       'tiles': {
         name: 'بلاط سيراميك',
-        nameEn: 'tiles',
-        quantityPerSqm: 1.1, // 1.1 sqm per sqm (waste factor)
-        unitPrice: 45, // SAR per sqm
+        quantityPerSqm: 1.1,
+        unitPrice: 45,
         unit: 'متر مربع',
-        category: 'finishing',
-        categoryAr: 'تشطيبات',
         description: 'بلاط للأرضيات'
       },
       'paint': {
         name: 'دهان أكريليك',
-        nameEn: 'paint',
-        quantityPerSqm: 0.5, // 0.5 gallons per sqm of wall area
-        unitPrice: 80, // SAR per 4L gallon
+        quantityPerSqm: 0.5,
+        unitPrice: 80,
         unit: 'جالون 4 لتر',
-        category: 'finishing',
-        categoryAr: 'دهانات',
         description: 'دهان للجدران الداخلية والخارجية'
       }
     };
 
-    // Calculate total quantities based on area and floors
-    const calculatedMaterials: UnifiedMaterialsMap = {};
+    // Calculate materials using unified logic
+    const materials: MaterialsMap = {};
     
     Object.entries(baseCalculations).forEach(([key, material]) => {
       let quantity = Math.ceil(area * material.quantityPerSqm);
       
       // Apply floor multiplier for certain materials
       if (['concrete', 'steel', 'cement'].includes(key)) {
-        quantity = quantity * floorCount;
+        quantity = quantity * floors;
       }
       
       // Apply project type multiplier
@@ -493,857 +413,1419 @@ interface UnifiedMaterialsMap {
       }
       
       quantity = Math.ceil(quantity * typeMultiplier);
-      const totalCost = quantity * material.unitPrice;
+      const estimatedCost = quantity * material.unitPrice;
       
-      calculatedMaterials[key] = {
-        id: key,
-        name: material.name,
-        nameEn: material.nameEn,
-        quantity: quantity,
-        unit: material.unit,
-        category: material.category,
-        categoryAr: material.categoryAr,
-        description: material.description,
-        totalCost: totalCost,
-        purchased: 0,
-        remaining: quantity,
-        remainingCost: totalCost
+      materials[key] = {
+        ...material,
+        quantity,
+        estimatedCost
       };
     });
 
-    return calculatedMaterials;
-  };
-
-  // Calculate material quantities - UNIFIED with project creation
-  const calculateMaterials = () => {
-    const area = projectArea || 0;
-    const type = projectType;
-    const floors = floorCount || 1;
-    
-    // Use unified calculation
-    const unifiedMaterialsData = calculateUnifiedMaterials(area, type, floors);
-    
-    // Convert to format expected by the UI
-    const calculated = Object.values(unifiedMaterialsData).map((material, index) => ({
-      ...materials[index], // Keep original material properties if they exist
-      id: material.id,
-      name: material.name,
-      calculatedQuantity: material.quantity,
-      totalCost: material.totalCost,
-      formattedCost: formatNumber(material.totalCost),
-      unit: material.unit,
-      category: material.category,
-      description: material.description
-    }));
-
-    setCalculatedMaterials(calculated);
-    setTotalCost(calculated.reduce((sum, material) => sum + (material.totalCost || 0), 0));
-  };
-
-  // Calculate lighting distribution
-  const calculateLighting = () => {
-    const area = lightCalc.length * lightCalc.width;
-    const roomTypeData = roomTypes.find(rt => rt.value === lightCalc.roomType);
-    const requiredLux = roomTypeData?.lux || 150;
-    
-    // Get light product data
-    const firstRowProduct = lightProducts.find(p => p.value === lightCalc.firstRowLights.product);
-    const secondRowProduct = lightProducts.find(p => p.value === lightCalc.secondRowLights.product);
-    
-    // Calculate total lumens needed
-    const totalLumensNeeded = area * requiredLux;
-    
-    // Calculate number of lights for each row
-    const firstRowLumens = firstRowProduct?.lumens || 1800;
-    const secondRowLumens = secondRowProduct?.lumens || 2400;
-    
-    // Simple distribution calculation
-    const firstRowCount = Math.ceil(totalLumensNeeded * 0.6 / firstRowLumens);
-    const secondRowCount = Math.ceil(totalLumensNeeded * 0.4 / secondRowLumens);
-    
-    // Calculate spacing
-    const firstRowWidthCount = Math.ceil(Math.sqrt(firstRowCount * (lightCalc.width / lightCalc.length)));
-    const firstRowLengthCount = Math.ceil(firstRowCount / firstRowWidthCount);
-    const firstRowWidthSpacing = lightCalc.width / (firstRowWidthCount + 1);
-    const firstRowLengthSpacing = lightCalc.length / (firstRowLengthCount + 1);
-    
-    const secondRowWidthCount = Math.ceil(Math.sqrt(secondRowCount * (lightCalc.width / lightCalc.length)));
-    const secondRowLengthCount = Math.ceil(secondRowCount / secondRowWidthCount);
-    const secondRowWidthSpacing = lightCalc.width / (secondRowWidthCount + 1);
-    const secondRowLengthSpacing = lightCalc.length / (secondRowLengthCount + 1);
-
-    setLightCalc(prev => ({
-      ...prev,
-      area,
-      requiredLux,
-      firstRowLights: {
-        ...prev.firstRowLights,
-        widthCount: firstRowWidthCount,
-        lengthCount: firstRowLengthCount,
-        widthSpacing: Number(firstRowWidthSpacing.toFixed(2)),
-        lengthSpacing: Number(firstRowLengthSpacing.toFixed(2))
-      },
-      secondRowLights: {
-        ...prev.secondRowLights,
-        widthCount: secondRowWidthCount,
-        lengthCount: secondRowLengthCount,
-        widthSpacing: Number(secondRowWidthSpacing.toFixed(2)),
-        lengthSpacing: Number(secondRowLengthSpacing.toFixed(2))
-      }
-    }));
-  };
-
-  // Save current room calculation
-  const saveCurrentRoom = () => {
-    if (!lightCalc.roomName.trim()) {
-      alert('يرجى إدخال اسم الغرفة');
-      return;
-    }
-
-    // Check if room with same name already exists
-    const existingRoomIndex = savedRooms.findIndex(room => room.roomName === lightCalc.roomName);
-    
-    if (existingRoomIndex !== -1) {
-      // Update existing room
-      const updatedRooms = [...savedRooms];
-      updatedRooms[existingRoomIndex] = { ...lightCalc };
-      setSavedRooms(updatedRooms);
-      alert('تم تحديث بيانات الغرفة بنجاح');
-    } else {
-      // Add new room
-      setSavedRooms(prev => [...prev, { ...lightCalc }]);
-      alert('تم حفظ الغرفة بنجاح');
-    }
-    
-    // Reset form for new room
-    setLightCalc(prev => ({
-      ...prev,
-      roomName: '',
-      length: 5,
-      width: 4
-    }));
-  };
-
-  // Delete saved room
-  const deleteSavedRoom = (roomName: string) => {
-    setSavedRooms(prev => prev.filter(room => room.roomName !== roomName));
-    alert('تم حذف الغرفة بنجاح');
-  };
-
-  // Load saved room for editing
-  const loadSavedRoom = (room: LightCalculation) => {
-    setLightCalc({ ...room });
-  };
-
-  // Calculate total lighting cost for all saved rooms
-  const getTotalLightingCost = () => {
-    return savedRooms.reduce((total, room) => {
-      const firstRowProduct = lightProducts.find(p => p.value === room.firstRowLights.product);
-      const secondRowProduct = lightProducts.find(p => p.value === room.secondRowLights.product);
-      
-      const firstRowCost = (room.firstRowLights.widthCount * room.firstRowLights.lengthCount) * (firstRowProduct?.price || 0);
-      const secondRowCost = (room.secondRowLights.widthCount * room.secondRowLights.lengthCount) * (secondRowProduct?.price || 0);
-      
-      return total + firstRowCost + secondRowCost;
-    }, 0);
-  };
-
-  // Simulate PDF analysis
-  const analyzePDF = async (file: File) => {
-    setAnalyzing(true);
-    
-    // Simulate processing time
-    await new Promise(resolve => setTimeout(resolve, 3000));
-    
-    setAnalyzing(false);
-  };
-
-  // Handle file upload
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file && file.type === 'application/pdf') {
-      setPdfFile(file);
-      analyzePDF(file);
-    }
-  };
-
-  // Handle save project edits
-  const handleSaveProject = async () => {
-    if (!currentProject) return;
-    
-    try {
-      // Map custom projectType to allowed values for edits
-      let mappedProjectType: 'residential' | 'commercial' | 'industrial' = 'residential';
-      if (['residential', 'commercial', 'industrial'].includes(editProjectData.projectType)) {
-        mappedProjectType = editProjectData.projectType as 'residential' | 'commercial' | 'industrial';
-      } else if (['villa', 'apartment', 'house', 'flat'].includes(editProjectData.projectType)) {
-        mappedProjectType = 'residential' as 'residential';
-      } else if (['shop', 'mall', 'office'].includes(editProjectData.projectType)) {
-        mappedProjectType = 'commercial' as 'commercial';
-      } else if (['factory', 'warehouse'].includes(editProjectData.projectType)) {
-        mappedProjectType = 'industrial' as 'industrial';
-      }
-      const updatedProject = {
-        ...currentProject,
-        name: editProjectData.name,
-        description: editProjectData.description,
-        area: editProjectData.area,
-        projectType: mappedProjectType,
-        floorCount: editProjectData.floorCount,
-        roomCount: editProjectData.roomCount,
-        location: editProjectData.location,
-        updatedAt: new Date().toISOString()
-      };
-      
-      await ProjectTrackingService.saveProject(updatedProject);
-      setCurrentProject(updatedProject);
-      setProjectName(editProjectData.name);
-      setProjectDescription(editProjectData.description);
-      setProjectArea(editProjectData.area);
-      setProjectType(editProjectData.projectType);
-      setFloorCount(editProjectData.floorCount);
-      setRoomCount(editProjectData.roomCount);
-      setIsEditingProject(false);
-      
-      alert('تم حفظ التغييرات بنجاح');
-    } catch (error) {
-      console.error('Error updating project:', error);
-      alert('حدث خطأ أثناء حفظ التغييرات');
-    }
-  };
-
-  const saveEstimationToProject = async () => {
-    try {
-      let targetProjectId = projectId;
-      // Map custom projectType to allowed values for new project creation
-      let mappedNewProjectType: 'residential' | 'commercial' | 'industrial' = 'residential';
-      if (['residential', 'commercial', 'industrial'].includes(projectType)) {
-        mappedNewProjectType = projectType as 'residential' | 'commercial' | 'industrial';
-      } else if (['villa', 'apartment', 'house', 'flat'].includes(projectType)) {
-        mappedNewProjectType = 'residential' as 'residential';
-      } else if (['shop', 'mall', 'office'].includes(projectType)) {
-        mappedNewProjectType = 'commercial' as 'commercial';
-      } else if (['factory', 'warehouse'].includes(projectType)) {
-        mappedNewProjectType = 'industrial' as 'industrial';
-      }
-      if (!projectId && projectName) {
-        const newProject: Project = {
-          id: Date.now().toString(),
-          name: projectName,
-          description: projectDescription,
-          area: projectArea,
-          projectType: mappedNewProjectType,
-          floorCount,
-          roomCount,
-          stage: 'تخطيط',
-          progress: 0,
-          status: 'planning',
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString()
-        };
-        await ProjectTrackingService.saveProject(newProject);
-        setCurrentProject(newProject);
-        targetProjectId = newProject.id;
-      }
-
-      if (!targetProjectId) {
-        alert('يرجى إدخال اسم المشروع');
-        return;
-      }
-
-      // Convert calculated materials to estimation format
-      const materialEstimations: MaterialEstimation[] = calculatedMaterials.map(material => ({
-        materialId: material.id,
-        materialName: material.name,
-        materialNameEn: material.nameEn,
-        category: material.category,
-        estimatedQuantity: material.calculatedQuantity,
-        unit: material.unit,
-        pricePerUnit: material.price,
-        totalCost: material.totalCost,
-        specifications: material.specifications,
-        suppliers: material.suppliers,
-        priority: 'medium',
-        phase: getCategoryPhase(material.category)
-      }));
-
-      // Convert lighting calculations to estimation format (if lighting is calculated)
-      const lightingEstimations: LightingEstimation[] = [];
-      if (lightCalc.length > 0 && lightCalc.width > 0) {
-        const area = lightCalc.length * lightCalc.width;
-        const roomTypeData = roomTypes.find(rt => rt.value === lightCalc.roomType);
-        const firstRowProduct = lightProducts.find(p => p.value === lightCalc.firstRowLights.product);
-        const secondRowProduct = lightProducts.find(p => p.value === lightCalc.secondRowLights.product);
-        
-        const lightingEstimation: LightingEstimation = {
-          roomName: lightCalc.roomName || 'غرفة',
-          roomType: lightCalc.roomType,
-          area: area,
-          requiredLux: roomTypeData?.lux || 150,
-          fixtures: [
-            {
-              type: lightCalc.firstRowLights.product,
-              quantity: lightCalc.firstRowLights.widthCount * lightCalc.firstRowLights.lengthCount,
-              pricePerUnit: firstRowProduct?.price || 0,
-              totalCost: (lightCalc.firstRowLights.widthCount * lightCalc.firstRowLights.lengthCount) * (firstRowProduct?.price || 0)
-            },
-            {
-              type: lightCalc.secondRowLights.product,
-              quantity: lightCalc.secondRowLights.widthCount * lightCalc.secondRowLights.lengthCount,
-              pricePerUnit: secondRowProduct?.price || 0,
-              totalCost: (lightCalc.secondRowLights.widthCount * lightCalc.secondRowLights.lengthCount) * (secondRowProduct?.price || 0)
-            }
-          ],
-          totalCost: 0 // Will be calculated below
-        };
-        
-        // Calculate total cost
-        lightingEstimation.totalCost = lightingEstimation.fixtures.reduce((sum, fixture) => sum + fixture.totalCost, 0);
-        lightingEstimations.push(lightingEstimation);
-      }
-
-      const totalLightingCost = lightingEstimations.reduce((sum, lighting) => sum + lighting.totalCost, 0);
-
-      // Create estimation
-      const estimation: ProjectEstimation = {
-        id: Date.now().toString(),
-        projectId: targetProjectId,
-        calculatorType: 'comprehensive',
-        createdAt: new Date().toISOString(),
-        materials: materialEstimations,
-        lighting: lightingEstimations,
-        totalCost: totalCost + totalLightingCost,
-        phases: {
-          foundation: materialEstimations.filter(m => m.phase === 'foundation').reduce((sum, m) => sum + m.totalCost, 0),
-          structure: materialEstimations.filter(m => m.phase === 'structure').reduce((sum, m) => sum + m.totalCost, 0),
-          finishing: materialEstimations.filter(m => m.phase === 'finishing').reduce((sum, m) => sum + m.totalCost, 0),
-          electrical: materialEstimations.filter(m => m.phase === 'electrical').reduce((sum, m) => sum + m.totalCost, 0) + totalLightingCost,
-          plumbing: materialEstimations.filter(m => m.phase === 'plumbing').reduce((sum, m) => sum + m.totalCost, 0)
-        }
-      };
-
-      await ProjectTrackingService.saveEstimation(estimation);
-      
-      alert('تم حفظ التقدير بنجاح!');
-      setShowSaveDialog(false);
-      
-      // Navigate to project list page since we're already in the unified interface
-      router.push('/user/projects/list');
-      
-    } catch (error) {
-      console.error('Error saving estimation:', error);
-      alert('حدث خطأ أثناء حفظ التقدير');
-    }
-  };
-
-  // Helper function to determine phase based on material category
-  const getCategoryPhase = (category: string): 'foundation' | 'structure' | 'finishing' | 'electrical' | 'plumbing' => {
-    switch (category) {
-      case 'خرسانة':
-      case 'حديد':
-        return 'foundation';
-      case 'بناء':
-        return 'structure';
-      case 'تشطيبات':
-      case 'دهانات':
-        return 'finishing';
-      case 'كهرباء':
-      case 'إضاءة':
-        return 'electrical';
-      case 'سباكة':
-        return 'plumbing';
-      default:
-        return 'structure';
-    }
-  };
-
-  // Generate and download PDF report
-  const generateAndDownloadPDF = () => {
-    try {
-      // Create report data
-      const reportData = {
-        projectInfo: {
-          name: projectName || `مشروع ${projectType}`,
-          area: projectArea,
-          type: projectType,
-          floors: floorCount,
-          rooms: roomCount,
-          date: formatDate(new Date())
-        },
-        materials: calculatedMaterials,
-        totalCost,
-        lightingCalculation: lightCalc,
-        pdfAnalysis
-      };
-
-      // Create blob with report content
-      const reportContent = JSON.stringify(reportData, null, 2);
-      const blob = new Blob([reportContent], { type: 'application/json' });
-      
-      // Create download link
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `تقرير-مشروع-${Date.now()}.json`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
-
-      alert('تم تحميل التقرير بنجاح!');
-    } catch (error) {
-      console.error('Error generating PDF:', error);
-      alert('حدث خطأ في إنشاء التقرير');
-    }
-  };
-
-  // Preview report in new window
-  const previewReport = () => {
-    try {
-      const reportData = {
-        projectInfo: {
-          name: projectName || `مشروع ${projectType}`,
-          area: projectArea,
-          type: projectType,
-          floors: floorCount,
-          rooms: roomCount,
-          date: formatDate(new Date())
-        },
-        materials: calculatedMaterials,
-        totalCost,
-        lightingCalculation: lightCalc,
-        pdfAnalysis
-      };
-
-      // Create HTML content for preview
-      const htmlContent = `
-        <!DOCTYPE html>
-        <html dir="rtl" lang="ar">
-        <head>
-          <meta charset="UTF-8">
-          <title>معاينة تقرير المشروع</title>
-          <style>
-            body { font-family: Arial, sans-serif; padding: 20px; direction: rtl; }
-            .header { text-align: center; margin-bottom: 30px; }
-            .section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; }
-            .cost { color: #059669; font-weight: bold; }
-            table { width: 100%; border-collapse: collapse; }
-            th, td { padding: 8px; border: 1px solid #ddd; text-align: right; }
-            th { background-color: #f9f9f9; }
-          </style>
-        </head>
-        <body>
-          <div class="header">
-            <h1>تقرير المشروع الشامل</h1>
-            <p>تاريخ الإنشاء: ${formatDate(new Date())}</p>
-          </div>
-          
-          <div class="section">
-            <h2>معلومات المشروع</h2>
-            <p><strong>اسم المشروع:</strong> ${reportData.projectInfo.name}</p>
-            <p><strong>المساحة:</strong> ${reportData.projectInfo.area} متر مربع</p>
-            <p><strong>نوع المشروع:</strong> ${reportData.projectInfo.type}</p>
-            <p><strong>عدد الطوابق:</strong> ${reportData.projectInfo.floors}</p>
-            <p><strong>عدد الغرف:</strong> ${reportData.projectInfo.rooms}</p>
-          </div>
-
-          <div class="section">
-            <h2>تفاصيل المواد والتكاليف</h2>
-            <table>
-              <thead>
-                <tr>
-                  <th>المادة</th>
-                  <th>الكمية</th>
-                  <th>الوحدة</th>
-                  <th>التكلفة الإجمالية</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${calculatedMaterials.map(material => `
-                  <tr>
-                    <td>${material.name}</td>
-                    <td>${material.calculatedQuantity}</td>
-                    <td>${material.unit}</td>
-                    <td class="cost">${material.formattedCost} ريال</td>
-                  </tr>
-                `).join('')}
-              </tbody>
-            </table>
-            <p style="text-align: center; font-size: 18px; margin-top: 20px;">
-              <strong>إجمالي التكلفة: <span class="cost">${formatNumber(totalCost)} ريال سعودي</span></strong>
-            </p>
-          </div>
-        </body>
-        </html>
-      `;
-
-      const newWindow = window.open('', '_blank');
-      if (newWindow) {
-        newWindow.document.write(htmlContent);
-        newWindow.document.close();
-      } else {
-        alert('يرجى السماح بفتح النوافذ المنبثقة لعرض التقرير');
-      }
-    } catch (error) {
-      console.error('Error previewing report:', error);
-      alert('حدث خطأ في معاينة التقرير');
-    }
+    return materials;
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 p-6" dir="rtl">
-      <div className="container mx-auto max-w-7xl">
+    <div className="min-h-screen bg-gray-50 p-4 lg:p-8">
+      <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="flex justify-between items-center mb-8">
-          <div className="text-center flex-1">
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <Calculator className="w-12 h-12 text-blue-600" />
-              <h1 className="text-4xl font-bold text-gray-900">الحاسبة الشاملة للبناء والإنارة</h1>
-            </div>
-            <p className="text-xl text-gray-600">
-              نظام ذكي متكامل لحساب المواد وتوزيع الإنارة وتحليل المخططات
+        <div className="flex items-center gap-4 mb-8">
+          <Button
+            variant="outline"
+            onClick={() => router.back()}
+            className="flex items-center gap-2"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            رجوع
+          </Button>
+          <div className="flex-1">
+            <h1 className="text-3xl font-bold text-gray-800">
+              {editMode ? 'تعديل المشروع' : 'منصة بِنَّا الموحدة للبناء'}
+            </h1>
+            <p className="text-gray-600">
+              {editMode ? 'تحديث معلومات وتفاصيل المشروع' : 'نظام شامل مع الإرشادات الرسمية والتكامل مع المنصات الخارجية'}
             </p>
-            {currentProject && (
-              <div className="mt-2">
-                <Badge variant="secondary" className="text-lg px-4 py-2">
-                  مشروع: {currentProject.name}
-                </Badge>
-              </div>
-            )}
-          </div>
-          <div className="flex flex-col gap-2">
-            {projectId && (
-              <Button
-                variant="outline"
-                onClick={() => {
-                  if (confirm(`هل أنت متأكد من حذف المشروع "${currentProject?.name}"؟ هذا الإجراء لا يمكن التراجع عنه.`)) {
-                    ProjectTrackingService.deleteProject(projectId).then(() => {
-                      router.push('/user/projects/list');
-                    }).catch((error) => {
-                      console.error('Error deleting project:', error);
-                      alert('حدث خطأ في حذف المشروع');
-                    });
-                  }
-                }}
-                className="flex items-center gap-2 text-red-600 hover:text-red-700"
-              >
-                <Trash2 className="w-4 h-4" />
-                حذف المشروع
-              </Button>
-            )}
-            <Button
-              onClick={() => setShowSaveDialog(true)}
-              className="flex items-center gap-2 bg-green-600 hover:bg-green-700"
-            >
-              <Save className="w-4 h-4" />
-              حفظ التقدير
-            </Button>
-            {!projectId && (
-              <Button
-                variant="outline"
-                onClick={() => router.push('/user/projects/list')}
-                className="flex items-center gap-2"
-              >
-                <Eye className="w-4 h-4" />
-                مشاريعي
-              </Button>
-            )}
           </div>
         </div>
 
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className={`grid w-full ${projectId ? 'grid-cols-7' : 'grid-cols-3'} mb-8`}>
-            {projectId && (
-              <>
-                <TabsTrigger value="overview" className="flex items-center gap-2">
-                  <Eye className="w-4 h-4" />
-                  نظرة عامة
-                </TabsTrigger>
-                <TabsTrigger value="expenses" className="flex items-center gap-2">
-                  <DollarSign className="w-4 h-4" />
-                  المصروفات والمشتريات
-                </TabsTrigger>
-                <TabsTrigger value="advice" className="flex items-center gap-2">
-                  <Lightbulb className="w-4 h-4" />
-                  النصائح والتوصيات
-                </TabsTrigger>
-                <TabsTrigger value="purchases" className="flex items-center gap-2">
-                  <ShoppingCart className="w-4 h-4" />
-                  المشتريات والضمانات
-                </TabsTrigger>
-              </>
-            )}
-            <TabsTrigger value="materials" className="flex items-center gap-2">
-              <Package className="w-4 h-4" />
-              حاسبة المواد الذكية
-            </TabsTrigger>
-            <TabsTrigger value="lighting" className="flex items-center gap-2">
-              <Lightbulb className="w-4 h-4" />
-              توزيع الإنارة
-            </TabsTrigger>
-            <TabsTrigger value="comprehensive" className="flex items-center gap-2">
-              <Target className="w-4 h-4" />
-              التقرير الشامل
-            </TabsTrigger>
-          </TabsList>
+        {/* Progress Indicator */}
+        <div className="mb-8">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-semibold">
+              {editMode ? 'خطوات تعديل المشروع' : 'خطوات إنشاء المشروع'}
+            </h3>
+            <span className="text-sm text-gray-500">
+              الخطوة {
+                activeTab === 'project-info' ? 1 : 
+                activeTab === 'location' ? 2 : 
+                activeTab === 'bulk-construction' ? 3 : 
+                activeTab === 'sale-booking' ? 4 : 
+                activeTab === 'level-selection' ? 5 : 
+                activeTab === 'level-details' ? 6 : 
+                activeTab === 'materials' ? 7 : 8
+              } من 8
+            </span>
+          </div>
+          <Progress 
+            value={
+              activeTab === 'project-info' ? 12.5 : 
+              activeTab === 'location' ? 25 : 
+              activeTab === 'bulk-construction' ? 37.5 : 
+              activeTab === 'sale-booking' ? 50 : 
+              activeTab === 'level-selection' ? 62.5 : 
+              activeTab === 'level-details' ? 75 : 
+              activeTab === 'materials' ? 87.5 : 100
+            } 
+            className="w-full"
+          />
+        </div>
 
-          {/* Project Overview Tab - only shown when projectId exists */}
-          {projectId && (
-            <TabsContent value="overview">
-              <div className="space-y-6">
-                {/* Project Header */}
-                {currentProject && (
-                  <Card>
-                    <CardHeader>
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <CardTitle className="text-2xl">{currentProject.name}</CardTitle>
-                          <p className="text-gray-600 mt-1">{currentProject.description}</p>
-                        </div>
-                        <Badge variant="secondary">
-                          {currentProject.status === 'planning' && 'تخطيط'}
-                          {currentProject.status === 'in-progress' && 'جاري التنفيذ'}
-                          {currentProject.status === 'completed' && 'مكتمل'}
-                          {currentProject.status === 'on-hold' && 'متوقف'}
-                        </Badge>
-                      </div>
-                    </CardHeader>
-                  </Card>
-                )}
+        {/* Tabs Navigation */}
+        <div className="mb-8">
+          <div className="flex space-x-1 rounded-xl bg-gray-200 p-1 overflow-x-auto">
+            {[
+              { id: 'project-info', label: 'معلومات المشروع', icon: FileText },
+              { id: 'location', label: 'الموقع الدقيق', icon: MapPin },
+              { id: 'bulk-construction', label: 'البناء المتعدد', icon: Copy },
+              { id: 'sale-booking', label: 'البيع والحجز', icon: ShoppingCart },
+              { id: 'level-selection', label: 'اختيار المستويات', icon: CheckCircle },
+              { id: 'level-details', label: 'تفاصيل المستويات', icon: Building2 },
+              { id: 'materials', label: 'احسب المواد المطلوبة', icon: Calculator },
+              { id: 'guidance', label: 'الإرشادات والوثائق', icon: FileCheck }
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id as any)}
+                className={`flex items-center gap-2 px-3 py-2 rounded-lg font-medium transition-colors text-sm whitespace-nowrap ${
+                  activeTab === tab.id
+                    ? 'bg-white text-blue-600 shadow-sm'
+                    : 'text-gray-600 hover:text-gray-800'
+                }`}
+              >
+                <tab.icon className="w-4 h-4" />
+                {tab.label}
+              </button>
+            ))}
+          </div>
+        </div>
 
-                {/* Quick Stats */}
-                {projectSummary && (
-                  <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                    <Card>
-                      <CardContent className="p-6">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="text-sm text-gray-600">التكلفة المقدرة</p>
-                            <p className="text-2xl font-bold text-blue-600">
-                              {projectSummary.totalEstimatedCost?.toLocaleString('en-US') || '0'} ريال
-                            </p>
-                          </div>
-                          <DollarSign className="w-8 h-8 text-blue-500" />
-                        </div>
-                      </CardContent>
-                    </Card>
-
-                    <Card>
-                      <CardContent className="p-6">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="text-sm text-gray-600">المنفق فعلياً</p>
-                            <p className="text-2xl font-bold text-green-600">
-                              {projectSummary.totalSpentCost?.toLocaleString('en-US') || '0'} ريال
-                            </p>
-                          </div>
-                          <Hammer className="w-8 h-8 text-green-500" />
-                        </div>
-                      </CardContent>
-                    </Card>
-
-                    <Card>
-                      <CardContent className="p-6">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="text-sm text-gray-600">المتبقي</p>
-                            <p className="text-2xl font-bold text-orange-600">
-                              {projectSummary.remainingCost?.toLocaleString('en-US') || '0'} ريال
-                            </p>
-                          </div>
-                          <Clock className="w-8 h-8 text-orange-500" />
-                        </div>
-                      </CardContent>
-                    </Card>
-
-                    <Card>
-                      <CardContent className="p-6">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="text-sm text-gray-600">نسبة الإكمال</p>
-                            <p className="text-2xl font-bold text-purple-600">
-                              {projectSummary.completionPercentage || 0}%
-                            </p>
-                          </div>
-                          <TrendingUp className="w-8 h-8 text-purple-500" />
-                        </div>
-                        <Progress value={projectSummary.completionPercentage || 0} className="mt-2" />
-                      </CardContent>
-                    </Card>
-                  </div>
-                )}
-
-                {/* Project Details */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  {currentProject && (
-                    <Card>
-                      <CardHeader>
-                        <div className="flex items-center justify-between">
-                          <CardTitle className="flex items-center gap-2">
-                            <FileText className="w-5 h-5" />
-                            معلومات المشروع
-                          </CardTitle>
-                          <button
-                            onClick={() => router.push(`/user/projects/create?editId=${projectId}`)}
-                            className="flex items-center gap-2 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
-                          >
-                            <Edit size={16} />
-                            تعديل المشروع
-                          </button>
-                        </div>
-                      </CardHeader>
-                      <CardContent className="space-y-4">
-                        <div className="grid grid-cols-2 gap-4">
-                          <div>
-                            <label className="text-sm text-gray-600">المساحة</label>
-                            <p className="font-semibold">{currentProject.area} متر مربع</p>
-                          </div>
-                          <div>
-                            <label className="text-sm text-gray-600">نوع المشروع</label>
-                            <p className="font-semibold">
-                              {currentProject.projectType === 'residential' && 'سكني'}
-                              {currentProject.projectType === 'commercial' && 'تجاري'}
-                              {currentProject.projectType === 'industrial' && 'صناعي'}
-                            </p>
-                          </div>
-                          <div>
-                            <label className="text-sm text-gray-600">عدد الأدوار</label>
-                            <p className="font-semibold">{currentProject.floorCount}</p>
-                          </div>
-                          <div>
-                            <label className="text-sm text-gray-600">عدد الغرف</label>
-                            <p className="font-semibold">{currentProject.roomCount}</p>
-                          </div>
-                        </div>
-                        <div className="pt-4 border-t">
-                          <label className="text-sm text-gray-600">الموقع</label>
-                          <p className="font-semibold">{currentProject.location || 'غير محدد'}</p>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  )}
-
-                  {/* Material Categories Progress */}
-                  {projectSummary?.materialProgress && (
-                    <Card>
-                      <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                          <Package className="w-5 h-5" />
-                          تقدم فئات المواد
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent className="space-y-4">
-                        {Object.entries(projectSummary.materialProgress).map(([category, progress]: [string, any]) => {
-                          const completionPercent = progress.estimatedCost > 0 
-                            ? Math.round((progress.spentCost / progress.estimatedCost) * 100)
-                            : 0;
-                          
-                          return (
-                            <div key={category} className="space-y-2">
-                              <div className="flex justify-between items-center">
-                                <span className="text-sm font-medium">{category}</span>
-                                <span className="text-sm text-gray-600">{completionPercent}%</span>
-                              </div>
-                              <Progress value={completionPercent} />
-                              <div className="flex justify-between text-xs text-gray-500">
-                                <span>منفق: {progress.spentCost?.toLocaleString('en-US') || '0'} ريال</span>
-                                <span>مقدر: {progress.estimatedCost?.toLocaleString('en-US') || '0'} ريال</span>
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </CardContent>
-                    </Card>
-                  )}
+        {/* Tab Content */}
+        {activeTab === 'project-info' && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <FileText className="w-6 h-6 text-blue-600" />
+                معلومات المشروع الأساسية
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-medium mb-2">اسم المشروع *</label>
+                  <Input
+                    value={projectData.name}
+                    onChange={(e) => setProjectData(prev => ({ ...prev, name: e.target.value }))}
+                    placeholder="فيلا العائلة الجديدة"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2">الموقع</label>
+                  <Input
+                    value={projectData.location}
+                    onChange={(e) => setProjectData(prev => ({ ...prev, location: e.target.value }))}
+                    placeholder="الرياض، المملكة العربية السعودية"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2">نوع المشروع</label>
+                  <select
+                    value={projectData.projectType}
+                    onChange={(e) => setProjectData(prev => ({ ...prev, projectType: e.target.value as any }))}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="residential">سكني</option>
+                    <option value="commercial">تجاري</option>
+                    <option value="industrial">صناعي</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2">المساحة (متر مربع)</label>
+                  <Input
+                    type="number"
+                    value={projectData.area}
+                    onChange={(e) => setProjectData(prev => ({ ...prev, area: e.target.value }))}
+                    placeholder="500"
+                  />
+                </div>
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium mb-2">الميزانية التقديرية (ريال)</label>
+                  <Input
+                    type="number"
+                    value={projectData.budget}
+                    onChange={(e) => setProjectData(prev => ({ ...prev, budget: e.target.value }))}
+                    placeholder="800000"
+                  />
                 </div>
               </div>
-            </TabsContent>
-          )}
+              <div>
+                <label className="block text-sm font-medium mb-2">وصف المشروع</label>
+                <Textarea
+                  value={projectData.description}
+                  onChange={(e) => setProjectData(prev => ({ ...prev, description: e.target.value }))}
+                  placeholder="وصف تفصيلي للمشروع ومتطلباته..."
+                  rows={3}
+                />
+              </div>
+              <div className="flex justify-end">
+                <Button
+                  onClick={() => setActiveTab('location')}
+                  className="bg-blue-600 hover:bg-blue-700"
+                >
+                  التالي: الموقع الدقيق
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
-          {/* Additional TabsContent sections - Expenses, Advice, Purchases, Materials, Lighting, Comprehensive */}
-          {/* These will be added in subsequent edits due to size constraints */}
-
-        </Tabs>
-
-        {/* Save Estimation Dialog */}
-        <Dialog open={showSaveDialog} onOpenChange={setShowSaveDialog}>
-          <DialogContent className="max-w-md">
-            <DialogHeader>
-              <DialogTitle>حفظ تقدير المشروع</DialogTitle>
-            </DialogHeader>
-            <div className="space-y-4">
-              {!projectId && (
-                <>
+        {/* Location Tab */}
+        {activeTab === 'location' && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <MapPin className="w-6 h-6 text-red-600" />
+                الموقع الدقيق والصور
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-medium mb-2">العنوان التفصيلي *</label>
+                  <Textarea
+                    value={projectData.exactLocation.address}
+                    onChange={(e) => setProjectData(prev => ({
+                      ...prev,
+                      exactLocation: { ...prev.exactLocation, address: e.target.value }
+                    }))}
+                    placeholder="الرياض، حي النرجس، شارع الأمير محمد بن عبدالعزيز، رقم 123"
+                    rows={3}
+                  />
+                </div>
+                <div className="space-y-4">
                   <div>
-                    <label className="text-sm font-medium">اسم المشروع</label>
+                    <label className="block text-sm font-medium mb-2">خط الطول (Longitude)</label>
                     <Input
-                      value={projectName}
-                      onChange={(e) => setProjectName(e.target.value)}
-                      placeholder="اسم المشروع..."
+                      value={projectData.exactLocation.longitude}
+                      onChange={(e) => setProjectData(prev => ({
+                        ...prev,
+                        exactLocation: { ...prev.exactLocation, longitude: e.target.value }
+                      }))}
+                      placeholder="46.6753"
                     />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-2">خط العرض (Latitude)</label>
+                    <Input
+                      value={projectData.exactLocation.latitude}
+                      onChange={(e) => setProjectData(prev => ({
+                        ...prev,
+                        exactLocation: { ...prev.exactLocation, latitude: e.target.value }
+                      }))}
+                      placeholder="24.7136"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Map Integration */}
+              <div className="border-2 border-dashed border-gray-300 rounded-lg p-6">
+                <Map className="w-12 h-12 text-gray-400 mx-auto mb-3" />
+                <p className="text-sm font-medium text-gray-700 mb-1">
+                  اختر الموقع على الخريطة
+                </p>
+                <p className="text-xs text-gray-500 mb-3">
+                  انقر لفتح Google Maps واختيار الموقع الدقيق
+                </p>
+                <div className="flex gap-2 justify-center">
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      const mapUrl = `https://www.google.com/maps/@${projectData.exactLocation.latitude || '24.7136'},${projectData.exactLocation.longitude || '46.6753'},15z`;
+                      window.open(mapUrl, '_blank');
+                    }}
+                  >
+                    <MapPin className="w-4 h-4 mr-2" />
+                    فتح الخريطة
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition((position) => {
+                          setProjectData(prev => ({
+                            ...prev,
+                            exactLocation: {
+                              ...prev.exactLocation,
+                              latitude: position.coords.latitude.toString(),
+                              longitude: position.coords.longitude.toString()
+                            }
+                          }));
+                        });
+                      } else {
+                        alert('الموقع الجغرافي غير مدعوم في هذا المتصفح');
+                      }
+                    }}
+                  >
+                    <MapPin className="w-4 h-4 mr-2" />
+                    موقعي الحالي
+                  </Button>
+                </div>
+                {projectData.exactLocation.latitude && projectData.exactLocation.longitude && (
+                  <div className="mt-3 p-2 bg-green-50 rounded text-sm text-green-700">
+                    ✓ تم حفظ الإحداثيات: {projectData.exactLocation.latitude}, {projectData.exactLocation.longitude}
+                  </div>
+                )}
+              </div>
+
+              {/* Location Images */}
+              <div>
+                <label className="block text-sm font-medium mb-2">صور الموقع *</label>
+                <div className="border-2 border-dashed border-gray-300 rounded-lg p-6">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={(e) => {
+                      const files = Array.from(e.target.files || []);
+                      setProjectData(prev => ({
+                        ...prev,
+                        locationImages: [...prev.locationImages, ...files]
+                      }));
+                    }}
+                    className="hidden"
+                    id="location-images"
+                  />
+                  <label htmlFor="location-images" className="cursor-pointer">
+                    <Camera className="w-12 h-12 text-gray-400 mx-auto mb-3" />
+                    <p className="text-sm font-medium text-gray-700 mb-1">
+                      ارفع صور الموقع والمنطقة المحيطة
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      مهم جداً للتوصيل والتسليم - يمكن رفع عدة صور
+                    </p>
+                  </label>
+                </div>
+                
+                {projectData.locationImages.length > 0 && (
+                  <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {projectData.locationImages.map((file, index) => (
+                      <div key={index} className="relative">
+                        <img
+                          src={URL.createObjectURL(file)}
+                          alt={`موقع ${index + 1}`}
+                          className="w-full h-24 object-cover rounded-lg border"
+                        />
+                        <button
+                          onClick={() => {
+                            setProjectData(prev => ({
+                              ...prev,
+                              locationImages: prev.locationImages.filter((_, i) => i !== index)
+                            }));
+                          }}
+                          className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 text-xs"
+                        >
+                          <Trash2 className="w-3 h-3" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <div className="flex justify-between">
+                <Button
+                  variant="outline"
+                  onClick={() => setActiveTab('project-info')}
+                >
+                  السابق: معلومات المشروع
+                </Button>
+                <Button
+                  onClick={() => setActiveTab('bulk-construction')}
+                  className="bg-blue-600 hover:bg-blue-700"
+                >
+                  التالي: البناء المتعدد
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Bulk Construction Tab */}
+        {activeTab === 'bulk-construction' && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Copy className="w-6 h-6 text-purple-600" />
+                البناء المتعدد للشركات
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="flex items-center gap-4">
+                <input
+                  type="checkbox"
+                  id="bulk-project"
+                  checked={projectData.isBulkProject}
+                  onChange={(e) => setProjectData(prev => ({
+                    ...prev,
+                    isBulkProject: e.target.checked
+                  }))}
+                  className="w-4 h-4 text-purple-600"
+                />
+                <label htmlFor="bulk-project" className="font-medium">
+                  هذا مشروع متعدد الوحدات (فلل أو شقق متطابقة)
+                </label>
+              </div>
+
+              {projectData.isBulkProject && (
+                <div className="space-y-6 p-4 bg-purple-50 rounded-lg border border-purple-200">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium mb-2">عدد الوحدات</label>
+                      <Input
+                        type="number"
+                        value={projectData.bulkDetails.unitCount}
+                        onChange={(e) => setProjectData(prev => ({
+                          ...prev,
+                          bulkDetails: { ...prev.bulkDetails, unitCount: Number(e.target.value) }
+                        }))}
+                        placeholder="6"
+                        min="2"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-2">نوع الوحدة</label>
+                      <select
+                        value={projectData.bulkDetails.unitType}
+                        onChange={(e) => setProjectData(prev => ({
+                          ...prev,
+                          bulkDetails: { ...prev.bulkDetails, unitType: e.target.value }
+                        }))}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                      >
+                        <option value="villa">فيلا</option>
+                        <option value="apartment">شقة</option>
+                        <option value="townhouse">تاون هاوس</option>
+                        <option value="duplex">دوبلكس</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-2">شركة المقاولات</label>
+                      <Input
+                        value={projectData.bulkDetails.constructionCompany}
+                        onChange={(e) => setProjectData(prev => ({
+                          ...prev,
+                          bulkDetails: { ...prev.bulkDetails, constructionCompany: e.target.value }
+                        }))}
+                        placeholder="شركة البناء المتميز"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-4">
+                    <input
+                      type="checkbox"
+                      id="identical-units"
+                      checked={projectData.bulkDetails.isIdentical}
+                      onChange={(e) => setProjectData(prev => ({
+                        ...prev,
+                        bulkDetails: { ...prev.bulkDetails, isIdentical: e.target.checked }
+                      }))}
+                      className="w-4 h-4 text-purple-600"
+                    />
+                    <label htmlFor="identical-units" className="text-sm">
+                      جميع الوحدات متطابقة (نفس التصميم والمساحة)
+                    </label>
+                  </div>
+
+                  {/* Master Plan Upload */}
+                  <div>
+                    <label className="block text-sm font-medium mb-2">المخطط العام للمشروع</label>
+                    <div className="border-2 border-dashed border-gray-300 rounded-lg p-4">
+                      <input
+                        type="file"
+                        accept=".pdf,.jpg,.jpeg,.png"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            setProjectData(prev => ({
+                              ...prev,
+                              bulkDetails: { ...prev.bulkDetails, masterPlan: file }
+                            }));
+                          }
+                        }}
+                        className="hidden"
+                        id="master-plan"
+                      />
+                      <label htmlFor="master-plan" className="cursor-pointer text-center block">
+                        <Upload className="w-8 h-8 text-gray-400 mx-auto mb-2" />
+                        <p className="text-sm text-gray-600">ارفع المخطط العام (PDF أو صورة)</p>
+                      </label>
+                    </div>
+                    {projectData.bulkDetails.masterPlan && (
+                      <p className="text-sm text-green-600 mt-2">
+                        ✓ تم رفع الملف: {projectData.bulkDetails.masterPlan.name}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="bg-blue-50 p-4 rounded-lg">
+                    <h4 className="font-semibold text-blue-800 mb-2">ملخص المشروع المتعدد</h4>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                      <div>
+                        <span className="text-gray-600">عدد الوحدات:</span>
+                        <p className="font-semibold">{projectData.bulkDetails.unitCount}</p>
+                      </div>
+                      <div>
+                        <span className="text-gray-600">نوع الوحدة:</span>
+                        <p className="font-semibold">{projectData.bulkDetails.unitType === 'villa' ? 'فيلا' : projectData.bulkDetails.unitType === 'apartment' ? 'شقة' : projectData.bulkDetails.unitType}</p>
+                      </div>
+                      <div>
+                        <span className="text-gray-600">المساحة الإجمالية:</span>
+                        <p className="font-semibold">{(parseInt(projectData.area) || 0) * projectData.bulkDetails.unitCount} م²</p>
+                      </div>
+                      <div>
+                        <span className="text-gray-600">التكلفة المقدرة:</span>
+                        <p className="font-semibold text-blue-600">
+                          {(Object.values(getMaterialsForProject()).reduce((sum, material) => sum + material.estimatedCost, 0) * projectData.bulkDetails.unitCount).toLocaleString('en-US')} ريال
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              <div className="flex justify-between">
+                <Button
+                  variant="outline"
+                  onClick={() => setActiveTab('location')}
+                >
+                  السابق: الموقع الدقيق
+                </Button>
+                <Button
+                  onClick={() => setActiveTab('sale-booking')}
+                  className="bg-blue-600 hover:bg-blue-700"
+                >
+                  التالي: البيع والحجز
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Sale & Booking Tab */}
+        {activeTab === 'sale-booking' && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <ShoppingCart className="w-6 h-6 text-green-600" />
+                نموذج البيع والحجز
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-4">
+                  <div className="flex items-center gap-4">
+                    <input
+                      type="checkbox"
+                      id="for-sale"
+                      checked={projectData.saleModel.isForSale}
+                      onChange={(e) => setProjectData(prev => ({
+                        ...prev,
+                        saleModel: { ...prev.saleModel, isForSale: e.target.checked }
+                      }))}
+                      className="w-4 h-4 text-green-600"
+                    />
+                    <label htmlFor="for-sale" className="font-medium">
+                      متاح للبيع
+                    </label>
                   </div>
                   
-                  <div>
-                    <label className="text-sm font-medium">وصف المشروع</label>
-                    <Textarea
-                      value={projectDescription}
-                      onChange={(e) => setProjectDescription(e.target.value)}
-                      placeholder="وصف المشروع..."
-                      rows={3}
+                  <div className="flex items-center gap-4">
+                    <input
+                      type="checkbox"
+                      id="for-booking"
+                      checked={projectData.saleModel.isForBooking}
+                      onChange={(e) => setProjectData(prev => ({
+                        ...prev,
+                        saleModel: { ...prev.saleModel, isForBooking: e.target.checked }
+                      }))}
+                      className="w-4 h-4 text-green-600"
                     />
-                  </div>
-                </>
-              )}
-
-              <div className="bg-blue-50 p-4 rounded-lg space-y-2">
-                <h4 className="font-semibold text-blue-800">ملخص التقدير</h4>
-                <div className="text-sm space-y-1">
-                  <div className="flex justify-between">
-                    <span>المساحة:</span>
-                    <span>{projectArea} متر مربع</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>عدد الأدوار:</span>
-                    <span>{floorCount}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>تكلفة المواد:</span>
-                    <span>{formatNumber(totalCost)} ريال</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>عدد المواد:</span>
-                    <span>{calculatedMaterials.length} مادة</span>
+                    <label htmlFor="for-booking" className="font-medium">
+                      متاح للحجز المسبق
+                    </label>
                   </div>
                 </div>
               </div>
 
-              {projectId && currentProject && (
-                <div className="bg-green-50 p-4 rounded-lg">
-                  <p className="text-sm text-green-700">
-                    سيتم تحديث تقدير مشروع: <strong>{currentProject.name}</strong>
-                  </p>
+              {(projectData.saleModel.isForSale || projectData.saleModel.isForBooking) && (
+                <div className="space-y-6 p-4 bg-green-50 rounded-lg border border-green-200">
+                  {/* Price Marks Section */}
+                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                    <h4 className="font-semibold text-yellow-800 mb-3 flex items-center gap-2">
+                      <DollarSign className="w-5 h-5" />
+                      التسعير والعلامات المميزة
+                    </h4>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                      {[
+                        { id: 'early-bird', label: 'العرض المبكر', color: 'bg-blue-100 text-blue-800' },
+                        { id: 'limited-time', label: 'عرض محدود', color: 'bg-red-100 text-red-800' },
+                        { id: 'best-price', label: 'أفضل سعر', color: 'bg-green-100 text-green-800' },
+                        { id: 'pre-launch', label: 'ما قبل الإطلاق', color: 'bg-purple-100 text-purple-800' },
+                        { id: 'featured', label: 'مميز', color: 'bg-orange-100 text-orange-800' },
+                        { id: 'hot-deal', label: 'عرض ساخن', color: 'bg-pink-100 text-pink-800' }
+                      ].map((mark) => (
+                        <label key={mark.id} className="flex items-center gap-2 text-sm cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={projectData.saleModel.priceMarks?.includes(mark.id) || false}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setProjectData(prev => ({
+                                  ...prev,
+                                  saleModel: {
+                                    ...prev.saleModel,
+                                    priceMarks: [...(prev.saleModel.priceMarks || []), mark.id]
+                                  }
+                                }));
+                              } else {
+                                setProjectData(prev => ({
+                                  ...prev,
+                                  saleModel: {
+                                    ...prev.saleModel,
+                                    priceMarks: (prev.saleModel.priceMarks || []).filter(m => m !== mark.id)
+                                  }
+                                }));
+                              }
+                            }}
+                            className="w-3 h-3"
+                          />
+                          <span className={`px-2 py-1 rounded text-xs ${mark.color}`}>
+                            {mark.label}
+                          </span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium mb-2">
+                        {projectData.isBulkProject ? 'السعر لكل وحدة' : 'سعر المشروع'} (ريال)
+                      </label>
+                      <Input
+                        type="number"
+                        value={projectData.saleModel.pricePerUnit}
+                        onChange={(e) => setProjectData(prev => ({
+                          ...prev,
+                          saleModel: { ...prev.saleModel, pricePerUnit: e.target.value }
+                        }))}
+                        placeholder="800000"
+                      />
+                    </div>
+                    
+                    {projectData.saleModel.isForBooking && (
+                      <div>
+                        <label className="block text-sm font-medium mb-2">مبلغ الحجز (ريال)</label>
+                        <Input
+                          type="number"
+                          value={projectData.saleModel.bookingDeposit}
+                          onChange={(e) => setProjectData(prev => ({
+                            ...prev,
+                            saleModel: { ...prev.saleModel, bookingDeposit: e.target.value }
+                          }))}
+                          placeholder="50000"
+                        />
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium mb-2">خطة الدفع</label>
+                      <select
+                        value={projectData.saleModel.paymentPlan}
+                        onChange={(e) => setProjectData(prev => ({
+                          ...prev,
+                          saleModel: { ...prev.saleModel, paymentPlan: e.target.value }
+                        }))}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                      >
+                        <option value="cash">دفع كامل</option>
+                        <option value="installments">أقساط</option>
+                        <option value="bank-finance">تمويل بنكي</option>
+                        <option value="custom">خطة مخصصة</option>
+                      </select>
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm font-medium mb-2">تاريخ التسليم المتوقع</label>
+                      <Input
+                        type="date"
+                        value={projectData.saleModel.completionDate}
+                        onChange={(e) => setProjectData(prev => ({
+                          ...prev,
+                          saleModel: { ...prev.saleModel, completionDate: e.target.value }
+                        }))}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Features */}
+                  <div>
+                    <label className="block text-sm font-medium mb-2">المميزات والخدمات</label>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                      {[
+                        'مواقف سيارات', 'حديقة خاصة', 'مسبح', 'صالة رياضة',
+                        'أمن وحراسة', 'مصعد', 'تكييف مركزي', 'مولد كهرباء',
+                        'خزان مياه', 'مطبخ مجهز', 'دش مركزي', 'إنترنت فائق السرعة'
+                      ].map((feature) => (
+                        <label key={feature} className="flex items-center gap-2 text-sm">
+                          <input
+                            type="checkbox"
+                            checked={projectData.saleModel.features.includes(feature)}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setProjectData(prev => ({
+                                  ...prev,
+                                  saleModel: {
+                                    ...prev.saleModel,
+                                    features: [...prev.saleModel.features, feature]
+                                  }
+                                }));
+                              } else {
+                                setProjectData(prev => ({
+                                  ...prev,
+                                  saleModel: {
+                                    ...prev.saleModel,
+                                    features: prev.saleModel.features.filter(f => f !== feature)
+                                  }
+                                }));
+                              }
+                            }}
+                            className="w-3 h-3"
+                          />
+                          {feature}
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Summary */}
+                  <div className="bg-blue-50 p-4 rounded-lg">
+                    <h4 className="font-semibold text-blue-800 mb-2">ملخص البيع والحجز</h4>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
+                      <div>
+                        <span className="text-gray-600">السعر:</span>
+                        <p className="font-semibold">{parseInt(projectData.saleModel.pricePerUnit || '0').toLocaleString('en-US')} ريال</p>
+                      </div>
+                      {projectData.isBulkProject && (
+                        <div>
+                          <span className="text-gray-600">إجمالي المشروع:</span>
+                          <p className="font-semibold text-green-600">
+                            {(parseInt(projectData.saleModel.pricePerUnit || '0') * projectData.bulkDetails.unitCount).toLocaleString('en-US')} ريال
+                          </p>
+                        </div>
+                      )}
+                      <div>
+                        <span className="text-gray-600">المميزات:</span>
+                        <p className="font-semibold">{projectData.saleModel.features.length} ميزة</p>
+                      </div>
+                    </div>
+                    {projectData.saleModel.priceMarks && projectData.saleModel.priceMarks.length > 0 && (
+                      <div className="mt-3">
+                        <span className="text-gray-600 text-sm">العلامات المميزة:</span>
+                        <div className="flex flex-wrap gap-2 mt-1">
+                          {projectData.saleModel.priceMarks.map((mark) => {
+                            const markConfig = [
+                              { id: 'early-bird', label: 'العرض المبكر', color: 'bg-blue-100 text-blue-800' },
+                              { id: 'limited-time', label: 'عرض محدود', color: 'bg-red-100 text-red-800' },
+                              { id: 'best-price', label: 'أفضل سعر', color: 'bg-green-100 text-green-800' },
+                              { id: 'pre-launch', label: 'ما قبل الإطلاق', color: 'bg-purple-100 text-purple-800' },
+                              { id: 'featured', label: 'مميز', color: 'bg-orange-100 text-orange-800' },
+                              { id: 'hot-deal', label: 'عرض ساخن', color: 'bg-pink-100 text-pink-800' }
+                            ].find(m => m.id === mark);
+                            return markConfig ? (
+                              <span key={mark} className={`px-2 py-1 rounded text-xs ${markConfig.color}`}>
+                                {markConfig.label}
+                              </span>
+                            ) : null;
+                          })}
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
               )}
 
-              <div className="flex gap-2">
-                <Button 
-                  onClick={saveEstimationToProject}
-                  disabled={!projectId && !projectName.trim()}
-                  className="flex-1"
+              <div className="flex justify-between">
+                <Button
+                  variant="outline"
+                  onClick={() => setActiveTab('bulk-construction')}
                 >
-                  <Save className="w-4 h-4 ml-2" />
-                  حفظ التقدير
+                  السابق: البناء المتعدد
                 </Button>
-                <Button 
-                  variant="outline" 
-                  onClick={() => setShowSaveDialog(false)}
+                <Button
+                  onClick={() => setActiveTab('level-selection')}
+                  className="bg-blue-600 hover:bg-blue-700"
                 >
-                  إلغاء
+                  التالي: اختيار المستويات
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {activeTab === 'level-selection' && (
+          <div className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <CheckCircle className="w-6 h-6 text-blue-600" />
+                  اختيار مستويات البناء المطلوبة
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {constructionLevels.map((level) => (
+                    <div
+                      key={level.id}
+                      className={`p-4 border rounded-lg cursor-pointer transition-all ${
+                        selectedLevels.includes(level.id)
+                          ? 'border-blue-500 bg-blue-50'
+                          : canStartLevel(level.id)
+                          ? 'border-gray-200 hover:border-gray-300'
+                          : 'border-gray-100 bg-gray-50 opacity-50'
+                      }`}
+                      onClick={() => canStartLevel(level.id) && handleLevelToggle(level.id)}
+                    >
+                      <div className="flex items-center gap-4">
+                        <div className={`p-3 rounded-lg ${
+                          selectedLevels.includes(level.id) ? 'bg-blue-200' : 'bg-gray-100'
+                        }`}>
+                          <Building2 className={`w-6 h-6 ${
+                            selectedLevels.includes(level.id) ? 'text-blue-600' : 'text-gray-600'
+                          }`} />
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-2">
+                            <h4 className="font-semibold text-lg">{level.arabicTitle}</h4>
+                            <Badge variant="outline" className="text-xs">
+                              المستوى {level.order}
+                            </Badge>
+                            {level.hasExternalIntegration && (
+                              <Badge className="text-xs bg-green-100 text-green-800">
+                                تكامل خارجي
+                              </Badge>
+                            )}
+                          </div>
+                          <p className="text-sm text-gray-600 mb-3">{level.description}</p>
+                          <div className="flex items-center gap-4 text-xs text-gray-500">
+                            <span className="flex items-center gap-1">
+                              <Clock className="w-3 h-3" />
+                              {level.estimatedDuration}
+                            </span>
+                            {level.estimatedCost && (
+                              <span className="flex items-center gap-1">
+                                <DollarSign className="w-3 h-3" />
+                                {level.estimatedCost.min.toLocaleString('en-US')} - {level.estimatedCost.max.toLocaleString('en-US')} {level.estimatedCost.currency}
+                              </span>
+                            )}
+                            <span className="flex items-center gap-1">
+                              <FileText className="w-3 h-3" />
+                              {level.documentationFiles.length} وثيقة
+                            </span>
+                          </div>
+                          {level.dependencies && level.dependencies.length > 0 && (
+                            <div className="mt-3 p-2 bg-yellow-50 rounded text-xs">
+                              <span className="text-yellow-800">
+                                يتطلب إكمال: {level.dependencies.map(dep => 
+                                  constructionLevels.find(l => l.id === dep)?.arabicTitle
+                                ).join(', ')}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                        <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
+                          selectedLevels.includes(level.id)
+                            ? 'border-blue-500 bg-blue-500'
+                            : 'border-gray-300'
+                        }`}>
+                          {selectedLevels.includes(level.id) && (
+                            <CheckCircle className="w-4 h-4 text-white" />
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+            
+            {selectedLevels.length > 0 && (
+              <Card className="border-l-4 border-l-green-500 bg-green-50">
+                <CardContent className="p-4">
+                  <h4 className="font-semibold text-green-800 mb-2">ملخص المستويات المختارة</h4>
+                  <div className="flex flex-wrap gap-2 mb-3">
+                    {selectedLevels.map(levelId => {
+                      const level = constructionLevels.find(l => l.id === levelId);
+                      return level ? (
+                        <Badge key={levelId} className="bg-green-200 text-green-800">
+                          {level.arabicTitle}
+                        </Badge>
+                      ) : null;
+                    })}
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-green-600">
+                      إجمالي المستويات: {selectedLevels.length}
+                    </span>
+                    <div className="flex gap-2">
+                      <Button
+                        onClick={calculateMaterials}
+                        className="bg-orange-600 hover:bg-orange-700"
+                      >
+                        احسب المواد المطلوبة
+                      </Button>
+                      <Button
+                        onClick={() => setActiveTab('level-details')}
+                        className="bg-green-600 hover:bg-green-700"
+                      >
+                        التالي: تفاصيل المستويات
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+          </div>
+        )}
+
+        {activeTab === 'level-details' && (
+          <div className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Building2 className="w-6 h-6 text-blue-600" />
+                  تفاصيل المستويات والتكاملات الخارجية
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {selectedLevels.map(levelId => {
+                    const level = constructionLevels.find(l => l.id === levelId);
+                    if (!level) return null;
+
+                    return (
+                      <div key={levelId} className="border rounded-lg p-4">
+                        <div className="flex items-center justify-between mb-4">
+                          <h4 className="font-semibold text-lg">{level.arabicTitle}</h4>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setCurrentLevelView(currentLevelView === levelId ? '' : levelId)}
+                          >
+                            {currentLevelView === levelId ? 'إخفاء التفاصيل' : 'عرض التفاصيل'}
+                          </Button>
+                        </div>
+
+                        {currentLevelView === levelId && (
+                          <div className="space-y-4">
+                            <div>
+                              <h5 className="font-medium mb-2">المتطلبات:</h5>
+                              <ul className="list-disc list-inside space-y-1 text-sm text-gray-600">
+                                {level.requirements.map((req, index) => (
+                                  <li key={index}>{req}</li>
+                                ))}
+                              </ul>
+                            </div>
+
+                            {level.hasExternalIntegration && (
+                              <div>
+                                <h5 className="font-medium mb-2">التكامل الخارجي:</h5>
+                                {renderLevelIntegration(level)}
+                              </div>
+                            )}
+
+                            <div>
+                              <h5 className="font-medium mb-2">الوثائق الرسمية:</h5>
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                {level.documentationFiles.map((doc) => (
+                                  <div key={doc.id} className="border rounded p-3 bg-gray-50">
+                                    <div className="flex items-center justify-between mb-2">
+                                      <h6 className="font-medium text-sm">{doc.arabicTitle}</h6>
+                                      <Badge variant={doc.isOfficial ? 'default' : 'outline'} className="text-xs">
+                                        {doc.isOfficial ? 'رسمي' : 'غير رسمي'}
+                                      </Badge>
+                                    </div>
+                                    <p className="text-xs text-gray-600 mb-2">{doc.description}</p>
+                                    <div className="flex items-center justify-between">
+                                      <span className="text-xs text-gray-500">{doc.source}</span>
+                                      <Button
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={() => window.open(doc.url, '_blank')}
+                                        className="text-xs"
+                                      >
+                                        <Download className="w-3 h-3 mr-1" />
+                                        تحميل
+                                      </Button>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </CardContent>
+            </Card>
+
+            <div className="flex justify-between">
+              <Button
+                variant="outline"
+                onClick={() => setActiveTab('level-selection')}
+              >
+                السابق: اختيار المستويات
+              </Button>
+              <div className="flex gap-2">
+                <Button
+                  onClick={calculateMaterials}
+                  className="bg-orange-600 hover:bg-orange-700"
+                >
+                  احسب المواد المطلوبة
+                </Button>
+                <Button
+                  onClick={() => setActiveTab('guidance')}
+                  className="bg-blue-600 hover:bg-blue-700"
+                >
+                  التالي: الإرشادات
                 </Button>
               </div>
             </div>
-          </DialogContent>
-        </Dialog>
+          </div>
+        )}
+
+        {activeTab === 'materials' && (
+          <div className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Calculator className="w-6 h-6 text-orange-600" />
+                  احسب المواد المطلوبة
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-6">
+                  {/* Method 1: Manual Input with House Features */}
+                  <div className="border rounded-lg p-4">
+                    <div className="flex items-center gap-2 mb-4">
+                      <Home className="w-5 h-5 text-blue-600" />
+                      <h3 className="font-semibold">الطريقة الأولى: إدخال تفاصيل المنزل</h3>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium mb-2">المساحة الإجمالية (م²)</label>
+                        <Input 
+                          type="number" 
+                          value={projectData.area || ''} 
+                          onChange={(e) => setProjectData(prev => ({...prev, area: e.target.value}))}
+                          placeholder="200"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">عدد الأدوار</label>
+                        <Input 
+                          type="number" 
+                          value={projectData.floors || 1} 
+                          onChange={(e) => setProjectData(prev => ({...prev, floors: Number(e.target.value)}))}
+                          placeholder="2"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">عدد الغرف</label>
+                        <Input 
+                          type="number" 
+                          value={projectData.rooms || 4} 
+                          onChange={(e) => setProjectData(prev => ({...prev, rooms: Number(e.target.value)}))}
+                          placeholder="4"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">عدد الحمامات</label>
+                        <Input 
+                          type="number" 
+                          value={projectData.bathrooms || 3} 
+                          onChange={(e) => setProjectData(prev => ({...prev, bathrooms: Number(e.target.value)}))}
+                          placeholder="3"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">عدد المطابخ</label>
+                        <Input 
+                          type="number" 
+                          value={projectData.kitchens || 1} 
+                          onChange={(e) => setProjectData(prev => ({...prev, kitchens: Number(e.target.value)}))}
+                          placeholder="1"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">مساحة الصالة (م²)</label>
+                        <Input 
+                          type="number" 
+                          value={projectData.livingArea || 30} 
+                          onChange={(e) => setProjectData(prev => ({...prev, livingArea: Number(e.target.value)}))}
+                          placeholder="30"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">الميزانية المقدرة</label>
+                        <Input 
+                          type="number" 
+                          value={projectData.estimatedBudget || ''} 
+                          onChange={(e) => setProjectData(prev => ({...prev, estimatedBudget: e.target.value}))}
+                          placeholder="500000"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">جودة التشطيب</label>
+                        <select 
+                          className="w-full p-2 border border-gray-300 rounded-md"
+                          value={projectData.finishQuality || 'standard'}
+                          onChange={(e) => setProjectData(prev => ({...prev, finishQuality: e.target.value}))}
+                        >
+                          <option value="basic">عادي</option>
+                          <option value="standard">متوسط</option>
+                          <option value="premium">فاخر</option>
+                          <option value="luxury">راقي جداً</option>
+                        </select>
+                      </div>
+                    </div>
+                    
+                    <Button 
+                      onClick={calculateMaterials}
+                      className="w-full mt-4 bg-blue-600 hover:bg-blue-700"
+                    >
+                      احسب المواد المطلوبة
+                    </Button>
+                  </div>
+
+                  {/* Method 2: PDF Analysis */}
+                  <div className="border rounded-lg p-4">
+                    <div className="flex items-center gap-2 mb-4">
+                      <FileText className="w-5 h-5 text-green-600" />
+                      <h3 className="font-semibold">الطريقة الثانية: تحليل المخططات</h3>
+                    </div>
+                    
+                    <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                      <input
+                        type="file"
+                        accept=".pdf"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            setProjectData(prev => ({...prev, pdfFile: file}));
+                            // Simulate PDF analysis
+                            setTimeout(() => {
+                              setProjectData(prev => ({
+                                ...prev,
+                                area: '180',
+                                floors: 2,
+                                rooms: 5,
+                                bathrooms: 3,
+                                kitchens: 1,
+                                livingArea: 35,
+                                pdfAnalyzed: true
+                              }));
+                            }, 2000);
+                          }
+                        }}
+                        className="hidden"
+                        id="pdf-upload"
+                      />
+                      <label htmlFor="pdf-upload" className="cursor-pointer">
+                        <FileText className="w-12 h-12 text-gray-400 mx-auto mb-3" />
+                        <p className="text-sm font-medium text-gray-700 mb-1">
+                          ارفع مخططات المشروع (PDF)
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          سيتم تحليلها تلقائياً وحساب المواد
+                        </p>
+                      </label>
+                    </div>
+                    
+                    {projectData.pdfFile && (
+                      <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                        <div className="flex items-center gap-2">
+                          <FileText className="w-4 h-4 text-blue-600" />
+                          <span className="text-sm font-medium">{projectData.pdfFile.name}</span>
+                        </div>
+                        {projectData.pdfAnalyzed && (
+                          <p className="text-xs text-green-600 mt-1">✓ تم تحليل الملف بنجاح</p>
+                        )}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Lighting Distribution */}
+                  <div className="border rounded-lg p-4">
+                    <div className="flex items-center gap-2 mb-4">
+                      <Lightbulb className="w-5 h-5 text-yellow-600" />
+                      <h3 className="font-semibold">توزيع الإنارة</h3>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium mb-2">نوع الغرفة</label>
+                        <select className="w-full p-2 border border-gray-300 rounded-md">
+                          <option value="living">صالة معيشة</option>
+                          <option value="bedroom">غرفة نوم</option>
+                          <option value="kitchen">مطبخ</option>
+                          <option value="bathroom">حمام</option>
+                          <option value="dining">غرفة طعام</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">الطول (م)</label>
+                        <Input type="number" placeholder="5" />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">العرض (م)</label>
+                        <Input type="number" placeholder="4" />
+                      </div>
+                    </div>
+                    
+                    <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                      <p className="text-sm text-yellow-800">
+                        <strong>توصية الإنارة:</strong> للصالة الرئيسية، يُنصح بتوزيع 6-8 نقاط إضاءة مع إنارة مخفية حول الأسقف
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Project Data Summary */}
+                  {materialsCalculated && (
+                    <div className="space-y-4">
+                      <div className="bg-blue-50 p-4 rounded-lg">
+                        <h4 className="font-semibold text-blue-800 mb-3">بيانات المشروع</h4>
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                          <div>
+                            <span className="text-gray-600">المساحة:</span>
+                            <p className="font-semibold">{projectData.area} م²</p>
+                          </div>
+                          <div>
+                            <span className="text-gray-600">عدد الأدوار:</span>
+                            <p className="font-semibold">{projectData.floors}</p>
+                          </div>
+                          <div>
+                            <span className="text-gray-600">إجمالي الغرف:</span>
+                            <p className="font-semibold">{(projectData.rooms || 0) + (projectData.bathrooms || 0) + (projectData.kitchens || 0)}</p>
+                          </div>
+                          <div>
+                            <span className="text-gray-600">الميزانية المقدرة:</span>
+                            <p className="font-semibold text-blue-600">
+                              {parseInt(projectData.estimatedBudget || '0').toLocaleString('en-US')} ريال
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div>
+                        <h4 className="font-semibold text-lg mb-4">المواد المطلوبة المقدرة</h4>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          {Object.entries(getMaterialsForProject()).map(([key, material]: [string, MaterialCalculation]) => (
+                            <Card key={key} className="border-l-4 border-l-orange-500">
+                              <CardContent className="p-4">
+                                <div className="flex items-center justify-between mb-2">
+                                  <h5 className="font-semibold">{material.name}</h5>
+                                  <Badge variant="outline" className="text-xs">
+                                    {material.quantity} {material.unit}
+                                  </Badge>
+                                </div>
+                                <p className="text-sm text-gray-600 mb-3">{material.description}</p>
+                                <div className="flex justify-between items-center">
+                                  <span className="text-sm text-gray-500">التكلفة المقدرة:</span>
+                                  <span className="font-semibold text-orange-600">
+                                    {Math.round(material.estimatedCost).toLocaleString('en-US')} ريال
+                                  </span>
+                                </div>
+                              </CardContent>
+                            </Card>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="bg-green-50 border border-green-200 p-4 rounded-lg">
+                        <div className="flex items-center justify-between mb-2">
+                          <h4 className="font-semibold text-green-800">إجمالي التكلفة المقدرة</h4>
+                          <div className="text-right">
+                            <p className="text-2xl font-bold text-green-600">
+                              {Object.values(getMaterialsForProject())
+                                .reduce((sum, material) => sum + material.estimatedCost, 0)
+                                .toLocaleString('en-US')} ريال
+                            </p>
+                            <p className="text-sm text-green-600">شامل جميع المواد الأساسية</p>
+                          </div>
+                        </div>
+                        <p className="text-sm text-green-700">
+                          * هذه تقديرات أولية بناءً على المعايير الهندسية المعتمدة. قد تختلف الأسعار الفعلية حسب المورد والسوق.
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+
+            <div className="flex justify-between">
+              <Button
+                variant="outline"
+                onClick={() => setActiveTab('level-details')}
+              >
+                السابق: تفاصيل المستويات
+              </Button>
+              <Button
+                onClick={() => setActiveTab('guidance')}
+                className="bg-blue-600 hover:bg-blue-700"
+              >
+                التالي: الإرشادات
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'guidance' && (
+          <div className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <FileCheck className="w-6 h-6 text-blue-600" />
+                  الإرشادات والنصائح الشاملة
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-6">
+                  {selectedLevels.map(levelId => {
+                    const level = constructionLevels.find(l => l.id === levelId);
+                    const guidance = ConstructionGuidanceService.getGuidanceForLevel(levelId);
+                    if (!level) return null;
+
+                    return (
+                      <div key={levelId} className="border rounded-lg p-4">
+                        <h4 className="font-semibold text-lg mb-4">{level.arabicTitle}</h4>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                          {/* Tips */}
+                          <div className="bg-blue-50 p-4 rounded-lg">
+                            <div className="flex items-center gap-2 mb-3">
+                              <Lightbulb className="w-5 h-5 text-blue-600" />
+                              <h5 className="font-medium text-blue-800">نصائح مهمة</h5>
+                            </div>
+                            <ul className="space-y-2 text-sm">
+                              {guidance.tips.map((tip, index) => (
+                                <li key={index} className="flex items-start gap-2">
+                                  <CheckCircle className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
+                                  <span>{tip}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+
+                          {/* Warnings */}
+                          <div className="bg-yellow-50 p-4 rounded-lg">
+                            <div className="flex items-center gap-2 mb-3">
+                              <AlertTriangle className="w-5 h-5 text-yellow-600" />
+                              <h5 className="font-medium text-yellow-800">تحذيرات</h5>
+                            </div>
+                            <ul className="space-y-2 text-sm">
+                              {guidance.warnings.map((warning, index) => (
+                                <li key={index} className="flex items-start gap-2">
+                                  <AlertTriangle className="w-4 h-4 text-yellow-600 mt-0.5 flex-shrink-0" />
+                                  <span>{warning}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+
+                          {/* Best Practices */}
+                          <div className="bg-green-50 p-4 rounded-lg">
+                            <div className="flex items-center gap-2 mb-3">
+                              <Target className="w-5 h-5 text-green-600" />
+                              <h5 className="font-medium text-green-800">أفضل الممارسات</h5>
+                            </div>
+                            <ul className="space-y-2 text-sm">
+                              {guidance.bestPractices.map((practice, index) => (
+                                <li key={index} className="flex items-start gap-2">
+                                  <Target className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
+                                  <span>{practice}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Final Cost Summary */}
+            {projectData.area && (
+              <Card className="bg-blue-50 border-blue-200">
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="font-semibold text-blue-800">ملخص التكلفة النهائية</h4>
+                      <p className="text-sm text-blue-600">هذه هي التكلفة التي سيتم حفظها مع المشروع</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-2xl font-bold text-blue-800">
+                        {Object.values(getMaterialsForProject())
+                          .reduce((sum, material) => sum + material.estimatedCost, 0)
+                          .toLocaleString('en-US')} ريال
+                      </p>
+                      <p className="text-sm text-blue-600">تكلفة المواد المحسوبة</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="flex justify-between">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setActiveTab('materials')}
+                >
+                  السابق: المواد المطلوبة
+                </Button>
+                <Button
+                  type="submit"
+                  disabled={loading}
+                  className="bg-green-600 hover:bg-green-700"
+                >
+                  {loading ? 'جاري الإنشاء...' : 'إنشاء المشروع النهائي'}
+                </Button>
+              </div>
+            </form>
+          </div>
+        )}
       </div>
     </div>
   );

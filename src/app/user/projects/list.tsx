@@ -1,14 +1,28 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/enhanced-components';
 import { BarChart3, FileText, Users, DollarSign, ChevronLeft, Plus } from 'lucide-react';
+import { ProjectTrackingService } from '@/core/services/projectTrackingService';
+import { useAuth } from '@/core/shared/auth/AuthProvider';
 
 export default function ProjectsListPage() {
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('all');
-  
+  const [projects, setProjects] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!user?.id) return;
+    setLoading(true);
+    ProjectTrackingService.getProjects(user.id).then((data) => {
+      setProjects(data);
+      setLoading(false);
+    });
+  }, [user]);
+
   const tabs = [
     { id: 'all', label: 'كل المشاريع' },
     { id: 'shared', label: 'مشاركة' },
@@ -16,48 +30,18 @@ export default function ProjectsListPage() {
     { id: 'my-projects', label: 'مشاريعي ملكي' },
   ];
 
-  const projects = [
-    {
-      id: '1',
-      name: 'حساب',
-      progress: 100,
-      estimated: 250000,
-      paid: 180000,
-      skeleton: 120000,
-      finishing: 60000,
-      remaining: 70000
-    },
-    {
-      id: '2', 
-      name: 'مقرن',
-      progress: 75,
-      estimated: 180000,
-      paid: 135000,
-      skeleton: 90000,
-      finishing: 45000,
-      remaining: 45000
-    },
-    {
-      id: '3',
-      name: 'مشروع عمارة خالتي',
-      progress: 45,
-      estimated: 500000,
-      paid: 225000,
-      skeleton: 150000,
-      finishing: 75000,
-      remaining: 275000
-    },
-    {
-      id: '4',
-      name: 'بناء',
-      progress: 30,
-      estimated: 300000,
-      paid: 90000,
-      skeleton: 60000,
-      finishing: 30000,
-      remaining: 210000
-    }
-  ];
+  if (loading) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center text-xl">
+        <div>Loading projects...</div>
+        <div className="mt-4 text-sm text-gray-500">User ID: {user?.id || 'No user'}</div>
+      </div>
+    );
+  }
+
+  // Debug output for fetched projects
+  console.log('Current user:', user);
+  console.log('Fetched projects:', projects);
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-indigo-50/20 font-tajawal">
@@ -86,11 +70,9 @@ export default function ProjectsListPage() {
             </Link>
           </div>
         </div>
-
         <Typography variant="heading" size="2xl" weight="bold" className="text-gray-800 mb-6">
           مشاريعي
         </Typography>
-
         {/* Tabs */}
         <div className="flex gap-2 mb-6 overflow-x-auto">
           {tabs.map((tab) => (
@@ -107,63 +89,57 @@ export default function ProjectsListPage() {
             </button>
           ))}
         </div>
-
         {/* Projects Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {projects.length === 0 && (
+            <div className="col-span-full text-center text-gray-400">No projects found for this user.</div>
+          )}
           {projects.map((project) => (
-            <EnhancedCard key={project.id} variant="elevated" hover className="p-6 cursor-pointer">
+            <EnhancedCard key={project.id} variant="elevated" hover className="p-6 cursor-pointer bg-gray-900 text-white">
               <div className="flex justify-between items-start mb-4">
-                <Typography variant="subheading" size="lg" weight="semibold" className="text-gray-800">
+                <Typography variant="subheading" size="lg" weight="semibold" className="text-gray-100">
                   {project.name}
                 </Typography>
-                <button className="text-blue-600 hover:text-blue-700" onClick={() => alert('Button clicked')}>
-                  <FileText className="w-5 h-5" />
-                </button>
+                {/* Display button now says 'عرض' and routes to the correct details page */}
+                <Link href={`/user/projects/${project.id}`} className="text-blue-400 hover:text-blue-200">
+                  <span title="عرض"><FileText className="w-5 h-5" /></span>
+                </Link>
               </div>
-
               {/* Progress Bar */}
               <div className="mb-4">
                 <div className="flex justify-between text-sm mb-1">
-                  <span>التقدم</span>
-                  <span>{project.progress}%</span>
+                  <span>Progress</span>
+                  <span>{project.progress || 0}%</span>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="w-full bg-gray-700 rounded-full h-2">
                   <div 
-                    className="bg-blue-600 h-2 rounded-full" 
-                    style={{ width: `${project.progress}%` }}
+                    className="bg-blue-500 h-2 rounded-full" 
+                    style={{ width: `${project.progress || 0}%` }}
                   ></div>
                 </div>
               </div>
-
               {/* Financial Details */}
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-gray-600">المقدرة:</span>
-                  <span className="font-medium">{project.estimated.toLocaleString('en-US')} ر.س</span>
+                  <span className="text-gray-400">Budget:</span>
+                  <span className="font-medium">{project.budget ? project.budget.toLocaleString('en-US') : 0} SAR</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600">المدفوعات:</span>
-                  <span className="font-medium">{project.paid.toLocaleString('en-US')} ر.س</span>
+                  <span className="text-gray-400">Location:</span>
+                  <span className="font-medium">{project.location || '-'}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600">العظم:</span>
-                  <span className="font-medium">{project.skeleton.toLocaleString('en-US')} ر.س</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">التشطيب:</span>
-                  <span className="font-medium">{project.finishing.toLocaleString('en-US')} ر.س</span>
-                </div>
-                <div className="flex justify-between border-t pt-2">
-                  <span className="text-gray-600">متبقي:</span>
-                  <span className="font-bold text-red-600">{project.remaining.toLocaleString('en-US')} ر.س</span>
+                  <span className="text-gray-400">Level:</span>
+                  <span className="font-medium">{project.stage || '-'}</span>
                 </div>
               </div>
-
-              {/* Share Button */}
-              <div className="mt-4 pt-4 border-t">
-                <button className="w-full bg-blue-50 text-blue-600 py-2 px-4 rounded-lg hover:bg-blue-100 transition-colors" onClick={() => alert('Button clicked')}>
-                  مشاركة
-                </button>
+              {/* Actions */}
+              <div className="mt-4 pt-4 border-t flex gap-2">
+                <Link href={`/user/projects/${project.id}/edit`} className="flex-1 bg-yellow-600 hover:bg-yellow-700 text-white py-2 px-2 rounded text-center">تعديل</Link>
+                {/* Fix: 'عرض' button now always routes to the project details page */}
+                <Link href={`/user/projects/${project.id}`} className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 px-2 rounded text-center">عرض</Link>
+                <button className="flex-1 bg-red-600 hover:bg-red-700 text-white py-2 px-2 rounded" onClick={() => alert('Delete project')}>حذف</button>
+                <button className="flex-1 bg-green-600 hover:bg-green-700 text-white py-2 px-2 rounded" onClick={() => alert('Advertise project')}>إعلان</button>
               </div>
             </EnhancedCard>
           ))}

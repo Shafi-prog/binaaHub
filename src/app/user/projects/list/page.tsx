@@ -309,7 +309,7 @@ export default function ProjectsListPage() {
                       </Badge>
                       <button 
                         className="text-blue-600 hover:text-blue-700"
-                        onClick={() => router.push(`/user/comprehensive-construction-calculator?projectId=${project.id}`)}
+                        onClick={() => router.push(`/user/projects/${project.id}`)}
                       >
                         <FileText className="w-5 h-5" />
                       </button>
@@ -358,7 +358,7 @@ export default function ProjectsListPage() {
                   <div className="mt-4 pt-4 border-t flex gap-2">
                     <Button
                       size="sm"
-                      onClick={() => router.push(`/user/comprehensive-construction-calculator?projectId=${project.id}`)}
+                      onClick={() => router.push(`/user/projects/${project.id}`)}
                       className="flex-1 flex items-center gap-1"
                     >
                       <Eye className="w-3 h-3" />

@@ -186,4 +186,63 @@ export type User = {
   email?: string;
 };
 
+// --- AUTO-GENERATED: Supabase construction_projects columns as of 2025-07-31 ---
+// id, user_id, project_name, description, project_type, status, budget, actual_cost, start_date, completion_percentage, location, created_at, updated_at, name, title, type, spent, end_date, estimated_completion, progress, area, estimated_cost, spent_cost
+
+export type SupabaseProject = {
+  id: string;
+  user_id: string;
+  project_name: string;
+  description: string | null;
+  project_type: string | null;
+  status: string | null;
+  budget: number | null;
+  actual_cost: number | null;
+  start_date: string | null;
+  completion_percentage: number | null;
+  location: string | null;
+  created_at: string;
+  updated_at: string;
+  name: string | null;
+  title: string | null;
+  type: string | null;
+  spent: number | null;
+  end_date: string | null;
+  estimated_completion: string | null;
+  progress: number | null;
+  area: number | null;
+  estimated_cost: number | null;
+  spent_cost: number | null;
+};
+
+// Utility: Map SupabaseProject to frontend Project type (partial, extend as needed)
+export function mapSupabaseProjectToProject(s: SupabaseProject): Project {
+  return {
+    id: s.id,
+    name: s.project_name || s.name || '',
+    description: s.description || '',
+    projectType: (s.project_type as any) || 'residential',
+    status: (s.status as any) || 'planning',
+    progress: s.progress ?? s.completion_percentage ?? 0,
+    createdAt: s.created_at,
+    updatedAt: s.updated_at,
+    area: s.area ?? 0,
+    budget: s.budget ?? undefined,
+    startDate: s.start_date ?? undefined,
+    endDate: s.end_date ?? undefined,
+    stage: '',
+    floorCount: 0,
+    roomCount: 0,
+    estimations: undefined,
+    purchases: undefined,
+    location: s.location ?? undefined,
+    images: undefined,
+    publicDisplay: undefined,
+    clientName: undefined,
+    selectedPhases: undefined,
+    enablePhotoTracking: undefined,
+    enableProgressTracking: undefined,
+  };
+}
+
 

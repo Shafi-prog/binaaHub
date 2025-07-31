@@ -6,7 +6,9 @@ import {
   ProjectPurchase, 
   ProjectSummary, 
   MaterialEstimation,
-  LightingEstimation 
+  LightingEstimation,
+  SupabaseProject,
+  mapSupabaseProjectToProject
 } from '@/core/shared/types/types';
 
 export class ProjectTrackingService {
@@ -29,7 +31,8 @@ export class ProjectTrackingService {
         console.error('Error loading projects:', error);
         return [];
       }
-      return data || [];
+      // Map SupabaseProject[] to Project[]
+      return (data as SupabaseProject[]).map(mapSupabaseProjectToProject);
     } catch (error) {
       console.error('Error loading projects:', error);
       return [];
@@ -83,22 +86,22 @@ export class ProjectTrackingService {
       };
       
       // Save to real Supabase database using correct table name
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('construction_projects')
         .upsert(dbProject);
-      
       if (error) {
         console.error('Error saving project to database:', error);
+        alert('Supabase error: ' + (error.message || JSON.stringify(error)));
       } else {
-        console.log('✅ Project saved to database:', project.name);
+        console.log('✅ Project saved to database:', project.name, data);
       }
     } catch (error) {
       console.error('Error saving project to mock database:', error);
     }
   }
 
-  static async getProjectById(id: string): Promise<Project | null> {
-    const projects = await this.getProjects();
+  static async getProjectById(id: string, userId?: string): Promise<Project | null> {
+    const projects = await this.getProjects(userId);
     return projects.find(p => p.id === id) || null;
   }
 

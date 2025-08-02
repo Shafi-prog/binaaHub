@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
+import { Badge } from '@/core/shared/components/ui/badge';
+import { Button } from '@/core/shared/components/ui/button';
+import { Progress } from '@/core/shared/components/ui/progress';
+import { Alert, AlertDescription } from '@/core/shared/components/ui/alert';
 import { 
   Activity, 
   Database, 
@@ -84,7 +84,7 @@ export default function PerformanceMonitoring() {
 
   const getStatusColor = (value: number, thresholds: { warning: number; critical: number }) => {
     if (value >= thresholds.critical) return 'destructive';
-    if (value >= thresholds.warning) return 'warning';
+    if (value >= thresholds.warning) return 'secondary';
     return 'default';
   };
 

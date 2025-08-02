@@ -27,6 +27,7 @@
         "src/core/shared/*"
       ],
       "@/components/*": [
+        "src/components/*",
         "src/core/shared/components/*",
         "components/*"
       ],

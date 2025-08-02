@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/core/shared/auth/AuthProvider';
 import { AuthProvider } from '@/core/shared/auth/AuthProvider';
 import { Button } from '@/core/shared/components/ui/button';
 import { LogOut, Wrench } from 'lucide-react';
@@ -17,14 +17,14 @@ export default function ServiceProviderLayout({ children }: ServiceProviderLayou
   
   // Safe auth hook usage
   let user: any = null;
-  let logout: (() => Promise<void>) | null = null;
+  let signOut: (() => Promise<void>) | null = null;
   try {
     const authResult = useAuth();
     user = authResult.user;
-    logout = authResult.logout;
+    signOut = authResult.signOut;
   } catch (error) {
     user = null;
-    logout = null;
+    signOut = null;
   }
 
   // Logout handler
@@ -45,9 +45,9 @@ export default function ServiceProviderLayout({ children }: ServiceProviderLayou
         console.warn('⚠️ [Service Provider Layout] Logout API failed, continuing with client-side cleanup');
       }
       
-      // Clear client-side auth state if logout function available
-      if (logout) {
-        await logout();
+      // Clear client-side auth state if signOut function available
+      if (signOut) {
+        await signOut();
       }
       
       // Redirect to login
@@ -56,8 +56,8 @@ export default function ServiceProviderLayout({ children }: ServiceProviderLayou
     } catch (error) {
       console.error('❌ [Service Provider Layout] Logout error:', error);
       // Even if API fails, clear client state and redirect
-      if (logout) {
-        await logout();
+      if (signOut) {
+        await signOut();
       }
       router.push('/auth/login');
     } finally {

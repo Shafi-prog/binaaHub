@@ -1,86 +1,119 @@
-// Unified API Layer - Implementation
-import { NextRequest, NextResponse } from 'next/server';
-
-export interface APIResponse<T = any> {
+// Unified API module for core functionality
+export interface ApiResponse<T = any> {
   success: boolean;
   data?: T;
   error?: string;
   message?: string;
 }
 
-export class APIResponseHelper {
-  static success<T>(data: T, message?: string): APIResponse<T> {
-    return {
-      success: true,
-      data,
-      message
-    };
-  }
-
-  static error(error: string, data?: any): APIResponse {
-    return {
-      success: false,
-      data,
-      error
-    };
-  }
+export interface ApiRequest {
+  method: string;
+  url: string;
+  data?: any;
+  headers?: Record<string, string>;
 }
 
-// Export both as interface and as value
-export const APIResponse = APIResponseHelper;
-
 interface Route {
-  path: string;
   method: string;
-  handler: (req: NextRequest) => Promise<NextResponse>;
-  middleware?: Array<(req: NextRequest) => Promise<NextRequest>>;
+  path: string;
+  handler: Function;
+  validation?: any;
+  auth?: boolean;
+  role?: string;
+  rateLimit?: string;
 }
 
 class ApiLayer {
   private routes: Route[] = [];
 
-  // Placeholder API layer methods
-  async get(path: string) {
-    return { success: true, data: null };
-  }
-
-  async post(path: string, data: any) {
-    return { success: true, data: null };
-  }
-
-  async put(path: string, data: any) {
-    return { success: true, data: null };
-  }
-
-  async delete(path: string) {
-    return { success: true, data: null };
-  }
-
   registerRoute(route: Route) {
     this.routes.push(route);
   }
 
-  async processRequest(request: NextRequest): Promise<NextResponse> {
-    // Simple request processing
-    const url = new URL(request.url);
-    const route = this.routes.find(r => r.path === url.pathname && r.method === request.method);
-    
-    if (route) {
-      return await route.handler(request);
-    }
-    
-    return NextResponse.json({ error: 'Route not found' }, { status: 404 });
+  getRoutes() {
+    return this.routes;
   }
 }
 
 export const apiLayer = new ApiLayer();
 
-export const createHandler = (handler: Function) => {
-  return async (req: Request) => {
+export class APIResponse {
+  static success<T>(data: T, message?: string): ApiResponse<T> {
+    return {
+      success: true,
+      data,
+      message,
+    };
+  }
+
+  static error(error: string, message?: string): ApiResponse {
+    return {
+      success: false,
+      error,
+      message,
+    };
+  }
+}
+
+export function createHandler(handler: Function) {
+  return handler;
+}
+
+export class UnifiedAPI {
+  private baseURL: string;
+
+  constructor(baseURL: string = '/api') {
+    this.baseURL = baseURL;
+  }
+
+  async request<T = any>(config: ApiRequest): Promise<ApiResponse<T>> {
     try {
-      return await handler(req);
+      const response = await fetch(`${this.baseURL}${config.url}`, {
+        method: config.method,
+        headers: {
+          'Content-Type': 'application/json',
+          ...config.headers,
+        },
+        body: config.data ? JSON.stringify(config.data) : undefined,
+      });
+
+      const result = await response.json();
+      
+      if (!response.ok) {
+        return {
+          success: false,
+          error: result.message || 'Request failed',
+        };
+      }
+
+      return {
+        success: true,
+        data: result,
+      };
     } catch (error) {
-      return Response.json({ success: false, error: 'Internal server error' }, { status: 500 });
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error',
+      };
     }
-  };
-};
+  }
+
+  async get<T = any>(url: string, headers?: Record<string, string>): Promise<ApiResponse<T>> {
+    return this.request<T>({ method: 'GET', url, headers });
+  }
+
+  async post<T = any>(url: string, data?: any, headers?: Record<string, string>): Promise<ApiResponse<T>> {
+    return this.request<T>({ method: 'POST', url, data, headers });
+  }
+
+  async put<T = any>(url: string, data?: any, headers?: Record<string, string>): Promise<ApiResponse<T>> {
+    return this.request<T>({ method: 'PUT', url, data, headers });
+  }
+
+  async delete<T = any>(url: string, headers?: Record<string, string>): Promise<ApiResponse<T>> {
+    return this.request<T>({ method: 'DELETE', url, headers });
+  }
+}
+
+export const unifiedAPI = new UnifiedAPI();
+export default unifiedAPI;

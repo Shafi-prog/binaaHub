@@ -1,22 +1,23 @@
 'use client'
 
 import { useState } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card'
+import { Button } from '@/core/shared/components/ui/button'
+import { Badge } from '@/core/shared/components/ui/badge'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/core/shared/components/ui/tabs'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/core/shared/components/ui/table'
 
 export default function CurrencyRegionPage() {
   const [currencies] = useState([])
   const [regions] = useState([])
   const [countries] = useState([])
+  const [activeTab, setActiveTab] = useState('currencies')
 
   return (
     <div className="p-6 space-y-6">
       <h1 className="text-3xl font-bold">Currency & Region Management</h1>
       
-      <Tabs defaultValue="currencies" className="space-y-4">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
         <TabsList>
           <TabsTrigger value="currencies">Currencies</TabsTrigger>
           <TabsTrigger value="regions">Regions</TabsTrigger>

@@ -3,7 +3,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { X, Camera, Zap, Scan, Package, AlertCircle } from 'lucide-react';
-import BarcodeScanner from '@/components/barcode/BarcodeScanner';
+import BarcodeScanner from '@/core/shared/components/barcode/BarcodeScanner';
 
 interface Product {
   id: string;

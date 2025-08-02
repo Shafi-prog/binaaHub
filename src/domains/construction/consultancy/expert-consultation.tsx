@@ -1,14 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Badge } from '@/components/ui/badge';
-import { Textarea } from '@/components/ui/textarea';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
+import { Button } from '@/core/shared/components/ui/button';
+import { Input } from '@/core/shared/components/ui/input';
+import { Label } from '@/core/shared/components/ui/label';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/core/shared/components/ui/tabs';
+import { Badge } from '@/core/shared/components/ui/badge';
+import { Textarea } from '@/core/shared/components/ui/textarea';
+import { Avatar, AvatarFallback, AvatarImage } from '@/core/shared/components/ui/avatar';
 import { 
   Video, 
   Calendar, 
@@ -75,6 +75,7 @@ interface ConsultationRequest {
 }
 
 export default function ExpertConsultation() {
+  const [activeTab, setActiveTab] = useState('overview');
   const [experts, setExperts] = useState<Expert[]>([
     {
       id: '1',
@@ -367,7 +368,7 @@ export default function ExpertConsultation() {
         </CardContent>
       </Card>
 
-      <Tabs defaultValue="experts" className="w-full">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="experts">Find Experts</TabsTrigger>
           <TabsTrigger value="consultations">My Consultations</TabsTrigger>
@@ -690,3 +691,4 @@ export default function ExpertConsultation() {
     </div>
   );
 }
+

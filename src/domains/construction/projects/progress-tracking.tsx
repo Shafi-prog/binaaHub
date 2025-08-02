@@ -1,14 +1,14 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Progress } from '@/components/ui/progress';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Badge } from '@/components/ui/badge';
-import { Textarea } from '@/components/ui/textarea';
+import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
+import { Button } from '@/core/shared/components/ui/button';
+import { Input } from '@/core/shared/components/ui/input';
+import { Label } from '@/core/shared/components/ui/label';
+import { Progress } from '@/core/shared/components/ui/progress';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/core/shared/components/ui/tabs';
+import { Badge } from '@/core/shared/components/ui/badge';
+import { Textarea } from '@/core/shared/components/ui/textarea';
 import ProjectCompletionPopup from '@/core/shared/components/ProjectCompletionPopup';
 import { Project } from '@/core/shared/types/types';
 import { 
@@ -59,6 +59,7 @@ interface ProgressReport {
 }
 
 export default function ProgressTracking() {
+  const [activeTab, setActiveTab] = useState('overview');
   const [tasks, setTasks] = useState<Task[]>([
     {
       id: '1',
@@ -362,7 +363,7 @@ export default function ProgressTracking() {
         </Card>
       </div>
 
-      <Tabs defaultValue="overview" className="w-full">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="tasks">Tasks</TabsTrigger>
@@ -613,3 +614,4 @@ export default function ProgressTracking() {
     </div>
   );
 }
+

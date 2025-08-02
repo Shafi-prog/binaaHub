@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic';
 import { ReactNode, useState } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { useAuth } from '@/contexts/AuthContext'
+import { useAuth } from '@/core/shared/auth/AuthProvider'
 import { cn } from '@/core/shared/utils'
 import { AuthProvider } from '@/core/shared/auth/AuthProvider'
 import { Button } from '@/core/shared/components/ui/button'
@@ -84,14 +84,14 @@ export default function AdminLayout({
   
   // Safe auth hook usage
   let user: any = null
-  let logout: (() => Promise<void>) | null = null
+  let signOut: (() => Promise<void>) | null = null
   try {
     const authResult = useAuth()
     user = authResult.user
-    logout = authResult.logout
+    signOut = authResult.signOut
   } catch (error) {
     user = null
-    logout = null
+    signOut = null
   }
 
   // Logout handler
@@ -112,9 +112,9 @@ export default function AdminLayout({
         console.warn('⚠️ [Admin Layout] Logout API failed, continuing with client-side cleanup')
       }
       
-      // Clear client-side auth state if logout function available
-      if (logout) {
-        await logout()
+      // Clear client-side auth state if signOut function available
+      if (signOut) {
+        await signOut()
       }
       
       // Redirect to login
@@ -123,8 +123,8 @@ export default function AdminLayout({
     } catch (error) {
       console.error('❌ [Admin Layout] Logout error:', error)
       // Even if API fails, clear client state and redirect
-      if (logout) {
-        await logout()
+      if (signOut) {
+        await signOut()
       }
       router.push('/auth/login')
     } finally {

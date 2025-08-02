@@ -89,7 +89,7 @@ const pagesSections = {
       { path: '/user/projects/create', name: 'Create Project', description: 'Create new construction project' },
       { path: '/user/projects/create/construction', name: 'Create Construction Project', description: 'Construction-specific project creation' },
       { path: '/user/projects/create/enhanced', name: 'Enhanced Project Creation', description: 'Enhanced project creation with advanced options' },
-      { path: '/user/projects/new', name: 'New Project', description: 'Alternative new project creation' },
+      { path: '/user/projects/create', name: 'Create Project', description: 'Standard project creation' },
       { path: '/user/projects/calculator', name: 'Project Calculator', description: 'Project cost calculation tools' },
       { path: '/user/projects/notebook', name: 'Project Notebook', description: 'Project notes and documentation' },
       { path: '/user/projects/settings', name: 'Project Settings', description: 'Configure project settings' },

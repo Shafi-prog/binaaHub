@@ -15,9 +15,9 @@ import {
   FileText,
   Plus,
 } from 'lucide-react';
-import WarrantyClaimForm from '@/components/warranties/WarrantyClaimForm';
-import WarrantyTransferForm from '@/components/warranties/WarrantyTransferForm';
-import WarrantyDocs from '@/components/warranties/WarrantyDocs';
+import WarrantyClaimForm from '@/core/shared/components/warranties/WarrantyClaimForm';
+import WarrantyTransferForm from '@/core/shared/components/warranties/WarrantyTransferForm';
+import WarrantyDocs from '@/core/shared/components/warranties/WarrantyDocs';
 
 interface Action {
   type: 'claim' | 'transfer' | 'docs';

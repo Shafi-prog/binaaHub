@@ -2,7 +2,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { ClientIcon } from '@/components/icons';
+import { ClientIcon } from '@/core/shared/components/icons';
 import { Button } from '@/core/shared/components/ui/enhanced-components';
 import { LoadingSpinner } from '@/core/shared/components/ui/loading-spinner';
 import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';

@@ -1,15 +1,15 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
-import { Calendar } from '@/components/ui/calendar';
-import { Popover, PopoverContent } from '@/components/ui/popover';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
+import { Button } from '@/core/shared/components/ui/button';
+import { Input } from '@/core/shared/components/ui/input';
+import { Label } from '@/core/shared/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/core/shared/components/ui/select';
+import { Badge } from '@/core/shared/components/ui/badge';
+import { Separator } from '@/core/shared/components/ui/separator';
+import { Calendar } from '@/core/shared/components/ui/calendar';
+import { Popover, PopoverContent } from '@/core/shared/components/ui/popover';
 import { CalendarIcon, Truck, MapPin, Clock, CheckCircle, AlertTriangle } from 'lucide-react';
 import { format } from 'date-fns';
 import { ar } from 'date-fns/locale';

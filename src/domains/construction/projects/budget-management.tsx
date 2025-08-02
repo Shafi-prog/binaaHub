@@ -1,13 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Progress } from '@/components/ui/progress';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
+import { Button } from '@/core/shared/components/ui/button';
+import { Input } from '@/core/shared/components/ui/input';
+import { Label } from '@/core/shared/components/ui/label';
+import { Progress } from '@/core/shared/components/ui/progress';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/core/shared/components/ui/tabs';
+import { Badge } from '@/core/shared/components/ui/badge';
 import { 
   Calculator, 
   TrendingUp, 
@@ -35,6 +35,7 @@ interface BudgetSummary {
 }
 
 export default function BudgetManagement() {
+  const [activeTab, setActiveTab] = useState('overview');
   const [budgetItems, setBudgetItems] = useState<BudgetItem[]>([
     {
       id: '1',
@@ -205,7 +206,7 @@ export default function BudgetManagement() {
         </Card>
       </div>
 
-      <Tabs defaultValue="overview" className="w-full">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="categories">Categories</TabsTrigger>
@@ -354,3 +355,4 @@ export default function BudgetManagement() {
     </div>
   );
 }
+

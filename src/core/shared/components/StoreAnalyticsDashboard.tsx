@@ -16,7 +16,7 @@ import {
   Cell,
 } from 'recharts';
 import { Card } from '@/core/shared/components/ui';
-import { ClientIcon } from '@/components/icons';
+import { ClientIcon } from '@/core/shared/components/icons';
 import {
   getStoreStats,
   getStoreAnalytics,

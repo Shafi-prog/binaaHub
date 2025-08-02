@@ -4,8 +4,7 @@
 import { useState, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useAuth } from '@/contexts/AuthContext';
-import { AuthProvider } from '@/core/shared/auth/AuthProvider';
+import { useAuth } from '@/core/shared/auth/AuthProvider';
 import { Button } from '@/core/shared/components/ui/button';
 import { 
   Store,
@@ -62,17 +61,17 @@ export default function StoreLayout({
   // Safe auth hook usage that handles SSG
   let user = null;
   let loading = false;
-  let logout: (() => Promise<void>) | null = null;
+  let signOut: (() => Promise<void>) | null = null;
   try {
     const authResult = useAuth();
     user = authResult.user;
     loading = authResult.loading;
-    logout = authResult.logout;
+    signOut = authResult.signOut;
   } catch (error) {
     // During SSG, useAuth might not be available, use defaults
     user = null;
     loading = false;
-    logout = null;
+    signOut = null;
   }
   
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -107,9 +106,9 @@ export default function StoreLayout({
         console.warn('⚠️ [Store Layout] Logout API failed, continuing with client-side cleanup');
       }
       
-      // Clear client-side auth state if logout function available
-      if (logout) {
-        await logout();
+      // Clear client-side auth state if signOut function available
+      if (signOut) {
+        await signOut();
       }
       
       // Redirect to login
@@ -118,8 +117,8 @@ export default function StoreLayout({
     } catch (error) {
       console.error('❌ [Store Layout] Logout error:', error);
       // Even if API fails, clear client state and redirect
-      if (logout) {
-        await logout();
+      if (signOut) {
+        await signOut();
       }
       router.push('/auth/login');
     } finally {
@@ -324,17 +323,14 @@ export default function StoreLayout({
   // NOW we can do conditional rendering - all hooks have been called
   if (!isClientSide) {
     return (
-      <AuthProvider>
-        <div className="min-h-screen flex items-center justify-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
-        </div>
-      </AuthProvider>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+      </div>
     );
   }
 
   return (
-    <AuthProvider>
-      <div className="min-h-screen bg-gray-50 flex" dir="rtl">
+    <div className="min-h-screen bg-gray-50 flex" dir="rtl">
       {/* Mobile sidebar backdrop */}
       {sidebarOpen && (
         <div 
@@ -597,8 +593,7 @@ export default function StoreLayout({
           {children}
         </main>
       </div>
-      </div>
-    </AuthProvider>
+    </div>
   );
 }
 

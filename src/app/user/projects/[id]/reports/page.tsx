@@ -3,8 +3,8 @@
 import { useUserData } from '@/core/shared/contexts/UserDataContext';
 import { useAuth } from '@/core/shared/auth/AuthProvider';
 
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card } from '@/core/shared/components/ui/card';
+import { Button } from '@/core/shared/components/ui/button';
 
 export default function ProjectReportsPage() {
   const { user, session, isLoading, error } = useAuth();

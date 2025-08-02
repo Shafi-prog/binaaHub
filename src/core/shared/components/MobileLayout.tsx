@@ -17,8 +17,7 @@ import {
 } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import NotificationSystem from '@/domains/stores/components/NotificationSystem'
-import { NotificationProvider } from '@/contexts/NotificationContext'
+import { NotificationProvider } from '@/core/shared/components/ui/NotificationSystem'
 
 interface MobileLayoutProps {
   children: React.ReactNode
@@ -174,7 +173,7 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({ children, title }) => {
               </div>
 
               <div className="flex items-center gap-4">
-                <NotificationSystem />
+                {/* NotificationSystem removed - using react-hot-toast provider */}
                 
                 {/* User Menu */}
                 <div className="flex items-center gap-2">

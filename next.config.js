@@ -109,6 +109,104 @@ const nextConfig = {
     optimizeCss: true,
     typedRoutes: false,
   },
+  
+  // Redirect legacy project routes to unified page
+  async redirects() {
+    return [
+      // Project creation redirects
+      {
+        source: '/user/projects/create',
+        destination: '/user/projects/unified?create=true&enhanced=true',
+        permanent: true,
+      },
+      {
+        source: '/user/projects/new', 
+        destination: '/user/projects/unified?create=true&enhanced=true',
+        permanent: true,
+      },
+      // Calculator redirects
+      {
+        source: '/user/projects/calculator',
+        destination: '/user/comprehensive-construction-calculator',
+        permanent: true,
+      },
+      {
+        source: '/(public)/calculator',
+        destination: '/user/comprehensive-construction-calculator',
+        permanent: false, // Keep as temporary for public access
+      },
+      // Keep enhanced page as specialized workflow
+      {
+        source: '/user/projects/create/enhanced',
+        destination: '/user/projects/create/construction-guidance',
+        permanent: true,
+      },
+      // Redirects for removed redundant project pages
+      {
+        source: '/user/projects/create/unified',
+        destination: '/user/projects/unified?create=true&enhanced=true',
+        permanent: true,
+      },
+      // Test page redirects (for any remaining links)
+      {
+        source: '/auth-test',
+        destination: '/user/dashboard',
+        permanent: true,
+      },
+      {
+        source: '/quick-test',
+        destination: '/user/dashboard', 
+        permanent: true,
+      },
+      {
+        source: '/test-login',
+        destination: '/simple-login',
+        permanent: true,
+      },
+      // Redirects for removed redundant test pages
+      {
+        source: '/test-context',
+        destination: '/dev/test-context',
+        permanent: true,
+      },
+      {
+        source: '/test-data-connection',
+        destination: '/dev/test-supabase',
+        permanent: true,
+      },
+      {
+        source: '/user/direct-test',
+        destination: '/dev/test-supabase',
+        permanent: true,
+      },
+      {
+        source: '/test/data-quick',
+        destination: '/dev/test-supabase',
+        permanent: true,
+      },
+      {
+        source: '/test/simple-data',
+        destination: '/dev/test-supabase',
+        permanent: true,
+      },
+      {
+        source: '/user/test-console',
+        destination: '/dev/test-console',
+        permanent: true,
+      },
+      {
+        source: '/user/test-context',
+        destination: '/dev/test-context',
+        permanent: true,
+      },
+      {
+        source: '/user/env-test',
+        destination: '/dev/env-test',
+        permanent: true,
+      },
+    ];
+  },
+  
   async headers() {
     return [
       {

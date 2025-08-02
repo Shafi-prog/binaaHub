@@ -1,14 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { Textarea } from '@/components/ui/textarea';
+import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
+import { Button } from '@/core/shared/components/ui/button';
+import { Input } from '@/core/shared/components/ui/input';
+import { Label } from '@/core/shared/components/ui/label';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/core/shared/components/ui/tabs';
+import { Badge } from '@/core/shared/components/ui/badge';
+import { Progress } from '@/core/shared/components/ui/progress';
+import { Textarea } from '@/core/shared/components/ui/textarea';
 import { 
   HardHat, 
   ClipboardCheck, 
@@ -81,6 +81,7 @@ interface TeamMember {
 }
 
 export default function SupervisorDashboard() {
+  const [activeTab, setActiveTab] = useState('overview');
   const [tasks, setTasks] = useState<SupervisorTask[]>([
     {
       id: '1',
@@ -406,7 +407,7 @@ export default function SupervisorDashboard() {
         </Card>
       </div>
 
-      <Tabs defaultValue="tasks" className="w-full">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid w-full grid-cols-5">
           <TabsTrigger value="tasks">Tasks</TabsTrigger>
           <TabsTrigger value="quality">Quality</TabsTrigger>
@@ -762,3 +763,4 @@ export default function SupervisorDashboard() {
     </div>
   );
 }
+

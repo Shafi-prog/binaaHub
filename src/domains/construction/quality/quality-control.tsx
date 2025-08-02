@@ -1,15 +1,15 @@
 'use client';
 
 import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { Textarea } from '@/components/ui/textarea';
-import { Checkbox } from '@/components/ui/checkbox';
+import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
+import { Button } from '@/core/shared/components/ui/button';
+import { Input } from '@/core/shared/components/ui/input';
+import { Label } from '@/core/shared/components/ui/label';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/core/shared/components/ui/tabs';
+import { Badge } from '@/core/shared/components/ui/badge';
+import { Progress } from '@/core/shared/components/ui/progress';
+import { Textarea } from '@/core/shared/components/ui/textarea';
+import { Checkbox } from '@/core/shared/components/ui/checkbox';
 import { 
   Shield, 
   CheckCircle, 
@@ -79,6 +79,7 @@ interface QualityMetrics {
 }
 
 export default function QualityControl() {
+  const [activeTab, setActiveTab] = useState('overview');
   const [inspections, setInspections] = useState<QualityInspection[]>([
     {
       id: '1',
@@ -404,7 +405,7 @@ export default function QualityControl() {
         </Card>
       </div>
 
-      <Tabs defaultValue="inspections" className="w-full">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="inspections">Inspections</TabsTrigger>
           <TabsTrigger value="standards">Standards</TabsTrigger>
@@ -733,3 +734,4 @@ export default function QualityControl() {
     </div>
   );
 }
+

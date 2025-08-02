@@ -239,7 +239,7 @@ export default function Navbar({ user, accountType }: NavbarProps) {
         },
         {
           label: 'المشاريع للبيع',
-          href: '/projects-for-sale',
+          href: '/marketplace',
           icon: Building2,
           description: 'مشاريع بناء للبيع'
         },
@@ -336,7 +336,7 @@ export default function Navbar({ user, accountType }: NavbarProps) {
         },
         {
           label: 'حاسبة البيت',
-          href: '/house-construction-calculator',
+          href: '/calculator',
           icon: Home,
           description: 'حاسبة تكلفة بناء البيت'
         },

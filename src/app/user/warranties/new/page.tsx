@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/enhanced-components';
 import { Shield, Upload, Calendar, DollarSign, Package, ArrowRight, FileText, Search, Bot, Sparkles } from 'lucide-react';
-import StoreSearch from '../../../../components/warranty/StoreSearch';
+import StoreSearch from '@/core/shared/components/StoreSearch';
 import { useAuth } from '@/core/shared/auth/AuthProvider';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 

@@ -136,11 +136,11 @@ export default function UserLayout({
         { href: '/user/projects', label: 'مشاريعي', icon: Package },
         { href: '/user/projects/create', label: 'مشروع جديد', icon: Building },
         { href: '/user/projects/list', label: 'قائمة المشاريع', icon: Archive },
-        { href: '/user/projects/calculator', label: 'حاسبة التكلفة', icon: Calculator },
+        { href: '/user/comprehensive-construction-calculator', label: 'حاسبة التكلفة', icon: Calculator },
         { href: '/user/building-advice', label: 'نصائح البناء', icon: FileText },
         { href: '/user/smart-construction-advisor', label: 'المستشار الذكي', icon: Wrench },
         { href: '/user/comprehensive-construction-calculator', label: 'حاسبة البناء الشاملة', icon: Calculator },
-        { href: '/user/individual-home-calculator', label: 'حاسبة المنزل الفردي', icon: Home },
+        { href: '/user/comprehensive-construction-calculator', label: 'حاسبة المنزل الفردي', icon: Home },
       ]
     },
 

@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { Users, MapPin, Phone, Mail, UserCheck, MessageCircle, Clock } from 'lucide-react';
 import { Card, CardContent, Button } from '@/core/shared/components/ui';
 import { useTranslation } from '@/core/shared/hooks/useTranslation';
-import SupervisorRequests from '@/components/SupervisorRequests';
+import SupervisorRequests from '@/core/shared/components/SupervisorRequests';
 
 interface Supervisor {
   id: string;

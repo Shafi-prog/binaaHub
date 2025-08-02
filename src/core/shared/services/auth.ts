@@ -29,6 +29,13 @@ class TempAuthService {
       role: 'user',
       isAuthenticated: true
     },
+    'user@user.com': {
+      id: 'test-user-001',
+      email: 'user@user.com',
+      name: 'Test User',
+      role: 'user',
+      isAuthenticated: true
+    },
     'store@binna': {
       id: 'real-store-001',
       email: 'store@binna',

@@ -61,7 +61,7 @@ const SecurityEvent = model.define("security_event", {
 })
 
 // Relationships
-SecurityEvent.belongsTo(() => import("../../user/models/user").then(m => m.default), {
+SecurityEvent.belongsTo(() => import("../../user/models/User").then(m => m.default), {
   foreignKey: "user_id"
 })
 

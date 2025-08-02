@@ -44,7 +44,7 @@ ChatSession.belongsTo(() => import("../../customer/models/customer").then(m => m
   foreignKey: "customer_id"
 })
 
-ChatSession.belongsTo(() => import("../../user/models/user").then(m => m.default), {
+ChatSession.belongsTo(() => import("../../user/models/User").then(m => m.default), {
   foreignKey: "agent_id"
 })
 

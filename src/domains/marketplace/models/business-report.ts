@@ -60,7 +60,7 @@ const BusinessReport = model.define("business_report", {
 })
 
 // Relationships
-BusinessReport.belongsTo(() => import("../../user/models/user").then(m => m.default), {
+BusinessReport.belongsTo(() => import("../../user/models/User").then(m => m.default), {
   foreignKey: "created_by"
 })
 

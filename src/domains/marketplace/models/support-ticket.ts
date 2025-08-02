@@ -49,7 +49,7 @@ SupportTicket.belongsTo(() => import("../../order/models/order").then(m => m.def
   foreignKey: "order_id"
 })
 
-SupportTicket.belongsTo(() => import("../../user/models/user").then(m => m.default), {
+SupportTicket.belongsTo(() => import("../../user/models/User").then(m => m.default), {
   foreignKey: "assigned_agent_id"
 })
 

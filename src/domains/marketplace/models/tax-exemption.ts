@@ -49,7 +49,7 @@ TaxExemption.belongsTo(() => import("../../customer/models/customer").then(m => 
   foreignKey: "customer_id"
 })
 
-TaxExemption.belongsTo(() => import("../../user/models/user").then(m => m.default), {
+TaxExemption.belongsTo(() => import("../../user/models/User").then(m => m.default), {
   foreignKey: "validated_by"
 })
 

@@ -56,7 +56,7 @@ const TwoFactorAuth = model.define("two_factor_auth", {
 })
 
 // Relationships
-TwoFactorAuth.belongsTo(() => import("../../user/models/user").then(m => m.default), {
+TwoFactorAuth.belongsTo(() => import("../../user/models/User").then(m => m.default), {
   foreignKey: "user_id"
 })
 

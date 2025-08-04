@@ -28,7 +28,7 @@ export default function QuickAccessLinks({ currentSection }: QuickAccessLinksPro
           {
             title: 'إدارة المتجر',
             description: 'إنشاء وإدارة متجرك الإلكتروني',
-            href: '/store/dashboard',
+            href: '/stores',
             icon: Store,
             color: 'bg-green-50 border-green-200 hover:bg-green-100',
             iconColor: 'text-green-600'
@@ -36,7 +36,7 @@ export default function QuickAccessLinks({ currentSection }: QuickAccessLinksPro
           {
             title: 'الخدمات المتخصصة',
             description: 'اطلب خدمات احترافية لمشروعك',
-            href: '/service-provider/dashboard',
+            href: '/service-provider',
             icon: Wrench,
             color: 'bg-purple-50 border-purple-200 hover:bg-purple-100',
             iconColor: 'text-purple-600'
@@ -48,7 +48,7 @@ export default function QuickAccessLinks({ currentSection }: QuickAccessLinksPro
           {
             title: 'إدارة العملاء',
             description: 'عرض وإدارة بيانات العملاء',
-            href: '/user/dashboard',
+            href: '/customers',
             icon: Users,
             color: 'bg-blue-50 border-blue-200 hover:bg-blue-100',
             iconColor: 'text-blue-600'
@@ -56,7 +56,7 @@ export default function QuickAccessLinks({ currentSection }: QuickAccessLinksPro
           {
             title: 'الخدمات المساندة',
             description: 'خدمات إضافية لتطوير المتجر',
-            href: '/service-provider/dashboard',
+            href: '/service-provider',
             icon: Wrench,
             color: 'bg-purple-50 border-purple-200 hover:bg-purple-100',
             iconColor: 'text-purple-600'
@@ -76,7 +76,7 @@ export default function QuickAccessLinks({ currentSection }: QuickAccessLinksPro
           {
             title: 'إدارة العملاء',
             description: 'عرض وإدارة طلبات العملاء',
-            href: '/user/dashboard',
+            href: '/customers',
             icon: Users,
             color: 'bg-blue-50 border-blue-200 hover:bg-blue-100',
             iconColor: 'text-blue-600'
@@ -104,7 +104,7 @@ export default function QuickAccessLinks({ currentSection }: QuickAccessLinksPro
           {
             title: 'إدارة المستخدمين',
             description: 'مراقبة وإدارة جميع المستخدمين',
-            href: '/user/dashboard',
+            href: '/admin/users',
             icon: Users,
             color: 'bg-blue-50 border-blue-200 hover:bg-blue-100',
             iconColor: 'text-blue-600'
@@ -112,7 +112,7 @@ export default function QuickAccessLinks({ currentSection }: QuickAccessLinksPro
           {
             title: 'إدارة المتاجر',
             description: 'مراقبة ومراجعة المتاجر الإلكترونية',
-            href: '/store/dashboard',
+            href: '/admin/stores',
             icon: Store,
             color: 'bg-green-50 border-green-200 hover:bg-green-100',
             iconColor: 'text-green-600'

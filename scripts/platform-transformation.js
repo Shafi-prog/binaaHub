@@ -7,14 +7,18 @@
  * This script automates the domain restructuring process
  */
 
-const fs = require('fs').promises;
-const path = require('path');
+import fs from 'fs/promises';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 class PlatformTransformation {
   constructor() {
-    this.srcPath = path.join(process.cwd(), 'src');
+    this.srcPath = path.join(path.dirname(__dirname), 'src');
     this.domainsPath = path.join(this.srcPath, 'domains');
-    this.backupPath = path.join(process.cwd(), 'transformation-backup');
+    this.backupPath = path.join(path.dirname(__dirname), 'transformation-backup');
   }
 
   async run() {
@@ -876,9 +880,5 @@ export function useRoleContext() {
 }
 
 // Run the transformation
-if (require.main === module) {
-  const transformation = new PlatformTransformation();
-  transformation.run();
-}
-
-module.exports = { PlatformTransformation };
+const transformation = new PlatformTransformation();
+transformation.run();

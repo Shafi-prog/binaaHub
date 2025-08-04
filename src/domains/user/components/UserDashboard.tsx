@@ -131,13 +131,13 @@ export default function UserDashboard() {
   ];
 
   const userPanelLinks = [
-    { label: 'لوحة التحكم', href: '/user/dashboard', icon: <Home className="w-5 h-5" /> },
-    { label: 'مشاريعي', href: '/user/projects/list', icon: <Folder className="w-5 h-5" /> },
-    { label: 'الملف الشخصي', href: '/user/profile', icon: <UserIcon className="w-5 h-5" /> },
-    { label: 'الرسائل', href: '/user/messages', icon: <Mail className="w-5 h-5" /> },
+    { label: 'لوحة التحكم', href: '/dashboard', icon: <Home className="w-5 h-5" /> },
+    { label: 'مشاريعي', href: '/projects/list', icon: <Folder className="w-5 h-5" /> },
+    { label: 'الملف الشخصي', href: '/profile', icon: <UserIcon className="w-5 h-5" /> },
+    { label: 'الرسائل', href: '/messages', icon: <Mail className="w-5 h-5" /> },
     { label: 'تصفح المتاجر', href: '/stores', icon: <Store className="w-5 h-5" /> },
-    { label: 'رحلة البناء', href: '/user/building-advice', icon: <BookOpen className="w-5 h-5" /> },
-    { label: 'المدفوعات', href: '/user/payments', icon: <CreditCard className="w-5 h-5" /> },
+    { label: 'رحلة البناء', href: '/building-advice', icon: <BookOpen className="w-5 h-5" /> },
+    { label: 'المدفوعات', href: '/payments', icon: <CreditCard className="w-5 h-5" /> },
     { label: 'الإعدادات', href: '/user/settings', icon: <Settings className="w-5 h-5" /> },
     { label: 'تسجيل الخروج', action: 'logout', icon: <LogOut className="w-5 h-5 text-red-600" />, danger: true },
   ];

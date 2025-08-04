@@ -176,24 +176,24 @@ export default function Navbar({ user, accountType }: NavbarProps) {
     
     switch (userData.account_type) {
       case 'store':
-        return '/store/dashboard';
+        return '/stores';
       case 'user':
       case 'client':
-        return '/user/dashboard';
+        return '/dashboard';
       case 'engineer':
       case 'consultant':
-        return '/dashboard/construction-data';
+        return '/construction-data';
       case 'concrete-supplier':
       case 'concrete_supplier':
-        return '/dashboard/concrete-supplier';
+        return '/concrete-supplier';
       case 'equipment-rental':
       case 'equipment_rental':
-        return '/dashboard/equipment-rental';
+        return '/equipment-rental';
       case 'waste-management':
       case 'waste_management':
-        return '/dashboard/waste-management';
+        return '/waste-management';
       case 'contractor':
-        return '/dashboard/contractor';
+        return '/contractor';
       default:
         return '/';
     }
@@ -442,27 +442,27 @@ export default function Navbar({ user, accountType }: NavbarProps) {
   const storeMenuItems = [
     {
       label: 'لوحة تحكم المتجر',
-      href: '/store/dashboard',
+      href: '/stores',
       icon: Home
     },
     {
       label: 'المنتجات',
-      href: '/store/products',
+      href: '/products',
       icon: Package
     },
     {
       label: 'الطلبات',
-      href: '/store/orders',
+      href: '/orders',
       icon: FileText
     },
     {
       label: 'العملاء',
-      href: '/store/customers',
+      href: '/customers',
       icon: Users
     },
     {
       label: 'الإعدادات',
-      href: '/store/settings',
+      href: '/settings',
       icon: Settings
     }
   ];
@@ -689,31 +689,31 @@ export default function Navbar({ user, accountType }: NavbarProps) {
             {/* Navigation Links */}            {userData?.account_type === 'store' ? (
               <div className="space-y-2">
                 <h3 className="font-semibold text-gray-800 mb-3">لوحة المتجر</h3>
-                <Link href="/store/dashboard" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
+                <Link href="/(platform)/stores" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
                   <Home className="w-5 h-5 text-blue-600" />
                   <span>لوحة التحكم</span>
                 </Link>
-                <Link href="/store/products" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
+                <Link href="/(platform)/products" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
                   <Package className="w-5 h-5 text-blue-600" />
                   <span>المنتجات</span>
                 </Link>
-                <Link href="/store/inventory" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
+                <Link href="/(platform)/inventory" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
                   <Package className="w-5 h-5 text-blue-600" />
                   <span>المخزون</span>
                 </Link>
-                <Link href="/store/orders" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
+                <Link href="/(platform)/orders" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
                   <FileText className="w-5 h-5 text-blue-600" />
                   <span>الطلبات</span>
                 </Link>
-                <Link href="/store/suppliers" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
+                <Link href="/(platform)/suppliers" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
                   <Users className="w-5 h-5 text-blue-600" />
                   <span>الموردين</span>
                 </Link>
-                <Link href="/store/invoices" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
+                <Link href="/(platform)/invoices" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
                   <FileText className="w-5 h-5 text-blue-600" />
                   <span>الفواتير</span>
                 </Link>
-                <Link href="/store/analytics" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
+                <Link href="/(platform)/analytics" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
                   <Calculator className="w-5 h-5 text-blue-600" />
                   <span>التحليلات</span>
                 </Link>

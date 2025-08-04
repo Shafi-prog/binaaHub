@@ -27,7 +27,7 @@ export default function CrossSectionNavigation({ currentSection, userRole }: Cro
     {
       key: 'user',
       label: 'المستخدم',
-      href: '/user/dashboard',
+      href: '/dashboard',
       icon: User,
       description: 'إدارة الحساب والملف الشخصي',
       color: 'bg-blue-600 hover:bg-blue-700'

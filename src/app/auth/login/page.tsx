@@ -56,10 +56,10 @@ export default function LoginPage() {
               router.push('/admin/dashboard')
               break
             default:
-              router.push('/user/dashboard')
+              router.push('/dashboard')
           }
         } else {
-          router.push('/user/dashboard')
+          router.push('/dashboard')
         }
       }
     } catch (err) {

@@ -196,7 +196,7 @@ export async function middleware(req: NextRequest) {
         accountType = userData?.account_type;
       }
       
-      const redirectUrl = accountType === 'store' ? '/store/dashboard' : '/user/dashboard';
+      const redirectUrl = accountType === 'store' ? '/stores' : '/dashboard';
       console.log('[MIDDLEWARE] Redirecting authenticated user from auth route to:', redirectUrl);
       return NextResponse.redirect(new URL(redirectUrl, req.url));
     } catch (dbError) {

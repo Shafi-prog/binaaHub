@@ -4,6 +4,9 @@ import { Toaster } from 'react-hot-toast';
 import LayoutProvider from '../core/shared/components/LayoutProvider';
 import PWARegister from '../core/shared/components/PWARegister';
 import ErrorHandler from '../core/shared/components/ErrorHandler';
+import { RoleProvider } from '@/domains/user/contexts/RoleContext';
+import { ProjectProvider } from '@/domains/projects/contexts/ProjectContext';
+import { MarketplaceProvider } from '@/domains/marketplace/contexts/MarketplaceContext';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -39,7 +42,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             },
           }}
         />
-        <LayoutProvider>{children}</LayoutProvider>
+        <LayoutProvider>
+          <RoleProvider>
+            <ProjectProvider>
+              <MarketplaceProvider>
+                {children}
+              </MarketplaceProvider>
+            </ProjectProvider>
+          </RoleProvider>
+        </LayoutProvider>
       </body>
     </html>
   );

@@ -147,19 +147,19 @@ export default function SignupPage() {
         // Redirect based on user type
         switch (selectedUserType) {
           case 'user':
-            router.push('/user/dashboard')
+            router.push('/dashboard')
             break
           case 'service-provider':
-            router.push('/service-provider/dashboard')
+            router.push('/service-provider')
             break
           case 'store':
-            router.push('/store/dashboard')
+            router.push('/stores')
             break
           case 'admin':
             router.push('/admin/dashboard')
             break
           default:
-            router.push('/user/dashboard')
+            router.push('/dashboard')
         }
       }
     } catch (err) {

@@ -2,7 +2,7 @@
 'use client';
 
 import React from 'react';
-import { useCart } from '@/contexts/CartContext';
+import { useCart } from '@/shared/contexts/CartContext';
 import { Plus, Minus, ShoppingCart } from 'lucide-react';
 
 interface AddToCartButtonProps {

@@ -1,2 +1,0 @@
-// This is a marker file to confirm the next edit will be visible.
-// If you see this file, the next edit will be applied to project/[id]/page.tsx.

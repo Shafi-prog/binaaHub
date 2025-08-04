@@ -3,7 +3,7 @@
 
 import { useEffect, useState } from 'react'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import { useNotificationActions } from '@/contexts/NotificationContext'
+import { useNotificationActions } from '@/shared/contexts/NotificationContext'
 
 interface StockItem {
   id: string

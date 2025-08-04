@@ -12,7 +12,7 @@ import {
   EyeIcon
 } from '@heroicons/react/24/outline'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import { useNotificationActions } from '@/contexts/NotificationContext'
+import { useNotificationActions } from '@/shared/contexts/NotificationContext'
 import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 
 interface Order {
@@ -146,7 +146,7 @@ const RealtimeOrderTracking: React.FC<RealtimeOrderTrackingProps> = ({
             {
               label: 'View Order',
               onClick: () => {
-                window.location.href = `/store/orders/${order.id}`
+                window.location.href = `/orders/${order.id}`
               }
             }
           )
@@ -263,7 +263,7 @@ const RealtimeOrderTracking: React.FC<RealtimeOrderTrackingProps> = ({
                   </div>
                   <button
                     onClick={() => {
-                      window.location.href = `/store/orders/${order.id}`
+                      window.location.href = `/orders/${order.id}`
                     }}
                     className="text-blue-600 hover:text-blue-700 p-1 rounded"
                   >
@@ -308,7 +308,7 @@ const RealtimeOrderTracking: React.FC<RealtimeOrderTrackingProps> = ({
             <div className="text-center pt-4">
               <button
                 onClick={() => {
-                  window.location.href = '/store/orders'
+                  window.location.href = '/orders'
                 }}
                 className="text-sm text-blue-600 hover:text-blue-700 font-medium"
               >

@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
 import Navbar from './Navbar';
-import { CartProvider } from '../../../contexts/CartContext';
+import { CartProvider } from '../../../shared/contexts/CartContext';
 import { AuthProvider } from '../auth/AuthProvider'; // Use the enhanced AuthProvider
 import { NotificationProvider } from './ui/NotificationSystem';
 import OnboardingTour from './ui/OnboardingTour';

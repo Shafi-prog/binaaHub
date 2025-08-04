@@ -25,14 +25,14 @@ interface MobileLayoutProps {
 }
 
 const navigation = [
-  { name: 'Dashboard', href: '/store/dashboard', icon: HomeIcon },
-  { name: 'Products', href: '/store/products', icon: CubeIcon },
-  { name: 'Inventory', href: '/store/inventory', icon: ShoppingCartIcon },
-  { name: 'Orders', href: '/store/orders', icon: TruckIcon },
-  { name: 'Suppliers', href: '/store/suppliers', icon: UserGroupIcon },
-  { name: 'Invoices', href: '/store/invoices', icon: DocumentTextIcon },
-  { name: 'Analytics', href: '/store/analytics-enhanced', icon: ChartBarIcon },
-  { name: 'Settings', href: '/store/settings', icon: Cog6ToothIcon },
+  { name: 'Dashboard', href: '/stores', icon: HomeIcon },
+  { name: 'Products', href: '/products', icon: CubeIcon },
+  { name: 'Inventory', href: '/inventory', icon: ShoppingCartIcon },
+  { name: 'Orders', href: '/orders', icon: TruckIcon },
+  { name: 'Suppliers', href: '/suppliers', icon: UserGroupIcon },
+  { name: 'Invoices', href: '/invoices', icon: DocumentTextIcon },
+  { name: 'Analytics', href: '/analytics-enhanced', icon: ChartBarIcon },
+  { name: 'Settings', href: '/settings', icon: Cog6ToothIcon },
 ]
 
 const MobileLayout: React.FC<MobileLayoutProps> = ({ children, title }) => {

@@ -38,35 +38,17 @@
       "@domains/*": [
         "src/domains/*"
       ],
-      "@/shared/*": [
+      "@shared/*": [
         "src/core/shared/*"
       ],
-      "@/components/*": [
-        "src/components/*",
-        "src/core/shared/components/*",
-        "components/*"
-      ],
-      "@/services/*": [
-        "src/services/*",
-        "src/core/shared/services/*"
-      ],
-      "@/hooks/*": [
-        "src/hooks/*",
-        "src/core/shared/hooks/*"
-      ],
-      "@/types/*": [
-        "src/types/*",
-        "src/core/shared/types/*"
-      ],
-      "@/lib/*": [
-        "src/core/shared/lib/*",
+      "@lib/*": [
         "src/lib/*"
       ],
-      "@/constants/*": [
-        "src/core/shared/constants/*"
+      "@utils/*": [
+        "src/utils/*"
       ],
-      "@/domains/*": [
-        "src/domains/*"
+      "@constants/*": [
+        "src/constants/*"
       ]
     },
     "plugins": [

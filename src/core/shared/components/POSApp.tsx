@@ -1,9 +1,9 @@
 /**
- * BinnaPOS - OnyxPro Competitor
+ * POSApp - Modern Touch POS System
  * Modern Touch POS System with Medusa.js Integration
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { ProductService, OrderService } from '../../../lib/mock-medusa';
 import ReceiptPrinter from './ReceiptPrinter';
 
@@ -20,7 +20,7 @@ interface CartItem {
   quantity: number;
 }
 
-export default function BinnaPOS() {
+const POSApp = React.memo(() => {
   const [products, setProducts] = useState<Product[]>([]);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -121,7 +121,7 @@ export default function BinnaPOS() {
     <div className="flex h-screen bg-gray-100">
       {/* Product Grid */}
       <div className="flex-1 p-6">
-        <h1 className="text-3xl font-bold mb-6 text-gray-800">BinnaPOS</h1>
+        <h1 className="text-3xl font-bold mb-6 text-gray-800">Point of Sale System</h1>
         
         {/* Category Filter */}
         <div className="mb-6">
@@ -236,4 +236,8 @@ export default function BinnaPOS() {
       </div>
     </div>
   );
-}
+});
+
+POSApp.displayName = 'POSApp';
+
+export default POSApp;

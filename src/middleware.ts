@@ -3,10 +3,21 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import type { Database } from '@/types/database';
 
+// Cache for session data to reduce database calls
+const sessionCache = new Map<string, { session: any; timestamp: number }>();
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
 export async function middleware(req: NextRequest) {
   const res = NextResponse.next();
   
   const url = req.nextUrl;
+
+  // Static route optimizations - skip middleware for static assets
+  if (url.pathname.startsWith('/_next') || 
+      url.pathname.startsWith('/api/auth') ||
+      url.pathname.includes('.')) {
+    return res;
+  }
 
   // Always allow access to landing page and public routes
   const publicRoutes = ['/', '/auth/login', '/auth/signup', '/clear-auth', '/products/new', '/store/storefront'];
@@ -16,18 +27,32 @@ export async function middleware(req: NextRequest) {
 
   const supabase = createMiddlewareClient<Database>({ req, res });
 
-  // Get the current session
+  // Get the current session with caching
   let session: any = null;
+  const authToken = req.headers.get('authorization') || req.cookies.get('sb-access-token')?.value;
+  const cacheKey = authToken || 'anonymous';
   
-  try {
-    const { data, error } = await supabase.auth.getSession();
-    session = data?.session;
-    
-    if (session) {
-      console.log('✅ [Middleware] Found Supabase session for:', session.user.email);
+  // Check cache first
+  const cached = sessionCache.get(cacheKey);
+  if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
+    session = cached.session;
+  } else {
+    try {
+      const { data, error } = await supabase.auth.getSession();
+      session = data?.session;
+      
+      // Cache the session
+      sessionCache.set(cacheKey, {
+        session,
+        timestamp: Date.now()
+      });
+      
+      if (session) {
+        console.log('✅ [Middleware] Found Supabase session for:', session.user.email);
+      }
+    } catch (error) {
+      console.error('❌ [Middleware] Error getting session:', error);
     }
-  } catch (error) {
-    console.error('❌ [Middleware] Error getting session:', error);
   }
 
   // Define protected and auth routes

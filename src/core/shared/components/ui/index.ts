@@ -1,3 +1,4 @@
+// Base UI Components
 export * from "./table";
 export * from "./button";
 export * from "./input";
@@ -43,6 +44,12 @@ export * from "./StatCard";
 // export * from "./sonner";
 // export * from "./toggle";
 // export * from "./toggle-group";
+
+// Enhanced UI Components
+export { default as ActionButton } from './ActionButton';
+export { default as DataCard } from './DataCard';
+export { LoadingSpinner, LoadingState } from './LoadingComponents';
+export { ErrorBoundary } from './ErrorBoundary';
 
 
 

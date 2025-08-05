@@ -7,6 +7,8 @@
     "dev": "next dev -p 3000",
     "dev:turbo": "next dev -p 3000 --turbo",
     "dev:fast": "next dev -p 3000 --turbo --experimental-https",
+    "dev:analyze": "ANALYZE=true npm run build",
+    "perf:check": "npm run type-check && npm run lint",
     "connect-user-pages": "node scripts/connect-user-pages.js",
     "sync-user-data": "node scripts/connect-user-pages.js && npm run dev",
     "fix:all": "npm run lint:fix && npm run format && npm run cleanup-pages && npm run fix-import-lines && npm run fix-pages-syntax && npm run fix-format-pages && npm run refactor-pages",

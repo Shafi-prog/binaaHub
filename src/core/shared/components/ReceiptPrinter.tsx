@@ -14,7 +14,7 @@ interface ReceiptPrinterProps {
 const ReceiptPrinter: React.FC<ReceiptPrinterProps> = ({ receiptData }) => {
   return (
     <div className="receipt-print-area" style={{ width: 300, padding: 16, background: '#fff', color: '#222', fontFamily: 'monospace' }}>
-      <h2 style={{ textAlign: 'center', margin: 0 }}>BinnaPOS</h2>
+      <h2 style={{ textAlign: 'center', margin: 0 }}>Binna POS</h2>
       <div style={{ fontSize: 12, textAlign: 'center', marginBottom: 8 }}>{receiptData.date}</div>
       <hr />
       <div>

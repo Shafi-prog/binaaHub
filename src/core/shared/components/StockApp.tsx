@@ -1,9 +1,9 @@
 /**
- * BinnaStock - Rewaa Competitor
+ * StockApp - Advanced Inventory Management System
  * Advanced Inventory Management with Medusa.js Integration
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { ProductService, InventoryService } from '../../../lib/mock-medusa';
 
 interface InventoryItem {
@@ -27,7 +27,7 @@ interface Location {
   type: 'warehouse' | 'store' | 'distribution';
 }
 
-export default function BinnaStock() {
+const StockApp = React.memo(() => {
   const [inventory, setInventory] = useState<InventoryItem[]>([]);
   const [locations, setLocations] = useState<Location[]>([]);
   const [selectedLocation, setSelectedLocation] = useState<string>('all');
@@ -110,7 +110,7 @@ export default function BinnaStock() {
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold mb-8 text-gray-800">BinnaStock - Inventory Management</h1>
+        <h1 className="text-3xl font-bold mb-8 text-gray-800">Stock Management System</h1>
         
         {/* Dashboard Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
@@ -260,4 +260,8 @@ export default function BinnaStock() {
       </div>
     </div>
   );
-}
+});
+
+StockApp.displayName = 'StockApp';
+
+export default StockApp;

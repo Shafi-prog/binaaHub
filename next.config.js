@@ -3,9 +3,32 @@ const nextConfig = {
   // Exclude Medusa development folder from Next.js compilation
   pageExtensions: ['js', 'jsx', 'ts', 'tsx'],
   
+  // Experimental features for better performance
+  experimental: {
+    optimizeCss: true,
+    serverComponentsExternalPackages: ['@supabase/supabase-js'],
+    optimizePackageImports: ['lucide-react', '@/components/ui'],
+  },
+  
   // Turbopack configuration for better development performance
   turbopack: {
     resolveExtensions: ['.ts', '.tsx', '.js', '.jsx', '.mjs', '.json'],
+  },
+  
+  // Compiler optimizations
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+    reactRemoveProperties: process.env.NODE_ENV === 'production',
+  },
+  
+  // Performance optimizations
+  poweredByHeader: false,
+  generateEtags: false,
+  
+  // Image optimization
+  images: {
+    formats: ['image/webp', 'image/avif'],
+    minimumCacheTTL: 60,
   },
   
   webpack: (config, { isServer }) => {

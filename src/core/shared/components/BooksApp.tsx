@@ -1,9 +1,9 @@
 /**
- * BinnaBooks - Wafeq Competitor
+ * BooksApp - ZATCA-Compliant Accounting System
  * ZATCA-Compliant Accounting System with Medusa.js Integration
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { OrderService } from '../../../lib/mock-medusa';
 
 interface Invoice {
@@ -30,7 +30,7 @@ interface FinancialSummary {
   vat_collected: number;
 }
 
-export default function BinnaBooks() {
+const BooksApp = React.memo(() => {
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [financialSummary, setFinancialSummary] = useState<FinancialSummary | null>(null);
   const [selectedPeriod, setSelectedPeriod] = useState<string>('this_month');
@@ -167,7 +167,7 @@ export default function BinnaBooks() {
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold mb-8 text-gray-800">BinnaBooks - Accounting System</h1>
+        <h1 className="text-3xl font-bold mb-8 text-gray-800">Accounting Management System</h1>
         
         {/* Financial Summary Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -310,4 +310,8 @@ export default function BinnaBooks() {
       </div>
     </div>
   );
-}
+});
+
+BooksApp.displayName = 'BooksApp';
+
+export default BooksApp;

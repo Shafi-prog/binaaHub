@@ -1,4 +1,4 @@
-// import { useAuth } from '@/hooks/useAuth'; // Will be created
+import { useAuth } from '@hooks/useAuth';
 import { useState, useEffect } from 'react';
 // Note: These dashboard components will be created as part of the optimization
 // import { ProjectOwnerDashboard } from './owner/Dashboard';
@@ -6,16 +6,7 @@ import { useState, useEffect } from 'react';
 // import { WorkerDashboard } from './worker/Dashboard';
 
 export const UserRoleRouter = () => {
-  // const { user } = useAuth(); // Will be implemented
-  
-  // Temporary implementation until useAuth hook is created
-  const [user, setUser] = useState<any>(null);
-  
-  useEffect(() => {
-    // This will be replaced with actual auth implementation
-    // For now, use a mock user
-    setUser({ user_metadata: { role: 'guest' } });
-  }, []);
+  const { user } = useAuth();
   
   // Fetch user role from Supabase - no hardcoded values
   const userRole = user?.user_metadata?.role || 'guest';

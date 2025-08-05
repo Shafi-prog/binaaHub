@@ -1,7 +1,6 @@
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { BaseService } from './base-service';
 
-export class StoreService {
-  private supabase = createClientComponentClient();
+export class StoreService extends BaseService {
 
   async getStore(storeId: string) {
     const { data, error } = await this.supabase

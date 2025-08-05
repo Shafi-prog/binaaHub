@@ -1,6 +1,7 @@
 'use client';
 
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { BaseService } from './base-service';
 
 export interface CartItem {
   id: string;
@@ -27,8 +28,7 @@ export interface CartSummary {
   }>;
 }
 
-export class CartService {
-  private supabase = createClientComponentClient();
+export class CartService extends BaseService {
 
   async getCartItems(userId: string): Promise<CartItem[]> {
     try {

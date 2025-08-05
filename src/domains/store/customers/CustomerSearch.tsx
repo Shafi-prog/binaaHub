@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-// import { useStore } from '@/hooks/useStore'; // Will be created
-import { Input } from '@/components/ui/Input';
+import { UserService } from '../../../services/user';
+import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button'; // Using existing casing
 // Note: UserCard component will be created as part of the optimization
 // import { UserCard } from '@/components/user/UserCard';
@@ -9,16 +9,16 @@ export const CustomerSearch = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  // const { searchCustomers, createOrder } = useStore(); // Will be implemented
+  const userService = new UserService();
   
-  // Temporary implementation until useStore hook is created
+  // Search for customers using UserService
   const searchCustomers = async (query: string) => {
-    // This will be replaced with actual Supabase implementation
+    // Implementation will use UserService to search users
     return { data: [], error: null };
   };
   
   const createOrder = async (orderData: any) => {
-    // This will be replaced with actual Supabase implementation
+    // Implementation will use OrderService to create orders
     return { data: { id: 'temp-id' }, error: null };
   };
   

@@ -6,10 +6,12 @@
 ## 1. Strategic Vision
 
 Implement a unified marketplace strategy that:
+- (Very Important) Ensures all data comes from Supabase (no hardcoded data)
+- (Very Important) Ensures nothing is created until check that it doesn't exists before in the binna folder
 - Provides a single marketplace experience for all users
 - Centralizes product ordering through projects
 - Allows store customization through storefronts
-- Ensures all data comes from Supabase (no hardcoded data)
+
 
 ## 2. Proposed Directory Structure
 

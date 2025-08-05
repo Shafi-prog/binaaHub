@@ -1,18 +1,18 @@
-name: Binna Platform CI/CD
+name: Enhanced Binna Platform CI/CD
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ main, develop, enhancement-* ]
   pull_request:
     branches: [ main, develop ]
 
 env:
-  NODE_VERSION: '18.x'
+  NODE_VERSION: '20.x'
   PNPM_VERSION: '8.x'
 
 jobs:
-  # Test and Build
-  test-and-build:
+  # Lint and Test
+  quality-checks:
     runs-on: ubuntu-latest
     
     steps:
@@ -33,16 +33,17 @@ jobs:
     - name: Run linting
       run: npm run lint
     
-    - name: Run tests
-      run: npm run test || true  # Allow tests to pass even if some fail during CI setup
+    - name: Run unit tests
+      run: npm run test:ci
       env:
         CI: true
     
-    - name: Upload coverage to Codecov
+    - name: Upload test coverage
       uses: codecov/codecov-action@v3
-      if: false  # Disable until coverage is configured
       with:
         file: ./coverage/lcov.info
+        flags: unittests
+        name: codecov-umbrella
     
     - name: Build application
       run: npm run build

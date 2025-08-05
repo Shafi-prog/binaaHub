@@ -4,16 +4,13 @@ export * from "./utils"
 export * from "./client-events"
 
 // Core utilities
-export { default as ApiErrorHandler } from './apiErrorHandler';
-export type { ApiError } from './apiErrorHandler';
-
-export { default as config } from './config';
-export { default as CacheManager, globalCache, useCache } from './cache';
-export { default as PerformanceMonitor, usePerformanceTimer } from './performance';
-
-// Validation utilities
-export { FormValidator, ValidationRules } from './validation';
-export type { ValidationRule, FieldValidation, FormErrors } from './validation';
+export * from './validation'
+export * from './cache'
+export * from './performance'
+export * from './config'
+export { ApiErrorHandler } from './apiErrorHandler'
+export * from './errorHandling'
+export * from './formValidation'
 
 // Hooks
 export { useAsyncData } from '../hooks/useAsyncData';

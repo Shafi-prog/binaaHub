@@ -25,6 +25,15 @@ export * from "./separator";
 export * from "./loading-spinner";
 export * from "./empty-state";
 export * from "./StatCard";
+
+// Enhanced UI Components
+export { ActionButton } from './ActionButton'
+export { DataCard } from './DataCard'
+export { LoadingSpinner, LoadingSkeleton, LoadingCard } from './LoadingComponents'
+
+// Error Handling
+export { ErrorBoundary } from './ErrorBoundary'
+export { GlobalErrorBoundary, ErrorFallback } from './GlobalErrorBoundary'
 // Components that need to be created:
 // export * from "./accordion";
 // export * from "./alert-dialog";

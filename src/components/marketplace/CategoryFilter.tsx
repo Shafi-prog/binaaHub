@@ -1,14 +1,7 @@
 'use client';
 
 import React from 'react';
-
-interface Category {
-  id: string;
-  name: string;
-  nameAr: string;
-  icon?: string;
-  count?: number;
-}
+import { useCategories } from '../../hooks/useMarketplace';
 
 interface CategoryFilterProps {
   selectedCategory: string;
@@ -21,50 +14,63 @@ export const CategoryFilter: React.FC<CategoryFilterProps> = ({
   onCategoryChange,
   showCounts = true,
 }) => {
-  // Categories from Supabase - Following strategic vision: NO hardcoded data
-  // TODO: Replace with actual Supabase query
-  const categories: Category[] = [
-    { id: 'all', name: 'All', nameAr: 'جميع المنتجات', icon: '🏗️', count: 0 },
-    { id: 'cement', name: 'Cement', nameAr: 'الأسمنت', icon: '🏗️', count: 0 },
-    { id: 'steel', name: 'Steel', nameAr: 'الحديد', icon: '🔩', count: 0 },
-    { id: 'blocks', name: 'Blocks', nameAr: 'البلوك', icon: '🧱', count: 0 },
-    { id: 'tiles', name: 'Tiles', nameAr: 'البلاط', icon: '⬜', count: 0 },
-    { id: 'paint', name: 'Paint', nameAr: 'الدهان', icon: '🎨', count: 0 },
-    { id: 'plumbing', name: 'Plumbing', nameAr: 'السباكة', icon: '🔧', count: 0 },
-    { id: 'electrical', name: 'Electrical', nameAr: 'الكهرباء', icon: '⚡', count: 0 },
-    { id: 'tools', name: 'Tools', nameAr: 'الأدوات', icon: '🔨', count: 0 },
-    { id: 'safety', name: 'Safety', nameAr: 'السلامة', icon: '🦺', count: 0 },
+  const { categories, loading } = useCategories();
+
+  // Add "All" category to the beginning
+  const allCategories = [
+    { 
+      id: 'all', 
+      slug: 'all',
+      nameAr: 'جميع المنتجات', 
+      name: 'All Categories',
+      productCount: 0,
+      sort_order: 0,
+      is_active: true
+    },
+    ...categories
   ];
+
+  if (loading) {
+    return (
+      <div className="bg-white border border-gray-200 rounded-lg p-4">
+        <h3 className="text-lg font-semibold mb-4 text-gray-900">الفئات</h3>
+        <div className="space-y-2">
+          {[...Array(6)].map((_, i) => (
+            <div key={i} className="p-3 rounded-lg bg-gray-100 animate-pulse">
+              <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white border border-gray-200 rounded-lg p-4">
       <h3 className="text-lg font-semibold mb-4 text-gray-900">الفئات</h3>
       
       <div className="space-y-2">
-        {categories.map((category) => (
+        {allCategories.map((category) => (
           <button
             key={category.id}
-            onClick={() => onCategoryChange(category.id)}
+            onClick={() => onCategoryChange(category.slug)}
             className={`w-full text-right p-3 rounded-lg transition-all duration-200 flex items-center justify-between hover:bg-gray-50 ${
-              selectedCategory === category.id
+              selectedCategory === category.slug
                 ? 'bg-blue-50 border-blue-200 text-blue-700 border'
                 : 'text-gray-700 border border-transparent'
             }`}
           >
             <div className="flex items-center gap-3">
-              {category.icon && (
-                <span className="text-lg">{category.icon}</span>
-              )}
               <span className="font-medium">{category.nameAr}</span>
             </div>
             
-            {showCounts && category.count !== undefined && (
+            {showCounts && category.productCount !== undefined && (
               <span className={`text-xs px-2 py-1 rounded-full ${
-                selectedCategory === category.id
+                selectedCategory === category.slug
                   ? 'bg-blue-100 text-blue-600'
                   : 'bg-gray-100 text-gray-600'
               }`}>
-                {category.count}
+                {category.productCount}
               </span>
             )}
           </button>

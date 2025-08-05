@@ -1,6 +1,6 @@
 import React from 'react';
-import { MarketplaceProvider } from '@/components/marketplace/MarketplaceProvider';
-import { MarketplaceView } from '@/components/marketplace/MarketplaceView';
+import { MarketplaceProvider } from '@/domains/marketplace/components/MarketplaceProvider';
+import { MarketplaceView } from '@/domains/marketplace/components/MarketplaceView';
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 

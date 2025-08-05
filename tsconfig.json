@@ -31,16 +31,16 @@
         "src/core/shared/components/*",
         "components/*"
       ],
-      "@/ui/*": [
-        "src/core/shared/components/ui/*"
+      "@/services/*": [
+        "src/services/*",
+        "src/core/shared/services/*"
       ],
       "@/hooks/*": [
+        "src/hooks/*",
         "src/core/shared/hooks/*"
       ],
-      "@/utils/*": [
-        "src/core/shared/utils/*"
-      ],
       "@/types/*": [
+        "src/types/*",
         "src/core/shared/types/*"
       ],
       "@/lib/*": [
@@ -49,9 +49,6 @@
       ],
       "@/constants/*": [
         "src/core/shared/constants/*"
-      ],
-      "@/services/*": [
-        "src/core/shared/services/*"
       ],
       "@/domains/*": [
         "src/domains/*"

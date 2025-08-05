@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { marketplaceService, Product, Category, Store, ProductFilters, PaginationOptions } from '../lib/marketplace/service';
+import { marketplaceService, Product, Category, Store, ProductFilters, PaginationOptions } from '../services/marketplace';
 
 export function useProducts(
   filters: ProductFilters = {},

@@ -1,5 +1,5 @@
-import { MarketplaceProvider } from '@/components/marketplace/MarketplaceProvider';
-import { MarketplaceView } from '@/components/marketplace/MarketplaceView';
+import { MarketplaceProvider } from '@/domains/marketplace/components/MarketplaceProvider';
+import { MarketplaceView } from '@/domains/marketplace/components/MarketplaceView';
 
 export default function PublicMarketplacePage() {
   return (

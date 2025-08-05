@@ -1,5 +1,5 @@
 import React from 'react';
-import { MarketplaceLayout } from '../../../components/marketplace/MarketplaceLayout';
+import { MarketplaceLayout } from '../../../domains/marketplace/components/MarketplaceLayout';
 import { useRouter } from 'next/navigation';
 
 interface CategoryPageProps {

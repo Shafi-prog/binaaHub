@@ -1,75 +1,5 @@
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-
-export interface Product {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  category: string;
-  subcategory?: string;
-  storeId: string;
-  storeName: string;
-  images: string[];
-  specifications: Record<string, string>;
-  warranty?: {
-    duration: number;
-    type: 'years' | 'months';
-    details: string;
-  };
-  stock: number;
-  created_at: string;
-  updated_at: string;
-}
-
-export interface Category {
-  id: string;
-  name: string;
-  nameAr: string;
-  slug: string;
-  description?: string;
-  parent_id?: string;
-  image_url?: string;
-  sort_order: number;
-  is_active: boolean;
-  productCount?: number;
-}
-
-export interface Store {
-  id: string;
-  name: string;
-  description: string;
-  logo: string;
-  coverImage?: string;
-  theme: {
-    primaryColor: string;
-    secondaryColor: string;
-  };
-  contactInfo: {
-    email: string;
-    phone: string;
-    address: string;
-  };
-  ownerId: string;
-  rating?: number;
-  reviewCount?: number;
-  created_at: string;
-  updated_at: string;
-}
-
-export interface ProductFilters {
-  category?: string;
-  storeId?: string;
-  search?: string;
-  minPrice?: number;
-  maxPrice?: number;
-  inStock?: boolean;
-  hasWarranty?: boolean;
-}
-
-export interface PaginationOptions {
-  page?: number;
-  limit?: number;
-}
+import { Product, Category, Store, ProductFilters, PaginationOptions, MarketplaceSearchResult } from '../types/marketplace';
 
 export class MarketplaceService {
   private supabase = createClientComponentClient();
@@ -311,14 +241,11 @@ export class MarketplaceService {
     return {
       id: data.id,
       name: data.name,
-      nameAr: data.name_ar || data.name,
-      slug: data.slug,
       description: data.description,
-      parent_id: data.parent_id,
-      image_url: data.image_url,
-      sort_order: data.sort_order || 0,
-      is_active: data.is_active,
-      productCount: data.product_count?.[0]?.count || 0
+      image: data.image_url,
+      productCount: data.product_count?.[0]?.count || 0,
+      parentCategory: data.parent_id,
+      subcategories: data.subcategories || []
     };
   }
 
@@ -327,20 +254,24 @@ export class MarketplaceService {
       id: data.id,
       name: data.name,
       description: data.description || '',
-      logo: data.logo || '/api/placeholder/100/100',
-      coverImage: data.cover_image,
-      theme: data.theme || {
-        primaryColor: '#2563eb',
-        secondaryColor: '#eff6ff'
+      logo: data.logo,
+      banner: data.cover_image,
+      location: {
+        city: data.location?.city || '',
+        area: data.location?.area || '',
+        coordinates: data.location?.coordinates
       },
-      contactInfo: data.contact_info || {
-        email: '',
-        phone: '',
-        address: ''
+      contact: {
+        phone: data.contact_info?.phone || '',
+        email: data.contact_info?.email || '',
+        whatsapp: data.contact_info?.whatsapp
       },
-      ownerId: data.owner_id,
-      rating: data.rating,
-      reviewCount: data.review_count,
+      rating: {
+        average: data.rating || 0,
+        count: data.review_count || 0
+      },
+      isVerified: data.is_verified || false,
+      categories: data.categories || [],
       created_at: data.created_at,
       updated_at: data.updated_at
     };

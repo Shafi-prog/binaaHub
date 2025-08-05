@@ -6,12 +6,12 @@ import { ProductGrid } from './ProductGrid';
 import { CategoryFilter } from './CategoryFilter';
 import { ProductSearch } from './ProductSearch';
 import { ShoppingCart } from './ShoppingCart';
-import { EnhancedCartSidebar } from './EnhancedCartSidebar';
+import { CartSidebar } from './CartSidebar';
 import { useAuth } from '@/core/shared/auth/AuthProvider';
 import { useCart } from '../../hooks/useCart';
 import { ShoppingBag, Filter, Search } from 'lucide-react';
-import { Button } from '../ui/button';
-import { Badge } from '../ui/badge';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 
 interface MarketplaceViewProps {
   showHeader?: boolean;
@@ -152,7 +152,7 @@ export const MarketplaceView: React.FC<MarketplaceViewProps> = ({
       </div>
       
       {/* Enhanced Cart Sidebar */}
-      <EnhancedCartSidebar 
+      <CartSidebar 
         isOpen={isCartOpen}
         onClose={() => setIsCartOpen(false)}
       />

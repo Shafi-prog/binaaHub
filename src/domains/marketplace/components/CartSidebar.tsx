@@ -2,18 +2,18 @@
 
 import React from 'react';
 import { X, Plus, Minus, ShoppingBag, Truck, CreditCard } from 'lucide-react';
-import { Button } from '../ui/button';
-import { Badge } from '../ui/badge';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { useCart } from '../../hooks/useCart';
 import { useAuth } from '@/core/shared/auth/AuthProvider';
 import Link from 'next/link';
 
-interface EnhancedCartSidebarProps {
+interface CartSidebarProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-export function EnhancedCartSidebar({ isOpen, onClose }: EnhancedCartSidebarProps) {
+export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
   const { user } = useAuth();
   const {
     cartItems,

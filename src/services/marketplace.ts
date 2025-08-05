@@ -1,8 +1,7 @@
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { BaseService } from './base-service';
 import { Product, Category, Store, ProductFilters, PaginationOptions, MarketplaceSearchResult } from '../types/marketplace';
 
-export class MarketplaceService {
-  private supabase = createClientComponentClient();
+export class MarketplaceService extends BaseService {
 
   // Products
   async getProducts(

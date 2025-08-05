@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { ShoppingCart, Plus, Minus, Check } from 'lucide-react';
-import { Button } from '../ui/button';
+import { Button } from '@/components/ui/button';
 import { useCart } from '../../hooks/useCart';
 import { useAuth } from '@/core/shared/auth/AuthProvider';
 
@@ -14,7 +14,7 @@ interface Product {
   stock?: number;
 }
 
-interface EnhancedAddToCartProps {
+interface AddToCartProps {
   product: Product;
   variant?: 'default' | 'compact' | 'icon';
   size?: 'sm' | 'md' | 'lg';
@@ -23,14 +23,14 @@ interface EnhancedAddToCartProps {
   onError?: (error: string) => void;
 }
 
-export function EnhancedAddToCart({
+export function AddToCart({
   product,
   variant = 'default',
   size = 'md',
   className = '',
   onSuccess,
   onError
-}: EnhancedAddToCartProps) {
+}: AddToCartProps) {
   const { user } = useAuth();
   const { 
     addToCart, 

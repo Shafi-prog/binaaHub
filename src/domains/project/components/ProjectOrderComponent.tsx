@@ -84,19 +84,48 @@ export default function ProjectOrderComponent({
   const [showCart, setShowCart] = useState(false);
 
   const supabase = createClientComponentClient();
-
-  const categories = [
-    { id: 'all', name: 'جميع الفئات', name_ar: 'جميع الفئات' },
-    { id: 'concrete', name: 'خرسانة', name_ar: 'خرسانة' },
-    { id: 'steel', name: 'حديد', name_ar: 'حديد' },
-    { id: 'electrical', name: 'كهرباء', name_ar: 'كهرباء' },
-    { id: 'plumbing', name: 'سباكة', name_ar: 'سباكة' },
-    { id: 'tiles', name: 'بلاط', name_ar: 'بلاط' },
-    { id: 'paint', name: 'دهانات', name_ar: 'دهانات' },
-    { id: 'wood', name: 'خشب', name_ar: 'خشب' },
-    { id: 'tools', name: 'أدوات', name_ar: 'أدوات' },
-    { id: 'other', name: 'أخرى', name_ar: 'أخرى' }
-  ];
+  
+  // Get categories from Supabase instead of hardcoded
+  const [categories, setCategories] = useState([]);
+  const [isLoadingCategories, setIsLoadingCategories] = useState(true);
+  
+  useEffect(() => {
+    async function loadCategories() {
+      try {
+        const { data, error } = await supabase
+          .from('product_categories')
+          .select('id, name, name_ar')
+          .order('name');
+        
+        if (error) throw error;
+        
+        const allCategories = [
+          { id: 'all', name: 'جميع الفئات', name_ar: 'جميع الفئات' },
+          ...(data || [])
+        ];
+        setCategories(allCategories);
+      } catch (error) {
+        console.error('Error loading categories:', error);
+        // Fallback to basic categories if Supabase fails
+        setCategories([
+          { id: 'all', name: 'جميع الفئات', name_ar: 'جميع الفئات' },
+          { id: 'concrete', name: 'خرسانة', name_ar: 'خرسانة' },
+          { id: 'steel', name: 'حديد', name_ar: 'حديد' },
+          { id: 'electrical', name: 'كهرباء', name_ar: 'كهرباء' },
+          { id: 'plumbing', name: 'سباكة', name_ar: 'سباكة' },
+          { id: 'tiles', name: 'بلاط', name_ar: 'بلاط' },
+          { id: 'paint', name: 'دهانات', name_ar: 'دهانات' },
+          { id: 'wood', name: 'خشب', name_ar: 'خشب' },
+          { id: 'tools', name: 'أدوات', name_ar: 'أدوات' },
+          { id: 'other', name: 'أخرى', name_ar: 'أخرى' }
+        ]);
+      } finally {
+        setIsLoadingCategories(false);
+      }
+    }
+    
+    loadCategories();
+  }, []);
 
   useEffect(() => {
     loadStoresAndProducts();

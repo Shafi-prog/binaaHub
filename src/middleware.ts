@@ -68,9 +68,41 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL('/auth/login', req.url));
   }
 
-  // Handle auth routes - redirect authenticated users to dashboard
+  // Handle auth routes - redirect authenticated users to appropriate dashboard
   if (isAuthRoute && isAuthenticated) {
-    return NextResponse.redirect(new URL('/user/dashboard', req.url));
+    try {
+      // Get user profile to determine correct dashboard
+      const { data: profile } = await supabase
+        .from('user_profiles')
+        .select('user_type')
+        .eq('user_id', session.user.id)
+        .single();
+
+      // Redirect based on user type
+      if (profile?.user_type) {
+        switch (profile.user_type) {
+          case 'service-provider':
+          case 'service_provider':
+            return NextResponse.redirect(new URL('/service-provider/dashboard', req.url));
+          case 'store':
+          case 'store_owner':
+            return NextResponse.redirect(new URL('/store/dashboard', req.url));
+          case 'admin':
+            return NextResponse.redirect(new URL('/admin/dashboard', req.url));
+          case 'user':
+          case 'customer':
+          default:
+            return NextResponse.redirect(new URL('/user/dashboard', req.url));
+        }
+      } else {
+        // Fallback to user dashboard if no profile found
+        return NextResponse.redirect(new URL('/user/dashboard', req.url));
+      }
+    } catch (error) {
+      console.error('Error getting user profile in middleware:', error);
+      // Fallback to user dashboard if there's an error
+      return NextResponse.redirect(new URL('/user/dashboard', req.url));
+    }
   }
 
   return res;

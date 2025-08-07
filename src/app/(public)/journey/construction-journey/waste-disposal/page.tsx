@@ -4,7 +4,7 @@ export const dynamic = 'force-dynamic';
 
 import React from 'react';
 import { Card, CardContent } from '@/components/ui';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Truck, Building2 } from 'lucide-react';
 

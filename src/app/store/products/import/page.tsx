@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Alert, AlertDescription } from '@/components/ui/Alert'
+import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Progress } from '@/components/ui/Progress'
 import { ArrowLeft, Upload, FileSpreadsheet, Download, AlertCircle } from 'lucide-react'
 

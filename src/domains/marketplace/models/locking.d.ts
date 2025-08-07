@@ -7,3 +7,6 @@ declare const Locking: import("@medusajs/framework/utils").DmlEntity<import("@me
 export default Locking;
 //# sourceMappingURL=locking.d.ts.map
 
+
+
+

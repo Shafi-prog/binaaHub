@@ -46,7 +46,7 @@ export const useTaxOverrideTable = ({
       return
     }
 
-    setPagination((prev) => ({
+    setPagination((prev: any) => ({
       ...prev,
       pageIndex: index,
     }))
@@ -58,7 +58,7 @@ export const useTaxOverrideTable = ({
     const state = updater(pagination)
     const { pageIndex, pageSize } = state
 
-    setSearchParams((prev) => {
+    setSearchParams((prev: any) => {
       if (!pageIndex) {
         prev.delete(offsetKey)
         return prev
@@ -91,5 +91,7 @@ export const useTaxOverrideTable = ({
     table,
   }
 }
+
+
 
 

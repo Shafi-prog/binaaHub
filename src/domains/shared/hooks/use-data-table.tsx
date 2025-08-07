@@ -75,7 +75,7 @@ export const useDataTable = <TData,>({
       return
     }
 
-    setPagination((prev) => ({
+    setPagination((prev: any) => ({
       ...prev,
       pageIndex: index,
     }))
@@ -87,7 +87,7 @@ export const useDataTable = <TData,>({
     const state = updater(pagination)
     const { pageIndex, pageSize } = state
 
-    setSearchParams((prev) => {
+    setSearchParams((prev: any) => {
       if (!pageIndex) {
         prev.delete(offsetKey)
         return prev
@@ -131,5 +131,8 @@ export const useDataTable = <TData,>({
 
   return { table }
 }
+
+
+
 
 

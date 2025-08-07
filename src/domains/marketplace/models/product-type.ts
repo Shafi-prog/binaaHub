@@ -23,3 +23,6 @@ const ProductType = model
 export default ProductType
 
 
+
+
+

@@ -4,7 +4,8 @@ export { StorefrontProducts } from './StorefrontProducts';
 export { StorefrontLayout } from './StorefrontLayout';
 
 // Re-export marketplace components that are used in storefronts
-export { StoreCard } from '../marketplace/StoreCard';
+export { StoreCard } from '../../../../../components/marketplace/StoreCard';
+export { default as StorePermissionSystem } from '../../../../../components/admin/permissions/StorePermissionSystem';
 
 // Export types
 export interface StorefrontStore {
@@ -44,3 +45,6 @@ export interface StorefrontProduct {
   onSale?: boolean;
   originalPrice?: number;
 }
+
+
+

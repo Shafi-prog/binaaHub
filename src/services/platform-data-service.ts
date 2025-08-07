@@ -1,9 +1,37 @@
+// Local Notification interface
+type Notification = {
+  id?: string;
+  userId: string;
+  userType: string;
+  title: string;
+  message: string;
+  type: string;
+  relatedId?: string;
+  isRead?: boolean;
+  createdAt?: Date;
+};
+
+// ApiResponse supports data or error
+interface ApiResponse<T> {
+  data?: T;
+  success: boolean;
+  message?: string;
+  error?: string;
+}
+
+interface PaginatedResponse<T> extends ApiResponse<T[]> {
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+  };
+}
+
 // Unified data service for real platform connections
 import { 
-  Product, Order, WarrantyClaim, ServiceBooking, Notification, 
-  StoreDashboardData, UserDashboardData, ServiceProviderDashboardData, AdminDashboardData,
-  ApiResponse, PaginatedResponse 
-} from '../types/platform-types';
+  Product, Order, WarrantyClaim, ServiceBooking,
+  StoreDashboardData, UserDashboardData, ServiceProviderDashboardData, AdminDashboardData
+} from '@/core/shared/types/platform-types';
 
 class PlatformDataService {
   private baseUrl = '/api/platform';
@@ -222,7 +250,7 @@ class PlatformDataService {
     }
   }
 
-  async updateBookingStatus(bookingId: string, status: ServiceBooking['status'], notes?: string): Promise<ApiResponse<ServiceBooking>> {
+  async updateBookingStatus(bookingId: string, status: string, notes?: string): Promise<ApiResponse<ServiceBooking>> {
     try {
       const response = await fetch(`${this.baseUrl}/service-bookings/${bookingId}/status`, {
         method: 'PUT',
@@ -366,3 +394,7 @@ class PlatformDataService {
 }
 
 export const platformDataService = new PlatformDataService();
+export default platformDataService;
+
+
+

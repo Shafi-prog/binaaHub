@@ -485,3 +485,6 @@ export class SupabaseDataService {
 }
 
 export const supabaseDataService = new SupabaseDataService();
+export default supabaseDataService;
+
+

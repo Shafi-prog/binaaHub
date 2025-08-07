@@ -25,3 +25,6 @@ const StockLocationAddress = model
 export default StockLocationAddress
 
 
+
+
+

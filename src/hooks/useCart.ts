@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/core/shared/auth/AuthProvider';
-import { cartService, CartItem, CartSummary } from '@/services/cart';
+import { cartService, CartItem, CartSummary } from '@/services';
 
 export const useCart = () => {
   const { user } = useAuth();
@@ -218,3 +218,5 @@ export const useCart = () => {
     isEmpty: cartSummary.totalItems === 0
   };
 };
+
+

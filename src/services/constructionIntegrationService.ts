@@ -1,6 +1,8 @@
 // Construction Platform Integration Service
 // Handles integrations with external platforms mentioned in the construction phases
 
+import { BaseService } from './BaseService';
+
 export interface PlatformIntegration {
   id: string;
   name: string;
@@ -113,11 +115,13 @@ export interface ServiceProvider {
   }[];
 }
 
-class ConstructionIntegrationService {
+class ConstructionIntegrationService extends BaseService {
   private static instance: ConstructionIntegrationService;
   private integrations: Map<string, PlatformIntegration> = new Map();
+  private platforms: PlatformIntegration[] = [];
 
   constructor() {
+    super();
     this.initializeIntegrations();
   }
 
@@ -128,7 +132,24 @@ class ConstructionIntegrationService {
     return ConstructionIntegrationService.instance;
   }
 
-  private initializeIntegrations() {
+  private async initializeIntegrations() {
+    try {
+      // Try to load platforms from Supabase first
+      const { data: platformsData, error } = await this.supabase
+        .from('platform_integrations')
+        .select('*')
+        .eq('status', 'available')
+        .order('name');
+
+      if (platformsData && !error) {
+        this.platforms = platformsData;
+        return;
+      }
+    } catch (error) {
+      console.log('Using default platforms - Supabase table may not exist yet');
+    }
+
+    // Fallback to hardcoded platforms
     const platforms: PlatformIntegration[] = [
       {
         id: 'sa-aqar',
@@ -236,6 +257,7 @@ class ConstructionIntegrationService {
       }
     ];
 
+    this.platforms = platforms;
     platforms.forEach(platform => {
       this.integrations.set(platform.id, platform);
     });
@@ -621,4 +643,10 @@ class ConstructionIntegrationService {
   }
 }
 
-export const constructionIntegrationService = ConstructionIntegrationService.getInstance();
+export { ConstructionIntegrationService };
+
+const constructionIntegrationService = ConstructionIntegrationService.getInstance();
+export default constructionIntegrationService;
+
+
+

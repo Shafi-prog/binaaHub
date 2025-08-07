@@ -50,3 +50,6 @@ const TaxCompliance = model.define("tax_compliance", {
 export default TaxCompliance
 
 
+
+
+

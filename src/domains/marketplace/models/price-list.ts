@@ -31,3 +31,6 @@ const PriceList = model
 export default PriceList
 
 
+
+
+

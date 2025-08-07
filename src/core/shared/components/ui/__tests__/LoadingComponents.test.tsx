@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import { LoadingSpinner, LoadingSkeleton, LoadingCard } from '../LoadingComponents'
+import { LoadingSpinner, LoadingState } from '../LoadingComponents'
 
 describe('LoadingComponents', () => {
   describe('LoadingSpinner', () => {
@@ -11,36 +11,30 @@ describe('LoadingComponents', () => {
     })
 
     it('renders with custom size', () => {
-      render(<LoadingSpinner size="large" />)
+      render(<LoadingSpinner size="lg" />)
       const spinner = screen.getByTestId('loading-spinner')
-      expect(spinner).toHaveClass('w-8', 'h-8')
+      expect(spinner).toHaveClass('h-12', 'w-12')
     })
 
-    it('renders with custom text', () => {
-      render(<LoadingSpinner text="Custom loading..." />)
+    it('renders without extra props', () => {
+      render(<LoadingSpinner />)
+      expect(screen.getByTestId('loading-spinner')).toBeInTheDocument()
+    })
+  })
+
+  describe('LoadingState', () => {
+    it('renders with default props', () => {
+      render(<LoadingState />)
+      const state = screen.getByTestId('loading-state')
+      expect(state).toBeInTheDocument()
+      expect(screen.getByText('Loading...')).toBeInTheDocument()
+    })
+
+    it('renders with custom message', () => {
+      render(<LoadingState message="Custom loading..." />)
       expect(screen.getByText('Custom loading...')).toBeInTheDocument()
     })
   })
-
-  describe('LoadingSkeleton', () => {
-    it('renders with default props', () => {
-      render(<LoadingSkeleton />)
-      const skeleton = screen.getByTestId('loading-skeleton')
-      expect(skeleton).toBeInTheDocument()
-    })
-
-    it('renders with custom height', () => {
-      render(<LoadingSkeleton height="h-20" />)
-      const skeleton = screen.getByTestId('loading-skeleton')
-      expect(skeleton).toHaveClass('h-20')
-    })
-  })
-
-  describe('LoadingCard', () => {
-    it('renders loading card with skeleton', () => {
-      render(<LoadingCard />)
-      expect(screen.getByTestId('loading-card')).toBeInTheDocument()
-      expect(screen.getAllByTestId('loading-skeleton')).toHaveLength(3)
-    })
-  })
 })
+
+

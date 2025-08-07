@@ -1,6 +1,5 @@
 // Frontend utilities only - client-safe exports
 export * from "./cn";
-export * from "./utils"
 export * from "./client-events"
 
 // Core utilities
@@ -17,5 +16,7 @@ export { useAsyncData } from '../hooks/useAsyncData';
 export { useDebounce, useSearch } from '../hooks/useSearch';
 
 // Note: events.ts contains server-side Medusa imports, use client-events.ts instead
+
+
 
 

@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useCategories } from '../../hooks/useMarketplace';
+import { useMarketplace } from '../hooks/useMarketplace';
 
 interface CategoryFilterProps {
   selectedCategory: string;
@@ -14,7 +14,7 @@ export const CategoryFilter: React.FC<CategoryFilterProps> = ({
   onCategoryChange,
   showCounts = true,
 }) => {
-  const { categories, loading } = useCategories();
+  const { categories, loading } = useMarketplace();
 
   // Add "All" category to the beginning
   const allCategories = [
@@ -50,31 +50,38 @@ export const CategoryFilter: React.FC<CategoryFilterProps> = ({
       <h3 className="text-lg font-semibold mb-4 text-gray-900">الفئات</h3>
       
       <div className="space-y-2">
-        {allCategories.map((category) => (
-          <button
-            key={category.id}
-            onClick={() => onCategoryChange(category.slug)}
-            className={`w-full text-right p-3 rounded-lg transition-all duration-200 flex items-center justify-between hover:bg-gray-50 ${
-              selectedCategory === category.slug
-                ? 'bg-blue-50 border-blue-200 text-blue-700 border'
-                : 'text-gray-700 border border-transparent'
-            }`}
-          >
-            <div className="flex items-center gap-3">
-              <span className="font-medium">{category.nameAr}</span>
-            </div>
+        {allCategories.map((category) => {
+          // Handle both string and object categories
+          const categoryObj = typeof category === 'string' 
+            ? { id: category, slug: category, nameAr: category, name: category, productCount: 0, sort_order: 0, is_active: true }
+            : category;
             
-            {showCounts && category.productCount !== undefined && (
-              <span className={`text-xs px-2 py-1 rounded-full ${
-                selectedCategory === category.slug
-                  ? 'bg-blue-100 text-blue-600'
-                  : 'bg-gray-100 text-gray-600'
-              }`}>
-                {category.productCount}
-              </span>
-            )}
-          </button>
-        ))}
+          return (
+            <button
+              key={categoryObj.id}
+              onClick={() => onCategoryChange(categoryObj.slug)}
+              className={`w-full text-right p-3 rounded-lg transition-all duration-200 flex items-center justify-between hover:bg-gray-50 ${
+                selectedCategory === categoryObj.slug
+                  ? 'bg-blue-50 border-blue-200 text-blue-700 border'
+                  : 'text-gray-700 border border-transparent'
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <span className="font-medium">{categoryObj.nameAr}</span>
+              </div>
+              
+              {showCounts && categoryObj.productCount !== undefined && (
+                <span className={`text-xs px-2 py-1 rounded-full ${
+                  selectedCategory === categoryObj.slug
+                    ? 'bg-blue-100 text-blue-600'
+                    : 'bg-gray-100 text-gray-600'
+                }`}>
+                  {categoryObj.productCount}
+                </span>
+              )}
+            </button>
+          );
+        })}
       </div>
 
       <div className="mt-6 pt-4 border-t border-gray-200">
@@ -99,3 +106,6 @@ export const CategoryFilter: React.FC<CategoryFilterProps> = ({
 };
 
 export default CategoryFilter;
+
+
+

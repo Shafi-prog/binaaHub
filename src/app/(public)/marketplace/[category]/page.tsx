@@ -3,6 +3,7 @@ import { MarketplaceProvider } from '@/domains/marketplace/components/Marketplac
 import { MarketplaceView } from '@/domains/marketplace/components/MarketplaceView';
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
+import { AuthProvider } from '@/core/shared/auth/AuthProvider';
 
 interface CategoryPageProps {
   params: {
@@ -38,30 +39,32 @@ async function getCategoryInfo(categoryId: string) {
 export default async function CategoryPage({ params }: CategoryPageProps) {
   const { category } = params;
   const categoryInfo = await getCategoryInfo(category);
-  
+
   return (
-    <MarketplaceProvider>
-      <div className="container mx-auto p-4" dir="rtl">
-        <div className="flex justify-between items-center mb-6">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">{categoryInfo.nameAr}</h1>
-            {categoryInfo.description && (
-              <p className="text-gray-600 mt-1">{categoryInfo.description}</p>
-            )}
+    <AuthProvider>
+      <MarketplaceProvider>
+        <div className="container mx-auto p-4" dir="rtl">
+          <div className="flex justify-between items-center mb-6">
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">{categoryInfo.nameAr}</h1>
+              {categoryInfo.description && (
+                <p className="text-gray-600 mt-1">{categoryInfo.description}</p>
+              )}
+            </div>
+            
+            <Link
+              href="/marketplace"
+              className="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            >
+              <ArrowRightIcon className="h-5 w-5" />
+              العودة للسوق
+            </Link>
           </div>
           
-          <Link
-            href="/marketplace"
-            className="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-          >
-            <ArrowRightIcon className="h-5 w-5" />
-            العودة للسوق
-          </Link>
+          <MarketplaceView showHeader={false} />
         </div>
-        
-        <MarketplaceView showHeader={false} />
-      </div>
-    </MarketplaceProvider>
+      </MarketplaceProvider>
+    </AuthProvider>
   );
 }
 
@@ -81,3 +84,4 @@ export async function generateStaticParams() {
     category,
   }));
 }
+

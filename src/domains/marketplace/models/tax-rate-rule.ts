@@ -30,3 +30,6 @@ const TaxRateRule = model
 export default TaxRateRule
 
 
+
+
+

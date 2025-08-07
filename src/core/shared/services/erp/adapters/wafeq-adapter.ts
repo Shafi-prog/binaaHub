@@ -419,3 +419,5 @@ export class WafeqERPAdapter extends BaseERPAdapter implements ERPAdapter {
     return response.data;
   }
 }
+
+

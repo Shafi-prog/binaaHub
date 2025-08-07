@@ -7,10 +7,10 @@ import {
   CardContent, 
   CardHeader, 
   CardTitle 
-} from '@/core/shared/components/ui/card';
-import { Button } from '@/core/shared/components/ui/button';
-import { Badge } from '@/core/shared/components/ui/badge';
-import { Progress } from '@/core/shared/components/ui/progress';
+} from '@/components/ui';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui';
+import { Progress } from '@/components/ui/progress';
 import { 
   BarChart, 
   Bar, 
@@ -735,3 +735,5 @@ export default function AdvancedProjectManagement() {
     </div>
   );
 }
+
+

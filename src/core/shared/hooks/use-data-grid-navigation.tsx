@@ -77,7 +77,7 @@ export const useDataGridNavigation = <TData, TFieldValues extends FieldValues>({
       const column = flatColumns[coords.col]
 
       // Ensure that the column is visible
-      setColumnVisibility((prev) => {
+      setColumnVisibility((prev: any) => {
         return {
           ...prev,
           [column.id]: true,
@@ -112,5 +112,7 @@ export const useDataGridNavigation = <TData, TFieldValues extends FieldValues>({
     navigateToField,
   }
 }
+
+
 
 

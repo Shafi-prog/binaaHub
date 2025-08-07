@@ -72,3 +72,6 @@ SecurityEvent.belongsTo(() => import("../../customer/models/customer").then(m =>
 export default SecurityEvent
 
 
+
+
+

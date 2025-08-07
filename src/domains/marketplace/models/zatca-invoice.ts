@@ -70,3 +70,6 @@ const ZATCAInvoice = model.define("zatca_invoice", {
 export default ZATCAInvoice
 
 
+
+
+

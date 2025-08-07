@@ -47,3 +47,6 @@ const ShippingMethod = model
 export default ShippingMethod
 
 
+
+
+

@@ -10,8 +10,9 @@ import {
   SupabaseProject,
   mapSupabaseProjectToProject
 } from '@/core/shared/types/types';
+import { BaseService } from './base-service';
 
-export class ProjectTrackingService {
+export class ProjectTrackingService extends BaseService {
   private static readonly STORAGE_KEY = 'binna_projects';
   private static readonly ESTIMATIONS_KEY = 'binna_estimations';
   private static readonly PURCHASES_KEY = 'binna_purchases';
@@ -31,7 +32,7 @@ export class ProjectTrackingService {
         console.error('Error loading projects:', error);
         return [];
       }
-      // Map SupabaseProject[] to Project[]
+      // Map SupabaseProject[] to Project[] using real fields
       return (data as SupabaseProject[]).map(mapSupabaseProjectToProject);
     } catch (error) {
       console.error('Error loading projects:', error);
@@ -200,7 +201,7 @@ export class ProjectTrackingService {
       const remainingCost = totalEstimatedCost - totalSpentCost;
 
       // حساب تقدم المواد حسب الفئة
-      const materialProgress: ProjectSummary['materialProgress'] = {};
+      const materialProgress: Record<string, any> = {};
       
       estimation.materials.forEach(material => {
         const category = material.category;
@@ -220,11 +221,11 @@ export class ProjectTrackingService {
         materialProgress[category].estimatedCost += material.totalCost;
 
         // حساب المشتريات لهذه المادة
-        const materialPurchases = purchases.filter(p => p.materialId === material.materialId);
-        const purchasedQuantity = materialPurchases.reduce((sum, p) => sum + p.purchasedQuantity, 0);
+        const materialPurchases = purchases.filter(p => p.materialName === material.name);
+        const purchasedQuantity = materialPurchases.reduce((sum, p) => sum + (p.quantity || 0), 0);
         const installedQuantity = materialPurchases
-          .filter(p => p.status === 'installed')
-          .reduce((sum, p) => sum + p.purchasedQuantity, 0);
+          .filter(p => p.order_status === 'installed')
+          .reduce((sum, p) => sum + (p.quantity || 0), 0);
         const spentCost = materialPurchases.reduce((sum, p) => sum + p.totalCost, 0);
 
         materialProgress[category].purchasedQuantity += purchasedQuantity;
@@ -237,7 +238,7 @@ export class ProjectTrackingService {
       });
 
       // حساب تقدم المراحل
-      const phaseProgress: ProjectSummary['phaseProgress'] = {
+      const phaseProgress: Record<string, any> = {
         foundation: { estimated: 0, spent: 0, completion: 0 },
         structure: { estimated: 0, spent: 0, completion: 0 },
         finishing: { estimated: 0, spent: 0, completion: 0 },
@@ -251,7 +252,7 @@ export class ProjectTrackingService {
         if (phaseProgress[phase]) {
           phaseProgress[phase].estimated += material.totalCost;
           
-          const materialPurchases = purchases.filter(p => p.materialId === material.materialId);
+          const materialPurchases = purchases.filter(p => p.materialName === material.name);
           const spentOnMaterial = materialPurchases.reduce((sum, p) => sum + p.totalCost, 0);
           phaseProgress[phase].spent += spentOnMaterial;
         }
@@ -270,67 +271,16 @@ export class ProjectTrackingService {
         : 0;
 
       return {
-        projectId,
-        totalEstimatedCost,
-        totalSpentCost,
-        remainingCost,
-        completionPercentage,
-        materialProgress,
-        phaseProgress
-      };
+        id: projectId,
+        name: project.name || 'Project',
+        totalCost: totalSpentCost,
+        status: project.status || 'active'
+      } as ProjectSummary;
 
     } catch (error) {
       console.error('Error calculating project summary:', error);
       return null;
     }
-  }
-
-  // مشاريع تجريبية افتراضية
-  private static getDefaultProjects(): Project[] {
-    return [
-      {
-        id: '1',
-        name: 'فيلا الحي الجديد',
-        stage: 'التشطيبات',
-        progress: 75,
-        createdAt: '2024-01-15T00:00:00.000Z',
-        updatedAt: '2024-02-20T00:00:00.000Z',
-        description: 'فيلا سكنية بمساحة 300 متر مربع',
-        area: 300,
-        projectType: 'residential',
-        floorCount: 2,
-        roomCount: 6,
-        status: 'in-progress'
-      },
-      {
-        id: '2',
-        name: 'شقة الزمالك',
-        stage: 'العظم',
-        progress: 45,
-        createdAt: '2024-02-01T00:00:00.000Z',
-        updatedAt: '2024-02-25T00:00:00.000Z',
-        description: 'شقة سكنية 150 متر مربع',
-        area: 150,
-        projectType: 'residential',
-        floorCount: 1,
-        roomCount: 4,
-        status: 'in-progress'
-      },
-      {
-        id: '3',
-        name: 'عمارة تجارية وسط البلد',
-        stage: 'التخطيط',
-        progress: 20,
-        createdAt: '2024-02-10T00:00:00.000Z',
-        updatedAt: '2024-02-26T00:00:00.000Z',
-        description: 'عمارة تجارية متعددة الأدوار',
-        area: 800,
-        projectType: 'commercial',
-        floorCount: 4,
-        roomCount: 16,
-        status: 'planning'
-      }
-    ];
   }
 
   // تصدير البيانات للطباعة أو المشاركة
@@ -378,3 +328,11 @@ export class ProjectTrackingService {
     }
   }
 }
+
+
+
+
+
+// Standardized export: class + instance
+export const projectTrackingService = new ProjectTrackingService();
+export default projectTrackingService;

@@ -67,3 +67,6 @@ BusinessReport.belongsTo(() => import("../../user/models/User").then(m => m.defa
 export default BusinessReport
 
 
+
+
+

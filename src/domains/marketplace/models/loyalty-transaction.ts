@@ -48,3 +48,6 @@ LoyaltyTransaction.belongsTo(() => import("../../order/models/order").then(m => 
 export default LoyaltyTransaction
 
 
+
+
+

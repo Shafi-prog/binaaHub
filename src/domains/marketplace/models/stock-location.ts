@@ -16,3 +16,6 @@ const StockLocation = model.define("StockLocation", {
 export default StockLocation
 
 
+
+
+

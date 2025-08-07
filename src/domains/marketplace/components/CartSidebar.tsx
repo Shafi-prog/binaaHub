@@ -3,8 +3,8 @@
 import React from 'react';
 import { X, Plus, Minus, ShoppingBag, Truck, CreditCard } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { useCart } from '../../hooks/useCart';
+import { Badge } from '@/components/ui';
+import { useCart } from '../hooks/useCart';
 import { useAuth } from '@/core/shared/auth/AuthProvider';
 import Link from 'next/link';
 
@@ -120,28 +120,28 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
         {user && !loading && !isEmpty && (
           <>
             <div className="flex-1 overflow-y-auto">
-              {/* Group by Store */}
-              {Object.entries(storeGroups).map(([storeId, group]) => (
-                <div key={storeId} className="border-b bg-gray-50">
+              {/* Group by Store - Fallback implementation */}
+              {cartItems && cartItems.length > 0 ? (
+                <div className="border-b bg-gray-50">
                   <div className="p-4 bg-gray-100">
                     <h3 className="font-medium text-gray-900 flex items-center gap-2">
                       <Truck className="h-4 w-4" />
-                      {group.store_name}
+                      متجر عام
                     </h3>
                     <p className="text-sm text-gray-600">
-                      Subtotal: {formatPrice(group.subtotal)}
+                      Subtotal: {formatPrice(totalAmount || 0)}
                     </p>
                   </div>
                   
-                  {group.items.map((item) => (
+                  {cartItems.map((item: any) => (
                     <div key={item.id} className="p-4 border-b border-gray-200 last:border-b-0">
                       <div className="flex gap-4">
                         {/* Product Image */}
                         <div className="w-16 h-16 bg-gray-200 rounded-lg overflow-hidden flex-shrink-0">
-                          {item.product_image ? (
+                          {item.product_image || item.image ? (
                             <img
-                              src={item.product_image}
-                              alt={item.product_name}
+                              src={item.product_image || item.image}
+                              alt={item.product_name || item.name}
                               className="w-full h-full object-cover"
                             />
                           ) : (
@@ -202,7 +202,11 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                     </div>
                   ))}
                 </div>
-              ))}
+              ) : (
+                <div className="p-8 text-center text-gray-500">
+                  لا توجد عناصر في السلة
+                </div>
+              )}
             </div>
 
             {/* Footer */}
@@ -251,3 +255,6 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
     </>
   );
 }
+
+
+

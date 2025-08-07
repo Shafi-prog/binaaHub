@@ -3,8 +3,8 @@
 export const dynamic = 'force-dynamic';
 
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
-import { Button } from '@/core/shared/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
+import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { 
   ArrowLeft, 
@@ -233,3 +233,7 @@ export default function ExecutionPage() {
     </div>
   );
 }
+
+
+
+

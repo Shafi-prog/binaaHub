@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { ProductCard } from '../components/marketplace/ProductCard';
-import { CategoryFilter } from '../components/marketplace/CategoryFilter';
-import { ProductSearch } from '../components/marketplace/ProductSearch';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
-import { Input } from '../components/ui/input';
-import { Button } from '../components/ui/button';
-import { Badge } from '../components/ui/badge';
-import { toast } from '../components/ui/use-toast';
+import { ProductCard } from '@/domains/marketplace/components/ProductCard';
+import { CategoryFilter } from '@/domains/marketplace/components/CategoryFilter';
+import { ProductSearch } from '@/domains/marketplace/components/ProductSearch';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Input } from '@/components/ui/Input';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui';
+import { toast } from '@/components/ui/use-toast';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 // Product category type
 type Category = 'all' | 'building-materials' | 'fixtures' | 'furniture' | 'appliances' | 'lighting';
@@ -34,6 +35,8 @@ interface ProjectMarketplaceProps {
   onClose?: () => void;
 }
 
+const supabase = createClientComponentClient();
+
 export const ProjectMarketplace: React.FC<ProjectMarketplaceProps> = ({
   projectId,
   phaseId,
@@ -46,91 +49,36 @@ export const ProjectMarketplace: React.FC<ProjectMarketplaceProps> = ({
   const [activeCategory, setActiveCategory] = useState<Category>('all');
   const [selectedProducts, setSelectedProducts] = useState<Map<string, number>>(new Map());
 
-  // Mock data for demonstration
+  // Fetch products from Supabase
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
       
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      const mockProducts: Product[] = [
-        {
-          id: '1',
-          name: 'بلاط سيراميك فاخر 60x60',
-          description: 'بلاط سيراميك عالي الجودة مناسب للأرضيات والجدران، مقاوم للخدش والماء',
-          price: 45,
-          imageUrl: '/api/placeholder/300/200',
-          storeName: 'متجر البناء الحديث',
-          storeId: 'store1',
-          category: 'building-materials',
-          stock: 150,
-          warranty: { duration: 2, type: 'years' }
-        },
-        {
-          id: '2',
-          name: 'دهان أكريليك داخلي',
-          description: 'دهان أكريليك عالي الجودة للجدران الداخلية، متوفر بألوان متعددة',
-          price: 85,
-          imageUrl: '/api/placeholder/300/200',
-          storeName: 'متجر الدهانات المتميزة',
-          storeId: 'store2',
-          category: 'building-materials',
-          stock: 75,
-          warranty: { duration: 6, type: 'months' }
-        },
-        {
-          id: '3',
-          name: 'حنفية مطبخ نحاسية',
-          description: 'حنفية مطبخ من النحاس المطلي، تصميم عصري ومقاومة للصدأ',
-          price: 180,
-          imageUrl: '/api/placeholder/300/200',
-          storeName: 'أدوات الحمام والمطبخ',
-          storeId: 'store3',
-          category: 'fixtures',
-          stock: 42,
-          warranty: { duration: 1, type: 'years' }
-        },
-        {
-          id: '4',
-          name: 'مصباح LED سقف دائري',
-          description: 'مصباح LED للسقف بتصميم دائري أنيق، إضاءة ناعمة وموفرة للطاقة',
-          price: 120,
-          imageUrl: '/api/placeholder/300/200',
-          storeName: 'متجر الإضاءة المتقدمة',
-          storeId: 'store4',
-          category: 'lighting',
-          stock: 60,
-          warranty: { duration: 2, type: 'years' }
-        },
-        {
-          id: '5',
-          name: 'خزانة ملابس خشبية',
-          description: 'خزانة ملابس من الخشب الطبيعي بتصميم كلاسيكي، 3 أبواب مع أدراج',
-          price: 1200,
-          imageUrl: '/api/placeholder/300/200',
-          storeName: 'أثاث المنزل العصري',
-          storeId: 'store5',
-          category: 'furniture',
-          stock: 15,
-          warranty: { duration: 3, type: 'years' }
-        },
-        {
-          id: '6',
-          name: 'مكيف هواء سبليت',
-          description: 'مكيف هواء سبليت بقدرة 18000 وحدة، موفر للطاقة وهادئ التشغيل',
-          price: 1850,
-          imageUrl: '/api/placeholder/300/200',
-          storeName: 'أجهزة التكييف والتبريد',
-          storeId: 'store6',
-          category: 'appliances',
-          stock: 8,
-          warranty: { duration: 2, type: 'years' }
-        },
-      ];
+      try {
+        const { data, error } = await supabase
+          .from('products')
+          .select('*');
 
-      setProducts(mockProducts);
-      setLoading(false);
+        if (error) {
+          console.error('Error fetching products:', error);
+          toast({
+            title: 'خطأ',
+            description: 'حدث خطأ أثناء جلب المنتجات. حاول مرة أخرى لاحقًا.',
+            variant: 'destructive',
+          });
+        } else {
+          setProducts(data || []);
+        }
+      } catch (err) {
+        console.error('Unexpected error:', err);
+        toast({
+          title: 'خطأ',
+          description: 'حدث خطأ غير متوقع. حاول مرة أخرى لاحقًا.',
+          variant: 'destructive',
+        });
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchProducts();
@@ -246,15 +194,14 @@ export const ProjectMarketplace: React.FC<ProjectMarketplaceProps> = ({
 
         {/* Search */}
         <ProductSearch
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
-          showFilters={false}
+          value={searchQuery}
+          onSearch={setSearchQuery}
+          placeholder=""
         />
 
         {/* Category Filter */}
         <CategoryFilter
-          categories={categories}
-          activeCategory={activeCategory}
+          selectedCategory={activeCategory}
           onCategoryChange={(category) => setActiveCategory(category as Category)}
         />
 
@@ -328,3 +275,5 @@ export const ProjectMarketplace: React.FC<ProjectMarketplaceProps> = ({
     </div>
   );
 };
+
+

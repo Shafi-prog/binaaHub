@@ -1,4 +1,4 @@
-import { CacheManager } from '../cache'
+import CacheManager from '../cache'
 
 describe('CacheManager', () => {
   let cache: CacheManager
@@ -76,3 +76,5 @@ describe('CacheManager', () => {
     }, 100)
   })
 })
+
+

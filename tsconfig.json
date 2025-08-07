@@ -49,6 +49,9 @@
       ],
       "@constants/*": [
         "src/constants/*"
+      ],
+      "@/domains/shared/utils/*": [
+        "src/domains/shared/utils/*"
       ]
     },
     "plugins": [
@@ -56,7 +59,9 @@
         "name": "next"
       }
     ],
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "forceConsistentCasingInFileNames": false,
+    "allowImportingTsExtensions": true
   },
   "include": [
     "next-env.d.ts",

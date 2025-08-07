@@ -1,5 +1,5 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
-import { StockApp } from '../StockApp'
+import StockApp from '../StockApp'
 
 // Mock the medusa service
 jest.mock('@/domains/marketplace/services/medusa', () => ({
@@ -42,3 +42,5 @@ describe('StockApp', () => {
     expect(screen.getByText('Loading stock data...')).toBeInTheDocument()
   })
 })
+
+

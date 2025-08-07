@@ -4,14 +4,14 @@ export const dynamic = 'force-dynamic';
 
 import React, { useState, useEffect, useRef } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { Button } from '@/core/shared/components/ui/button';
-import { Input } from '@/core/shared/components/ui/input';
-import { Label } from '@/core/shared/components/ui/label';
-import { Textarea } from '@/core/shared/components/ui/textarea';
-import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
-import { Badge } from '@/core/shared/components/ui/badge';
-import { Separator } from '@/core/shared/components/ui/separator';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/core/shared/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/Input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
+import { Badge } from '@/components/ui';
+import { Separator } from '@/components/ui/separator';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { 
   Plus, 
   Minus,
@@ -56,7 +56,7 @@ import {
   Mail
 } from 'lucide-react';
 import { toast } from 'sonner';
-import { CustomerSearchWidget, CustomerDetailModal, type Customer as CustomerInterface } from '@/core/shared/components/store/CustomerSearchWidget';
+import { CustomerSearchWidget, CustomerDetailModal, type Customer as CustomerInterface } from '@/components/admin/store/CustomerSearchWidget';
 
 interface ErrorBoundaryState {
   hasError: boolean;
@@ -1409,4 +1409,9 @@ function POSSystemComponent() {
     </div>
   );
 }
+
+
+
+
+
 

@@ -13,3 +13,6 @@ export const ShippingOptionRule = model.define("shipping_option_rule", {
 })
 
 
+
+
+

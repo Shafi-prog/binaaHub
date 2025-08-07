@@ -39,3 +39,6 @@ const ProductConfigurator = model
 export default ProductConfigurator
 
 
+
+
+

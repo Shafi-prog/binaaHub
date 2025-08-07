@@ -5,43 +5,11 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-export interface ConcreteType {
-  id: string;
-  grade: string;
-  name: string;
-  description: string;
-  compressive_strength: number;
-  suitable_for: string[];
-  price_per_cubic_meter: number;
-  min_order_quantity: number;
-  curing_time_hours: number;
-  additives_available: string[];
-}
 
-export interface ConcreteRequirement {
-  total_volume_cubic_meters: number;
-  recommended_grade: string;
-  estimated_cost: number;
-  delivery_schedule: DeliveryWindow[];
-  special_requirements: string[];
-  quality_certificates: string[];
-}
 
-export interface ConcreteOrder {
-  id?: string;
-  project_id: string;
-  supplier_id: string;
-  concrete_type_id: string;
-  volume_cubic_meters: number;
-  delivery_address: string;
-  delivery_date: Date;
-  delivery_time_slot: string;
-  special_instructions?: string;
-  additives: string[];
-  total_cost: number;
-  status: 'pending' | 'confirmed' | 'in_production' | 'in_transit' | 'delivered' | 'cancelled';
-  created_at?: Date;
-}
+
+
+
 
 export interface DeliverySchedule {
   id: string;
@@ -63,7 +31,7 @@ export interface DeliverySchedule {
   };
 }
 
-export interface DeliveryStatus {
+export interface DeliveryStatusInfo {
   order_id: string;
   current_status: string;
   truck_location: {
@@ -109,7 +77,7 @@ export interface ConcreteSupplier {
   quality_standards: string[];
 }
 
-class ConcreteSupplyService {
+export class ConcreteSupplyService {
   async getConcreteTypes(): Promise<ConcreteType[]> {
     try {
       const { data, error } = await supabase
@@ -194,14 +162,14 @@ class ConcreteSupplyService {
 
       // Get concrete type for pricing
       const concreteTypes = await this.getConcreteTypes();
-      const selectedType = concreteTypes.find(type => type.grade === recommendedGrade);
-      const estimatedCost = totalVolume * (selectedType?.price_per_cubic_meter || 350);
+      const selectedType = concreteTypes.find(type => type.name === recommendedGrade);
+      const estimatedCost = totalVolume * (selectedType?.price || 350);
 
       // Generate delivery schedule
       const deliverySchedule = this.generateDeliverySchedule(totalVolume);
 
       return {
-        total_volume_cubic_meters: Math.ceil(totalVolume * 1.1), // Add 10% waste factor
+        volume: Math.ceil(totalVolume * 1.1), // Add 10% waste factor
         recommended_grade: recommendedGrade,
         estimated_cost: estimatedCost,
         delivery_schedule: deliverySchedule,
@@ -263,8 +231,8 @@ class ConcreteSupplyService {
           phone: '+966501234567',
           license_number: 'DL123456789'
         },
-        scheduled_departure: new Date(order.delivery_date.getTime() - 60 * 60 * 1000), // 1 hour before
-        estimated_arrival: order.delivery_date,
+        scheduled_departure: new Date(order.deliveryDate || new Date().getTime() - 60 * 60 * 1000), // 1 hour before
+        estimated_arrival: order.deliveryDate || new Date(),
         status: 'scheduled',
         gps_tracking: {
           latitude: 24.7136,
@@ -287,7 +255,7 @@ class ConcreteSupplyService {
     }
   }
 
-  async trackDelivery(orderId: string): Promise<DeliveryStatus> {
+  async trackDelivery(orderId: string): Promise<DeliveryStatusInfo> {
     try {
       const { data: delivery, error } = await supabase
         .from('concrete_deliveries')
@@ -301,7 +269,7 @@ class ConcreteSupplyService {
       if (error) throw error;
 
       // Simulate real-time tracking data
-      const status: DeliveryStatus = {
+      const status: DeliveryStatusInfo = {
         order_id: orderId,
         current_status: delivery.status,
         truck_location: {
@@ -433,6 +401,73 @@ class ConcreteSupplyService {
       throw error;
     }
   }
+
+  async calculatePrice(order: ConcreteOrder): Promise<number> {
+    // Mock calculation based on quantity and type
+    const basePrice = 150; // per cubic meter
+    return order.quantity * basePrice;
+  }
+  
+  async submitOrder(order: ConcreteOrder): Promise<boolean> {
+    try {
+      // Mock order submission
+      console.log('Submitting concrete order:', order);
+      return true;
+    } catch (error) {
+      console.error('Error submitting order:', error);
+      return false;
+    }
+  }
 }
 
+// Consolidated instance export for ConcreteSupplyService
 export const concreteSupplyService = new ConcreteSupplyService();
+export default concreteSupplyService;
+
+// Service interfaces
+export interface ConcreteType {
+  id: string;
+  name: string;
+  strength: string;
+  description?: string;
+  grade?: string;
+  compressive_strength?: number;
+  price?: number;
+}
+
+export interface ConcreteOrder {
+  id: string;
+  type: string;
+  quantity: number;
+  strength: string;
+  delivery_date?: Date;
+  project_id?: string;
+  status: string;
+  supplier_id?: string;
+  deliveryDate?: Date;
+}
+
+export interface ConcreteRequirement {
+  projectType?: string;
+  volume: number;
+  strength?: string;
+  deliveryDate?: Date;
+  location?: string;
+  total_volume_cubic_meters?: number;
+  estimated_cost?: number;
+  recommended_grade?: string;
+  delivery_date?: Date;
+  delivery_schedule?: DeliveryWindow[];
+  special_requirements?: string[];
+  quality_certificates?: string[];
+}
+
+export enum DeliveryStatus {
+  SCHEDULED = 'scheduled',
+  IN_TRANSIT = 'in_transit', 
+  DELIVERED = 'delivered',
+  DELAYED = 'delayed'
+}
+
+
+

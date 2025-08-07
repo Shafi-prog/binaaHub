@@ -97,7 +97,7 @@ export const useDataGridErrorHighlighting = <
         )
       }
 
-      setIsHighlighted((prev) => !prev)
+      setIsHighlighted((prev: any) => !prev)
     },
     [
       isHighlighted,
@@ -132,5 +132,7 @@ function findErrorPaths(
     findErrorPaths(value, [...path, key])
   )
 }
+
+
 
 

@@ -9,3 +9,6 @@ declare class IdealProviderService extends StripeBase {
 export default IdealProviderService;
 //# sourceMappingURL=stripe-ideal.d.ts.map
 
+
+
+

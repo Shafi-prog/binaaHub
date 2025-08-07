@@ -17,9 +17,9 @@ import {
   Clock,
   DollarSign
 } from 'lucide-react';
-import { Card } from '@/core/shared/components/ui/card';
-import { Button } from '@/core/shared/components/ui/button';
-import { Input } from '@/core/shared/components/ui/input';
+import { Card } from '@/components/ui';
+import { Button } from '@/components/ui/button';
+import { Input } from "@/components/ui/Input";
 import { toast } from 'react-hot-toast';
 import POSUserSearch from './POSUserSearch';
 
@@ -518,6 +518,10 @@ export default function EnhancedStorePOS() {
     </div>
   );
 }
+
+
+
+
 
 
 

@@ -41,3 +41,6 @@ const LoyaltyProgram = model.define("loyalty_program", {
 export default LoyaltyProgram
 
 
+
+
+

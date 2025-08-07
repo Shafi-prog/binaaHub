@@ -9,3 +9,6 @@ declare class PromptpayProviderService extends StripeBase {
 export default PromptpayProviderService;
 //# sourceMappingURL=stripe-promptpay.d.ts.map
 
+
+
+

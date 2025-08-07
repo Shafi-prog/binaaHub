@@ -265,3 +265,5 @@ const StockApp = React.memo(() => {
 StockApp.displayName = 'StockApp';
 
 export default StockApp;
+
+

@@ -130,3 +130,5 @@ export interface StoreSearchResult {
   limit: number;
   hasMore: boolean;
 }
+
+

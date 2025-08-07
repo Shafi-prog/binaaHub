@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Card } from '@/core/shared/components/ui';
+import { Card } from '@/components/ui';
 import { MapPin, TrendingDown, TrendingUp, DollarSign, BarChart3, ArrowRight, Home } from 'lucide-react';
 import Link from 'next/link';
 
@@ -194,5 +194,9 @@ export default function MaterialPricesPage() {
     </div>
   );
 }
+
+
+
+
 
 

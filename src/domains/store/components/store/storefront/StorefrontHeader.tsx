@@ -1,8 +1,8 @@
 import React from 'react';
 import Image from 'next/image';
-import { Button } from '../ui/button';
-import { Badge } from '../ui/badge';
-import { Separator } from '../ui/separator';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui';
+import { Separator } from '@/components/ui/separator';
 
 interface Store {
   id: string;
@@ -203,3 +203,6 @@ export const StorefrontHeader: React.FC<StorefrontHeaderProps> = ({
     </>
   );
 };
+
+
+

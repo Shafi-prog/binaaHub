@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { Card, LoadingSpinner } from '@/core/shared/components/ui';
+import { Card, LoadingSpinner } from '@/components/ui';
 import { formatCurrency } from '@/core/shared/utils';
 import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 import {
@@ -615,5 +615,8 @@ export default function ProjectOrderComponent({
     </div>
   );
 }
+
+
+
 
 

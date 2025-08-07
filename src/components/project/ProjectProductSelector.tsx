@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { ProductGrid } from '../marketplace/ProductGrid';
-import { CategoryFilter } from '../marketplace/CategoryFilter';
-import { ProductSearch } from '../marketplace/ProductSearch';
+import { ProductGrid } from '@/domains/marketplace/components/ProductGrid';
+import { CategoryFilter } from '@/domains/marketplace/components/CategoryFilter';
+import { ProductSearch } from '@/domains/marketplace/components/ProductSearch';
 import { Button } from '../ui/button';
-import { Badge } from '../ui/badge';
+import { Badge } from '@/components/ui';
 import { ShoppingCart, ArrowLeft } from 'lucide-react';
-import { toast } from '../ui/use-toast';
+import { toast } from '@/components/ui';
 
 interface ProjectProductSelectorProps {
   projectId: string;
@@ -151,7 +151,7 @@ export const ProjectProductSelector: React.FC<ProjectProductSelectorProps> = ({
               <div className="space-y-6">
                 <ProductSearch 
                   value={searchQuery}
-                  onChange={setSearchQuery}
+                  onSearch={setSearchQuery}
                   placeholder="البحث عن المنتجات..."
                 />
                 
@@ -167,10 +167,8 @@ export const ProjectProductSelector: React.FC<ProjectProductSelectorProps> = ({
           <div className="lg:col-span-3">
             <ProductGrid 
               searchQuery={searchQuery}
-              selectedCategory={selectedCategory}
-              onAddToProject={handleAddToProject}
+              category={selectedCategory || undefined}
               projectContext={true}
-              showProjectButton={true}
             />
           </div>
         </div>
@@ -250,3 +248,5 @@ export const ProjectProductSelector: React.FC<ProjectProductSelectorProps> = ({
     </div>
   );
 };
+
+

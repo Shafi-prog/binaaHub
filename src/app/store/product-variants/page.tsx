@@ -3,11 +3,11 @@
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
-import { Button } from '@/core/shared/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
-import { Badge } from '@/core/shared/components/ui/badge';
-import { Input } from '@/core/shared/components/ui/input';
-import { Label } from '@/core/shared/components/ui/label';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
+import { Badge } from '@/components/ui';
+import { Input } from '@/components/ui/Input';
+import { Label } from '@/components/ui/label';
 import { Edit, Package, DollarSign, BarChart3 } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
@@ -213,3 +213,8 @@ const supabase = createClientComponentClient();
     </div>
   );
 }
+
+
+
+
+

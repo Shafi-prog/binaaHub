@@ -3,10 +3,11 @@
 export const dynamic = 'force-dynamic';
 
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent } from '@/core/shared/components/ui/card';
-import { Button } from '@/core/shared/components/ui/button';
-import { Badge } from '@/core/shared/components/ui/badge';
-import PublicProjectShowcase from '@/core/shared/components/PublicProjectShowcase';
+import { Card, CardContent } from '@/components/ui';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui';
+import PublicProjectShowcase from '@/components/ui/PublicProjectShowcase';
+import { Project } from '@/types/types';
 import { 
   Home, 
   MapPin, 
@@ -21,7 +22,6 @@ import {
   Star,
   Layers
 } from 'lucide-react';
-import { Project } from '@/core/shared/types/types';
 import Link from 'next/link';
 
 export default function PublicProjectsPage() {
@@ -42,6 +42,7 @@ export default function PublicProjectsPage() {
       {
         id: '1',
         name: 'فيلا الفخامة الحديثة',
+        userId: 'user1',
         stage: 'التشطيبات النهائية',
         progress: 85,
         createdAt: '2024-01-15',
@@ -51,7 +52,7 @@ export default function PublicProjectsPage() {
         projectType: 'residential',
         floorCount: 2,
         roomCount: 6,
-        status: 'in-progress',
+        status: 'in_progress',
         location: 'الرياض - حي النرجس',
         startDate: '2024-01-01',
         endDate: '2024-08-30',
@@ -79,6 +80,7 @@ export default function PublicProjectsPage() {
       {
         id: '2',
         name: 'مجمع تجاري متطور',
+        userId: 'user2',
         stage: 'الهيكل الإنشائي',
         progress: 60,
         createdAt: '2024-03-01',
@@ -88,7 +90,7 @@ export default function PublicProjectsPage() {
         projectType: 'commercial',
         floorCount: 3,
         roomCount: 20,
-        status: 'in-progress',
+        status: 'in_progress',
         location: 'جدة - شارع التحلية',
         startDate: '2024-02-01',
         endDate: '2024-12-31',
@@ -105,6 +107,7 @@ export default function PublicProjectsPage() {
       {
         id: '3',
         name: 'شقق سكنية راقية',
+        userId: 'user3',
         stage: 'مكتمل',
         progress: 100,
         createdAt: '2023-09-01',
@@ -162,7 +165,12 @@ export default function PublicProjectsPage() {
     
     if (filters.type !== 'all' && project.projectType !== filters.type) return false;
     if (filters.status !== 'all' && project.status !== filters.status) return false;
-    if (filters.location !== 'all' && !project.location?.includes(filters.location)) return false;
+    if (filters.location !== 'all') {
+      const locationString = typeof project.location === 'string' 
+        ? project.location 
+        : project.location?.address || '';
+      if (!locationString.includes(filters.location)) return false;
+    }
     if (searchTerm && !project.name.toLowerCase().includes(searchTerm.toLowerCase())) return false;
     
     return true;
@@ -299,9 +307,9 @@ export default function PublicProjectsPage() {
           </div>
         ) : viewMode === 'grid' ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredProjects.map((project) => {
+            {filteredProjects.map((project: Project) => {
               const statusInfo = getStatusLabel(project.status);
-              const mainImage = project.images?.find(img => img.isPublic);
+              const mainImage = project.images?.find((img: any) => img.isPublic);
               
               return (
                 <Card 
@@ -349,7 +357,7 @@ export default function PublicProjectsPage() {
                       {project.publicDisplay?.showLocation && project.location && (
                         <div className="flex items-center gap-2 text-sm text-gray-600">
                           <MapPin className="w-4 h-4 text-gray-500" />
-                          <span>{project.location}</span>
+                          <span>{typeof project.location === 'string' ? project.location : project.location?.address}</span>
                         </div>
                       )}
                       
@@ -377,9 +385,9 @@ export default function PublicProjectsPage() {
           </div>
         ) : (
           <div className="space-y-4">
-            {filteredProjects.map((project) => {
+            {filteredProjects.map((project: Project) => {
               const statusInfo = getStatusLabel(project.status);
-              const mainImage = project.images?.find(img => img.isPublic);
+              const mainImage = project.images?.find((img: any) => img.isPublic);
               
               return (
                 <Card 
@@ -425,7 +433,7 @@ export default function PublicProjectsPage() {
                           {project.publicDisplay?.showLocation && project.location && (
                             <div className="flex items-center gap-1">
                               <MapPin className="w-4 h-4" />
-                              <span>{project.location}</span>
+                              <span>{typeof project.location === 'string' ? project.location : project.location?.address}</span>
                             </div>
                           )}
                           <div className="flex items-center gap-1">
@@ -474,3 +482,8 @@ export default function PublicProjectsPage() {
     </div>
   );
 }
+
+
+
+
+

@@ -200,3 +200,5 @@ export const ensureEnglishNumerals = (text: string | number): string => {
   
   return arabicToEnglishNumerals(text);
 };
+
+

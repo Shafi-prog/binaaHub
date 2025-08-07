@@ -7,3 +7,6 @@ declare const IndexSync: import("@medusajs/framework/utils").DmlEntity<import("@
 export default IndexSync;
 //# sourceMappingURL=index-sync.d.ts.map
 
+
+
+

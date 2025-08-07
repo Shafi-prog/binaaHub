@@ -124,3 +124,5 @@ if (process.env.NODE_ENV === 'development') {
 
 export { UAEMarketManager };
 export default uaeMarketManager;
+
+

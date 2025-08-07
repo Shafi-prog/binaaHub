@@ -47,3 +47,6 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
 export {};
 //# sourceMappingURL=event-bus-redis.d.ts.map
 
+
+
+

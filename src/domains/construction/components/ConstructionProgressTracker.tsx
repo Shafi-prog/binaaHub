@@ -2,9 +2,9 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { ClientIcon } from '@/core/shared/components/icons';
-import { Button } from '@/core/shared/components/ui/enhanced-components';
-import { LoadingSpinner } from '@/core/shared/components/ui/loading-spinner';
+import { ClientIcon } from '@/components/ui';
+import { Button } from '@/components/ui/enhanced-components';
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
 
 interface ProgressAnalysis {
   progressPercentage: number;
@@ -352,5 +352,9 @@ export default function ConstructionProgressTracker({ userId, projectId }: Const
     </div>
   );
 }
+
+
+
+
 
 

@@ -515,9 +515,14 @@ export class ConstructionPDFAnalyzer {
         utilities: '4-5 أسابيع',
         finishing: '6-8 أسابيع',
         total: '22-29 أسابيع'
-      }
+      },
+      materials,
+      lighting
     };
   }
 }
 
-export default ConstructionPDFAnalyzer;
+export const constructionPDFAnalyzer = new ConstructionPDFAnalyzer();
+export default constructionPDFAnalyzer;
+
+

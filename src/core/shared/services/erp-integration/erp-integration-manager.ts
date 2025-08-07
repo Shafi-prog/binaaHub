@@ -352,3 +352,5 @@ class ERPIntegrationManager {
 // Export singleton instance
 export const erpIntegrationManager = new ERPIntegrationManager();
 export default erpIntegrationManager;
+
+

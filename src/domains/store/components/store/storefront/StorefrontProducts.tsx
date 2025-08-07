@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
-import { ProductGrid } from '../marketplace/ProductGrid';
-import { CategoryFilter } from '../marketplace/CategoryFilter';
-import { ProductSearch } from '../marketplace/ProductSearch';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
-import { Badge } from '../ui/badge';
+'use client';
+
+import React, { useState, useEffect } from 'react';
+import { ProductGrid } from '@/domains/marketplace/components/ProductGrid';
+import { CategoryFilter } from '@/domains/marketplace/components/CategoryFilter';
+import { ProductSearch } from '@/domains/marketplace/components/ProductSearch';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Badge } from '@/components/ui';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+
+const supabase = createClientComponentClient();
 
 interface Product {
   id: string;
@@ -46,9 +51,33 @@ export const StorefrontProducts: React.FC<StorefrontProductsProps> = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState('all');
   const [activeTab, setActiveTab] = useState('all');
+  const [fetchedProducts, setProducts] = useState<Product[]>(products);
+
+  // Fetch products from Supabase
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('products')
+          .select('*')
+          .eq('storeId', storeId);
+
+        if (error) {
+          console.error('Error fetching products:', error);
+          return;
+        }
+
+        setProducts(data || []);
+      } catch (err) {
+        console.error('Unexpected error:', err);
+      }
+    };
+
+    fetchProducts();
+  }, [storeId]);
 
   // Filter products based on search, category, and tab
-  const filteredProducts = products.filter(product => {
+  const filteredProducts = fetchedProducts.filter(product => {
     const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          product.description.toLowerCase().includes(searchQuery.toLowerCase());
     
@@ -62,19 +91,19 @@ export const StorefrontProducts: React.FC<StorefrontProductsProps> = ({
     return matchesSearch && matchesCategory && matchesTab;
   });
 
-  // Generate categories with counts
+  // Generate categories dynamically from products with fallback to Supabase
   const categories = [
-    { id: 'all', name: 'جميع الفئات', count: products.length },
-    ...Array.from(new Set(products.map(p => p.category))).map(category => ({
+    { id: 'all', name: 'جميع الفئات', count: fetchedProducts.length },
+    ...Array.from(new Set(fetchedProducts.map(p => p.category))).map(category => ({
       id: category,
       name: getCategoryDisplayName(category),
-      count: products.filter(p => p.category === category).length,
+      count: fetchedProducts.filter(p => p.category === category).length,
     })),
   ];
 
   // Get featured products
-  const featuredProducts = products.filter(p => p.featured);
-  const saleProducts = products.filter(p => p.onSale);
+  const featuredProducts = fetchedProducts.filter(p => p.featured);
+  const saleProducts = fetchedProducts.filter(p => p.onSale);
 
   return (
     <div className="container mx-auto px-4">
@@ -82,7 +111,7 @@ export const StorefrontProducts: React.FC<StorefrontProductsProps> = ({
       <div className="bg-white rounded-lg border p-6 mb-6">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="text-center">
-            <div className="text-2xl font-bold text-gray-900">{products.length}</div>
+            <div className="text-2xl font-bold text-gray-900">{fetchedProducts.length}</div>
             <div className="text-sm text-gray-600">إجمالي المنتجات</div>
           </div>
           <div className="text-center">
@@ -102,9 +131,8 @@ export const StorefrontProducts: React.FC<StorefrontProductsProps> = ({
 
       {/* Search */}
       <ProductSearch
-        searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
-        showFilters={false}
+        value={searchQuery}
+        onSearch={setSearchQuery}
       />
 
       {/* Product Tabs */}
@@ -114,7 +142,7 @@ export const StorefrontProducts: React.FC<StorefrontProductsProps> = ({
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
             </svg>
-            جميع المنتجات ({products.length})
+            جميع المنتجات ({fetchedProducts.length})
           </TabsTrigger>
           <TabsTrigger value="featured" className="flex items-center gap-2">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -133,18 +161,15 @@ export const StorefrontProducts: React.FC<StorefrontProductsProps> = ({
         <TabsContent value={activeTab} className="mt-6">
           {/* Category Filter */}
           <CategoryFilter
-            categories={categories}
-            activeCategory={activeCategory}
+            selectedCategory={activeCategory}
             onCategoryChange={setActiveCategory}
           />
 
           {/* Products Grid */}
           <ProductGrid
-            products={filteredProducts}
-            loading={loading}
-            onAddToProject={onAddToProject}
-            onViewProduct={onViewProduct}
-            showAddToProject={showAddToProject}
+            category={activeCategory === 'all' ? undefined : activeCategory}
+            searchQuery={searchQuery}
+            projectContext={false}
             emptyMessage={
               activeTab === 'featured' ? 'لا توجد منتجات مميزة حالياً' :
               activeTab === 'sale' ? 'لا توجد عروض خاصة حالياً' :
@@ -219,3 +244,6 @@ function getCategoryDisplayName(category: string): string {
   
   return categoryNames[category] || category;
 }
+
+
+

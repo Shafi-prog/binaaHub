@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { useState } from 'react';
-import { EnhancedInput, Button } from '@/core/shared/components/ui/enhanced-components';
+import { EnhancedInput, Button } from '@/components/ui/enhanced-components';
 
 export default function StoreProfileForm({ store, onSave }: { store: any, onSave: (data: any) => void }) {
   const [location, setLocation] = useState(store.location || null);
@@ -57,5 +57,8 @@ export default function StoreProfileForm({ store, onSave }: { store: any, onSave
     </form>
   );
 }
+
+
+
 
 

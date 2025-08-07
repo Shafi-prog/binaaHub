@@ -12,3 +12,6 @@ const IndexData = model.define("IndexData", {
 export default IndexData
 
 
+
+
+

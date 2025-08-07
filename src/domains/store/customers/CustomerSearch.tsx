@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { UserService } from '../../../services/user';
-import { Input } from '@/components/ui/input';
+import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/button'; // Using existing casing
 // Note: UserCard component will be created as part of the optimization
 // import { UserCard } from '@/components/user/UserCard';
@@ -100,3 +100,7 @@ export const CustomerSearch = () => {
     </div>
   );
 };
+
+
+
+

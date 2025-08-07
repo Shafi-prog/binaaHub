@@ -15,3 +15,6 @@ export declare class ManualFulfillmentService extends AbstractFulfillmentProvide
 }
 //# sourceMappingURL=manual-fulfillment.d.ts.map
 
+
+
+

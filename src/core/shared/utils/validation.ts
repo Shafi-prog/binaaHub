@@ -81,3 +81,5 @@ export const ValidationRules = {
     message: 'Password must be at least 8 characters with uppercase, lowercase, number and special character'
   }
 };
+
+

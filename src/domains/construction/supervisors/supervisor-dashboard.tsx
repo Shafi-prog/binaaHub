@@ -1,14 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
-import { Button } from '@/core/shared/components/ui/button';
-import { Input } from '@/core/shared/components/ui/input';
-import { Label } from '@/core/shared/components/ui/label';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/core/shared/components/ui/tabs';
-import { Badge } from '@/core/shared/components/ui/badge';
-import { Progress } from '@/core/shared/components/ui/progress';
-import { Textarea } from '@/core/shared/components/ui/textarea';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/Input';
+import { Label } from '@/components/ui/label';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Badge } from '@/components/ui';
+import { Progress } from '@/components/ui/progress';
+import { Textarea } from '@/components/ui/textarea';
 import { 
   HardHat, 
   ClipboardCheck, 
@@ -763,4 +763,8 @@ export default function SupervisorDashboard() {
     </div>
   );
 }
+
+
+
+
 

@@ -1,11 +1,11 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
-import { Badge } from '@/core/shared/components/ui/badge';
-import { Button } from '@/core/shared/components/ui/button';
-import { Input } from '@/core/shared/components/ui/input';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/core/shared/components/ui/table';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
+import { Badge } from '@/components/ui';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/Input';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Search, Play, Pause, RotateCcw, CheckCircle, XCircle, Clock, Settings } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
@@ -425,3 +425,7 @@ export default function WorkflowExecutionList() {
     </div>
   );
 }
+
+
+
+

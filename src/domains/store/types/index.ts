@@ -44,3 +44,6 @@ export interface InventoryAlert {
   minQuantity: number;
   alertType: 'low_stock' | 'out_of_stock' | 'overstock';
 }
+
+
+

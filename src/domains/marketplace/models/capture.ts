@@ -22,3 +22,6 @@ const Capture = model
 export default Capture
 
 
+
+
+

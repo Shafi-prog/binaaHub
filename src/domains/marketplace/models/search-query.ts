@@ -50,3 +50,6 @@ SearchQuery.belongsTo(() => import("../../customer/models/customer").then(m => m
 export default SearchQuery
 
 
+
+
+

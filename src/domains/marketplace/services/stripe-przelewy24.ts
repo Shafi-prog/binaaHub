@@ -20,3 +20,6 @@ class Przelewy24ProviderService extends StripeBase {
 export default Przelewy24ProviderService
 
 
+
+
+

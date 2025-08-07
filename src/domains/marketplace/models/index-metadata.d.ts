@@ -10,3 +10,6 @@ declare const IndexMetadata: import("@medusajs/framework/utils").DmlEntity<impor
 export default IndexMetadata;
 //# sourceMappingURL=index-metadata.d.ts.map
 
+
+
+

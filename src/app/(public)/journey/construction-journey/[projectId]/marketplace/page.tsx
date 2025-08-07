@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { ProjectProductSelector } from '../../../../components/project/ProjectProductSelector';
+import { ProjectProductSelector } from '@components/project/ProjectProductSelector';
 import { useRouter } from 'next/navigation';
 import { useParams } from 'next/navigation';
 
@@ -10,7 +10,7 @@ interface ProjectMarketplacePageProps {}
 export default function ProjectMarketplacePage({}: ProjectMarketplacePageProps) {
   const router = useRouter();
   const params = useParams();
-  const projectId = params.projectId as string;
+  const projectId = params?.projectId as string;
   
   const [project, setProject] = useState<any>(null);
   const [currentPhase, setCurrentPhase] = useState<any>(null);
@@ -109,3 +109,4 @@ export default function ProjectMarketplacePage({}: ProjectMarketplacePageProps) 
     />
   );
 }
+

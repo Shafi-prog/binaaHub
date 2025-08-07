@@ -41,3 +41,6 @@ const SearchIndex = model.define("search_index", {
 export default SearchIndex
 
 
+
+
+

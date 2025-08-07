@@ -315,3 +315,5 @@ export const syncUserWithMedusa = async (userData: { email: string; name: string
     return null;
   }
 };
+
+

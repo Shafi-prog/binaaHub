@@ -38,3 +38,6 @@ const PromotionRule = model
 export default PromotionRule
 
 
+
+
+

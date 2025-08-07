@@ -215,3 +215,6 @@ export default function StoreSearch({ onSelect, onCancel, selectedStore }: Store
     </div>
   );
 }
+
+
+

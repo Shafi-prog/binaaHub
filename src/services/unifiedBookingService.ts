@@ -1,9 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+import { supabase } from '@/lib/supabase/client';
 
 export type BookingService = 'equipment-rental' | 'waste-management' | 'concrete-supply' | 'design-office' | 'insurance';
 
@@ -584,3 +579,6 @@ class UnifiedBookingService {
 }
 
 export const unifiedBookingService = new UnifiedBookingService();
+
+// Default export the unifiedBookingService instance
+export default unifiedBookingService;

@@ -1339,3 +1339,6 @@ export class SupplyChainManagementSystem extends EventEmitter {
 export const supplyChainManagementSystem = new SupplyChainManagementSystem();
 
 
+
+
+

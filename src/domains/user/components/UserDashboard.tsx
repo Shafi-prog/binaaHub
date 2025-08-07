@@ -3,10 +3,10 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { LoadingSpinner } from '@/core/shared/components/ui/loading-spinner';
-import { Typography, EnhancedCard, Button } from '@/core/shared/components/ui/enhanced-components';
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
+import { Typography, EnhancedCard, Button } from '@/components/ui/enhanced-components';
 import { Shield, Calendar, Box, Tag, Clock, CreditCard, File, Settings, BarChart3, MessageCircle, Store, User as UserIcon, LogOut, Home, Folder, Mail, BookOpen, Bot } from 'lucide-react';
-import { verifyTempAuth } from '@/core/shared/services/auth';
+import { useAuth } from '@/core/shared/auth/AuthProvider';
 import { quickLogout } from '@/core/shared/services/logout';
 
 interface DashboardStats {
@@ -38,9 +38,9 @@ export default function UserDashboard() {
     
     const loadUserData = async () => {
       try {
-        const authResult = verifyTempAuth();
-        if (authResult?.user) {
-          setUser(authResult.user);
+        const { user: authUser } = useAuth();
+        if (authUser) {
+          setUser(authUser);
         }
         
         // Simulate loading delay
@@ -403,19 +403,19 @@ export default function UserDashboard() {
             <div className="mb-4 bg-white p-4 rounded-xl border border-blue-100">
               <div className="mb-2">
                 <label className="block mb-1 text-sm">المشروع</label>
-                <input type="text" className="w-full border rounded px-2 py-1" value={costForm.project} onChange={e => setCostForm({ ...costForm, project: e.target.value })} placeholder="اسم المشروع" />
+                <input type="text" className="w-full border rounded px-2 py-1" value={costForm.project} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCostForm({ ...costForm, project: e.target.value })} placeholder="اسم المشروع" />
               </div>
               <div className="mb-2">
                 <label className="block mb-1 text-sm">المبلغ (ر.س)</label>
-                <input type="number" className="w-full border rounded px-2 py-1" value={costForm.amount} onChange={e => setCostForm({ ...costForm, amount: e.target.value })} placeholder="المبلغ" />
+                <input type="number" className="w-full border rounded px-2 py-1" value={costForm.amount} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCostForm({ ...costForm, amount: e.target.value })} placeholder="المبلغ" />
               </div>
               <div className="mb-2">
                 <label className="block mb-1 text-sm">المتجر</label>
-                <input type="text" className="w-full border rounded px-2 py-1" value={costForm.store} onChange={e => setCostForm({ ...costForm, store: e.target.value })} placeholder="اسم المتجر أو رابط المتجر" />
+                <input type="text" className="w-full border rounded px-2 py-1" value={costForm.store} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCostForm({ ...costForm, store: e.target.value })} placeholder="اسم المتجر أو رابط المتجر" />
               </div>
               <div className="mb-2">
                 <label className="block mb-1 text-sm">ملاحظة</label>
-                <input type="text" className="w-full border rounded px-2 py-1" value={costForm.note} onChange={e => setCostForm({ ...costForm, note: e.target.value })} placeholder="ملاحظات إضافية (اختياري)" />
+                <input type="text" className="w-full border rounded px-2 py-1" value={costForm.note} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCostForm({ ...costForm, note: e.target.value })} placeholder="ملاحظات إضافية (اختياري)" />
               </div>
               <Button onClick={handleAddCost} className="bg-green-600 text-white rounded px-4 py-2 mt-2">إضافة</Button>
               <Button onClick={() => setShowAddCost(false)} className="ml-2 bg-gray-200 text-gray-700 rounded px-4 py-2 mt-2">إلغاء</Button>
@@ -454,3 +454,6 @@ export default function UserDashboard() {
     </main>
   );
 }
+
+
+

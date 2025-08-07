@@ -14,7 +14,7 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ size = 'md', className 
   };
 
   return (
-    <div className={cn('animate-spin rounded-full border-b-2 border-blue-600', sizeClasses[size], className)} />
+    <div data-testid="loading-spinner" className={cn('animate-spin rounded-full border-b-2 border-blue-600', sizeClasses[size], className)} />
   );
 };
 
@@ -30,7 +30,7 @@ const LoadingState: React.FC<LoadingStateProps> = ({
   className 
 }) => {
   return (
-    <div className={cn('flex flex-col items-center justify-center p-8', className)}>
+    <div data-testid="loading-state" className={cn('flex flex-col items-center justify-center p-8', className)}>
       <LoadingSpinner size={size} />
       <p className="mt-4 text-gray-600">{message}</p>
     </div>
@@ -38,3 +38,5 @@ const LoadingState: React.FC<LoadingStateProps> = ({
 };
 
 export { LoadingSpinner, LoadingState };
+
+

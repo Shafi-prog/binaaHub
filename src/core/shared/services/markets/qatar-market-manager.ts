@@ -124,3 +124,5 @@ if (process.env.NODE_ENV === 'development') {
 
 export { QatarMarketManager };
 export default qatarMarketManager;
+
+

@@ -27,3 +27,6 @@ export interface ProjectSummary {
   budget: number;
   spent: number;
 }
+
+
+

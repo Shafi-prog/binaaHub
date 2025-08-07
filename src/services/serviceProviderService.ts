@@ -1,7 +1,7 @@
 // Service Provider Registration Platform
 // Comprehensive platform for construction service providers to register and manage their services
 
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { BaseService } from './BaseService';
 
 export interface ServiceCategory {
   id: string;
@@ -226,9 +226,8 @@ export interface ProviderReview {
   createdAt: Date;
 }
 
-class ServiceProviderService {
+class ServiceProviderService extends BaseService {
   private static instance: ServiceProviderService;
-  private supabase = createClientComponentClient();
 
   static getInstance(): ServiceProviderService {
     if (!ServiceProviderService.instance) {
@@ -821,3 +820,4 @@ class ServiceProviderService {
 }
 
 export const serviceProviderService = ServiceProviderService.getInstance();
+export default serviceProviderService;

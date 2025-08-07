@@ -2,9 +2,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { ClientIcon } from '@/core/shared/components/icons';
-import { Button } from '@/core/shared/components/ui/enhanced-components';
-import { LoadingSpinner } from '@/core/shared/components/ui/loading-spinner';
+import { ClientIcon } from '@/components/ui';
+import { Button } from '@/components/ui/enhanced-components';
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 
 interface ProjectSpecs {
@@ -474,5 +474,8 @@ export default function AIConstructionCalculator({ userId }: AIConstructionCalcu
     </div>
   );
 }
+
+
+
 
 

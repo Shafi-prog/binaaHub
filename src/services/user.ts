@@ -48,4 +48,6 @@ export class UserService extends BaseService {
   }
 }
 
+// Singleton instance export
 export const userService = new UserService();
+export default userService;

@@ -36,3 +36,5 @@ export class InventoryService {
     return { id: itemId, adjustment };
   }
 }
+
+

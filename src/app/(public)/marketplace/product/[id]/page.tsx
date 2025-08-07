@@ -4,7 +4,7 @@ import { StarIcon as StarSolidIcon } from '@heroicons/react/24/solid';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { Badge } from '@/components/ui';
 
 interface ProductDetailPageProps {
   params: {
@@ -261,3 +261,4 @@ export default async function ProductDetailPage({ params }: ProductDetailPagePro
     </div>
   );
 }
+

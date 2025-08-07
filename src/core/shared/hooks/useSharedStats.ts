@@ -1,16 +1,14 @@
-
-import { useUserData } from '../contexts/UserDataContext';
-import UserStatsCalculator from '../services/UserStatsCalculator';
-import { useAuth } from '@/core/shared/auth/AuthProvider';
+import { useUserData, useAuth } from '@/contexts';
+import { UserStatsCalculator } from '@/services/UserStatsCalculator';
 
 export const useSharedStats = () => {
-  const { user, session, isLoading, error } = useAuth();
+  const { user } = useAuth();
   
-  // Mock data for now
-  const orders = [];
-  const invoices = [];
-  const projects = [];
-  const warranties = [];
+  // Mock data for now - these should be fetched from Supabase
+  const orders: any[] = [];
+  const invoices: any[] = [];
+  const projects: any[] = [];
+  const warranties: any[] = [];
   const profile = null; // User profile type mismatch, using null for now
   const stats = { total: 0, active: 0, completed: 0 };
   
@@ -29,3 +27,5 @@ export const useSharedStats = () => {
     loyaltyStats,
   };
 };
+
+

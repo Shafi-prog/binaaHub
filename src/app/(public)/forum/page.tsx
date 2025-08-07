@@ -4,8 +4,9 @@ import { useEffect, useState } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import Link from 'next/link';
 import { User } from '@supabase/supabase-js';
-import { Card, LoadingSpinner, EmptyState } from '@/core/shared/components/ui';
-import ClientIcon from '@/core/shared/components/ClientIcon';
+import { Card } from '@/components/ui';
+import { LoadingSpinner, EmptyState } from '@/components/ui/enhanced-components';
+import ClientIcon from '@/components/ui/ClientIcon';
 import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 
 
@@ -531,5 +532,10 @@ export default function ForumPage() {
     </div>
   );
 }
+
+
+
+
+
 
 

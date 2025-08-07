@@ -1,5 +1,5 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
-import { BooksApp } from '../BooksApp'
+import BooksApp from '../BooksApp'
 
 jest.mock('@/domains/marketplace/services/medusa', () => ({
   getProducts: jest.fn(() => Promise.resolve([
@@ -41,3 +41,5 @@ describe('BooksApp', () => {
     expect(screen.getByText('Loading books...')).toBeInTheDocument()
   })
 })
+
+

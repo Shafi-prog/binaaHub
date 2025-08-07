@@ -45,3 +45,6 @@ const Promotion = model
 export default Promotion
 
 
+
+
+

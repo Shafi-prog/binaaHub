@@ -2,28 +2,46 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/core/shared/auth/AuthProvider';
-import { ProjectTrackingService } from '@/core/services/projectTrackingService';
+import { projectTrackingService } from '@/services';
 
-interface ProjectFormProps {
-  initialData?: any;
-  onSuccess?: () => void;
-  submitLabel?: string;
+interface ProjectData {
+  id?: string;
+  name: string;
+  location: string;
+  budget: string | number;
+  picture?: File | null;
+  image?: File | null;
+  level: string;
+  progress?: number;
+  createdAt?: string;
+  area?: number;
+  projectType?: string;
+  floorCount?: number;
+  roomCount?: number;
+  status?: string;
 }
 
-export default function ProjectForm({ initialData, onSuccess, submitLabel = 'Save Project' }: ProjectFormProps) {
+interface ProjectFormProps {
+  initialData?: Partial<ProjectData>;
+  onSuccess?: () => void;
+  submitLabel?: string;
+  onSubmit?: (data: ProjectData) => Promise<void>;
+}
+
+export default function ProjectForm({ initialData, onSuccess, submitLabel = 'Save Project', onSubmit }: ProjectFormProps) {
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
-  const [projectData, setProjectData] = useState({
+  const [projectData, setProjectData] = useState<ProjectData>({
     name: '',
     location: '',
     budget: '',
-    picture: null as File | null,
+    picture: null,
     level: '',
     ...initialData,
   });
 
   useEffect(() => {
-    if (initialData) setProjectData(prev => ({ ...prev, ...initialData }));
+    if (initialData) setProjectData((prev: ProjectData) => ({ ...prev, ...initialData }));
   }, [initialData]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -54,7 +72,7 @@ export default function ProjectForm({ initialData, onSuccess, submitLabel = 'Sav
         location: projectData.location,
         budget: Number(projectData.budget),
       };
-      await ProjectTrackingService.saveProject(project, user.id);
+      await projectTrackingService.saveProject(project);
       if (onSuccess) onSuccess();
     } catch (error) {
       alert('Error saving project');
@@ -70,23 +88,57 @@ export default function ProjectForm({ initialData, onSuccess, submitLabel = 'Sav
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label className="block mb-1">Project Name *</label>
-            <input type="text" className="w-full p-2 rounded bg-gray-800 border border-gray-700" value={projectData.name} onChange={e => setProjectData(prev => ({ ...prev, name: e.target.value }))} required />
+            <input 
+              type="text" 
+              className="w-full p-2 rounded bg-gray-800 border border-gray-700" 
+              value={projectData.name} 
+              onChange={(e) => setProjectData((prev: ProjectData) => ({ ...prev, name: e.target.value }))} 
+              required 
+            />
           </div>
           <div>
             <label className="block mb-1">Map Location *</label>
-            <input type="text" className="w-full p-2 rounded bg-gray-800 border border-gray-700" value={projectData.location} onChange={e => setProjectData(prev => ({ ...prev, location: e.target.value }))} required placeholder="Paste map link or address" />
+            <input 
+              type="text" 
+              className="w-full p-2 rounded bg-gray-800 border border-gray-700" 
+              value={projectData.location} 
+              onChange={(e) => setProjectData((prev: ProjectData) => ({ ...prev, location: e.target.value }))} 
+              required 
+              placeholder="Paste map link or address" 
+            />
           </div>
           <div>
             <label className="block mb-1">Budget (SAR) *</label>
-            <input type="number" className="w-full p-2 rounded bg-gray-800 border border-gray-700" value={projectData.budget} onChange={e => setProjectData(prev => ({ ...prev, budget: e.target.value }))} required />
+            <input 
+              type="number" 
+              className="w-full p-2 rounded bg-gray-800 border border-gray-700" 
+              value={projectData.budget} 
+              onChange={(e) => setProjectData((prev: ProjectData) => ({ ...prev, budget: Number(e.target.value) }))} 
+              required 
+            />
           </div>
           <div>
             <label className="block mb-1">Project Picture</label>
-            <input type="file" accept="image/*" className="w-full" onChange={e => setProjectData(prev => ({ ...prev, picture: e.target.files?.[0] || null }))} />
+            <input 
+              type="file" 
+              accept="image/*" 
+              className="w-full" 
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) {
+                  setProjectData((prev: ProjectData) => ({ ...prev, image: file }));
+                }
+              }}
+            />
           </div>
           <div>
             <label className="block mb-1">Level of Construction *</label>
-            <select className="w-full p-2 rounded bg-gray-800 border border-gray-700" value={projectData.level} onChange={e => setProjectData(prev => ({ ...prev, level: e.target.value }))} required>
+            <select 
+              className="w-full p-2 rounded bg-gray-800 border border-gray-700" 
+              value={projectData.level} 
+              onChange={(e) => setProjectData((prev: ProjectData) => ({ ...prev, level: e.target.value }))} 
+              required
+            >
               <option value="">Select level</option>
               <option value="planning">Planning</option>
               <option value="foundation">Foundation</option>
@@ -103,3 +155,9 @@ export default function ProjectForm({ initialData, onSuccess, submitLabel = 'Sav
     </div>
   );
 }
+
+
+export { ProjectForm };
+
+
+

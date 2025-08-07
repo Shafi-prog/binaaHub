@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState, useRef } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
-import { Button } from '@/core/shared/components/ui/button';
-import { Badge } from '@/core/shared/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui';
 import { 
   Camera, 
   Upload, 
@@ -276,7 +276,7 @@ export default function ConstructionPhotoUploader({
                     
                     <div className="flex items-center gap-2 text-xs text-gray-500">
                       <Calendar className="w-3 h-3" />
-                      <span>{new Date(image.uploadedAt).toLocaleDateString('en-US')}</span>
+                      <span>{image.uploadedAt ? new Date(image.uploadedAt).toLocaleDateString('en-US') : 'No date'}</span>
                     </div>
 
                     <div className="flex justify-between items-center pt-2">
@@ -319,3 +319,6 @@ export default function ConstructionPhotoUploader({
     </div>
   );
 }
+
+
+

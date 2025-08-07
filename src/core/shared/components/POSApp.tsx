@@ -241,3 +241,5 @@ const POSApp = React.memo(() => {
 POSApp.displayName = 'POSApp';
 
 export default POSApp;
+
+

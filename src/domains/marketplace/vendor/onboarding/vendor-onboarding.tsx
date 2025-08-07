@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
-import { Card } from '@/shared/components/ui/card';
-import { Button } from '@/shared/components/ui/button';
-import { EnhancedInput, EnhancedSelect } from '@/core/shared/components/ui/enhanced-components';
+import { Card } from '@/components/ui';
+import { Button } from '@/components/ui';
+import { Input } from '@/components/ui/Input';
+import { Select } from '@/components/ui/select';
+import { supabase } from '@/lib/supabase/client';
+
+const supabaseClient = supabase;
 
 interface VendorOnboardingData {
   businessName: string;
@@ -43,23 +47,17 @@ export function VendorOnboarding() {
 
   const handleSubmit = async () => {
     setIsSubmitting(true);
-    
-    try {
-      // Submit vendor application
-      const response = await fetch('/api/vendors/onboard', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
 
-      if (response.ok) {
-        // Show success message and redirect
-        alert('Vendor application submitted successfully! We will review your application within 2-3 business days.');
-      } else {
+    try {
+      const { error } = await supabaseClient
+        .from('vendor_onboarding')
+        .insert([formData]);
+
+      if (error) {
         throw new Error('Failed to submit application');
       }
+
+      alert('Vendor application submitted successfully! We will review your application within 2-3 business days.');
     } catch (error) {
       alert('Error submitting application. Please try again.');
     } finally {
@@ -73,35 +71,43 @@ export function VendorOnboarding() {
         return (
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Business Information</h3>
-            <EnhancedInput
-              label="Business Name (Arabic)"
-              value={formData.businessName}
-              onChange={(e) => setFormData({ ...formData, businessName: e.target.value })}
-              placeholder="اسم الشركة"
-              required
-            />
-            <EnhancedInput
-              label="Contact Person"
-              value={formData.contactPerson}
-              onChange={(e) => setFormData({ ...formData, contactPerson: e.target.value })}
-              placeholder="اسم الشخص المسؤول"
-              required
-            />
-            <EnhancedInput
-              label="Email Address"
-              type="email"
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              placeholder="email@example.com"
-              required
-            />
-            <EnhancedInput
-              label="Phone Number"
-              value={formData.phone}
-              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-              placeholder="+966 5X XXX XXXX"
-              required
-            />
+            <div>
+              <label className="block text-sm font-medium mb-1">Business Name (Arabic)</label>
+              <Input
+                value={formData.businessName}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, businessName: e.target.value })}
+                placeholder="اسم الشركة"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">Contact Person</label>
+              <Input
+                value={formData.contactPerson}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, contactPerson: e.target.value })}
+                placeholder="اسم الشخص المسؤول"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">Email Address</label>
+              <Input
+                type="email"
+                value={formData.email}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, email: e.target.value })}
+                placeholder="email@example.com"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+              <Input
+                value={formData.phone}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, phone: e.target.value })}
+                placeholder="+966 5X XXX XXXX"
+                required
+              />
+            </div>
           </div>
         );
       
@@ -109,33 +115,40 @@ export function VendorOnboarding() {
         return (
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Legal Documentation</h3>
-            <EnhancedInput
-              label="Commercial Registration Number"
-              value={formData.commercialRegistration}
-              onChange={(e) => setFormData({ ...formData, commercialRegistration: e.target.value })}
-              placeholder="1010XXXXXX"
-              required
-            />
-            <EnhancedInput
-              label="Tax Number (VAT)"
-              value={formData.taxNumber}
-              onChange={(e) => setFormData({ ...formData, taxNumber: e.target.value })}
-              placeholder="30XXXXXXXXX"
-              required
-            />
-            <EnhancedSelect
-              label="Business Type"
-              value={formData.businessType}
-              onChange={(e) => setFormData({ ...formData, businessType: e.target.value })}
-              options={[
-                { value: 'retail', label: 'Retail Store' },
-                { value: 'wholesale', label: 'Wholesale' },
-                { value: 'manufacturer', label: 'Manufacturer' },
-                { value: 'construction', label: 'Construction' },
-                { value: 'services', label: 'Services' },
-              ]}
-              required
-            />
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Commercial Registration Number</label>
+              <Input
+                value={formData.commercialRegistration}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, commercialRegistration: e.target.value })}
+                placeholder="1010XXXXXX"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Tax Number (VAT)</label>
+              <Input
+                value={formData.taxNumber}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, taxNumber: e.target.value })}
+                placeholder="30XXXXXXXXX"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Business Type</label>
+              <select
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                value={formData.businessType}
+                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFormData({ ...formData, businessType: e.target.value })}
+                required
+              >
+                <option value="">Select business type</option>
+                <option value="retail">Retail Store</option>
+                <option value="wholesale">Wholesale</option>
+                <option value="manufacturer">Manufacturer</option>
+                <option value="construction">Construction</option>
+                <option value="services">Services</option>
+              </select>
+            </div>
           </div>
         );
 
@@ -143,20 +156,24 @@ export function VendorOnboarding() {
         return (
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Address & Banking</h3>
-            <EnhancedInput
-              label="Business Address"
-              value={formData.address}
-              onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-              placeholder="Full business address"
-              required
-            />
-            <EnhancedInput
-              label="Bank Account (IBAN)"
-              value={formData.bankAccount}
-              onChange={(e) => setFormData({ ...formData, bankAccount: e.target.value })}
-              placeholder="SA0380000000XXXXXXXXXX"
-              required
-            />
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Business Address</label>
+              <Input
+                value={formData.address}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, address: e.target.value })}
+                placeholder="Full business address"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Bank Account (IBAN)</label>
+              <Input
+                value={formData.bankAccount}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, bankAccount: e.target.value })}
+                placeholder="SA0380000000XXXXXXXXXX"
+                required
+              />
+            </div>
           </div>
         );
 
@@ -177,7 +194,7 @@ export function VendorOnboarding() {
               type="file"
               multiple
               accept=".pdf,.jpg,.jpeg,.png"
-              onChange={(e) => setFormData({ ...formData, documents: Array.from(e.target.files || []) })}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, documents: Array.from(e.target.files || []) })}
               className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
             />
           </div>
@@ -252,3 +269,6 @@ export function VendorOnboarding() {
 }
 
 export default VendorOnboarding;
+
+
+

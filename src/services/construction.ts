@@ -1,6 +1,7 @@
 // Enhanced Construction Guidance Service
 // Integrated with formal documents and external platforms
 
+import { BaseService } from './base-service';
 import { LandListing } from './constructionIntegrationService';
 
 export interface ConstructionPhase {
@@ -134,7 +135,7 @@ export interface ConstructionProject {
   updatedAt: Date;
 }
 
-export class ConstructionGuidanceService {
+export class ConstructionGuidanceService extends BaseService {
   private static readonly DRIVE_BASE_URL = 'https://drive.google.com/drive/folders/1e3V8i3wQrhl9tqbhZ6JMWgaW1gEH0KMS';
 
   static getConstructionLevels(): ConstructionLevel[] {
@@ -448,142 +449,10 @@ export class ConstructionGuidanceService {
     
     return level.dependencies.every(dep => completedLevels.includes(dep));
   }
-
-  static calculateOverallProgress(projectLevels: ProjectLevel[]): number {
-    if (projectLevels.length === 0) return 0;
-    
-    const totalProgress = projectLevels.reduce((sum, level) => sum + level.progress, 0);
-    return Math.round(totalProgress / projectLevels.length);
-  }
-
-  static async downloadDocument(documentId: string): Promise<Blob> {
-    // This would implement actual document download from Google Drive
-    // For now, return a placeholder
-    throw new Error('Document download not implemented yet');
-  }
-
-  static getGuidanceForLevel(levelId: string): {
-    tips: string[];
-    warnings: string[];
-    bestPractices: string[];
-  } {
-    const guidanceMap: Record<string, any> = {
-      'land-acquisition': {
-        tips: [
-          'تأكد من صحة ملكية الأرض قبل الشراء',
-          'احرص على وجود طريق معبد للوصول إلى الأرض',
-          'تحقق من توفر الخدمات الأساسية (كهرباء، ماء، صرف)',
-          'راجع اللوائح العمرانية للمنطقة'
-        ],
-        warnings: [
-          'لا تقم بالدفع قبل التأكد من صحة الوثائق',
-          'تجنب الأراضي في المناطق المعرضة للفيضانات',
-          'احذر من الأراضي غير المرخصة للبناء'
-        ],
-        bestPractices: [
-          'استعن بخبير عقاري معتمد',
-          'قم بمسح الأرض قبل الشراء',
-          'احرص على وجود ضمانات قانونية'
-        ]
-      },
-      'design-approval': {
-        tips: [
-          'اختر مكتب هندسي معتمد ومرخص',
-          'احرص على التصميم المناسب للمناخ المحلي',
-          'تأكد من مطابقة التصميم لكود البناء السعودي',
-          'خطط للتوسعات المستقبلية'
-        ],
-        warnings: [
-          'لا تبدأ البناء قبل الحصول على رخصة البناء',
-          'تجنب التعديلات غير المرخصة على التصميم',
-          'احذر من تجاوز نسب البناء المسموحة'
-        ],
-        bestPractices: [
-          'احرص على كفاءة الطاقة في التصميم',
-          'خطط لأنظمة الصرف والتهوية',
-          'استخدم مواد صديقة للبيئة'
-        ]
-      },
-      'contractor-selection': {
-        tips: [
-          'اطلب عروض أسعار من عدة مقاولين',
-          'تحقق من سجل المقاول وأعماله السابقة',
-          'احرص على وجود ترخيص ساري المفعول',
-          'اشترط ضمانات على الأعمال'
-        ],
-        warnings: [
-          'لا تتعامل مع مقاولين غير مرخصين',
-          'احذر من العروض المنخفضة جداً',
-          'تجنب الدفع المقدم الكبير'
-        ],
-        bestPractices: [
-          'اكتب عقد مفصل وواضح',
-          'حدد جدول زمني للتنفيذ',
-          'اشترط مواد ذات جودة عالية'
-        ]
-      }
-    };
-
-    return guidanceMap[levelId] || { tips: [], warnings: [], bestPractices: [] };
-  }
-
-  static async getProjectPhases(settings: ProjectGuidanceSettings): Promise<ConstructionPhase[]> {
-    // Fetch project phases from real API or Supabase
-    try {
-      // Example: Replace with your actual API endpoint or Supabase query
-      // const response = await fetch('/api/project-phases', { method: 'POST', body: JSON.stringify(settings) });
-      // const data = await response.json();
-      // return data.phases;
-      // Or, if using Supabase:
-      // const { data, error } = await supabase.from('project_phases').select('*').eq('projectType', settings.projectType);
-      // if (error) throw error;
-      // return data;
-      throw new Error('getProjectPhases: Real API integration required');
-    } catch (error) {
-      console.error('Error fetching project phases:', error);
-      return [];
-    }
-  }
-
-  static getComplianceChecklist(projectType: string): any[] {
-    return [
-      {
-        category: 'Building Permits',
-        items: [
-          { id: 'permit-1', name: 'Building License', completed: false },
-          { id: 'permit-2', name: 'Construction Permit', completed: false }
-        ]
-      }
-    ];
-  }
-
-  static calculateProjectTimeline(settings: ProjectGuidanceSettings): any {
-    return {
-      totalDuration: 180, // days
-      phases: this.getProjectPhases(settings)
-    };
-  }
-
-  static getNextPhase(currentPhaseId: string, phases: ConstructionPhase[]): ConstructionPhase | null {
-    const currentIndex = phases.findIndex(p => p.id === currentPhaseId);
-    return currentIndex >= 0 && currentIndex < phases.length - 1 ? phases[currentIndex + 1] : null;
-  }
-
-  // Example real implementation for fetching vehicles
-  static async getVehicles(): Promise<any[]> {
-    try {
-      // Example: Replace with your actual API endpoint or Supabase query
-      // const response = await fetch('/api/vehicles');
-      // const data = await response.json();
-      // return data.vehicles;
-      // Or, if using Supabase:
-      // const { data, error } = await supabase.from('vehicles').select('*');
-      // if (error) throw error;
-      // return data;
-      throw new Error('getVehicles: Real API integration required');
-    } catch (error) {
-      console.error('Error fetching vehicles:', error);
-      return [];
-    }
-  }
 }
+
+// Standardized export: class + instance
+export const constructionService = new ConstructionGuidanceService();
+export default constructionService;
+
+

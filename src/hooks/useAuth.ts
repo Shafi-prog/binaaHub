@@ -2,15 +2,18 @@
 
 import { useState, useEffect } from 'react';
 import { AuthService } from '../services/auth';
+import { createClient } from '@supabase/supabase-js';
+import type { User as SupabaseUser } from '@supabase/auth-helpers-nextjs';
 
-// Define simplified types for the hook
+// Define simplified types for the hook compatible with Supabase
 interface User {
   id: string;
-  email: string;
-  full_name: string;
-  role: string;
-  email_verified: boolean;
-  created_at: string;
+  email?: string;
+  full_name?: string;
+  role?: string;
+  email_verified?: boolean;
+  created_at?: string;
+  user_metadata?: any;
 }
 
 interface SignUpData {
@@ -25,6 +28,11 @@ interface SignInData {
   password: string;
 }
 
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+// Adjust AuthService initialization
 const authService = new AuthService();
 
 export function useAuth() {
@@ -37,8 +45,17 @@ export function useAuth() {
       try {
         setLoading(true);
         setError(null);
-        const currentUser = await authService.getCurrentUser();
-        setUser(currentUser);
+        const { data: session, error: fetchError } = await supabase.auth.getSession();
+        if (fetchError) throw new Error(fetchError.message);
+        const currentUser = session?.session?.user;
+        if (currentUser) {
+          setUser({
+            id: currentUser.id,
+            email: currentUser.email,
+            user_metadata: currentUser.user_metadata,
+            ...currentUser.user_metadata
+          } as User);
+        }
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to get current user');
       } finally {
@@ -82,7 +99,10 @@ export function useSignUp() {
     try {
       setLoading(true);
       setError(null);
-      const result = await authService.signUp(data.email, data.password, data.full_name, data.role);
+      const result = await authService.signUp(data.email, data.password, {
+        full_name: data.full_name,
+        role: data.role
+      });
       return result;
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to sign up';
@@ -148,7 +168,7 @@ export function useUpdatePassword() {
     try {
       setLoading(true);
       setError(null);
-      await authService.updatePassword(currentPassword, newPassword);
+      await authService.updatePassword(newPassword);
       return true;
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to update password';
@@ -161,3 +181,5 @@ export function useUpdatePassword() {
 
   return { updatePassword, loading, error };
 }
+
+

@@ -11,3 +11,6 @@ declare const IndexRelation: import("@medusajs/framework/utils").DmlEntity<impor
 export default IndexRelation;
 //# sourceMappingURL=index-relation.d.ts.map
 
+
+
+

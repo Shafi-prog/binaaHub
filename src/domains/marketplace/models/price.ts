@@ -46,3 +46,6 @@ const Price = model
 export default Price
 
 
+
+
+

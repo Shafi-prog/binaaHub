@@ -1,26 +1,23 @@
-// @ts-nocheck
+// Temporary Progress component - needs to be replaced with proper implementation
 import React from 'react';
-import classNames from 'classnames';
 
-interface ProgressProps {
-  value: number;
+export interface ProgressProps {
+  value?: number;
   max?: number;
   className?: string;
 }
 
-export const Progress: React.FC<ProgressProps> = ({ value, max = 100, className }) => {
-  const percentage = Math.min((value / max) * 100, 100);
-
+export function Progress({ value = 0, max = 100, className = '' }: ProgressProps) {
+  const percentage = Math.min(Math.max((value / max) * 100, 0), 100);
+  
   return (
-    <div className={classNames('relative w-full h-4 bg-gray-200 rounded', className)}>
-      <div
-        className="absolute top-0 left-0 h-full bg-blue-500 rounded"
+    <div className={`progress w-full bg-gray-200 rounded-full h-2 ${className}`}>
+      <div 
+        className="progress-bar bg-blue-600 h-2 rounded-full transition-all duration-300 ease-in-out"
         style={{ width: `${percentage}%` }}
-      ></div>
+      />
     </div>
   );
-};
-
-export default Progress;
+}
 
 

@@ -20,3 +20,5 @@ const POSNavbar: React.FC = () => (
 );
 
 export default POSNavbar;
+
+

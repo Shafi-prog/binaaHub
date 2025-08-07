@@ -15,8 +15,8 @@ import {
   Pie,
   Cell,
 } from 'recharts';
-import { Card } from '@/core/shared/components/ui';
-import { ClientIcon } from '@/core/shared/components/icons';
+import { Card } from '@/components/ui';
+import { ClientIcon } from '@/components/icons';
 import {
   getStoreStats,
   getStoreAnalytics,
@@ -328,5 +328,9 @@ export default function StoreAnalyticsDashboard({ storeId }: AnalyticsProps) {
     </div>
   );
 }
+
+
+
+
 
 

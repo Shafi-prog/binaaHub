@@ -12,3 +12,6 @@ const SalesChannel = model.define("SalesChannel", {
 export default SalesChannel
 
 
+
+
+

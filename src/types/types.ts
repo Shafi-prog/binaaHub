@@ -34,6 +34,7 @@ export type Warranty = {
 export type Project = {
   id: string;
   name: string;
+  userId: string;
   stage: string;
   progress: number;
   createdAt: string;
@@ -45,8 +46,8 @@ export type Project = {
   roomCount: number;
   estimations?: ProjectEstimation;
   purchases?: ProjectPurchase[];
-  status: 'planning' | 'in-progress' | 'completed' | 'on-hold';
-  location?: string;
+  status: 'planning' | 'in_progress' | 'completed' | 'on-hold';
+  location?: string | { lat: number; lng: number; address: string };
   startDate?: string;
   endDate?: string;
   images?: ProjectImage[];
@@ -244,5 +245,7 @@ export function mapSupabaseProjectToProject(s: SupabaseProject): Project {
     enableProgressTracking: undefined,
   };
 }
+
+
 
 

@@ -16,3 +16,6 @@ const PromotionRuleValue = model.define(
 export default PromotionRuleValue
 
 
+
+
+

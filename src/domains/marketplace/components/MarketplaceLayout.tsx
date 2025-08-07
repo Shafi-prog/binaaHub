@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { supabase } from '@/lib/supabase/client';
 import { ProductGrid } from './ProductGrid';
 import { CategoryFilter } from './CategoryFilter';
 import { ProductSearch } from './ProductSearch';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
-import { Button } from '../ui/button';
-import { Badge } from '../ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui';
 
 interface Product {
   id: string;
@@ -46,6 +47,7 @@ export const MarketplaceLayout: React.FC<MarketplaceLayoutProps> = ({
   showAddToProject = true,
   projectContext = false,
 }) => {
+  const supabaseClient = supabase;
   const [products, setProducts] = useState<Product[]>([]);
   const [stores, setStores] = useState<Store[]>([]);
   const [loading, setLoading] = useState(true);
@@ -168,14 +170,58 @@ export const MarketplaceLayout: React.FC<MarketplaceLayoutProps> = ({
     return matchesSearch && matchesCategory;
   });
 
-  // Generate categories with counts
-  const categories = [
-    { id: 'all', name: 'جميع الفئات', count: products.length },
-    { id: 'building-materials', name: 'مواد البناء', count: products.filter(p => p.category === 'building-materials').length },
-    { id: 'lighting', name: 'الإضاءة', count: products.filter(p => p.category === 'lighting').length },
-    { id: 'furniture', name: 'الأثاث', count: products.filter(p => p.category === 'furniture').length },
-    { id: 'appliances', name: 'الأجهزة', count: products.filter(p => p.category === 'appliances').length },
-  ];
+  // Categories will be loaded from Supabase with fallback
+  const [categories, setCategories] = useState([
+    { id: 'all', name: 'جميع الفئات', count: products.length }
+  ]);
+
+  // Load categories from Supabase
+  useEffect(() => {
+    const loadCategories = async () => {
+      try {
+        const { data: categoriesData, error } = await supabaseClient
+          .from('product_categories')
+          .select('id, name, name_ar')
+          .eq('active', true)
+          .order('name_ar');
+
+        if (categoriesData && !error) {
+          const categoriesWithCounts = [
+            { id: 'all', name: 'جميع الفئات', count: products.length },
+            ...categoriesData.map((cat: any) => ({
+              id: cat.id,
+              name: cat.name_ar || cat.name,
+              count: products.filter(p => p.category === cat.id).length
+            }))
+          ];
+          setCategories(categoriesWithCounts);
+        } else {
+          // Fallback to hardcoded categories
+          const fallbackCategories = [
+            { id: 'all', name: 'جميع الفئات', count: products.length },
+            { id: 'building-materials', name: 'مواد البناء', count: products.filter(p => p.category === 'building-materials').length },
+            { id: 'lighting', name: 'الإضاءة', count: products.filter(p => p.category === 'lighting').length },
+            { id: 'furniture', name: 'الأثاث', count: products.filter(p => p.category === 'furniture').length },
+            { id: 'appliances', name: 'الأجهزة', count: products.filter(p => p.category === 'appliances').length },
+          ];
+          setCategories(fallbackCategories);
+        }
+      } catch (error) {
+        console.error('Error loading categories:', error);
+        // Use fallback categories
+        const fallbackCategories = [
+          { id: 'all', name: 'جميع الفئات', count: products.length },
+          { id: 'building-materials', name: 'مواد البناء', count: products.filter(p => p.category === 'building-materials').length },
+          { id: 'lighting', name: 'الإضاءة', count: products.filter(p => p.category === 'lighting').length },
+          { id: 'furniture', name: 'الأثاث', count: products.filter(p => p.category === 'furniture').length },
+          { id: 'appliances', name: 'الأجهزة', count: products.filter(p => p.category === 'appliances').length },
+        ];
+        setCategories(fallbackCategories);
+      }
+    };
+
+    loadCategories();
+  }, [products, supabaseClient]);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -195,9 +241,8 @@ export const MarketplaceLayout: React.FC<MarketplaceLayoutProps> = ({
 
         {/* Search Component */}
         <ProductSearch
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
-          availableStores={stores.map(store => ({ id: store.id, name: store.name }))}
+          value={searchQuery}
+          onSearch={(query: string) => setSearchQuery(query)}
         />
 
         {/* Main Content */}
@@ -219,18 +264,14 @@ export const MarketplaceLayout: React.FC<MarketplaceLayoutProps> = ({
 
           <TabsContent value="products" className="mt-6">
             <CategoryFilter
-              categories={categories}
-              activeCategory={activeCategory}
-              onCategoryChange={setActiveCategory}
+              selectedCategory={activeCategory}
+              onCategoryChange={(category: string) => setActiveCategory(category)}
             />
             
             <ProductGrid
-              products={filteredProducts}
-              loading={loading}
-              onAddToProject={onAddToProject}
-              onViewStore={onViewStore}
-              onViewProduct={onViewProduct}
-              showAddToProject={showAddToProject}
+              category={activeCategory}
+              searchQuery={searchQuery}
+              projectContext={showAddToProject}
               emptyMessage={searchQuery ? 'لا توجد منتجات تطابق البحث' : 'لا توجد منتجات في هذه الفئة'}
             />
           </TabsContent>
@@ -277,3 +318,6 @@ export const MarketplaceLayout: React.FC<MarketplaceLayoutProps> = ({
     </div>
   );
 };
+
+
+

@@ -3,7 +3,7 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import { cn } from "@/core/shared/utils";
-import { supabaseDataService } from "@/core/shared/services/supabase-data-service";
+import { supabaseDataService } from "@/services/supabase-data-service";
 import Link from 'next/link';
 import { 
   Store, 
@@ -53,7 +53,8 @@ interface PriceData {
   lastUpdated: string;
 }
 
-const mockPriceData: PriceData[] = [
+// Default price data for fallback
+const defaultPriceData: PriceData[] = [
   {
     product: "اسمنت عادي",
     category: "مواد خام",
@@ -293,13 +294,13 @@ export default function HomePage() {
         if (Array.isArray(data) && data.length > 0) {
           setPriceData(data);
         } else {
-          console.warn('No real data available, using mock data');
-          setPriceData(mockPriceData);
+          console.warn('No real data available, using default data');
+          setPriceData(defaultPriceData);
         }
       } catch (error) {
         console.error('Error loading price data:', error);
-        // Use mock data as fallback to prevent display issues
-        setPriceData(mockPriceData);
+        // Use default data as fallback to prevent display issues
+        setPriceData(defaultPriceData);
       } finally {
         setIsLoading(false);
       }
@@ -729,3 +730,7 @@ export default function HomePage() {
     </div>
   );
 }
+
+
+
+

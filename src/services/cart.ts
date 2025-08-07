@@ -197,13 +197,12 @@ export class CartService extends BaseService {
 
   async getCartSummary(userId: string): Promise<CartSummary> {
     try {
-      const items = await this.getCartItems(userId);
+      const cartItems = await this.getCartItems(userId);
       
-      const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
-      const totalAmount = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+      const totalAmount = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
       
-      // Group items by store
-      const storeGroups = items.reduce((groups, item) => {
+      const storeGroups = cartItems.reduce((groups, item) => {
         if (!groups[item.store_id]) {
           groups[item.store_id] = {
             store_name: item.store_name,
@@ -217,7 +216,7 @@ export class CartService extends BaseService {
       }, {} as Record<string, { store_name: string; items: CartItem[]; subtotal: number; }>);
 
       return {
-        items,
+        items: cartItems,
         totalItems,
         totalAmount,
         storeGroups
@@ -232,41 +231,22 @@ export class CartService extends BaseService {
     try {
       const cartSummary = await this.getCartSummary(userId);
       
-      if (cartSummary.items.length === 0) {
-        throw new Error('Cart is empty');
-      }
-
-      // Create order
+      // Create order in database
       const { data: order, error: orderError } = await this.supabase
         .from('orders')
-        .insert([{
+        .insert({
           user_id: userId,
           total_amount: cartSummary.totalAmount,
+          shipping_address: shippingAddress,
           status: 'pending',
-          shipping_address: shippingAddress
-        }])
-        .select('id')
+          order_items: cartSummary.items
+        })
+        .select()
         .single();
 
       if (orderError) throw orderError;
 
-      // Create order items
-      const orderItems = cartSummary.items.map(item => ({
-        order_id: order.id,
-        product_id: item.product_id,
-        store_id: item.store_id,
-        quantity: item.quantity,
-        price: item.price,
-        subtotal: item.price * item.quantity
-      }));
-
-      const { error: itemsError } = await this.supabase
-        .from('order_items')
-        .insert(orderItems);
-
-      if (itemsError) throw itemsError;
-
-      // Clear cart after successful order
+      // Clear cart after successful order creation
       await this.clearCart(userId);
 
       return order.id;
@@ -278,3 +258,6 @@ export class CartService extends BaseService {
 }
 
 export const cartService = new CartService();
+export default cartService;
+
+

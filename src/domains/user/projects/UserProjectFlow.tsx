@@ -1,6 +1,6 @@
 import { useState } from 'react';
 // import { useSupabase } from '@/hooks/useSupabase'; // Will be created
-import { ProjectForm } from './creation/ProjectForm';
+import ProjectForm from './creation/ProjectForm';
 // Note: These components will be created as part of the optimization
 // import { MaterialSelection } from './materials/MaterialSelection';
 // import { ServiceProviderSelection } from './services/ServiceProviderSelection';
@@ -94,3 +94,7 @@ export const UserProjectFlow = () => {
     </div>
   );
 };
+
+
+
+

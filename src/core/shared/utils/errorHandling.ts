@@ -44,7 +44,7 @@ export function createErrorResponse(error: AppError | Error, status?: number): N
 }
 
 export function handleValidationError(error: z.ZodError): AppError {
-  const details = error.errors.map(err => ({
+  const details = error.issues.map((err: any) => ({
     field: err.path.join('.'),
     message: err.message
   }))
@@ -81,3 +81,5 @@ export function logError(error: Error, context?: any) {
     // Send to Sentry, LogRocket, etc.
   }
 }
+
+

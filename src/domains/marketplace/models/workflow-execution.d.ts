@@ -12,3 +12,6 @@ export declare const WorkflowExecution: import("@medusajs/framework/utils").DmlE
 }>, "workflow_execution">;
 //# sourceMappingURL=workflow-execution.d.ts.map
 
+
+
+

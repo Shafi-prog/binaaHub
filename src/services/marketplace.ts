@@ -277,5 +277,11 @@ export class MarketplaceService extends BaseService {
   }
 }
 
+// Export types
+export type { Product, Category, Store, ProductFilters, PaginationOptions, MarketplaceSearchResult } from '../types/marketplace';
+
 // Export singleton instance
 export const marketplaceService = new MarketplaceService();
+export default marketplaceService;
+
+

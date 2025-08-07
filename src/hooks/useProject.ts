@@ -44,7 +44,12 @@ export function useProject(projectId: string) {
         setLoading(true);
         setError(null);
         const data = await ProjectTrackingService.getProjectById(projectId);
-        setProject(data);
+        if (data) {
+          setProject({
+            ...data,
+            description: data.description || ''
+          } as Project);
+        }
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to fetch project');
       } finally {
@@ -69,7 +74,13 @@ export function useProjects(filters?: ProjectFilters) {
         setLoading(true);
         setError(null);
         const result = await ProjectTrackingService.getProjects();
-        setData(result);
+        setData({
+          data: result,
+          total: result.length,
+          page: 1,
+          limit: result.length,
+          hasMore: false
+        } as ProjectSearchResult);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to fetch projects');
       } finally {
@@ -91,7 +102,14 @@ export function useCreateProject() {
     try {
       setLoading(true);
       setError(null);
-      const newProject = await ProjectTrackingService.saveProject(projectData);
+      const fullProjectData = {
+        projectType: 'construction',
+        userId: 'current_user',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        ...projectData
+      } as any;
+      const newProject = await ProjectTrackingService.saveProject(fullProjectData);
       return newProject;
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to create project';
@@ -149,3 +167,5 @@ export function useDeleteProject() {
 
   return { deleteProject, loading, error };
 }
+
+

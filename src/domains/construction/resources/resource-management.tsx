@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Card } from '@/shared/components/ui/card';
-import { Button } from '@/shared/components/ui/button';
-import { Input } from '@/shared/components/ui/input';
-import { Select } from '@/shared/components/ui/select';
+import { Card } from '@/components/ui';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/Input';
+import { Select } from '@/components/ui/select';
 
 interface Resource {
   id: string;
@@ -316,3 +316,6 @@ export function ResourceManagement() {
 }
 
 export default ResourceManagement;
+
+
+

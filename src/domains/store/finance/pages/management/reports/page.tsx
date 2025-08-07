@@ -1,11 +1,11 @@
 'use client';
 import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
-import { Button } from '@/core/shared/components/ui/button';
-import { Input } from '@/core/shared/components/ui/input';
-import { Label } from '@/core/shared/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/core/shared/components/ui/select';
-import { Badge } from '@/core/shared/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/Input';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Badge } from '@/components/ui';
 import { 
   BarChart3, 
   TrendingUp, 
@@ -433,3 +433,7 @@ export default function FinanceReportsPage() {
     </div>
   );
 }
+
+
+
+

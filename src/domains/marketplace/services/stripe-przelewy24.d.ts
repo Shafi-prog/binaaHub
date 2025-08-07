@@ -9,3 +9,6 @@ declare class Przelewy24ProviderService extends StripeBase {
 export default Przelewy24ProviderService;
 //# sourceMappingURL=stripe-przelewy24.d.ts.map
 
+
+
+

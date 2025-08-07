@@ -186,3 +186,5 @@ export function addSecurityHeaders(response: NextResponse, customConfig?: Partia
 }
 
 export default createSecurityMiddleware;
+
+

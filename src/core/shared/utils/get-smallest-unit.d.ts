@@ -17,3 +17,5 @@ export declare function getSmallestUnit(amount: BigNumberInput, currency: string
 export declare function getAmountFromSmallestUnit(amount: BigNumberInput, currency: string): number;
 //# sourceMappingURL=get-smallest-unit.d.ts.map
 
+
+

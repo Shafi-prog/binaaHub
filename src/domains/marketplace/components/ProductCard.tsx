@@ -1,11 +1,11 @@
 import React from 'react';
 import Image from 'next/image';
-import { Button } from '../ui/button';
-import { Badge } from '../ui/badge';
-import { EnhancedAddToCart } from './EnhancedAddToCart';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui';
+import { AddToCart } from './AddToCart';
 import { Store, Star, Shield } from 'lucide-react';
 
-interface ProductCardProps {
+export interface ProductCardProps {
   id: string;
   name: string;
   description: string;
@@ -123,7 +123,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         </div>
         
         <div className="space-y-2">
-          <EnhancedAddToCart 
+          <AddToCart 
             product={product}
             variant="compact"
             size="sm"
@@ -145,3 +145,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     </div>
   );
 };
+
+
+

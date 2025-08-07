@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { ShoppingCart, Plus, Minus, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useCart } from '../../hooks/useCart';
+import { useCart } from '@hooks/useCart';
 import { useAuth } from '@/core/shared/auth/AuthProvider';
 
 interface Product {
@@ -286,3 +286,6 @@ export function AddToCart({
     </div>
   );
 }
+
+
+

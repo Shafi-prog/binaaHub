@@ -66,3 +66,6 @@ StoreProductCatalog.indexes = [
 export default StoreProductCatalog
 
 
+
+
+

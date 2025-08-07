@@ -2,7 +2,7 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link" | "warning" | "success" | "neutral";
+  variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link" | "warning" | "success" | "neutral" | "primary" | "danger" | "filled";
   size?: "default" | "sm" | "lg" | "icon";
   asChild?: boolean;
   loading?: boolean;
@@ -10,6 +10,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 
 const buttonVariants = {
   default: "bg-primary text-white hover:bg-primary/90",
+  primary: "bg-primary text-primary-foreground hover:bg-primary/90",
   destructive: "bg-red-600 text-white hover:bg-red-700",
   outline: "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
   secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
@@ -18,6 +19,8 @@ const buttonVariants = {
   warning: "bg-yellow-600 text-white hover:bg-yellow-700",
   success: "bg-green-600 text-white hover:bg-green-700",
   neutral: "bg-gray-500 text-white hover:bg-gray-600",
+  danger: "bg-red-500 text-white hover:bg-red-600",
+  filled: "bg-gray-100 text-gray-800 hover:bg-gray-200"
 };
 
 const buttonSizes = {
@@ -70,3 +73,5 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   }
 );
 Button.displayName = "Button";
+
+

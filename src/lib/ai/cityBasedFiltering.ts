@@ -456,36 +456,36 @@ class CityBasedFilteringService {
 
       return {
         equipment: {
-          available: serviceProviders.some(p => p.services?.some(s => s.category === 'equipment')),
-          providers: serviceProviders.filter(p => p.services?.some(s => s.category === 'equipment')).length,
+          available: serviceProviders.some(p => p.services?.some((s: any) => s.category === 'equipment')),
+          providers: serviceProviders.filter(p => p.services?.some((s: any) => s.category === 'equipment')).length,
           avgResponseTime: '2-4 ساعات',
           coverageAreas: ['المدينة الكاملة'],
           specializedServices: ['رافعات', 'حفارات', 'شاحنات']
         },
         concrete: {
-          available: serviceProviders.some(p => p.services?.some(s => s.category === 'concrete')),
-          plants: serviceProviders.filter(p => p.services?.some(s => s.category === 'concrete')).length,
+          available: serviceProviders.some(p => p.services?.some((s: any) => s.category === 'concrete')),
+          plants: serviceProviders.filter(p => p.services?.some((s: any) => s.category === 'concrete')).length,
           maxDailyCapacity: 5000,
           grades: ['C20', 'C25', 'C30', 'C35', 'C40'],
           deliveryRadius: 50
         },
         waste: {
-          available: serviceProviders.some(p => p.services?.some(s => s.category === 'waste')),
-          providers: serviceProviders.filter(p => p.services?.some(s => s.category === 'waste')).length,
+          available: serviceProviders.some(p => p.services?.some((s: any) => s.category === 'waste')),
+          providers: serviceProviders.filter(p => p.services?.some((s: any) => s.category === 'waste')).length,
           wasteTypes: ['بناء', 'هدم', 'تجاري', 'صناعي'],
           recyclingFacilities: 2,
           collectionSchedule: 'يومي'
         },
         consultation: {
-          available: serviceProviders.some(p => p.services?.some(s => s.category === 'consultation')),
-          engineers: serviceProviders.filter(p => p.services?.some(s => s.category === 'consultation')).length,
+          available: serviceProviders.some(p => p.services?.some((s: any) => s.category === 'consultation')),
+          engineers: serviceProviders.filter(p => p.services?.some((s: any) => s.category === 'consultation')).length,
           specializations: ['إنشائي', 'معماري', 'كهربائي', 'ميكانيكي'],
           languages: ['العربية', 'الإنجليزية'],
           certifications: ['هيئة المهندسين', 'ISO']
         },
         materials: {
-          available: serviceProviders.some(p => p.services?.some(s => s.category === 'materials')),
-          suppliers: serviceProviders.filter(p => p.services?.some(s => s.category === 'materials')).length,
+          available: serviceProviders.some(p => p.services?.some((s: any) => s.category === 'materials')),
+          suppliers: serviceProviders.filter(p => p.services?.some((s: any) => s.category === 'materials')).length,
           categories: ['خرسانة', 'حديد', 'أسمنت', 'مواد عزل'],
           warehouses: 5,
           deliveryOptions: ['نفس اليوم', 'اليوم التالي', 'مجدول']
@@ -568,7 +568,7 @@ class CityBasedFilteringService {
     // Quality level (20% weight)
     if (criteria.qualityLevel) {
       const avgQuality = availableServices.reduce((acc, s) => acc + s.qualityScore, 0) / Math.max(1, availableServices.length);
-      const qualityThresholds = { basic: 3.0, standard: 4.0, premium: 4.5 };
+      const qualityThresholds = { basic: 3.0, standard: 4.0, premium: 4.5 } as { [key: string]: number };
       const requiredQuality = qualityThresholds[criteria.qualityLevel];
       
       if (avgQuality >= requiredQuality) {
@@ -583,7 +583,7 @@ class CityBasedFilteringService {
 
     // Response time (20% weight)
     if (criteria.responseTime) {
-      const timeScores = { immediate: 20, same_day: 15, next_day: 10, week: 5 };
+      const timeScores = { immediate: 20, same_day: 15, next_day: 10, week: 5 } as { [key: string]: number };
       score += timeScores[criteria.responseTime] || 0;
     }
     maxScore += 20;
@@ -601,7 +601,7 @@ class CityBasedFilteringService {
     );
 
     const sortedByResponse = [...availableServices].sort((a, b) => {
-      const responseOrder = { 'فوري': 1, 'ساعات': 2, 'يوم': 3, 'أيام': 4 };
+      const responseOrder = { 'فوري': 1, 'ساعات': 2, 'يوم': 3, 'أيام': 4 } as { [key: string]: number };
       const aOrder = Object.keys(responseOrder).find(key => a.avgResponseTime.includes(key)) || 'أيام';
       const bOrder = Object.keys(responseOrder).find(key => b.avgResponseTime.includes(key)) || 'أيام';
       return responseOrder[aOrder] - responseOrder[bOrder];
@@ -720,7 +720,7 @@ class CityBasedFilteringService {
 
   private getDefaultDistricts(cityId: string): District[] {
     // Return some default districts based on city
-    const defaultDistricts = {
+    const defaultDistricts: { [key: string]: Array<{ name: string; type: 'residential' | 'commercial' | 'mixed'; averageIncome: 'low' | 'medium' | 'high' | 'premium' }> } = {
       'riyadh': [
         { name: 'الملز', type: 'residential' as const, averageIncome: 'high' as const },
         { name: 'العليا', type: 'commercial' as const, averageIncome: 'premium' as const },
@@ -736,7 +736,7 @@ class CityBasedFilteringService {
 
     const districts = defaultDistricts[cityId] || defaultDistricts['riyadh'];
     
-    return districts.map((district, index) => ({
+    return districts.map((district: any, index: number) => ({
       id: `${cityId}_${index}`,
       name: district.name,
       cityId,
@@ -781,3 +781,5 @@ export async function findBestCityForProject(
   );
   return results.length > 0 ? results[0] : null;
 }
+
+

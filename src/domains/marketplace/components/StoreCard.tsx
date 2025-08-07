@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
-import { Button } from '../ui/button';
-import { Badge } from '../ui/badge';
+import { Button } from '@/components/ui';
+import { Badge } from '@/components/ui';
 
 interface Store {
   id: string;
@@ -162,3 +162,6 @@ export const StoreCard: React.FC<StoreCardProps> = ({
     </div>
   );
 };
+
+
+

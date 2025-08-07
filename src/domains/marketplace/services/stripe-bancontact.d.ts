@@ -9,3 +9,6 @@ declare class BancontactProviderService extends StripeBase {
 export default BancontactProviderService;
 //# sourceMappingURL=stripe-bancontact.d.ts.map
 
+
+
+

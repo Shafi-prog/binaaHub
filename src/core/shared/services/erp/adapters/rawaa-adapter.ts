@@ -456,3 +456,5 @@ export class RawaaERPAdapter extends BaseERPAdapter implements ERPAdapter {
     return response.data;
   }
 }
+
+

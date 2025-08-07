@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { Card, LoadingSpinner, StatusBadge } from '@/core/shared/components/ui';
+import { Card, LoadingSpinner, StatusBadge } from '@/components/ui';
 import { formatCurrency, formatDate } from '@/core/shared/utils';
 import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 import {
@@ -89,21 +89,23 @@ interface ExpenseConstructionCategory {
   color: string;
 }
 
-const paymentMethods = [
+// Payment methods will be fetched from Supabase
+const defaultPaymentMethods = [
   { value: 'cash', label: 'نقداً' },
   { value: 'card', label: 'بطاقة ائتمان' },
   { value: 'bank_transfer', label: 'تحويل بنكي' },
   { value: 'check', label: 'شيك' }
 ];
 
-const paymentStatuses = [
+const defaultPaymentStatuses = [
   { value: 'pending', label: 'في الانتظار' },
   { value: 'paid', label: 'مدفوع' },
   { value: 'overdue', label: 'متأخر' },
   { value: 'cancelled', label: 'ملغي' }
 ];
 
-const currencies = [
+// Currencies will be fetched from Supabase  
+const defaultCurrencies = [
   { value: 'SAR', label: 'ريال سعودي' },
   { value: 'USD', label: 'دولار أمريكي' },
   { value: 'EUR', label: 'يورو' }
@@ -161,6 +163,11 @@ export default function ProjectExpenseTracker({
     category_id: ''
   });
 
+  // Supabase options state
+  const [paymentMethods, setPaymentMethods] = useState(defaultPaymentMethods);
+  const [paymentStatuses, setPaymentStatuses] = useState(defaultPaymentStatuses);
+  const [currencies, setCurrencies] = useState(defaultCurrencies);
+  
   const supabase = createClientComponentClient();
 
   useEffect(() => {
@@ -177,6 +184,39 @@ export default function ProjectExpenseTracker({
       setForm(prev => ({ ...prev, amount: prev.quantity * prev.unit_price }));
     }
   }, [form.quantity, form.unit_price]);
+
+  // Load options from Supabase
+  useEffect(() => {
+    const loadOptions = async () => {
+      try {
+        // Try to load payment methods from Supabase
+        const { data: paymentMethodsData, error: pmError } = await supabase
+          .from('payment_methods')
+          .select('value, label')
+          .order('label');
+        
+        if (paymentMethodsData && !pmError) {
+          setPaymentMethods(paymentMethodsData);
+        }
+
+        // Try to load currencies from Supabase  
+        const { data: currenciesData, error: currError } = await supabase
+          .from('currencies')
+          .select('value, label')
+          .eq('active', true)
+          .order('label');
+        
+        if (currenciesData && !currError) {
+          setCurrencies(currenciesData);
+        }
+      } catch (error) {
+        console.log('Using default options - Supabase tables may not exist yet');
+        // Keep default values if Supabase tables don't exist
+      }
+    };
+
+    loadOptions();
+  }, [supabase]);
 
   const loadData = async () => {
     try {
@@ -1143,5 +1183,8 @@ export default function ProjectExpenseTracker({
     </div>
   );
 }
+
+
+
 
 

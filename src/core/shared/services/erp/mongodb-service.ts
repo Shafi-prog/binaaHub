@@ -464,3 +464,5 @@ export const calculateTotal = (subtotal: number, taxRate: number = 0.08) => {
     total: subtotal + taxAmount
   };
 };
+
+

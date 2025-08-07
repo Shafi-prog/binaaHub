@@ -36,3 +36,6 @@ export declare class PostgresAdvisoryLockProvider extends PostgresAdvisoryLockPr
 export {};
 //# sourceMappingURL=advisory-lock.d.ts.map
 
+
+
+

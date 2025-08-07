@@ -48,7 +48,8 @@ export class BaseService {
     }
   }
   
-  protected async insert(table: string, data: any) {
+  // Single generic insert method
+  protected async insert<T>(table: string, data: any): Promise<{ data: T | null; error: any }> {
     try {
       const { data: result, error } = await this.supabase
         .from(table)
@@ -64,19 +65,17 @@ export class BaseService {
     }
   }
   
-  protected async update(table: string, id: string, data: any) {
+  // Single generic update method
+  protected async update<T>(table: string, id: string, updates: any): Promise<{ data: T | null; error: any }> {
     try {
-      const { data: result, error } = await this.supabase
+      const { data, error } = await this.supabase
         .from(table)
-        .update(data)
-        .eq('id', id)
-        .select()
-        .single();
-      
+        .update(updates)
+        .eq('id', id);
       if (error) throw error;
-      return { data: result, error: null };
+      return { data: data as T, error: null };
     } catch (error) {
-      this.handleError(error, `Failed to update ${table}`);
+      this.handleError(error, `Failed to update in ${table}`);
       return { data: null, error };
     }
   }
@@ -95,4 +94,61 @@ export class BaseService {
       return { data: false, error };
     }
   }
+
+  // Additional convenience methods for common operations
+  protected async getAll<T>(table: string, orderBy?: string) {
+    try {
+      let query = this.supabase.from(table).select('*');
+      if (orderBy) {
+        query = query.order(orderBy);
+      }
+      const { data, error } = await query;
+      if (error) throw error;
+      return { data, error: null };
+    } catch (error) {
+      this.handleError(error, `Failed to get all from ${table}`);
+      return { data: null, error };
+    }
+  }
+
+  protected async getById<T>(table: string, id: string) {
+    try {
+      const { data, error } = await this.supabase
+        .from(table)
+        .select('*')
+        .eq('id', id)
+        .single();
+      if (error) throw error;
+      return { data, error: null };
+    } catch (error) {
+      this.handleError(error, `Failed to get by id from ${table}`);
+      return { data: null, error };
+    }
+  }
+  
+  protected async search<T>(table: string, column: string, searchTerm: string, limit?: number) {
+    try {
+      let query = this.supabase
+        .from(table)
+        .select('*')
+        .ilike(column, `%${searchTerm}%`);
+      
+      if (limit) {
+        query = query.limit(limit);
+      }
+      
+      const { data, error } = await query;
+      if (error) throw error;
+      return { data, error: null };
+    } catch (error) {
+      this.handleError(error, `Failed to search in ${table}`);
+      return { data: null, error };
+    }
+  }
 }
+
+// Changed default export to instance export pattern
+export const baseService = new BaseService();
+export default baseService;
+
+

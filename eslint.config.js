@@ -71,6 +71,17 @@ export default [
       '@next/next/no-img-element': 'off',
       'no-unused-vars': 'off',
       'no-undef': 'off',
+      // Restrict deep UI imports: enforce using '@/components/ui' barrel
+      'no-restricted-imports': [
+        'error',
+        {
+          paths: [
+            { name: "@/components/ui/badge", message: "Import Badge from '@/components/ui' instead." },
+            { name: "@/components/ui/card", message: "Import Card from '@/components/ui' instead." }
+          ],
+          patterns: ["**/ui/badge", "**/ui/card"]
+        }
+      ]
     },
     settings: {
       react: { version: 'detect' },

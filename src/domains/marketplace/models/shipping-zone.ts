@@ -31,3 +31,6 @@ const ShippingZone = model.define("shipping_zone", {
 export default ShippingZone
 
 
+
+
+

@@ -1,4 +1,3 @@
-// @ts-nocheck
 "use client";
 
 import * as React from "react";
@@ -9,12 +8,12 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLDivElement> {
   size?: "sm" | "md" | "lg";
 }
 
-function Badge({
+const Badge = ({
   className,
   variant = "default",
   size = "md",
   ...props
-}: BadgeProps) {
+}: BadgeProps) => {
   const variants = {
     default: "bg-gray-900 text-gray-50 hover:bg-gray-900/80 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/80",
     secondary: "bg-gray-100 text-gray-900 hover:bg-gray-100/80 dark:bg-gray-800 dark:text-gray-50 dark:hover:bg-gray-800/80",
@@ -42,8 +41,6 @@ function Badge({
       {...props}
     />
   );
-}
+};
 
 export { Badge };
-
-

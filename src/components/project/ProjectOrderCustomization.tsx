@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Card, LoadingSpinner, Button } from '@/core/shared/components/ui';
+import { Card, LoadingSpinner, Button } from '@/components/ui';
 import { 
   Settings, 
   FileText, 
@@ -728,5 +728,7 @@ function ProjectAnalyticsTab({
     </div>
   );
 }
+
+
 
 

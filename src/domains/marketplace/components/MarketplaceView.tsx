@@ -1,17 +1,17 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useMarketplace } from './MarketplaceProvider';
+import { useMarketplace } from '../hooks/useMarketplace';
 import { ProductGrid } from './ProductGrid';
 import { CategoryFilter } from './CategoryFilter';
 import { ProductSearch } from './ProductSearch';
 import { ShoppingCart } from './ShoppingCart';
 import { CartSidebar } from './CartSidebar';
 import { useAuth } from '@/core/shared/auth/AuthProvider';
-import { useCart } from '../../hooks/useCart';
+import { useCart } from '../hooks/useCart';
 import { ShoppingBag, Filter, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { Badge } from '@/components/ui';
 
 interface MarketplaceViewProps {
   showHeader?: boolean;
@@ -146,7 +146,7 @@ export const MarketplaceView: React.FC<MarketplaceViewProps> = ({
             category={category} 
             searchQuery={searchQuery}
             projectContext={isProjectContext}
-            projectId={projectId}
+            projectId={projectId || undefined}
           />
         </div>
       </div>
@@ -161,3 +161,6 @@ export const MarketplaceView: React.FC<MarketplaceViewProps> = ({
 };
 
 export default MarketplaceView;
+
+
+

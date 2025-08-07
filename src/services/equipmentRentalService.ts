@@ -1,12 +1,13 @@
 // Equipment Rental Service with Real Data Integration
 // Integrates with construction equipment rental providers
 
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { BaseService } from './base-service';
 
 export interface EquipmentType {
   id: string;
   name: string;
   nameAr: string;
+  providerId: string;
   category: 'crane' | 'truck' | 'excavator' | 'mixer' | 'generator' | 'forklift' | 'pump' | 'compactor';
   specifications: {
     capacity: string;
@@ -97,9 +98,8 @@ export interface BookingFilters {
   city?: string;
 }
 
-class EquipmentRentalService {
+class EquipmentRentalService extends BaseService {
   private static instance: EquipmentRentalService;
-  private supabase = createClientComponentClient();
 
   static getInstance(): EquipmentRentalService {
     if (!EquipmentRentalService.instance) {
@@ -148,15 +148,21 @@ class EquipmentRentalService {
       }
 
       // Check availability for date range
+      if (!filters.startDate || !filters.endDate) {
+        throw new Error('Start date and end date are required');
+      }
       const availableEquipment = await this.checkAvailability(
         filteredEquipment.map(item => item.id),
-        filters.startDate,
-        filters.endDate
+        filters.startDate!,
+        filters.endDate!
       );
 
       return filteredEquipment
         .filter(item => availableEquipment.includes(item.id))
-        .map(this.mapToEquipmentType);
+        .map(item => this.mapToEquipmentType({
+          ...item,
+          provider_id: item.equipment_providers.id
+        }));
 
     } catch (error) {
       console.error('Error searching equipment:', error);
@@ -381,6 +387,35 @@ class EquipmentRentalService {
     }
   }
 
+  // Add provider-specific methods
+  async getProviderEquipment(providerId: string): Promise<EquipmentType[]> {
+    const { data, error } = await this.supabase
+      .from('equipment_inventory')
+      .select('*')
+      .eq('provider_id', providerId);
+    if (error) throw error;
+    return data as EquipmentType[];
+  }
+
+  async getProviderBookings(providerId: string): Promise<EquipmentBooking[]> {
+    const { data, error } = await this.supabase
+      .from('equipment_bookings')
+      .select('*')
+      .eq('provider_id', providerId);
+    if (error) throw error;
+    return data as EquipmentBooking[];
+  }
+
+  async getProviderAnalytics(providerId: string): Promise<any> {
+    // Example analytics: count of bookings
+    const { data, error } = await this.supabase
+      .from('equipment_bookings')
+      .select('id', { count: 'exact' })
+      .eq('provider_id', providerId);
+    if (error) throw error;
+    return { totalBookings: data.length };
+  }
+
   // Private helper methods
   private async getEquipmentById(equipmentId: string): Promise<EquipmentType> {
     const { data: equipment, error } = await this.supabase
@@ -447,6 +482,7 @@ class EquipmentRentalService {
       id: data.id,
       name: data.name,
       nameAr: data.name_ar,
+      providerId: data.provider_id,
       category: data.category,
       specifications: data.specifications,
       hourlyRate: data.hourly_rate,
@@ -503,56 +539,12 @@ class EquipmentRentalService {
       updatedAt: new Date(data.updated_at)
     };
   }
-
-  // Provider-specific methods
-  async getProviderEquipment(providerId: string): Promise<EquipmentType[]> {
-    try {
-      const { data, error } = await this.supabase
-        .from('equipment')
-        .select('*')
-        .eq('provider_id', providerId);
-      
-      if (error) throw error;
-      return data?.map(this.mapToEquipmentType) || [];
-    } catch (error) {
-      console.error('Error fetching provider equipment:', error);
-      return [];
-    }
-  }
-
-  async getProviderBookings(providerId: string): Promise<EquipmentBooking[]> {
-    try {
-      const { data, error } = await this.supabase
-        .from('equipment_bookings')
-        .select('*')
-        .eq('provider_id', providerId)
-        .order('created_at', { ascending: false });
-      
-      if (error) throw error;
-      return data?.map(this.mapToBooking) || [];
-    } catch (error) {
-      console.error('Error fetching provider bookings:', error);
-      return [];
-    }
-  }
-
-  async getProviderAnalytics(providerId: string): Promise<any> {
-    try {
-      // Mock analytics data - in real implementation, calculate from bookings
-      return {
-        totalBookings: 45,
-        activeBookings: 3,
-        totalRevenue: 125000,
-        monthlyRevenue: 15000,
-        averageRating: 4.6,
-        utilizationRate: 78,
-        popularEquipment: ['crane', 'excavator', 'mixer']
-      };
-    } catch (error) {
-      console.error('Error fetching provider analytics:', error);
-      return {};
-    }
-  }
 }
 
-export const equipmentRentalService = EquipmentRentalService.getInstance();
+// Added instance and default export for EquipmentRentalService
+export const equipmentRentalService = new EquipmentRentalService();
+export default equipmentRentalService;
+
+
+
+

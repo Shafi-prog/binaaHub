@@ -1,12 +1,14 @@
-// Domain Components
+// Main component exports - barrel export file
+export * from './admin';
+export * from './forms';
+export * from './layout';
 export * from './marketplace';
 export * from './project';
-export * from './store';
-export * from './user';
-export * from './auth';
-
-// Shared Components
 export * from './shared';
-
-// UI Components  
+export * from './storefront';
 export * from './ui';
+
+// Specific component re-exports for backward compatibility
+export { default as LayoutProvider } from './layout/LayoutProvider';
+
+

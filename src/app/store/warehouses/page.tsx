@@ -2,14 +2,14 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
-import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
-import { Button } from '@/core/shared/components/ui/button';
-import { Input } from '@/core/shared/components/ui/input';
-import { Badge } from '@/core/shared/components/ui/badge';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/core/shared/components/ui/table';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/core/shared/components/ui/select';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/Input';
+import { Badge } from '@/components/ui';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Plus, Search, Edit, Trash2, Warehouse, MapPin, Package, TrendingUp } from 'lucide-react';
-import { fetchAllWarehouses } from '@/lib/supabase/enhanced-client';
+import { fetchAllWarehouses } from '@/lib/supabase/client';
 
 export const dynamic = 'force-dynamic';
 interface WarehouseData {
@@ -340,4 +340,9 @@ export default function WarehouseManagement() {
     </div>
   );
 }
+
+
+
+
+
 

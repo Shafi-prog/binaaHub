@@ -1,10 +1,10 @@
 "use client"
 import { useState, useEffect, useMemo } from "react";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/core/shared/components/ui/table";
-import { Button } from "@/core/shared/components/ui/button";
-import { Input } from "@/core/shared/components/ui/input";
-import { Badge } from "@/core/shared/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/core/shared/components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/Input";
+import { Badge } from "@/components/ui";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Search, Plus, Edit, Trash2 } from "lucide-react";
 
 interface Product {
@@ -149,3 +149,7 @@ export function ProductListTable() {
     </Card>
   );
 }
+
+
+
+

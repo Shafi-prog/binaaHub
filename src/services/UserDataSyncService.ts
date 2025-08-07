@@ -1,5 +1,5 @@
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { UserProfile, Order, Warranty, Project, Invoice } from '../contexts/UserDataContext';
+import { UserProfile, Order, Warranty, Project, Invoice } from '@/contexts/UserDataContext';
 
 export class UserDataSyncService {
   private supabase = createClientComponentClient();
@@ -392,3 +392,6 @@ export class UserDataSyncService {
 }
 
 export const userDataSyncService = new UserDataSyncService();
+
+// Singleton instance export
+export default userDataSyncService;

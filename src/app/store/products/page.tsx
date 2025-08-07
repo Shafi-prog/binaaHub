@@ -2,9 +2,9 @@
 
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
-import { Button } from '@/core/shared/components/ui/button';
-import { CustomerSearchWidget, type Customer } from '@/core/shared/components/store/CustomerSearchWidget';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
+import { Button } from '@/components/ui/button';
+import { CustomerSearchWidget, type Customer } from '@/components/admin/store/CustomerSearchWidget';
 import { toast } from 'sonner';
 import { 
   Package, 
@@ -553,3 +553,8 @@ const supabase = createClientComponentClient();
     </div>
   );
 }
+
+
+
+
+

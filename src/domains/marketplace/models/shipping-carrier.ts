@@ -39,3 +39,6 @@ const ShippingCarrier = model.define("shipping_carrier", {
 export default ShippingCarrier
 
 
+
+
+

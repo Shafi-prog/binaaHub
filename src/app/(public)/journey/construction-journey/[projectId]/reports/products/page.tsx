@@ -1,17 +1,17 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { ProjectProductReport } from '../../../../../components/project/ProjectProductReport';
+import { ProjectProductReport } from '@components/project/ProjectProductReport';
 import { useRouter } from 'next/navigation';
 import { useParams } from 'next/navigation';
-import { toast } from '../../../../../components/ui/use-toast';
+import { toast } from '@/components/ui/enhanced-components';
 
 interface ProjectProductReportPageProps {}
 
 export default function ProjectProductReportPage({}: ProjectProductReportPageProps) {
   const router = useRouter();
   const params = useParams();
-  const projectId = params.projectId as string;
+  const projectId = params?.projectId as string;
   
   const [project, setProject] = useState<any>(null);
   const [products, setProducts] = useState<any[]>([]);
@@ -289,3 +289,4 @@ export default function ProjectProductReportPage({}: ProjectProductReportPagePro
     </div>
   );
 }
+

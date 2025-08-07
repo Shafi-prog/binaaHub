@@ -133,3 +133,5 @@ describe('ValidationRules', () => {
     expect(ValidationRules.strongPassword.validate('Password123')).toBe(false); // no special char
   });
 });
+
+

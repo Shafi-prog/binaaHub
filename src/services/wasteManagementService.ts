@@ -1,7 +1,7 @@
 // Waste Management Service with Real Data Integration
 // Handles construction waste collection, pin delivery, and tracking
 
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { BaseService } from './base-service';
 
 export interface WasteType {
   id: string;
@@ -143,9 +143,8 @@ export interface VolumeEstimation {
   environmentalTips: string[];
 }
 
-class WasteManagementService {
+class WasteManagementService extends BaseService {
   private static instance: WasteManagementService;
-  private supabase = createClientComponentClient();
 
   static getInstance(): WasteManagementService {
     if (!WasteManagementService.instance) {
@@ -753,3 +752,6 @@ class WasteManagementService {
 }
 
 export const wasteManagementService = WasteManagementService.getInstance();
+
+// Default export the wasteManagementService instance
+export default wasteManagementService;

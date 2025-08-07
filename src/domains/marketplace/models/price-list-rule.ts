@@ -25,3 +25,6 @@ const PriceListRule = model
 export default PriceListRule
 
 
+
+
+

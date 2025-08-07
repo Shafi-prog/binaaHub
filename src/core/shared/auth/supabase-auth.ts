@@ -198,3 +198,5 @@ class SupabaseAuthService {
 }
 
 export const supabaseAuth = new SupabaseAuthService();
+
+

@@ -59,4 +59,6 @@ export class StoreService extends BaseService {
   }
 }
 
+// Export singleton instance of StoreService
 export const storeService = new StoreService();
+export default storeService;

@@ -68,18 +68,18 @@ export function validateForm<T>(schema: z.ZodSchema<T>, data: unknown): {
   errors?: Record<string, string>
 } {
   try {
-    const validatedData = schema.parse(data)
-    return { success: true, data: validatedData }
+    const validatedData = schema.parse(data);
+    return { success: true, data: validatedData };
   } catch (error) {
     if (error instanceof z.ZodError) {
-      const errors: Record<string, string> = {}
-      error.errors.forEach((err) => {
-        const path = err.path.join('.')
-        errors[path] = err.message
-      })
-      return { success: false, errors }
+      const errors: Record<string, string> = {};
+      error.issues.forEach((err: z.ZodIssue) => {
+        const path = err.path.join('.');
+        errors[path] = err.message;
+      });
+      return { success: false, errors };
     }
-    return { success: false, errors: { general: 'Validation failed' } }
+    return { success: false, errors: { general: 'Validation failed' } };
   }
 }
 
@@ -89,18 +89,22 @@ export function createValidator<T>(schema: z.ZodSchema<T>) {
     validate: (data: unknown) => validateForm(schema, data),
     validateField: (field: string, value: unknown) => {
       try {
-        const fieldSchema = schema.shape[field as keyof typeof schema.shape]
-        if (fieldSchema) {
-          fieldSchema.parse(value)
-          return { success: true }
+        if (schema instanceof z.ZodObject) {
+          const fieldSchema = schema.shape[field as keyof typeof schema.shape];
+          if (fieldSchema) {
+            fieldSchema.parse(value);
+            return { success: true };
+          }
         }
-        return { success: true }
+        return { success: true };
       } catch (error) {
         if (error instanceof z.ZodError) {
-          return { success: false, error: error.errors[0]?.message }
+          return { success: false, error: error.issues[0]?.message };
         }
-        return { success: false, error: 'Validation failed' }
+        return { success: false, error: 'Validation failed' };
       }
-    }
-  }
+    },
+  };
 }
+
+

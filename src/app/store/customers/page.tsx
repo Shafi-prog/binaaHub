@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
-import { Button } from '@/core/shared/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
+import { Button } from '@/components/ui/button';
 import { 
   Users, 
   Plus, 
@@ -544,7 +544,7 @@ const supabase = createClientComponentClient();
                 {customer.tags.length > 0 && (
                   <div className="mb-3">
                     <div className="flex flex-wrap gap-1">
-                      {customer.tags.map((tag, index) => (
+                      {customer.tags.map((tag: string, index: number) => (
                         <span key={index} className="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs">
                           <Tag className="h-3 w-3 inline mr-1" />
                           {tag}
@@ -591,3 +591,7 @@ const supabase = createClientComponentClient();
     </div>
   );
 }
+
+
+
+

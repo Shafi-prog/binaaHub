@@ -1,4 +1,4 @@
-import { ErrorBoundaryProps } from './ErrorBoundary'
+import { ErrorBoundaryProps } from '../../../../components/ui/core/ErrorBoundary'
 import { Component, ReactNode } from 'react'
 
 interface ErrorFallbackProps {
@@ -95,3 +95,5 @@ export class GlobalErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoun
     return this.props.children
   }
 }
+
+

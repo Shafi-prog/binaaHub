@@ -1,18 +1,15 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
-import { Button } from '@/core/shared/components/ui/button';
-import { Badge } from '@/core/shared/components/ui/badge';
-import { Progress } from '@/core/shared/components/ui/progress';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/core/shared/components/ui/tabs';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/core/shared/components/ui/dialog';
-import ConstructionPhotoUploader from '@/core/shared/components/ConstructionPhotoUploader';
-import {
-  ConstructionGuidanceService,
-  ConstructionLevel,
-  ProjectLevel
-} from '@/core/services/constructionGuidanceService';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui';
+import { Progress } from '@/components/ui/progress';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import ConstructionPhotoUploader from './ConstructionPhotoUploader';
+import constructionGuidanceService, { ConstructionGuidanceService } from '@/services/constructionGuidanceService';
+import type { ConstructionLevel, ProjectLevel } from '@/services/construction';
 import { Project, ProjectImage } from '@/core/shared/types/types';
 import { 
   CheckCircle, 
@@ -50,14 +47,7 @@ export default function ConstructionGuidance({ project, onPhaseUpdate }: Constru
 
   useEffect(() => {
     // Get construction phases based on project settings (async)
-    ConstructionGuidanceService.getProjectPhases({
-      projectType: project.projectType,
-      area: project.area,
-      floors: project.floorCount,
-      compliance: 'enhanced',
-      supervision: 'engineer',
-      location: project.location || ''
-    }).then(phases => {
+    constructionGuidanceService.getConstructionPhases().then((phases: any) => {
       setProjectPhases(phases as unknown as ConstructionLevel[]);
       if (phases.length > 0) {
         setCurrentPhase(phases[0].id);
@@ -120,7 +110,7 @@ export default function ConstructionGuidance({ project, onPhaseUpdate }: Constru
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {projectPhases.map((phase) => {
+              {projectPhases.map((phase, index) => {
                 const status = getPhaseStatus(phase);
                 return (
                   <Card 
@@ -137,11 +127,11 @@ export default function ConstructionGuidance({ project, onPhaseUpdate }: Constru
                         </div>
                         <div className="flex-1">
                           <h4 className="font-medium text-sm">{phase.arabicTitle}</h4>
-                          <p className="text-xs text-gray-500">{phase.estimatedDuration}</p>
+                          <p className="text-xs text-gray-500">مدة تقديرية: 1-2 أسابيع</p>
                         </div>
                       </div>
                       <Badge variant="outline" className="text-xs">
-                        المرحلة {phase.order}
+                        المرحلة {index + 1}
                       </Badge>
                     </CardContent>
                   </Card>
@@ -181,7 +171,7 @@ export default function ConstructionGuidance({ project, onPhaseUpdate }: Constru
                       نصائح مهمة
                     </h4>
                     <ul className="space-y-2">
-                      {currentGuidance?.tips.map((tip, index) => (
+                      {currentGuidance?.tips.map((tip: any, index: number) => (
                         <li key={index} className="flex items-start gap-2 text-sm">
                           <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
                           <span>{tip}</span>
@@ -196,7 +186,7 @@ export default function ConstructionGuidance({ project, onPhaseUpdate }: Constru
                       تحذيرات مهمة
                     </h4>
                     <ul className="space-y-2">
-                      {currentGuidance?.warnings.map((warning, index) => (
+                      {currentGuidance?.warnings.map((warning: any, index: number) => (
                         <li key={index} className="flex items-start gap-2 text-sm">
                           <AlertTriangle className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" />
                           <span>{warning}</span>
@@ -232,11 +222,11 @@ export default function ConstructionGuidance({ project, onPhaseUpdate }: Constru
                   projectId={project.id}
                   phaseId={currentPhaseData.id}
                   existingImages={project.images?.filter(img => img.phaseId === currentPhaseData.id) || []}
-                  onImageUpload={(images) => {
+                  onImageUpload={(images: any) => {
                     // Handle image upload - update project
                     console.log('Images uploaded:', images);
                   }}
-                  onImageDelete={(imageId) => {
+                  onImageDelete={(imageId: any) => {
                     // Handle image deletion
                     console.log('Image deleted:', imageId);
                   }}
@@ -246,7 +236,7 @@ export default function ConstructionGuidance({ project, onPhaseUpdate }: Constru
 
               <TabsContent value="documents" className="space-y-4">
                 <div className="grid gap-4">
-                  {currentPhaseData.documentationFiles.map((doc) => (
+                  {currentPhaseData.documentationFiles?.map((doc: any) => (
                     <Card key={doc.id} className="p-4">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
@@ -273,7 +263,7 @@ export default function ConstructionGuidance({ project, onPhaseUpdate }: Constru
 
               <TabsContent value="checkpoints" className="space-y-4">
                 <div className="grid gap-4">
-                  {currentPhaseData.requirements.map((requirement, index) => (
+                  {currentPhaseData.requirements?.map((requirement: any, index: number) => (
                     <Card key={index} className="p-4">
                       <div className="flex items-center justify-between mb-3">
                         <h5 className="font-medium">{requirement}</h5>
@@ -287,7 +277,7 @@ export default function ConstructionGuidance({ project, onPhaseUpdate }: Constru
 
               <TabsContent value="materials" className="space-y-4">
                 <div className="grid gap-4">
-                  {currentGuidance?.bestPractices.map((practice, index) => (
+                  {currentGuidance?.bestPractices.map((practice: any, index: number) => (
                     <Card key={index} className="p-4">
                       <div className="flex items-center gap-3">
                         <div className="p-2 bg-green-100 rounded-lg">
@@ -305,7 +295,7 @@ export default function ConstructionGuidance({ project, onPhaseUpdate }: Constru
 
               <TabsContent value="regulations" className="space-y-4">
                 <div className="grid gap-4">
-                  {currentPhaseData.externalPlatforms?.map((platform, index) => (
+                  {(currentPhaseData as any)?.externalPlatforms?.map((platform: any, index: number) => (
                     <Card key={index} className="p-4">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
@@ -358,3 +348,7 @@ export default function ConstructionGuidance({ project, onPhaseUpdate }: Constru
     </div>
   );
 }
+
+
+
+

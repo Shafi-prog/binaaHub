@@ -4,9 +4,9 @@ export const dynamic = 'force-dynamic';
 
 import { useState } from 'react';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/core/shared/components/ui/card';
-import { Button } from '@/core/shared/components/ui/button';
-import { Badge } from '@/core/shared/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui';
 import { 
   Receipt, 
   DollarSign, 
@@ -22,7 +22,7 @@ import {
   User,
   FileText
 } from 'lucide-react';
-import { CustomerSearchWidget, type Customer } from '@/core/shared/components/store/CustomerSearchWidget';
+import { CustomerSearchWidget, type Customer } from '@/components/admin/store/CustomerSearchWidget';
 import { toast } from 'sonner';
 
 export default function ClaimsPage() {
@@ -305,3 +305,7 @@ export default function ClaimsPage() {
     </div>
   );
 }
+
+
+
+

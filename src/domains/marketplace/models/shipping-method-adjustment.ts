@@ -37,3 +37,6 @@ const ShippingMethodAdjustment = model
 export default ShippingMethodAdjustment
 
 
+
+
+

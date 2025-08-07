@@ -1,74 +1,42 @@
-import { cache, performance } from '../performance'
+import PerformanceMonitor from '../performance'
 
 describe('Performance utilities', () => {
-  describe('cache', () => {
+  describe('PerformanceMonitor', () => {
     beforeEach(() => {
-      cache.clear()
+      PerformanceMonitor.clearMetrics()
     })
 
-    it('stores and retrieves values', () => {
-      cache.set('key1', 'value1')
-      expect(cache.get('key1')).toBe('value1')
+    it('starts and ends timers', () => {
+      PerformanceMonitor.startTimer('test')
+      const duration = PerformanceMonitor.endTimer('test')
+      expect(duration).toBeGreaterThanOrEqual(0)
     })
 
-    it('returns undefined for non-existent keys', () => {
-      expect(cache.get('nonexistent')).toBeUndefined()
+    it('returns null for non-existent timers', () => {
+      expect(PerformanceMonitor.endTimer('nonexistent')).toBeNull()
     })
 
-    it('clears all values', () => {
-      cache.set('key1', 'value1')
-      cache.set('key2', 'value2')
-      cache.clear()
-      expect(cache.get('key1')).toBeUndefined()
-      expect(cache.get('key2')).toBeUndefined()
+    it('clears all metrics', () => {
+      PerformanceMonitor.startTimer('test1')
+      PerformanceMonitor.endTimer('test1')
+      PerformanceMonitor.clearMetrics()
+      expect(PerformanceMonitor.getMetrics()).toHaveLength(0)
     })
-  })
 
-  describe('performance', () => {
-    it('measures execution time', async () => {
-      const testFn = () => new Promise(resolve => setTimeout(resolve, 100))
-      const result = await performance.measure('test', testFn)
+    it('calculates average time', () => {
+      PerformanceMonitor.startTimer('test')
+      PerformanceMonitor.endTimer('test')
+      PerformanceMonitor.startTimer('test')
+      PerformanceMonitor.endTimer('test')
       
-      expect(result.duration).toBeGreaterThan(90)
-      expect(result.duration).toBeLessThan(150)
+      const average = PerformanceMonitor.getAverageTime('test')
+      expect(average).toBeGreaterThanOrEqual(0)
     })
 
-    it('handles synchronous functions', () => {
-      const testFn = () => 'result'
-      const result = performance.measureSync('test', testFn)
-      
-      expect(result.result).toBe('result')
-      expect(result.duration).toBeGreaterThanOrEqual(0)
-    })
-
-    it('debounces function calls', (done) => {
-      let callCount = 0
-      const testFn = () => { callCount++ }
-      const debouncedFn = performance.debounce(testFn, 50)
-      
-      debouncedFn()
-      debouncedFn()
-      debouncedFn()
-      
-      setTimeout(() => {
-        expect(callCount).toBe(1)
-        done()
-      }, 100)
-    })
-
-    it('throttles function calls', (done) => {
-      let callCount = 0
-      const testFn = () => { callCount++ }
-      const throttledFn = performance.throttle(testFn, 50)
-      
-      throttledFn()
-      throttledFn()
-      throttledFn()
-      
-      setTimeout(() => {
-        expect(callCount).toBe(1)
-        done()
-      }, 100)
+    it('returns 0 average for non-existent metric', () => {
+      expect(PerformanceMonitor.getAverageTime('nonexistent')).toBe(0)
     })
   })
 })
+
+

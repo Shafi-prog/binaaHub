@@ -1,5 +1,5 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
-import { POSApp } from '../POSApp'
+import POSApp from '../POSApp'
 
 jest.mock('@/domains/marketplace/services/medusa', () => ({
   getProducts: jest.fn(() => Promise.resolve([
@@ -51,3 +51,5 @@ describe('POSApp', () => {
     })
   })
 })
+
+

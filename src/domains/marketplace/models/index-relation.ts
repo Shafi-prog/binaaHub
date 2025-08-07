@@ -14,3 +14,6 @@ const IndexRelation = model.define("IndexRelation", {
 export default IndexRelation
 
 
+
+
+

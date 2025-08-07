@@ -10,3 +10,5 @@ export function formatCurrency(amount: number, currency: string = 'SAR'): string
     currency: currency,
   }).format(amount);
 }
+
+

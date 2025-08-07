@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { Card, LoadingSpinner, StatusBadge } from '@/core/shared/components/ui';
+import { Card, LoadingSpinner, StatusBadge } from '@/components/ui';
 import { formatCurrency, formatDate } from '@/core/shared/utils';
 import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 import {
@@ -835,5 +835,7 @@ export default function ProjectWarrantyManager({
     </div>
   );
 }
+
+
 
 

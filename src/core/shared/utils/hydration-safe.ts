@@ -193,3 +193,5 @@ export const setLocalStorageSafe = (key: string, value: any) => {
     // Silently fail if localStorage is not available
   }
 };
+
+

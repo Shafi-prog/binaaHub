@@ -344,7 +344,10 @@ class FatoorahService {
   }
 }
 
+export { FatoorahService };
 // Export singleton instance
 export const fatoorahService = new FatoorahService();
 
 export default fatoorahService;
+
+

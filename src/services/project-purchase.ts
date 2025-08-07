@@ -1,5 +1,6 @@
 import { Order, Warranty, Project, ProjectPurchase } from '@/core/shared/types/types';
-import { ProjectTrackingService } from './projectTrackingService';
+import { ProjectTrackingService } from './project';
+import { BaseService } from './base-service';
 
 export interface PurchaseAllocation {
   projectId: string;
@@ -15,7 +16,7 @@ export interface PurchaseAssignmentDialog {
   allocations: PurchaseAllocation[];
 }
 
-export class ProjectPurchaseService {
+export class ProjectPurchaseService extends BaseService {
   // Get all active projects for purchase assignment
   static async getAvailableProjects(): Promise<Project[]> {
     try {
@@ -48,18 +49,18 @@ export class ProjectPurchaseService {
         const projectPurchase: ProjectPurchase = {
           id: `purchase-${Date.now()}`,
           projectId: projectId,
-          materialId: `material-${order.id}`,
-          materialName: order.item,
-          purchasedQuantity: order.quantity || 1,
-          unit: 'قطعة',
-          pricePerUnit: order.totalCost ? order.totalCost / (order.quantity || 1) : 0,
-          totalCost: order.totalCost || 0,
-          purchaseDate: order.date,
-          supplier: order.supplier || 'غير محدد',
-          receiptNumber: order.id.toString(),
-          status: 'ordered',
           orderId: order.id,
-          hasWarranty: false
+          materialName: order.items[0]?.name || '',
+          quantity: order.items[0]?.quantity || 1,
+          unit: 'قطعة',
+          price: order.items[0]
+            ? (order.items[0].price * order.items[0].quantity) / order.items[0].quantity
+            : 0,
+          totalCost: order.total_amount,
+          purchase_date: order.createdAt.toISOString(),
+          vendor: order.supplier_name || order.vendor || 'غير محدد',
+          receipt_number: order.id,
+          order_status: 'ordered'
         };
 
         await this.addPurchaseToProject(projectPurchase);
@@ -69,18 +70,16 @@ export class ProjectPurchaseService {
           const projectPurchase: ProjectPurchase = {
             id: `purchase-${Date.now()}-${alloc.projectId}`,
             projectId: alloc.projectId,
-            materialId: `material-${order.id}`,
-            materialName: order.item,
-            purchasedQuantity: alloc.quantity,
-            unit: 'قطعة',
-            pricePerUnit: alloc.cost / alloc.quantity,
-            totalCost: alloc.cost,
-            purchaseDate: order.date,
-            supplier: order.supplier || 'غير محدد',
-            receiptNumber: order.id.toString(),
-            status: 'ordered',
             orderId: order.id,
-            hasWarranty: false
+            materialName: order.items[0]?.name || '',
+            quantity: alloc.quantity,
+            unit: 'قطعة',
+            price: alloc.quantity ? alloc.cost / alloc.quantity : 0,
+            totalCost: alloc.cost,
+            purchase_date: order.createdAt.toISOString(),
+            vendor: order.supplier_name || order.vendor || 'غير محدد',
+            receipt_number: order.id,
+            order_status: 'ordered'
           };
 
           await this.addPurchaseToProject(projectPurchase);
@@ -103,15 +102,13 @@ export class ProjectPurchaseService {
       if (!project?.purchases) return;
 
       const relatedPurchase = project.purchases.find(p => 
-        p.orderId === warranty.orderId || 
-        p.materialName.toLowerCase().includes(warranty.item.toLowerCase())
+        (warranty.product_id && p.materialId === warranty.product_id) || 
+        p.materialName.toLowerCase().includes(warranty.description.toLowerCase())
       );
 
       if (relatedPurchase) {
         // Update purchase with warranty info
-        relatedPurchase.warrantyId = warranty.id;
-        relatedPurchase.warrantyEndDate = warranty.expiryDate;
-        relatedPurchase.hasWarranty = true;
+        relatedPurchase.warranty_id = warranty.id;
 
         await this.updateProjectPurchase(relatedPurchase);
       }
@@ -159,13 +156,18 @@ export class ProjectPurchaseService {
     console.log('Updating project purchase:', purchase);
   }
 
-  private static async updateOrderWithProject(orderId: number, projectId: string): Promise<void> {
+  private static async updateOrderWithProject(orderId: string, projectId: string): Promise<void> {
     // Update order to link with project
     console.log('Linking order to project:', orderId, projectId);
   }
 
-  private static async updateWarrantyWithProject(warrantyId: number, projectId: string): Promise<void> {
+  private static async updateWarrantyWithProject(warrantyId: string, projectId: string): Promise<void> {
     // Update warranty to link with project
     console.log('Linking warranty to project:', warrantyId, projectId);
   }
 }
+
+export const projectPurchaseService = new ProjectPurchaseService();
+export default projectPurchaseService;
+
+

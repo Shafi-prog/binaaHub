@@ -32,3 +32,6 @@ const _OrderClaimItemImage = model
 export const OrderClaimItemImage = _OrderClaimItemImage
 
 
+
+
+

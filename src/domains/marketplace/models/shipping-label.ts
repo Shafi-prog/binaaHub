@@ -59,3 +59,6 @@ ShippingLabel.belongsTo(() => import("./shipping-carrier").then(m => m.default),
 export default ShippingLabel
 
 
+
+
+

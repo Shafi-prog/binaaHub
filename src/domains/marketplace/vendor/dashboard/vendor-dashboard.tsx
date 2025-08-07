@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { Card } from '@/shared/components/ui/card';
-import { Button } from '@/shared/components/ui/button';
-import { StatCard } from '@/shared/components/ui/stat-card';
+import { Card } from '@/components/ui';
+import { Button } from '@/components/ui';
 
 interface VendorStats {
   totalSales: number;
@@ -59,42 +58,36 @@ export function VendorDashboard() {
 
       {/* Key Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 mb-8">
-        <StatCard
-          title="Total Sales"
-          value={`SAR ${stats.totalSales.toLocaleString('en-US')}`}
-          trend="+12.5%"
-          trendDirection="up"
-        />
-        <StatCard
-          title="Orders"
-          value={stats.ordersCount.toString()}
-          trend="+8.3%"
-          trendDirection="up"
-        />
-        <StatCard
-          title="Products"
-          value={stats.productsCount.toString()}
-          trend="+2"
-          trendDirection="up"
-        />
-        <StatCard
-          title="Rating"
-          value={`${stats.rating}/5.0`}
-          trend="+0.2"
-          trendDirection="up"
-        />
-        <StatCard
-          title="Commission Paid"
-          value={`SAR ${stats.commission.toLocaleString('en-US')}`}
-          trend="-"
-          trendDirection="neutral"
-        />
-        <StatCard
-          title="Pending Payouts"
-          value={`SAR ${stats.pendingPayouts.toLocaleString('en-US')}`}
-          trend="+5.2%"
-          trendDirection="up"
-        />
+        <Card className="p-4">
+          <h3 className="text-sm font-medium text-gray-600">Total Sales</h3>
+          <p className="text-2xl font-bold">SAR {stats.totalSales.toLocaleString('en-US')}</p>
+          <p className="text-sm text-green-600">+12.5%</p>
+        </Card>
+        <Card className="p-4">
+          <h3 className="text-sm font-medium text-gray-600">Orders</h3>
+          <p className="text-2xl font-bold">{stats.ordersCount.toString()}</p>
+          <p className="text-sm text-green-600">+8.3%</p>
+        </Card>
+        <Card className="p-4">
+          <h3 className="text-sm font-medium text-gray-600">Products</h3>
+          <p className="text-2xl font-bold">{stats.productsCount.toString()}</p>
+          <p className="text-sm text-green-600">+2</p>
+        </Card>
+        <Card className="p-4">
+          <h3 className="text-sm font-medium text-gray-600">Rating</h3>
+          <p className="text-2xl font-bold">{stats.rating}/5.0</p>
+          <p className="text-sm text-green-600">+0.2</p>
+        </Card>
+        <Card className="p-4">
+          <h3 className="text-sm font-medium text-gray-600">Commission Paid</h3>
+          <p className="text-2xl font-bold">SAR {stats.commission.toLocaleString('en-US')}</p>
+          <p className="text-sm text-gray-500">-</p>
+        </Card>
+        <Card className="p-4">
+          <h3 className="text-sm font-medium text-gray-600">Pending Payouts</h3>
+          <p className="text-2xl font-bold">SAR {stats.pendingPayouts.toLocaleString('en-US')}</p>
+          <p className="text-sm text-green-600">+5.2%</p>
+        </Card>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -204,3 +197,6 @@ export function VendorDashboard() {
 }
 
 export default VendorDashboard;
+
+
+

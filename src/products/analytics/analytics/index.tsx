@@ -90,7 +90,7 @@ const IoTLiveWidget: React.FC = () => {
       if (dev.status === 'online') {
         const alert = ingestDeviceData(dev.id, dev.temp);
         if (alert && !alerts.includes(alert)) {
-          setAlerts((prev) => [...prev, alert]);
+          setAlerts((prev: any) => [...prev, alert]);
         }
       }
     });
@@ -236,5 +236,7 @@ const AnalyticsDashboard: React.FC = () => {
 };
 
 export default AnalyticsDashboard;
+
+
 
 

@@ -44,3 +44,6 @@ const InventoryItem = model
 export default InventoryItem
 
 
+
+
+

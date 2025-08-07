@@ -1,8 +1,7 @@
 import React from 'react';
 import { ProductCard } from './ProductCard';
-import { LoadingSkeleton } from '../ui/LoadingComponents';
-import { useProducts } from '../../hooks/useMarketplace';
-import { useMarketplace } from './MarketplaceProvider';
+import { LoadingSkeleton } from '@/components/ui/LoadingComponents';
+import { useMarketplace } from '../hooks/useMarketplace';
 
 interface ProductGridProps {
   category?: string;
@@ -21,7 +20,7 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
   storeId,
   emptyMessage = 'لا توجد منتجات متاحة',
 }) => {
-  const { addProductToSelection, isProjectContext } = useMarketplace();
+  const { products, loading, error, addProductToSelection, isProjectContext } = useMarketplace();
   
   // Build filters for the hook
   const filters = {
@@ -30,11 +29,9 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
     ...(storeId && { storeId }),
   };
 
-  const { products, loading, error } = useProducts(filters, { limit: 20 });
-
   const handleAddToProject = (product: any, quantity: number = 1) => {
     if (isProjectContext) {
-      addProductToSelection(product, quantity);
+      addProductToSelection(product);
     }
   };
 
@@ -95,12 +92,12 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
           name={product.name}
           description={product.description}
           price={product.price}
-          imageUrl={product.images[0]}
-          storeName={product.storeName}
-          storeId={product.storeId}
+          imageUrl={product.image || '/placeholder.jpg'}
+          storeName="متجر عام"
+          storeId="default-store"
           category={product.category}
-          stock={product.stock}
-          warranty={product.warranty}
+          stock={50}
+          warranty={{ duration: 1, type: "years" }}
           onAddToProject={() => handleAddToProject(product)}
           onViewStore={(storeId) => console.log('View store:', storeId)}
           onViewProduct={(productId) => console.log('View product:', productId)}
@@ -110,3 +107,6 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
     </div>
   );
 };
+
+
+

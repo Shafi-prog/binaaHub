@@ -3,8 +3,8 @@
 export const dynamic = 'force-dynamic';
 
 import React from 'react';
-import { Card, CardContent } from '@/core/shared/components/ui/card';
-import { Button } from '@/core/shared/components/ui/button';
+import { Card, CardContent } from '@/components/ui';
+import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Shield, Building2 } from 'lucide-react';
 
@@ -47,3 +47,7 @@ export default function FencingPage() {
     </div>
   );
 }
+
+
+
+

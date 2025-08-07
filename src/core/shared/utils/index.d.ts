@@ -10,3 +10,5 @@ export * from "./default-schema";
 export * from "./normalze-table-name";
 //# sourceMappingURL=index.d.ts.map
 
+
+

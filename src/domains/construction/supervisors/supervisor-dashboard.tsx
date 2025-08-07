@@ -2,12 +2,12 @@
 
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui';
-import { Progress } from '@/components/ui/progress';
+import { Progress } from '@/components/ui/Progress';
 import { Textarea } from '@/components/ui/textarea';
 import { 
   HardHat, 

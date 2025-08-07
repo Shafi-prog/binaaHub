@@ -7,7 +7,7 @@ import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { Search, User, Phone, MapPin, Package, Clock, DollarSign } from 'lucide-react';
 import { Card } from '@/components/ui';
 import { Input } from '@/components/ui/Input';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 
 interface CustomerSearchResult {
   id: string;

@@ -3,7 +3,7 @@
 // Driver Assignment System
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 
 export function DriverAssignmentSystem() {
   const [drivers] = useState([

@@ -6,7 +6,7 @@ import { platformDataService } from '@/services';
 // import { AdminDashboardData } from '@/types/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
 import { Badge } from '@/components/ui';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { ErrorBoundary } from '@/components/ui/ErrorBoundary';
 import { 
   Users, 

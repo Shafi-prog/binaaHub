@@ -3,7 +3,7 @@ import { ProductGrid } from '@/domains/marketplace/components/ProductGrid';
 import { CategoryFilter } from '@/domains/marketplace/components/CategoryFilter';
 import { ProductSearch } from '@/domains/marketplace/components/ProductSearch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui';
 
 interface Product {

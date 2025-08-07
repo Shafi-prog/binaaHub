@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
 
 interface ActionButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {

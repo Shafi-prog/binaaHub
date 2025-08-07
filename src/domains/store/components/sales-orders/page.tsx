@@ -3,7 +3,7 @@
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { CustomerSearchWidget, type Customer as CustomerInterface } from '@/components/admin/store/CustomerSearchWidget';
 import { toast } from 'sonner';
 import { 

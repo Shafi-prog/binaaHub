@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 // Force dynamic rendering to avoid SSG auth context issues
 import { useState, useEffect } from "react"

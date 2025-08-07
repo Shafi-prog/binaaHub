@@ -3,7 +3,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { X, Camera, Package, Search, ShoppingCart, Building, Scan, QrCode } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Card } from '@/components/ui';
 

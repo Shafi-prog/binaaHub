@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import { AuthProvider } from '@/core/shared/auth/AuthProvider';
 

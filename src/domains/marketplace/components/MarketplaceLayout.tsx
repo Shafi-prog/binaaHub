@@ -4,7 +4,7 @@ import { ProductGrid } from './ProductGrid';
 import { CategoryFilter } from './CategoryFilter';
 import { ProductSearch } from './ProductSearch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui';
 
 interface Product {

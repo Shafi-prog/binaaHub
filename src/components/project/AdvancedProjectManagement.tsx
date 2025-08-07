@@ -8,9 +8,9 @@ import {
   CardHeader, 
   CardTitle 
 } from '@/components/ui';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui';
-import { Progress } from '@/components/ui/progress';
+import { Progress } from '@/components/ui/Progress';
 import { 
   BarChart, 
   Bar, 

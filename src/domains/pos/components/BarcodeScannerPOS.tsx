@@ -2,7 +2,7 @@
 // Enhanced Barcode Scanner Component for Professional POS Systems
 import React, { useState, useEffect, useRef } from 'react';
 import { Camera, Scan, X, Package, ShoppingCart, AlertTriangle, Check } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 
 interface BarcodeProduct {

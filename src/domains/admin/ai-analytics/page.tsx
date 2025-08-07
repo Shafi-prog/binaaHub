@@ -6,10 +6,10 @@ export const dynamic = 'force-dynamic'
 import React, { useState, useEffect } from 'react'
 import MarketAnalytics from '@/domains/analytics/components/MarketAnalytics'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/ui/Button'
 import { Badge } from '@/components/ui'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Progress } from '@/components/ui/progress'
+import { Progress } from '@/components/ui/Progress'
 import { 
 
   Brain, 

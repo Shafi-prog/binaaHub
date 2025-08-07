@@ -13,7 +13,7 @@ import {
   RefreshCw
 } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Badge } from '@/components/ui';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';

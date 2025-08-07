@@ -1,5 +1,5 @@
 import React, { forwardRef } from 'react';
-import { Button as BaseButton } from '@/components/ui/button'
+import { Button as BaseButton } from '@/components/ui/Button'
 import { ChevronDown } from 'lucide-react';
 
 // Utility function (simplified version of cn)

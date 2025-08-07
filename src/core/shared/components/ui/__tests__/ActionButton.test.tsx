@@ -4,7 +4,7 @@ import '@testing-library/jest-dom';
 import ActionButton from '../ActionButton';
 
 // Mock the shadcn Button component
-jest.mock('@/components/ui/button', () => ({
+jest.mock('@/components/ui/Button', () => ({
   Button: ({ children, className, disabled, ...props }: any) => (
     <button className={className} disabled={disabled} {...props}>
       {children}

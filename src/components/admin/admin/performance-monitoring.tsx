@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
 import { Badge } from '@/components/ui';
-import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
+import { Button } from '@/components/ui/Button';
+import { Progress } from '@/components/ui/Progress';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { 
   Activity, 

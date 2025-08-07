@@ -1,4 +1,4 @@
-﻿// صفحة نصائح البناء التفاعلية الشاملة
+// صفحة نصائح البناء التفاعلية الشاملة
 'use client';
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';

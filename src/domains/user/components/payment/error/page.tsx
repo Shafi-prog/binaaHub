@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import React, { useEffect, useState, Suspense } from 'react';
 import { useAuth } from '@/core/shared/auth/AuthProvider';

@@ -1,7 +1,7 @@
 // @ts-nocheck
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { Input, Textarea, Select, Modal, EmptyState } from '@/components/ui';

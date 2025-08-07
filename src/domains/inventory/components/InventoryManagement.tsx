@@ -25,7 +25,7 @@ import {
   Info
 } from 'lucide-react';
 import { Card } from '@/components/ui';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Badge } from '@/components/ui';
 import { toast } from 'react-hot-toast';

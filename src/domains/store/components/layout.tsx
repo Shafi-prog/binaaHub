@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/core/shared/auth/AuthProvider';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { 
   Store,
   ShoppingCart,

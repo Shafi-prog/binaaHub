@@ -3,7 +3,7 @@
 import React, { useState, useCallback, useRef } from 'react';
 import { GoogleMap, LoadScript, Marker, Autocomplete } from '@react-google-maps/api';
 import { Input } from '@/components/ui/Input';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
 import { MapPin, Search, Target, AlertTriangle } from 'lucide-react';
 

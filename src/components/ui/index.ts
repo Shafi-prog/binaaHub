@@ -12,7 +12,7 @@ export type { IconKey } from './ClientIcon';
 export { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from './dialog';
 export { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './select';
 export { Checkbox } from './checkbox';
-export { Progress } from './progress';
+export { Progress } from './Progress';
 export { Calendar } from './calendar';
 export { Popover, PopoverContent } from './popover';
 export { Textarea } from './textarea';

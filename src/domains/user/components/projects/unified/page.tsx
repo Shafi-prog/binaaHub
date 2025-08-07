@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
 import { Input } from '@/components/ui/Input';
-import { Textarea } from '@/components/ui/textarea';
+import { Textarea } from '@/components/ui/Textarea';
 import { Progress } from '@/components/ui/Progress';
 import { Badge } from '@/components/ui';
 import { ArrowLeft, Building2, MapPin, FileText, Calculator, CheckCircle, AlertTriangle } from 'lucide-react';

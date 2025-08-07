@@ -3,7 +3,7 @@
 import React from 'react';
 import { useMarketplace } from './MarketplaceProvider';
 import { ShoppingCartIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 
 export const ShoppingCart: React.FC = () => {
   const { 

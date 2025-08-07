@@ -15,7 +15,7 @@ export { Checkbox } from './checkbox';
 export { Progress } from './Progress';
 export { Calendar } from './calendar';
 export { Popover, PopoverContent } from './popover';
-export { Textarea } from './textarea';
+export { Textarea } from './Textarea';
 export { toast, useToast } from './use-toast';
 export { ErrorBoundary } from './core/ErrorBoundary';
 export type { ErrorBoundaryProps, ErrorBoundaryState } from './core/ErrorBoundary';

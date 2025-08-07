@@ -3,7 +3,7 @@ import { ArrowRightIcon, ShoppingCartIcon, StarIcon } from '@heroicons/react/24/
 import { StarIcon as StarSolidIcon } from '@heroicons/react/24/solid';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui';
 
 interface ProductDetailPageProps {

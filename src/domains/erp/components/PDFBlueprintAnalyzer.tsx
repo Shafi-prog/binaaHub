@@ -1,7 +1,7 @@
 // @ts-nocheck
 import React, { useState, useRef, useCallback } from 'react';
 import { Upload, FileText, Brain, Calculator, Download, Loader, AlertCircle, CheckCircle, Eye, Edit3 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui';
 
 interface ExtractedData {

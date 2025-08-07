@@ -2,7 +2,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui';
 import { BarChart3, TrendingUp, Users, DollarSign, Calendar, Download, FileText } from 'lucide-react';
 

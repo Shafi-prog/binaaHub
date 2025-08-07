@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/core/shared/auth/AuthProvider';
 import { AuthProvider } from '@/core/shared/auth/AuthProvider';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { LogOut, Wrench } from 'lucide-react';
 
 interface ServiceProviderLayoutProps {

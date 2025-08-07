@@ -6,7 +6,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { XCircle, RefreshCw, ArrowRight, AlertTriangle, CreditCard } from 'lucide-react';
 import { Card } from '@/components/ui';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 
 export const dynamic = 'force-dynamic'
 // Force dynamic rendering to avoid SSG auth context issues

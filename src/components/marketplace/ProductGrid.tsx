@@ -1,6 +1,6 @@
 import React from 'react';
 import { ProductCard } from './ProductCard';
-import { LoadingSkeleton } from '../ui/LoadingComponents';
+import { LoadingSkeleton } from '@/components/ui/LoadingComponents';
 import { useProducts } from '../../hooks/useMarketplace';
 import { useMarketplace } from './MarketplaceProvider';
 

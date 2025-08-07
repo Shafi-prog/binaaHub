@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Button } from '../ui/Button';
+import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui';
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/Card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
   FileText, 
   Download, 

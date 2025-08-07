@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { X, Plus, Minus, ShoppingBag, Truck, CreditCard } from 'lucide-react';
-import { Button } from '../ui/button';
+import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui';
 import { useCart } from '../../hooks/useCart';
 import { useAuth } from '@/core/shared/auth/AuthProvider';

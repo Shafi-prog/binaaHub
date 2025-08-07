@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ProductGrid } from '../marketplace/ProductGrid';
 import { CategoryFilter } from '../marketplace/CategoryFilter';
 import { ProductSearch } from '../marketplace/ProductSearch';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui';
 
 interface Product {

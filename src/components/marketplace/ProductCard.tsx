@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import { Button } from '../ui/button';
+import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui';
 import { AddToCart } from './AddToCart';
 import { Store, Star, Shield } from 'lucide-react';

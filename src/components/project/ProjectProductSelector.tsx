@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ProductGrid } from '@/domains/marketplace/components/ProductGrid';
 import { CategoryFilter } from '@/domains/marketplace/components/CategoryFilter';
 import { ProductSearch } from '@/domains/marketplace/components/ProductSearch';
-import { Button } from '../ui/Button';
+import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui';
 import { ShoppingCart, ArrowLeft } from 'lucide-react';
 import { toast } from '@/components/ui';

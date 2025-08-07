@@ -10,7 +10,7 @@ import { Textarea } from '@/components/ui/Textarea';
 import { Badge } from '@/components/ui/Badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/Progress';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/Dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import ProjectPurchasesWarranties from '@/components/ui/ProjectPurchasesWarranties';
 import { ProjectTrackingService } from '@/core/services/projectTrackingService';
 import { Project as ProjectType, ProjectEstimation, MaterialEstimation, LightingEstimation } from '@/core/shared/types/types';

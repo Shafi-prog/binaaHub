@@ -403,7 +403,7 @@ export default function HomePage() {
                 />
               </div>
               
-              <Link href="/auth" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-all duration-200 text-sm font-medium">
+              <Link href="/auth/login" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-all duration-200 text-sm font-medium">
                 تسجيل الدخول
               </Link>
             </div>

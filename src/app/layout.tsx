@@ -1,5 +1,8 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import { AuthProvider } from '@/core/shared/auth/AuthProvider'
+import { Toaster } from 'react-hot-toast'
+import MainHeader from '@/components/layout/MainHeader'
 
 export const metadata: Metadata = {
   title: 'binaaHub - Construction Platform',
@@ -12,9 +15,13 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="ar" dir="rtl">
       <body>
-        {children}
+        <AuthProvider>
+          <MainHeader />
+          {children}
+          <Toaster position="top-center" />
+        </AuthProvider>
       </body>
     </html>
   )

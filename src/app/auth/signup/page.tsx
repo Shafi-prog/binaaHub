@@ -63,7 +63,7 @@ const userTypes: UserTypeOption[] = [
   }
 ]
 
-export default function SignupPage() {
+export default function SignupForm() {
   const [step, setStep] = useState<'type-selection' | 'form'>('type-selection')
   const [selectedUserType, setSelectedUserType] = useState<UserType | null>(null)
   const [email, setEmail] = useState('')

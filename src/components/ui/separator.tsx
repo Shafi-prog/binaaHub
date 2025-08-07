@@ -6,18 +6,23 @@ export interface SeparatorProps {
   className?: string;
 }
 
-export function Separator({ orientation = 'horizontal', className = '' }: SeparatorProps) {
-  const orientationClasses = orientation === 'horizontal' 
-    ? 'h-px w-full' 
-    : 'w-px h-full';
-    
-  return (
-    <div 
-      className={`shrink-0 bg-gray-200 ${orientationClasses} ${className}`}
-      role="separator"
-      aria-orientation={orientation}
-    />
-  );
-}
+export const Separator = React.forwardRef<HTMLDivElement, SeparatorProps>(
+  ({ orientation = 'horizontal', className = '' }, ref) => {
+    const orientationClasses = orientation === 'horizontal' 
+      ? 'h-px w-full' 
+      : 'w-px h-full';
+      
+    return (
+      <div 
+        ref={ref}
+        className={`shrink-0 bg-gray-200 ${orientationClasses} ${className}`}
+        role="separator"
+        aria-orientation={orientation}
+      />
+    );
+  }
+);
+
+Separator.displayName = 'Separator';
 
 

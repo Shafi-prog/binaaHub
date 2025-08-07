@@ -6,8 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Typography, EnhancedCard, Button } from '@/components/ui/enhanced-components';
 import { formatNumber, formatCurrency } from '@/core/shared/utils/formatting';
 import { useAuth } from '@/core/shared/auth/AuthProvider';
-import type { User as SupabaseUser } from '@supabase/supabase-js';
-import { supabaseDataService } from '@/services';
+import { supabaseDataService } from '@/services/supabase-data-service';
 import { 
   Calendar, 
   Wallet, 
@@ -845,92 +844,7 @@ export default function UserDashboardPage() {
             ))}
           </div>
         </EnhancedCard>
-
-        {/* DEBUG PANEL: Show raw profile and stats for troubleshooting */}
-        {process.env.NODE_ENV !== 'production' && (
-          <div className="mb-8 p-4 bg-yellow-100 rounded text-yellow-900 text-xs">
-            <strong>DEBUG: Raw Context Data & User ID Testing</strong>
-            
-            {/* User ID Testing Section */}
-            <div className="mb-4 p-3 bg-white rounded border">
-              <strong>User ID Testing (Development Only):</strong>
-              <div className="mt-2 flex flex-wrap gap-2">
-                <button
-                  onClick={() => {
-                    const url = new URL(window.location.href);
-                    url.searchParams.set('debugUserId', 'user@binna.com');
-                    window.location.href = url.toString();
-                  }}
-                  className="px-2 py-1 bg-blue-500 text-white rounded text-xs hover:bg-blue-600"
-                >
-                  Test User (Most Data)
-                </button>
-                <button
-                  onClick={() => {
-                    const url = new URL(window.location.href);
-                    url.searchParams.set('debugUserId', 'admin');
-                    window.location.href = url.toString();
-                  }}
-                  className="px-2 py-1 bg-green-500 text-white rounded text-xs hover:bg-green-600"
-                >
-                  Admin User
-                </button>
-                <button
-                  onClick={() => {
-                    const url = new URL(window.location.href);
-                    url.searchParams.set('debugUserId', 'contractor');
-                    window.location.href = url.toString();
-                  }}
-                  className="px-2 py-1 bg-purple-500 text-white rounded text-xs hover:bg-purple-600"
-                >
-                  Contractor
-                </button>
-                <button
-                  onClick={() => {
-                    // Emergency auth fix
-                    const userObj = {
-                      id: 'user@binna.com',
-                      email: 'user@binna.com',
-                      user_id: 'user@binna.com',
-                      name: 'مستخدم تجريبي'
-                    };
-                    
-                    const cookieValue = encodeURIComponent(JSON.stringify(userObj));
-                    document.cookie = `temp_auth_user=${cookieValue}; path=/; max-age=86400`;
-                    
-                    alert('تم إصلاح المصادقة! سيتم إعادة تحميل الصفحة.');
-                    window.location.reload();
-                  }}
-                  className="px-2 py-1 bg-red-500 text-white rounded text-xs hover:bg-red-600"
-                >
-                  🔧 Fix Auth
-                </button>
-                <button
-                  onClick={() => {
-                    const url = new URL(window.location.href);
-                    url.searchParams.delete('debugUserId');
-                    window.location.href = url.toString();
-                  }}
-                  className="px-2 py-1 bg-red-500 text-white rounded text-xs hover:bg-red-600"
-                >
-                  Clear Override
-                </button>
-              </div>
-              <div className="mt-2 text-xs">
-                <strong>Current URL Debug UserId:</strong> {new URLSearchParams(window.location.search).get('debugUserId') || 'None'}
-              </div>
-            </div>
-
-            {/* Raw Data */}
-            <div className="overflow-x-auto">
-              <pre>{JSON.stringify({ profile, stats, orders, projects, warranties, invoices }, null, 2)}</pre>
-            </div>
-          </div>
-        )}
       </div>
     </main>
   );
 }
-
-
-

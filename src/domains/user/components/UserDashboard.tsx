@@ -120,7 +120,7 @@ export default function UserDashboard() {
   ];
 
   const quickActions = [
-    { title: 'مركز البناء الرئيسي', href: '/user/projects/new', icon: <Calendar className="w-6 h-6" /> },
+    { title: 'مركز البناء الرئيسي', href: '/user/projects/create', icon: <Calendar className="w-6 h-6" /> },
     { title: 'مشاريعي', href: '/user/projects/list', icon: <Box className="w-6 h-6" /> },
     { title: 'حاسبة التكاليف', href: '/user/projects/calculator', icon: <BarChart3 className="w-6 h-6" /> },
     { title: 'الحاسبة المتقدمة', href: '/user/calculator', icon: <BarChart3 className="w-6 h-6" /> },

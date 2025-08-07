@@ -1,6 +1,8 @@
 // @ts-nocheck
 import { useState, useEffect } from 'react';
-import { EnhancedInput, EnhancedSelect, Button } from '@/components/ui/enhanced-components';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/Select';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 const TRADES = [
@@ -389,24 +391,28 @@ export default function UserProfileForm({ user }: { user: any }) {
       )}
       {error && <div className="mb-4 p-3 bg-red-100 text-red-700 rounded">{error}</div>}
       {success && <div className="mb-4 p-3 bg-green-100 text-green-700 rounded">{success}</div>}
-      <EnhancedInput
-        label="الاسم الكامل"
-        value={name}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
-        placeholder="أدخل اسمك الكامل"
-        required
-      />
+      <div className="space-y-2">
+        <label className="text-sm font-medium text-gray-700">الاسم الكامل</label>
+        <Input
+          value={name}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
+          placeholder="أدخل اسمك الكامل"
+          required
+        />
+      </div>
       <div className="flex flex-col gap-2">
         <div className="flex gap-2 items-end">
-          <EnhancedInput
-            label="البريد الإلكتروني"
-            value={email}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
-            placeholder="أدخل بريدك الإلكتروني"
-            type="email"
-            required
-            disabled={emailVerificationStep === 'verified'}
-          />
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-gray-700">البريد الإلكتروني</label>
+            <Input
+              value={email}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+              placeholder="أدخل بريدك الإلكتروني"
+              type="email"
+              required
+              disabled={emailVerificationStep === 'verified'}
+            />
+          </div>
           {emailVerificationStep === 'idle' && (
             <Button type="button" variant="secondary" onClick={handleVerifyEmail}>
               تحقق من البريد الإلكتروني
@@ -414,12 +420,14 @@ export default function UserProfileForm({ user }: { user: any }) {
           )}
           {emailVerificationStep === 'sent' && (
             <>
-              <EnhancedInput
-                label="رمز التحقق"
-                value={emailCode}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmailCode(e.target.value)}
-                placeholder="أدخل رمز التحقق"
-              />
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700">رمز التحقق</label>
+                <Input
+                  value={emailCode}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmailCode(e.target.value)}
+                  placeholder="أدخل رمز التحقق"
+                />
+              </div>
               <Button type="button" variant="primary" onClick={handleConfirmEmailCode}>
                 تأكيد
               </Button>
@@ -445,16 +453,18 @@ export default function UserProfileForm({ user }: { user: any }) {
             </select>
           </div>
           <div className="flex-1">
-            <EnhancedInput
-              label="رقم الجوال"
-              value={phone}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPhone(e.target.value)}
-              placeholder="5xxxxxxxx"
-              type="tel"
-              required
-              disabled={phoneVerificationStep === 'verified'}
-              style={{ direction: 'ltr', textAlign: 'right' }}
-            />
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700">رقم الجوال</label>
+              <Input
+                value={phone}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPhone(e.target.value)}
+                placeholder="5xxxxxxxx"
+                type="tel"
+                required
+                disabled={phoneVerificationStep === 'verified'}
+                style={{ direction: 'ltr', textAlign: 'right' }}
+              />
+            </div>
             <p className="text-xs text-gray-500 mt-1">أدخل الرقم بدون الصفر الأول (مثال: 512345678)</p>
           </div>
           {phoneVerificationStep === 'idle' && (
@@ -465,12 +475,14 @@ export default function UserProfileForm({ user }: { user: any }) {
           {phoneVerificationStep === 'sent' && (
             <>
               <div className="flex-1">
-                <EnhancedInput
-                  label="رمز التحقق"
-                  value={phoneCode}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPhoneCode(e.target.value)}
-                  placeholder="أدخل الرمز المرسل"
-                />
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-700">رمز التحقق</label>
+                  <Input
+                    value={phoneCode}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPhoneCode(e.target.value)}
+                    placeholder="أدخل الرمز المرسل"
+                  />
+                </div>
               </div>
               <Button type="button" variant="primary" onClick={handleConfirmPhoneCode}>
                 تأكيد
@@ -543,35 +555,52 @@ export default function UserProfileForm({ user }: { user: any }) {
         </div>
       )}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <EnhancedSelect
-          label="المنطقة"
-          value={region}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            setRegion(e.target.value);
-            setCity('');
-          }}
-          options={REGIONS}
-          dir="rtl"
-          required
-        />
-        <EnhancedSelect
-          label="المدينة"
-          value={city}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCity(e.target.value)}
-          options={
-            region && Object.prototype.hasOwnProperty.call(CITIES, region)
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-gray-700">المنطقة</label>
+          <select
+            value={region}
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+              setRegion(e.target.value);
+              setCity('');
+            }}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            dir="rtl"
+            required
+          >
+            {REGIONS.map(option => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-gray-700">المدينة</label>
+          <select
+            value={city}
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setCity(e.target.value)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            dir="rtl"
+            required
+          >
+            {(region && Object.prototype.hasOwnProperty.call(CITIES, region)
               ? CITIES[region as keyof typeof CITIES]
               : [{ value: '', label: 'اختر المدينة' }]
-          }
-          dir="rtl"
-          required
-        />
-        <EnhancedInput
-          label="الحي (اختياري)"
-          value={neighborhood}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNeighborhood(e.target.value)}
-          placeholder="اسم الحي"
-        />
+            ).map(option => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-gray-700">الحي (اختياري)</label>
+          <Input
+            value={neighborhood}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNeighborhood(e.target.value)}
+            placeholder="اسم الحي"
+          />
+        </div>
       </div>
       <div>
         <label className="block mb-2 font-medium">الموقع الجغرافي</label>

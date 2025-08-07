@@ -354,6 +354,7 @@ export default function ERPStoreDashboard({ storeId }: ERPStoreDashboardProps) {
     }
   };
 
+  // Render loading state
   if (loading) {
     return (
       <div className="p-6">
@@ -362,6 +363,7 @@ export default function ERPStoreDashboard({ storeId }: ERPStoreDashboardProps) {
     );
   }
 
+  // Render error state
   if (error) {
     return (
       <div className="p-6">

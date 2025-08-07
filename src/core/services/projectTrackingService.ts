@@ -1,4 +1,6 @@
 // Project Tracking Service for managing construction project phases
+import { Project as ProjectType } from '@/core/shared/types/types';
+
 export interface Project {
   id: string;
   name: string;
@@ -50,6 +52,18 @@ export class ProjectTrackingService {
       return true;
     } catch (error) {
       console.error('Error updating project progress:', error);
+      return false;
+    }
+  }
+
+  static async saveProject(project: ProjectType, userId?: string): Promise<boolean> {
+    try {
+      // Mock implementation - replace with actual API call
+      await new Promise(resolve => setTimeout(resolve, 100));
+      console.log(`Saved project: ${project.name} for user: ${userId}`);
+      return true;
+    } catch (error) {
+      console.error('Error saving project:', error);
       return false;
     }
   }

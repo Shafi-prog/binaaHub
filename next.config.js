@@ -136,15 +136,10 @@ const nextConfig = {
   // Redirect legacy project routes to unified page
   async redirects() {
     return [
-      // Project creation redirects
-      {
-        source: '/user/projects/create',
-        destination: '/user/projects/unified?create=true&enhanced=true',
-        permanent: true,
-      },
+      // Removed project creation redirect - now goes directly to 7-step construction
       {
         source: '/user/projects/new', 
-        destination: '/user/projects/unified?create=true&enhanced=true',
+        destination: '/user/projects/create',
         permanent: true,
       },
       // Calculator redirects

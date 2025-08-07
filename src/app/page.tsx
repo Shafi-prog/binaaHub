@@ -433,6 +433,56 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Marketplace Section */}
+      <section className="py-16 px-4 bg-gradient-to-r from-blue-600 to-purple-600">
+        <div className="max-w-6xl mx-auto text-center">
+          <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20">
+            <div className="flex items-center justify-center mb-6">
+              <div className="bg-white/20 p-4 rounded-full">
+                <Store className="h-8 w-8 text-white" />
+              </div>
+            </div>
+            <h2 className="text-3xl font-bold text-white mb-4">
+              السوق الإلكتروني لمواد البناء
+            </h2>
+            <p className="text-blue-100 text-lg mb-8 max-w-2xl mx-auto">
+              تسوق من أكبر تشكيلة من مواد البناء عالية الجودة من أفضل الموردين في المملكة
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                <ShoppingCart className="h-8 w-8 text-white mx-auto mb-4" />
+                <h3 className="text-white font-semibold mb-2">تسوق آمن</h3>
+                <p className="text-blue-100 text-sm">عمليات شراء آمنة مع ضمان الجودة</p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                <Truck className="h-8 w-8 text-white mx-auto mb-4" />
+                <h3 className="text-white font-semibold mb-2">توصيل سريع</h3>
+                <p className="text-blue-100 text-sm">خدمة توصيل لجميع أنحاء المملكة</p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                <Award className="h-8 w-8 text-white mx-auto mb-4" />
+                <h3 className="text-white font-semibold mb-2">جودة مضمونة</h3>
+                <p className="text-blue-100 text-sm">منتجات معتمدة من أفضل الموردين</p>
+              </div>
+            </div>
+            <div className="flex items-center justify-center space-x-4 rtl:space-x-reverse">
+              <Link 
+                href="/marketplace" 
+                className="bg-white text-blue-600 px-8 py-4 rounded-xl hover:bg-blue-50 transform hover:scale-105 transition-all duration-300 font-semibold text-lg shadow-lg"
+              >
+                تصفح السوق الإلكتروني
+              </Link>
+              <Link 
+                href="/marketplace?category=cement" 
+                className="border-2 border-white/50 text-white px-8 py-4 rounded-xl hover:bg-white/10 transition-all duration-300 font-medium text-lg"
+              >
+                عرض الأسمنت
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Stats Section */}
       <section className="py-16 px-4 bg-white/50 backdrop-blur-sm">
         <div className="max-w-6xl mx-auto">

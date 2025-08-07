@@ -908,9 +908,186 @@ interface UnifiedMaterialsMap {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 p-6" dir="rtl">
       <div className="container mx-auto max-w-7xl">
-        {/* ...rest of the UI code for all tabs and dialog (no changes needed for the JSX wrapper)... */}
-        {/* If you need the rest of the UI code, use the code you posted originally, but ensure that 
-            every <div className="grid grid-cols-1 lg:grid-cols-3 gap-6"> has a corresponding closing </div> */}
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">حاسبة البناء الشاملة</h1>
+          <p className="text-gray-600">احسب تكلفة مشروعك الإنشائي بدقة</p>
+        </div>
+
+        {/* Project Info Card */}
+        {projectId && (
+          <Card className="mb-6">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Building className="w-5 h-5" />
+                معلومات المشروع
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">معرف المشروع</label>
+                  <div className="text-lg font-semibold text-blue-600">{projectId}</div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">نوع المشروع</label>
+                  <div className="text-lg">{projectType}</div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">المساحة الإجمالية</label>
+                  <div className="text-lg">{projectArea} متر مربع</div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Main Calculator Tabs */}
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="overview">نظرة عامة</TabsTrigger>
+            <TabsTrigger value="materials">المواد</TabsTrigger>
+            <TabsTrigger value="lighting">الإضاءة</TabsTrigger>
+            <TabsTrigger value="reports">التقارير</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="overview" className="mt-6">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Home className="w-5 h-5" />
+                    تفاصيل المشروع
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">المساحة (متر مربع)</label>
+                    <Input
+                      type="number"
+                      value={projectArea}
+                      onChange={(e) => setProjectArea(Number(e.target.value))}
+                      className="w-full"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">نوع المشروع</label>
+                    <Select value={projectType} onValueChange={setProjectType}>
+                      <option value="villa">فيلا</option>
+                      <option value="apartment">شقة</option>
+                      <option value="building">مبنى</option>
+                      <option value="commercial">تجاري</option>
+                    </Select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">عدد الطوابق</label>
+                    <Input
+                      type="number"
+                      value={floorCount}
+                      onChange={(e) => setFloorCount(Number(e.target.value))}
+                      className="w-full"
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Calculator className="w-5 h-5" />
+                    تقدير التكلفة
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="bg-blue-50 p-4 rounded-lg">
+                      <div className="text-sm text-gray-600">التكلفة المتوقعة</div>
+                      <div className="text-2xl font-bold text-blue-600">
+                        {formatCurrency(projectArea * 1500)} ريال
+                      </div>
+                    </div>
+                    <div className="text-sm text-gray-500">
+                      * التقدير مبني على متوسط التكلفة للمتر المربع (1,500 ريال)
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <FileText className="w-5 h-5" />
+                    الإجراءات
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <Button className="w-full" variant="outline">
+                    <Download className="w-4 h-4 mr-2" />
+                    تحميل التقرير
+                  </Button>
+                  <Button className="w-full" variant="outline">
+                    <Save className="w-4 h-4 mr-2" />
+                    حفظ الحسابات
+                  </Button>
+                  {projectId && (
+                    <Button 
+                      className="w-full" 
+                      onClick={() => router.push('/user/projects')}
+                    >
+                      <Eye className="w-4 h-4 mr-2" />
+                      عرض المشروع
+                    </Button>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="materials" className="mt-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>حاسبة المواد</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-center py-12 text-gray-500">
+                  <Package className="w-16 h-16 mx-auto mb-4 text-gray-300" />
+                  <p>حاسبة المواد قيد التطوير</p>
+                  <p className="text-sm">سيتم إضافة هذه الميزة قريباً</p>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="lighting" className="mt-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>حاسبة الإضاءة</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-center py-12 text-gray-500">
+                  <Lightbulb className="w-16 h-16 mx-auto mb-4 text-gray-300" />
+                  <p>حاسبة الإضاءة قيد التطوير</p>
+                  <p className="text-sm">سيتم إضافة هذه الميزة قريباً</p>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="reports" className="mt-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>التقارير والتحليلات</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-center py-12 text-gray-500">
+                  <FileText className="w-16 h-16 mx-auto mb-4 text-gray-300" />
+                  <p>قسم التقارير قيد التطوير</p>
+                  <p className="text-sm">سيتم إضافة هذه الميزة قريباً</p>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );

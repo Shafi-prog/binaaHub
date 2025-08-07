@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import { EnhancedCard, Button } from '@/components/ui/enhanced-components';
 
 export default function UserProjectsPage() {
@@ -13,11 +14,13 @@ export default function UserProjectsPage() {
         <div className="text-gray-400 text-6xl mb-4">🏗️</div>
         <h3 className="text-xl font-semibold text-gray-600 mb-2">لا توجد مشاريع حالياً</h3>
         <p className="text-gray-500 mb-4">ابدأ مشروعك الأول معنا</p>
-        <Button 
-          className="bg-blue-600 hover:bg-blue-700 text-white"
-        >
-          إنشاء مشروع جديد
-        </Button>
+        <Link href="/user/projects/create">
+          <Button 
+            className="bg-blue-600 hover:bg-blue-700 text-white"
+          >
+            إنشاء مشروع جديد
+          </Button>
+        </Link>
       </EnhancedCard>
     </div>
   );

@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Typography, EnhancedCard, Button } from '@/components/ui/enhanced-components';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
-import { Badge } from '@/components/ui/badge';
+import { Badge } from '@/components/ui/Badge';
 import { useAuth } from '@/core/shared/auth/AuthProvider';
 import { 
   MessageSquare, 

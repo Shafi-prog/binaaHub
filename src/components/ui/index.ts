@@ -2,8 +2,8 @@ export { Button } from './Button';
 export { Card, CardContent, CardHeader, CardTitle } from './Card';
 export { CardDescription } from './Card';
 export { Input } from './Input';
-export type { BadgeProps } from './badge';
-export { Badge } from './badge';
+export type { BadgeProps } from './Badge';
+export { Badge } from './Badge';
 export { default as ClientIcon } from './ClientIcon';
 export type { IconKey } from './ClientIcon';
 

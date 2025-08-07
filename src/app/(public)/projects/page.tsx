@@ -4,7 +4,7 @@ export const dynamic = 'force-dynamic';
 
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui';
 import PublicProjectShowcase from '@/components/ui/PublicProjectShowcase';
 import { Project } from '@/types/types';

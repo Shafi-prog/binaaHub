@@ -257,7 +257,10 @@ export default function StockAdjustmentsPage() {
             <Download className="h-4 w-4 mr-2" />
             تصدير التعديلات
           </Button>
-          <Button>
+          <Button onClick={() => {
+            const el = document.getElementById('create-adjustment');
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
+          }}>
             <Plus className="h-4 w-4 mr-2" />
             تعديل جديد
           </Button>
@@ -520,7 +523,7 @@ export default function StockAdjustmentsPage() {
         </CardContent>
       </Card>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6" id="create-adjustment">
         <Card>
           <CardHeader>
             <CardTitle>إنشاء تعديل جديد</CardTitle>

@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ProductCard } from './ProductCard';
 import { LoadingSkeleton } from '@/components/ui/LoadingComponents';
-import { useMarketplace } from '../hooks/useMarketplace';
+import { useMarketplace as useProductsMarketplace } from '../hooks/useMarketplace';
+import { useMarketplace as useProjectMarketplace } from './MarketplaceProvider';
 
 interface ProductGridProps {
   category?: string;
@@ -10,6 +11,12 @@ interface ProductGridProps {
   projectId?: string;
   storeId?: string;
   emptyMessage?: string;
+  inStock?: boolean;
+  warrantyOnly?: boolean;
+  freeShipping?: boolean;
+  city?: string;
+  sortBy?: string;
+  order?: 'asc' | 'desc';
 }
 
 export const ProductGrid: React.FC<ProductGridProps> = ({
@@ -19,19 +26,34 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
   projectId,
   storeId,
   emptyMessage = 'لا توجد منتجات متاحة',
+  inStock = false,
+  warrantyOnly = false,
+  freeShipping = false,
+  city,
+  sortBy,
+  order,
 }) => {
-  const { products, loading, error, addProductToSelection, isProjectContext } = useMarketplace();
-  
-  // Build filters for the hook
-  const filters = {
-    ...(category && category !== 'all' && { category }),
-    ...(searchQuery && { search: searchQuery }),
-    ...(storeId && { storeId }),
-  };
+  const { products, loading, error, updateFilters } = useProductsMarketplace();
+  const { addProductToSelection, isProjectContext: projectCtx } = useProjectMarketplace();
+
+  // Sync filters to the marketplace hook
+  useEffect(() => {
+    updateFilters({
+      category: category && category !== 'all' ? category : undefined,
+      searchTerm: searchQuery || undefined,
+      storeId: storeId || undefined,
+    inStock: inStock || undefined,
+    warrantyOnly: warrantyOnly || undefined,
+    freeShipping: freeShipping || undefined,
+    city: city || undefined,
+    sortBy: sortBy || undefined,
+    order: order || undefined,
+    });
+  }, [category, searchQuery, storeId, inStock, warrantyOnly, freeShipping, city, sortBy, order, updateFilters]);
 
   const handleAddToProject = (product: any, quantity: number = 1) => {
-    if (isProjectContext) {
-      addProductToSelection(product);
+    if (projectCtx) {
+      addProductToSelection(product as any, 1);
     }
   };
 
@@ -92,16 +114,17 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
           name={product.name}
           description={product.description}
           price={product.price}
-          imageUrl={product.image || '/placeholder.jpg'}
-          storeName="متجر عام"
-          storeId="default-store"
+          imageUrl={(product as any).imageUrl || (product as any).image || '/images/placeholder.png'}
+          storeName={(product as any).storeName || 'متجر عام'}
+          storeId={(product as any).storeId || 'default-store'}
           category={product.category}
-          stock={50}
-          warranty={{ duration: 1, type: "years" }}
+          stock={(product as any).stock}
+          freeShipping={(product as any).freeShipping === true}
+          // warranty is omitted unless provided by API mapping
           onAddToProject={() => handleAddToProject(product)}
           onViewStore={(storeId) => console.log('View store:', storeId)}
           onViewProduct={(productId) => console.log('View product:', productId)}
-          showAddToProject={isProjectContext}
+          showAddToProject={projectCtx}
         />
       ))}
     </div>

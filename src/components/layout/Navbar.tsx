@@ -814,7 +814,7 @@ export default function Navbar({ user, accountType }: NavbarProps) {
                   
                   {/* Highlighted Advanced Project Link */}
                   <div className="mt-3 pt-3 border-t border-gray-200">
-                    <Link href="/user/projects/create/construction" className="flex items-center gap-2 p-3 bg-gradient-to-r from-blue-100 to-indigo-100 rounded-lg hover:from-blue-200 hover:to-indigo-200 transition-all" onClick={() => setIsMenuOpen(false)}>
+                    <Link href="/user/projects/create" className="flex items-center gap-2 p-3 bg-gradient-to-r from-blue-100 to-indigo-100 rounded-lg hover:from-blue-200 hover:to-indigo-200 transition-all" onClick={() => setIsMenuOpen(false)}>
                       <Building2 className="w-5 h-5 text-blue-700" />
                       <div>
                         <div className="font-semibold text-blue-800">مشروع بناء متكامل</div>

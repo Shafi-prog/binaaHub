@@ -2,7 +2,8 @@
 
 export const dynamic = 'force-dynamic';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
@@ -24,54 +25,46 @@ import {
 import { CustomerSearchWidget, type Customer } from '@/components/store/CustomerSearchWidget';
 import { toast } from 'sonner';
 
+interface Shipment {
+  id: string;
+  customerName: string;
+  destination: string;
+  carrier: string;
+  method: string;
+  status: string;
+  trackingNumber: string;
+  estimatedDelivery: string;
+  weight: string;
+}
 export default function ShippingPage() {
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
+  const [shippingData, setShippingData] = useState<{ stats: any; shipments: Shipment[] }>({
+    stats: {},
+    shipments: []
+  });
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
-  // Mock shipping data
-  const shippingStats = {
-    totalShipments: 189,
-    inTransit: 34,
-    delivered: 145,
-    pending: 10,
-    averageDeliveryTime: 3.2,
-    onTimeDelivery: 94
-  };
+  // Fetch shipping data from Supabase API
+  useEffect(() => {
+    const fetchShippingData = async () => {
+      try {
+        const response = await fetch('/api/store/shipping');
+        if (response.ok) {
+          const data = await response.json();
+          setShippingData(data);
+        }
+      } catch (error) {
+        console.error('Error fetching shipping data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const shipments = [
-    {
-      id: 'SHP001',
-      customerName: 'أحمد محمد علي',
-      destination: 'الرياض، المملكة العربية السعودية',
-      carrier: 'شركة الشحن السريع',
-      method: 'شحن بري',
-      status: 'في الطريق',
-      trackingNumber: 'TRK123456789',
-      estimatedDelivery: '2025-01-27',
-      weight: '15 كيلو'
-    },
-    {
-      id: 'SHP002',
-      customerName: 'فاطمة حسن',
-      destination: 'جدة، المملكة العربية السعودية',
-      carrier: 'شركة الطيران للشحن',
-      method: 'شحن جوي',
-      status: 'تم التسليم',
-      trackingNumber: 'TRK123456790',
-      estimatedDelivery: '2025-01-25',
-      weight: '8 كيلو'
-    },
-    {
-      id: 'SHP003',
-      customerName: 'محمد خالد',
-      destination: 'الدمام، المملكة العربية السعودية',
-      carrier: 'شركة الشحن البحري',
-      method: 'شحن بحري',
-      status: 'معلق',
-      trackingNumber: 'TRK123456791',
-      estimatedDelivery: '2025-01-30',
-      weight: '50 كيلو'
-    }
-  ];
+    fetchShippingData();
+  }, []);
+
+  const { stats: shippingStats = {}, shipments = [] } = shippingData;
 
   return (
     <div className="p-6 space-y-6">
@@ -85,15 +78,15 @@ export default function ShippingPage() {
               <p className="text-blue-100 text-lg">نظام شامل لإدارة ومتابعة جميع عمليات الشحن والتوصيل</p>
             </div>
             <div className="flex gap-3">
-              <Button variant="outline" className="bg-white/20 border-white/30 text-white hover:bg-white/30">
+              <Button variant="outline" className="bg-white/20 border-white/30 text-white hover:bg-white/30" onClick={() => router.push('/store/shipping/export')}>
                 <Download className="h-4 w-4 mr-2" />
                 تصدير التقرير
               </Button>
-              <Button variant="outline" className="bg-white/20 border-white/30 text-white hover:bg-white/30">
+              <Button variant="outline" className="bg-white/20 border-white/30 text-white hover:bg-white/30" onClick={() => router.push('/store/shipping/filter')}>
                 <Filter className="h-4 w-4 mr-2" />
                 تصفية
               </Button>
-              <Button className="bg-white text-purple-600 hover:bg-gray-50">
+              <Button className="bg-white text-purple-600 hover:bg-gray-50" onClick={() => router.push('/store/shipping/new')}>
                 <Plus className="h-4 w-4 mr-2" />
                 شحنة جديدة
               </Button>
@@ -251,7 +244,7 @@ export default function ShippingPage() {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {shipments.map((shipment) => (
+            {shipments.map((shipment: Shipment) => (
               <div key={shipment.id} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50">
                 <div className="flex items-center gap-4">
                   <div className="p-3 bg-purple-100 rounded-lg">

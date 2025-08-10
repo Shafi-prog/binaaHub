@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
@@ -43,6 +44,7 @@ interface Transaction {
 
 export default function BankReconciliationPage() {
 const supabase = createClientComponentClient();
+  const router = useRouter();
 
   const [loading, setLoading] = useState(true);
   const [bankAccounts] = useState<BankAccount[]>([
@@ -152,11 +154,11 @@ const supabase = createClientComponentClient();
           <p className="text-gray-600">تسوية الحسابات البنكية ومطابقة المعاملات</p>
         </div>
         <div className="flex gap-3">
-          <Button variant="outline">
-            <Upload className="h-4 w-4 mr-2" />
-            رفع كشف حساب
-          </Button>
-          <Button>
+            <Button variant="outline" onClick={() => router.push('/store/accounting/bank-reconciliation/upload')}>
+              <Upload className="h-4 w-4 mr-2" />
+              رفع كشف حساب
+            </Button>
+          <Button onClick={() => router.push('/store/accounting/bank-reconciliation/new')}>
             <Plus className="h-4 w-4 mr-2" />
             تسوية جديدة
           </Button>

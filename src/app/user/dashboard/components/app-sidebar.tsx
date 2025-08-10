@@ -55,7 +55,7 @@ const navSections = [
     icon: Building,
     items: [
       { href: '/user/projects', label: 'مشاريعي', icon: Package },
-      { href: '/user/projects/create/construction', label: 'مشروع جديد', icon: Building },
+  { href: '/user/projects/create', label: 'مشروع جديد', icon: Building },
       { href: '/user/projects/list', label: 'قائمة المشاريع', icon: Archive },
       { href: '/user/comprehensive-construction-calculator', label: 'حاسبة التكلفة', icon: Calculator },
       { href: '/user/building-advice', label: 'نصائح البناء', icon: FileText },

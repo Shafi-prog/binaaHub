@@ -1,11 +1,12 @@
-import { createClient } from '@supabase/supabase-js';
+// Unified Supabase Data Service implementation (uses enhanced Next.js client)
+import { createClient } from '@/lib/supabase/client';
 
 export class SupabaseDataService {
-  private supabase: any;
+  private supabase: ReturnType<typeof createClient>;
 
   constructor() {
-    // Always use real Supabase client
-    this.supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+  // Always use the enhanced Supabase client configured for Next.js
+  this.supabase = createClient();
   }
 
   // User Profile Data

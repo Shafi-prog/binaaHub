@@ -1,5 +1,5 @@
-import ConstructionProjectCreation from '@/domains/user/components/projects/create/construction/ConstructionProjectCreation';
+import SimpleProjectWizard from '@/domains/user/components/projects/create/SimpleProjectWizard';
 
 export default function UserProjectCreatePage() {
-  return <ConstructionProjectCreation />;
+  return <SimpleProjectWizard />;
 }

@@ -37,7 +37,7 @@ export default function WasteDisposalPage() {
                   <p className="text-red-600">تنظيم وتصريف مخلفات البناء بطريقة آمنة وصديقة للبيئة</p>
                 </div>
               </div>
-              <Button onClick={() => router.push('/user/projects/create/construction')} className="bg-red-600 hover:bg-red-700">
+              <Button onClick={() => router.push('/user/projects/create')} className="bg-red-600 hover:bg-red-700">
                 ابدأ مشروع بناء متكامل
               </Button>
             </div>

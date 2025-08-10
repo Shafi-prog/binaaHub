@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Typography, EnhancedCard, Button } from '@/components/ui/enhanced-components';
 import { DollarSign, Plus, Search, Filter, Calendar, Tag, TrendingUp, TrendingDown, PieChart, BarChart3, Edit, Trash2 } from 'lucide-react';
@@ -30,62 +31,11 @@ interface ExpenseCategory {
 
 export default function ExpensesPage() {
   const { user, session, isLoading, error } = useAuth();
-  const [expenses, setExpenses] = useState<Expense[]>([
-    {
-      id: 'EXP001',
-      description: 'أسمنت وحديد تسليح',
-      amount: 2500,
-      category: 'مواد خام',
-      project: 'مشروع الفيلا الجديدة',
-      store: 'متجر مواد البناء المتقدمة',
-      date: '2024-01-15',
-      tags: ['أساسيات', 'بناء'],
-      paymentMethod: 'بطاقة ائتمان'
-    },
-    {
-      id: 'EXP002',
-      description: 'أدوات كهربائية وأسلاك',
-      amount: 850,
-      category: 'كهربائيات',
-      project: 'مشروع الفيلا الجديدة',
-      store: 'متجر الكهربائيات المنزلية',
-      date: '2024-01-20',
-      tags: ['كهرباء', 'أدوات'],
-      paymentMethod: 'نقداً'
-    },
-    {
-      id: 'EXP003',
-      description: 'مضخة مياه ومواسير',
-      amount: 1200,
-      category: 'صحية',
-      project: 'مشروع الفيلا الجديدة',
-      store: 'معرض الأدوات الصحية',
-      date: '2024-02-05',
-      tags: ['مياه', 'مضخات'],
-      paymentMethod: 'تحويل بنكي'
-    },
-    {
-      id: 'EXP004',
-      description: 'أجور عمالة البناء',
-      amount: 3200,
-      category: 'عمالة',
-      store: 'مقاول البناء المحترف',
-      date: '2024-02-15',
-      tags: ['عمالة', 'بناء'],
-      paymentMethod: 'نقداً'
-    },
-    {
-      id: 'EXP005',
-      description: 'دهانات وأدوات التشطيب',
-      amount: 950,
-      category: 'تشطيبات',
-      project: 'مشروع الفيلا الجديدة',
-      store: 'معرض الدهانات والديكور',
-      date: '2024-03-01',
-      tags: ['دهانات', 'تشطيب'],
-      paymentMethod: 'بطاقة ائتمان'
-    }
-  ]);
+  const [expenses, setExpenses] = useState<Expense[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [apiError, setApiError] = useState<string | null>(null);
+  const search = useSearchParams();
+  const projectIdFromUrl = search?.get('projectId') || undefined;
 
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');
@@ -100,6 +50,68 @@ export default function ExpensesPage() {
     date: '',
     paymentMethod: ''
   });
+
+  // Fetch expenses data from API
+  useEffect(() => {
+    const fetchExpenses = async () => {
+      if (!user || !session) return;
+      
+      try {
+        setLoading(true);
+        setApiError(null);
+        const url = projectIdFromUrl ? `/api/user/expenses?projectId=${projectIdFromUrl}` : '/api/user/expenses';
+        const response = await fetch(url, {
+          headers: {
+            'Authorization': `Bearer ${session.access_token}`
+          }
+        });
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        if (data.success && data.expenses) {
+          // Transform API data to match our Expense interface
+          const transformedExpenses = data.expenses.map((exp: any) => ({
+            id: exp.id || exp.order_number || `EXP-${Date.now()}`,
+            description: exp.description || exp.order_items?.map((item: any) => item.product_name || item.name).join(', ') || 'منتجات متنوعة',
+            amount: parseFloat(exp.amount || exp.total_amount || 0),
+            category: exp.category || 'عام',
+            project: exp.project_name || exp.project || undefined,
+            store: exp.store_name || exp.store || 'متجر غير محدد',
+            date: exp.date || exp.created_at || new Date().toISOString().split('T')[0],
+            tags: exp.tags || [],
+            paymentMethod: exp.payment_method || 'غير محدد'
+          }));
+          
+          setExpenses(transformedExpenses);
+        } else {
+          console.warn('No expenses data received:', data);
+          setExpenses([]);
+        }
+      } catch (error) {
+        console.error('Error fetching expenses:', error);
+        setApiError(error instanceof Error ? error.message : 'Failed to fetch expenses');
+        // Keep empty array if API fails
+        setExpenses([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchExpenses();
+  }, [user, session, projectIdFromUrl]);
+
+  // If projectId provided in URL, pre-filter by that project name when possible
+  useEffect(() => {
+    if (projectIdFromUrl && expenses.length > 0) {
+      // project prop holds name; if we can't map ID->name here, leave the list already filtered by API
+      setProjectFilter('all');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [projectIdFromUrl]);
 
   const categories: ExpenseCategory[] = [
     { name: 'مواد خام', color: 'bg-blue-500', total: 0, count: 0 },
@@ -168,7 +180,7 @@ export default function ExpensesPage() {
 
   
   // Loading state
-  if (isLoading) {
+  if (isLoading || loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
@@ -177,11 +189,12 @@ export default function ExpensesPage() {
   }
 
   // Error state
-  if (error) {
+  if (error || apiError) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <p className="text-red-600 mb-4">حدث خطأ في تحميل البيانات</p>
+          <p className="text-sm text-gray-600 mb-4">{error || apiError}</p>
           <button 
             onClick={() => window.location.reload()}
             className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"

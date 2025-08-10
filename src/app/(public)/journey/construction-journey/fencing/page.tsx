@@ -37,7 +37,7 @@ export default function FencingPage() {
                   <p className="text-orange-600">تأمين الموقع وحمايته من العوامل الخارجية</p>
                 </div>
               </div>
-              <Button onClick={() => router.push('/user/projects/create/construction')} className="bg-orange-600 hover:bg-orange-700">
+              <Button onClick={() => router.push('/user/projects/create')} className="bg-orange-600 hover:bg-orange-700">
                 ابدأ مشروع بناء متكامل
               </Button>
             </div>

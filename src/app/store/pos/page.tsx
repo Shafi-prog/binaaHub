@@ -1,27 +1,53 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { CreditCard, Package, ShoppingCart, Calculator, Receipt } from 'lucide-react';
 
 export default function POSPage() {
+  const router = useRouter();
   const [cart, setCart] = useState<any[]>([]);
   const [total, setTotal] = useState(0);
+  
+  useEffect(() => {
+    const t = cart.reduce((sum, item) => sum + item.quantity * item.price, 0);
+    setTotal(t);
+  }, [cart]);
+
+  const addSample = (name: string, price: number) => {
+    setCart((prev) => {
+      const idx = prev.findIndex((p) => p.name === name);
+      if (idx >= 0) {
+        const next = [...prev];
+        next[idx] = { ...next[idx], quantity: next[idx].quantity + 1 };
+        return next;
+      }
+      return [...prev, { name, price, quantity: 1 }];
+    });
+  };
+
+  const checkoutCash = () => {
+    if (cart.length === 0) return;
+    // TODO: integrate with Supabase orders API
+    alert('تم تسجيل دفع نقدي (تجريبي). سيتم ربط العملية بقاعدة البيانات لاحقًا.');
+    setCart([]);
+  };
 
   return (
     <div className="p-6 space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold">نقطة البيع (POS)</h1>
         <div className="flex space-x-2">
-          <Button variant="outline">
+    <Button variant="outline" onClick={() => router.push('/store/pos/print-last')}>
             <Receipt className="w-4 h-4 mr-2" />
             طباعة آخر فاتورة
           </Button>
           <Button>
             <Package className="w-4 h-4 mr-2" />
             منتج جديد
-          </Button>
+            </Button>
         </div>
       </div>
 
@@ -43,15 +69,15 @@ export default function POSPage() {
                   className="w-full p-3 border rounded-lg"
                 />
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  {/* Sample products */}
-                  <div className="p-4 border rounded-lg cursor-pointer hover:bg-gray-50">
+                  {/* Sample products (مؤقتة) */}
+                  <div className="p-4 border rounded-lg cursor-pointer hover:bg-gray-50" onClick={() => addSample('منتج تجريبي 1', 100)}>
                     <div className="text-center">
                       <div className="w-16 h-16 bg-gray-200 rounded-lg mx-auto mb-2"></div>
                       <div className="font-medium">منتج تجريبي 1</div>
                       <div className="text-sm text-gray-500">100 ر.س</div>
                     </div>
                   </div>
-                  <div className="p-4 border rounded-lg cursor-pointer hover:bg-gray-50">
+                  <div className="p-4 border rounded-lg cursor-pointer hover:bg-gray-50" onClick={() => addSample('منتج تجريبي 2', 200)}>
                     <div className="text-center">
                       <div className="w-16 h-16 bg-gray-200 rounded-lg mx-auto mb-2"></div>
                       <div className="font-medium">منتج تجريبي 2</div>
@@ -98,7 +124,7 @@ export default function POSPage() {
                   </div>
                   
                   <div className="space-y-2">
-                    <Button className="w-full" size="lg">
+                    <Button className="w-full" size="lg" onClick={checkoutCash} disabled={cart.length === 0}>
                       <CreditCard className="w-4 h-4 mr-2" />
                       دفع نقدي
                     </Button>

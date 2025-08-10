@@ -37,7 +37,7 @@ export default function ExcavationPage() {
                   <p className="text-yellow-600">أعمال الحفر والتسوية وتجهيز الأساسات</p>
                 </div>
               </div>
-              <Button onClick={() => router.push('/user/projects/create/construction')} className="bg-yellow-600 hover:bg-yellow-700">
+              <Button onClick={() => router.push('/user/projects/create')} className="bg-yellow-600 hover:bg-yellow-700">
                 ابدأ مشروع بناء متكامل
               </Button>
             </div>

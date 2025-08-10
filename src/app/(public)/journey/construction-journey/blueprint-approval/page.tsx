@@ -37,7 +37,7 @@ export default function BlueprintApprovalPage() {
                   <p className="text-indigo-600">مراجعة المخططات والحصول على الموافقات من الجهات المختصة</p>
                 </div>
               </div>
-              <Button onClick={() => router.push('/user/projects/create/construction')} className="bg-indigo-600 hover:bg-indigo-700">
+              <Button onClick={() => router.push('/user/projects/create')} className="bg-indigo-600 hover:bg-indigo-700">
                 ابدأ مشروع بناء متكامل
               </Button>
             </div>

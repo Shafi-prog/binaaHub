@@ -44,198 +44,15 @@ import {
 export const dynamic = 'force-dynamic';
 
 interface PriceData {
-  product: string;
+  id: string;
+  name: string;
   category: string;
   price: number;
-  change: number;
-  store: string;
+  stock: number;
+  storeName: string;
   city: string;
   lastUpdated: string;
 }
-
-// Default price data for fallback
-const defaultPriceData: PriceData[] = [
-  {
-    product: "اسمنت عادي",
-    category: "مواد خام",
-    price: 142,
-    change: 2.5,
-    store: "مؤسسة البناء الحديث",
-    city: "الرياض",
-    lastUpdated: "2024-01-15T10:30:00Z"
-  },
-  {
-    product: "اسمنت مقاوم",
-    category: "مواد خام",
-    price: 165,
-    change: -1.2,
-    store: "شركة الخليج للمواد",
-    city: "جدة",
-    lastUpdated: "2024-01-15T10:45:00Z"
-  },
-  {
-    product: "حديد التسليح 12مم",
-    category: "حديد",
-    price: 3200,
-    change: 5.8,
-    store: "مجموعة الحديد الوطني",
-    city: "الدمام",
-    lastUpdated: "2024-01-15T11:00:00Z"
-  },
-  {
-    product: "حديد التسليح 16مم",
-    category: "حديد",
-    price: 3450,
-    change: 4.2,
-    store: "مؤسسة البناء الحديث",
-    city: "الرياض",
-    lastUpdated: "2024-01-15T11:15:00Z"
-  },
-  {
-    product: "طوب احمر",
-    category: "طوب",
-    price: 0.85,
-    change: -0.5,
-    store: "مصنع الطوب الأحمر",
-    city: "الرياض",
-    lastUpdated: "2024-01-15T11:30:00Z"
-  },
-  {
-    product: "طوب اسمنتي",
-    category: "طوب",
-    price: 1.20,
-    change: 1.8,
-    store: "شركة الخليج للمواد",
-    city: "جدة",
-    lastUpdated: "2024-01-15T11:45:00Z"
-  },
-  {
-    product: "رمل مغسول",
-    category: "رمل",
-    price: 85,
-    change: 0.0,
-    store: "مقالع الرمل الذهبي",
-    city: "الرياض",
-    lastUpdated: "2024-01-15T12:00:00Z"
-  },
-  {
-    product: "حصى ناعم",
-    category: "حصى",
-    price: 95,
-    change: 2.1,
-    store: "مجموعة الحديد الوطني",
-    city: "الدمام",
-    lastUpdated: "2024-01-15T12:15:00Z"
-  },
-  {
-    product: "دهان داخلي",
-    category: "دهانات",
-    price: 45,
-    change: -2.8,
-    store: "معرض الألوان",
-    city: "جدة",
-    lastUpdated: "2024-01-15T12:30:00Z"
-  },
-  {
-    product: "دهان خارجي",
-    category: "دهانات",
-    price: 65,
-    change: 1.5,
-    store: "مؤسسة البناء الحديث",
-    city: "الرياض",
-    lastUpdated: "2024-01-15T12:45:00Z"
-  },
-  {
-    product: "بلاط سيراميك 40x40",
-    category: "بلاط",
-    price: 25,
-    change: 0.8,
-    store: "معرض السيراميك الفاخر",
-    city: "الرياض",
-    lastUpdated: "2024-01-15T13:00:00Z"
-  },
-  {
-    product: "بلاط بورسلين 60x60",
-    category: "بلاط",
-    price: 45,
-    change: 3.2,
-    store: "شركة الخليج للمواد",
-    city: "جدة",
-    lastUpdated: "2024-01-15T13:15:00Z"
-  },
-  {
-    product: "رخام كرارة",
-    category: "رخام",
-    price: 180,
-    change: -1.8,
-    store: "معرض الرخام الإيطالي",
-    city: "الرياض",
-    lastUpdated: "2024-01-15T13:30:00Z"
-  },
-  {
-    product: "جرانيت أسود",
-    category: "جرانيت",
-    price: 220,
-    change: 4.5,
-    store: "مجموعة الحديد الوطني",
-    city: "الدمام",
-    lastUpdated: "2024-01-15T13:45:00Z"
-  },
-  {
-    product: "كابلات كهرباء 2.5مم",
-    category: "كهرباء",
-    price: 12,
-    change: 2.0,
-    store: "محل الكهرباء المتقدم",
-    city: "جدة",
-    lastUpdated: "2024-01-15T14:00:00Z"
-  },
-  {
-    product: "مواسير PVC 4 انش",
-    category: "سباكة",
-    price: 35,
-    change: -0.8,
-    store: "مؤسسة البناء الحديث",
-    city: "الرياض",
-    lastUpdated: "2024-01-15T14:15:00Z"
-  },
-  {
-    product: "خشب صنوبر",
-    category: "خشب",
-    price: 450,
-    change: 6.2,
-    store: "معرض الأخشاب الطبيعية",
-    city: "الرياض",
-    lastUpdated: "2024-01-15T14:30:00Z"
-  },
-  {
-    product: "زجاج مضاعف 6مم",
-    category: "زجاج",
-    price: 85,
-    change: 1.2,
-    store: "شركة الخليج للمواد",
-    city: "جدة",
-    lastUpdated: "2024-01-15T14:45:00Z"
-  },
-  {
-    product: "عازل حراري",
-    category: "عزل",
-    price: 25,
-    change: 0.5,
-    store: "مجموعة الحديد الوطني",
-    city: "الدمام",
-    lastUpdated: "2024-01-15T15:00:00Z"
-  },
-  {
-    product: "بويه أساس",
-    category: "دهانات",
-    price: 35,
-    change: -1.5,
-    store: "معرض الألوان",
-    city: "جدة",
-    lastUpdated: "2024-01-15T15:15:00Z"
-  }
-];
 
 const statsData = [
   {
@@ -278,71 +95,104 @@ export default function HomePage() {
   const [selectedStore, setSelectedStore] = useState('all');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
-  const [sortBy, setSortBy] = useState<'price' | 'change' | 'updated'>('price');
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  const [sortBy, setSortBy] = useState<'price' | 'updated' | 'name'>('updated');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const [priceData, setPriceData] = useState<PriceData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [allCities, setAllCities] = useState<string[]>(['all']);
+  const [allStores, setAllStores] = useState<string[]>(['all']);
+  const [allCategories, setAllCategories] = useState<string[]>(['all']);
 
-  // Load price data from Supabase
+  // Debounced search term for API calls
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
+
+  // Debounce search term
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
+
+  // Load filter options once on mount
+  useEffect(() => {
+    const loadFilterOptions = async () => {
+      try {
+        const response = await fetch('/api/products?limit=200');
+        const data = await response.json();
+        
+        if (data.products && Array.isArray(data.products)) {
+          const cities = ['all', ...Array.from(new Set(data.products.map((p: any) => p.city).filter((city: string) => city && city !== 'غير محدد')))];
+          const stores = ['all', ...Array.from(new Set(data.products.map((p: any) => p.storeName).filter((store: string) => store && store !== 'متجر غير محدد')))];
+          const categories = ['all', ...Array.from(new Set(data.products.map((p: any) => p.category).filter((cat: string) => cat && cat !== 'غير محدد')))];
+          
+          console.log('Filter options loaded:', { cities, stores, categories });
+          
+          setAllCities(cities);
+          setAllStores(stores);
+          setAllCategories(categories);
+        }
+      } catch (error) {
+        console.error('Error loading filter options:', error);
+      }
+    };
+
+    loadFilterOptions();
+  }, []);
+
+  // Load price data from API
   useEffect(() => {
     const loadPriceData = async () => {
       try {
         setIsLoading(true);
-        const data = await supabaseDataService.getMaterialPrices();
         
-        // Additional validation to ensure we have valid data
-        if (Array.isArray(data) && data.length > 0) {
-          setPriceData(data);
+        // Build query parameters
+        const params = new URLSearchParams();
+        if (selectedCity !== 'all') params.set('city', selectedCity);
+        if (selectedCategory !== 'all') params.set('category', selectedCategory);
+        if (debouncedSearchTerm) params.set('q', debouncedSearchTerm);
+        params.set('sortBy', sortBy);
+        params.set('order', sortOrder);
+        params.set('limit', '50');
+        
+        const apiUrl = `/api/products?${params.toString()}`;
+        console.log('Fetching from:', apiUrl); // Debug log
+        
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+        
+        console.log('API Response:', data); // Debug log
+        
+        if (data.products && Array.isArray(data.products) && data.products.length > 0) {
+          const mappedData = data.products.map((product: any) => ({
+            id: product.id,
+            name: product.name,
+            category: product.category || 'غير محدد',
+            price: product.price,
+            stock: product.stock || 0,
+            storeName: product.storeName || 'متجر غير محدد',
+            city: product.city || 'غير محدد',
+            lastUpdated: product.lastUpdated || new Date().toISOString()
+          }));
+          setPriceData(mappedData);
         } else {
-          console.warn('No real data available, using default data');
-          setPriceData(defaultPriceData);
+          console.warn('No real data available from API');
+          setPriceData([]);
         }
       } catch (error) {
         console.error('Error loading price data:', error);
-        // Use default data as fallback to prevent display issues
-        setPriceData(defaultPriceData);
+        setPriceData([]);
       } finally {
         setIsLoading(false);
       }
     };
 
     loadPriceData();
-  }, []);
+  }, [selectedCity, selectedStore, selectedCategory, debouncedSearchTerm, sortBy, sortOrder]);
 
-  const cities = ['all', ...Array.from(new Set(priceData.map(item => item.city)))];
-  const stores = ['all', ...Array.from(new Set(priceData.map(item => item.store)))];
-  const categories = ['all', ...Array.from(new Set(priceData.map(item => item.category)))];
-
-  // Filter data based on selected filters
-  const filteredData = priceData.filter(item => {
-    const matchesCity = selectedCity === 'all' || item.city === selectedCity;
-    const matchesStore = selectedStore === 'all' || item.store === selectedStore;
-    const matchesCategory = selectedCategory === 'all' || item.category === selectedCategory;
-    const matchesSearch = searchTerm === '' || 
-      item.product.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.store.toLowerCase().includes(searchTerm.toLowerCase());
-    
-    return matchesCity && matchesStore && matchesCategory && matchesSearch;
-  });
-
-  // Sort data
-  const sortedData = [...filteredData].sort((a, b) => {
-    let compareValue = 0;
-    
-    switch (sortBy) {
-      case 'price':
-        compareValue = a.price - b.price;
-        break;
-      case 'change':
-        compareValue = a.change - b.change;
-        break;
-      case 'updated':
-        compareValue = new Date(a.lastUpdated).getTime() - new Date(b.lastUpdated).getTime();
-        break;
-    }
-    
-    return sortOrder === 'asc' ? compareValue : -compareValue;
-  });
+  // Since filters are applied server-side via API, we just display the data
+  const sortedData = priceData;
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('ar-SA', {
@@ -351,11 +201,6 @@ export default function HomePage() {
       minimumFractionDigits: 0,
       maximumFractionDigits: 2
     }).format(price);
-  };
-
-  const formatChange = (change: number) => {
-    const sign = change >= 0 ? '+' : '';
-    return `${sign}${change.toFixed(1)}%`;
   };
 
   const formatDate = (dateString: string) => {
@@ -518,20 +363,42 @@ export default function HomePage() {
           </div>
 
           {/* Filters */}
-          <div className="bg-white rounded-xl shadow-lg border border-gray-100 p-6 mb-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+          <div className="bg-white rounded-xl shadow-lg border border-gray-100 p-6 mb-8 relative">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-semibold text-gray-900">تصفية النتائج</h3>
+              <button
+                onClick={() => {
+                  console.log('Reset button clicked');
+                  setSelectedCity('all');
+                  setSelectedStore('all');
+                  setSelectedCategory('all');
+                  setSearchTerm('');
+                  setSortBy('updated');
+                  setSortOrder('desc');
+                }}
+                className="px-4 py-2 text-sm text-blue-600 border border-blue-200 rounded-lg hover:bg-blue-50 transition-colors"
+              >
+                إعادة تعيين
+              </button>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 relative z-10">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">المدينة</label>
                 <select 
                   value={selectedCity}
-                  onChange={(e) => setSelectedCity(e.target.value)}
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  onChange={(e) => {
+                    console.log('City changed to:', e.target.value);
+                    setSelectedCity(e.target.value);
+                  }}
+                  className="w-full border-2 border-gray-300 rounded-lg px-3 py-2 text-sm bg-white cursor-pointer hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  style={{ pointerEvents: 'auto', zIndex: 100 }}
                 >
                   <option value="all">جميع المدن</option>
-                  {cities.filter(city => city !== 'all').map(city => (
+                  {allCities.filter(city => city !== 'all').map(city => (
                     <option key={city} value={city}>{city}</option>
                   ))}
                 </select>
+                <small className="text-xs text-gray-500">Options: {allCities.length}</small>
               </div>
 
               <div>
@@ -542,7 +409,7 @@ export default function HomePage() {
                   className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="all">جميع المتاجر</option>
-                  {stores.filter(store => store !== 'all').map(store => (
+                  {allStores.filter(store => store !== 'all').map(store => (
                     <option key={store} value={store}>{store}</option>
                   ))}
                 </select>
@@ -552,25 +419,34 @@ export default function HomePage() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">الفئة</label>
                 <select 
                   value={selectedCategory}
-                  onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  onChange={(e) => {
+                    console.log('Category changed to:', e.target.value);
+                    setSelectedCategory(e.target.value);
+                  }}
+                  className="w-full border-2 border-gray-300 rounded-lg px-3 py-2 text-sm bg-white cursor-pointer hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  style={{ pointerEvents: 'auto', zIndex: 100 }}
                 >
                   <option value="all">جميع الفئات</option>
-                  {categories.filter(category => category !== 'all').map(category => (
+                  {allCategories.filter(category => category !== 'all').map(category => (
                     <option key={category} value={category}>{category}</option>
                   ))}
                 </select>
+                <small className="text-xs text-gray-500">Options: {allCategories.length}</small>
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">ترتيب حسب</label>
-                <select 
+                <select
                   value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value as 'price' | 'change' | 'updated')}
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  onChange={(e) => {
+                    console.log('Sort by changed to:', e.target.value);
+                    setSortBy(e.target.value as 'price' | 'updated' | 'name');
+                  }}
+                  className="w-full border-2 border-gray-300 rounded-lg px-3 py-2 text-sm bg-white cursor-pointer hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  style={{ pointerEvents: 'auto', zIndex: 100 }}
                 >
                   <option value="price">السعر</option>
-                  <option value="change">التغيير</option>
+                  <option value="name">الاسم</option>
                   <option value="updated">آخر تحديث</option>
                 </select>
               </div>
@@ -579,11 +455,15 @@ export default function HomePage() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">الترتيب</label>
                 <select 
                   value={sortOrder}
-                  onChange={(e) => setSortOrder(e.target.value as 'asc' | 'desc')}
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  onChange={(e) => {
+                    console.log('Sort order changed to:', e.target.value);
+                    setSortOrder(e.target.value as 'asc' | 'desc');
+                  }}
+                  className="w-full border-2 border-gray-300 rounded-lg px-3 py-2 text-sm bg-white cursor-pointer hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  style={{ pointerEvents: 'auto', zIndex: 100 }}
                 >
-                  <option value="asc">تصاعدي</option>
                   <option value="desc">تنازلي</option>
+                  <option value="asc">تصاعدي</option>
                 </select>
               </div>
             </div>
@@ -595,10 +475,10 @@ export default function HomePage() {
               <table className="w-full">
                 <thead className="bg-gray-50">
                   <tr>
-                    <th className="px-6 py-4 text-right text-sm font-medium text-gray-500">المادة</th>
+                    <th className="px-6 py-4 text-right text-sm font-medium text-gray-500">المنتج</th>
                     <th className="px-6 py-4 text-right text-sm font-medium text-gray-500">الفئة</th>
                     <th className="px-6 py-4 text-right text-sm font-medium text-gray-500">السعر</th>
-                    <th className="px-6 py-4 text-right text-sm font-medium text-gray-500">التغيير</th>
+                    <th className="px-6 py-4 text-right text-sm font-medium text-gray-500">المخزون</th>
                     <th className="px-6 py-4 text-right text-sm font-medium text-gray-500">المتجر</th>
                     <th className="px-6 py-4 text-right text-sm font-medium text-gray-500">المدينة</th>
                     <th className="px-6 py-4 text-right text-sm font-medium text-gray-500">آخر تحديث</th>
@@ -608,27 +488,33 @@ export default function HomePage() {
                   {isLoading ? (
                     <tr>
                       <td colSpan={7} className="px-6 py-12 text-center text-gray-500">
-                        جاري تحميل البيانات...
+                        <div className="flex items-center justify-center space-x-2 rtl:space-x-reverse">
+                          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
+                          <span>جاري تحميل البيانات...</span>
+                        </div>
                       </td>
                     </tr>
                   ) : sortedData.length === 0 ? (
                     <tr>
                       <td colSpan={7} className="px-6 py-12 text-center text-gray-500">
-                        لا توجد بيانات متاحة
+                        <div className="text-center">
+                          <p className="text-lg font-medium text-gray-600 mb-2">لا توجد نتائج</p>
+                          <p className="text-sm text-gray-500">جرب تغيير معايير البحث أو المرشحات</p>
+                        </div>
                       </td>
                     </tr>
                   ) : (
                     sortedData.map((item, index) => (
-                      <tr key={index} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                        <td className="px-6 py-4 text-sm font-medium text-gray-900">{item.product}</td>
+                      <tr key={item.id || index} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                        <td className="px-6 py-4 text-sm font-medium text-gray-900">{item.name}</td>
                         <td className="px-6 py-4 text-sm text-gray-600">{item.category}</td>
                         <td className="px-6 py-4 text-sm font-bold text-gray-900">{formatPrice(item.price)}</td>
-                        <td className="px-6 py-4 text-sm">
-                          <span className={`font-medium ${item.change >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                            {formatChange(item.change)}
+                        <td className="px-6 py-4 text-sm text-gray-600">
+                          <span className={`font-medium ${item.stock > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                            {item.stock > 0 ? `${item.stock} متوفر` : 'نفذ المخزون'}
                           </span>
                         </td>
-                        <td className="px-6 py-4 text-sm text-gray-600">{item.store}</td>
+                        <td className="px-6 py-4 text-sm text-gray-600">{item.storeName}</td>
                         <td className="px-6 py-4 text-sm text-gray-600">{item.city}</td>
                         <td className="px-6 py-4 text-sm text-gray-500">{formatDate(item.lastUpdated)}</td>
                       </tr>

@@ -17,6 +17,7 @@ interface CartState {
   items: CartItem[];
   total: number;
   itemCount: number;
+  projectId?: string;
 }
 
 interface CartContextType {
@@ -26,6 +27,7 @@ interface CartContextType {
   updateQuantity: (id: string, quantity: number) => void;
   clearCart: () => void;
   getCartTotal: () => number;
+  setProjectId: (projectId?: string) => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -34,9 +36,13 @@ type CartAction =
   | { type: 'ADD_TO_CART'; payload: Omit<CartItem, 'quantity'> }
   | { type: 'REMOVE_FROM_CART'; payload: string }
   | { type: 'UPDATE_QUANTITY'; payload: { id: string; quantity: number } }
-  | { type: 'CLEAR_CART' };
+  | { type: 'CLEAR_CART' }
+  | { type: 'SET_PROJECT_ID'; payload?: string };
 
 function cartReducer(state: CartState, action: CartAction): CartState {
+  console.log('CartReducer: Action received:', action.type, action.payload);
+  console.log('CartReducer: Current state:', state);
+  
   switch (action.type) {
     case 'ADD_TO_CART':
       const existingItem = state.items.find(item => item.id === action.payload.id);
@@ -46,20 +52,24 @@ function cartReducer(state: CartState, action: CartAction): CartState {
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
-        return {
+        const newState = {
           ...state,
           items: updatedItems,
           total: calculateTotal(updatedItems),
           itemCount: calculateItemCount(updatedItems),
         };
+        console.log('CartReducer: Updated existing item, new state:', newState);
+        return newState;
       } else {
         const newItems = [...state.items, { ...action.payload, quantity: 1 }];
-        return {
+        const newState = {
           ...state,
           items: newItems,
           total: calculateTotal(newItems),
           itemCount: calculateItemCount(newItems),
         };
+        console.log('CartReducer: Added new item, new state:', newState);
+        return newState;
       }
     
     case 'REMOVE_FROM_CART':
@@ -89,7 +99,10 @@ function cartReducer(state: CartState, action: CartAction): CartState {
         items: [],
         total: 0,
         itemCount: 0,
+        projectId: state.projectId,
       };
+    case 'SET_PROJECT_ID':
+      return { ...state, projectId: action.payload };
     
     default:
       return state;
@@ -108,10 +121,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [cart, dispatch] = useReducer(cartReducer, {
     items: [],
     total: 0,
-    itemCount: 0,
+  itemCount: 0,
+  projectId: undefined,
   });
 
   const addToCart = (item: Omit<CartItem, 'quantity'>) => {
+    console.log('CartContext: Adding item to cart:', item);
     dispatch({ type: 'ADD_TO_CART', payload: item });
   };
 
@@ -129,6 +144,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const getCartTotal = () => cart.total;
 
+  const setProjectId = (projectId?: string) => {
+    dispatch({ type: 'SET_PROJECT_ID', payload: projectId });
+  };
+
   return (
     <CartContext.Provider
       value={{
@@ -138,6 +157,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         updateQuantity,
         clearCart,
         getCartTotal,
+  setProjectId,
       }}
     >
       {children}

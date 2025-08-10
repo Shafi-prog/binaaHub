@@ -1,6 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/Button';
+import { formatCurrency } from '@/core/shared/currency/format';
 import { Badge } from '@/components/ui';
 import { AddToCart } from './AddToCart';
 import { Store, Star, Shield } from 'lucide-react';
@@ -15,6 +16,7 @@ export interface ProductCardProps {
   storeId: string;
   category?: string;
   stock?: number;
+  freeShipping?: boolean;
   warranty?: {
     duration: number;
     type: 'years' | 'months';
@@ -35,6 +37,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   storeId,
   category,
   stock,
+  freeShipping,
   warranty,
   onAddToProject,
   onViewStore,
@@ -43,18 +46,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 }) => {
   const isOutOfStock = stock !== undefined && stock <= 0;
 
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD'
-    }).format(price);
-  };
+  const formatPrice = (price: number) => formatCurrency(price);
 
   const product = {
     id,
     name,
     price,
-    store_id: storeId,
+    storeId: storeId,
+    storeName: storeName,
     stock
   };
 
@@ -73,14 +72,19 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           </Badge>
         )}
         {warranty && (
-          <Badge className="absolute top-2 right-2 bg-green-100 text-green-800 text-xs flex items-center gap-1">
+            <Badge className="absolute top-2 right-2 bg-green-100 text-green-800 text-xs flex items-center gap-1">
             <Shield className="h-3 w-3" />
-            {warranty.duration} {warranty.type === 'years' ? 'yr' : 'mo'}
+            {warranty.duration} {warranty.type === 'years' ? 'سنة' : 'شهر'}
+          </Badge>
+        )}
+        {freeShipping && (
+          <Badge className="absolute top-10 right-2 bg-emerald-100 text-emerald-700 text-xs">
+            شحن مجاني
           </Badge>
         )}
         {isOutOfStock && (
           <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-            <Badge variant="destructive">Out of Stock</Badge>
+            <Badge variant="destructive">غير متوفر</Badge>
           </div>
         )}
       </div>
@@ -109,17 +113,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         <div className="flex justify-between items-center">
           <div>
             <span className="font-bold text-lg text-gray-900">{formatPrice(price)}</span>
-            {stock !== undefined && stock > 0 && (
+            {typeof stock === 'number' && stock >= 0 && (
               <p className="text-xs text-gray-500">
-                {stock} in stock
+                المتوفر: {stock}
               </p>
             )}
           </div>
           
-          <div className="flex items-center gap-1 text-yellow-500">
-            <Star className="h-3 w-3 fill-current" />
-            <span className="text-xs text-gray-600">4.5</span>
-          </div>
+          {/* Rating removed until real data is provided */}
         </div>
         
         <div className="space-y-2">
@@ -137,7 +138,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               className="w-full text-xs"
               disabled={isOutOfStock}
             >
-              Add to Project
+              إضافة إلى المشروع
             </Button>
           )}
         </div>

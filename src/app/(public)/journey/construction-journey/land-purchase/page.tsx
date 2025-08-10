@@ -83,7 +83,7 @@ export default function LandPurchasePage() {
                 </div>
               </div>
               <Button
-                onClick={() => router.push('/user/projects/create/construction')}
+                onClick={() => router.push('/user/projects/create')}
                 className="bg-blue-600 hover:bg-blue-700"
               >
                 ابدأ مشروع بناء متكامل

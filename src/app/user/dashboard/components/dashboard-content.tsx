@@ -171,7 +171,7 @@ export default function DashboardContent() {
   ];
 
   const quickActions = [
-    { title: 'مشروع جديد', href: '/user/projects/create/construction', icon: FolderOpen, color: 'bg-blue-100' },
+    { title: 'مشروع جديد', href: '/user/projects/create', icon: FolderOpen, color: 'bg-blue-100' },
     { title: 'طلب منتج', href: '/user/products', icon: Package, color: 'bg-green-100' },
     { title: 'حجز موعد', href: '/user/appointments/new', icon: Calendar, color: 'bg-purple-100' },
     { title: 'دعم فني', href: '/user/support', icon: AlertCircle, color: 'bg-orange-100' }

@@ -24,14 +24,15 @@ export default function OrdersPage() {
 
   const fetchOrders = async (userId: string) => {
     try {
-      const supabase = createClientComponentClient();
-      const { data, error } = await supabase
-        .from('orders')
-        .select('*')
-        .eq('user_id', userId)
-        .order('created_at', { ascending: false });
-      if (error) throw error;
-      setOrders(data || []);
+      // Use our new API endpoint that calls the RPC function
+      const response = await fetch('/api/user/orders');
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to fetch orders');
+      }
+      
+      setOrders(data.orders || []);
     } catch (error) {
       console.error('Error fetching orders:', error);
       setOrders([]);

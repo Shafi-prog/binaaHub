@@ -3,14 +3,14 @@
 import React, { useState } from 'react';
 import { ShoppingCart, Plus, Minus, Check } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
-import { useCart } from '@hooks/useCart';
-import { useAuth } from '@/core/shared/auth/AuthProvider';
+import { useCart } from '@/contexts/CartContext';
 
 interface Product {
   id: string;
   name: string;
   price: number;
-  store_id: string;
+  storeId: string;
+  storeName: string;
   stock?: number;
 }
 
@@ -31,30 +31,23 @@ export function AddToCart({
   onSuccess,
   onError
 }: AddToCartProps) {
-  const { user } = useAuth();
   const { 
+    cart,
     addToCart, 
-    updateQuantity, 
-    getItemQuantity, 
-    isInCart, 
-    loading,
-    cartItems
+    updateQuantity
   } = useCart();
   
   const [quantity, setQuantity] = useState(1);
   const [isAdding, setIsAdding] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
 
-  const currentQuantityInCart = getItemQuantity(product.id);
-  const isProductInCart = isInCart(product.id);
-  const cartItem = cartItems.find(item => item.product_id === product.id);
+  const isProductInCart = !!cart.items.find((i: any) => i.id === product.id);
+  const currentQuantityInCart = cart.items.find((i: any) => i.id === product.id)?.quantity || 0;
+  const cartItem = cart.items.find((item: any) => item.id === product.id);
 
   const handleAddToCart = async () => {
-    if (!user) {
-      onError?.('Please sign in to add items to cart');
-      return;
-    }
-
+    console.log('Adding to cart:', product);
+    
     if (product.stock !== undefined && quantity > product.stock) {
       onError?.('Quantity exceeds available stock');
       return;
@@ -63,7 +56,23 @@ export function AddToCart({
     setIsAdding(true);
     
     try {
-      await addToCart(product.id, product.store_id, quantity, product.price);
+      // Add the item to cart with all required fields
+      const cartItem = { 
+        id: product.id, 
+        name: product.name, 
+        price: product.price,
+        storeId: product.storeId,
+        storeName: product.storeName
+      };
+      console.log('Cart item being added:', cartItem);
+      
+      addToCart(cartItem as any);
+      // Then adjust to desired quantity if > 1
+      if (quantity > 1) {
+        await updateQuantity(product.id, quantity);
+      }
+      
+      console.log('Item added to cart successfully');
       
       // Show success feedback
       setShowSuccess(true);
@@ -71,6 +80,7 @@ export function AddToCart({
       
       onSuccess?.();
     } catch (error) {
+      console.error('Error adding to cart:', error);
       const errorMessage = error instanceof Error ? error.message : 'Failed to add to cart';
       onError?.(errorMessage);
     } finally {
@@ -113,7 +123,7 @@ export function AddToCart({
     return (
       <Button
         onClick={handleAddToCart}
-        disabled={isAdding || loading || !user}
+            disabled={isAdding}
         className={`p-2 ${className}`}
         variant="outline"
       >
@@ -136,7 +146,7 @@ export function AddToCart({
               size="sm"
               className="h-8 w-8 p-0"
               onClick={() => handleQuantityChange(-1)}
-              disabled={loading}
+              
             >
               <Minus className="h-3 w-3" />
             </Button>
@@ -148,7 +158,7 @@ export function AddToCart({
               size="sm"
               className="h-8 w-8 p-0"
               onClick={() => handleQuantityChange(1)}
-              disabled={loading || (product.stock !== undefined && currentQuantityInCart >= product.stock)}
+                disabled={(product.stock !== undefined && currentQuantityInCart >= product.stock)}
             >
               <Plus className="h-3 w-3" />
             </Button>
@@ -156,7 +166,7 @@ export function AddToCart({
         ) : (
           <Button
             onClick={handleAddToCart}
-            disabled={isAdding || loading || !user}
+            disabled={isAdding}
             className={`${getButtonSize()} bg-blue-600 hover:bg-blue-700`}
           >
             {showSuccess ? (
@@ -213,7 +223,7 @@ export function AddToCart({
                 size="sm"
                 className="h-8 w-8 p-0"
                 onClick={() => handleQuantityChange(-1)}
-                disabled={loading}
+                
               >
                 <Minus className="h-3 w-3" />
               </Button>
@@ -225,7 +235,7 @@ export function AddToCart({
                 size="sm"
                 className="h-8 w-8 p-0"
                 onClick={() => handleQuantityChange(1)}
-                disabled={loading || (product.stock !== undefined && currentQuantityInCart >= product.stock)}
+                disabled={(product.stock !== undefined && currentQuantityInCart >= product.stock)}
               >
                 <Plus className="h-3 w-3" />
               </Button>
@@ -233,7 +243,8 @@ export function AddToCart({
           </div>
           <Button
             onClick={handleAddToCart}
-            disabled={isAdding || loading}
+            disabled={isAdding}
+            // no global loading flag here
             className={`w-full ${getButtonSize()} bg-blue-600 hover:bg-blue-700`}
           >
             {isAdding ? (
@@ -252,7 +263,7 @@ export function AddToCart({
       ) : (
         <Button
           onClick={handleAddToCart}
-          disabled={isAdding || loading || !user || (product.stock !== undefined && product.stock <= 0)}
+            disabled={isAdding || (product.stock !== undefined && product.stock <= 0)}
           className={`w-full ${getButtonSize()} bg-blue-600 hover:bg-blue-700`}
         >
           {showSuccess ? (
@@ -265,8 +276,6 @@ export function AddToCart({
               <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
               Adding to Cart...
             </>
-          ) : !user ? (
-            'Sign in to Purchase'
           ) : product.stock !== undefined && product.stock <= 0 ? (
             'Out of Stock'
           ) : (

@@ -80,7 +80,7 @@ export default function ContractorSelectionPage() {
                 </div>
               </div>
               <Button
-                onClick={() => router.push('/user/projects/create/construction')}
+                onClick={() => router.push('/user/projects/create')}
                 className="bg-green-600 hover:bg-green-700"
               >
                 ابدأ مشروع بناء متكامل

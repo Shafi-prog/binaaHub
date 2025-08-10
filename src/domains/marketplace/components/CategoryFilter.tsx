@@ -7,14 +7,22 @@ interface CategoryFilterProps {
   selectedCategory: string;
   onCategoryChange: (category: string) => void;
   showCounts?: boolean;
+  inStock?: boolean;
+  warrantyOnly?: boolean;
+  freeShipping?: boolean;
+  onQuickFilterChange?: (flags: { inStock?: boolean; warrantyOnly?: boolean; freeShipping?: boolean }) => void;
 }
 
 export const CategoryFilter: React.FC<CategoryFilterProps> = ({
   selectedCategory,
   onCategoryChange,
   showCounts = true,
+  inStock,
+  warrantyOnly,
+  freeShipping,
+  onQuickFilterChange,
 }) => {
-  const { categories, loading } = useMarketplace();
+  const { categories, loading } = useMarketplace() as any;
 
   // Add "All" category to the beginning
   const allCategories = [
@@ -88,15 +96,30 @@ export const CategoryFilter: React.FC<CategoryFilterProps> = ({
         <h4 className="text-sm font-medium text-gray-700 mb-3">فلتر سريع</h4>
         <div className="space-y-2 text-sm">
           <label className="flex items-center gap-2">
-            <input type="checkbox" className="rounded border-gray-300" />
+            <input
+              type="checkbox"
+              className="rounded border-gray-300"
+              checked={!!(typeof inStock !== 'undefined' ? inStock : false)}
+              onChange={(e) => onQuickFilterChange?.({ inStock: e.target.checked })}
+            />
             <span>متوفر في المخزن</span>
           </label>
           <label className="flex items-center gap-2">
-            <input type="checkbox" className="rounded border-gray-300" />
+            <input
+              type="checkbox"
+              className="rounded border-gray-300"
+              checked={!!(typeof warrantyOnly !== 'undefined' ? warrantyOnly : false)}
+              onChange={(e) => onQuickFilterChange?.({ warrantyOnly: e.target.checked })}
+            />
             <span>منتجات مضمونة</span>
           </label>
           <label className="flex items-center gap-2">
-            <input type="checkbox" className="rounded border-gray-300" />
+            <input
+              type="checkbox"
+              className="rounded border-gray-300"
+              checked={!!(typeof freeShipping !== 'undefined' ? freeShipping : false)}
+              onChange={(e) => onQuickFilterChange?.({ freeShipping: e.target.checked })}
+            />
             <span>توصيل مجاني</span>
           </label>
         </div>

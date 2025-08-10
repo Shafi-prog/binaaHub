@@ -1,5 +1,6 @@
-import ConstructionProjectCreation from '@/domains/user/components/projects/create/construction/ConstructionProjectCreation';
+import { redirect } from 'next/navigation';
 
 export default function ConstructionProjectCreationPage() {
-  return <ConstructionProjectCreation />;
+  // Redirect to unified wizard to avoid duplication
+  redirect('/user/projects/create');
 }

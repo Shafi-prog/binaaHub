@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
@@ -50,6 +51,7 @@ interface VATTransaction {
 
 export default function VATManagementPage() {
 const supabase = createClientComponentClient();
+  const router = useRouter();
 
   const [loading, setLoading] = useState(true);
   const [vatReturns] = useState<VATReturn[]>([
@@ -174,11 +176,11 @@ const supabase = createClientComponentClient();
           <p className="text-gray-600">إدارة الإقرارات الضريبية ومتابعة ضريبة القيمة المضافة</p>
         </div>
         <div className="flex gap-3">
-          <Button variant="outline">
+    <Button variant="outline" onClick={() => router.push('/store/accounting/vat-management/export')}>
             <Download className="h-4 w-4 mr-2" />
             تصدير البيانات
           </Button>
-          <Button>
+    <Button onClick={() => router.push('/store/accounting/vat-management/new')}>
             <Plus className="h-4 w-4 mr-2" />
             إقرار جديد
           </Button>

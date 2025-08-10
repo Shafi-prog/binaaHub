@@ -84,7 +84,7 @@ export default function InsurancePage() {
                 </div>
               </div>
               <Button
-                onClick={() => router.push('/user/projects/create/construction')}
+                onClick={() => router.push('/user/projects/create')}
                 className="bg-purple-600 hover:bg-purple-700"
               >
                 ابدأ مشروع بناء متكامل
@@ -213,7 +213,7 @@ export default function InsurancePage() {
               <Button 
                 variant="outline" 
                 className="h-16 flex flex-col items-center justify-center gap-2"
-                onClick={() => router.push('/user/projects/create/construction')}
+                onClick={() => router.push('/user/projects/create')}
               >
                 <Building2 className="w-6 h-6" />
                 <span>ابدأ مشروع بناء متكامل</span>

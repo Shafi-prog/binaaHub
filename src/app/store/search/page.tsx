@@ -2,7 +2,8 @@
 
 export const dynamic = 'force-dynamic';
 
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
@@ -23,33 +24,50 @@ import {
 import { CustomerSearchWidget, type Customer } from '@/components/store/CustomerSearchWidget';
 import { toast } from 'sonner';
 
+interface PopularSearch {
+  query: string;
+  count: number;
+  trend: string;
+}
+interface RecentSearch {
+  id: string;
+  query: string;
+  user: string;
+  time: string;
+  results: number;
+}
 export default function SearchPage() {
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchData, setSearchData] = useState<any>({
+    stats: {},
+    popularSearches: [],
+    recentSearches: []
+  });
+  const [loading, setLoading] = useState(true);
 
-  // Mock search data
-  const searchStats = {
-    totalSearches: 1250,
-    popularQueries: 45,
-    searchResults: 890,
-    averageTime: 0.8,
-    conversionRate: 23,
-    activeUsers: 156
-  };
+  // Fetch search data from Supabase API
+  useEffect(() => {
+    const fetchSearchData = async () => {
+      try {
+        const response = await fetch('/api/store/search');
+        if (response.ok) {
+          const data = await response.json();
+          setSearchData(data);
+        }
+      } catch (error) {
+        console.error('Error fetching search data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const popularSearches = [
-    { query: 'كرسي مكتب', count: 89, trend: '+12%' },
-    { query: 'طاولة اجتماعات', count: 67, trend: '+8%' },
-    { query: 'مصباح LED', count: 54, trend: '+15%' },
-    { query: 'خزانة ملفات', count: 43, trend: '+5%' }
-  ];
+    fetchSearchData();
+  }, []);
 
-  const recentSearches = [
-    { id: 1, query: 'مكتب تنفيذي', user: 'أحمد محمد', time: '5 دقائق', results: 23 },
-    { id: 2, query: 'كرسي ألعاب', user: 'فاطمة علي', time: '10 دقائق', results: 15 },
-    { id: 3, query: 'مكتبة خشبية', user: 'محمد حسن', time: '15 دقيقة', results: 31 }
-  ];
+  const { stats: searchStats = {}, popularSearches = [], recentSearches = [] } = searchData;
 
+  const router = useRouter();
   return (
     <div className="p-6 space-y-6">
       {/* Enhanced Header with Gradient Background */}
@@ -62,15 +80,26 @@ export default function SearchPage() {
               <p className="text-blue-100 text-lg">نظام بحث ذكي مع تحليلات شاملة ونتائج مخصصة</p>
             </div>
             <div className="flex gap-3">
-              <Button variant="outline" className="bg-white/20 border-white/30 text-white hover:bg-white/30">
+              <Button
+                variant="outline"
+                className="bg-white/20 border-white/30 text-white hover:bg-white/30"
+                onClick={() => router.push('/store/search/export')}
+              >
                 <Download className="h-4 w-4 mr-2" />
                 تصدير النتائج
               </Button>
-              <Button variant="outline" className="bg-white/20 border-white/30 text-white hover:bg-white/30">
+              <Button
+                variant="outline"
+                className="bg-white/20 border-white/30 text-white hover:bg-white/30"
+                onClick={() => router.push('/store/search/filter')}
+              >
                 <Filter className="h-4 w-4 mr-2" />
                 تصفية متقدمة
               </Button>
-              <Button className="bg-white text-purple-600 hover:bg-gray-50">
+              <Button
+                className="bg-white text-purple-600 hover:bg-gray-50"
+                onClick={() => router.push('/store/search/advanced')}
+              >
                 <Plus className="h-4 w-4 mr-2" />
                 بحث مخصص
               </Button>
@@ -242,13 +271,13 @@ export default function SearchPage() {
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              {popularSearches.map((search, index) => (
-                <div key={index} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50">
+              {popularSearches.map((item: PopularSearch, idx: number) => (
+                <div key={idx} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50">
                   <div className="flex items-center gap-3">
-                    <div className="text-sm font-medium text-gray-900">{search.query}</div>
-                    <Badge variant="secondary">{search.count} بحث</Badge>
+                    <div className="text-sm font-medium text-gray-900">{item.query}</div>
+                    <Badge variant="secondary">{item.count} بحث</Badge>
                   </div>
-                  <div className="text-sm text-green-600 font-medium">{search.trend}</div>
+                  <div className="text-sm text-green-600 font-medium">{item.trend}</div>
                 </div>
               ))}
             </div>
@@ -262,13 +291,13 @@ export default function SearchPage() {
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              {recentSearches.map((search) => (
-                <div key={search.id} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50">
+              {recentSearches.map((item: RecentSearch) => (
+                <div key={item.id} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50">
                   <div>
-                    <div className="font-medium text-gray-900">{search.query}</div>
-                    <div className="text-sm text-gray-600">بواسطة {search.user} • {search.time}</div>
+                    <div className="font-medium text-gray-900">{item.query}</div>
+                    <div className="text-sm text-gray-600">بواسطة {item.user} • {item.time}</div>
                   </div>
-                  <Badge variant="outline">{search.results} نتيجة</Badge>
+                  <Badge variant="outline">{item.results} نتيجة</Badge>
                 </div>
               ))}
             </div>

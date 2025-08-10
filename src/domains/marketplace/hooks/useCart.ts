@@ -45,6 +45,9 @@ export const useCart = () => {
     setItems([]);
   };
 
+  const isInCart = (id: string) => items.some(i => i.id === id);
+  const getItemQuantity = (id: string) => items.find(i => i.id === id)?.quantity ?? 0;
+
   const total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -57,6 +60,8 @@ export const useCart = () => {
     removeFromCart,
     updateQuantity,
     clearCart,
+  isInCart,
+  getItemQuantity,
     total,
     totalAmount: total,
     itemCount,

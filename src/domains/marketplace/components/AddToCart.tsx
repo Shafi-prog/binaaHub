@@ -168,6 +168,7 @@ export function AddToCart({
             onClick={handleAddToCart}
             disabled={isAdding}
             className={`${getButtonSize()} bg-blue-600 hover:bg-blue-700`}
+            data-test="add-to-cart"
           >
             {showSuccess ? (
               <Check className="h-3 w-3 mr-1" />
@@ -265,6 +266,7 @@ export function AddToCart({
           onClick={handleAddToCart}
             disabled={isAdding || (product.stock !== undefined && product.stock <= 0)}
           className={`w-full ${getButtonSize()} bg-blue-600 hover:bg-blue-700`}
+          data-test="add-to-cart-default"
         >
           {showSuccess ? (
             <>

@@ -24,7 +24,7 @@ export async function POST(req: Request) {
     const supabase = createClient(supabaseUrl, supabaseAnonKey)
     
     // For now, use a placeholder user ID - in production this should come from proper auth
-    const userId = 'user@binna' // This matches the existing test data
+  const userId = 'user@binna.com' // Align with demo user id used in projects list
     
     // Hybrid approach: use required fields from migration schema, optional fields from simple schema
     const insert: any = {

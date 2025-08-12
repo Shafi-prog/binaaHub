@@ -114,6 +114,7 @@ export const MarketplaceView: React.FC<MarketplaceViewProps> = ({
                 size="sm"
                 className="relative"
                 onClick={() => setIsCartOpen(true)}
+                data-test="cart-icon"
               >
                 <ShoppingBag className="h-4 w-4 mr-2" />
                 السلة
@@ -121,6 +122,7 @@ export const MarketplaceView: React.FC<MarketplaceViewProps> = ({
                   <Badge 
                     variant="destructive" 
                     className="absolute -top-2 -right-2 h-5 w-5 p-0 flex items-center justify-center text-xs"
+                    data-test="cart-count"
                   >
                     {cart.itemCount}
                   </Badge>

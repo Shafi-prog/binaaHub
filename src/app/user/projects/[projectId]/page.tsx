@@ -17,7 +17,7 @@ export default function ProjectDashboardPage() {
   const goTo = (path: string) => router.push(path);
 
   return (
-    <div className="container mx-auto p-6 space-y-6" dir="rtl">
+  <div className="container mx-auto p-6 space-y-6 project-dashboard" dir="rtl" data-test="project-dashboard">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">مركز المشروع</h1>
@@ -56,7 +56,7 @@ export default function ProjectDashboardPage() {
       </div>
 
       {/* Quick Requests */}
-      <div className="bg-white border rounded-xl p-5">
+  <div className="bg-white border rounded-xl p-5 project-purchases" data-test="project-purchases">
         <h2 className="text-lg font-semibold mb-4">طلبات سريعة</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           <QuickButton label="طلب خرسانة" icon={Truck} onClick={() => goTo(`/user/projects/${projectId}/requests/concrete`)} />

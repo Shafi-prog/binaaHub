@@ -167,10 +167,11 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
             </div>
 
             {/* Checkout Button */}
-            <Link href={cart.projectId ? `/user/cart/checkout?projectId=${cart.projectId}` : "/user/cart/checkout"}>
+      <Link href={cart.projectId ? `/user/cart/checkout?projectId=${cart.projectId}` : "/user/cart/checkout"}>
               <Button 
                 className="w-full bg-blue-600 hover:bg-blue-700 flex items-center gap-2"
                 onClick={onClose}
+        data-test="go-to-checkout"
               >
                 <CreditCard className="h-4 w-4" />
                 المتابعة إلى الدفع

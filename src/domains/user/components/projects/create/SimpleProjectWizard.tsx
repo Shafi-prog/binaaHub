@@ -46,7 +46,7 @@ export default function UnifiedProjectWizard() {
         ...(form.longitude && { longitude: parseFloat(form.longitude) }),
       };
 
-      const res = await fetch('/api/projects', {
+  const res = await fetch('/api/projects/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -104,6 +104,7 @@ export default function UnifiedProjectWizard() {
                   value={form.name} 
                   onChange={e => setForm(p => ({ ...p, name: e.target.value }))} 
                   placeholder="مثال: فيلا عائلية في الرياض" 
+                  name="name"
                   required
                 />
               </div>
@@ -127,6 +128,7 @@ export default function UnifiedProjectWizard() {
                   value={form.location} 
                   onChange={e => setForm(p => ({ ...p, location: e.target.value }))} 
                   placeholder="مثال: الرياض - حي الياسمين" 
+                  name="location"
                 />
               </div>
 
@@ -139,6 +141,7 @@ export default function UnifiedProjectWizard() {
                     placeholder="24.774265" 
                     type="number"
                     step="any"
+                    name="latitude"
                   />
                 </div>
                 <div>
@@ -149,6 +152,7 @@ export default function UnifiedProjectWizard() {
                     placeholder="46.738586" 
                     type="number"
                     step="any"
+                    name="longitude"
                   />
                 </div>
               </div>
@@ -160,6 +164,7 @@ export default function UnifiedProjectWizard() {
                   value={form.description} 
                   onChange={e => setForm(p => ({ ...p, description: e.target.value }))} 
                   placeholder="وصف مختصر عن المشروع ومتطلباته..." 
+                  name="description"
                 />
               </div>
 
@@ -177,6 +182,7 @@ export default function UnifiedProjectWizard() {
                 onClick={saveProject} 
                 disabled={!isValid || saving}
                 className="flex-1"
+                data-test="create-project"
               >
                 {saving ? 'جاري الحفظ...' : 'إنشاء المشروع'}
               </Button>

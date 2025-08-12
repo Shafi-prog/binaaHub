@@ -77,7 +77,7 @@ export default function CheckoutPage() {
   if (orderNumber) {
     return (
       <div className="container mx-auto p-6 max-w-2xl">
-        <div className="bg-green-50 border border-green-200 rounded-lg p-6">
+    <div className="bg-green-50 border border-green-200 rounded-lg p-6" data-test="order-created">
           <h1 className="text-2xl font-semibold text-green-800 mb-2">تم إنشاء طلبك بنجاح</h1>
           <p className="text-green-700 mb-4">رقم الطلب: <span className="font-mono">{orderNumber}</span></p>
           <div className="flex gap-3">
@@ -153,7 +153,7 @@ export default function CheckoutPage() {
             <div className="bg-red-50 text-red-700 border border-red-200 rounded p-3 text-sm">{error}</div>
           )}
 
-          <Button type="submit" disabled={submitting} className="w-full md:w-auto">
+          <Button type="submit" disabled={submitting} className="w-full md:w-auto" data-test="confirm-order">
             {submitting ? "جاري المعالجة..." : "إصدار الطلب والدفع عند الاستلام"}
           </Button>
         </form>
@@ -162,7 +162,7 @@ export default function CheckoutPage() {
           <h2 className="font-semibold mb-3">ملخص الطلب</h2>
           <ul className="divide-y">
             {cartItems.map((item: any) => (
-              <li key={item.id} className="py-2 flex justify-between text-sm">
+              <li key={item.id} className="py-2 flex justify-between text-sm" data-test="cart-item">
                 <span className="truncate mr-2">{item.name || item.product_name}</span>
                 <span>{item.quantity} × {formatCurrency(item.price)}</span>
               </li>

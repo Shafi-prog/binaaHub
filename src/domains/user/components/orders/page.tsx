@@ -230,9 +230,9 @@ export default function OrdersPage() {
       </div>
 
       {/* Orders List */}
-      <div className="grid gap-6">
+      <div className="grid gap-6 orders-list" data-test="orders-list">
         {filteredOrders.map((order) => (
-          <EnhancedCard key={order.id} className="p-6 hover:shadow-lg transition-shadow">
+          <EnhancedCard key={order.id} className="p-6 hover:shadow-lg transition-shadow order-card" data-test="order-card">
             <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-6">
               <div className="flex-1">
                 <div className="flex items-center gap-3 mb-4">
@@ -249,11 +249,11 @@ export default function OrdersPage() {
                 </div>
 
                 {/* Order Items */}
-                <div className="mb-4">
+                <div className="mb-4 order-items" data-test="order-items">
                   <Typography variant="caption" size="sm" className="text-gray-600 mb-2">المنتجات:</Typography>
                   <div className="space-y-2">
                     {order.items.map((item: any, index: number) => (
-                      <div key={index} className="flex justify-between items-center bg-gray-50 p-3 rounded-lg">
+                      <div key={index} className="flex justify-between items-center bg-gray-50 p-3 rounded-lg order-item" data-test="order-item">
                         <div className="flex-1">
                           <Typography variant="body" size="lg" weight="medium">{item.name}</Typography>
                           <Typography variant="caption" size="sm" className="text-gray-600">الكمية: {item.quantity}</Typography>

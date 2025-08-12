@@ -114,9 +114,9 @@ export default async function UserProjectsPage() {
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-6 project-list" data-test="project-list">
         {projects.map((project) => (
-          <EnhancedCard key={project.id} className="p-4 lg:p-6 hover:shadow-lg transition-shadow h-fit">
+          <EnhancedCard key={project.id} className="p-4 lg:p-6 hover:shadow-lg transition-shadow h-fit project-card" data-test="project-card" data-project-id={project.id}>
             <div className="space-y-3 lg:space-y-4">
               {/* Header */}
               <div className="flex justify-between items-start gap-2">

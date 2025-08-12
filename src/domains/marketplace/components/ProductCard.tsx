@@ -58,7 +58,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   };
 
   return (
-    <div className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow bg-white group">
+    <div className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow bg-white group" data-test="product-card">
       <div className="relative h-48 w-full cursor-pointer" onClick={() => onViewProduct?.(id)}>
         <Image
           src={imageUrl || '/placeholder-product.jpg'}
@@ -95,6 +95,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             className="font-semibold text-lg mb-1 cursor-pointer hover:text-blue-600 line-clamp-2 leading-tight"
             onClick={() => onViewProduct?.(id)}
             title={name}
+            data-test="product-title"
           >
             {name}
           </h3>
@@ -112,7 +113,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         
         <div className="flex justify-between items-center">
           <div>
-            <span className="font-bold text-lg text-gray-900">{formatPrice(price)}</span>
+            <span className="font-bold text-lg text-gray-900" data-test="product-price">{formatPrice(price)}</span>
             {typeof stock === 'number' && stock >= 0 && (
               <p className="text-xs text-gray-500">
                 المتوفر: {stock}

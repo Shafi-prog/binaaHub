@@ -33,8 +33,8 @@ async function testBasicConnection() {
       
       // محاولة أخرى بجلب الجداول المتاحة
       const { data: tables, error: tablesError } = await supabase
-        .from('information_schema.tables')
-        .select('table_name')
+        .from('user_profiles')
+        .select('id')
         .limit(1);
       
       if (tablesError) {
@@ -96,7 +96,7 @@ async function testCRUDOperations() {
     // اختبار قراءة البيانات
     const { data: profiles, error: readError } = await supabase
       .from('user_profiles')
-      .select('id, email, full_name')
+      .select('id, email, display_name')
       .limit(5);
     
     if (readError) {
@@ -122,15 +122,16 @@ async function testRelationships() {
   console.log('\n🔗 اختبار العلاقات بين الجداول...');
   
   try {
-    // اختبار العلاقة بين المشاريع والطلبات
-    const { data: projectsWithOrders, error } = await supabase
-      .from('construction_projects')
+    // اختبار العلاقة بين المشاريع والطلبات (الطريقة الصحيحة)
+    const { data: ordersWithProjects, error } = await supabase
+      .from('orders')
       .select(`
         id,
-        project_name,
-        orders (
+        order_number,
+        project_id,
+        construction_projects (
           id,
-          status
+          name
         )
       `)
       .limit(3);
@@ -140,8 +141,28 @@ async function testRelationships() {
       return { success: false, error: error.message };
     }
     
-    console.log(`   ✅ العلاقات تعمل: ${projectsWithOrders?.length || 0} مشروع مع طلبات`);
-    return { success: true, relationCount: projectsWithOrders?.length || 0 };
+    console.log('   ✅ العلاقة بين orders و construction_projects تعمل بشكل صحيح');
+    
+    // اختبار إضافي للتحقق من صحة البنية
+    const { data: projectsWithOrders, error: reverseError } = await supabase
+      .from('construction_projects')
+      .select(`
+        id,
+        name,
+        orders (
+          id,
+          order_number
+        )
+      `)
+      .limit(3);
+    
+    if (reverseError) {
+      console.log('   ⚠️  تحذير في الاختبار العكسي:', reverseError.message);
+    } else {
+      console.log('   ✅ العلاقة العكسية من projects إلى orders تعمل أيضاً');
+    }
+    
+    return { success: true, relationCount: (ordersWithProjects?.length || 0) };
     
   } catch (error) {
     console.log('   ❌ خطأ في اختبار العلاقات:', error.message);

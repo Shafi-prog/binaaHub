@@ -128,6 +128,7 @@ CREATE TABLE orders (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     order_number VARCHAR(50) UNIQUE NOT NULL,
     customer_id UUID NOT NULL,
+    project_id UUID REFERENCES construction_projects(id) ON DELETE SET NULL,
     
     -- Order Status
     status VARCHAR(20) DEFAULT 'pending' CHECK (status IN ('pending', 'confirmed', 'processing', 'shipped', 'delivered', 'cancelled', 'returned')),
@@ -669,8 +670,80 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- ==========================================
+-- RELATIONSHIP ENHANCEMENTS
+-- ==========================================
+
+-- إضافة فهرس للعلاقة بين الطلبات والمشاريع
+CREATE INDEX IF NOT EXISTS idx_orders_project_id ON orders(project_id);
+
+-- إضافة تعليق توضيحي
+COMMENT ON COLUMN orders.project_id IS 'ربط الطلب بمشروع إنشائي محدد (اختياري)';
+
+-- دالة للتحقق من تكامل البيانات بين المشاريع والطلبات
+CREATE OR REPLACE FUNCTION validate_project_order_relationship()
+RETURNS TABLE (
+    order_id UUID,
+    project_id UUID,
+    order_total DECIMAL(10,2),
+    project_budget DECIMAL(15,2),
+    is_within_budget BOOLEAN
+) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT 
+        o.id as order_id,
+        o.project_id,
+        o.total_amount as order_total,
+        cp.budget as project_budget,
+        (o.total_amount <= (cp.budget - cp.spent_amount)) as is_within_budget
+    FROM orders o
+    INNER JOIN construction_projects cp ON o.project_id = cp.id
+    WHERE o.project_id IS NOT NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+-- دالة لحساب إجمالي المصروفات لكل مشروع
+CREATE OR REPLACE FUNCTION update_project_spent_amount(p_project_id UUID)
+RETURNS VOID AS $$
+DECLARE
+    total_spent DECIMAL(15,2);
+BEGIN
+    -- حساب إجمالي الطلبات المدفوعة للمشروع
+    SELECT COALESCE(SUM(total_amount), 0)
+    INTO total_spent
+    FROM orders
+    WHERE project_id = p_project_id 
+    AND payment_status = 'paid';
+    
+    -- تحديث المبلغ المنفق في جدول المشاريع
+    UPDATE construction_projects
+    SET spent_amount = total_spent,
+        updated_at = CURRENT_TIMESTAMP
+    WHERE id = p_project_id;
+END;
+$$ LANGUAGE plpgsql;
+
+-- view لعرض ملخص المشاريع والطلبات
+CREATE OR REPLACE VIEW project_orders_summary AS
+SELECT 
+    cp.id as project_id,
+    cp.name as project_name,
+    cp.status as project_status,
+    cp.budget,
+    cp.spent_amount,
+    (cp.budget - cp.spent_amount) as remaining_budget,
+    COUNT(o.id) as total_orders,
+    COUNT(CASE WHEN o.payment_status = 'paid' THEN 1 END) as paid_orders,
+    COUNT(CASE WHEN o.status = 'pending' THEN 1 END) as pending_orders,
+    COALESCE(SUM(CASE WHEN o.payment_status = 'paid' THEN o.total_amount END), 0) as total_paid_amount,
+    COALESCE(SUM(CASE WHEN o.status = 'pending' THEN o.total_amount END), 0) as pending_amount
+FROM construction_projects cp
+LEFT JOIN orders o ON cp.id = o.project_id
+GROUP BY cp.id, cp.name, cp.status, cp.budget, cp.spent_amount;
+
+-- ==========================================
 -- COMPLETION MESSAGE
 -- ==========================================
 
 -- Schema creation completed successfully
-SELECT 'Binna Platform Database Schema Created Successfully!' as message;
+SELECT 'Binna Platform Database Schema Created Successfully with Enhanced Relationships!' as message;

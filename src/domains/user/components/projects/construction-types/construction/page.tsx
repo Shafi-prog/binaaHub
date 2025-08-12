@@ -341,7 +341,7 @@ export default function ConstructionProjectCreationPage() {
       }
       const newProject: Project = {
         id: Date.now().toString(),
-        userId: 'current-user', // TODO: Get actual user ID
+        userId: user?.id || 'current-user', // Use actual user ID when available
         name: projectData.name.trim(),
         description: projectData.description.trim(),
         area: parseFloat(projectData.landSize) || 0,

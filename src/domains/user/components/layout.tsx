@@ -55,7 +55,8 @@ export default function UserLayout({
   const [isClientSide, setIsClientSide] = useState(false);
   const [logoutLoading, setLogoutLoading] = useState(false);
   const [expandedSections, setExpandedSections] = useState<{[key: string]: boolean}>({
-    projects: false
+    projects: false,
+    finance: false
   });
   
   useEffect(() => {
@@ -141,48 +142,6 @@ export default function UserLayout({
     // Finance & Payments (moved to project scope when applicable)
     {
       title: 'المالية والمدفوعات',
-      items: [
-        { href: '/user/balance', label: 'الرصيد', icon: Banknote },
-        { href: '/user/invoices', label: 'الفواتير', icon: Receipt },
-        { href: '/user/subscriptions', label: 'الاشتراكات', icon: Star },
-      ]
-    },
-
-    // AI & Smart Features
-    {
-      title: 'الذكاء الاصطناعي',
-      items: [
-        { href: '/user/ai-assistant', label: 'المساعد الذكي', icon: MessageSquare },
-        { href: '/user/ai-hub', label: 'مركز الذكاء الاصطناعي', icon: Wrench },
-        { href: '/user/smart-insights', label: 'الرؤى الذكية', icon: TrendingUp },
-        { href: '/user/company-bulk-optimizer', label: 'محسن الجملة للشركات', icon: Building2 },
-      ]
-    },
-
-    // Community & Support  
-    {
-      title: 'المجتمع والدعم',
-      items: [
-        { href: '/user/social-community', label: 'المجتمع الاجتماعي', icon: MessageSquare },
-        { href: '/user/gamification', label: 'التحديات والجوائز', icon: Star },
-        { href: '/user/documents', label: 'المستندات', icon: FileText },
-        { href: '/user/settings', label: 'الإعدادات', icon: Settings },
-      ]
-  },
-  // Marketplace & Shopping
-    {
-      title: 'التسوق والمتاجر',
-      items: [
-        { href: '/user/stores-browse', label: 'تصفح المتاجر', icon: Building2 },
-        { href: '/user/cart', label: 'سلة التسوق', icon: ShoppingCart },
-        { href: '/user/orders', label: 'طلباتي', icon: Receipt },
-        { href: '/user/favorites', label: 'المفضلة', icon: Heart },
-      ]
-    },
-
-    // Finance & Payments
-    {
-      title: 'المالية والمدفوعات',
       isDropdown: true,
       key: 'finance',
       icon: CreditCard,
@@ -207,7 +166,7 @@ export default function UserLayout({
       ]
     },
 
-        // Community & Support  
+    // Community & Support  
     {
       title: 'المجتمع والدعم',
       items: [
@@ -250,6 +209,10 @@ export default function UserLayout({
     
     if (pathname.startsWith('/user/projects/') || pathname.startsWith('/user/building-') || pathname.startsWith('/user/smart-') || pathname.startsWith('/user/comprehensive-') || pathname.startsWith('/user/individual-')) {
       setExpandedSections(prev => ({ ...prev, projects: true }));
+    }
+    
+    if (pathname.startsWith('/user/balance') || pathname.startsWith('/user/invoices') || pathname.startsWith('/user/expenses') || pathname.startsWith('/user/subscriptions') || pathname.startsWith('/user/warranties')) {
+      setExpandedSections(prev => ({ ...prev, finance: true }));
     }
   }, [pathname]);
 

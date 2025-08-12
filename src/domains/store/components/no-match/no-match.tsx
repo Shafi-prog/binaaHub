@@ -2,9 +2,8 @@
 import { ExclamationCircle } from "@medusajs/icons"
 import { Button, Text } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
-import { Link } from "react-router-dom"
+import Link from "next/link"
 
-// TODO: Add 404 page
 export const NoMatch = () => {
   const { t } = useTranslation()
 

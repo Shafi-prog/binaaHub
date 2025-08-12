@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Select } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/Textarea';
+import { useAuth } from '@/core/shared/auth/AuthProvider';
 import { Badge } from '@/components/ui';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/Progress';
@@ -16,7 +17,6 @@ import ProjectPurchasesWarranties from '@/components/ui/ProjectPurchasesWarranti
 import { projectTrackingService } from '@/services';
 import { Project, ProjectEstimation, MaterialEstimation, LightingEstimation } from '@/types/types';
 import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
-import { useAuth } from '@/core/shared/auth/AuthProvider';
 import { 
   Calculator, 
   FileText, 
@@ -687,7 +687,7 @@ interface UnifiedMaterialsMap {
         const newProject: Project = {
           id: Date.now().toString(),
           name: projectName,
-          userId: 'current-user', // TODO: Get actual user ID
+          userId: user?.id || 'current-user', // Use actual user ID when available
           description: projectDescription,
           area: projectArea,
           projectType: mappedProjectType,

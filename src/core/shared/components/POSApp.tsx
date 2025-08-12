@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { ProductService, OrderService } from '../../../lib/mock-medusa';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import ReceiptPrinter from './ReceiptPrinter';
 
 interface Product {
@@ -28,13 +28,25 @@ const POSApp = React.memo(() => {
   const [showReceipt, setShowReceipt] = useState(false);
   const [lastReceipt, setLastReceipt] = useState<any>(null);
 
-  // Fetch products from Medusa.js
+  const supabase = createClientComponentClient();
+  // Fetch products from Supabase
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const productService = new ProductService();
-        const productsData = await productService.list();
-        setProducts(productsData);
+        const { data, error } = await supabase
+          .from('products')
+          .select('id, name, price, image_url, stock_quantity')
+          .eq('is_available', true)
+          .limit(200);
+        if (error) throw error;
+        const mapped: Product[] = (data ?? []).map((p: any) => ({
+          id: p.id,
+          title: p.name,
+          price: Number(p.price ?? 0),
+          thumbnail: p.image_url ?? '',
+          inventory_quantity: Number(p.stock_quantity ?? 0),
+        }));
+        setProducts(mapped);
       } catch (error) {
         console.error('Error fetching products:', error);
       } finally {
@@ -80,17 +92,39 @@ const POSApp = React.memo(() => {
 
   const processOrder = async () => {
     try {
-      const orderService = new OrderService();
-      const orderData = {
-        items: cart.map(item => ({
-          variant_id: item.product.id,
-          quantity: item.quantity
-        })),
-        region_id: 'reg_01H4XXXX', // Saudi Arabia region
-        payment_method: 'card', // or 'cash', 'mada', 'stc_pay'
-      };
+      const subtotal = cart.reduce((sum, it) => sum + it.product.price * it.quantity, 0);
+      const tax_amount = subtotal * 0.15;
+      const total_amount = subtotal + tax_amount;
+      const { data: order, error: orderErr } = await supabase
+        .from('orders')
+        .insert({
+          order_number: 'POS-' + Date.now(),
+          customer_id: null,
+          store_id: null,
+          status: 'pending',
+          payment_status: 'pending',
+          payment_method: 'card',
+          subtotal,
+          tax_amount,
+          shipping_cost: 0,
+          total_amount,
+          notes: 'POS order'
+        })
+        .select('id')
+        .single();
+      if (orderErr) throw orderErr;
 
-      await orderService.create(orderData);
+      if (order?.id) {
+        const itemsPayload = cart.map(it => ({
+          order_id: order.id,
+          product_id: it.product.id,
+          quantity: it.quantity,
+          unit_price: it.product.price,
+          total_price: it.product.price * it.quantity,
+        }));
+        const { error: itemsErr } = await supabase.from('order_items').insert(itemsPayload);
+        if (itemsErr) throw itemsErr;
+      }
       // Prepare receipt data
       const receiptData = {
         items: cart.map(item => ({
@@ -121,7 +155,7 @@ const POSApp = React.memo(() => {
     <div className="flex h-screen bg-gray-100">
       {/* Product Grid */}
       <div className="flex-1 p-6">
-        <h1 className="text-3xl font-bold mb-6 text-gray-800">Point of Sale System</h1>
+  <h1 className="text-3xl font-bold mb-6 text-gray-800">Point of Sale</h1>
         
         {/* Category Filter */}
         <div className="mb-6">

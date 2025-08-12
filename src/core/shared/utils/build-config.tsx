@@ -335,7 +335,9 @@ function retrieveLinkModuleAndAlias({
         )
       }
 
-      const entitiesMap = servicesEntityMap
+  // Restrict graph traversal to the relevant module schema only to avoid ambiguous multi-module paths
+  const restrictedExecutable = makeSchemaExecutable(moduleSchema)
+  const entitiesMap = restrictedExecutable?.getTypeMap() ?? servicesEntityMap
       let intermediateEntities: string[] = []
       let foundCount = 0
       let foundName: string | null = null
@@ -453,15 +455,16 @@ function setCustomDirectives(currentObjectRepresentationRef, directives) {
     )
 
     if (!directive) {
-      return
+      continue
     }
 
     // Only support array directive value for now
-    currentObjectRepresentationRef[
-      customDirectiveConfiguration.configurationPropertyName
-    ] = ((directive.arguments[0].value as any)?.values ?? []).map(
+    const newValues = ((directive.arguments[0].value as any)?.values ?? []).map(
       (v) => v.value
     )
+    const prop = customDirectiveConfiguration.configurationPropertyName
+    const existing = currentObjectRepresentationRef[prop] || []
+    currentObjectRepresentationRef[prop] = Array.from(new Set([...(existing || []), ...newValues]))
   }
 }
 
@@ -613,12 +616,20 @@ function processEntity(
           existingParent.targetProp === entityTargetPropertyNameInParent
       )
 
-      const parentPropertyNameWithinCurrentEntity = retrieveEntityPropByType({
+      let parentPropertyNameWithinCurrentEntity = retrieveEntityPropByType({
         sourceEntityName: entityName,
         targetEntityName: parent,
         entitiesMap,
         servicesEntityMap,
       })
+
+      // Fallback: infer the inverse side property name from the parent entity name when missing
+      if (!parentPropertyNameWithinCurrentEntity?.name) {
+        parentPropertyNameWithinCurrentEntity = {
+          name: lowerCaseFirst(parent),
+          isArray: false,
+        } as any
+      }
 
       if (!parentAlreadyExists) {
         currentObjectRepresentationRef.parents.push({
@@ -645,12 +656,19 @@ function processEntity(
       parentModuleConfig.isLink ||
       currentObjectRepresentationRef.moduleConfig.isLink
     ) {
-      const parentPropertyNameWithinCurrentEntity = retrieveEntityPropByType({
+      let parentPropertyNameWithinCurrentEntity = retrieveEntityPropByType({
         sourceEntityName: entityName,
         targetEntityName: parent,
         entitiesMap,
         servicesEntityMap,
       })
+
+      if (!parentPropertyNameWithinCurrentEntity?.name) {
+        parentPropertyNameWithinCurrentEntity = {
+          name: lowerCaseFirst(parent),
+          isArray: false,
+        } as any
+      }
 
       const parentAlreadyExists = currentObjectRepresentationRef.parents.some(
         (existingParent) =>
@@ -658,16 +676,34 @@ function processEntity(
           existingParent.targetProp === entityTargetPropertyNameInParent
       )
 
+      // Fallback: derive list-ness for the parent->current relation when missing
+      let isListFlag = entityTargetPropertyIsListInParent
+      if (typeof isListFlag === 'undefined') {
+        try {
+          const src = (servicesEntityMap as any)?.[parentObjectRepresentationRef.entity]
+          const tname = currentObjectRepresentationRef.entity
+          const fields = (src?._fields ? Object.values(src._fields) : []) as any[]
+          for (const f of fields) {
+            const ts = f?.type?.toString?.() || ''
+            const base = ts.replace(/\[|\]|!/g, '')
+            if (base === tname && ts.trim().startsWith('[')) {
+              isListFlag = true as any
+              break
+            }
+          }
+        } catch {}
+      }
+
       if (!parentAlreadyExists) {
         currentObjectRepresentationRef.parents.push({
           ref: parentObjectRepresentationRef,
           targetProp: entityTargetPropertyNameInParent,
           inverseSideProp: parentPropertyNameWithinCurrentEntity?.name!,
-          isList: entityTargetPropertyIsListInParent,
+          isList: isListFlag,
         })
       }
 
-      const propertyToAdd = parentPropertyNameWithinCurrentEntity?.name + ".id"
+  const propertyToAdd = parentPropertyNameWithinCurrentEntity?.name + ".id"
 
       if (
         parentPropertyNameWithinCurrentEntity &&
@@ -905,12 +941,33 @@ function processEntity(
           entitiesMap: servicesEntityMap,
         })
 
-        const entityTargetPropertyIsListInParent = retrieveEntityPropByType({
+        let entityTargetPropertyIsListInParent = retrieveEntityPropByType({
           sourceEntityName: currentParentIntermediateRef.entity,
           targetEntityName: currentObjectRepresentationRef.entity,
           entitiesMap: entitiesMap,
           servicesEntityMap: servicesEntityMap,
         })?.isArray
+
+        // Fallback: derive list-ness from servicesEntityMap field signatures if unresolved
+        if (typeof entityTargetPropertyIsListInParent === 'undefined') {
+          try {
+            const src = (servicesEntityMap as any)?.[currentParentIntermediateRef.entity]
+            const tname = currentObjectRepresentationRef.entity
+            const fields = (src?._fields ? Object.values(src._fields) : []) as any[]
+            for (const f of fields) {
+              const ts = f?.type?.toString?.() || ''
+              const base = ts.replace(/\[|\]|!/g, '')
+              if (base === tname && ts.trim().startsWith('[')) {
+                entityTargetPropertyIsListInParent = true as any
+                break
+              }
+            }
+          } catch {}
+          // If still unresolved, assume list for cross-service path
+          if (typeof entityTargetPropertyIsListInParent === 'undefined') {
+            entityTargetPropertyIsListInParent = true as any
+          }
+        }
 
         const parentAlreadyExists = currentObjectRepresentationRef.parents.some(
           (existingParent) =>
@@ -999,7 +1056,7 @@ function buildAliasMap(
 
     visited.add(current.entity)
 
-    for (const parentEntity of current.parents) {
+  for (const parentEntity of (current.parents || [])) {
       const newParentPath = parentPath
         ? `${parentEntity.targetProp}.${parentPath}`
         : parentEntity.targetProp
@@ -1095,16 +1152,22 @@ function buildAliasMap(
     const aliases = recursivelyBuildAliasPath(entityRepresentationRef)
 
     for (const alias of aliases) {
+      if (alias.alias === undefined || alias.alias === null) {
+        continue
+      }
       if (aliasMap[alias.alias] && !alias.shortCutOf) {
         continue
       }
 
-      aliasMap[alias.alias] = {
+      const entry: any = {
         ref: entityRepresentationRef,
-        shortCutOf: alias.shortCutOf,
         isList: alias.isList,
         isInverse: alias.isInverse,
       }
+      if (alias.shortCutOf) {
+        entry.shortCutOf = alias.shortCutOf
+      }
+      aliasMap[alias.alias] = entry
     }
   }
 
@@ -1196,8 +1259,8 @@ function buildSchemaFromFilterableLinks(
         return
       }
 
-      const normalizedEntity = lowerCaseFirst(kebabCase(entity))
-      const events = `@Listeners(values: ["${serviceName}.${normalizedEntity}.created", "${serviceName}.${normalizedEntity}.updated", "${serviceName}.${normalizedEntity}.deleted"])`
+  const normalizedEntity = lowerCaseFirst(kebabCase(entity))
+  const events = `@Listeners(values: ["${serviceName}.${normalizedEntity}.${CommonEvents.CREATED}", "${serviceName}.${normalizedEntity}.${CommonEvents.UPDATED}", "${serviceName}.${normalizedEntity}.${CommonEvents.DELETED}"])`
 
       const fieldDefinitions = fields
         .map((field) => {
@@ -1271,6 +1334,23 @@ export function buildSchemaObjectRepresentation(schema: string): {
 
   objectRepresentation._schemaPropertiesMap =
     buildAliasMap(objectRepresentation)
+
+  // Fallback: if no aliases were derived, add a root empty path mapping to the first entity
+  if (
+    objectRepresentation._schemaPropertiesMap &&
+    Object.keys(objectRepresentation._schemaPropertiesMap).length === 0
+  ) {
+    const firstKey = Object.keys(objectRepresentation).find(
+      (k) => !schemaObjectRepresentationPropertiesToOmit.includes(k)
+    )
+    if (firstKey) {
+      objectRepresentation._schemaPropertiesMap[""] = {
+        ref: objectRepresentation[firstKey],
+        isInverse: false,
+        isList: undefined,
+      } as any
+    }
+  }
 
   return {
     objectRepresentation,

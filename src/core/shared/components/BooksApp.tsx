@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { OrderService } from '../../../lib/mock-medusa';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 interface Invoice {
   id: string;
@@ -36,26 +36,29 @@ const BooksApp = React.memo(() => {
   const [selectedPeriod, setSelectedPeriod] = useState<string>('this_month');
   const [isLoading, setIsLoading] = useState(true);
 
+  const supabase = createClientComponentClient();
   // Fetch financial data
   useEffect(() => {
     const fetchFinancialData = async () => {
       try {
-        // Fetch invoices from Medusa orders
-        const orderService = new OrderService();
-        const orders: any[] = await orderService.list();
+        // Fetch orders from Supabase
+        const { data: orders, error } = await supabase
+          .from('orders')
+          .select('id, order_number, subtotal, tax_amount, total_amount, created_at, payment_status, metadata, customer_id');
+        if (error) throw error;
         
         // Convert orders to invoices
-        const invoiceData = orders.map(order => ({
+        const invoiceData = (orders ?? []).map((order: any) => ({
           id: order.id,
-          invoice_number: `INV-${order.display_id}`,
-          customer_name: order.customer?.first_name + ' ' + order.customer?.last_name,
-          customer_vat: order.customer?.metadata?.vat_number || '',
+          invoice_number: `INV-${order.order_number}`,
+          customer_name: order.customer_id || 'عميل',
+          customer_vat: order.metadata?.vat_number || '',
           issue_date: order.created_at,
           due_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
-          subtotal: order.subtotal,
-          vat_amount: order.tax_total,
-          total_amount: order.total,
-          status: order.payment_status === 'captured' ? 'paid' : 'sent',
+          subtotal: Number(order.subtotal ?? 0),
+          vat_amount: Number(order.tax_amount ?? 0),
+          total_amount: Number(order.total_amount ?? 0),
+          status: order.payment_status === 'paid' ? 'paid' : 'sent',
           zatca_uuid: generateZATCAUUID(),
           qr_code: generateQRCode(order),
         }));

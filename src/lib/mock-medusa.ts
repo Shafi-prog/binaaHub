@@ -1,40 +1,24 @@
-// Mock Medusa services for development
+/**
+ * Deprecated: legacy mock-medusa stub. Not used in production.
+ * This file remains only to avoid broken imports in old branches.
+ * Any attempt to instantiate will throw to prevent accidental use.
+ */
+const err = () => {
+  throw new Error('Deprecated: mock-medusa is not allowed in production paths. Use Supabase services.');
+};
+
 export class OrderService {
-  async list() {
-    return [];
-  }
-  
-  async retrieve(id: string) {
-    return { id, status: 'pending' };
-  }
-  
-  async create(data: any) {
-    return { id: 'order_' + Date.now(), ...data };
-  }
+  constructor() { err(); }
 }
 
 export class ProductService {
-  async list() {
-    return [];
-  }
-  
-  async retrieve(id: string) {
-    return { id, title: 'Sample Product' };
-  }
-  
-  async create(data: any) {
-    return { id: 'prod_' + Date.now(), ...data };
-  }
+  constructor() { err(); }
 }
 
 export class InventoryService {
-  async getInventoryItems() {
-    return [];
-  }
-  
-  async adjustInventory(itemId: string, adjustment: number) {
-    return { id: itemId, adjustment };
-  }
+  constructor() { err(); }
 }
+
+export const __deprecated_mock_medusa = true;
 
 

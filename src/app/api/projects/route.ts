@@ -22,20 +22,41 @@ export async function POST(req: Request) {
     
     // Create a simple supabase client - auth will be handled by RLS
     const supabase = createClient(supabaseUrl, supabaseAnonKey)
-    
-    // For now, use a placeholder user ID - in production this should come from proper auth
-  const userId = 'user@binna.com' // Align with demo user id used in projects list
-    
-    // Hybrid approach: use required fields from migration schema, optional fields from simple schema
-    const insert: any = {
+
+    // Try to get authenticated user id from auth cookie if present
+    let userId: string | null = null
+    try {
+      const authCookieStore = await cookies()
+      const supabaseAccessToken = (authCookieStore as any)?.get?.('sb-access-token')?.value
+      if (supabaseAccessToken) {
+        // We don't have a server helper here, but some proxies set user in JWT; keep placeholder
+        // Prefer explicit user_id in body if provided
+      }
+    } catch {}
+    userId = body.user_id || body.customer_id || userId || null
+    if (!userId) {
+      // final fallback for demo only
+      userId = '00000000-0000-0000-0000-000000000000'
+    }
+
+    // Build two shapes to support both schemas
+    const insertA: any = {
       user_id: userId,
-      project_name: body.name || body.project_name || null, // Required field from migration schema
+      project_name: body.name || body.project_name || '',
       description: body.description ?? null,
       status: body.status ?? 'planning',
       location: body.location ?? null,
       budget: body.estimated_cost ?? body.budget ?? 0,
-      type: body.type ?? body.project_type ?? 'residential',
-      project_type: body.type ?? body.project_type ?? 'residential', // Also include migration schema field
+      project_type: body.type ?? body.project_type ?? 'residential',
+    }
+    const insertB: any = {
+      user_id: userId,
+      name: body.name || body.project_name || '',
+      description: body.description ?? null,
+      status: body.status ?? 'planning',
+      location: body.location ?? null,
+      budget: body.estimated_cost ?? body.budget ?? 0,
+      project_type: body.type ?? body.project_type ?? 'residential',
     }
 
     // If lat/lng provided, include coordinates in location as JSON
@@ -47,11 +68,17 @@ export async function POST(req: Request) {
           lng: parseFloat(body.longitude)
         }
       }
-      insert.location = JSON.stringify(locationData)
+      insertA.location = JSON.stringify(locationData)
+      insertB.location = JSON.stringify(locationData)
     }
 
-    const { data, error } = await supabase.from('construction_projects').insert(insert).select('*').single()
-    if (error) return NextResponse.json({ error: error.message }, { status: 400 })
+    // Try first shape, then fallback to second
+    let { data, error } = await supabase.from('construction_projects').insert(insertA).select('*').single()
+    if (error) {
+      const second = await supabase.from('construction_projects').insert(insertB).select('*').single()
+      if (second.error) return NextResponse.json({ error: second.error.message }, { status: 400 })
+      data = second.data
+    }
     return NextResponse.json({ project: data })
   } catch (e: any) {
     return NextResponse.json({ error: e?.message || 'unknown' }, { status: 500 })

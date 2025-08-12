@@ -7,6 +7,15 @@ const createJestConfig = nextJest({
 const customJestConfig = {
   setupFilesAfterEnv: ['<rootDir>/config/jest.setup.js'],
   testEnvironment: 'jest-environment-jsdom',
+  transform: {
+    '^.+\\.(ts|tsx|js|jsx)$': [
+      'babel-jest',
+  { configFile: '<rootDir>/babel.config.js' },
+    ],
+  },
+  transformIgnorePatterns: [
+    '/node_modules/(?!(uuid|@medusajs|@react-google-maps/api)/)',
+  ],
   testPathIgnorePatterns: [
     '<rootDir>/.next/',
     '<rootDir>/node_modules/',
@@ -30,6 +39,10 @@ const customJestConfig = {
     '^@/(.*)$': '<rootDir>/src/$1',
     '^@/core/(.*)$': '<rootDir>/src/core/$1',
     '^@/domains/(.*)$': '<rootDir>/src/domains/$1',
+  '^@/lib/utils$': '<rootDir>/src/lib/utils.ts',
+  '^@/lib/supabase/client$': '<rootDir>/src/lib/supabase/client.ts',
+  '^@/components/ui$': '<rootDir>/src/components/ui/index.ts',
+  '^@/components/ui/(.*)$': '<rootDir>/src/components/ui/$1',
   },
 }
 

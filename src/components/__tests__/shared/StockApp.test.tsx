@@ -13,7 +13,7 @@ describe('StockApp', () => {
   it('renders stock management interface', async () => {
     render(<StockApp />)
     
-    expect(screen.getByText('Stock Management')).toBeInTheDocument()
+  expect(screen.getByText('Stock Management')).toBeInTheDocument()
     
     await waitFor(() => {
       expect(screen.getByText('Product 1')).toBeInTheDocument()
@@ -28,7 +28,7 @@ describe('StockApp', () => {
       expect(screen.getByText('Product 1')).toBeInTheDocument()
     })
 
-    const searchInput = screen.getByPlaceholderText(/search/i)
+  const searchInput = screen.getByPlaceholderText(/search/i)
     fireEvent.change(searchInput, { target: { value: 'Product 1' } })
     
     await waitFor(() => {

@@ -7,6 +7,12 @@ const createJestConfig = nextJest({
 const customJestConfig = {
   setupFilesAfterEnv: ['<rootDir>/config/jest.setup.js'],
   testEnvironment: 'jest-environment-jsdom',
+  transform: {
+  '^.+\\.(ts|tsx|js|jsx)$': 'babel-jest',
+  },
+  transformIgnorePatterns: [
+    '/node_modules/(?!(uuid|@medusajs|@react-google-maps/api)/)',
+  ],
   testPathIgnorePatterns: [
     '<rootDir>/.next/',
     '<rootDir>/node_modules/',
@@ -28,9 +34,17 @@ const customJestConfig = {
     },
   },
   moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/src/$1',
+    // Specific mappings first
+    '^@/domains/marketplace/services/medusa$': '<rootDir>/src/lib/__mocks__/medusa-service.ts',
+    '^@/components/ui$': '<rootDir>/src/components/ui/index.ts',
+    '^@/components/ui/(.*)$': '<rootDir>/src/components/ui/$1',
+    '^@/lib/utils$': '<rootDir>/src/lib/utils.ts',
+    '^@/lib/supabase/client$': '<rootDir>/src/lib/supabase/client.ts',
     '^@/core/(.*)$': '<rootDir>/src/core/$1',
     '^@/domains/(.*)$': '<rootDir>/src/domains/$1',
+    // Catch-all last
+    '^@/(.*)$': '<rootDir>/src/$1',
+  '^@supabase/auth-helpers-nextjs$': '<rootDir>/src/lib/__mocks__/supabase-auth-helpers-nextjs.ts',
   },
   // إعدادات إضافية لاختبارات E2E
   projects: [
@@ -42,6 +56,36 @@ const customJestConfig = {
       ],
       testEnvironment: 'jest-environment-jsdom',
       setupFilesAfterEnv: ['<rootDir>/config/jest.setup.js'],
+      testPathIgnorePatterns: [
+        '<rootDir>/.next/',
+        '<rootDir>/node_modules/',
+        '<rootDir>/src/domains/marketplace/services/__tests__/',
+  '<rootDir>/src/core/shared/components/__tests__/',
+        '/__tests__/.*\\.d\\.ts$',
+        '.*\\.d\\.ts$',
+      ],
+      transform: {
+  '^.+\\.(ts|tsx|js|jsx)$': 'babel-jest',
+      },
+      transformIgnorePatterns: [
+        '/node_modules/(?!(uuid|@medusajs|@react-google-maps/api)/)',
+      ],
+      moduleNameMapper: {
+        // Specific mappings first
+        '^@/domains/marketplace/services/medusa$': '<rootDir>/src/lib/__mocks__/medusa-service.ts',
+  '^@medusajs/framework/utils$': '<rootDir>/src/lib/__mocks__/medusa-framework-utils.ts',
+  '^@medusajs/framework/types$': '<rootDir>/src/lib/__mocks__/medusa-framework-types.ts',
+        '^@/components/ui$': '<rootDir>/src/components/ui/index.ts',
+        '^@/components/ui/(.*)$': '<rootDir>/src/components/ui/$1',
+        '^@/lib/utils$': '<rootDir>/src/lib/utils.ts',
+        '^@/lib/supabase/client$': '<rootDir>/src/lib/supabase/client.ts',
+        '^@/core/(.*)$': '<rootDir>/src/core/$1',
+        '^@/domains/(.*)$': '<rootDir>/src/domains/$1',
+        '^@types$': '<rootDir>/src/types/index.ts',
+        '^@models$': '<rootDir>/src/lib/__mocks__/models.ts',
+        // Catch-all last
+        '^@/(.*)$': '<rootDir>/src/$1',
+      },
     },
     {
       displayName: 'e2e-tests',

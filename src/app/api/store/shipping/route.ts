@@ -7,6 +7,7 @@ export async function GET() {
     
     // Shipping stats from database
     const { data: shipmentsData } = await client
+      .schema('logistics')
       .from('shipments')
       .select('*')
       .order('created_at', { ascending: false });
@@ -42,35 +43,36 @@ export async function GET() {
 
   } catch (error: any) {
     console.error('Shipping API error:', error);
-    
-    // Fallback to mock data if database fails
-    const mockStats = {
-      totalShipments: 189,
-      inTransit: 34,
-      delivered: 145,
-      pending: 10,
-      averageDeliveryTime: 3.2,
-      onTimeDelivery: 94
-    };
 
-    const mockShipments = [
-      {
-        id: 'SHP001',
-        customerName: 'أحمد محمد علي',
-        destination: 'الرياض، المملكة العربية السعودية',
-        carrier: 'شركة الشحن السريع',
-        method: 'شحن بري',
-        status: 'في الطريق',
-        trackingNumber: 'TRK123456789',
-        estimatedDelivery: '2025-01-27',
-        weight: '15 كيلو'
-      }
-    ];
+    if (process.env.NODE_ENV !== 'production') {
+      // Dev-only mock fallback to keep local UI usable
+      const mockStats = {
+        totalShipments: 189,
+        inTransit: 34,
+        delivered: 145,
+        pending: 10,
+        averageDeliveryTime: 3.2,
+        onTimeDelivery: 94
+      };
 
-    return NextResponse.json({
-      stats: mockStats,
-      shipments: mockShipments
-    });
+      const mockShipments = [
+        {
+          id: 'SHP001',
+          customerName: 'أحمد محمد علي',
+          destination: 'الرياض، المملكة العربية السعودية',
+          carrier: 'شركة الشحن السريع',
+          method: 'شحن بري',
+          status: 'في الطريق',
+          trackingNumber: 'TRK123456789',
+          estimatedDelivery: '2025-01-27',
+          weight: '15 كيلو'
+        }
+      ];
+
+      return NextResponse.json({ stats: mockStats, shipments: mockShipments, hint: 'dev_mock_fallback' });
+    }
+
+    return NextResponse.json({ stats: { totalShipments: 0, inTransit: 0, delivered: 0, pending: 0, averageDeliveryTime: 0, onTimeDelivery: 0 }, shipments: [], error: error?.message || 'unknown' });
   }
 }
 

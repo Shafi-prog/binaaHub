@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
@@ -54,20 +54,9 @@ interface Product {
 export default function StorefrontMainPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
-  const [cart, setCart] = useState<{ [key: string]: number }>({});
-
-  // Load cart from localStorage on component mount
-  useEffect(() => {
-    const savedCart = localStorage.getItem('cart');
-    if (savedCart) {
-      setCart(JSON.parse(savedCart));
-    }
-  }, []);
-
-  // Save cart to localStorage whenever cart changes
-  useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cart));
-  }, [cart]);
+  const [userId, setUserId] = useState<string | null>(null);
+  const [cartItems, setCartItems] = useState<Array<{ id: string; product_id: string; store_id: string; quantity: number; price: number }>>([]);
+  const [loadingCart, setLoadingCart] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedStore, setSelectedStore] = useState('all');
   const [priceRange, setPriceRange] = useState('all');
@@ -80,28 +69,51 @@ export default function StorefrontMainPage() {
     fetchAllProducts();
   }, []);
 
+  // Load authenticated user and cart
+  useEffect(() => {
+    const loadUserAndCart = async () => {
+      const { data: authData } = await supabase.auth.getUser();
+      const uid = authData.user?.id ?? null;
+      setUserId(uid ?? null);
+      if (uid) {
+        await fetchCart(uid);
+      }
+    };
+    loadUserAndCart();
+    // Listen to auth changes
+    const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
+      const uid = session?.user?.id ?? null;
+      setUserId(uid);
+      if (uid) fetchCart(uid);
+      else setCartItems([]);
+    });
+    return () => {
+      sub.subscription.unsubscribe();
+    };
+  }, []);
+
   const fetchAllProducts = async () => {
     try {
       setLoading(true);
       
-      // For now, use dummy data
-      const productsData = getAllDummyProducts();
-      setProducts(productsData);
-      
-      // Uncomment when Supabase is ready
-      /*
-      const { data, error } = await supabase
+      // Try embedded store join first; fallback to simple select if relationship not present
+      let { data, error } = await supabase
         .from('products')
         .select(`
           *,
           store:stores(id, name, description, category, rating, location, phone, email)
         `)
         .eq('is_available', true);
-      
-      if (data) {
-        setProducts(data);
+      if (error) {
+        // Fallback without join to be schema-agnostic
+        const fallback = await supabase
+          .from('products')
+          .select('*')
+          .eq('is_available', true);
+        if (fallback.error) throw fallback.error;
+        data = fallback.data as any[];
       }
-      */
+      setProducts((data as any[]) ?? []);
     } catch (error) {
       console.error('Error fetching products:', error);
     } finally {
@@ -109,178 +121,94 @@ export default function StorefrontMainPage() {
     }
   };
 
-  const getAllDummyProducts = (): Product[] => {
-    const stores = [
-      {
-        id: '1',
-        name: 'متجر البناء المتميز',
-        description: 'متجر شامل لجميع مواد البناء والتشييد',
-        category: 'materials',
-        rating: 4.5,
-        location: 'الرياض، المملكة العربية السعودية',
-        phone: '+966 11 123 4567',
-        email: 'info@building-store.sa'
-      },
-      {
-        id: '2',
-        name: 'مؤسسة الحديد والأجهزة',
-        description: 'متخصصون في الحديد والمعدات الثقيلة',
-        category: 'tools',
-        rating: 4.2,
-        location: 'جدة، المملكة العربية السعودية',
-        phone: '+966 12 987 6543',
-        email: 'contact@irontools.sa'
-      },
-      {
-        id: '3',
-        name: 'معرض الأدوات الصحية',
-        description: 'جميع أنواع الأدوات والتجهيزات الصحية',
-        category: 'plumbing',
-        rating: 4.7,
-        location: 'الدمام، المملكة العربية السعودية',
-        phone: '+966 13 456 7890',
-        email: 'info@plumbing-store.sa'
-      }
-    ];
-
-    return [
-      // Store 1 Products
-      {
-        id: '1',
-        name: 'أسمنت بورتلاند عادي - 50 كيس',
-        description: 'أسمنت عالي الجودة مناسب لجميع أعمال البناء والخرسانة',
-        price: 25.50,
-        category: 'cement',
-        stock_quantity: 500,
-        is_available: true,
-        store_id: '1',
-        store: stores[0]
-      },
-      {
-        id: '2',
-        name: 'حديد تسليح 12 مم - طن',
-        description: 'حديد تسليح عالي المقاومة مطابق للمواصفات السعودية',
-        price: 2800.00,
-        category: 'steel',
-        stock_quantity: 50,
-        is_available: true,
-        store_id: '1',
-        store: stores[0]
-      },
-      {
-        id: '3',
-        name: 'طوب أحمر - ألف طوبة',
-        description: 'طوب أحمر طبيعي عالي الجودة للبناء والعزل',
-        price: 180.00,
-        category: 'bricks',
-        stock_quantity: 100,
-        is_available: true,
-        store_id: '1',
-        store: stores[0]
-      },
-      {
-        id: '4',
-        name: 'دهان داخلي أبيض - 20 لتر',
-        description: 'دهان داخلي عالي الجودة قابل للغسيل ومقاوم للرطوبة',
-        price: 95.00,
-        category: 'paint',
-        stock_quantity: 80,
-        is_available: true,
-        store_id: '1',
-        store: stores[0]
-      },
-      // Store 2 Products
-      {
-        id: '5',
-        name: 'مثقاب كهربائي 750 واط',
-        description: 'مثقاب كهربائي قوي مع مجموعة ريش متنوعة',
-        price: 320.00,
-        category: 'tools',
-        stock_quantity: 25,
-        is_available: true,
-        store_id: '2',
-        store: stores[1]
-      },
-      {
-        id: '6',
-        name: 'منشار دائري 1400 واط',
-        description: 'منشار دائري احترافي للقطع الدقيق',
-        price: 580.00,
-        category: 'tools',
-        stock_quantity: 15,
-        is_available: true,
-        store_id: '2',
-        store: stores[1]
-      },
-      {
-        id: '7',
-        name: 'حديد زاوية 5x5 سم - 6 متر',
-        description: 'حديد زاوية مجلفن عالي الجودة',
-        price: 45.00,
-        category: 'steel',
-        stock_quantity: 200,
-        is_available: true,
-        store_id: '2',
-        store: stores[1]
-      },
-      // Store 3 Products
-      {
-        id: '8',
-        name: 'مغسلة بورسلين أبيض',
-        description: 'مغسلة بورسلين فاخرة مع خلاط',
-        price: 450.00,
-        category: 'plumbing',
-        stock_quantity: 30,
-        is_available: true,
-        store_id: '3',
-        store: stores[2]
-      },
-      {
-        id: '9',
-        name: 'مرحاض إفرنجي مع خزان',
-        description: 'مرحاض إفرنجي كامل مع خزان علوي',
-        price: 380.00,
-        category: 'plumbing',
-        stock_quantity: 20,
-        is_available: true,
-        store_id: '3',
-        store: stores[2]
-      },
-      {
-        id: '10',
-        name: 'خلاط مياه حديث',
-        description: 'خلاط مياه بتصميم عصري وجودة عالية',
-        price: 150.00,
-        category: 'plumbing',
-        stock_quantity: 40,
-        is_available: true,
-        store_id: '3',
-        store: stores[2]
-      },
-      {
-        id: '11',
-        name: 'بلاط سيراميك 60x60 سم',
-        description: 'بلاط سيراميك فاخر مقاوم للماء والخدوش',
-        price: 35.00,
-        category: 'tiles',
-        stock_quantity: 300,
-        is_available: true,
-        store_id: '1',
-        store: stores[0]
-      },
-      {
-        id: '12',
-        name: 'رمل بناء - متر مكعب',
-        description: 'رمل نظيف مغسول مناسب لأعمال البناء والخرسانة',
-        price: 45.00,
-        category: 'sand',
-        stock_quantity: 200,
-        is_available: true,
-        store_id: '1',
-        store: stores[0]
-      }
-    ];
+  // Server-side cart: marketplace.simple_cart_items
+  const fetchCart = async (uid: string) => {
+    try {
+      setLoadingCart(true);
+      const { data, error } = await supabase
+        .schema('marketplace')
+        .from('simple_cart_items')
+        .select('id, product_id, store_id, quantity, price')
+        .eq('user_id', uid);
+      if (error) throw error;
+      setCartItems(data ?? []);
+    } catch (e) {
+      console.error('Error fetching cart:', e);
+    } finally {
+      setLoadingCart(false);
+    }
   };
+
+  const getQty = (productId: string) => {
+    return cartItems.find(ci => ci.product_id === productId)?.quantity ?? 0;
+  };
+
+  const addToCart = async (productId: string) => {
+    if (!userId) {
+      // Optional: redirect to login
+      alert('الرجاء تسجيل الدخول لإضافة منتجات إلى السلة');
+      return;
+    }
+    const product = products.find(p => p.id === productId);
+    if (!product) return;
+    try {
+      const existing = cartItems.find(ci => ci.product_id === productId);
+      if (existing) {
+        const { error } = await supabase
+          .schema('marketplace')
+          .from('simple_cart_items')
+          .update({ quantity: existing.quantity + 1 })
+          .eq('id', existing.id)
+          .eq('user_id', userId);
+        if (error) throw error;
+      } else {
+  const { error } = await supabase
+          .schema('marketplace')
+          .from('simple_cart_items')
+          .insert({
+            user_id: userId,
+            product_id: productId,
+            quantity: 1,
+            price: product.price,
+          });
+        if (error) throw error;
+      }
+      await fetchCart(userId);
+    } catch (e) {
+      console.error('Error adding to cart:', e);
+    }
+  };
+
+  const removeFromCart = async (productId: string) => {
+    if (!userId) return;
+    try {
+      const existing = cartItems.find(ci => ci.product_id === productId);
+      if (!existing) return;
+      if (existing.quantity > 1) {
+        const { error } = await supabase
+          .schema('marketplace')
+          .from('simple_cart_items')
+          .update({ quantity: existing.quantity - 1 })
+          .eq('id', existing.id)
+          .eq('user_id', userId);
+        if (error) throw error;
+      } else {
+        const { error } = await supabase
+          .schema('marketplace')
+          .from('simple_cart_items')
+          .delete()
+          .eq('id', existing.id)
+          .eq('user_id', userId);
+        if (error) throw error;
+      }
+      await fetchCart(userId);
+    } catch (e) {
+      console.error('Error removing from cart:', e);
+    }
+  };
+
+  const getTotalCartItems = () => cartItems.reduce((sum, ci) => sum + ci.quantity, 0);
+  const getTotalCartValue = () => cartItems.reduce((sum, ci) => sum + (ci.price * ci.quantity), 0);
 
   const categories = [
     { value: 'all', label: 'جميع المنتجات' },
@@ -303,6 +231,40 @@ export default function StorefrontMainPage() {
     { value: '1000+', label: 'أكثر من 1000 ر.س' },
   ];
 
+  const uniqueStores = useMemo(() => {
+    const map: Record<string, Store> = {};
+    for (const p of products) {
+      if (p.store && !map[p.store.id]) map[p.store.id] = p.store;
+    }
+    return Object.values(map);
+  }, [products]);
+
+  const getUniqueStores = () => uniqueStores;
+
+  const filteredAndSortedProducts = useMemo(() => {
+    let list = [...products];
+    if (selectedCategory !== 'all') list = list.filter(p => p.category === selectedCategory);
+    if (selectedStore !== 'all') list = list.filter(p => p.store_id === selectedStore);
+    if (priceRange !== 'all') {
+      const [minStr, maxStr] = priceRange.split('-');
+      const min = minStr === '0' ? 0 : parseFloat(minStr);
+      const max = maxStr?.endsWith('+') ? Infinity : parseFloat(maxStr || '0');
+      list = list.filter(p => p.price >= min && p.price <= (isFinite(max) ? max : p.price));
+    }
+    if (searchTerm.trim()) list = list.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()));
+    switch (sortBy) {
+      case 'price-low':
+        list.sort((a, b) => a.price - b.price); break;
+      case 'price-high':
+        list.sort((a, b) => b.price - a.price); break;
+      case 'rating':
+        list.sort((a, b) => (b.store?.rating ?? 0) - (a.store?.rating ?? 0)); break;
+      default:
+        list.sort((a, b) => a.name.localeCompare(b.name));
+    }
+    return list;
+  }, [products, selectedCategory, selectedStore, priceRange, searchTerm, sortBy]);
+
   const sortOptions = [
     { value: 'name', label: 'الاسم' },
     { value: 'price-low', label: 'السعر: الأقل أولاً' },
@@ -310,77 +272,6 @@ export default function StorefrontMainPage() {
     { value: 'rating', label: 'التقييم' },
   ];
 
-  const getUniqueStores = () => {
-    const storeMap = new Map();
-    products.forEach(product => {
-      if (product.store && !storeMap.has(product.store.id)) {
-        storeMap.set(product.store.id, product.store);
-      }
-    });
-    return Array.from(storeMap.values());
-  };
-
-  const filteredAndSortedProducts = products
-    .filter(product => {
-      const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
-      const matchesStore = selectedStore === 'all' || product.store_id === selectedStore;
-      const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           (product.description && product.description.toLowerCase().includes(searchTerm.toLowerCase()));
-      
-      let matchesPrice = true;
-      if (priceRange !== 'all') {
-        const [min, max] = priceRange.split('-').map(p => p.replace('+', ''));
-        if (max) {
-          matchesPrice = product.price >= parseInt(min) && product.price <= parseInt(max);
-        } else {
-          matchesPrice = product.price >= parseInt(min);
-        }
-      }
-      
-      return matchesCategory && matchesStore && matchesSearch && matchesPrice;
-    })
-    .sort((a, b) => {
-      switch (sortBy) {
-        case 'price-low':
-          return a.price - b.price;
-        case 'price-high':
-          return b.price - a.price;
-        case 'rating':
-          return (b.store?.rating || 0) - (a.store?.rating || 0);
-        default:
-          return a.name.localeCompare(b.name, 'ar');
-      }
-    });
-
-  const addToCart = (productId: string) => {
-    setCart(prev => ({
-      ...prev,
-      [productId]: (prev[productId] || 0) + 1
-    }));
-  };
-
-  const removeFromCart = (productId: string) => {
-    setCart(prev => {
-      const newCart = { ...prev };
-      if (newCart[productId] > 1) {
-        newCart[productId]--;
-      } else {
-        delete newCart[productId];
-      }
-      return newCart;
-    });
-  };
-
-  const getTotalCartItems = () => {
-    return Object.values(cart).reduce((sum, quantity) => sum + quantity, 0);
-  };
-
-  const getTotalCartValue = () => {
-    return Object.entries(cart).reduce((total, [productId, quantity]) => {
-      const product = products.find(p => p.id === productId);
-      return total + (product ? product.price * quantity : 0);
-    }, 0);
-  };
 
   if (loading) {
     return (
@@ -536,7 +427,7 @@ export default function StorefrontMainPage() {
                 {product.store && (
                   <div className="mb-3 p-2 bg-gray-50 rounded-lg">
                     <Link 
-                      href={`/storefront/${product.store.id}`}
+                      href={`/user/stores-browse`}
                       className="text-sm text-blue-600 hover:text-blue-800 font-medium"
                     >
                       {product.store.name}
@@ -565,7 +456,7 @@ export default function StorefrontMainPage() {
                 </div>
                 
                 <div className="flex items-center justify-between">
-                  {cart[product.id] ? (
+                  {getQty(product.id) > 0 ? (
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => removeFromCart(product.id)}
@@ -574,7 +465,7 @@ export default function StorefrontMainPage() {
                         -
                       </button>
                       <span className="min-w-[2rem] text-center font-semibold">
-                        {cart[product.id]}
+                        {getQty(product.id)}
                       </span>
                       <button
                         onClick={() => addToCart(product.id)}
@@ -611,13 +502,13 @@ export default function StorefrontMainPage() {
             </div>
             <div className="flex gap-2">
               <Link
-                href={`/checkout?items=${Object.keys(cart).length}`}
+                href={`/user/cart/checkout?items=${getTotalCartItems()}`}
                 className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-semibold transition-colors"
               >
                 إتمام الطلب
               </Link>
               <Link
-                href="/auth/login?redirect=/storefront"
+                href="/auth/login?redirect=/marketplace"
                 className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold transition-colors"
               >
                 تسجيل الدخول

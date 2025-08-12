@@ -220,6 +220,7 @@ export type SupabaseProject = {
 export function mapSupabaseProjectToProject(s: SupabaseProject): Project {
   return {
     id: s.id,
+  userId: s.user_id,
     name: s.project_name || s.name || '',
     description: s.description || '',
     projectType: (s.project_type as any) || 'residential',

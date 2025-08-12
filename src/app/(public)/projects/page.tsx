@@ -36,107 +36,53 @@ export default function PublicProjectsPage() {
   });
   const [searchTerm, setSearchTerm] = useState('');
 
-  // Mock data - in real app, this would come from API
+  // Fetch from API -> Supabase
   useEffect(() => {
-    const mockProjects: Project[] = [
-      {
-        id: '1',
-        name: 'فيلا الفخامة الحديثة',
-        userId: 'user1',
-        stage: 'التشطيبات النهائية',
-        progress: 85,
-        createdAt: '2024-01-15',
-        updatedAt: '2024-07-15',
-        description: 'فيلا فاخرة بتصميم عصري على مساحة 500 متر مربع',
-        area: 500,
-        projectType: 'residential',
-        floorCount: 2,
-        roomCount: 6,
-        status: 'in_progress',
-        location: 'الرياض - حي النرجس',
-        startDate: '2024-01-01',
-        endDate: '2024-08-30',
-        publicDisplay: {
-          isPublic: true,
-          showLocation: true,
-          showTimeline: true,
-          showImages: true,
-          hideCosts: true,
-          description: 'فيلا عصرية فاخرة تتميز بالتصميم المعاصر والمواد عالية الجودة'
-        },
-        images: [
-          {
-            id: 'img1',
-            projectId: '1',
-            url: '/construction-images/villa-1.jpg',
-            caption: 'واجهة الفيلا الرئيسية',
-            phaseId: 'structure',
-            uploadedAt: '2024-06-01',
-            type: 'showcase',
-            isPublic: true
-          }
-        ]
-      },
-      {
-        id: '2',
-        name: 'مجمع تجاري متطور',
-        userId: 'user2',
-        stage: 'الهيكل الإنشائي',
-        progress: 60,
-        createdAt: '2024-03-01',
-        updatedAt: '2024-07-10',
-        description: 'مجمع تجاري متكامل بمساحة 2000 متر مربع',
-        area: 2000,
-        projectType: 'commercial',
-        floorCount: 3,
-        roomCount: 20,
-        status: 'in_progress',
-        location: 'جدة - شارع التحلية',
-        startDate: '2024-02-01',
-        endDate: '2024-12-31',
-        publicDisplay: {
-          isPublic: true,
-          showLocation: true,
-          showTimeline: true,
-          showImages: true,
-          hideCosts: true,
-          description: 'مجمع تجاري حديث يضم محلات ومكاتب بتقنيات ذكية'
-        },
-        images: []
-      },
-      {
-        id: '3',
-        name: 'شقق سكنية راقية',
-        userId: 'user3',
-        stage: 'مكتمل',
-        progress: 100,
-        createdAt: '2023-09-01',
-        updatedAt: '2024-06-30',
-        description: 'مبنى سكني يحتوي على 12 شقة فاخرة',
-        area: 1200,
-        projectType: 'residential',
-        floorCount: 4,
-        roomCount: 48,
-        status: 'completed',
-        location: 'الدمام - الكورنيش',
-        startDate: '2023-08-01',
-        endDate: '2024-06-30',
-        publicDisplay: {
-          isPublic: true,
-          showLocation: true,
-          showTimeline: true,
-          showImages: true,
-          hideCosts: true,
-          description: 'مبنى سكني راقي بإطلالة على البحر وتشطيبات فاخرة'
-        },
-        images: []
+    let cancelled = false;
+    const load = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch('/api/projects', { cache: 'no-store' });
+        const json = await res.json();
+        if (!cancelled) {
+          const list = (json.projects || []) as any[];
+          // Map into frontend Project shape (best-effort, public view)
+          const mapped: Project[] = list.map((p: any) => ({
+            id: p.id,
+            name: p.project_name || p.name || 'مشروع',
+            userId: p.user_id || '',
+            stage: '',
+            progress: p.progress ?? p.completion_percentage ?? 0,
+            createdAt: p.created_at,
+            updatedAt: p.updated_at,
+            description: p.description ?? '',
+            area: p.area ?? 0,
+            projectType: p.project_type || p.type || 'residential',
+            floorCount: 0,
+            roomCount: 0,
+            status: p.status || 'planning',
+            location: p.location ?? undefined,
+            startDate: p.start_date ?? undefined,
+            endDate: p.end_date ?? undefined,
+            images: [],
+            publicDisplay: { isPublic: true, showLocation: true, showTimeline: true, showImages: true, hideCosts: true, description: p.description ?? '' },
+            budget: p.budget ?? undefined,
+            clientName: undefined,
+            selectedPhases: undefined,
+            enablePhotoTracking: undefined,
+            enableProgressTracking: undefined,
+          }));
+          setProjects(mapped);
+        }
+      } catch (e) {
+        console.error('Failed to load projects:', e);
+        if (!cancelled) setProjects([]);
+      } finally {
+        if (!cancelled) setLoading(false);
       }
-    ];
-    
-    setTimeout(() => {
-      setProjects(mockProjects);
-      setLoading(false);
-    }, 1000);
+    };
+    load();
+    return () => { cancelled = true; };
   }, []);
 
   const getProjectTypeLabel = (type: string) => {

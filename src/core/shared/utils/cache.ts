@@ -27,17 +27,17 @@ class CacheManager {
     });
   }
 
-  get<T>(key: string): T | null {
+  get<T>(key: string): T | undefined {
     const entry = this.cache.get(key);
     
     if (!entry) {
-      return null;
+      return undefined;
     }
 
     const now = Date.now();
     if (now - entry.timestamp > entry.ttl) {
       this.cache.delete(key);
-      return null;
+  return undefined;
     }
 
     return entry.value;
@@ -97,12 +97,12 @@ export function useCache<T>(
   fetchFn: () => Promise<T>,
   ttl: number = 300000
 ): {
-  data: T | null;
+  data: T | null | undefined;
   loading: boolean;
   error: string | null;
   refresh: () => Promise<void>;
 } {
-  const [data, setData] = React.useState<T | null>(globalCache.get(key));
+  const [data, setData] = React.useState<T | null | undefined>(globalCache.get(key));
   const [loading, setLoading] = React.useState(!globalCache.has(key));
   const [error, setError] = React.useState<string | null>(null);
 

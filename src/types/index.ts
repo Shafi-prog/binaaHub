@@ -34,3 +34,15 @@ export type RevokeApiKeyInput = RevokeApiKeyDTO & { id: string }
 
 
 
+// Jest/unit-friendly default for omitted schema properties used in build-config utilities
+export const schemaObjectRepresentationPropertiesToOmit: string[] = [
+  "__meta",
+  "__typename",
+  "created_at",
+  "updated_at",
+  "_serviceNameModuleConfigMap",
+]
+
+
+
+

@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { ProductService, InventoryService } from '../../../lib/mock-medusa';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 interface InventoryItem {
   id: string;
@@ -34,16 +34,30 @@ const StockApp = React.memo(() => {
   const [lowStockItems, setLowStockItems] = useState<InventoryItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Fetch inventory data from Medusa.js
+  const supabase = createClientComponentClient();
+  // Fetch inventory data from Supabase
   useEffect(() => {
     const fetchInventory = async () => {
       try {
-        const inventoryService = new InventoryService();
-        const inventoryData: any[] = await inventoryService.getInventoryItems();
-        setInventory(inventoryData);
-        
-        // Filter low stock items
-        const lowStock = inventoryData.filter(item => item.quantity <= item.reorder_level);
+        const { data, error } = await supabase
+          .from('inventory')
+          .select('id, product_id, quantity, reserved_quantity, warehouse_location, last_counted');
+        if (error) throw error;
+        const mapped: any[] = (data ?? []).map((row: any) => ({
+          id: row.id,
+          sku: row.product_id,
+          title: row.product_id,
+          quantity: Number(row.quantity ?? 0),
+          reserved_quantity: Number(row.reserved_quantity ?? 0),
+          location: row.warehouse_location ?? 'main',
+          reorder_level: 0,
+          cost_price: 0,
+          selling_price: 0,
+          supplier: '',
+          last_restocked: row.last_counted ?? ''
+        }));
+        setInventory(mapped);
+        const lowStock = mapped.filter((item: any) => item.quantity <= item.reorder_level);
         setLowStockItems(lowStock);
       } catch (error) {
         console.error('Error fetching inventory:', error);
@@ -57,8 +71,13 @@ const StockApp = React.memo(() => {
 
   const handleStockAdjustment = async (itemId: string, adjustment: number, reason: string) => {
     try {
-      const inventoryService = new InventoryService();
-      await inventoryService.adjustInventory(itemId, adjustment);
+      const current = inventory.find(i => i.id === itemId);
+      if (!current) return;
+      const { error } = await supabase
+        .from('inventory')
+        .update({ quantity: current.quantity + adjustment })
+        .eq('id', itemId);
+      if (error) throw error;
       
       // Update local state
       setInventory(inventory.map(item => 

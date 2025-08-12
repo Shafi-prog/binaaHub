@@ -12,7 +12,7 @@ describe('POSApp', () => {
   it('renders POS interface', async () => {
     render(<POSApp />)
     
-    expect(screen.getByText('Point of Sale')).toBeInTheDocument()
+  expect(screen.getByText('Point of Sale')).toBeInTheDocument()
     
     await waitFor(() => {
       expect(screen.getByText('Item 1')).toBeInTheDocument()
@@ -27,7 +27,7 @@ describe('POSApp', () => {
       expect(screen.getByText('Item 1')).toBeInTheDocument()
     })
 
-    const addButton = screen.getAllByText('Add to Cart')[0]
+  const addButton = screen.getAllByText('Add to Cart')[0]
     fireEvent.click(addButton)
     
     await waitFor(() => {
@@ -42,7 +42,7 @@ describe('POSApp', () => {
       expect(screen.getByText('Item 1')).toBeInTheDocument()
     })
 
-    const addButtons = screen.getAllByText('Add to Cart')
+  const addButtons = screen.getAllByText('Add to Cart')
     fireEvent.click(addButtons[0]) // Add Item 1 ($10)
     fireEvent.click(addButtons[1]) // Add Item 2 ($15)
     

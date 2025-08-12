@@ -22,21 +22,20 @@ export function useSearch<T>(
   initialSearchTerm: string = ''
 ) {
   const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
-  const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
   const filteredData = useMemo(() => {
-    if (!debouncedSearchTerm) return items;
-    
+    if (!searchTerm) return items;
+
     return items.filter(item => {
       return searchKeys.some(key => {
         const value = item[key];
         if (typeof value === 'string') {
-          return value.toLowerCase().includes(debouncedSearchTerm.toLowerCase());
+          return value.toLowerCase().includes(searchTerm.toLowerCase());
         }
         return false;
       });
     });
-  }, [items, debouncedSearchTerm, searchKeys]);
+  }, [items, searchKeys, searchTerm]);
 
   const clearSearch = () => setSearchTerm('');
 

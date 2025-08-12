@@ -12,7 +12,7 @@ describe('BooksApp', () => {
   it('renders books management interface', async () => {
     render(<BooksApp />)
     
-    expect(screen.getByText('Books Management')).toBeInTheDocument()
+  expect(screen.getByText('Books Management')).toBeInTheDocument()
     
     await waitFor(() => {
       expect(screen.getByText('Book 1')).toBeInTheDocument()
@@ -27,7 +27,7 @@ describe('BooksApp', () => {
       expect(screen.getByText('Book 1')).toBeInTheDocument()
     })
 
-    const categoryFilter = screen.getByDisplayValue('All Categories')
+  const categoryFilter = screen.getByDisplayValue('All Categories')
     fireEvent.change(categoryFilter, { target: { value: 'Fiction' } })
     
     await waitFor(() => {

@@ -2,6 +2,7 @@
 
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
 import { Button } from '@/components/ui/Button';
 import { CustomerSearchWidget, type Customer } from '@/components/admin/store/CustomerSearchWidget';
@@ -65,6 +66,7 @@ interface Product {
 }
 
 export default function ProductsManagementPage() {
+const router = useRouter();
 const supabase = createClientComponentClient();
 
   const [loading, setLoading] = useState(true);
@@ -179,15 +181,15 @@ const supabase = createClientComponentClient();
             <p className="text-blue-100">نظام إدارة شامل للمنتجات والمخزون مع التتبع المالي والعملاء</p>
           </div>
           <div className="flex gap-3">
-            <Button variant="outline" className="bg-white/10 border-white/20 text-white hover:bg-white/20">
+            <Button variant="outline" className="bg-white/10 border-white/20 text-white hover:bg-white/20" onClick={() => router.push('/store/products/export')}>
               <Download className="h-4 w-4 mr-2" />
               تصدير المنتجات
             </Button>
-            <Button variant="outline" className="bg-white/10 border-white/20 text-white hover:bg-white/20">
+            <Button variant="outline" className="bg-white/10 border-white/20 text-white hover:bg-white/20" onClick={() => router.push('/store/products/import')}>
               <Upload className="h-4 w-4 mr-2" />
               استيراد منتجات
             </Button>
-            <Button className="bg-green-600 hover:bg-green-700 text-white">
+            <Button className="bg-green-600 hover:bg-green-700 text-white" onClick={() => router.push('/store/products/create')}>
               <Plus className="h-4 w-4 mr-2" />
               منتج جديد
             </Button>

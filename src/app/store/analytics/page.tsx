@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
@@ -17,6 +18,7 @@ import {
 } from 'lucide-react';
 
 export default function AnalyticsPage() {
+  const router = useRouter();
   const [selectedPeriod, setSelectedPeriod] = useState('month');
   const [selectedCategory, setSelectedCategory] = useState('all');
   
@@ -72,7 +74,7 @@ export default function AnalyticsPage() {
             <Filter className="w-4 h-4 mr-2" />
             تصفية
           </Button>
-          <Button variant="outline">
+          <Button variant="outline" onClick={() => router.push('/store/reports')}>
             <Download className="w-4 h-4 mr-2" />
             تصدير
           </Button>

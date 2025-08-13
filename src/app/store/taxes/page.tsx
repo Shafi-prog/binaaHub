@@ -1,5 +1,6 @@
 'use client';
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
@@ -28,6 +29,7 @@ import {
 import { toast } from 'sonner';
 
 export default function TaxesPage() {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState('rates');
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -186,11 +188,11 @@ export default function TaxesPage() {
           <p className="text-gray-600">إدارة معدلات الضرائب والتقارير الضريبية</p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline">
+          <Button variant="outline" onClick={() => router.push('/store/reports')}>
             <Download className="h-4 w-4 mr-2" />
             تصدير التقارير
           </Button>
-          <Button>
+          <Button onClick={() => router.push('/store/taxes/create')}>
             <Plus className="h-4 w-4 mr-2" />
             إضافة معدل ضريبي
           </Button>

@@ -6,6 +6,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/core/shared/auth/AuthProvider';
 import { Button } from '@/components/ui/Button';
+import StoreNavbar from '@/components/store/StoreNavbar';
 import { 
   Store,
   ShoppingCart,
@@ -62,6 +63,10 @@ export default function StoreLayout({
   let user = null;
   let loading = false;
   let signOut: (() => Promise<void>) | null = null;
+  const [storeName, setStoreName] = useState<string | null>(null);
+  const [storeLogoUrl, setStoreLogoUrl] = useState<string | null>(null);
+  const [storeThemeFrom, setStoreThemeFrom] = useState<string>('#2563eb'); // blue-600
+  const [storeThemeTo, setStoreThemeTo] = useState<string>('#1d4ed8');   // blue-700
   try {
     const authResult = useAuth();
     user = authResult.user;
@@ -87,6 +92,35 @@ export default function StoreLayout({
   useEffect(() => {
     setIsClientSide(true);
   }, []);
+
+  // Fetch store name/logo from user_profiles if available
+  useEffect(() => {
+    const fetchStoreName = async () => {
+      try {
+        if (!user?.id) return;
+        const res = await fetch('/api/auth/profile', { cache: 'no-store' });
+        if (!res.ok) return;
+        const data = await res.json();
+        // Try common keys
+        const name = data?.store_name || data?.storeName || data?.profile?.store_name || data?.profile?.display_name || null;
+        const logo = data?.profile?.logo_url || data?.logo_url || null;
+        if (name) setStoreName(name);
+        if (logo) setStoreLogoUrl(logo);
+
+  // Theme colors: attempt multiple naming conventions
+  const profile = data?.profile || {};
+  const tryKeys = (...keys: string[]) => keys.map(k => profile?.[k] ?? data?.[k]).find(v => typeof v === 'string' && v);
+  const fromCandidate = tryKeys('store_theme_from', 'theme_from', 'brand_color_from', 'brand_from', 'primary_color', 'brand_primary');
+  const toCandidate = tryKeys('store_theme_to', 'theme_to', 'brand_color_to', 'brand_to', 'secondary_color', 'brand_secondary');
+  const isCssColor = (v?: string) => typeof v === 'string' && (/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/.test(v) || v.startsWith('rgb') || v.startsWith('hsl'));
+  if (isCssColor(fromCandidate)) setStoreThemeFrom(fromCandidate!);
+  if (isCssColor(toCandidate)) setStoreThemeTo(toCandidate!);
+      } catch (e) {
+        // ignore
+      }
+    };
+    fetchStoreName();
+  }, [user?.id]);
 
   // Logout handler
   const handleLogout = async () => {
@@ -330,7 +364,15 @@ export default function StoreLayout({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex" dir="rtl">
+    <div
+      className="min-h-screen bg-gray-50 flex"
+      dir="rtl"
+      // Shared store theme variables (dynamic with fallbacks)
+      style={{
+        ['--store-from' as any]: storeThemeFrom,
+        ['--store-to' as any]: storeThemeTo,
+      }}
+    >
       {/* Mobile sidebar backdrop */}
       {sidebarOpen && (
         <div 
@@ -342,7 +384,10 @@ export default function StoreLayout({
       {/* Sidebar - Always Fixed with improved scrolling */}
       <div className={`fixed inset-y-0 right-0 z-50 w-72 bg-white shadow-xl transform transition-transform duration-300 ease-in-out flex flex-col ${sidebarOpen ? 'translate-x-0' : 'translate-x-full lg:translate-x-0'}`}>
         {/* Sidebar Header */}
-        <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200 bg-gradient-to-r from-blue-600 to-blue-700 flex-shrink-0">
+        <div
+          className="flex items-center justify-between h-16 px-6 border-b border-gray-200 flex-shrink-0"
+          style={{ background: 'linear-gradient(to right, var(--store-from), var(--store-to))' }}
+        >
           <div className="flex items-center gap-3">
             <div className="p-2 bg-white rounded-lg">
               <Store className="h-5 w-5 text-blue-600" />
@@ -529,64 +574,17 @@ export default function StoreLayout({
 
       {/* Main content - Properly positioned beside sidebar */}
       <div className="flex-1 lg:mr-72 min-h-screen">
-        {/* Enhanced Top bar */}
-        <div className="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-30">
-          <div className="flex items-center justify-between h-16 px-6">
-            <div className="flex items-center gap-4">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setSidebarOpen(true)}
-                className="lg:hidden"
-              >
-                <Menu className="h-5 w-5" />
-              </Button>
-              <div className="flex items-center gap-3">
-                <div className="lg:hidden">
-                  <Store className="h-6 w-6 text-blue-600" />
-                </div>
-                <div>
-                  <h1 className="text-xl font-bold text-gray-900">
-                    {getCurrentPageName()}
-                  </h1>
-                  <p className="text-sm text-gray-500">
-                    {isStoreOwner ? 'إدارة المتجر' : 'منصة التجارة الإلكترونية'}
-                  </p>
-                </div>
-              </div>
-            </div>
-            
-            <div className="flex items-center gap-3">
-              {/* Notifications */}
-              <Button variant="ghost" size="sm" className="relative">
-                <Bell className="h-5 w-5 text-gray-600" />
-                <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full text-xs"></span>
-              </Button>
-              
-              {/* Logout Button */}
-              <Button 
-                variant="ghost" 
-                size="sm"
-                onClick={handleLogout}
-                disabled={logoutLoading}
-                className="text-red-600 hover:text-red-700 hover:bg-red-50"
-              >
-                <LogOut className="h-5 w-5" />
-                {logoutLoading && <span className="ml-1">...</span>}
-              </Button>
-              
-              {/* User Menu */}
-              <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-50">
-                <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
-                  <User className="h-4 w-4 text-white" />
-                </div>
-                <span className="text-sm font-medium text-gray-700 hidden md:block">
-                  {user?.name || 'المدير'}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
+        {/* Unified Store Navbar */}
+        <StoreNavbar
+          title={getCurrentPageName()}
+          subtitle={isStoreOwner ? 'إدارة المتجر' : 'منصة التجارة الإلكترونية'}
+          onOpenSidebar={() => setSidebarOpen(true)}
+          user={user}
+          storeName={storeName}
+          storeLogoUrl={storeLogoUrl}
+          onLogout={handleLogout}
+          logoutLoading={logoutLoading}
+        />
 
         {/* Page content */}
         <main className="bg-gray-50">

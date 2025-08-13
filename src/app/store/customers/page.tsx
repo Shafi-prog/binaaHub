@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
@@ -101,6 +102,7 @@ interface CustomerCategory {
 }
 
 export default function CustomersPage() {
+const router = useRouter();
 const supabase = createClientComponentClient();
 
   const [loading, setLoading] = useState(true);
@@ -242,15 +244,15 @@ const supabase = createClientComponentClient();
           <p className="text-gray-600">إدارة قاعدة بيانات العملاء والعلاقات التجارية</p>
         </div>
         <div className="flex gap-3">
-          <Button variant="outline">
+          <Button variant="outline" onClick={() => router.push('/store/customers/import')}>
             <Upload className="h-4 w-4 mr-2" />
             استيراد عملاء
           </Button>
-          <Button variant="outline">
+          <Button variant="outline" onClick={() => router.push('/store/customers/export')}>
             <Download className="h-4 w-4 mr-2" />
             تصدير البيانات
           </Button>
-          <Button>
+          <Button onClick={() => router.push('/store/customers/create')}>
             <UserPlus className="h-4 w-4 mr-2" />
             عميل جديد
           </Button>

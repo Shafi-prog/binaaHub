@@ -2,7 +2,7 @@
 
 export const dynamic = 'force-dynamic';
 
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
@@ -26,25 +26,95 @@ import {
 } from 'lucide-react';
 import { CustomerSearchWidget, Customer } from '@/components/store/CustomerSearchWidget';
 import { toast } from 'sonner';
+import { exportReportToExcel, exportReportToPDF, ReportTopProduct } from '@/core/shared/utils/report-export';
 
 export default function ReportsPage() {
 const supabase = createClientComponentClient();
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
   const [selectedPeriod, setSelectedPeriod] = useState('month');
   const [reportType, setReportType] = useState('sales');
+  const [summary, setSummary] = useState({ totalSales: 0, ordersCount: 0, customersCount: 0, growth: 0 });
+  const [topProducts, setTopProducts] = useState<ReportTopProduct[]>([]);
 
-  const salesData = {
-    total: 125000,
-    growth: 12.5,
-    orders: 342,
-    customers: 89
+  const period = useMemo(() => getPeriodRange(selectedPeriod), [selectedPeriod]);
+
+  const handleGenerateReport = async () => {
+    setLoading(true);
+    try {
+      // 1) Fetch orders in period (optionally by customer)
+      let q = supabase
+        .from('orders')
+        .select('id,total_amount,customer_id,created_at')
+        .gte('created_at', period.start)
+        .lte('created_at', period.end)
+        .order('created_at', { ascending: true });
+      if (selectedCustomer?.id) {
+        q = q.eq('customer_id', selectedCustomer.id);
+      }
+      const { data: orders, error: ordersErr } = await q;
+      if (ordersErr) throw ordersErr;
+
+      const totalSales = (orders ?? []).reduce((s: number, o: any) => s + Number(o.total_amount || 0), 0);
+      const ordersCount = (orders ?? []).length;
+      const customersCount = new Set((orders ?? []).map((o: any) => o.customer_id).filter(Boolean)).size;
+
+      // 2) Fetch order_items for those orders and compute top products
+      let top: ReportTopProduct[] = [];
+      if (orders && orders.length) {
+        const orderIds = orders.map((o: any) => o.id);
+        const { data: items, error: itemsErr } = await supabase
+          .from('order_items')
+          .select('order_id, product_id, quantity, total_price, product_name')
+          .in('order_id', orderIds);
+        if (itemsErr) throw itemsErr;
+
+        // If product_name snapshot exists, use it; otherwise map names via products table.
+        const needProductNames = (items ?? []).some((it: any) => !it.product_name);
+        let namesMap: Record<string, string> = {};
+        if (needProductNames) {
+          const productIds = Array.from(new Set((items ?? []).map((it: any) => it.product_id).filter(Boolean)));
+          if (productIds.length) {
+            const { data: prods } = await supabase.from('products').select('id,name').in('id', productIds);
+            for (const p of prods || []) namesMap[p.id as string] = (p as any).name || '-';
+          }
+        }
+
+        const agg: Record<string, { product_name: string; quantity: number; sales: number }> = {};
+        for (const it of items || []) {
+          const pid = (it as any).product_id as string;
+          const key = pid || (it as any).product_name || 'unknown';
+          if (!agg[key]) {
+            agg[key] = {
+              product_name: (it as any).product_name || namesMap[pid] || 'منتج',
+              quantity: 0,
+              sales: 0,
+            };
+          }
+          agg[key].quantity += Number((it as any).quantity || 0);
+          agg[key].sales += Number((it as any).total_price || 0);
+        }
+        top = Object.values(agg).sort((a, b) => b.sales - a.sales).slice(0, 10);
+      }
+
+      // Simple growth placeholder: compare to previous equal period total if needed later
+      setSummary({ totalSales, ordersCount, customersCount, growth: 0 });
+      setTopProducts(top);
+      toast.success('تم إنشاء التقرير بنجاح');
+    } catch (e: any) {
+      console.error(e);
+      toast.error('تعذر إنشاء التقرير');
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleGenerateReport = () => {
-    toast.success('تم إنشاء التقرير بنجاح');
-  };
+  useEffect(() => {
+    // Auto-generate on mount and period change
+    handleGenerateReport();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedPeriod, selectedCustomer?.id, reportType]);
 
   return (
     <div className="p-6 space-y-6">
@@ -58,11 +128,22 @@ const supabase = createClientComponentClient();
               <p className="text-teal-100 text-lg">تحليل شامل للأداء وإحصائيات المبيعات والعملاء</p>
             </div>
             <div className="flex gap-3">
-              <Button variant="outline" className="bg-white/20 border-white/30 text-white hover:bg-white/30">
+              <Button
+                variant="outline"
+                className="bg-white/20 border-white/30 text-white hover:bg-white/30"
+                onClick={async () => {
+                  const report = buildSummaryForExport({ summary, topProducts, periodLabel: period.label, customerName: selectedCustomer?.name });
+                  await exportReportToPDF(report);
+                }}
+              >
                 <Download className="h-4 w-4 mr-2" />
                 تصدير التقارير
               </Button>
-              <Button variant="outline" className="bg-white/20 border-white/30 text-white hover:bg-white/30">
+              <Button
+                variant="outline"
+                className="bg-white/20 border-white/30 text-white hover:bg-white/30"
+                onClick={() => handleGenerateReport()}
+              >
                 <RefreshCw className="h-4 w-4 mr-2" />
                 تحديث البيانات
               </Button>
@@ -155,10 +236,10 @@ const supabase = createClientComponentClient();
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-blue-600 mb-1">إجمالي المبيعات</p>
-                <p className="text-2xl font-bold text-blue-800">{salesData.total.toLocaleString()} ريال</p>
+                <p className="text-2xl font-bold text-blue-800">{summary.totalSales.toLocaleString()} ريال</p>
                 <div className="flex items-center gap-1 mt-1">
                   <TrendingUp className="h-4 w-4 text-green-600" />
-                  <span className="text-sm text-green-600">+{salesData.growth}%</span>
+                  <span className="text-sm text-green-600">+{summary.growth}%</span>
                 </div>
               </div>
               <div className="p-3 bg-blue-500 rounded-full">
@@ -173,7 +254,7 @@ const supabase = createClientComponentClient();
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-green-600 mb-1">عدد الطلبات</p>
-                <p className="text-2xl font-bold text-green-800">{salesData.orders}</p>
+                <p className="text-2xl font-bold text-green-800">{summary.ordersCount}</p>
                 <div className="flex items-center gap-1 mt-1">
                   <TrendingUp className="h-4 w-4 text-green-600" />
                   <span className="text-sm text-green-600">+8.2%</span>
@@ -191,7 +272,7 @@ const supabase = createClientComponentClient();
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-purple-600 mb-1">عدد العملاء</p>
-                <p className="text-2xl font-bold text-purple-800">{salesData.customers}</p>
+                <p className="text-2xl font-bold text-purple-800">{summary.customersCount}</p>
                 <div className="flex items-center gap-1 mt-1">
                   <TrendingUp className="h-4 w-4 text-green-600" />
                   <span className="text-sm text-green-600">+15.3%</span>
@@ -259,29 +340,15 @@ const supabase = createClientComponentClient();
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              <div className="flex items-center justify-between p-3 border rounded-lg">
-                <div>
-                  <p className="font-medium">أجهزة الكمبيوتر</p>
-                  <p className="text-sm text-gray-600">45% من المبيعات</p>
+              {(topProducts.length ? topProducts : [{ product_name: '—', quantity: 0, sales: 0 }]).map((p, idx) => (
+                <div key={idx} className="flex items-center justify-between p-3 border rounded-lg">
+                  <div>
+                    <p className="font-medium">{p.product_name}</p>
+                    <p className="text-sm text-gray-600">الكمية: {p.quantity.toLocaleString()} • المبيعات: {p.sales.toLocaleString()} ريال</p>
+                  </div>
+                  <Badge variant={idx === 0 ? 'secondary' : 'outline'}>{idx === 0 ? 'الأعلى مبيعاً' : '—'}</Badge>
                 </div>
-                <Badge variant="secondary">الأعلى مبيعاً</Badge>
-              </div>
-              
-              <div className="flex items-center justify-between p-3 border rounded-lg">
-                <div>
-                  <p className="font-medium">الإكسسوارات</p>
-                  <p className="text-sm text-gray-600">30% من المبيعات</p>
-                </div>
-                <Badge variant="outline">جيد</Badge>
-              </div>
-              
-              <div className="flex items-center justify-between p-3 border rounded-lg">
-                <div>
-                  <p className="font-medium">البرمجيات</p>
-                  <p className="text-sm text-gray-600">25% من المبيعات</p>
-                </div>
-                <Badge variant="outline">متوسط</Badge>
-              </div>
+              ))}
             </div>
           </CardContent>
         </Card>
@@ -294,12 +361,26 @@ const supabase = createClientComponentClient();
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <Button variant="outline" className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              className="flex items-center gap-2"
+              onClick={async () => {
+                const report = buildSummaryForExport({ summary, topProducts, periodLabel: period.label, customerName: selectedCustomer?.name });
+                await exportReportToPDF(report);
+              }}
+            >
               <Download className="h-4 w-4" />
               تصدير PDF
             </Button>
             
-            <Button variant="outline" className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              className="flex items-center gap-2"
+              onClick={async () => {
+                const report = buildSummaryForExport({ summary, topProducts, periodLabel: period.label, customerName: selectedCustomer?.name });
+                await exportReportToExcel(report);
+              }}
+            >
               <Download className="h-4 w-4" />
               تصدير Excel
             </Button>
@@ -318,5 +399,57 @@ const supabase = createClientComponentClient();
       </Card>
     </div>
   );
+}
+
+function getPeriodRange(key: string) {
+  const now = new Date();
+  let start: Date;
+  let end: Date = new Date();
+  let label = '';
+  switch (key) {
+    case 'day':
+      start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      label = 'اليوم';
+      break;
+    case 'week': {
+      const d = new Date(now);
+      const day = (d.getDay() + 6) % 7; // Monday=0
+      start = new Date(d);
+      start.setDate(d.getDate() - day);
+      start.setHours(0, 0, 0, 0);
+      label = 'هذا الأسبوع';
+      break;
+    }
+    case 'month':
+      start = new Date(now.getFullYear(), now.getMonth(), 1);
+      label = 'هذا الشهر';
+      break;
+    case 'quarter': {
+      const q = Math.floor(now.getMonth() / 3);
+      start = new Date(now.getFullYear(), q * 3, 1);
+      label = 'هذا الربع';
+      break;
+    }
+    case 'year':
+      start = new Date(now.getFullYear(), 0, 1);
+      label = 'هذا العام';
+      break;
+    default:
+      start = new Date(now.getFullYear(), now.getMonth(), 1);
+      label = 'هذا الشهر';
+  }
+  // Supabase expects ISO strings
+  return { start: start.toISOString(), end: end.toISOString(), label };
+}
+
+function buildSummaryForExport({ summary, topProducts, periodLabel, customerName }: { summary: { totalSales: number; ordersCount: number; customersCount: number; growth: number }; topProducts: ReportTopProduct[]; periodLabel: string; customerName?: string; }) {
+  return {
+    periodLabel,
+    customerName,
+    totalSales: summary.totalSales,
+    ordersCount: summary.ordersCount,
+    customersCount: summary.customersCount,
+    topProducts,
+  };
 }
 

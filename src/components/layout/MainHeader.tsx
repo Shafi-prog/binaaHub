@@ -32,8 +32,8 @@ export default function MainHeader() {
   const [isJourneyDropdownOpen, setIsJourneyDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Hide header on dashboard pages since they have their own header
-  if (pathname?.startsWith('/user/dashboard')) {
+  // Hide public header on all /user routes and all /store routes (both have their own navbars)
+  if (pathname?.startsWith('/user') || pathname?.startsWith('/store')) {
     return null;
   }
 

@@ -114,176 +114,55 @@ const StockApp = React.memo(() => {
       total_items: inventory.length,
       total_value: inventory.reduce((sum, item) => sum + (item.quantity * item.cost_price), 0),
       low_stock_items: lowStockItems.length,
-      locations: locations.length,
-      generated_at: new Date().toISOString(),
     };
 
     // Export report
     console.log('Stock Report:', report);
   };
 
-  if (isLoading) {
-    return <div className="flex justify-center items-center h-screen">Loading...</div>;
-  }
+  const handleLocationChange = (locationId: string) => {
+    setSelectedLocation(locationId);
+  };
+
+  const filteredInventory = useMemo(() => {
+    return selectedLocation === 'all'
+      ? inventory
+      : inventory.filter(item => item.location === selectedLocation);
+  }, [inventory, selectedLocation]);
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <div className="max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold mb-8 text-gray-800">Stock Management System</h1>
-        
-        {/* Dashboard Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white p-6 rounded-lg shadow">
-            <h3 className="text-lg font-semibold text-gray-700 mb-2">Total Items</h3>
-            <p className="text-3xl font-bold text-blue-600">{inventory.length}</p>
-          </div>
-          <div className="bg-white p-6 rounded-lg shadow">
-            <h3 className="text-lg font-semibold text-gray-700 mb-2">Low Stock</h3>
-            <p className="text-3xl font-bold text-red-600">{lowStockItems.length}</p>
-          </div>
-          <div className="bg-white p-6 rounded-lg shadow">
-            <h3 className="text-lg font-semibold text-gray-700 mb-2">Total Value</h3>
-            <p className="text-3xl font-bold text-green-600">
-              {inventory.reduce((sum, item) => sum + (item.quantity * item.cost_price), 0).toLocaleString('en-US')} SAR
-            </p>
-          </div>
-          <div className="bg-white p-6 rounded-lg shadow">
-            <h3 className="text-lg font-semibold text-gray-700 mb-2">Locations</h3>
-            <p className="text-3xl font-bold text-purple-600">{locations.length}</p>
-          </div>
-        </div>
-
-        {/* Location Filter */}
-        <div className="mb-6">
-          <select
-            value={selectedLocation}
-            onChange={(e) => setSelectedLocation(e.target.value)}
-            className="px-4 py-2 border rounded-lg bg-white"
-          >
-            <option value="all">All Locations</option>
-            {locations.map(location => (
-              <option key={location.id} value={location.id}>
-                {location.name}
-              </option>
-            ))}
-          </select>
-          
-          <button
-            onClick={generateStockReport}
-            className="ml-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-          >
-            Generate Report
-          </button>
-        </div>
-
-        {/* Low Stock Alerts */}
-        {lowStockItems.length > 0 && (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
-            <h3 className="text-lg font-semibold text-red-800 mb-2">Low Stock Alerts</h3>
-            <div className="space-y-2">
-              {lowStockItems.map(item => (
-                <div key={item.id} className="flex items-center justify-between">
-                  <span className="text-red-700">{item.title} - {item.quantity} units left</span>
-                  <button
-                    onClick={() => handleReorder(item.id, item.reorder_level * 2)}
-                    className="px-3 py-1 bg-red-500 text-white rounded text-sm hover:bg-red-600"
-                  >
-                    Reorder
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Inventory Table */}
-        <div className="bg-white rounded-lg shadow overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Product
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    SKU
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Quantity
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Location
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Cost Price
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {inventory.map(item => (
-                  <tr key={item.id} className={item.quantity <= item.reorder_level ? 'bg-red-50' : ''}>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">{item.title}</div>
-                      <div className="text-sm text-gray-500">{item.supplier}</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {item.sku}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center">
-                        <span className={`text-sm font-medium ${
-                          item.quantity <= item.reorder_level ? 'text-red-600' : 'text-gray-900'
-                        }`}>
-                          {item.quantity}
-                        </span>
-                        <span className="text-sm text-gray-500 ml-2">
-                          (Reserved: {item.reserved_quantity})
-                        </span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {item.location}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {item.cost_price.toLocaleString('en-US')} SAR
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                      <button
-                        onClick={() => handleStockAdjustment(item.id, 1, 'Manual adjustment')}
-                        className="text-green-600 hover:text-green-900 mr-3"
-                      >
-                        +
-                      </button>
-                      <button
-                        onClick={() => handleStockAdjustment(item.id, -1, 'Manual adjustment')}
-                        className="text-red-600 hover:text-red-900 mr-3"
-                      >
-                        -
-                      </button>
-                      <button
-                        onClick={() => handleReorder(item.id, item.reorder_level * 2)}
-                        className="text-blue-600 hover:text-blue-900"
-                      >
-                        Reorder
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
+    <div>
+      <h1>Stock Inventory</h1>
+      <div>
+        <label>Filter by Location:</label>
+        <select value={selectedLocation} onChange={e => handleLocationChange(e.target.value)}>
+          <option value="all">All Locations</option>
+          {locations.map(location => (
+            <option key={location.id} value={location.id}>{location.name}</option>
+          ))}
+        </select>
       </div>
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : (
+        <div>
+          <h2>Inventory List</h2>
+          <ul>
+            {filteredInventory.map(item => (
+              <li key={item.id}>
+                {item.title} - Qty: {item.quantity} {item.location}
+                <button onClick={() => handleStockAdjustment(item.id, 1, 'Restock')}>Restock</button>
+                <button onClick={() => handleStockAdjustment(item.id, -1, 'Sell')}>Sell</button>
+                <button onClick={() => handleReorder(item.id, 10)}>Reorder</button>
+              </li>
+            ))}
+          </ul>
+          <button onClick={generateStockReport}>Generate Report</button>
+        </div>
+      )}
     </div>
   );
 });
 
-StockApp.displayName = 'StockApp';
-
-export default StockApp;
-
-
-
+// Re-export canonical StockApp from shared components to avoid duplication
+export { default } from '@shared/components/StockApp';

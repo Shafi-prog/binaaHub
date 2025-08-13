@@ -62,13 +62,20 @@ export interface MedusaOrderItem {
 class MedusaIntegrationService {
   private baseUrl: string;
   private apiKey?: string;
+  private enabled: boolean;
 
   constructor() {
     this.baseUrl = process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL || 'http://localhost:9000';
     this.apiKey = process.env.MEDUSA_API_KEY;
+    // Enable by default; set NEXT_PUBLIC_MEDUSA_ENABLE to 'false' to disable external calls
+    this.enabled = process.env.NEXT_PUBLIC_MEDUSA_ENABLE !== 'false';
   }
 
   private async makeRequest(endpoint: string, options: RequestInit = {}) {
+    if (!this.enabled) {
+      // Short-circuit when Medusa integration is disabled
+      throw new Error('MEDUSA_DISABLED');
+    }
     const url = `${this.baseUrl}${endpoint}`;
     const headers = {
       'Content-Type': 'application/json',
@@ -87,7 +94,11 @@ class MedusaIntegrationService {
       }
 
       return await response.json();
-    } catch (error) {
+    } catch (error: any) {
+      if (error?.message === 'MEDUSA_DISABLED') {
+        // Avoid noisy logs when integration is intentionally disabled
+        throw error;
+      }
       console.error('Medusa API request failed:', error);
       throw error;
     }

@@ -36,6 +36,7 @@ const customJestConfig = {
   moduleNameMapper: {
     // Specific mappings first
     '^@/domains/marketplace/services/medusa$': '<rootDir>/src/lib/__mocks__/medusa-service.ts',
+  '^@shared/(.*)$': '<rootDir>/src/core/shared/$1',
     '^@/components/ui$': '<rootDir>/src/components/ui/index.ts',
     '^@/components/ui/(.*)$': '<rootDir>/src/components/ui/$1',
     '^@/lib/utils$': '<rootDir>/src/lib/utils.ts',
@@ -73,8 +74,10 @@ const customJestConfig = {
       moduleNameMapper: {
         // Specific mappings first
         '^@/domains/marketplace/services/medusa$': '<rootDir>/src/lib/__mocks__/medusa-service.ts',
+  '^@shared/(.*)$': '<rootDir>/src/core/shared/$1',
   '^@medusajs/framework/utils$': '<rootDir>/src/lib/__mocks__/medusa-framework-utils.ts',
   '^@medusajs/framework/types$': '<rootDir>/src/lib/__mocks__/medusa-framework-types.ts',
+  '^@supabase/auth-helpers-nextjs$': '<rootDir>/src/lib/__mocks__/supabase-auth-helpers-nextjs.ts',
         '^@/components/ui$': '<rootDir>/src/components/ui/index.ts',
         '^@/components/ui/(.*)$': '<rootDir>/src/components/ui/$1',
         '^@/lib/utils$': '<rootDir>/src/lib/utils.ts',

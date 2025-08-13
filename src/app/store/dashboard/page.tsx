@@ -1,6 +1,8 @@
+
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Badge } from '@/components/ui/Badge'
@@ -14,10 +16,12 @@ import {
   Target,
   Activity,
   FileText,
-  Download
+  Download,
+  Plus
 } from 'lucide-react'
 
 export default function DashboardPage() {
+  const router = useRouter()
   const [dashboardData] = useState({
     orders: [],
     products: [],
@@ -55,12 +59,16 @@ export default function DashboardPage() {
 
   return (
     <div className="p-6 space-y-6" dir="rtl">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">لوحة تحكم المتجر</h1>
-        <div className="flex space-x-2 space-x-reverse">
-          <Button variant="outline">تصدير التقرير</Button>
-          <Button>طلب جديد</Button>
-        </div>
+      {/* In-page actions (not in the navbar) */}
+      <div className="flex justify-end gap-2">
+        <Button variant="outline" onClick={() => router.push('/store/reports')}>
+          <Download className="h-4 w-4 ml-2" />
+          تصدير التقرير
+        </Button>
+        <Button onClick={() => router.push('/store/pos')}>
+          <Plus className="h-4 w-4 ml-2" />
+          طلب جديد
+        </Button>
       </div>
 
       {/* Key Metrics Cards */}

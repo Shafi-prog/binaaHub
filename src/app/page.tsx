@@ -2,6 +2,7 @@
 "use client";
 import * as React from "react";
 import { useState, useEffect } from "react";
+import { useRouter } from 'next/navigation';
 import { cn } from "@/core/shared/utils";
 import { supabaseDataService } from "@/services/supabase-data-service";
 import Link from 'next/link';
@@ -90,6 +91,7 @@ const statsData = [
 ];
 
 export default function HomePage() {
+  const router = useRouter();
   const [selectedTab, setSelectedTab] = useState<'users' | 'stores'>('users');
   const [selectedCity, setSelectedCity] = useState('all');
   const [selectedStore, setSelectedStore] = useState('all');
@@ -105,6 +107,33 @@ export default function HomePage() {
 
   // Debounced search term for API calls
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
+
+  // If logged in and user is a store, redirect to store dashboard to show the store navbar
+  useEffect(() => {
+    let cancelled = false;
+    const checkAndRedirect = async () => {
+      try {
+        const { createClientComponentClient } = await import('@supabase/auth-helpers-nextjs');
+        const supabase = createClientComponentClient();
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
+        const { data: profile } = await supabase
+          .from('user_profiles')
+          .select('user_type')
+          .eq('user_id', user.id)
+          .single();
+        if (cancelled) return;
+        const type = profile?.user_type;
+        if (type === 'store' || type === 'store_owner') {
+          router.replace('/store/dashboard');
+        }
+      } catch (e) {
+        // no-op
+      }
+    };
+    checkAndRedirect();
+    return () => { cancelled = true; };
+  }, [router]);
 
   // Debounce search term
   useEffect(() => {

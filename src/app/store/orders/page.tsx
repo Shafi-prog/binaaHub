@@ -1,11 +1,13 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { ShoppingCart, Package, Search, Filter, Plus, Edit, Trash2 } from 'lucide-react';
 
 export default function OrdersPage() {
+  const router = useRouter();
   const [orders, setOrders] = useState([
     {
       id: '1001',
@@ -59,7 +61,7 @@ export default function OrdersPage() {
             <Search className="w-4 h-4 mr-2" />
             بحث
           </Button>
-          <Button>
+          <Button onClick={() => router.push('/store/pos')}>
             <Plus className="w-4 h-4 mr-2" />
             طلب جديد
           </Button>

@@ -58,9 +58,30 @@ export default function UserLayout({
     projects: false,
     finance: false
   });
+  const [userThemeFrom, setUserThemeFrom] = useState<string>('#16a34a'); // green-600
+  const [userThemeTo, setUserThemeTo] = useState<string>('#15803d');   // green-700
   
   useEffect(() => {
     setIsClientSide(true);
+  }, []);
+
+  // Fetch user profile theme colors
+  useEffect(() => {
+    const loadTheme = async () => {
+      try {
+        const res = await fetch('/api/auth/profile', { cache: 'no-store' });
+        if (!res.ok) return;
+        const data = await res.json();
+        const profile = data?.profile || {};
+        const pick = (...keys: string[]) => keys.map(k => profile?.[k] ?? data?.[k]).find(v => typeof v === 'string' && v);
+        const fromC = pick('user_theme_from', 'theme_from', 'brand_color_from', 'brand_from', 'primary_color', 'brand_primary');
+        const toC = pick('user_theme_to', 'theme_to', 'brand_color_to', 'brand_to', 'secondary_color', 'brand_secondary');
+        const isCss = (v?: string) => typeof v === 'string' && (/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/.test(v) || v.startsWith('rgb') || v.startsWith('hsl'));
+        if (isCss(fromC)) setUserThemeFrom(fromC!);
+        if (isCss(toC)) setUserThemeTo(toC!);
+      } catch {}
+    };
+    loadTheme();
   }, []);
 
   // Logout handler
@@ -225,7 +246,15 @@ export default function UserLayout({
   }
 
   return (
-      <div className="min-h-screen bg-gray-50 flex" dir="rtl">
+      <div
+        className="min-h-screen bg-gray-50 flex"
+        dir="rtl"
+        // Shared user theme variables (dynamic with fallbacks)
+        style={{
+          ['--user-from' as any]: userThemeFrom,
+          ['--user-to' as any]: userThemeTo,
+        }}
+      >
           {/* Mobile sidebar backdrop */}
           {sidebarOpen && (
             <div 
@@ -237,7 +266,10 @@ export default function UserLayout({
           {/* Sidebar */}
           <div className={`fixed inset-y-0 right-0 z-50 w-72 bg-white shadow-xl transform transition-transform duration-300 ease-in-out flex flex-col ${sidebarOpen ? 'translate-x-0' : 'translate-x-full lg:translate-x-0'}`}>
             {/* Sidebar Header */}
-            <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200 bg-gradient-to-r from-green-600 to-green-700 flex-shrink-0">
+            <div
+              className="flex items-center justify-between h-16 px-6 border-b border-gray-200 flex-shrink-0"
+              style={{ background: 'linear-gradient(to right, var(--user-from), var(--user-to))' }}
+            >
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-white rounded-lg">
                   <User className="h-5 w-5 text-green-600" />
@@ -397,32 +429,35 @@ export default function UserLayout({
       {/* Main content */}
       <div className="flex-1 lg:mr-72 min-h-screen">
         {/* Top bar */}
-        <div className="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-30">
+        <header
+          className="border-b border-transparent shadow-sm sticky top-0 z-30 text-white"
+          style={{ background: 'linear-gradient(to right, var(--user-from), var(--user-to))' }}
+        >
           <div className="flex items-center justify-between h-16 px-6">
             <div className="flex items-center gap-4">
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => setSidebarOpen(true)}
-                className="lg:hidden"
+                className="lg:hidden text-white hover:bg-white/10"
               >
                 <Menu className="h-5 w-5" />
               </Button>
               <div>
-                <h1 className="text-lg font-semibold text-gray-900">
+                <h1 className="text-lg font-semibold text-white">
                   {getCurrentPageName()}
                 </h1>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-green-100">
                   منصة البناء الذكي
                 </p>
               </div>
             </div>
 
             <div className="flex items-center gap-3">
-              <Button variant="ghost" size="sm">
+              <Button variant="ghost" size="sm" className="text-white hover:bg-white/10">
                 <Bell className="h-4 w-4" />
               </Button>
-              <Button variant="ghost" size="sm">
+              <Button variant="ghost" size="sm" className="text-white hover:bg-white/10">
                 <HelpCircle className="h-4 w-4" />
               </Button>
               <Button 
@@ -430,14 +465,14 @@ export default function UserLayout({
                 size="sm"
                 onClick={handleLogout}
                 disabled={logoutLoading}
-                className="text-red-600 hover:text-red-700"
+                className="text-red-100 hover:text-white hover:bg-red-500/20"
               >
                 <LogOut className="h-4 w-4" />
                 {logoutLoading && <span className="ml-1">...</span>}
               </Button>
             </div>
           </div>
-        </div>
+        </header>
 
         {/* Page content */}
         <main className="p-6">

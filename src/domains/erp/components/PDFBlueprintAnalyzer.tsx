@@ -107,43 +107,68 @@ const PDFBlueprintAnalyzer: React.FC = () => {
       // Step 1: Extract text and analyze PDF
       setAnalysisStep('استخراج النصوص والأبعاد من المخطط...');
       
-      const formData = new FormData();
-      formData.append('file', file);
-      
-      const extractResponse = await fetch('/api/ai/analyze-pdf-blueprint', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!extractResponse.ok) {
-        throw new Error('فشل في تحليل ملف PDF');
-      }
-
-      const extractedResult = await extractResponse.json();
+      // Local mock extraction based on filename and static heuristics
+      await new Promise((r) => setTimeout(r, 800));
+      const totalArea = 250 + Math.round(Math.random() * 250);
+      const rooms = [
+        { name: 'غرفة معيشة', width: 5, length: 6, area: 30 },
+        { name: 'غرفة نوم رئيسية', width: 4, length: 5, area: 20 },
+        { name: 'مطبخ', width: 3, length: 4, area: 12 },
+      ];
+      const extractedResult = {
+        data: {
+          rooms,
+          totalArea,
+          dimensions: { plotWidth: 20, plotLength: 25, floors: 2 },
+          specifications: { foundationType: 'شريطي', wallType: 'بلوك', roofType: 'هولوكور', finishLevel: 'standard' },
+          quantities: { walls: 320, doors: 12, windows: 18, electricalPoints: 85, plumbingFixtures: 24 },
+          confidence: 90,
+        },
+        rawText: `Mock extracted text for ${file.name}`,
+      } as any;
       setExtractedData(extractedResult.data);
       setRawText(extractedResult.rawText || '');
 
       // Step 2: Calculate construction costs
       setAnalysisStep('حساب التكاليف والكميات...');
       
-      const costResponse = await fetch('/api/ai/calculate-blueprint-cost', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          extractedData: extractedResult.data,
-          location: 'الرياض', // Default location
-          finishLevel: 'standard',
-        }),
-      });
-
-      if (!costResponse.ok) {
-        throw new Error('فشل في حساب التكاليف');
-      }
-
-      const costResult = await costResponse.json();
-      setCostEstimate(costResult.estimate);
+      // Local mock cost calculation
+      await new Promise((r) => setTimeout(r, 600));
+      const basePerSqm = 1700;
+      const totalCost = Math.round(extractedResult.data.totalArea * basePerSqm);
+      const breakdown = {
+        foundation: Math.round(totalCost * 0.15),
+        structure: Math.round(totalCost * 0.25),
+        walls: Math.round(totalCost * 0.1),
+        roofing: Math.round(totalCost * 0.08),
+        electrical: Math.round(totalCost * 0.12),
+        plumbing: Math.round(totalCost * 0.1),
+        finishing: Math.round(totalCost * 0.15),
+        labor: Math.round(totalCost * 0.05),
+      };
+      const materials = [
+        { name: 'أسمنت', quantity: 50, unit: 'طن', unitPrice: 280, totalPrice: 50 * 280 },
+        { name: 'حديد تسليح', quantity: 8000, unit: 'كجم', unitPrice: 3.5, totalPrice: 8000 * 3.5 },
+        { name: 'بلوك أسود', quantity: 5000, unit: 'قطعة', unitPrice: 2.2, totalPrice: 5000 * 2.2 },
+      ];
+      const timeline = {
+        estimated_duration: 10,
+        phases: [
+          { name: 'الأساسات', duration: 2, cost: breakdown.foundation },
+          { name: 'الهيكل الإنشائي', duration: 4, cost: breakdown.structure },
+          { name: 'الجدران', duration: 1, cost: breakdown.walls },
+          { name: 'التشطيبات', duration: 3, cost: breakdown.finishing },
+        ],
+      };
+      const recommendations = [
+        'استخدم بلوك عازل لتحسين كفاءة الطاقة.',
+        'خطط لتوريد المواد على دفعات لتقليل التخزين.',
+        'راجع توزيع الأعمدة لتقليل الهدر.'
+      ];
+      const alternatives = [
+        { description: 'استخدام بلاطات هولوكور', savings: 25000, impact: 'تقليل الوزن وتقليل الاستهلاك' },
+      ];
+      setCostEstimate({ totalCost, breakdown, materials, timeline, recommendations, alternatives } as any);
 
       setAnalysisStep('تم التحليل بنجاح!');
       
@@ -166,20 +191,21 @@ const PDFBlueprintAnalyzer: React.FC = () => {
     setAnalysisStep('إعادة حساب التكاليف...');
 
     try {
-      const costResponse = await fetch('/api/ai/calculate-blueprint-cost', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          extractedData: updatedData,
-          location: 'الرياض',
-          finishLevel: 'standard',
-        }),
-      });
-
-      const costResult = await costResponse.json();
-      setCostEstimate(costResult.estimate);
+      // Local recalculation with small variation
+      await new Promise((r) => setTimeout(r, 400));
+      const totalArea = updatedData.totalArea || 300;
+      const totalCost = Math.round(totalArea * 1700 * (0.98 + Math.random() * 0.04));
+      const breakdown = {
+        foundation: Math.round(totalCost * 0.15),
+        structure: Math.round(totalCost * 0.25),
+        walls: Math.round(totalCost * 0.1),
+        roofing: Math.round(totalCost * 0.08),
+        electrical: Math.round(totalCost * 0.12),
+        plumbing: Math.round(totalCost * 0.1),
+        finishing: Math.round(totalCost * 0.15),
+        labor: Math.round(totalCost * 0.05),
+      };
+      setCostEstimate((prev: any) => prev ? { ...prev, breakdown, totalCost } : { totalCost, breakdown } as any);
       
     } catch (err) {
       setError('فشل في إعادة حساب التكاليف');

@@ -47,11 +47,12 @@ export default function AIExpenseTracker({ userId, onExpenseAdded }: AIExpenseTr
 
     try {
       const formData = new FormData();
-      formData.append('file', file);
+      // New invoice extraction API expects the field name "invoice"
+      formData.append('invoice', file);
       formData.append('userId', userId);
 
-      // Call our AI processing API
-      const response = await fetch('/api/ai/process-receipt', {
+      // Use the safe mock endpoint for invoice extraction
+      const response = await fetch('/api/ai/invoice-extract', {
         method: 'POST',
         body: formData,
       });
@@ -61,7 +62,20 @@ export default function AIExpenseTracker({ userId, onExpenseAdded }: AIExpenseTr
       }
 
       const result = await response.json();
-      setExtractedData(result.expenseData);
+      // Map API response to local ExpenseData shape
+      const mapped: ExpenseData = {
+        vendor: result.vendor_name || 'غير معروف',
+        amount: typeof result.total === 'number' ? result.total : (
+          Array.isArray(result.line_items)
+            ? result.line_items.reduce((sum: number, it: any) => sum + (typeof it.amount === 'number' ? it.amount : 0), 0)
+            : 0
+        ),
+        date: result.date || new Date().toISOString().slice(0, 10),
+        category: 'فاتورة مشتريات',
+        items: Array.isArray(result.line_items) ? result.line_items.map((it: any) => it.description || '') : [],
+        confidence: 0.92,
+      };
+      setExtractedData(mapped);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'حدث خطأ في المعالجة');
     } finally {

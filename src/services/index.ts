@@ -7,7 +7,6 @@ export { default as marketplaceService } from './marketplace';
 export { default as concreteSupplyService } from './concreteSupplyService';
 export { default as constructionService } from './construction';
 export { default as constructionIntegrationService } from './constructionIntegrationService';
-export { default as constructionPDFAnalyzer } from './constructionPDFAnalyzer';
 export { default as equipmentRentalService } from './equipmentRentalService';
 export { default as fatoorahService } from './fatoorah-service';
 export { default as platformDataService } from './platform-data-service';

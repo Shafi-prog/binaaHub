@@ -95,6 +95,24 @@
 			"type": "shell",
 			"command": "npm run type-check",
 			"group": "build"
+		},
+		{
+			"label": "Type Check (tsc)",
+			"type": "shell",
+			"command": "npm run type-check",
+			"group": "build"
+		},
+		{
+			"label": "Type Check (tsc)",
+			"type": "shell",
+			"command": "npm run type-check",
+			"group": "build"
+		},
+		{
+			"label": "Type Check (tsc)",
+			"type": "shell",
+			"command": "npm run type-check",
+			"group": "build"
 		}
 	]
 }

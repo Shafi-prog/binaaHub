@@ -15,14 +15,14 @@ export default function AIQuickAccess({ currentPage, className = '' }: AIQuickAc
           { name: 'استخراج ذكي من الفواتير', href: '/user/ai-hub?feature=expense-tracker', icon: <Brain className="w-4 h-4" /> },
           { name: 'الحاسبة الشاملة', href: '/user/comprehensive-construction-calculator', icon: <Calculator className="w-4 h-4" /> }
         ];
-      case 'warranties':
+    case 'warranties':
         return [
           { name: 'استخراج بيانات الضمان', href: '/user/warranties/ai-extract', icon: <Brain className="w-4 h-4" /> },
           { name: 'تتبع ذكي للمصروفات', href: '/user/warranty-expense-tracking', icon: <Lightbulb className="w-4 h-4" /> }
         ];
       case 'projects':
         return [
-          { name: 'المستشار الذكي', href: '/user/smart-construction-advisor', icon: <Bot className="w-4 h-4" /> },
+          { name: 'نصائح البناء', href: '/user/building-advice', icon: <Lightbulb className="w-4 h-4" /> },
           { name: 'الحاسبة الشاملة', href: '/user/comprehensive-construction-calculator', icon: <Calculator className="w-4 h-4" /> }
         ];
       default:
@@ -59,12 +59,8 @@ export default function AIQuickAccess({ currentPage, className = '' }: AIQuickAc
                 </Link>
               ))}
             </div>
-            <div className="border-t mt-2 pt-2">
-              <Link href="/user/ai-smart-features-test">
-                <div className="text-xs text-orange-600 hover:text-orange-700 cursor-pointer">
-                  🧪 اختبار الميزات الذكية
-                </div>
-              </Link>
+            <div className="border-t mt-2 pt-2 text-xs text-gray-500">
+              تم تحديث الأدوات الذكية واختبارات الميزات
             </div>
           </div>
         </div>

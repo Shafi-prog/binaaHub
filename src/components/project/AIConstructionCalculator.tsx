@@ -89,24 +89,66 @@ export default function AIConstructionCalculator({ userId }: AIConstructionCalcu
     setError(null);
 
     try {
-      const response = await fetch('/api/ai/calculate-construction-cost', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      // Local deterministic mock calculation replacing the missing API
+      const baseCostPerSqm: Record<string, number> = {
+        villa: 1800,
+        apartment: 1600,
+        commercial: 2200,
+        warehouse: 1400,
+        mosque: 2000,
+      };
+      const finishMultiplier: Record<string, number> = {
+        basic: 1.0,
+        standard: 1.3,
+        luxury: 1.8,
+        super_luxury: 2.5,
+      };
+
+      const area = Math.max(0, Number(projectSpecs.area) || 0);
+      const floors = Math.max(1, Number(projectSpecs.floors) || 1);
+      const base = baseCostPerSqm[projectSpecs.projectType] || 1500;
+      const mult = finishMultiplier[projectSpecs.finishLevel] || 1.0;
+      const cityAdj = projectSpecs.location === 'riyadh' ? 1.1 : projectSpecs.location === 'jeddah' ? 1.08 : 1.0;
+      const totalCost = Math.round(area * floors * base * mult * cityAdj);
+
+      const materialsBreakdown = [
+        {
+          material: 'أسمنت', quantity: Math.ceil(area * floors * 0.2), unit: 'طن', unitPrice: 280,
+          totalPrice: Math.ceil(area * floors * 0.2) * 280, supplier: 'شركة الأسمنت السعودية',
+          alternatives: [ { material: 'أسمنت بديل', price: 260, savings: 20 } ]
         },
-        body: JSON.stringify({
-          userId,
-          projectSpecs,
-          timestamp: new Date().toISOString()
-        }),
-      });
+        {
+          material: 'حديد تسليح', quantity: Math.ceil(area * floors * 40), unit: 'كجم', unitPrice: 3.5,
+          totalPrice: Math.ceil(area * floors * 40) * 3.5, supplier: 'سابك'
+        },
+        {
+          material: 'خرسانة جاهزة', quantity: Math.ceil(area * floors * 0.12), unit: 'م³', unitPrice: 210,
+          totalPrice: Math.ceil(area * floors * 0.12) * 210, supplier: 'مصنع الخرسانة'
+        },
+      ];
 
-      if (!response.ok) {
-        throw new Error('فشل في حساب التكلفة');
-      }
+      const laborCost = Math.round(totalCost * 0.25);
+      const riskFactor = projectSpecs.timeline === 'fast' ? 0.15 : projectSpecs.timeline === 'slow' ? 0.05 : 0.1;
+      const recommendations = [
+        'استخدم بدائل المواد عند ارتفاع الأسعار لتقليل التكلفة.',
+        'قم بجدولة التوريد مبكرًا لتجنب التأخير.',
+        'راجع التصميم لتحقيق أفضل توازن بين الجودة والتكلفة.'
+      ];
+      const timelineEstimate = projectSpecs.timeline === 'fast' ? '6 أشهر' : projectSpecs.timeline === 'slow' ? '12-18 شهر' : '9-12 شهر';
+      const priceValidUntil = new Date(Date.now() + 14 * 24 * 3600 * 1000).toLocaleDateString('ar-SA');
 
-      const result = await response.json();
-      setEstimate(result.estimate);
+      const mockEstimate = {
+        totalCost,
+        materialsBreakdown,
+        laborCost,
+        riskFactor,
+        confidenceScore: 0.88,
+        recommendations,
+        timelineEstimate,
+        priceValidUntil,
+      };
+
+      setEstimate(mockEstimate as any);
       setActiveTab('results');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'حدث خطأ في الحساب');

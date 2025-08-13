@@ -58,8 +58,7 @@ const navSections = [
   { href: '/user/projects/create', label: 'مشروع جديد', icon: Building },
       { href: '/user/projects/list', label: 'قائمة المشاريع', icon: Archive },
       { href: '/user/comprehensive-construction-calculator', label: 'حاسبة التكلفة', icon: Calculator },
-      { href: '/user/building-advice', label: 'نصائح البناء', icon: FileText },
-      { href: '/user/smart-construction-advisor', label: 'المستشار الذكي', icon: Wrench },
+  { href: '/user/building-advice', label: 'نصائح البناء', icon: FileText },
     ]
   },
   // Marketplace & Shopping
@@ -92,9 +91,9 @@ const navSections = [
   {
     title: 'الذكاء الاصطناعي',
     items: [
-      { href: '/user/ai-assistant', label: 'المساعد الذكي', icon: MessageSquare },
-      { href: '/user/ai-hub', label: 'مركز الذكاء الاصطناعي', icon: Wrench },
-      { href: '/user/smart-insights', label: 'الرؤى الذكية', icon: TrendingUp },
+  { href: '/user/ai-assistant', label: 'المساعد الذكي', icon: MessageSquare },
+  { href: '/user/ai-hub', label: 'مركز الذكاء الاصطناعي', icon: Wrench },
+  { href: '/user/building-advice', label: 'نصائح البناء', icon: TrendingUp },
       { href: '/user/company-bulk-optimizer', label: 'محسن الجملة للشركات', icon: Building2 },
     ]
   },
@@ -134,7 +133,7 @@ export function AppSidebar() {
   React.useEffect(() => {
     if (!pathname) return;
 
-    if (pathname.startsWith('/user/projects/') || pathname.startsWith('/user/building-') || pathname.startsWith('/user/smart-') || pathname.startsWith('/user/comprehensive-')) {
+  if (pathname.startsWith('/user/projects/') || pathname.startsWith('/user/building-') || pathname.startsWith('/user/comprehensive-')) {
       setExpandedSections(prev => ({ ...prev, projects: true }));
     } else if (pathname.startsWith('/user/balance') || pathname.startsWith('/user/invoices') || pathname.startsWith('/user/expenses') || pathname.startsWith('/user/subscriptions') || pathname.startsWith('/user/warranties')) {
       setExpandedSections(prev => ({ ...prev, finance: true }));

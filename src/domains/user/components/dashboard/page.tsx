@@ -372,11 +372,11 @@ export default function UserDashboardPage() {
       textColor: 'text-green-600'
     },
     {
-      title: 'الرؤى الذكية',
+      title: 'نصائح البناء',
       value: formatNumber(userData.stats.aiInsights),
-      subtitle: 'توصية جديدة',
+      subtitle: 'تحديث جديد',
       icon: <Brain className="w-6 h-6" />,
-      href: '/user/smart-insights',
+      href: '/user/building-advice',
       color: 'bg-gradient-to-r from-purple-500 to-purple-600',
       textColor: 'text-purple-600'
     },
@@ -574,23 +574,15 @@ export default function UserDashboardPage() {
                 </div>
               </Link>
               
-              <Link href="/user/smart-construction-advisor">
-                <div className="bg-orange-50 rounded-lg p-3 hover:bg-orange-100 transition-colors cursor-pointer">
-                  <div className="flex items-center gap-2 mb-1">
-                    <Building2 className="w-4 h-4 text-orange-600" />
-                    <Typography variant="caption" size="sm" weight="medium" className="text-orange-800">مستشار ذكي</Typography>
-                  </div>
-                  <Typography variant="caption" size="xs" className="text-orange-600">نصائح مخصصة</Typography>
-                </div>
-              </Link>
+              {/* Smart advisor unified under Building Advice */}
               
-              <Link href="/user/smart-insights">
+              <Link href="/user/building-advice">
                 <div className="bg-purple-50 rounded-lg p-3 hover:bg-purple-100 transition-colors cursor-pointer">
                   <div className="flex items-center gap-2 mb-1">
                     <BarChart3 className="w-4 h-4 text-purple-600" />
-                    <Typography variant="caption" size="sm" weight="medium" className="text-purple-800">رؤى ذكية</Typography>
+                    <Typography variant="caption" size="sm" weight="medium" className="text-purple-800">نصائح البناء</Typography>
                   </div>
-                  <Typography variant="caption" size="xs" className="text-purple-600">تحليلات متقدمة</Typography>
+                  <Typography variant="caption" size="xs" className="text-purple-600">نصائح وإرشادات</Typography>
                 </div>
               </Link>
             </div>
@@ -623,11 +615,7 @@ export default function UserDashboardPage() {
                   مركز الذكاء الاصطناعي
                 </Button>
               </Link>
-              <Link href="/user/ai-smart-features-test" className="flex-1">
-                <Button variant="outline" className="w-full text-orange-600 border-orange-300 hover:bg-orange-50 text-sm py-2" onClick={() => alert('Button clicked')}>
-                  اختبار الميزات
-                </Button>
-              </Link>
+              {/* Legacy test page removed */}
             </div>
           </EnhancedCard>
 

@@ -558,7 +558,7 @@ return (
             </div>
           </Link>
           
-          <Link href="/user/smart-insights">
+          <Link href="/user/building-advice">
             <div className="bg-white rounded-lg p-4 hover:shadow-lg transition-shadow cursor-pointer border border-blue-200">
               <div className="flex items-center gap-3 mb-2">
                 <BarChart3 className="w-8 h-8 text-blue-600" />

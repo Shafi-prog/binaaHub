@@ -56,32 +56,24 @@ export default function ConstructionProgressTracker({ userId, projectId }: Const
     setError(null);
 
     try {
-      const formData = new FormData();
-      formData.append('image', file);
-      formData.append('userId', userId);
-      formData.append('projectId', selectedProject);
-      formData.append('timestamp', new Date().toISOString());
-
-      // Get GPS location if available
-      if (navigator.geolocation) {
-        const position = await new Promise<GeolocationPosition>((resolve, reject) => {
-          navigator.geolocation.getCurrentPosition(resolve, reject);
-        });
-        formData.append('latitude', position.coords.latitude.toString());
-        formData.append('longitude', position.coords.longitude.toString());
-      }
-
-      const response = await fetch('/api/ai/analyze-construction-progress', {
-        method: 'POST',
-        body: formData,
+      // Local mock analysis replacing removed AI endpoint
+      await new Promise((r) => setTimeout(r, 1000));
+      const progress = Math.min(95, 30 + Math.round(Math.random() * 60));
+      const quality = 0.7 + Math.random() * 0.25;
+      const detected = ['أعمدة', 'جدران', 'شبكة حديد', 'قواعد', 'صب خرسانة'];
+      const recs = [
+        'تأكد من معالجة أماكن التعشيش في الخرسانة.',
+        'تحقق من استقامة الجدران قبل صب الدور التالي.',
+        'أعد شد أسياخ الحديد في المناطق القريبة من الفتحات.'
+      ];
+      setAnalysisResult({
+        progressPercentage: progress,
+        qualityScore: Number(quality.toFixed(2)),
+        detectedElements: detected,
+        recommendations: recs,
+        progressChange: Number((Math.random() * 5).toFixed(1)),
+        areasChanged: ['الجدار الشمالي', 'العمود C2'],
       });
-
-      if (!response.ok) {
-        throw new Error('فشل في تحليل الصورة');
-      }
-
-      const result = await response.json();
-      setAnalysisResult(result.analysis);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'حدث خطأ في التحليل');
     } finally {

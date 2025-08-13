@@ -72,21 +72,34 @@ export default function AIExtractionPage() {
     setLocalError(null);
   };
 
-  const simulateAIExtraction = async (): Promise<ExtractedData> => {
-    // Simulate AI processing delay
-    await new Promise(resolve => setTimeout(resolve, 3000));
-    
-    // TODO: Integrate with real AI extraction or Supabase data
+  const extractViaAPI = async (invoiceFile: File): Promise<ExtractedData> => {
+    const form = new FormData()
+    form.append('invoice', invoiceFile)
+
+    const res = await fetch('/api/ai/invoice-extract', {
+      method: 'POST',
+      body: form,
+    })
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}))
+      throw new Error(err?.error || 'Extraction request failed')
+    }
+
+    const data = await res.json()
+
+    // Map API extraction to UI fields with safe fallbacks
+    const firstItem = Array.isArray(data?.line_items) && data.line_items.length > 0 ? data.line_items[0] : null
     return {
-      productName: 'مضخة المياه الذكية عالية الكفاءة',
-      store: 'متجر الأدوات الصحية المتقدمة',
-      purchaseDate: '2024-07-15',
-      price: 850,
-      receiptNumber: 'REC-2024-001857',
-      warrantyPeriod: '24 شهر',
-      confidence: 94.5
-    };
-  };
+      productName: firstItem?.description || 'منتج غير محدد',
+      store: data?.vendor_name || 'متجر غير معروف',
+      purchaseDate: data?.date || new Date().toISOString().slice(0, 10),
+      price: typeof data?.total === 'number' ? data.total : 0,
+      receiptNumber: data?.invoice_number || 'غير متوفر',
+      warrantyPeriod: '12 شهر',
+      confidence: 90.0,
+    }
+  }
 
   const handleExtract = async () => {
     if (!file) return;
@@ -95,7 +108,7 @@ export default function AIExtractionPage() {
     setLocalError(null);
 
     try {
-      const data = await simulateAIExtraction();
+      const data = await extractViaAPI(file);
       setExtractedData(data);
     } catch (err) {
       setLocalError('فشل في استخراج البيانات. يرجى المحاولة مرة أخرى.');

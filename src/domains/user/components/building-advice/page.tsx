@@ -152,27 +152,50 @@ const constructionPDFGuides: PDFGuide[] = [
   }
 ];
 
-// --- Enhanced Stage Advice ---
-function getStageAdvice(stageKey: string, projectType: string) {
-  // Mock implementation since getProjectPhases doesn't exist
-  return Promise.resolve({
-    tips: [
-      'تأكد من التخطيط المفصل للمرحلة',
-      'احرص على استخدام مواد عالية الجودة',
-      'اتبع معايير السلامة المطلوبة'
-    ],
-    checklist: [
-      'مراجعة المخططات والتصاميم',
-      'فحص الأدوات والمعدات',
-      'التأكد من توفر المواد'
-    ],
-    warnings: [
-      'تجنب البناء في الطقس السيء',
-      'تأكد من صحة التراخيص'
-    ],
-    duration: '2-4 أسابيع',
-    cost: { min: 50000, max: 150000, currency: 'ريال' }
-  });
+// --- Enhanced Stage Advice (wired to AI Advice API) ---
+async function getStageAdvice(stageKey: string, projectType: string) {
+  try {
+    const res = await fetch('/api/ai/advice', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ projectType, constructionPhase: stageKey, location: 'KSA' })
+    });
+    if (!res.ok) throw new Error('failed');
+    const data = await res.json();
+    // Map API response to UI structure
+    const textAr: string = data?.text_ar || '';
+    const lines = textAr.split('\n').map((s: string) => s.trim()).filter(Boolean);
+    return {
+      tips: lines.length ? lines : [textAr || 'نصيحة متاحة لهذه المرحلة.'],
+      checklist: [
+        'راجع مراجع كود البناء السعودي (SBC) ذات الصلة',
+        'التأكد من سلامة الموقع والمتطلبات النظامية',
+        'توثيق القرارات والخطوات التنفيذية'
+      ],
+      warnings: [],
+      duration: '—',
+      cost: { min: 0, max: 0, currency: 'ريال' },
+      sbcReferences: data?.sbcReferences || []
+    } as any;
+  } catch {
+    // Fallback if API fails
+    return {
+      tips: [
+        'تأكد من التخطيط المفصل للمرحلة',
+        'احرص على استخدام مواد عالية الجودة',
+        'اتبع معايير السلامة المطلوبة'
+      ],
+      checklist: [
+        'مراجعة المخططات والتصاميم',
+        'فحص الأدوات والمعدات',
+        'التأكد من توفر المواد'
+      ],
+      warnings: [],
+      duration: '2-4 أسابيع',
+      cost: { min: 50000, max: 150000, currency: 'ريال' },
+      sbcReferences: []
+    } as any;
+  }
 }
 
 export default function BuildingAdvicePage() {
@@ -538,6 +561,22 @@ export default function BuildingAdvicePage() {
                                     ))}
                                   </div>
                                 </div>
+                                {Array.isArray(advice.sbcReferences) && advice.sbcReferences.length > 0 && (
+                                  <div>
+                                    <h4 className="font-medium mb-2 flex items-center gap-2">
+                                      <BookOpen className="w-4 h-4 text-blue-600" />
+                                      مراجع كود البناء السعودي (SBC)
+                                    </h4>
+                                    <ul className="list-disc list-inside text-sm text-gray-600 space-y-1">
+                                      {advice.sbcReferences.map((ref: any, i: number) => (
+                                        <li key={i}>
+                                          <span className="font-semibold">{ref.code}</span> — {ref.description_ar}
+                                          <span className="text-gray-500"> ( {ref.description_en} )</span>
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </div>
+                                )}
                               </div>
                             )}
                           </div>

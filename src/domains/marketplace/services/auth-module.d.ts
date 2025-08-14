@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { AuthenticationInput, AuthenticationResponse, AuthIdentityProviderService, AuthTypes, Context, DAL, ICacheService, InferEntityType, InternalModuleDeclaration, Logger, ModuleJoinerConfig, ModulesSdkTypes } from "@medusajs/framework/types";
+import { AuthenticationInput, AuthenticationResponse, AuthIdentityProviderService, AuthTypes, Context, DAL, ICacheService, InferEntityType, InternalModuleDeclaration, Logger, ModuleJoinerConfig, ModulesSdkTypes } from "@platform/framework/types";
 import { AuthIdentity, ProviderIdentity } from "@models";
 import AuthProviderService from "./auth-provider";
 type InjectedDependencies = {

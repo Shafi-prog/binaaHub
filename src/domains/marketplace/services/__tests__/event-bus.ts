@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Logger } from "@medusajs/framework/types"
+import { Logger } from "@platform/framework/types"
 import { Queue, Worker } from "bullmq"
 import { Redis } from "ioredis"
 import RedisEventBusService from "../event-bus-redis"

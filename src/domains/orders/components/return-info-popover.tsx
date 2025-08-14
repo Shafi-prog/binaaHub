@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { InformationCircleSolid } from "@medusajs/icons"
-import { AdminReturn } from "@medusajs/types"
-import { Badge, Popover, Text } from "@medusajs/ui"
+import { InformationCircleSolid } from "@platform/icons"
+import { AdminReturn } from "@platform/types"
+import { Badge, Popover, Text } from "@platform/ui"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import { useDate } from "../../../../../hooks/use-date"

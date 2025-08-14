@@ -1,11 +1,11 @@
 // @ts-nocheck
-import { PencilSquare, Plus, Trash } from "@medusajs/icons"
-import { Badge, Container, Heading, usePrompt } from "@medusajs/ui"
+import { PencilSquare, Plus, Trash } from "@platform/icons"
+import { Badge, Container, Heading, usePrompt } from "@platform/ui"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { SectionRow } from "../../../../../components/common/section"
 import { useDeleteProductOption } from "../../../../../hooks/api/products"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@platform/types"
 
 const OptionActions = ({
   product,

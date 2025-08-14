@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { OrderStatus } from "@medusajs/framework/utils"
+import { OrderStatus } from "@platform/framework/utils"
 
 export interface CreateOrderDTO {
   region_id?: string

@@ -1,5 +1,5 @@
 // @ts-nocheck
-declare const IndexMetadataService_base: new (container: object) => import("@medusajs/types").IMedusaInternalService<any, object>;
+declare const IndexMetadataService_base: new (container: object) => import("@platform/types").IMedusaInternalService<any, object>;
 export declare class IndexMetadataService extends IndexMetadataService_base {
 }
 export {};

@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { PencilSquare, Trash } from "@medusajs/icons"
-import { HttpTypes } from "@medusajs/types"
-import { Button, Checkbox, Container, Heading, usePrompt } from "@medusajs/ui"
+import { PencilSquare, Trash } from "@platform/icons"
+import { HttpTypes } from "@platform/types"
+import { Button, Checkbox, Container, Heading, usePrompt } from "@platform/ui"
 import { RowSelectionState, createColumnHelper } from "@tanstack/react-table"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"

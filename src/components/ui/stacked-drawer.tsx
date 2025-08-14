@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Drawer, clx } from "@medusajs/ui"
+import { Drawer, clx } from "@platform/ui"
 import {
   ComponentPropsWithoutRef,
   PropsWithChildren,

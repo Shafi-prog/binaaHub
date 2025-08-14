@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { model } from "@medusajs/framework/utils"
+import { model } from "@platform/framework/utils"
 
 const SalesChannel = model.define("SalesChannel", {
   id: model.id({ prefix: "sc" }).primaryKey(),

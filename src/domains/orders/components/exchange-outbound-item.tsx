@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { XCircle } from "@medusajs/icons"
-import { AdminOrderLineItem, HttpTypes } from "@medusajs/types"
-import { Input, Text } from "@medusajs/ui"
+import { XCircle } from "@platform/icons"
+import { AdminOrderLineItem, HttpTypes } from "@platform/types"
+import { Input, Text } from "@platform/ui"
 import { UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 

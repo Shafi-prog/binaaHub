@@ -1,10 +1,10 @@
 // @ts-nocheck
-import { AdminReservationResponse } from "@medusajs/types"
-import { Container, Heading } from "@medusajs/ui"
+import { AdminReservationResponse } from "@platform/types"
+import { Container, Heading } from "@platform/ui"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
-import { InventoryTypes } from "@medusajs/types"
-import { PencilSquare } from "@medusajs/icons"
+import { InventoryTypes } from "@platform/types"
+import { PencilSquare } from "@platform/icons"
 import { SectionRow } from "../../../../../components/common/section"
 import { useInventoryItem } from "../../../../../hooks/api/inventory"
 import { useStockLocation } from "../../../../../hooks/api/stock-locations"

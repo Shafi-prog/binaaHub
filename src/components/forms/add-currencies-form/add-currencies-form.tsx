@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Button, Checkbox, Hint, Switch, toast, Tooltip } from "@medusajs/ui"
+import { Button, Checkbox, Hint, Switch, toast, Tooltip } from "@platform/ui"
 import {
   createColumnHelper,
   OnChangeFn,
@@ -10,7 +10,7 @@ import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@platform/types"
 import { keepPreviousData } from "@tanstack/react-query"
 import { useForm } from "react-hook-form"
 import {

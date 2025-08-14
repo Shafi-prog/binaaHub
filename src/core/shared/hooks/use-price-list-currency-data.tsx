@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@platform/types"
 import { useRegions } from "@/domains/shared/hooks/api/regions"
 import { useStore } from "@/domains/shared/hooks/api/store"
 import { usePricePreferences } from "@/domains/shared/hooks/api/price-preferences"

@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { PromotionRuleOperatorValues } from "@medusajs/framework/types"
+import { PromotionRuleOperatorValues } from "@platform/framework/types"
 
 export interface CreatePromotionRuleDTO {
   description?: string | null

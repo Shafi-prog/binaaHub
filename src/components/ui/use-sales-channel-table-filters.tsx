@@ -1,6 +1,6 @@
 // @ts-nocheck
-import { HttpTypes } from "@medusajs/types"
-import { createDataTableFilterHelper } from "@medusajs/ui"
+import { HttpTypes } from "@platform/types"
+import { createDataTableFilterHelper } from "@platform/ui"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { useDataTableDateFilters } from "../general/use-data-table-date-filters"

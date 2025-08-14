@@ -1,9 +1,9 @@
 // @ts-nocheck
-import { MedusaContainer } from "@medusajs/framework/types"
+import { MedusaContainer } from "@platform/framework/types"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
-} from "@medusajs/framework/utils"
+} from "@platform/framework/utils"
 
 export const refetchFulfillment = async (
   fulfillmentId: string,

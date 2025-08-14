@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { PencilSquare, ThumbnailBadge } from "@medusajs/icons"
+import { PencilSquare, ThumbnailBadge } from "@platform/icons"
 import {
   Button,
   Checkbox,
@@ -10,13 +10,13 @@ import {
   Tooltip,
   clx,
   usePrompt,
-} from "@medusajs/ui"
+} from "@platform/ui"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { useUpdateProduct } from "../../../../../hooks/api/products"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@platform/types"
 
 type ProductMedisaSectionProps = {
   product: HttpTypes.AdminProduct

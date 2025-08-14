@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { model } from "@medusajs/framework/utils"
+import { model } from "@platform/framework/utils"
 
 const StoreProductCatalog = model.define("store_product_catalog", {
   id: model.id().primaryKey(),

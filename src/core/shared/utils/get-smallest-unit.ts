@@ -1,6 +1,6 @@
 // @ts-nocheck
-import { BigNumberInput } from "@medusajs/framework/types"
-import { BigNumber, MathBN } from "@medusajs/framework/utils"
+import { BigNumberInput } from "@platform/framework/types"
+import { BigNumber, MathBN } from "@platform/framework/utils"
 
 function getCurrencyMultiplier(currency) {
   const currencyMultipliers = {

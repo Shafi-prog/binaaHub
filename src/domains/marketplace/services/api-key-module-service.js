@@ -97,7 +97,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ApiKeyModuleService = void 0;
-var utils_1 = require("@medusajs/framework/utils");
+var utils_1 = require("@platform/framework/utils");
 var _models_1 = require("@models");
 var crypto_1 = require("crypto");
 var util_1 = require("util");

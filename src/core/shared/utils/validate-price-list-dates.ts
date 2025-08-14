@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { isDate, MedusaError } from "@medusajs/framework/utils"
+import { isDate, MedusaError } from "@platform/framework/utils"
 
 export const validatePriceListDates = (priceListData: {
   starts_at?: Date | string | null

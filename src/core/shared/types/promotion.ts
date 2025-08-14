@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { PromotionTypeValues } from "@medusajs/framework/types"
+import { PromotionTypeValues } from "@platform/framework/types"
 
 export interface CreatePromotionDTO {
   code: string

@@ -37,7 +37,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AnalyticsProviderRegistrationPrefix = exports.AnalyticsProviderIdentifierRegistrationName = void 0;
-var utils_1 = require("@medusajs/framework/utils");
+var utils_1 = require("@platform/framework/utils");
 exports.AnalyticsProviderIdentifierRegistrationName = "analytics_providers_identifier";
 exports.AnalyticsProviderRegistrationPrefix = "aly_";
 var AnalyticsProviderService = /** @class */ (function () {

@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { model } from "@medusajs/framework/utils"
+import { model } from "@platform/framework/utils"
 
 const ShippingLabel = model.define("shipping_label", {
   id: model.id().primaryKey(),

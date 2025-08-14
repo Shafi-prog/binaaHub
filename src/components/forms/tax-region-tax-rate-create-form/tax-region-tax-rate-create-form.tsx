@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { zodResolver } from "@hookform/resolvers/zod"
-import { HttpTypes } from "@medusajs/types"
-import { Button, Heading, Input, Text, toast } from "@medusajs/ui"
+import { HttpTypes } from "@platform/types"
+import { Button, Heading, Input, Text, toast } from "@platform/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"

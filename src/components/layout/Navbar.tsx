@@ -709,7 +709,7 @@ export default function Navbar({ user, accountType }: NavbarProps) {
                   <Users className="w-5 h-5 text-blue-600" />
                   <span>الموردين</span>
                 </Link>
-                <Link href="/store/invoices" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
+                <Link href="/user/invoices" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100" onClick={() => setIsMenuOpen(false)}>
                   <FileText className="w-5 h-5 text-blue-600" />
                   <span>الفواتير</span>
                 </Link>

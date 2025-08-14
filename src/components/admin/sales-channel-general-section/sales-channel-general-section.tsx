@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { PencilSquare, Trash } from "@medusajs/icons"
+import { PencilSquare, Trash } from "@platform/icons"
 import {
   Container,
   Heading,
@@ -7,10 +7,10 @@ import {
   Text,
   toast,
   usePrompt,
-} from "@medusajs/ui"
+} from "@platform/ui"
 import { useTranslation } from "react-i18next"
 
-import { SalesChannelDTO } from "@medusajs/types"
+import { SalesChannelDTO } from "@platform/types"
 import { useNavigate } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { useDeleteSalesChannel } from "../../../../../hooks/api/sales-channels"

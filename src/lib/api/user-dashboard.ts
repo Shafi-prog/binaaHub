@@ -88,51 +88,16 @@ export async function getUserDashboardStats(userId: string): Promise<UserDashboa
     };
   } catch (error) {
     console.error('Error fetching user dashboard stats:', error);
-    
-    // Return mock data as fallback
+    // Return empty structures in error cases to avoid demo data in production
     return {
-      activeWarranties: 3,
-      activeProjects: 2,
-      completedProjects: 5,
-      totalOrders: 12,
-      totalInvoices: 8,
-      recentOrders: [
-        {
-          id: '1',
-          store_name: 'متجر الإلكترونيات',
-          amount: 2500,
-          status: 'delivered',
-          type: 'order',
-          created_at: new Date().toISOString()
-        },
-        {
-          id: '2',
-          store_name: 'متجر التقنية',
-          amount: 1200,
-          status: 'paid',
-          type: 'invoice',
-          invoice_number: 'INV-2024-001',
-          created_at: new Date().toISOString()
-        }
-      ],
-      recentProjects: [
-        {
-          id: '1',
-          name: 'مشروع البناء الأول',
-          status: 'active',
-          progress: 65,
-          created_at: new Date().toISOString()
-        }
-      ],
-      recentWarranties: [
-        {
-          id: '1',
-          product_name: 'جهاز كمبيوتر',
-          store_name: 'متجر التقنية',
-          status: 'active',
-          expiry_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
-        }
-      ]
+      activeWarranties: 0,
+      activeProjects: 0,
+      completedProjects: 0,
+      totalOrders: 0,
+      totalInvoices: 0,
+      recentOrders: [],
+      recentProjects: [],
+      recentWarranties: []
     };
   }
 }

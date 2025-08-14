@@ -1,8 +1,8 @@
 // @ts-nocheck
-import { Avatar, Copy, Text } from "@medusajs/ui"
+import { Avatar, Copy, Text } from "@platform/ui"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@platform/types"
 import { getFormattedAddress, isSameAddress } from "@/domains/shared/services/addresses"
 
 const ID = ({ data }: { data: HttpTypes.AdminOrder }) => {

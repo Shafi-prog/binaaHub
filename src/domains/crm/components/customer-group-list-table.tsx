@@ -1,12 +1,12 @@
 // @ts-nocheck
-import { PencilSquare, Trash } from "@medusajs/icons"
-import { HttpTypes } from "@medusajs/types"
+import { PencilSquare, Trash } from "@platform/icons"
+import { HttpTypes } from "@platform/types"
 import {
   Container,
   createDataTableColumnHelper,
   toast,
   usePrompt,
-} from "@medusajs/ui"
+} from "@platform/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { useCallback, useMemo } from "react"
 import { useTranslation } from "react-i18next"

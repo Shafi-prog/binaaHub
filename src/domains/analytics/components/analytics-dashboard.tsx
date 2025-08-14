@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Card, Container, Heading, Text } from "@medusajs/ui"
+import { Card, Container, Heading, Text } from "@platform/ui"
 import { useDashboardAnalytics } from "@/store/hooks/api/analytics"
 import { LoadingSpinner } from "../common/loading-spinner"
 

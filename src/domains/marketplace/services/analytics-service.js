@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var utils_1 = require("@medusajs/framework/utils");
+var utils_1 = require("@platform/framework/utils");
 var AnalyticsService = /** @class */ (function () {
     function AnalyticsService(_a) {
         var analyticsProviderService = _a.analyticsProviderService;

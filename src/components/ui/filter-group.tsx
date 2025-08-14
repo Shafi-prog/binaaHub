@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Button, DropdownMenu } from "@medusajs/ui"
+import { Button, DropdownMenu } from "@platform/ui"
 import { ReactNode } from "react"
 import { useSearchParams } from "react-router-dom"
 

@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { DistributedTransactionEvents, DistributedTransactionType, TransactionStep } from "@medusajs/framework/orchestration";
-import { ContainerLike, Context, MedusaContainer } from "@medusajs/framework/types";
-import { type FlowRunOptions, ReturnWorkflow } from "@medusajs/framework/workflows-sdk";
+import { DistributedTransactionEvents, DistributedTransactionType, TransactionStep } from "@platform/framework/orchestration";
+import { ContainerLike, Context, MedusaContainer } from "@platform/framework/types";
+import { type FlowRunOptions, ReturnWorkflow } from "@platform/framework/workflows-sdk";
 import { WorkflowOrchestratorCancelOptions } from "@types";
 import { InMemoryDistributedTransactionStorage } from "../utils";
 export type WorkflowOrchestratorRunOptions<T> = Omit<FlowRunOptions<T>, "container"> & {

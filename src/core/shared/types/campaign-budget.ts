@@ -3,7 +3,7 @@ import {
   BigNumberInput,
   CampaignBudgetTypeValues,
   InferEntityType,
-} from "@medusajs/framework/types"
+} from "@platform/framework/types"
 import { Campaign } from "@models"
 
 export interface CreateCampaignBudgetDTO {

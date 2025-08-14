@@ -1,9 +1,9 @@
 // @ts-nocheck
-import { PencilSquare, Trash } from "@medusajs/icons"
+import { PencilSquare, Trash } from "@platform/icons"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { useDeleteReservationItem } from "../../../../../hooks/api/reservations"
-import { usePrompt } from "@medusajs/ui"
+import { usePrompt } from "@platform/ui"
 import { useTranslation } from "react-i18next"
 import { ExtendedReservationItem } from "../../../../inventory/inventory-detail/components/reservations-table/use-reservation-list-table-columns"
 

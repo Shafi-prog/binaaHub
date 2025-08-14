@@ -77,7 +77,7 @@ function PaymentErrorContent() {
 
   const retryPayment = () => {
     if (errorInfo.invoiceId) {
-      router.push(`/store/invoices/${errorInfo.invoiceId}`);
+  router.push(`/user/invoices/${errorInfo.invoiceId}`);
     } else {
       router.back();
     }
@@ -159,7 +159,7 @@ return (
           </Button>
 
           {errorInfo.invoiceId && (
-            <Link href={`/store/invoices/${errorInfo.invoiceId}`}>
+            <Link href={`/user/invoices/${errorInfo.invoiceId}`}>
               <Button className="w-full" variant="outline" onClick={() => alert('Button clicked')}>
                 <CreditCard className="w-4 h-4 ml-2" />
                 العودة للفاتورة

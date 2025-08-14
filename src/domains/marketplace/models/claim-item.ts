@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { ClaimReason, model } from "@medusajs/framework/utils"
+import { ClaimReason, model } from "@platform/framework/utils"
 import { OrderClaim } from "./claim"
 import { OrderClaimItemImage } from "./claim-item-image"
 import { OrderLineItem } from "./line-item"

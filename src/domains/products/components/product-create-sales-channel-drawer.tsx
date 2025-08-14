@@ -1,10 +1,10 @@
 // @ts-nocheck
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@platform/types"
 import {
   Button,
   createDataTableColumnHelper,
   DataTableRowSelectionState,
-} from "@medusajs/ui"
+} from "@platform/ui"
 import { useEffect, useMemo, useState } from "react"
 import { UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"

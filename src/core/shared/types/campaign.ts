@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { InferEntityType, PromotionDTO } from "@medusajs/framework/types"
+import { InferEntityType, PromotionDTO } from "@platform/framework/types"
 import { Promotion } from "@models"
 
 export interface CreateCampaignDTO {

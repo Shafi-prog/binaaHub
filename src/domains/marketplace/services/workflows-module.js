@@ -14,8 +14,8 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 var _a, _b, _c;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.WorkflowsModuleService = void 0;
-const types_1 = require("@medusajs/framework/types");
-const utils_1 = require("@medusajs/framework/utils");
+const types_1 = require("@platform/framework/types");
+const utils_1 = require("@platform/framework/utils");
 const _models_1 = require("@models");
 const _types_1 = require("@types");
 class WorkflowsModuleService extends utils_1.ModulesSdkUtils.MedusaService({ WorkflowExecution: _models_1.WorkflowExecution }) {

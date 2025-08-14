@@ -1,6 +1,6 @@
 // @ts-nocheck
-import { EventBusTypes, InternalModuleDeclaration, Logger, MedusaContainer, Message, Subscriber } from "@medusajs/framework/types";
-import { AbstractEventBusModuleService } from "@medusajs/framework/utils";
+import { EventBusTypes, InternalModuleDeclaration, Logger, MedusaContainer, Message, Subscriber } from "@platform/framework/types";
+import { AbstractEventBusModuleService } from "@platform/framework/utils";
 import { EventEmitter } from "events";
 type InjectedDependencies = {
     logger: Logger;

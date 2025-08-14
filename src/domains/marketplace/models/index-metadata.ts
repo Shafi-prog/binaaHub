@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { model } from "@medusajs/framework/utils"
+import { model } from "@platform/framework/utils"
 import { IndexMetadataStatus } from "@/domains/shared/utils/index-metadata-status"
 
 const IndexMetadata = model

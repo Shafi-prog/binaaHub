@@ -12,7 +12,7 @@ import {
   ReservationItemDTO,
   RestoreReturn,
   SoftDeleteReturn,
-} from "@medusajs/framework/types"
+} from "@platform/framework/types"
 import {
   arrayDifference,
   BigNumber,
@@ -30,7 +30,7 @@ import {
   moduleEventBuilderFactory,
   Modules,
   partitionArray,
-} from "@medusajs/framework/utils"
+} from "@platform/framework/utils"
 import { InventoryItem, InventoryLevel, ReservationItem } from "@models"
 import { joinerConfig } from "../joiner-config"
 import { applyEntityHooks } from "@/domains/shared/utils/apply-decorators"

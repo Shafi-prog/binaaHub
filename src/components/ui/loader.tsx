@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { QueryClient } from "@tanstack/react-query"
 
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@platform/types"
 import { productsQueryKeys } from "@/domains/shared/hooks/api/products"
 import { sdk } from "@/domains/shared/services/client"
 import { queryClient } from "@/domains/shared/services/query-client"

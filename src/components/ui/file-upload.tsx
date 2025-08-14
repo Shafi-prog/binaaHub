@@ -1,6 +1,6 @@
 // @ts-nocheck
-import { ArrowDownTray } from "@medusajs/icons"
-import { Text, clx } from "@medusajs/ui"
+import { ArrowDownTray } from "@platform/icons"
+import { Text, clx } from "@platform/ui"
 import { ChangeEvent, DragEvent, useRef, useState } from "react"
 
 export interface FileType {

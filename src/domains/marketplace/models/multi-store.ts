@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { model } from "@medusajs/framework/utils"
+import { model } from "@platform/framework/utils"
 
 const MultiStore = model.define("multi_store", {
   id: model.id().primaryKey(),

@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { clx } from "@medusajs/ui"
+import { clx } from "@platform/ui"
 import { PropsWithChildren } from "react"
 
 type StatusCellProps = PropsWithChildren<{

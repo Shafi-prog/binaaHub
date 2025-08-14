@@ -1,6 +1,6 @@
 // @ts-nocheck
-import { AdminReturnReason } from "@medusajs/types"
-import { toast, usePrompt } from "@medusajs/ui"
+import { AdminReturnReason } from "@platform/types"
+import { toast, usePrompt } from "@platform/ui"
 import { useTranslation } from "react-i18next"
 import { useDeleteReturnReason } from "@/domains/shared/hooks/api/return-reasons"
 

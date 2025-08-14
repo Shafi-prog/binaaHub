@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Text } from "@medusajs/ui"
+import { Text } from "@platform/ui"
 import { ReactNode } from "react"
 
 export interface ListicleProps {

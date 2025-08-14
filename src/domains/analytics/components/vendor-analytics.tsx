@@ -1,9 +1,9 @@
 // @ts-nocheck
-import { Card, Heading, Text, Badge, Select } from "@medusajs/ui"
+import { Card, Heading, Text, Badge, Select } from "@platform/ui"
 import { useVendorAnalytics } from "@/store/hooks/api/analytics"
 import { LoadingSpinner } from "../common/loading-spinner"
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts"
-import { Store, TrendingUp, DollarSign, ShoppingBag } from "@medusajs/icons"
+import { Store, TrendingUp, DollarSign, ShoppingBag } from "@platform/icons"
 import { useState } from "react"
 
 interface VendorAnalyticsProps {

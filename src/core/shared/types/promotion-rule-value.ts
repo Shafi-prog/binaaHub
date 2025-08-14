@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { InferEntityType, PromotionRuleDTO } from "@medusajs/framework/types"
+import { InferEntityType, PromotionRuleDTO } from "@platform/framework/types"
 import { PromotionRule } from "@models"
 
 export interface CreatePromotionRuleValueDTO {

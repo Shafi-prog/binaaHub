@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { MedusaService } from '@medusajs/framework/utils';
+import { MedusaService } from '@platform/framework/utils';
 import { 
   BrandRegistry, 
   BrandRegistryStatus,

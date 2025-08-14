@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PosthogAnalyticsService = void 0;
 const posthog_node_1 = require("posthog-node");
-const utils_1 = require("@medusajs/framework/utils");
+const utils_1 = require("@platform/framework/utils");
 class PosthogAnalyticsService extends utils_1.AbstractAnalyticsProviderService {
     constructor({ logger }, options) {
         super();

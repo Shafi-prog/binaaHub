@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { model, OrderStatus } from "@medusajs/framework/utils"
+import { model, OrderStatus } from "@platform/framework/utils"
 import { Return } from "@models"
 import { OrderAddress } from "./address"
 import { OrderCreditLine } from "./credit-line"

@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { ModuleProviderExports, ModuleServiceInitializeOptions } from "@medusajs/framework/types";
+import { ModuleProviderExports, ModuleServiceInitializeOptions } from "@platform/framework/types";
 export type AnalyticsModuleOptions = Partial<ModuleServiceInitializeOptions> & {
     /**
      * Providers to be registered

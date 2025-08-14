@@ -1,6 +1,6 @@
 // @ts-nocheck
-import { Constructor, IEventBusModuleService, IndexTypes, InternalModuleDeclaration, Logger, ModulesSdkTypes, RemoteQueryFunction } from "@medusajs/framework/types";
-import { MikroOrmBaseRepository as BaseRepository, ContainerRegistrationKeys, Modules, ModulesSdkUtils } from "@medusajs/framework/utils";
+import { Constructor, IEventBusModuleService, IndexTypes, InternalModuleDeclaration, Logger, ModulesSdkTypes, RemoteQueryFunction } from "@platform/framework/types";
+import { MikroOrmBaseRepository as BaseRepository, ContainerRegistrationKeys, Modules, ModulesSdkUtils } from "@platform/framework/utils";
 import { DataSynchronizer } from "./data-synchronizer";
 type InjectedDependencies = {
     logger: Logger;

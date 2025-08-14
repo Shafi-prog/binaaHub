@@ -1,6 +1,6 @@
 // @ts-nocheck
-import { AdminApiKeyResponse } from "@medusajs/types"
-import { Badge } from "@medusajs/ui"
+import { AdminApiKeyResponse } from "@platform/types"
+import { Badge } from "@platform/ui"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"

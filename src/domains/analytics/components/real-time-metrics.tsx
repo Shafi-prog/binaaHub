@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { Card, Heading, Text, Badge } from "@medusajs/ui"
+import { Card, Heading, Text, Badge } from "@platform/ui"
 import { useEffect, useState } from "react"
-import { Activity, Eye, Users, ShoppingCart, TrendingUp } from "@medusajs/icons"
+import { Activity, Eye, Users, ShoppingCart, TrendingUp } from "@platform/icons"
 
 interface RealTimeMetric {
   label: string

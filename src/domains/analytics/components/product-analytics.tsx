@@ -1,9 +1,9 @@
 // @ts-nocheck
-import { Card, Heading, Text, Badge, Table } from "@medusajs/ui"
+import { Card, Heading, Text, Badge, Table } from "@platform/ui"
 import { useProductAnalytics } from "@/store/hooks/api/analytics"
 import { LoadingSpinner } from "../common/loading-spinner"
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts"
-import { Package, TrendingUp, AlertTriangle } from "@medusajs/icons"
+import { Package, TrendingUp, AlertTriangle } from "@platform/icons"
 
 interface ProductAnalyticsProps {
   dateRange: { from: Date; to: Date }

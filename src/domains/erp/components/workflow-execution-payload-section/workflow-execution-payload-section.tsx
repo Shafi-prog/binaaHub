@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@platform/types"
 import { JsonViewSection } from "../../../../../components/common/json-view-section"
 
 type WorkflowExecutionPayloadSectionProps = {

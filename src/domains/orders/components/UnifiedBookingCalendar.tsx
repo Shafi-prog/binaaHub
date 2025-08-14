@@ -174,7 +174,7 @@ interface UnifiedBookingCalendarProps {
           <div className="p-4 border-r">
             <span className="text-sm font-medium text-gray-600">الوقت</span>
           </div>
-          {weekDays.map((day, index) => (
+          {weekDays.map((day: Date, index: number) => (
             <div key={index} className="p-4 text-center border-r last:border-r-0">
               <div className="text-sm font-medium text-gray-900">
                 {format(day, 'EEEE', { locale: ar })}
@@ -193,7 +193,7 @@ interface UnifiedBookingCalendarProps {
               <div className="p-2 border-r bg-gray-50 text-center text-sm text-gray-600">
                 {hour.toString().padStart(2, '0')}:00
               </div>
-              {weekDays.map((day, dayIndex) => {
+              {weekDays.map((day: Date, dayIndex: number) => {
                 const dayEvents = getEventsForDay(day).filter(event => {
                   const eventHour = new Date(event.start).getHours();
                   return eventHour === hour;

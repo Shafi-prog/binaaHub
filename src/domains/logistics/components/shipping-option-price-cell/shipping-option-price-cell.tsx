@@ -1,6 +1,6 @@
 // @ts-nocheck
-import { ArrowsPointingOut, CircleSliders } from "@medusajs/icons"
-import { clx } from "@medusajs/ui"
+import { ArrowsPointingOut, CircleSliders } from "@platform/icons"
+import { clx } from "@platform/ui"
 import { useCallback, useEffect, useRef, useState } from "react"
 import CurrencyInput, {
   CurrencyInputProps,

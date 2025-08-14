@@ -1,6 +1,6 @@
 // @ts-nocheck
-import { PencilSquare, Trash } from "@medusajs/icons"
-import { AdminCampaignResponse } from "@medusajs/types"
+import { PencilSquare, Trash } from "@platform/icons"
+import { AdminCampaignResponse } from "@platform/types"
 import {
   Badge,
   Container,
@@ -9,7 +9,7 @@ import {
   Text,
   toast,
   usePrompt,
-} from "@medusajs/ui"
+} from "@platform/ui"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"

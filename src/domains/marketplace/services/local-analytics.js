@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LocalAnalyticsService = void 0;
-const utils_1 = require("@medusajs/framework/utils");
+const utils_1 = require("@platform/framework/utils");
 class LocalAnalyticsService extends utils_1.AbstractAnalyticsProviderService {
     constructor({ logger }, options) {
         super();

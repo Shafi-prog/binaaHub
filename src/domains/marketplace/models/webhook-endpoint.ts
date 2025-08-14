@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { model } from "@medusajs/framework/utils"
+import { model } from "@platform/framework/utils"
 
 const WebhookEndpoint = model.define("webhook_endpoint", {
   id: model.id().primaryKey(),

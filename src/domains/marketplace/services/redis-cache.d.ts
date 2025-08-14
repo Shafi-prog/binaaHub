@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { ICacheService } from "@medusajs/framework/types";
+import { ICacheService } from "@platform/framework/types";
 import { Redis } from "ioredis";
 import { RedisCacheModuleOptions } from "../types";
 type InjectedDependencies = {

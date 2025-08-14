@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const utils_1 = require("@medusajs/framework/utils");
+const utils_1 = require("@platform/framework/utils");
 const IndexData = utils_1.model.define("IndexData", {
     id: utils_1.model.text().primaryKey(),
     name: utils_1.model.text().primaryKey(),

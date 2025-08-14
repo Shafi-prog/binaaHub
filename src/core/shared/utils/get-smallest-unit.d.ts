@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { BigNumberInput } from "@medusajs/framework/types";
+import { BigNumberInput } from "@platform/framework/types";
 /**
  * Converts an amount to the format required by Stripe based on currency.
  * https://docs.stripe.com/currencies

@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { RegionCountryDTO } from "@medusajs/types"
+import { RegionCountryDTO } from "@platform/types"
 import { json } from "react-router-dom"
 import { StaticCountry } from "@/domains/shared/services/data/countries"
 

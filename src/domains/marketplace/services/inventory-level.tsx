@@ -1,6 +1,6 @@
 // @ts-nocheck
-import { Context } from "@medusajs/framework/types"
-import { BigNumber, ModulesSdkUtils } from "@medusajs/framework/utils"
+import { Context } from "@platform/framework/types"
+import { BigNumber, ModulesSdkUtils } from "@platform/framework/utils"
 import { applyEntityHooks } from "@/domains/shared/utils/apply-decorators"
 
 import { InventoryLevel } from "@models"

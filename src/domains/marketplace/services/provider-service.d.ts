@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Constructor, IAnalyticsProvider, ProviderIdentifyAnalyticsEventDTO, ProviderTrackAnalyticsEventDTO } from "@medusajs/types";
+import { Constructor, IAnalyticsProvider, ProviderIdentifyAnalyticsEventDTO, ProviderTrackAnalyticsEventDTO } from "@platform/types";
 export declare const AnalyticsProviderIdentifierRegistrationName = "analytics_providers_identifier";
 export declare const AnalyticsProviderRegistrationPrefix = "aly_";
 type InjectedDependencies = {

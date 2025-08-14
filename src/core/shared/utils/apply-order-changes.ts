@@ -4,14 +4,14 @@ import {
   InferEntityType,
   OrderChangeActionDTO,
   OrderDTO,
-} from "@medusajs/framework/types"
+} from "@platform/framework/types"
 import {
   ChangeActionType,
   MathBN,
   createRawPropertiesFromBigNumber,
   decorateCartTotals,
   isDefined,
-} from "@medusajs/framework/utils"
+} from "@platform/framework/utils"
 import { OrderItem, OrderShippingMethod } from "@models"
 import { calculateOrderChange } from "./calculate-order-change"
 

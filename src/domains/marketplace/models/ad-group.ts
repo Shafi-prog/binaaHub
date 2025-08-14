@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { model } from "@medusajs/utils"
+import { model } from "@platform/utils"
 
 /**
  * Amazon-style Ad Group model for organizing ads within campaigns

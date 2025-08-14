@@ -1,6 +1,6 @@
 // @ts-nocheck
-import { HttpTypes } from "@medusajs/types"
-import { Button, InlineTip, Input, toast } from "@medusajs/ui"
+import { HttpTypes } from "@platform/types"
+import { Button, InlineTip, Input, toast } from "@platform/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"

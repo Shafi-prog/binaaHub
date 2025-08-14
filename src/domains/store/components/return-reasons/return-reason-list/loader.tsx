@@ -2,7 +2,7 @@
 import {
   AdminReturnReasonListParams,
   AdminReturnReasonListResponse,
-} from "@medusajs/types"
+} from "@platform/types"
 
 import { returnReasonsQueryKeys } from "@/domains/shared/hooks/api/return-reasons"
 import { sdk } from "@/domains/shared/services/client"

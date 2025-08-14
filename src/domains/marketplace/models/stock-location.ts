@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { model } from "@medusajs/framework/utils"
+import { model } from "@platform/framework/utils"
 import StockLocationAddress from "./stock-location-address"
 
 const StockLocation = model.define("StockLocation", {

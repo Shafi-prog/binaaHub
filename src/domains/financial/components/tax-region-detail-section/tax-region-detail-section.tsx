@@ -1,6 +1,6 @@
 // @ts-nocheck
-import { HttpTypes } from "@medusajs/types"
-import { Badge, Container, Tooltip } from "@medusajs/ui"
+import { HttpTypes } from "@platform/types"
+import { Badge, Container, Tooltip } from "@platform/ui"
 import { useTranslation } from "react-i18next"
 
 import { TaxRateLine } from "../../../common/components/tax-rate-line"

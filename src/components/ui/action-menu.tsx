@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { DropdownMenu, IconButton, clx } from "@medusajs/ui"
+import { DropdownMenu, IconButton, clx } from "@platform/ui"
 
-import { EllipsisHorizontal } from "@medusajs/icons"
+import { EllipsisHorizontal } from "@platform/icons"
 import { PropsWithChildren, ReactNode } from "react"
 import { Link } from "react-router-dom"
 import { ConditionalTooltip } from "../conditional-tooltip"

@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { PosthogAnalyticsServiceOptions, Logger, ProviderIdentifyAnalyticsEventDTO, ProviderTrackAnalyticsEventDTO } from "@medusajs/framework/types";
+import { PosthogAnalyticsServiceOptions, Logger, ProviderIdentifyAnalyticsEventDTO, ProviderTrackAnalyticsEventDTO } from "@platform/framework/types";
 import { PostHog } from "posthog-node";
-import { AbstractAnalyticsProviderService } from "@medusajs/framework/utils";
+import { AbstractAnalyticsProviderService } from "@platform/framework/utils";
 type InjectedDependencies = {
     logger: Logger;
 };

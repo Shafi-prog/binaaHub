@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Card, Heading, Text } from "@medusajs/ui"
+import { Card, Heading, Text } from "@platform/ui"
 import { useSalesAnalytics } from "@/store/hooks/api/analytics"
 import { LoadingSpinner } from "../common/loading-spinner"
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from "recharts"

@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Card, Heading, Text, ProgressBar } from "@medusajs/ui"
+import { Card, Heading, Text, ProgressBar } from "@platform/ui"
 import { usePerformanceAnalytics } from "@/store/hooks/api/analytics"
 import { LoadingSpinner } from "../common/loading-spinner"
 

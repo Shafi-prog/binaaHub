@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { ChatBubble, DocumentText, XCircle, XMark } from "@medusajs/icons"
-import { AdminOrderLineItem, HttpTypes } from "@medusajs/types"
-import { IconButton, Input, Text } from "@medusajs/ui"
+import { ChatBubble, DocumentText, XCircle, XMark } from "@platform/icons"
+import { AdminOrderLineItem, HttpTypes } from "@platform/types"
+import { IconButton, Input, Text } from "@platform/ui"
 import { UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 

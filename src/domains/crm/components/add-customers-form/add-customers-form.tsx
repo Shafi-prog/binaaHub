@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Button, Checkbox, Hint, Tooltip, toast } from "@medusajs/ui"
+import { Button, Checkbox, Hint, Tooltip, toast } from "@platform/ui"
 import {
   OnChangeFn,
   RowSelectionState,
@@ -11,7 +11,7 @@ import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@platform/types"
 import {
   RouteFocusModal,
   useRouteModal,

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const utils_1 = require("@medusajs/framework/utils");
+const utils_1 = require("@platform/framework/utils");
 const IndexSync = utils_1.model
     .define("IndexSync", {
     id: utils_1.model.id({ prefix: "idxsync" }).primaryKey(),

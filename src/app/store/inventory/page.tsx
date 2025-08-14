@@ -1,13 +1,15 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { Package, Plus, Search, Filter, Edit, Trash2, BarChart3 } from 'lucide-react';
 
 export default function InventoryPage() {
-  const [inventory] = useState([
+  const router = useRouter()
+  const [inventory, setInventory] = useState([
     { id: 1, name: 'مواد بناء - أسمنت', sku: 'BM-001', quantity: 150, minQuantity: 50, price: 25.50, status: 'in_stock' },
     { id: 2, name: 'حديد التسليح 12مم', sku: 'BM-002', quantity: 30, minQuantity: 20, price: 450.00, status: 'low_stock' },
     { id: 3, name: 'طلاء خارجي أبيض', sku: 'PT-001', quantity: 0, minQuantity: 10, price: 85.00, status: 'out_of_stock' },
@@ -39,11 +41,11 @@ export default function InventoryPage() {
           <p className="text-gray-600 mt-1">متابعة وإدارة مخزون المتجر</p>
         </div>
         <div className="flex space-x-2">
-          <Button variant="outline">
+          <Button variant="outline" onClick={() => router.push('/store/reports?type=inventory')}>
             <BarChart3 className="w-4 h-4 mr-2" />
             تقرير المخزون
           </Button>
-          <Button>
+          <Button onClick={() => router.push('/store/products/create')}>
             <Plus className="w-4 h-4 mr-2" />
             إضافة منتج
           </Button>
@@ -151,10 +153,20 @@ export default function InventoryPage() {
                     </td>
                     <td className="p-3">
                       <div className="flex space-x-2">
-                        <Button size="sm" variant="outline">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          title="تعديل المنتج"
+                          onClick={() => router.push('/store/products')}
+                        >
                           <Edit className="w-3 h-3" />
                         </Button>
-                        <Button size="sm" variant="outline">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          title="حذف المنتج"
+                          onClick={() => setInventory((prev) => prev.filter((x) => x.id !== item.id))}
+                        >
                           <Trash2 className="w-3 h-3" />
                         </Button>
                       </div>

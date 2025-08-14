@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Kbd, Text, clx } from "@medusajs/ui"
+import { Kbd, Text, clx } from "@platform/ui"
 import { Collapsible as RadixCollapsible } from "radix-ui"
 import {
   PropsWithChildren,

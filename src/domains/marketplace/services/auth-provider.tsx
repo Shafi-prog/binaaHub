@@ -5,7 +5,7 @@ import {
   AuthIdentityProviderService,
   AuthTypes,
   Logger,
-} from "@medusajs/framework/types"
+} from "@platform/framework/types"
 import { AuthProviderRegistrationPrefix } from "@types"
 
 type InjectedDependencies = {

@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { IndexTypes } from "@medusajs/framework/types"
+import { IndexTypes } from "@platform/framework/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { schemaObjectRepresentationPropertiesToOmit } from "@types"
 import { getPivotTableName, normalizeTableName } from "./normalze-table-name"

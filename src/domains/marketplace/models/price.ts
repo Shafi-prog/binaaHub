@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { model } from "@medusajs/framework/utils"
+import { model } from "@platform/framework/utils"
 import PriceList from "./price-list"
 import PriceRule from "./price-rule"
 import PriceSet from "./price-set"

@@ -1,8 +1,8 @@
 // @ts-nocheck
-declare const Locking: import("@medusajs/framework/utils").DmlEntity<import("@medusajs/framework/utils").DMLEntitySchemaBuilder<{
-    id: import("@medusajs/framework/utils").PrimaryKeyModifier<string, import("@medusajs/framework/utils").IdProperty>;
-    owner_id: import("@medusajs/framework/utils").NullableModifier<string, import("@medusajs/framework/utils").TextProperty>;
-    expiration: import("@medusajs/framework/utils").NullableModifier<Date, import("@medusajs/framework/utils").DateTimeProperty>;
+declare const Locking: import("@platform/framework/utils").DmlEntity<import("@platform/framework/utils").DMLEntitySchemaBuilder<{
+    id: import("@platform/framework/utils").PrimaryKeyModifier<string, import("@platform/framework/utils").IdProperty>;
+    owner_id: import("@platform/framework/utils").NullableModifier<string, import("@platform/framework/utils").TextProperty>;
+    expiration: import("@platform/framework/utils").NullableModifier<Date, import("@platform/framework/utils").DateTimeProperty>;
 }>, "Locking">;
 export default Locking;
 //# sourceMappingURL=locking.d.ts.map

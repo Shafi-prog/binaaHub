@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { PromotionUtils, model } from "@medusajs/framework/utils"
+import { PromotionUtils, model } from "@platform/framework/utils"
 import Campaign from "./campaign"
 
 const CampaignBudget = model.define(

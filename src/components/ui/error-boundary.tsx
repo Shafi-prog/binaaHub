@@ -1,6 +1,6 @@
 // @ts-nocheck
-import { ExclamationCircle } from "@medusajs/icons"
-import { Text } from "@medusajs/ui"
+import { ExclamationCircle } from "@platform/icons"
+import { Text } from "@platform/ui"
 import { useTranslation } from "react-i18next"
 import { Navigate, useLocation, useRouteError } from "react-router-dom"
 

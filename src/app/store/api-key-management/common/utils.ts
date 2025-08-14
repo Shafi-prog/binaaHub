@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { AdminApiKeyResponse } from "@medusajs/types"
+import { AdminApiKeyResponse } from "@platform/types"
 import { TFunction } from "i18next"
 import { ApiKeyType } from "./constants"
 

@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { PencilSquare } from "@medusajs/icons"
-import { HttpTypes } from "@medusajs/types"
-import { Badge, Container, Heading, Tooltip } from "@medusajs/ui"
+import { PencilSquare } from "@platform/icons"
+import { HttpTypes } from "@platform/types"
+import { Badge, Container, Heading, Tooltip } from "@platform/ui"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"

@@ -1,6 +1,6 @@
 // @ts-nocheck
-import { DistributedTransactionType, IDistributedSchedulerStorage, IDistributedTransactionStorage, SchedulerOptions, TransactionCheckpoint, TransactionOptions, TransactionStep } from "@medusajs/framework/orchestration";
-import { Logger, ModulesSdkTypes } from "@medusajs/framework/types";
+import { DistributedTransactionType, IDistributedSchedulerStorage, IDistributedTransactionStorage, SchedulerOptions, TransactionCheckpoint, TransactionOptions, TransactionStep } from "@platform/framework/orchestration";
+import { Logger, ModulesSdkTypes } from "@platform/framework/types";
 export declare class InMemoryDistributedTransactionStorage implements IDistributedTransactionStorage, IDistributedSchedulerStorage {
     #private;
     private workflowExecutionService_;

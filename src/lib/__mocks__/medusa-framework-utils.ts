@@ -1,4 +1,4 @@
-// Focused jest mock for @medusajs/framework/utils used by build-config and utils tests
+// Focused jest mock for @platform/framework/utils used by build-config and utils tests
 
 // ---- Minimal BigNumber/MathBN implementation ----
 export class BigNumber {

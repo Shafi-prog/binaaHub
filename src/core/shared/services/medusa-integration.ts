@@ -1,5 +1,6 @@
 // Medusa Integration Service
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import * as ERP from '@/core/erp/services/products'
 
 const supabase = createClientComponentClient();
 
@@ -67,8 +68,8 @@ class MedusaIntegrationService {
   constructor() {
     this.baseUrl = process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL || 'http://localhost:9000';
     this.apiKey = process.env.MEDUSA_API_KEY;
-    // Enable by default; set NEXT_PUBLIC_MEDUSA_ENABLE to 'false' to disable external calls
-    this.enabled = process.env.NEXT_PUBLIC_MEDUSA_ENABLE !== 'false';
+  // Disabled by default; set NEXT_PUBLIC_MEDUSA_ENABLE to 'true' to enable external calls
+  this.enabled = process.env.NEXT_PUBLIC_MEDUSA_ENABLE === 'true';
   }
 
   private async makeRequest(endpoint: string, options: RequestInit = {}) {
@@ -110,6 +111,22 @@ class MedusaIntegrationService {
       const response = await this.makeRequest(`/store/products?limit=${limit}&offset=${offset}`);
       return response;
     } catch (error) {
+      if ((error as any)?.message === 'MEDUSA_DISABLED') {
+        const r = await ERP.listProducts(limit, offset)
+        // Map ERP -> MedusaProduct minimal
+        return { products: r.products.map(p => ({
+          id: p.id,
+          title: p.name,
+          description: p.description || undefined,
+          price: Number(p.price || 0),
+          images: p.image_url ? [p.image_url] : [],
+          variants: [],
+          categories: [],
+          status: 'published',
+          created_at: p.created_at || '',
+          updated_at: p.updated_at || ''
+        })), count: r.count }
+      }
       console.error('Failed to fetch products:', error);
       return { products: [], count: 0 };
     }
@@ -120,6 +137,22 @@ class MedusaIntegrationService {
       const response = await this.makeRequest(`/store/products/${id}`);
       return response.product;
     } catch (error) {
+      if ((error as any)?.message === 'MEDUSA_DISABLED') {
+        const p = await ERP.getProduct(id)
+        if (!p) return null
+        return {
+          id: p.id,
+          title: p.name,
+          description: p.description || undefined,
+          price: Number(p.price || 0),
+          images: p.image_url ? [p.image_url] : [],
+          variants: [],
+          categories: [],
+          status: 'published',
+          created_at: p.created_at || '',
+          updated_at: p.updated_at || ''
+        }
+      }
       console.error('Failed to fetch product:', error);
       return null;
     }
@@ -130,6 +163,21 @@ class MedusaIntegrationService {
       const response = await this.makeRequest(`/store/products?q=${encodeURIComponent(query)}`);
       return response.products || [];
     } catch (error) {
+      if ((error as any)?.message === 'MEDUSA_DISABLED') {
+        const list = await ERP.searchProducts(query)
+        return list.map(p => ({
+          id: p.id,
+          title: p.name,
+          description: p.description || undefined,
+          price: Number(p.price || 0),
+          images: p.image_url ? [p.image_url] : [],
+          variants: [],
+          categories: [],
+          status: 'published',
+          created_at: p.created_at || '',
+          updated_at: p.updated_at || ''
+        }))
+      }
       console.error('Failed to search products:', error);
       return [];
     }

@@ -1,12 +1,12 @@
 // @ts-nocheck
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Button, Heading, Input, Prompt, Text, toast } from "@medusajs/ui"
+import { Button, Heading, Input, Prompt, Text, toast } from "@platform/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
-import { Eye, EyeSlash } from "@medusajs/icons"
-import { AdminApiKeyResponse } from "@medusajs/types"
+import { Eye, EyeSlash } from "@platform/icons"
+import { AdminApiKeyResponse } from "@platform/types"
 import { Fragment, useState } from "react"
 import { Form } from "../../../../../components/common/form"
 import {

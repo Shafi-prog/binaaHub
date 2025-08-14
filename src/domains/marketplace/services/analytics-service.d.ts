@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { TrackAnalyticsEventDTO, IdentifyAnalyticsEventDTO } from "@medusajs/types";
+import { TrackAnalyticsEventDTO, IdentifyAnalyticsEventDTO } from "@platform/types";
 import AnalyticsProviderService from "./provider-service";
 type InjectedDependencies = {
     analyticsProviderService: AnalyticsProviderService;

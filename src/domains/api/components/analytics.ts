@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import { sdk } from "../../client"
-import { HttpTypes, TrackAnalyticsEventDTO, IdentifyAnalyticsEventDTO } from "@medusajs/types"
+import { HttpTypes, TrackAnalyticsEventDTO, IdentifyAnalyticsEventDTO } from "@platform/types"
 
 const analyticsQueryKeys = {
   all: ["analytics"] as const,

@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Input, Text } from "@medusajs/ui"
+import { Input, Text } from "@platform/ui"
 import { ComponentProps, ElementRef, forwardRef } from "react"
 
 export const HandleInput = forwardRef<

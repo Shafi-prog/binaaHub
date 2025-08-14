@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Table } from "@medusajs/ui"
+import { Table } from "@platform/ui"
 import { ComponentPropsWithoutRef, ElementRef, forwardRef } from "react"
 import { useTranslation } from "react-i18next"
 

@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { InformationCircle } from "@medusajs/icons"
-import { HttpTypes } from "@medusajs/types"
-import { Switch, Tooltip } from "@medusajs/ui"
+import { InformationCircle } from "@platform/icons"
+import { HttpTypes } from "@platform/types"
+import { Switch, Tooltip } from "@platform/ui"
 import { useCallback, useMemo } from "react"
 
 import { useTranslation } from "react-i18next"

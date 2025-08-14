@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { model } from "@medusajs/framework/utils"
+import { model } from "@platform/framework/utils"
 
 const TwoFactorAuth = model.define("two_factor_auth", {
   id: model.id().primaryKey(),

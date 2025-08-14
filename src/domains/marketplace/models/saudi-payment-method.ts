@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { model } from "@medusajs/framework/utils"
+import { model } from "@platform/framework/utils"
 
 const SaudiPaymentMethod = model.define("saudi_payment_method", {
   id: model.id().primaryKey(),

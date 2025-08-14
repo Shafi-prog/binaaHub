@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
@@ -24,19 +24,30 @@ interface StoreSearchProps {
 export function StoreSearch({ onSelect, onCancel, selectedStore }: StoreSearchProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [results, setResults] = useState<Store[]>([]);
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
-  const mockStores: Store[] = [
-    { id: '1', name: 'متجر البناء الحديث', location: 'الرياض', rating: 4.5 },
-    { id: '2', name: 'مركز مواد البناء', location: 'جدة', rating: 4.2 },
-    { id: '3', name: 'أدوات البناء المتقدمة', location: 'الدمام', rating: 4.7 }
-  ];
+  const fetchStores = async (q: string = '') => {
+    setLoading(true)
+    setError(null)
+    try {
+      const res = await fetch(`/api/stores${q ? `?search=${encodeURIComponent(q)}` : ''}`)
+      if (!res.ok) throw new Error(`status ${res.status}`)
+      const data = await res.json()
+      setResults(data.stores || [])
+    } catch (e: any) {
+      setError(e?.message || 'حدث خطأ')
+      setResults([])
+    } finally {
+      setLoading(false)
+    }
+  }
 
-  const handleSearch = () => {
-    const filtered = mockStores.filter(store => 
-      store.name.includes(searchTerm) || store.location.includes(searchTerm)
-    );
-    setResults(filtered);
-  };
+  useEffect(() => { fetchStores() }, [])
+  useEffect(() => {
+    const id = setTimeout(() => fetchStores(searchTerm.trim()), 300)
+    return () => clearTimeout(id)
+  }, [searchTerm])
 
   return (
     <Card>
@@ -55,19 +66,25 @@ export function StoreSearch({ onSelect, onCancel, selectedStore }: StoreSearchPr
               onChange={(e) => setSearchTerm(e.target.value)}
               className="flex-1"
             />
-            <Button onClick={handleSearch}>
+            <Button onClick={() => fetchStores(searchTerm)}>
               <Search className="w-4 h-4" />
             </Button>
           </div>
           
           <div className="space-y-2">
-            {results.map(store => (
+            {loading && (
+              <div className="text-sm text-gray-500">جارٍ التحميل...</div>
+            )}
+            {error && (
+              <div className="text-sm text-red-600">{error}</div>
+            )}
+            {!loading && !error && results.map(store => (
               <div key={store.id} className="p-3 border rounded-lg flex items-center justify-between">
                 <div>
                   <h4 className="font-semibold">{store.name}</h4>
                   <p className="text-sm text-gray-600 flex items-center gap-1">
                     <MapPin className="w-3 h-3" />
-                    {store.location}
+                    {store.location || '—'}
                   </p>
                 </div>
                 <Button size="sm" onClick={() => onSelect(store)}>

@@ -1,9 +1,9 @@
 // @ts-nocheck
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@platform/types"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 
-import { createDataTableColumnHelper, Tooltip } from "@medusajs/ui"
+import { createDataTableColumnHelper, Tooltip } from "@platform/ui"
 import { DataTableStatusCell } from "@/components/data-table-status-cell/data-table-status-cell"
 import { useDataTableDateColumns } from "../general/use-data-table-date-columns"
 

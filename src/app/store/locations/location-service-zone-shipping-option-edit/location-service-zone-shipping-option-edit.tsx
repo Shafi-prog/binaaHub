@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Heading } from "@medusajs/ui"
+import { Heading } from "@platform/ui"
 import { useTranslation } from "react-i18next"
 import { json, useParams } from "react-router-dom"
 

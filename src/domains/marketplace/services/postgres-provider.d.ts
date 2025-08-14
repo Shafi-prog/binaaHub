@@ -1,6 +1,6 @@
 // @ts-nocheck
-import { Context, Event, IndexTypes, RemoteQueryFunction, Subscriber } from "@medusajs/framework/types";
-import { MikroOrmBaseRepository as BaseRepository, ContainerRegistrationKeys } from "@medusajs/framework/utils";
+import { Context, Event, IndexTypes, RemoteQueryFunction, Subscriber } from "@platform/framework/types";
+import { MikroOrmBaseRepository as BaseRepository, ContainerRegistrationKeys } from "@platform/framework/utils";
 import { EntityManager, SqlEntityManager } from "@mikro-orm/postgresql";
 type InjectedDependencies = {
     manager: EntityManager;

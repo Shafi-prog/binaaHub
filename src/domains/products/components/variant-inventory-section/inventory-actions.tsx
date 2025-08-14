@@ -1,8 +1,8 @@
 // @ts-nocheck
 import { useTranslation } from "react-i18next"
 
-import { Buildings } from "@medusajs/icons"
-import { InventoryItemDTO } from "@medusajs/types"
+import { Buildings } from "@platform/icons"
+import { InventoryItemDTO } from "@platform/types"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
 

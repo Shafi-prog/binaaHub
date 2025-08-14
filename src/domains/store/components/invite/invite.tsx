@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Alert, Button, Heading, Hint, Input, Text, toast } from "@medusajs/ui"
+import { Alert, Button, Heading, Hint, Input, Text, toast } from "@platform/ui"
 import i18n from "i18next"
 import { AnimatePresence, motion } from "motion/react"
 import { useState } from "react"

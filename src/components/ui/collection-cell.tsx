@@ -2,7 +2,7 @@
 import { useTranslation } from "react-i18next"
 
 import { PlaceholderCell } from "../../common/placeholder-cell"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@platform/types"
 
 type CollectionCellProps = {
   collection?: HttpTypes.AdminCollection | null

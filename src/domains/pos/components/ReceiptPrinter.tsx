@@ -1,4 +1,5 @@
-// Re-export canonical ReceiptPrinter from shared components to avoid duplication
+
+// توحيد ReceiptPrinter: إعادة التصدير من المسار الموحد فقط
 export { default } from '@shared/components/ReceiptPrinter';
 
 

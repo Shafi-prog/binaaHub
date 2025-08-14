@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { IndexTypes, InferEntityType, Logger } from "@medusajs/types";
+import { IndexTypes, InferEntityType, Logger } from "@platform/types";
 import { IndexMetadata } from "@models";
 import { DataSynchronizer } from "../../services/data-synchronizer";
 import { IndexMetadataService } from "../../services/index-metadata";

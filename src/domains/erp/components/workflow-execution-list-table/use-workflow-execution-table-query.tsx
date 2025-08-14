@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@platform/types"
 import { useQueryParams } from "../../../../../hooks/use-query-params"
 
 export const useWorkflowExecutionTableQuery = ({

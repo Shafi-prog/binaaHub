@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Button, Container, Heading, Text } from "@medusajs/ui"
+import { Button, Container, Heading, Text } from "@platform/ui"
 
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"

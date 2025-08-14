@@ -2,10 +2,10 @@
 import React from "react"
 import { z } from "zod"
 import { useFieldArray, UseFormReturn } from "react-hook-form"
-import { Button, Heading, IconButton, Input, Label } from "@medusajs/ui"
+import { Button, Heading, IconButton, Input, Label } from "@platform/ui"
 
 import { CreateProductVariantSchema } from "./constants"
-import { XMarkMini } from "@medusajs/icons"
+import { XMarkMini } from "@platform/icons"
 import { useTranslation } from "react-i18next"
 
 import { useComboboxData } from "../../../../../hooks/use-combobox-data"

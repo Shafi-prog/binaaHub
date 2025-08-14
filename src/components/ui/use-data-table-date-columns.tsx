@@ -3,7 +3,7 @@ import {
   createDataTableColumnHelper,
   DataTableColumnDef,
   Tooltip,
-} from "@medusajs/ui"
+} from "@platform/ui"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { useDate } from "@/domains/shared/hooks/use-date"

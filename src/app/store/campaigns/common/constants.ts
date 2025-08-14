@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { CampaignBudgetTypeValues } from "@medusajs/types"
+import { CampaignBudgetTypeValues } from "@platform/types"
 
 export const DEFAULT_CAMPAIGN_VALUES = {
   name: "",

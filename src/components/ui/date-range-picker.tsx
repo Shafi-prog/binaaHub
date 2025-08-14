@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { useState } from "react"
-import { Button, DatePicker, Popover, Text } from "@medusajs/ui"
-import { CalendarDays } from "@medusajs/icons"
+import { Button, DatePicker, Popover, Text } from "@platform/ui"
+import { CalendarDays } from "@platform/icons"
 import { formatNumber, formatCurrency, formatDate, formatPercentage } from '@/core/shared/utils/formatting';
 
 interface DateRangePickerProps {

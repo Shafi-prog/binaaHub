@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { MedusaService } from "@medusajs/utils"
+import { MedusaService } from "@platform/utils"
 import { AdCampaign } from "../models/ad-campaign"
 import { AdGroup } from "../models/ad-group"
 import { AdKeyword } from "../models/ad-keyword"

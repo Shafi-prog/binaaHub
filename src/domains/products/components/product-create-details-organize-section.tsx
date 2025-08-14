@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Button, Heading } from "@medusajs/ui"
+import { Button, Heading } from "@platform/ui"
 import { UseFormReturn, useFieldArray } from "react-hook-form"
 import { Trans, useTranslation } from "react-i18next"
 

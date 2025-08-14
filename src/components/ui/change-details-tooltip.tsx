@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Popover, Text } from "@medusajs/ui"
+import { Popover, Text } from "@platform/ui"
 import { ReactNode, useState } from "react"
 import { useTranslation } from "react-i18next"
 

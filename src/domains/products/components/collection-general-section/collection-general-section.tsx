@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { PencilSquare, Trash } from "@medusajs/icons"
-import { HttpTypes } from "@medusajs/types"
-import { Container, Heading, Text, usePrompt } from "@medusajs/ui"
+import { PencilSquare, Trash } from "@platform/icons"
+import { HttpTypes } from "@platform/types"
+import { Container, Heading, Text, usePrompt } from "@platform/ui"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { useDeleteCollection } from "../../../../../hooks/api/collections"

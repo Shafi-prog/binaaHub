@@ -25,8 +25,8 @@ import {
   ThumbnailBadge,
   Trash,
   XMark,
-} from "@medusajs/icons"
-import { IconButton, Text } from "@medusajs/ui"
+} from "@platform/icons"
+import { IconButton, Text } from "@platform/ui"
 import { useState } from "react"
 import { useFieldArray, UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"

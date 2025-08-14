@@ -490,7 +490,7 @@ export default function StoreLayout({
             </div>
             <div className="space-y-1">
               <Link
-                href="/store/marketplace"
+                href="/marketplace"
                 className="group flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-all duration-200"
                 onClick={() => setSidebarOpen(false)}
               >
@@ -498,7 +498,7 @@ export default function StoreLayout({
                 تصفح سريع
               </Link>
               <Link
-                href="/store/admin"
+                href="/store/dashboard"
                 className="group flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-all duration-200"
                 onClick={() => setSidebarOpen(false)}
               >

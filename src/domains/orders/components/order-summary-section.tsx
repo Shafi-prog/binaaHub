@@ -12,7 +12,7 @@ import {
   ExclamationCircle,
   PencilSquare,
   TriangleDownMini,
-} from "@medusajs/icons"
+} from "@platform/icons"
 import {
   AdminClaim,
   AdminExchange,
@@ -23,7 +23,7 @@ import {
   AdminPlugin,
   AdminRegion,
   AdminReturn,
-} from "@medusajs/types"
+} from "@platform/types"
 import {
   Badge,
   Button,
@@ -36,9 +36,9 @@ import {
   toast,
   Tooltip,
   usePrompt,
-} from "@medusajs/ui"
+} from "@platform/ui"
 
-import { AdminReservation } from "@medusajs/types/src/http"
+import { AdminReservation } from "@platform/types/src/http"
 import { format } from "date-fns"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import DisplayId from "../../../../../components/common/display-id/display-id"

@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { IndexTypes } from "@medusajs/types";
+import { IndexTypes } from "@platform/types";
 export declare class DataSynchronizer {
     #private;
     constructor(container: Record<string, any>);

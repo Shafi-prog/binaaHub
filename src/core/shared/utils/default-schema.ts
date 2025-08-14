@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Modules } from "@medusajs/utils"
+import { Modules } from "@platform/utils"
 
 export const defaultSchema = `
   type Product @Listeners(values: ["${Modules.PRODUCT}.product.created", "${Modules.PRODUCT}.product.updated", "${Modules.PRODUCT}.product.deleted"]) {

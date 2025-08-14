@@ -1,6 +1,6 @@
 // @ts-nocheck
-import { LocalNotificationServiceOptions, Logger, NotificationTypes } from "@medusajs/framework/types";
-import { AbstractNotificationProviderService } from "@medusajs/framework/utils";
+import { LocalNotificationServiceOptions, Logger, NotificationTypes } from "@platform/framework/types";
+import { AbstractNotificationProviderService } from "@platform/framework/utils";
 type InjectedDependencies = {
     logger: Logger;
 };

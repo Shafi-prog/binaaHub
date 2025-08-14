@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { zodResolver } from "@hookform/resolvers/zod"
-import { MagnifyingGlass } from "@medusajs/icons"
-import { HttpTypes } from "@medusajs/types"
+import { MagnifyingGlass } from "@platform/icons"
+import { HttpTypes } from "@platform/types"
 import {
   Button,
   Divider,
@@ -13,7 +13,7 @@ import {
   Text,
   clx,
   toast,
-} from "@medusajs/ui"
+} from "@platform/ui"
 import { useFieldArray, useForm, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"

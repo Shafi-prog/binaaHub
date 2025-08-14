@@ -2,7 +2,7 @@
 import {
   ModuleProviderExports,
   ModuleServiceInitializeOptions,
-} from "@medusajs/framework/types"
+} from "@platform/framework/types"
 
 export type AnalyticsModuleOptions = Partial<ModuleServiceInitializeOptions> & {
   /**

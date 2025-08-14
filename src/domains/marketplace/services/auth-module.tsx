@@ -12,13 +12,13 @@ import {
   Logger,
   ModuleJoinerConfig,
   ModulesSdkTypes,
-} from "@medusajs/framework/types"
+} from "@platform/framework/types"
 import {
   InjectManager,
   MedusaContext,
   MedusaError,
   MedusaService,
-} from "@medusajs/framework/utils"
+} from "@platform/framework/utils"
 import { AuthIdentity, ProviderIdentity } from "@models"
 import { joinerConfig } from "../joiner-config"
 import AuthProviderService from "./auth-provider"

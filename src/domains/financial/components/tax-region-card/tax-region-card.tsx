@@ -1,6 +1,6 @@
 // @ts-nocheck
-import { HttpTypes } from "@medusajs/types"
-import { Heading, Text, Tooltip, clx } from "@medusajs/ui"
+import { HttpTypes } from "@platform/types"
+import { Heading, Text, Tooltip, clx } from "@platform/ui"
 import ReactCountryFlag from "react-country-flag"
 
 import {
@@ -9,7 +9,7 @@ import {
   Plus,
   Trash,
   PencilSquare,
-} from "@medusajs/icons"
+} from "@platform/icons"
 import { ComponentPropsWithoutRef, ReactNode } from "react"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"

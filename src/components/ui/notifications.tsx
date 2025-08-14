@@ -3,9 +3,9 @@ import {
   BellAlert,
   BellAlertDone,
   InformationCircleSolid,
-} from "@medusajs/icons"
-import { HttpTypes } from "@medusajs/types"
-import { clx, Drawer, Heading, IconButton, Text } from "@medusajs/ui"
+} from "@platform/icons"
+import { HttpTypes } from "@platform/types"
+import { clx, Drawer, Heading, IconButton, Text } from "@platform/ui"
 import { formatDistance } from "date-fns"
 import { TFunction } from "i18next"
 import { useEffect, useState } from "react"

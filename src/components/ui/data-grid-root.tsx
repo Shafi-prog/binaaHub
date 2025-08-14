@@ -3,8 +3,8 @@ import {
   Adjustments,
   AdjustmentsDone,
   ExclamationCircle,
-} from "@medusajs/icons"
-import { Button, DropdownMenu, clx } from "@medusajs/ui"
+} from "@platform/icons"
+import { Button, DropdownMenu, clx } from "@platform/ui"
 import {
   Cell,
   CellContext,

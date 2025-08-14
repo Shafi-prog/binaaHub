@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@platform/types"
 import { ColumnDef } from "@tanstack/react-table"
 import { TFunction } from "i18next"
 import { FieldPath, FieldValues } from "react-hook-form"

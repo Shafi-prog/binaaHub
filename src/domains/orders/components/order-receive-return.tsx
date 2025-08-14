@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { useNavigate, useParams } from "react-router-dom"
 import { useTranslation } from "react-i18next"
-import { Heading, toast } from "@medusajs/ui"
+import { Heading, toast } from "@platform/ui"
 import { useEffect } from "react"
 
 import { useOrder, useOrderPreview } from "@/domains/shared/hooks/api/orders"

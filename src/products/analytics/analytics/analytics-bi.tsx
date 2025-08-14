@@ -784,7 +784,9 @@ export class AdvancedAnalyticsBISystem extends EventEmitter {
     return new Promise((resolve) => {
       // Simulate query execution
       setTimeout(() => {
-        const mockData = this.generateMockData(dataSource);
+  // Optional: gate mock data generation behind env for non-production demos
+  const allow = process.env.NEXT_PUBLIC_DEV_MOCKS === 'true'
+  const mockData = allow ? this.generateMockData(dataSource) : []
         resolve(mockData);
       }, Math.random() * 1000 + 500);
     });

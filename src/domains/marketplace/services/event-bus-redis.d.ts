@@ -1,6 +1,6 @@
 // @ts-nocheck
-import { InternalModuleDeclaration, Logger, Message } from "@medusajs/framework/types";
-import { AbstractEventBusModuleService } from "@medusajs/framework/utils";
+import { InternalModuleDeclaration, Logger, Message } from "@platform/framework/types";
+import { AbstractEventBusModuleService } from "@platform/framework/utils";
 import { Queue, Worker } from "bullmq";
 import { Redis } from "ioredis";
 import { BullJob, EventBusRedisModuleOptions, Options } from "../types";

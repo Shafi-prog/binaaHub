@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { model } from "@medusajs/framework/utils"
+import { model } from "@platform/framework/utils"
 
 const SearchIndex = model.define("search_index", {
   id: model.id().primaryKey(),

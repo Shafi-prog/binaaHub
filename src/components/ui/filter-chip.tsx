@@ -1,6 +1,6 @@
 // @ts-nocheck
-import { XMarkMini } from "@medusajs/icons"
-import { Text, clx } from "@medusajs/ui"
+import { XMarkMini } from "@platform/icons"
+import { Text, clx } from "@platform/ui"
 import { Popover as RadixPopover } from "radix-ui"
 import { MouseEvent } from "react"
 import { useTranslation } from "react-i18next"

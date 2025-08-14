@@ -3,7 +3,7 @@ import {
   ApplicationMethodTargetTypeValues,
   PromotionRuleDTO,
   PromotionRuleOperatorValues,
-} from "@medusajs/framework/types"
+} from "@platform/framework/types"
 import {
   ApplicationMethodTargetType,
   MathBN,
@@ -12,7 +12,7 @@ import {
   isPresent,
   isString,
   pickValueFromObject,
-} from "@medusajs/framework/utils"
+} from "@platform/framework/utils"
 import { CreatePromotionRuleDTO } from "@types"
 
 export function validatePromotionRuleAttributes(

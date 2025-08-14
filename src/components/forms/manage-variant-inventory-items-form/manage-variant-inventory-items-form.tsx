@@ -1,8 +1,8 @@
 // @ts-nocheck
 import { zodResolver } from "@hookform/resolvers/zod"
-import { XMarkMini } from "@medusajs/icons"
-import { AdminProductVariant, HttpTypes } from "@medusajs/types"
-import { Button, Heading, IconButton, Input, Label, toast } from "@medusajs/ui"
+import { XMarkMini } from "@platform/icons"
+import { AdminProductVariant, HttpTypes } from "@platform/types"
+import { Button, Heading, IconButton, Input, Label, toast } from "@platform/ui"
 import i18next from "i18next"
 import {
   useFieldArray,

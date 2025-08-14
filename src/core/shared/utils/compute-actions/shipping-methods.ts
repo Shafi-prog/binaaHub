@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { BigNumberInput, PromotionTypes } from "@medusajs/framework/types"
+import { BigNumberInput, PromotionTypes } from "@platform/framework/types"
 import {
   ApplicationMethodAllocation,
   ApplicationMethodTargetType,
@@ -7,7 +7,7 @@ import {
   ComputedActions,
   MathBN,
   MedusaError,
-} from "@medusajs/framework/utils"
+} from "@platform/framework/utils"
 import { areRulesValidForContext } from "../validations"
 import { computeActionForBudgetExceeded } from "./usage"
 

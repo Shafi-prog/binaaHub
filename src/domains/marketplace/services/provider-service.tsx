@@ -1,11 +1,11 @@
 // @ts-nocheck
-import { MedusaError } from "@medusajs/framework/utils"
+import { MedusaError } from "@platform/framework/utils"
 import {
   Constructor,
   IAnalyticsProvider,
   ProviderIdentifyAnalyticsEventDTO,
   ProviderTrackAnalyticsEventDTO,
-} from "@medusajs/types"
+} from "@platform/types"
 
 export const AnalyticsProviderIdentifierRegistrationName =
   "analytics_providers_identifier"

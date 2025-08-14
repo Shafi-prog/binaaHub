@@ -4,7 +4,7 @@ import {
   ContainerRegistrationKeys,
   Modules,
   promiseAll,
-} from "@medusajs/framework/utils"
+} from "@platform/framework/utils"
 import {
   Event,
   ILockingModule,
@@ -13,7 +13,7 @@ import {
   ModulesSdkTypes,
   RemoteQueryFunction,
   SchemaObjectEntityRepresentation,
-} from "@medusajs/types"
+} from "@platform/types"
 import { IndexMetadataStatus, Orchestrator } from "@utils"
 import { setTimeout } from "timers/promises"
 export class DataSynchronizer {

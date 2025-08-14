@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { ICacheService } from "@medusajs/framework/types";
+import { ICacheService } from "@platform/framework/types";
 import { CacheRecord, InMemoryCacheModuleOptions } from "../types";
 type InjectedDependencies = {};
 /**

@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EmailPassAuthService = void 0;
-const utils_1 = require("@medusajs/framework/utils");
+const utils_1 = require("@platform/framework/utils");
 const scrypt_kdf_1 = __importDefault(require("scrypt-kdf"));
 class EmailPassAuthService extends utils_1.AbstractAuthModuleProvider {
     constructor({ logger }, options) {

@@ -4,8 +4,8 @@ import { useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
 import * as zod from "zod"
 
-import { HttpTypes } from "@medusajs/types"
-import { Button, toast } from "@medusajs/ui"
+import { HttpTypes } from "@platform/types"
+import { Button, toast } from "@platform/ui"
 import { useTranslation } from "react-i18next"
 
 import { DataGrid } from "../../../../../components/data-grid"

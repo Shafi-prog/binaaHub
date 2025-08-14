@@ -12,7 +12,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _IndexModuleService_isWorkerMode;
 Object.defineProperty(exports, "__esModule", { value: true });
-const utils_1 = require("@medusajs/framework/utils");
+const utils_1 = require("@platform/framework/utils");
 const _types_1 = require("@types");
 const _utils_1 = require("@utils");
 const base_graphql_schema_1 = require("../utils/base-graphql-schema");

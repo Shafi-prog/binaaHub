@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Button, clx } from "@medusajs/ui"
+import { Button, clx } from "@platform/ui"
 import { Popover as RadixPopover } from "radix-ui"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { useSearchParams } from "react-router-dom"

@@ -1,6 +1,6 @@
 // @ts-nocheck
-import { LocalAnalyticsServiceOptions, Logger, ProviderIdentifyAnalyticsEventDTO, ProviderTrackAnalyticsEventDTO } from "@medusajs/framework/types";
-import { AbstractAnalyticsProviderService } from "@medusajs/framework/utils";
+import { LocalAnalyticsServiceOptions, Logger, ProviderIdentifyAnalyticsEventDTO, ProviderTrackAnalyticsEventDTO } from "@platform/framework/types";
+import { AbstractAnalyticsProviderService } from "@platform/framework/utils";
 type InjectedDependencies = {
     logger: Logger;
 };

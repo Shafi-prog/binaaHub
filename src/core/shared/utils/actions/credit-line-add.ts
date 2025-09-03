@@ -3,8 +3,8 @@ import {
   ChangeActionType,
   MathBN,
   MedusaError,
-} from "@medusajs/framework/utils"
-import { CreateOrderCreditLineDTO, OrderCreditLineDTO } from "@medusajs/types"
+} from "@platform/framework/utils"
+import { CreateOrderCreditLineDTO, OrderCreditLineDTO } from "@platform/types"
 import { OrderChangeProcessing } from "../calculate-order-change"
 import { setActionReference } from "../set-action-reference"
 

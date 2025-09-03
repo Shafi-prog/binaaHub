@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var utils_1 = require("@medusajs/framework/utils");
+var utils_1 = require("@platform/framework/utils");
 exports.default = utils_1.model.define("currency", {
     code: utils_1.model.text().searchable().primaryKey(),
     symbol: utils_1.model.text(),

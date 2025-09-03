@@ -1,11 +1,11 @@
 // @ts-nocheck
-import { IndexTypes } from "@medusajs/framework/types"
+import { IndexTypes } from "@platform/framework/types"
 import {
   isDefined,
   isObject,
   isString,
   unflattenObjectKeys,
-} from "@medusajs/framework/utils"
+} from "@platform/framework/utils"
 import { Knex } from "@mikro-orm/knex"
 import { OrderBy, QueryFormat, QueryOptions, Select } from "@types"
 import { getPivotTableName, normalizeTableName } from "./normalze-table-name"

@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { RuleOperator } from "@medusajs/framework/utils"
+import { RuleOperator } from "@platform/framework/utils"
 import { isContextValid } from "../utils"
 
 describe("isContextValidForRules", () => {

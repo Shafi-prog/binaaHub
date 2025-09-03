@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { HandTruck, PencilSquare } from "@medusajs/icons"
-import { HttpTypes } from "@medusajs/types"
-import { Container, Heading } from "@medusajs/ui"
+import { HandTruck, PencilSquare } from "@platform/icons"
+import { HttpTypes } from "@platform/types"
+import { Container, Heading } from "@platform/ui"
 import { Fragment } from "react"
 import { useTranslation } from "react-i18next"
 

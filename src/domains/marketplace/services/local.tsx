@@ -3,11 +3,11 @@ import {
   LocalNotificationServiceOptions,
   Logger,
   NotificationTypes,
-} from "@medusajs/framework/types"
+} from "@platform/framework/types"
 import {
   AbstractNotificationProviderService,
   MedusaError,
-} from "@medusajs/framework/utils"
+} from "@platform/framework/utils"
 
 type InjectedDependencies = {
   logger: Logger

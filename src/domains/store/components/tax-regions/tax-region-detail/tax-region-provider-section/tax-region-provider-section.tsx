@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { useTranslation } from "react-i18next"
-import { HttpTypes } from "@medusajs/types"
-import { Container, Heading } from "@medusajs/ui"
+import { HttpTypes } from "@platform/types"
+import { Container, Heading } from "@platform/ui"
 
 import { formatProvider } from "@/domains/shared/services/format-provider"
 

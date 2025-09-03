@@ -39,7 +39,7 @@ import {
   InitiatePaymentOutput,
   UpdateAccountHolderDTO,
   UpdateAccountHolderOutput,
-} from "@medusajs/framework/types"
+} from "@platform/framework/types"
 import {
   BigNumber,
   InjectManager,
@@ -53,7 +53,7 @@ import {
   PaymentCollectionStatus,
   PaymentSessionStatus,
   promiseAll,
-} from "@medusajs/framework/utils"
+} from "@platform/framework/utils"
 import {
   AccountHolder,
   Capture,

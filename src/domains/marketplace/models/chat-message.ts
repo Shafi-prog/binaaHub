@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { model } from "@medusajs/framework/utils"
+import { model } from "@platform/framework/utils"
 
 const ChatMessage = model.define("chat_message", {
   id: model.id().primaryKey(),

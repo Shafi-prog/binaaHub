@@ -13,7 +13,7 @@ import {
   SoftDeleteReturn,
   UpdateRegionDTO,
   UpsertRegionDTO,
-} from "@medusajs/framework/types"
+} from "@platform/framework/types"
 import {
   arrayDifference,
   getDuplicates,
@@ -25,7 +25,7 @@ import {
   MedusaService,
   promiseAll,
   removeUndefined,
-} from "@medusajs/framework/utils"
+} from "@platform/framework/utils"
 import { Country, Region } from "@models"
 import { UpdateRegionInput } from "@types"
 

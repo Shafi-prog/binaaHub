@@ -3,14 +3,14 @@ import {
   BigNumberInput,
   OrderDTO,
   OrderSummaryDTO,
-} from "@medusajs/framework/types"
+} from "@platform/framework/types"
 import {
   BigNumber,
   ChangeActionType,
   MathBN,
   isPresent,
   transformPropertiesToBigNumber,
-} from "@medusajs/framework/utils"
+} from "@platform/framework/utils"
 import {
   ActionTypeDefinition,
   EVENT_STATUS,

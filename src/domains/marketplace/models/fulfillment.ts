@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { model } from "@medusajs/framework/utils"
+import { model } from "@platform/framework/utils"
 
 import { FulfillmentAddress } from "./address"
 import { FulfillmentItem } from "./fulfillment-item"

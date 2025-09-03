@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Checkbox } from "@medusajs/ui"
+import { Checkbox } from "@platform/ui"
 import { Controller, ControllerRenderProps } from "react-hook-form"
 
 import { useCombinedRefs } from "@/domains/shared/hooks/use-combined-refs"

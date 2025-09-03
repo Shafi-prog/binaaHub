@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { Button, Container, Copy, Heading, toast } from "@medusajs/ui"
+import { Button, Container, Copy, Heading, toast } from "@platform/ui"
 import { useTranslation } from "react-i18next"
-import { ExclamationCircleSolid } from "@medusajs/icons"
+import { ExclamationCircleSolid } from "@platform/icons"
 
 import { useOrderPreview } from "../../../../../hooks/api"
 import {
@@ -9,7 +9,7 @@ import {
   useConfirmOrderEdit,
 } from "../../../../../hooks/api/order-edits"
 import { useMemo } from "react"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@platform/types"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
 import { useNavigate } from "react-router-dom"
 

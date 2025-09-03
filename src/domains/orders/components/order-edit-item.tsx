@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { ArrowUturnLeft, DocumentSeries, XCircle } from "@medusajs/icons"
-import { AdminOrderLineItem } from "@medusajs/types"
-import { Badge, Input, Text, toast } from "@medusajs/ui"
+import { ArrowUturnLeft, DocumentSeries, XCircle } from "@platform/icons"
+import { AdminOrderLineItem } from "@platform/types"
+import { Badge, Input, Text, toast } from "@platform/ui"
 import { useTranslation } from "react-i18next"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"

@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { InformationCircleSolid } from "@medusajs/icons"
-import { AdminOrderShippingMethod } from "@medusajs/types"
-import { Badge, Tooltip } from "@medusajs/ui"
+import { InformationCircleSolid } from "@platform/icons"
+import { AdminOrderShippingMethod } from "@platform/types"
+import { Badge, Tooltip } from "@platform/ui"
 import { useTranslation } from "react-i18next"
 
 type ShippingInfoPopoverProps = {

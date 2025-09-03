@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { model, ReturnStatus } from "@medusajs/framework/utils"
+import { model, ReturnStatus } from "@platform/framework/utils"
 import { OrderClaim } from "./claim"
 import { OrderExchange } from "./exchange"
 import { Order } from "./order"

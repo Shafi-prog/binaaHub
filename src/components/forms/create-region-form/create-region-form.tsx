@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { zodResolver } from "@hookform/resolvers/zod"
-import { XMarkMini } from "@medusajs/icons"
+import { XMarkMini } from "@platform/icons"
 import {
   Button,
   Checkbox,
@@ -11,14 +11,14 @@ import {
   Text,
   clx,
   toast,
-} from "@medusajs/ui"
+} from "@platform/ui"
 import { RowSelectionState, createColumnHelper } from "@tanstack/react-table"
 import { useMemo, useState } from "react"
 import { useForm, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
-import { PaymentProviderDTO, RegionCountryDTO } from "@medusajs/types"
+import { PaymentProviderDTO, RegionCountryDTO } from "@platform/types"
 
 import { Form } from "../../../../../components/common/form"
 import { Combobox } from "../../../../../components/inputs/combobox"

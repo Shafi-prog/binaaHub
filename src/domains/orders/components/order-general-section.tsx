@@ -1,6 +1,6 @@
 // @ts-nocheck
-import { XCircle } from "@medusajs/icons"
-import { HttpTypes } from "@medusajs/types"
+import { XCircle } from "@platform/icons"
+import { HttpTypes } from "@platform/types"
 import {
   Container,
   Copy,
@@ -9,7 +9,7 @@ import {
   Text,
   toast,
   usePrompt,
-} from "@medusajs/ui"
+} from "@platform/ui"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { useCancelOrder } from "../../../../../hooks/api/orders"

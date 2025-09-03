@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { ErrorMessage } from "@hookform/error-message"
-import { ExclamationCircle } from "@medusajs/icons"
-import { Tooltip, clx } from "@medusajs/ui"
+import { ExclamationCircle } from "@platform/icons"
+import { Tooltip, clx } from "@platform/ui"
 import { PropsWithChildren } from "react"
 import { get } from "react-hook-form"
 

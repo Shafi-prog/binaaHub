@@ -1,6 +1,6 @@
 // @ts-nocheck
-import { ShoppingBag } from "@medusajs/icons"
-import { Container, Heading } from "@medusajs/ui"
+import { ShoppingBag } from "@platform/icons"
+import { Container, Heading } from "@platform/ui"
 import { useTranslation } from "react-i18next"
 import { useLoaderData } from "react-router-dom"
 

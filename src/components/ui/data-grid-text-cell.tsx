@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { clx } from "@medusajs/ui"
+import { clx } from "@platform/ui"
 import { useEffect, useState } from "react"
 import { Controller, ControllerRenderProps } from "react-hook-form"
 

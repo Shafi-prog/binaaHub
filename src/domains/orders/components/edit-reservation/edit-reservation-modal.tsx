@@ -1,6 +1,6 @@
 // @ts-nocheck
-import { InventoryTypes } from "@medusajs/types"
-import { Heading } from "@medusajs/ui"
+import { InventoryTypes } from "@platform/types"
+import { Heading } from "@platform/ui"
 import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
 import { RouteDrawer } from "../../../../../components/modals"

@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { CommandBar, Table, clx } from "@medusajs/ui"
+import { CommandBar, Table, clx } from "@platform/ui"
 import {
   ColumnDef,
   Table as ReactTable,

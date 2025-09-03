@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Tooltip } from "@medusajs/ui"
+import { Tooltip } from "@platform/ui"
 import { useTranslation } from "react-i18next"
 import { PlaceholderCell } from "../placeholder-cell"
 import { useDate } from "../../../../../hooks/use-date"

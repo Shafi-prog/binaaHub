@@ -1,6 +1,6 @@
 // @ts-nocheck
-import { Component, PencilSquare, Trash } from "@medusajs/icons"
-import { Badge, Container, Heading } from "@medusajs/ui"
+import { Component, PencilSquare, Trash } from "@platform/icons"
+import { Badge, Container, Heading } from "@platform/ui"
 import { useRouter } from "next/navigation"
 
 import { ActionMenu } from "@/components/common/action-menu"

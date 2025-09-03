@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { DataTableEmptyStateProps } from "@medusajs/ui"
+import { DataTableEmptyStateProps } from "@platform/ui"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 

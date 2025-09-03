@@ -1,6 +1,6 @@
 // @ts-nocheck
 /**
- * Re-implementation of enum from `@medusajs/medusa` as it cannot be imported
+ * Re-implementation of legacy enums (cannot be imported from external sources)
  */
 export enum PriceListStatus {
   ACTIVE = "active",
@@ -13,7 +13,7 @@ export enum PriceListDateStatus {
 }
 
 /**
- * Re-implementation of enum from `@medusajs/medusa` as it cannot be imported
+ * Re-implementation of legacy enums (cannot be imported from external sources)
  */
 export enum PriceListType {
   SALE = "sale",

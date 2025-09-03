@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { AdminCampaign } from "@medusajs/types"
+import { AdminCampaign } from "@platform/types"
 import { isAfter, isBefore } from "date-fns"
 
 export function campaignStatus(campaign: AdminCampaign) {

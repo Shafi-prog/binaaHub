@@ -1,6 +1,6 @@
 // @ts-nocheck
-import { XMarkMini } from "@medusajs/icons"
-import { Badge, clx } from "@medusajs/ui"
+import { XMarkMini } from "@platform/icons"
+import { Badge, clx } from "@platform/ui"
 import { AnimatePresence, motion } from "motion/react"
 import {
   FocusEvent,

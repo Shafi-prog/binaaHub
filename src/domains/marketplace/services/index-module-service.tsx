@@ -7,14 +7,14 @@ import {
   Logger,
   ModulesSdkTypes,
   RemoteQueryFunction,
-} from "@medusajs/framework/types"
+} from "@platform/framework/types"
 import {
   MikroOrmBaseRepository as BaseRepository,
   ContainerRegistrationKeys,
   GraphQLUtils,
   Modules,
   ModulesSdkUtils,
-} from "@medusajs/framework/utils"
+} from "@platform/framework/utils"
 import { schemaObjectRepresentationPropertiesToOmit } from "@types"
 import {
   buildSchemaObjectRepresentation,

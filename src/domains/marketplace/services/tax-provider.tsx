@@ -1,6 +1,6 @@
 // @ts-nocheck
-import { DAL, ITaxProvider, Logger, TaxTypes } from "@medusajs/framework/types"
-import { ModulesSdkUtils } from "@medusajs/framework/utils"
+import { DAL, ITaxProvider, Logger, TaxTypes } from "@platform/framework/types"
+import { ModulesSdkUtils } from "@platform/framework/utils"
 
 import TaxProvider from "../models/tax-provider"
 

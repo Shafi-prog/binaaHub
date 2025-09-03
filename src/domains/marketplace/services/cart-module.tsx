@@ -9,7 +9,7 @@ import {
   InferEntityType,
   InternalModuleDeclaration,
   ModulesSdkTypes,
-} from "@medusajs/framework/types"
+} from "@platform/framework/types"
 import {
   createRawPropertiesFromBigNumber,
   decorateCartTotals,
@@ -23,7 +23,7 @@ import {
   MedusaError,
   ModulesSdkUtils,
   promiseAll,
-} from "@medusajs/framework/utils"
+} from "@platform/framework/utils"
 import {
   Address,
   Cart,

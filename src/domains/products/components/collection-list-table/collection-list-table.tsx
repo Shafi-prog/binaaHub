@@ -1,9 +1,9 @@
 // @ts-nocheck
-import { Button, Container, Heading, Text } from "@medusajs/ui"
+import { Button, Container, Heading, Text } from "@platform/ui"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@platform/types"
 import { keepPreviousData } from "@tanstack/react-query"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"

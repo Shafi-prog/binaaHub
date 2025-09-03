@@ -34,8 +34,8 @@ export async function POST(req: Request) {
       }
     } catch {}
     userId = body.user_id || body.customer_id || userId || null
-    if (!userId) {
-      // final fallback for demo only
+    if (!userId && process.env.NEXT_PUBLIC_ALLOW_DEMO_FALLBACK === 'true') {
+      // final fallback for demo only (gated by env)
       userId = '00000000-0000-0000-0000-000000000000'
     }
 

@@ -1,8 +1,8 @@
 // @ts-nocheck
-import { FetchError } from "@medusajs/js-sdk"
+import { FetchError } from "@platform/js-sdk"
 import { LoaderFunctionArgs, redirect } from "react-router-dom"
 
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@platform/types"
 import { stockLocationsQueryKeys } from "@/domains/shared/hooks/api/stock-locations"
 import { sdk } from "@/domains/shared/services/client"
 import { queryClient } from "@/domains/shared/services/query-client"

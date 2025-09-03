@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Avatar, Text } from "@medusajs/ui"
+import { Avatar, Text } from "@platform/ui"
 import { Link } from "react-router-dom"
 import { useUser } from "@/domains/shared/hooks/api/users"
 

@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { PlusMini, Trash } from "@medusajs/icons"
-import { HttpTypes } from "@medusajs/types"
-import { Checkbox, Container, Heading, toast, usePrompt } from "@medusajs/ui"
+import { PlusMini, Trash } from "@platform/icons"
+import { HttpTypes } from "@platform/types"
+import { Checkbox, Container, Heading, toast, usePrompt } from "@platform/ui"
 import {
   ColumnDef,
   RowSelectionState,

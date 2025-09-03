@@ -1,12 +1,12 @@
 // @ts-nocheck
 import { zodResolver } from "@hookform/resolvers/zod"
-import { PencilSquare } from "@medusajs/icons"
+import { PencilSquare } from "@platform/icons"
 import {
   AdminOrder,
   AdminOrderPreview,
   AdminReturn,
   InventoryLevelDTO,
-} from "@medusajs/types"
+} from "@platform/types"
 import {
   Alert,
   Button,
@@ -17,7 +17,7 @@ import {
   Text,
   toast,
   usePrompt,
-} from "@medusajs/ui"
+} from "@platform/ui"
 import { useEffect, useMemo, useState } from "react"
 import { useFieldArray, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"

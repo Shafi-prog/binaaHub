@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { OrderTypes } from "@medusajs/framework/types"
+import { OrderTypes } from "@platform/framework/types"
 
 export type OrderTransactionDTO = OrderTypes.OrderTransactionDTO
 

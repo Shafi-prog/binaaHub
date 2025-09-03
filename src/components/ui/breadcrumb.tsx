@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@platform/types"
 import { UIMatch } from "react-router-dom"
 
 import { useApiKey } from "@/domains/shared/hooks/api/api-keys"

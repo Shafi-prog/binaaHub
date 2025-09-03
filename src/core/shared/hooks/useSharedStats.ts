@@ -10,6 +10,7 @@ export const useSharedStats = () => {
   const projects: any[] = [];
   const warranties: any[] = [];
   const profile = null; // User profile type mismatch, using null for now
+  // TODO: Replace with Supabase-driven stats; returning zeros to avoid fake data
   const stats = { total: 0, active: 0, completed: 0 };
   
   const financialStats = UserStatsCalculator.calculateFinancialStats(orders, invoices, projects);

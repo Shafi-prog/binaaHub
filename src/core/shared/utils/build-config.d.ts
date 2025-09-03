@@ -1,6 +1,6 @@
 // @ts-nocheck
-import { IndexTypes } from "@medusajs/framework/types";
-import { GraphQLUtils } from "@medusajs/framework/utils";
+import { IndexTypes } from "@platform/framework/types";
+import { GraphQLUtils } from "@platform/framework/utils";
 export declare const CustomDirectives: {
     Listeners: {
         configurationPropertyName: string;

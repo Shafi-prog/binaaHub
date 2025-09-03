@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { ChartPie, PencilSquare } from "@medusajs/icons"
-import { AdminCampaign } from "@medusajs/types"
-import { Container, Heading, Text } from "@medusajs/ui"
+import { ChartPie, PencilSquare } from "@platform/icons"
+import { AdminCampaign } from "@platform/types"
+import { Container, Heading, Text } from "@platform/ui"
 import { Trans, useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 

@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { createDataTableFilterHelper } from "@medusajs/ui"
+import { createDataTableFilterHelper } from "@platform/ui"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { useDataTableDateFilters } from "../../../data-table/helpers/general/use-data-table-date-filters"

@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@platform/types"
 import { TransactionState, TransactionStepState } from "./types"
 
 export const STEP_IN_PROGRESS_STATES: HttpTypes.TransactionStepState[] = [

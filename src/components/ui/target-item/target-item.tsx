@@ -1,6 +1,6 @@
 // @ts-nocheck
-import { XMarkMini } from "@medusajs/icons"
-import { IconButton, Text } from "@medusajs/ui"
+import { XMarkMini } from "@platform/icons"
+import { IconButton, Text } from "@platform/ui"
 
 type TargetItemProps = {
   index: number

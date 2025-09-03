@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Text, clx } from "@medusajs/ui"
+import { Text, clx } from "@platform/ui"
 import { useTranslation } from "react-i18next"
 import { useDate } from "@/domains/shared/hooks/use-date"
 

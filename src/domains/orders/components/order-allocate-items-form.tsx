@@ -4,9 +4,9 @@ import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
-import { AdminOrder, InventoryItemDTO } from "@medusajs/types"
+import { AdminOrder, InventoryItemDTO } from "@platform/types"
 import { OrderLineItemDTO } from "../../../../../lib/order-types"
-import { Alert, Button, Heading, Input, Select, toast } from "@medusajs/ui"
+import { Alert, Button, Heading, Input, Select, toast } from "@platform/ui"
 import { useForm, useWatch } from "react-hook-form"
 
 import { Form } from "../../../../../components/common/form"

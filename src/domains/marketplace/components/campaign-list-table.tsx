@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { PencilSquare, Trash } from "@medusajs/icons"
-import { AdminCampaign } from "@medusajs/types"
-import { Button, Container, Heading, toast, usePrompt } from "@medusajs/ui"
+import { PencilSquare, Trash } from "@platform/icons"
+import { AdminCampaign } from "@platform/types"
+import { Button, Container, Heading, toast, usePrompt } from "@platform/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"

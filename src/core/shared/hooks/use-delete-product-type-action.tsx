@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { useNavigate } from "react-router-dom"
-import { toast, usePrompt } from "@medusajs/ui"
+import { toast, usePrompt } from "@platform/ui"
 import { useTranslation } from "react-i18next"
 
 import { useDeleteProductType } from "@/domains/shared/hooks/api/product-types"

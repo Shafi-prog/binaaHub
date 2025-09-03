@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { model } from "@medusajs/framework/utils"
+import { model } from "@platform/framework/utils"
 import Product from "./product"
 
 const ProductSubscription = model

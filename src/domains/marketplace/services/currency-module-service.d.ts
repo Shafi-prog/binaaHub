@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Context, CurrencyTypes, DAL, FilterableCurrencyProps, FindConfig, ICurrencyModuleService, InternalModuleDeclaration, ModulesSdkTypes } from "@medusajs/framework/types";
+import { Context, CurrencyTypes, DAL, FilterableCurrencyProps, FindConfig, ICurrencyModuleService, InternalModuleDeclaration, ModulesSdkTypes } from "@platform/framework/types";
 import { Currency } from "@models";
 type InjectedDependencies = {
     baseRepository: DAL.RepositoryService;

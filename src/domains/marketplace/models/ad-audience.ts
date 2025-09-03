@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { model } from "@medusajs/utils"
+import { model } from "@platform/utils"
 
 /**
  * Amazon DSP-style audience targeting model for advanced advertising

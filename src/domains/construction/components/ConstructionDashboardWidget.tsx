@@ -191,7 +191,7 @@ export default function ConstructionDashboardWidget({ storeId }: ConstructionDas
       {/* Quick Actions */}
       <div className="space-y-3">
         <Link
-          href="/store/products/construction"
+          href="/store/products"
           className="w-full flex items-center justify-center px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors"
         >
           <Package className="w-4 h-4 ml-2" />
@@ -200,7 +200,7 @@ export default function ConstructionDashboardWidget({ storeId }: ConstructionDas
         
         <div className="grid grid-cols-2 gap-3">
           <Link
-            href="/store/products/construction/new"
+            href="/store/products/create"
             className="flex items-center justify-center px-3 py-2 bg-white border border-orange-300 text-orange-700 rounded-lg hover:bg-orange-50 transition-colors"
           >
             <Plus className="w-4 h-4 ml-1" />
@@ -220,7 +220,7 @@ export default function ConstructionDashboardWidget({ storeId }: ConstructionDas
         </div>
         
         <Link
-          href="/store/categories/construction"
+          href="/store/products"
           className="w-full flex items-center justify-center px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors text-sm"
         >
           إدارة الفئات

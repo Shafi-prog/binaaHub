@@ -1,3 +1,5 @@
+import path from 'path'
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Exclude Medusa development folder from Next.js compilation
@@ -55,6 +57,33 @@ const nextConfig = {
       poll: false,
     };
     
+    // Aliases to replace Medusa icons with local equivalents
+    config.resolve = config.resolve || {}
+    config.resolve.alias = {
+      ...(config.resolve.alias || {}),
+      '@medusajs/icons': path.resolve(process.cwd(), 'src/adapters/medusa/icons.tsx'),
+      '@medusajs/ui': path.resolve(process.cwd(), 'src/adapters/medusa/ui.tsx'),
+      '@medusajs/types': path.resolve(process.cwd(), 'src/adapters/medusa/types.ts'),
+      '@medusajs/framework/types': path.resolve(process.cwd(), 'src/adapters/medusa/framework-types.ts'),
+      '@medusajs/framework/utils': path.resolve(process.cwd(), 'src/adapters/medusa/framework-utils.ts'),
+      '@medusajs/framework/modules-sdk': path.resolve(process.cwd(), 'src/adapters/medusa/modules-sdk.ts'),
+      '@medusajs/framework/orchestration': path.resolve(process.cwd(), 'src/adapters/medusa/orchestration.ts'),
+  '@medusajs/framework/workflows-sdk': path.resolve(process.cwd(), 'src/adapters/medusa/workflows-sdk.ts'),
+      '@medusajs/utils': path.resolve(process.cwd(), 'src/adapters/medusa/utils.ts'),
+      '@medusajs/js-sdk': path.resolve(process.cwd(), 'src/adapters/medusa/js-sdk.ts'),
+  // Platform-prefixed aliases to remove Medusa naming from imports
+  '@platform/icons': path.resolve(process.cwd(), 'src/adapters/medusa/icons.tsx'),
+  '@platform/ui': path.resolve(process.cwd(), 'src/adapters/medusa/ui.tsx'),
+  '@platform/types': path.resolve(process.cwd(), 'src/adapters/medusa/types.ts'),
+  '@platform/framework/types': path.resolve(process.cwd(), 'src/adapters/medusa/framework-types.ts'),
+  '@platform/framework/utils': path.resolve(process.cwd(), 'src/adapters/medusa/framework-utils.ts'),
+  '@platform/framework/modules-sdk': path.resolve(process.cwd(), 'src/adapters/medusa/modules-sdk.ts'),
+  '@platform/framework/orchestration': path.resolve(process.cwd(), 'src/adapters/medusa/orchestration.ts'),
+  '@platform/framework/workflows-sdk': path.resolve(process.cwd(), 'src/adapters/medusa/workflows-sdk.ts'),
+  '@platform/utils': path.resolve(process.cwd(), 'src/adapters/medusa/utils.ts'),
+  '@platform/js-sdk': path.resolve(process.cwd(), 'src/adapters/medusa/js-sdk.ts'),
+    }
+
     // Add fallbacks for Node.js modules to prevent CloudFlare sockets issues
     if (!isServer) {
       config.resolve.fallback = {

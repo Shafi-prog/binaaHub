@@ -1,6 +1,6 @@
 // @ts-nocheck
-import { HttpTypes } from "@medusajs/types"
-import { Container, Heading } from "@medusajs/ui"
+import { HttpTypes } from "@platform/types"
+import { Container, Heading } from "@platform/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { useTranslation } from "react-i18next"
 

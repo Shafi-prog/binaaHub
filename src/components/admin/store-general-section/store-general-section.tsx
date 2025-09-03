@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { PencilSquare } from "@medusajs/icons"
-import { AdminStore } from "@medusajs/types"
-import { Badge, Container, Heading, Text } from "@medusajs/ui"
+import { PencilSquare } from "@platform/icons"
+import { AdminStore } from "@platform/types"
+import { Badge, Container, Heading, Text } from "@platform/ui"
 import { useTranslation } from "react-i18next"
 
 import { Link } from "react-router-dom"

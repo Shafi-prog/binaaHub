@@ -1,6 +1,6 @@
 // @ts-nocheck
-import { HttpTypes } from "@medusajs/types"
-import { Container, Heading } from "@medusajs/ui"
+import { HttpTypes } from "@platform/types"
+import { Container, Heading } from "@platform/ui"
 import { useTranslation } from "react-i18next"
 import { _DataTable } from "../../../../../components/table/data-table"
 import { useProducts } from "../../../../../hooks/api"

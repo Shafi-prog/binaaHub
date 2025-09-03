@@ -20,7 +20,7 @@ import {
   SoftDeleteReturn,
   UpdateOrderItemWithSelectorDTO,
   UpdateOrderReturnReasonDTO,
-} from "@medusajs/framework/types"
+} from "@platform/framework/types"
 import {
   BigNumber,
   ChangeActionType,
@@ -42,7 +42,7 @@ import {
   promiseAll,
   toMikroORMEntity,
   transformPropertiesToBigNumber,
-} from "@medusajs/framework/utils"
+} from "@platform/framework/utils"
 import { BeforeCreate, OnInit, rel } from "@mikro-orm/core"
 import {
   Order,

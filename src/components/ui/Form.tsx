@@ -1,12 +1,12 @@
 // @ts-nocheck
-import { InformationCircleSolid } from "@medusajs/icons"
+import { InformationCircleSolid } from "@platform/icons"
 import {
   Hint as HintComponent,
   Label as LabelComponent,
   Text,
   Tooltip,
   clx,
-} from "@medusajs/ui"
+} from "@platform/ui"
 import { Label as RadixLabel, Slot } from "radix-ui"
 import React, {
   ReactNode,

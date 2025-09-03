@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Text, clx } from "@medusajs/ui"
+import { Text, clx } from "@platform/ui"
 import { ReactNode } from "react"
 
 export type SectionRowProps = {

@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { ILockingProvider } from "@medusajs/types";
+import { ILockingProvider } from "@platform/types";
 import { RedisCacheModuleOptions } from "../types";
 import { Redis } from "ioredis";
 export declare class RedisLockingProvider implements ILockingProvider {

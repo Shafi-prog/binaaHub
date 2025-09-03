@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var utils_1 = require("@medusajs/framework/utils");
+var utils_1 = require("@platform/framework/utils");
 var ApiKey = utils_1.model
     .define("ApiKey", {
     id: utils_1.model.id({ prefix: "apk" }).primaryKey(),

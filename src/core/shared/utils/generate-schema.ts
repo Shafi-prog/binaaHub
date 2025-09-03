@@ -1,16 +1,16 @@
 // @ts-nocheck
-import { MedusaModule } from "@medusajs/framework/modules-sdk"
+import { MedusaModule } from "@platform/framework/modules-sdk"
 import {
   ModuleJoinerConfig,
   ModuleJoinerRelationship,
-} from "@medusajs/framework/types"
+} from "@platform/framework/types"
 import {
   camelToSnakeCase,
   composeTableName,
   isString,
   lowerCaseFirst,
   toPascalCase,
-} from "@medusajs/framework/utils"
+} from "@platform/framework/utils"
 
 export function generateGraphQLSchema(
   joinerConfig: ModuleJoinerConfig,

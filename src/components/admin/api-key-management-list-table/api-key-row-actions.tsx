@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { PencilSquare, SquareTwoStack, Trash, XCircle } from "@medusajs/icons"
-import { AdminApiKeyResponse } from "@medusajs/types"
-import { toast, usePrompt } from "@medusajs/ui"
+import { PencilSquare, SquareTwoStack, Trash, XCircle } from "@platform/icons"
+import { AdminApiKeyResponse } from "@platform/types"
+import { toast, usePrompt } from "@platform/ui"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import {

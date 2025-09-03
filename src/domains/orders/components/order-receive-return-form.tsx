@@ -1,8 +1,8 @@
 // @ts-nocheck
 import { zodResolver } from "@hookform/resolvers/zod"
-import { ArrowRight } from "@medusajs/icons"
-import { AdminOrder, AdminReturn } from "@medusajs/types"
-import { Alert, Button, Input, Switch, Text, toast } from "@medusajs/ui"
+import { ArrowRight } from "@platform/icons"
+import { AdminOrder, AdminReturn } from "@platform/types"
+import { Alert, Button, Input, Switch, Text, toast } from "@platform/ui"
 import { useEffect, useMemo } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"

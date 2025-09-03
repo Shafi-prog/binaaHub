@@ -30,7 +30,7 @@ const navigation = [
   { name: 'Inventory', href: '/store/inventory', icon: ShoppingCartIcon },
   { name: 'Orders', href: '/store/orders', icon: TruckIcon },
   { name: 'Suppliers', href: '/store/suppliers', icon: UserGroupIcon },
-  { name: 'Invoices', href: '/store/invoices', icon: DocumentTextIcon },
+  { name: 'Invoices', href: '/user/invoices', icon: DocumentTextIcon },
   { name: 'Analytics', href: '/store/analytics-enhanced', icon: ChartBarIcon },
   { name: 'Settings', href: '/store/settings', icon: Cog6ToothIcon },
 ]

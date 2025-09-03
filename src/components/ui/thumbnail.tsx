@@ -1,6 +1,6 @@
 // @ts-nocheck
-import { Photo } from "@medusajs/icons"
-import { clx } from "@medusajs/ui"
+import { Photo } from "@platform/icons"
+import { clx } from "@platform/ui"
 
 type ThumbnailProps = {
   src?: string | null

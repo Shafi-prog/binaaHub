@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { model } from "@medusajs/framework/utils"
+import { model } from "@platform/framework/utils"
 
 const PushNotification = model.define("push_notification", {
   id: model.id().primaryKey(),

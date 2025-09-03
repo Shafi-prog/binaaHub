@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@platform/types"
 import { LoaderFunctionArgs } from "react-router-dom"
 
 import { productTagsQueryKeys } from "@/domains/shared/hooks/api"

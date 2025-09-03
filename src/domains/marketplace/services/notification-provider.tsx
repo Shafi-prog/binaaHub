@@ -4,8 +4,8 @@ import {
   InferEntityType,
   Logger,
   NotificationTypes,
-} from "@medusajs/framework/types"
-import { ModulesSdkUtils } from "@medusajs/framework/utils"
+} from "@platform/framework/types"
+import { ModulesSdkUtils } from "@platform/framework/utils"
 import { NotificationProvider } from "@models"
 import { NotificationProviderRegistrationPrefix } from "@types"
 

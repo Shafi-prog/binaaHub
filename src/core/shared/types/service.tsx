@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { FulfillmentTypes } from "@medusajs/framework/types"
+import { FulfillmentTypes } from "@platform/framework/types"
 
 export type UpdateShippingOptionsInput = Required<
   Pick<FulfillmentTypes.UpdateShippingOptionDTO, "id">

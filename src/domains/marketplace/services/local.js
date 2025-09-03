@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LocalNotificationService = void 0;
-const utils_1 = require("@medusajs/framework/utils");
+const utils_1 = require("@platform/framework/utils");
 class LocalNotificationService extends utils_1.AbstractNotificationProviderService {
     constructor({ logger }, options) {
         super();

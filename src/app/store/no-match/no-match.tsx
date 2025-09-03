@@ -1,6 +1,6 @@
 // @ts-nocheck
-import { ExclamationCircle } from "@medusajs/icons"
-import { Button, Text } from "@medusajs/ui"
+import { ExclamationCircle } from "@platform/icons"
+import { Button, Text } from "@platform/ui"
 import { useTranslation } from "react-i18next"
 import Link from "next/link"
 

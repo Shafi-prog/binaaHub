@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { BigNumberInput } from "@medusajs/framework/types"
+import { BigNumberInput } from "@platform/framework/types"
 
 export interface PartialUpsertOrderItemDTO {
   order_id?: string

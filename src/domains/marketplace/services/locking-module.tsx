@@ -4,7 +4,7 @@ import {
   ILockingModule,
   InternalModuleDeclaration,
   Logger,
-} from "@medusajs/types"
+} from "@platform/types"
 import { EntityManager } from "@mikro-orm/core"
 import { LockingDefaultProvider } from "@types"
 import LockingProviderService from "./locking-provider"

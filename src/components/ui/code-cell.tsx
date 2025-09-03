@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Badge } from "@medusajs/ui"
+import { Badge } from "@platform/ui"
 
 type CellProps = {
   code: string

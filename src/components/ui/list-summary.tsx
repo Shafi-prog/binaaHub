@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Tooltip, clx } from "@medusajs/ui"
+import { Tooltip, clx } from "@platform/ui"
 import { useTranslation } from "react-i18next"
 
 type ListSummaryProps = {

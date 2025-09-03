@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { CheckCircleSolid, SquareTwoStack } from "@medusajs/icons"
-import { AdminOrder, AdminPaymentCollection } from "@medusajs/types"
-import { Button, Tooltip } from "@medusajs/ui"
+import { CheckCircleSolid, SquareTwoStack } from "@platform/icons"
+import { AdminOrder, AdminPaymentCollection } from "@platform/types"
+import { Button, Tooltip } from "@platform/ui"
 import copy from "copy-to-clipboard"
 import React, { useState } from "react"
 import { useTranslation } from "react-i18next"

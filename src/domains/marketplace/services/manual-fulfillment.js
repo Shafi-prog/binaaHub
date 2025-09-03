@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ManualFulfillmentService = void 0;
-const utils_1 = require("@medusajs/framework/utils");
+const utils_1 = require("@platform/framework/utils");
 // TODO rework type and DTO's
 class ManualFulfillmentService extends utils_1.AbstractFulfillmentProviderService {
     constructor() {

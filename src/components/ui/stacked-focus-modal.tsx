@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { FocusModal, clx } from "@medusajs/ui"
+import { FocusModal, clx } from "@platform/ui"
 import {
   ComponentPropsWithoutRef,
   PropsWithChildren,

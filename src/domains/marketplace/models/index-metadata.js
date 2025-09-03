@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const utils_1 = require("@medusajs/framework/utils");
+const utils_1 = require("@platform/framework/utils");
 const index_metadata_status_1 = require("../utils/index-metadata-status");
 const IndexMetadata = utils_1.model
     .define("IndexMetadata", {

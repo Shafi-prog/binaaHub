@@ -10,7 +10,7 @@ import {
   InternalModuleDeclaration,
   ModuleJoinerConfig,
   ModulesSdkTypes,
-} from "@medusajs/framework/types"
+} from "@platform/framework/types"
 import {
   ApiKeyType,
   InjectManager,
@@ -22,7 +22,7 @@ import {
   MedusaError,
   MedusaService,
   promiseAll,
-} from "@medusajs/framework/utils"
+} from "@platform/framework/utils"
 import { ApiKey } from "@models"
 import {
   CreateApiKeyDTO,

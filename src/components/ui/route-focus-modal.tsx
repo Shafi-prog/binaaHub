@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { FocusModal, clx } from "@medusajs/ui"
+import { FocusModal, clx } from "@platform/ui"
 import { PropsWithChildren, useEffect, useState } from "react"
 import { Path, useNavigate } from "react-router-dom"
 import { useStateAwareTo } from "../hooks/use-state-aware-to"

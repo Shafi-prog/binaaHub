@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { MagnifyingGlass, XMarkMini } from "@medusajs/icons"
+import { MagnifyingGlass, XMarkMini } from "@platform/icons"
 import {
   Button,
   DatePicker,
@@ -12,7 +12,7 @@ import {
   Text,
   Textarea,
   clx,
-} from "@medusajs/ui"
+} from "@platform/ui"
 import { useFieldArray, type UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 

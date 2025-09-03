@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { PropsWithChildren } from "react"
 
-import { clx } from "@medusajs/ui"
+import { clx } from "@platform/ui"
 import { useDataGridCellError } from "../hooks"
 import { DataGridCellProps } from "../types"
 import { DataGridRowErrorIndicator } from "./data-grid-row-error-indicator"

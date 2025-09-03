@@ -13,11 +13,11 @@ import {
   FileTypes,
   Logger,
   S3FileServiceOptions,
-} from "@medusajs/framework/types"
+} from "@platform/framework/types"
 import {
   AbstractFileProviderService,
   MedusaError,
-} from "@medusajs/framework/utils"
+} from "@platform/framework/utils"
 import path from "path"
 import { Readable } from "stream"
 import { ulid } from "ulid"

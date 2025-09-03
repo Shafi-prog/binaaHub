@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { Button, Heading, IconButton, Input, Label } from "@medusajs/ui"
+import { Button, Heading, IconButton, Input, Label } from "@platform/ui"
 import { useFieldArray, UseFormReturn, useWatch } from "react-hook-form"
-import { XMarkMini } from "@medusajs/icons"
+import { XMarkMini } from "@platform/icons"
 import { useTranslation } from "react-i18next"
 
 import { ProductCreateSchemaType } from "../../../../types"

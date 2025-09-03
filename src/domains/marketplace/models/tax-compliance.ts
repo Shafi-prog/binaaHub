@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { model } from "@medusajs/framework/utils"
+import { model } from "@platform/framework/utils"
 
 const TaxCompliance = model.define("tax_compliance", {
   id: model.id().primaryKey(),

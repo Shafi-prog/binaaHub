@@ -1,6 +1,6 @@
 // @ts-nocheck
-import { TransactionState } from "@medusajs/framework/orchestration"
-import { model } from "@medusajs/framework/utils"
+import { TransactionState } from "@platform/framework/orchestration"
+import { model } from "@platform/framework/utils"
 
 export const WorkflowExecution = model
   .define("workflow_execution", {

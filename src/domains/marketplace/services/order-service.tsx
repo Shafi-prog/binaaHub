@@ -6,13 +6,13 @@ import {
   InferEntityType,
   OrderTypes,
   RepositoryService,
-} from "@medusajs/framework/types"
+} from "@platform/framework/types"
 import {
   InjectManager,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
-} from "@medusajs/framework/utils"
+} from "@platform/framework/utils"
 import { Order } from "@models"
 
 type InjectedDependencies = {

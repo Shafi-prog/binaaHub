@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { zodResolver } from "@hookform/resolvers/zod"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@platform/types"
 import {
   Button,
   CurrencyInput,
@@ -8,7 +8,7 @@ import {
   Select,
   Textarea,
   toast,
-} from "@medusajs/ui"
+} from "@platform/ui"
 import { useEffect, useMemo } from "react"
 import { formatValue } from "react-currency-input-field"
 import { useForm } from "react-hook-form"

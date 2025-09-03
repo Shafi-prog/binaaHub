@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProviderIdentity = void 0;
-var utils_1 = require("@medusajs/framework/utils");
+var utils_1 = require("@platform/framework/utils");
 var auth_identity_1 = require("./auth-identity");
 exports.ProviderIdentity = utils_1.model
     .define("provider_identity", {

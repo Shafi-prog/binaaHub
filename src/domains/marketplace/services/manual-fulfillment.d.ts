@@ -1,6 +1,6 @@
 // @ts-nocheck
-import { AbstractFulfillmentProviderService } from "@medusajs/framework/utils";
-import { CalculatedShippingOptionPrice, CalculateShippingOptionPriceContext, CreateFulfillmentResult, FulfillmentOption, ValidateFulfillmentDataContext } from "@medusajs/types";
+import { AbstractFulfillmentProviderService } from "@platform/framework/utils";
+import { CalculatedShippingOptionPrice, CalculateShippingOptionPriceContext, CreateFulfillmentResult, FulfillmentOption, ValidateFulfillmentDataContext } from "@platform/types";
 export declare class ManualFulfillmentService extends AbstractFulfillmentProviderService {
     static identifier: string;
     constructor();

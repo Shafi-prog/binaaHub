@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import { sdk } from "../../client"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@platform/types"
 
 export const workflowsQueryKeys = {
   all: ["workflows"] as const,

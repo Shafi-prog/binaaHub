@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { model, ProductUtils } from "@medusajs/framework/utils"
+import { model, ProductUtils } from "@platform/framework/utils"
 
 import ProductCategory from "./product-category"
 import ProductCollection from "./product-collection"

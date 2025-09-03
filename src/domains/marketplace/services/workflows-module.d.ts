@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { Context, DAL, FilterableWorkflowExecutionProps, FindConfig, InferEntityType, InternalModuleDeclaration, ModulesSdkTypes, WorkflowExecutionDTO, WorkflowsSdkTypes } from "@medusajs/framework/types";
-import { ModulesSdkUtils } from "@medusajs/framework/utils";
-import type { ReturnWorkflow, UnwrapWorkflowInputDataType } from "@medusajs/framework/workflows-sdk";
+import { Context, DAL, FilterableWorkflowExecutionProps, FindConfig, InferEntityType, InternalModuleDeclaration, ModulesSdkTypes, WorkflowExecutionDTO, WorkflowsSdkTypes } from "@platform/framework/types";
+import { ModulesSdkUtils } from "@platform/framework/utils";
+import type { ReturnWorkflow, UnwrapWorkflowInputDataType } from "@platform/framework/workflows-sdk";
 import { SqlEntityManager } from "@mikro-orm/postgresql";
 import { WorkflowExecution } from "@models";
 import { WorkflowOrchestratorService } from "@services";

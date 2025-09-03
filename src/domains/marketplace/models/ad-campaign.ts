@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { model } from "@medusajs/utils"
+import { model } from "@platform/utils"
 
 /**
  * Amazon PPC-inspired advertising campaign model

@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { PromotionUtils, model } from "@medusajs/framework/utils"
+import { PromotionUtils, model } from "@platform/framework/utils"
 import ApplicationMethod from "./application-method"
 import Promotion from "./promotion"
 import PromotionRuleValue from "./promotion-rule-value"

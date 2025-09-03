@@ -1,15 +1,15 @@
 // @ts-nocheck
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
-import { InventoryItemDTO } from "@medusajs/types"
+import { InventoryItemDTO } from "@platform/types"
 import { OrderLineItemDTO } from "../../../../../lib/order-types"
 import {
   Component,
   ExclamationCircleSolid,
   TriangleDownMini,
-} from "@medusajs/icons"
+} from "@platform/icons"
 import { UseFormReturn, useWatch } from "react-hook-form"
-import { Input, Text, clx } from "@medusajs/ui"
+import { Input, Text, clx } from "@platform/ui"
 import * as zod from "zod"
 
 import { Thumbnail } from "../../../../../components/common/thumbnail"

@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { OrderCreditLineDTO } from "@medusajs/framework/types"
-import { ArrowDownRightMini, DocumentText, XCircle } from "@medusajs/icons"
-import { AdminOrder, AdminPayment, HttpTypes } from "@medusajs/types"
+import { OrderCreditLineDTO } from "@platform/framework/types"
+import { ArrowDownRightMini, DocumentText, XCircle } from "@platform/icons"
+import { AdminOrder, AdminPayment, HttpTypes } from "@platform/types"
 import {
   Badge,
   Button,
@@ -12,7 +12,7 @@ import {
   toast,
   Tooltip,
   usePrompt,
-} from "@medusajs/ui"
+} from "@platform/ui"
 import { format } from "date-fns"
 import { Trans, useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"

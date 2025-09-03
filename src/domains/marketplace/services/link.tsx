@@ -1,12 +1,12 @@
 // @ts-nocheck
-import { Context, FindConfig } from "@medusajs/framework/types"
+import { Context, FindConfig } from "@platform/framework/types"
 import {
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
   MikroOrmBaseRepository,
   ModulesSdkUtils,
-} from "@medusajs/framework/utils"
+} from "@platform/framework/utils"
 
 type InjectedDependencies = {
   linkRepository: MikroOrmBaseRepository

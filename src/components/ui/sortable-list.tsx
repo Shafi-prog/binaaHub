@@ -21,8 +21,8 @@ import {
   useSortable,
 } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
-import { DotsSix } from "@medusajs/icons"
-import { IconButton, clx } from "@medusajs/ui"
+import { DotsSix } from "@platform/icons"
+import { IconButton, clx } from "@platform/ui"
 import {
   CSSProperties,
   Fragment,

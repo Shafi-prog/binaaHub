@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { PencilSquare, ShoppingBag } from "@medusajs/icons"
-import { HttpTypes } from "@medusajs/types"
-import { Container, Heading } from "@medusajs/ui"
+import { PencilSquare, ShoppingBag } from "@platform/icons"
+import { HttpTypes } from "@platform/types"
+import { Container, Heading } from "@platform/ui"
 import { useTranslation } from "react-i18next"
 
 import { SidebarLink } from "../../../../../components/common/sidebar-link/sidebar-link"

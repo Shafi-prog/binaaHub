@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Input, Text, clx } from "@medusajs/ui"
+import { Input, Text, clx } from "@platform/ui"
 import { ComponentProps, ElementRef, forwardRef } from "react"
 import Primitive from "react-currency-input-field"
 

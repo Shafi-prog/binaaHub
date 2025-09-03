@@ -64,7 +64,7 @@ export async function GET(req: NextRequest) {
     , false), false)
       const { data: baseData, error: baseError } = await baseQb
       if (baseError) {
-        if (process.env.NODE_ENV !== 'production') {
+        if (process.env.NEXT_PUBLIC_DEV_MOCKS === 'true') {
           const mock = buildDevMock()
           return NextResponse.json({ products: mock, hint: 'dev_mock_fallback' })
         }
@@ -88,13 +88,13 @@ export async function GET(req: NextRequest) {
   freeShipping: p.free_shipping ?? null,
     }))
 
-    if ((!products || products.length === 0) && process.env.NODE_ENV !== 'production') {
+  if ((!products || products.length === 0) && process.env.NEXT_PUBLIC_DEV_MOCKS === 'true') {
       const mock = buildDevMock()
       return NextResponse.json({ products: mock, hint: 'dev_mock_fallback' })
     }
     return NextResponse.json({ products })
   } catch (e: any) {
-    if (process.env.NODE_ENV !== 'production') {
+  if (process.env.NEXT_PUBLIC_DEV_MOCKS === 'true') {
       const mock = buildDevMock()
       return NextResponse.json({ products: mock, hint: 'dev_mock_error_fallback', error: e?.message || 'unknown' })
     }

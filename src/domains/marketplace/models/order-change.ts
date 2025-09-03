@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { model, OrderChangeStatus } from "@medusajs/framework/utils"
+import { model, OrderChangeStatus } from "@platform/framework/utils"
 import { Order } from "./order"
 import { OrderChangeAction } from "./order-change-action"
 

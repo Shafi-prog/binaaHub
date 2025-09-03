@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { model } from "@medusajs/framework/utils"
+import { model } from "@platform/framework/utils"
 
 const LoyaltyProgram = model.define("loyalty_program", {
   id: model.id().primaryKey(),

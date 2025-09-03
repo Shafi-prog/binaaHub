@@ -1,7 +1,7 @@
 // @ts-nocheck
 import type { Readable } from "stream"
-import { Constructor, FileTypes } from "@medusajs/framework/types"
-import { MedusaError } from "@medusajs/framework/utils"
+import { Constructor, FileTypes } from "@platform/framework/types"
+import { MedusaError } from "@platform/framework/utils"
 import { FileProviderRegistrationPrefix } from "@types"
 
 type InjectedDependencies = {

@@ -10,7 +10,7 @@ import {
   ModuleJoinerConfig,
   ModulesSdkTypes,
   ProductTypes,
-} from "@medusajs/framework/types"
+} from "@platform/framework/types"
 import {
   Product,
   ProductCategory,
@@ -42,7 +42,7 @@ import {
   ProductStatus,
   removeUndefined,
   toHandle,
-} from "@medusajs/framework/utils"
+} from "@platform/framework/utils"
 import { ProductRepository } from "../repositories"
 import {
   UpdateCategoryInput,

@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { useTranslation } from "react-i18next"
-import { PaymentProviderDTO } from "@medusajs/types"
+import { PaymentProviderDTO } from "@platform/types"
 
 import { formatProvider } from "../../../../../lib/format-provider"
 import { PlaceholderCell } from "../../common/placeholder-cell"

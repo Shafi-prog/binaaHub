@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { ILockingModule, Logger } from "@medusajs/types";
+import { ILockingModule, Logger } from "@platform/types";
 export declare class Orchestrator {
     #private;
     /**

@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Badge, Tooltip } from "@medusajs/ui"
+import { Badge, Tooltip } from "@platform/ui"
 import { useTranslation } from "react-i18next"
 import { DataGridRowError } from "../types"
 

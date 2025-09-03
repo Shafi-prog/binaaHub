@@ -41,6 +41,12 @@
       "@shared/*": [
         "src/core/shared/*"
       ],
+      "@medusajs/ui": [
+        "src/adapters/medusa/ui.tsx"
+      ],
+      "@platform/ui": [
+        "src/adapters/medusa/ui.tsx"
+      ],
       "@lib/*": [
         "src/lib/*"
       ],
@@ -49,6 +55,60 @@
       ],
       "@constants/*": [
         "src/constants/*"
+      ],
+      "@medusajs/icons": [
+        "src/adapters/medusa/icons.tsx"
+      ],
+      "@platform/icons": [
+        "src/adapters/medusa/icons.tsx"
+      ],
+      "@medusajs/types": [
+        "src/adapters/medusa/types.ts"
+      ],
+      "@platform/types": [
+        "src/adapters/medusa/types.ts"
+      ],
+      "@medusajs/framework/types": [
+        "src/adapters/medusa/framework-types.ts"
+      ],
+      "@platform/framework/types": [
+        "src/adapters/medusa/framework-types.ts"
+      ],
+      "@medusajs/framework/utils": [
+        "src/adapters/medusa/framework-utils.ts"
+      ],
+      "@platform/framework/utils": [
+        "src/adapters/medusa/framework-utils.ts"
+      ],
+      "@medusajs/framework/modules-sdk": [
+        "src/adapters/medusa/modules-sdk.ts"
+      ],
+      "@platform/framework/modules-sdk": [
+        "src/adapters/medusa/modules-sdk.ts"
+      ],
+      "@medusajs/framework/orchestration": [
+        "src/adapters/medusa/orchestration.ts"
+      ],
+      "@platform/framework/orchestration": [
+        "src/adapters/medusa/orchestration.ts"
+      ],
+      "@medusajs/framework/workflows-sdk": [
+        "src/adapters/medusa/workflows-sdk.ts"
+      ],
+      "@platform/framework/workflows-sdk": [
+        "src/adapters/medusa/workflows-sdk.ts"
+      ],
+      "@medusajs/utils": [
+        "src/adapters/medusa/utils.ts"
+      ],
+      "@platform/utils": [
+        "src/adapters/medusa/utils.ts"
+      ],
+      "@medusajs/js-sdk": [
+        "src/adapters/medusa/js-sdk.ts"
+      ],
+      "@platform/js-sdk": [
+        "src/adapters/medusa/js-sdk.ts"
       ],
       "@/domains/shared/utils/*": [
         "src/domains/shared/utils/*"

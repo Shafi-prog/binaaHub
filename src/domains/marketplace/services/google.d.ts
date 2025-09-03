@@ -1,6 +1,6 @@
 // @ts-nocheck
-import { AuthenticationInput, AuthenticationResponse, AuthIdentityProviderService, GoogleAuthProviderOptions, Logger } from "@medusajs/framework/types";
-import { AbstractAuthModuleProvider } from "@medusajs/framework/utils";
+import { AuthenticationInput, AuthenticationResponse, AuthIdentityProviderService, GoogleAuthProviderOptions, Logger } from "@platform/framework/types";
+import { AbstractAuthModuleProvider } from "@platform/framework/utils";
 type InjectedDependencies = {
     logger: Logger;
 };

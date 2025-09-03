@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { model } from "@medusajs/utils"
+import { model } from "@platform/utils"
 
 /**
  * Next-generation AI-powered product ads model for advanced advertising campaigns

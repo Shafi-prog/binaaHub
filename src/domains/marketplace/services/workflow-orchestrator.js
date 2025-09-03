@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.WorkflowOrchestratorService = void 0;
-const orchestration_1 = require("@medusajs/framework/orchestration");
-const utils_1 = require("@medusajs/framework/utils");
-const workflows_sdk_1 = require("@medusajs/framework/workflows-sdk");
+const orchestration_1 = require("@platform/framework/orchestration");
+const utils_1 = require("@platform/framework/utils");
+const workflows_sdk_1 = require("@platform/framework/workflows-sdk");
 const ulid_1 = require("ulid");
 const AnySubscriber = "any";
 class WorkflowOrchestratorService {

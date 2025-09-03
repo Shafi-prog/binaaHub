@@ -6,7 +6,7 @@ import {
   TriangleDownMini,
   XMark,
   XMarkMini,
-} from "@medusajs/icons"
+} from "@platform/icons"
 import {
   Badge,
   Button,
@@ -18,7 +18,7 @@ import {
   Label,
   Text,
   Tooltip,
-} from "@medusajs/ui"
+} from "@platform/ui"
 import { Accordion as RadixAccordion } from "radix-ui"
 import React, { Fragment, ReactNode, useRef, useState } from "react"
 import {

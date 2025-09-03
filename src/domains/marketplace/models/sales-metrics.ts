@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { model } from "@medusajs/framework/utils"
+import { model } from "@platform/framework/utils"
 
 const SalesMetrics = model.define("sales_metrics", {
   id: model.id().primaryKey(),

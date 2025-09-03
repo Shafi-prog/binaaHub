@@ -111,7 +111,7 @@ return (
         {/* Actions */}
         <div className="space-y-3">
           {paymentInfo.invoiceId && (
-            <Link href={`/store/invoices/${paymentInfo.invoiceId}`}>
+            <Link href={`/user/invoices/${paymentInfo.invoiceId}`}>
               <Button className="w-full" variant="outline" onClick={() => alert('Button clicked')}>
                 <FileText className="w-4 h-4 ml-2" />
                 عرض الفاتورة

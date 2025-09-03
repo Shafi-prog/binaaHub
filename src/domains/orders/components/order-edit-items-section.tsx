@@ -1,6 +1,6 @@
 // @ts-nocheck
-import { AdminOrder, AdminOrderPreview } from "@medusajs/types"
-import { Button, Heading, Input, toast } from "@medusajs/ui"
+import { AdminOrder, AdminOrderPreview } from "@platform/types"
+import { Button, Heading, Input, toast } from "@platform/ui"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import {

@@ -3,6 +3,7 @@
 export const dynamic = 'force-dynamic';
 
 import { useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
@@ -30,6 +31,7 @@ import { exportReportToExcel, exportReportToPDF, ReportTopProduct } from '@/core
 
 export default function ReportsPage() {
 const supabase = createClientComponentClient();
+  const searchParams = useSearchParams();
 
   const [loading, setLoading] = useState(false);
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
@@ -109,6 +111,11 @@ const supabase = createClientComponentClient();
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const initialType = searchParams?.get('type')
+    if (initialType) setReportType(initialType)
+  }, [searchParams])
 
   useEffect(() => {
     // Auto-generate on mount and period change

@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Button, Heading, toast } from "@medusajs/ui"
+import { Button, Heading, toast } from "@platform/ui"
 import { RouteDrawer, useRouteModal } from "@/components/modals"
 import { useTranslation } from "react-i18next"
 import { ExportFilters } from "./components/export-filters"

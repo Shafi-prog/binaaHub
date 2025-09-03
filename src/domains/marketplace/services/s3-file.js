@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.S3FileService = void 0;
 const client_s3_1 = require("@aws-sdk/client-s3");
 const s3_request_presigner_1 = require("@aws-sdk/s3-request-presigner");
-const utils_1 = require("@medusajs/framework/utils");
+const utils_1 = require("@platform/framework/utils");
 const path_1 = __importDefault(require("path"));
 const ulid_1 = require("ulid");
 const DEFAULT_UPLOAD_EXPIRATION_DURATION_SECONDS = 60 * 60;

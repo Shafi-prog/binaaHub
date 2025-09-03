@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Container, Heading, Text, clx } from "@medusajs/ui"
+import { Container, Heading, Text, clx } from "@platform/ui"
 import { CSSProperties, ComponentPropsWithoutRef } from "react"
 
 type SkeletonProps = {

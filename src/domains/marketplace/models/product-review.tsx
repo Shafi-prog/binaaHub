@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { DAL } from "@medusajs/framework/utils"
+import { DAL } from "@platform/framework/utils"
 import {
   BeforeCreate,
   Entity,
@@ -11,7 +11,7 @@ import {
   OneToMany,
   ManyToOne,
 } from "@mikro-orm/core"
-import { generateEntityId } from "@medusajs/framework/utils"
+import { generateEntityId } from "@platform/framework/utils"
 
 export enum ReviewStatus {
   PENDING = "pending",

@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { model } from "@medusajs/framework/utils"
+import { model } from "@platform/framework/utils"
 import Cart from "./cart"
 import ShippingMethodAdjustment from "./shipping-method-adjustment"
 import ShippingMethodTaxLine from "./shipping-method-tax-line"

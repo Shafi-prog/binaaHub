@@ -3,7 +3,7 @@ import {
   model,
   PriceListStatus,
   PriceListType,
-} from "@medusajs/framework/utils"
+} from "@platform/framework/utils"
 import Price from "./price"
 import PriceListRule from "./price-list-rule"
 

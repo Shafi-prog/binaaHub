@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { model, PaymentCollectionStatus } from "@medusajs/framework/utils"
+import { model, PaymentCollectionStatus } from "@platform/framework/utils"
 import Payment from "./payment"
 import PaymentProvider from "./payment-provider"
 import PaymentSession from "./payment-session"

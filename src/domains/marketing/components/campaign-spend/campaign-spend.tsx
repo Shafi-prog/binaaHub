@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { CurrencyDollar } from "@medusajs/icons"
-import { AdminCampaign } from "@medusajs/types"
-import { Container, Heading, Text } from "@medusajs/ui"
+import { CurrencyDollar } from "@platform/icons"
+import { AdminCampaign } from "@platform/types"
+import { Container, Heading, Text } from "@platform/ui"
 import { Trans, useTranslation } from "react-i18next"
 
 type CampaignSpendProps = {

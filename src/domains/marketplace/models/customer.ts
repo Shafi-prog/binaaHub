@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { model } from "@medusajs/framework/utils"
+import { model } from "@platform/framework/utils"
 import CustomerAddress from "./address"
 import CustomerGroup from "./customer-group"
 import CustomerGroupCustomer from "./customer-group-customer"

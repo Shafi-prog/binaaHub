@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { IndexTypes } from "@medusajs/framework/types";
+import { IndexTypes } from "@platform/framework/types";
 import { Knex } from "@mikro-orm/knex";
 import { QueryFormat, QueryOptions } from "@types";
 export declare const OPERATOR_MAP: {

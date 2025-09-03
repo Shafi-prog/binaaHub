@@ -294,7 +294,7 @@ export class MarketplaceService {
       subcategory: data.subcategory,
       storeId: data.store_id,
       storeName: data.stores?.name || '',
-      images: data.images || ['/api/placeholder/300/200'],
+  images: data.images || [],
       specifications: data.specifications || {},
       warranty: data.warranty_details ? {
         duration: data.warranty_duration || 0,
@@ -327,17 +327,10 @@ export class MarketplaceService {
       id: data.id,
       name: data.name,
       description: data.description || '',
-      logo: data.logo || '/api/placeholder/100/100',
+  logo: data.logo || '',
       coverImage: data.cover_image,
-      theme: data.theme || {
-        primaryColor: '#2563eb',
-        secondaryColor: '#eff6ff'
-      },
-      contactInfo: data.contact_info || {
-        email: '',
-        phone: '',
-        address: ''
-      },
+  theme: data.theme || { primaryColor: '', secondaryColor: '' },
+  contactInfo: data.contact_info || { email: '', phone: '', address: '' },
       ownerId: data.owner_id,
       rating: data.rating,
       reviewCount: data.review_count,

@@ -6,7 +6,7 @@ import {
   isDefined,
   isObject,
   toMikroORMEntity,
-} from "@medusajs/framework/utils"
+} from "@platform/framework/utils"
 import type { DecorateCartLikeInputDTO } from "../../../../core/utils/src/totals/cart"
 
 // Reshape the order object to match the OrderDTO

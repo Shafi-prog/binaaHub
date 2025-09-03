@@ -1,6 +1,6 @@
 // @ts-nocheck
-import { EllipseMiniSolid } from "@medusajs/icons"
-import { Input, Label, clx } from "@medusajs/ui"
+import { EllipseMiniSolid } from "@platform/icons"
+import { Input, Label, clx } from "@platform/ui"
 import { debounce } from "lodash"
 import {
   Popover as RadixPopover,

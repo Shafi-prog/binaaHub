@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Spinner } from "@medusajs/icons"
+import { Spinner } from "@platform/icons"
 import { Navigate, Outlet, useLocation } from "react-router-dom"
 import { useMe } from "@/domains/shared/hooks/api/users"
 import { SearchProvider } from "../../../providers/search-provider"

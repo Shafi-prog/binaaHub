@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { PencilSquare } from "@medusajs/icons"
-import { HttpTypes } from "@medusajs/types"
-import { Container, Heading, Text } from "@medusajs/ui"
+import { PencilSquare } from "@platform/icons"
+import { HttpTypes } from "@platform/types"
+import { Container, Heading, Text } from "@platform/ui"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { languages } from "../../../../../i18n/languages"

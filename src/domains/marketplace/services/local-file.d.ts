@@ -1,6 +1,6 @@
 // @ts-nocheck
-import { FileTypes, LocalFileServiceOptions } from "@medusajs/framework/types";
-import { AbstractFileProviderService } from "@medusajs/framework/utils";
+import { FileTypes, LocalFileServiceOptions } from "@platform/framework/types";
+import { AbstractFileProviderService } from "@platform/framework/utils";
 import type { Readable } from "stream";
 export declare class LocalFileService extends AbstractFileProviderService {
     static identifier: string;

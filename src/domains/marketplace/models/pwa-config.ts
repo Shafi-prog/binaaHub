@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { model } from "@medusajs/framework/utils"
+import { model } from "@platform/framework/utils"
 
 const PWAConfig = model.define("pwa_config", {
   id: model.id().primaryKey(),

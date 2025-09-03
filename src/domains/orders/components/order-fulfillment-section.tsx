@@ -1,12 +1,12 @@
 // @ts-nocheck
-import { Buildings, XCircle } from "@medusajs/icons"
+import { Buildings, XCircle } from "@platform/icons"
 import {
   AdminOrder,
   AdminOrderFulfillment,
   AdminOrderLineItem,
   HttpTypes,
   OrderLineItemDTO,
-} from "@medusajs/types"
+} from "@platform/types"
 import {
   Button,
   Container,
@@ -17,7 +17,7 @@ import {
   Tooltip,
   toast,
   usePrompt,
-} from "@medusajs/ui"
+} from "@platform/ui"
 import { format } from "date-fns"
 import { useTranslation } from "react-i18next"
 import { Link, useNavigate } from "react-router-dom"

@@ -1,4 +1,4 @@
-// Minimal types used by build-config under @medusajs/framework/types
+// Minimal types used by build-config under @platform/framework/types
 export type IndexTypes = any
 export type JoinerServiceConfigAlias = { name: string | string[]; entity: string }
 export type ModuleJoinerConfig = any

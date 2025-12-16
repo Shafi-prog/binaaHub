@@ -7,7 +7,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui';
 import { Switch } from '@/components/ui/switch';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { 
   Bell, 
   Mail, 
@@ -36,8 +35,6 @@ interface Notification {
 }
 
 export default function NotificationsPage() {
-  const supabase = createClientComponentClient();
-
   const [loading, setLoading] = useState(true);
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
   const [notifications, setNotifications] = useState<Notification[]>([]);

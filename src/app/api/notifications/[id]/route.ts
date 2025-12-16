@@ -34,8 +34,8 @@ export async function PATCH(
       .select()
       .single();
     
-    // Fallback to admin schema if not found in public
-    if (error) {
+    // Fallback to admin schema only if table/schema not found
+    if (error && (error.message?.includes('relation') || error.message?.includes('does not exist'))) {
       const result = await supabase
         .from('admin.notifications')
         .update(updateData)
@@ -82,8 +82,8 @@ export async function DELETE(
       .eq('id', id)
       .eq('user_id', user.id);
     
-    // Fallback to admin schema if not found in public
-    if (error) {
+    // Fallback to admin schema only if table/schema not found
+    if (error && (error.message?.includes('relation') || error.message?.includes('does not exist'))) {
       const result = await supabase
         .from('admin.notifications')
         .delete()

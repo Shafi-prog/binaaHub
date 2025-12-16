@@ -21,8 +21,8 @@ export async function POST(request: NextRequest) {
       .is('read_at', null)
       .select();
     
-    // Fallback to admin schema if not found in public
-    if (error) {
+    // Fallback to admin schema only if table/schema not found
+    if (error && (error.message?.includes('relation') || error.message?.includes('does not exist'))) {
       const result = await supabase
         .from('admin.notifications')
         .update({ read_at: new Date().toISOString() })

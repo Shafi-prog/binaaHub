@@ -20,8 +20,8 @@ export async function GET(request: NextRequest) {
       .eq('user_id', user.id)
       .order('created_at', { ascending: false });
     
-    // Fallback to admin schema if not found in public
-    if (error) {
+    // Fallback to admin schema only if table/schema not found
+    if (error && (error.message?.includes('relation') || error.message?.includes('does not exist'))) {
       const result = await supabase
         .from('admin.notifications')
         .select('*')
@@ -70,8 +70,8 @@ export async function POST(request: NextRequest) {
       .select()
       .single();
     
-    // Fallback to admin schema if not found in public
-    if (error) {
+    // Fallback to admin schema only if table/schema not found
+    if (error && (error.message?.includes('relation') || error.message?.includes('does not exist'))) {
       const result = await supabase
         .from('admin.notifications')
         .insert({

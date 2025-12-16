@@ -25,13 +25,27 @@ export async function PATCH(
       read_at: read ? new Date().toISOString() : null,
     };
 
-    const { data: notification, error } = await supabase
+    // Try both public and admin schemas
+    let { data: notification, error } = await supabase
       .from('notifications')
       .update(updateData)
       .eq('id', id)
       .eq('user_id', user.id)
       .select()
       .single();
+    
+    // Fallback to admin schema if not found in public
+    if (error) {
+      const result = await supabase
+        .from('admin.notifications')
+        .update(updateData)
+        .eq('id', id)
+        .eq('user_id', user.id)
+        .select()
+        .single();
+      notification = result.data;
+      error = result.error;
+    }
 
     if (error) {
       console.error('Error updating notification:', error);
@@ -61,12 +75,22 @@ export async function DELETE(
 
     const { id } = params;
 
-    // Delete notification
-    const { error } = await supabase
+    // Delete notification - try both public and admin schemas
+    let { error } = await supabase
       .from('notifications')
       .delete()
       .eq('id', id)
       .eq('user_id', user.id);
+    
+    // Fallback to admin schema if not found in public
+    if (error) {
+      const result = await supabase
+        .from('admin.notifications')
+        .delete()
+        .eq('id', id)
+        .eq('user_id', user.id);
+      error = result.error;
+    }
 
     if (error) {
       console.error('Error deleting notification:', error);

@@ -13,13 +13,25 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Mark all unread notifications as read
-    const { data, error } = await supabase
+    // Mark all unread notifications as read - try both public and admin schemas
+    let { data, error } = await supabase
       .from('notifications')
       .update({ read_at: new Date().toISOString() })
       .eq('user_id', user.id)
       .is('read_at', null)
       .select();
+    
+    // Fallback to admin schema if not found in public
+    if (error) {
+      const result = await supabase
+        .from('admin.notifications')
+        .update({ read_at: new Date().toISOString() })
+        .eq('user_id', user.id)
+        .is('read_at', null)
+        .select();
+      data = result.data;
+      error = result.error;
+    }
 
     if (error) {
       console.error('Error marking all notifications as read:', error);

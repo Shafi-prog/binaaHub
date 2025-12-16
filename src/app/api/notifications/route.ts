@@ -13,12 +13,23 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Fetch notifications for the user
-    const { data: notifications, error } = await supabase
+    // Fetch notifications for the user - try both public and admin schemas
+    let { data: notifications, error } = await supabase
       .from('notifications')
       .select('*')
       .eq('user_id', user.id)
       .order('created_at', { ascending: false });
+    
+    // Fallback to admin schema if not found in public
+    if (error) {
+      const result = await supabase
+        .from('admin.notifications')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false });
+      notifications = result.data;
+      error = result.error;
+    }
 
     if (error) {
       console.error('Error fetching notifications:', error);
@@ -46,8 +57,8 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { type, title, content, data } = body;
 
-    // Create notification
-    const { data: notification, error } = await supabase
+    // Create notification - try both public and admin schemas
+    let { data: notification, error } = await supabase
       .from('notifications')
       .insert({
         user_id: user.id,
@@ -58,6 +69,23 @@ export async function POST(request: NextRequest) {
       })
       .select()
       .single();
+    
+    // Fallback to admin schema if not found in public
+    if (error) {
+      const result = await supabase
+        .from('admin.notifications')
+        .insert({
+          user_id: user.id,
+          type,
+          title,
+          content,
+          data,
+        })
+        .select()
+        .single();
+      notification = result.data;
+      error = result.error;
+    }
 
     if (error) {
       console.error('Error creating notification:', error);

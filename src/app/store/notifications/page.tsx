@@ -2,12 +2,11 @@
 
 export const dynamic = 'force-dynamic';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { Switch } from '@/components/ui/switch';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { 
   Bell, 
   Mail, 
@@ -25,51 +24,99 @@ import {
 import { CustomerSearchWidget, Customer } from '@/components/store/CustomerSearchWidget';
 import { toast } from 'sonner';
 
-export default function NotificationsPage() {
-const supabase = createClientComponentClient();
+interface Notification {
+  id: string;
+  title: string;
+  content: string;
+  type: string;
+  read_at: string | null;
+  created_at: string;
+  data?: any;
+}
 
+export default function NotificationsPage() {
   const [loading, setLoading] = useState(true);
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
 
-  // Real data from Supabase
-  const notificationStats = {
-    totalNotifications: 156,
-    unread: 23,
-    emailNotifications: 89,
-    pushNotifications: 45,
-    smsNotifications: 22,
-    systemAlerts: 12
+  useEffect(() => {
+    fetchNotifications();
+  }, []);
+
+  const fetchNotifications = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch('/api/notifications');
+      const data = await response.json();
+      
+      if (data.notifications) {
+        setNotifications(data.notifications);
+      }
+    } catch (error) {
+      console.error('Error fetching notifications:', error);
+      toast.error('فشل في تحميل الإشعارات');
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const notifications = [
-    {
-      id: 1,
-      title: 'طلب جديد',
-      message: 'تم استلام طلب جديد من العميل أحمد محمد',
-      type: 'order',
-      priority: 'عالية',
-      time: '5 دقائق',
-      read: false
-    },
-    {
-      id: 2,
-      title: 'نفاد المخزون',
-      message: 'المنتج "كرسي مكتب" أوشك على النفاد',
-      type: 'inventory',
-      priority: 'متوسطة',
-      time: '15 دقيقة',
-      read: false
-    },
-    {
-      id: 3,
-      title: 'دفعة مكتملة',
-      message: 'تم استلام دفعة بقيمة 5,000 ريال',
-      type: 'payment',
-      priority: 'منخفضة',
-      time: 'ساعة',
-      read: true
+  const toggleNotificationRead = async (notificationId: string, currentReadStatus: boolean) => {
+    try {
+      const response = await fetch(`/api/notifications/${notificationId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ read: !currentReadStatus }),
+      });
+
+      if (response.ok) {
+        await fetchNotifications();
+        toast.success(currentReadStatus ? 'تم وضع علامة غير مقروء' : 'تم وضع علامة كمقروء');
+      } else {
+        toast.error('فشل في تحديث الإشعار');
+      }
+    } catch (error) {
+      console.error('Error toggling notification:', error);
+      toast.error('حدث خطأ أثناء تحديث الإشعار');
     }
-  ];
+  };
+
+  const markAllAsRead = async () => {
+    try {
+      const response = await fetch('/api/notifications/mark-all-read', {
+        method: 'POST',
+      });
+
+      if (response.ok) {
+        await fetchNotifications();
+        toast.success('تم تحديد جميع الإشعارات كمقروءة');
+      } else {
+        toast.error('فشل في تحديد الإشعارات كمقروءة');
+      }
+    } catch (error) {
+      console.error('Error marking all as read:', error);
+      toast.error('حدث خطأ أثناء تحديث الإشعارات');
+    }
+  };
+
+  const getTimeDifference = (createdAt: string) => {
+    const now = new Date();
+    const created = new Date(createdAt);
+    const diffInMinutes = Math.floor((now.getTime() - created.getTime()) / (1000 * 60));
+
+    if (diffInMinutes < 1) return 'الآن';
+    if (diffInMinutes < 60) return `${diffInMinutes} دقيقة`;
+    if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)} ساعة`;
+    return `${Math.floor(diffInMinutes / 1440)} يوم`;
+  };
+
+  const notificationStats = {
+    totalNotifications: notifications.length,
+    unread: notifications.filter(n => !n.read_at).length,
+    emailNotifications: notifications.filter(n => n.type === 'email').length,
+    pushNotifications: notifications.filter(n => n.type === 'push').length,
+    smsNotifications: notifications.filter(n => n.type === 'sms').length,
+    systemAlerts: notifications.filter(n => n.type === 'system').length,
+  };
 
   return (
     <div className="p-6 space-y-6">
@@ -244,7 +291,7 @@ const supabase = createClientComponentClient();
                   className="pr-10 pl-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 w-64"
                 />
               </div>
-              <Button size="sm" variant="outline">
+              <Button size="sm" variant="outline" onClick={markAllAsRead}>
                 <Check className="h-4 w-4 mr-1" />
                 تحديد الكل كمقروء
               </Button>
@@ -252,37 +299,52 @@ const supabase = createClientComponentClient();
           </div>
         </CardHeader>
         <CardContent>
-          <div className="space-y-4">
-            {notifications.map((notification) => (
-              <div key={notification.id} className={`flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 ${!notification.read ? 'border-blue-200 bg-blue-50' : 'border-gray-200'}`}>
-                <div className="flex items-center gap-4">
-                  <div className={`p-3 rounded-lg ${!notification.read ? 'bg-blue-100' : 'bg-gray-100'}`}>
-                    {notification.type === 'order' && <MessageSquare className="h-5 w-5 text-blue-600" />}
-                    {notification.type === 'inventory' && <AlertTriangle className="h-5 w-5 text-yellow-600" />}
-                    {notification.type === 'payment' && <CheckCircle className="h-5 w-5 text-green-600" />}
-                  </div>
-                  <div className="flex-1">
-                    <h3 className={`font-semibold ${!notification.read ? 'text-gray-900' : 'text-gray-600'}`}>
-                      {notification.title}
-                    </h3>
-                    <p className="text-sm text-gray-600 mt-1">{notification.message}</p>
-                    <div className="flex items-center gap-2 mt-2">
-                      <span className="text-xs text-gray-500">{notification.time}</span>
-                      {!notification.read && (
-                        <Badge variant="secondary" className="text-xs">جديد</Badge>
-                      )}
+          {loading ? (
+            <div className="flex items-center justify-center py-8">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
+            </div>
+          ) : notifications.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-12">
+              <Bell className="h-16 w-16 text-gray-300 mb-4" />
+              <p className="text-gray-500 text-lg">لا توجد إشعارات</p>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {notifications.map((notification) => {
+                const isRead = !!notification.read_at;
+                return (
+                  <div key={notification.id} className={`flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 ${!isRead ? 'border-blue-200 bg-blue-50' : 'border-gray-200'}`}>
+                    <div className="flex items-center gap-4">
+                      <div className={`p-3 rounded-lg ${!isRead ? 'bg-blue-100' : 'bg-gray-100'}`}>
+                        {notification.type === 'order' && <MessageSquare className="h-5 w-5 text-blue-600" />}
+                        {notification.type === 'inventory' && <AlertTriangle className="h-5 w-5 text-yellow-600" />}
+                        {notification.type === 'payment' && <CheckCircle className="h-5 w-5 text-green-600" />}
+                        {!['order', 'inventory', 'payment'].includes(notification.type) && <Bell className="h-5 w-5 text-gray-600" />}
+                      </div>
+                      <div className="flex-1">
+                        <h3 className={`font-semibold ${!isRead ? 'text-gray-900' : 'text-gray-600'}`}>
+                          {notification.title}
+                        </h3>
+                        <p className="text-sm text-gray-600 mt-1">{notification.content}</p>
+                        <div className="flex items-center gap-2 mt-2">
+                          <span className="text-xs text-gray-500">{getTimeDifference(notification.created_at)}</span>
+                          {!isRead && (
+                            <Badge variant="secondary" className="text-xs">جديد</Badge>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <Switch 
+                        checked={!isRead} 
+                        onCheckedChange={() => toggleNotificationRead(notification.id, isRead)}
+                      />
                     </div>
                   </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Badge variant={notification.priority === 'عالية' ? 'destructive' : notification.priority === 'متوسطة' ? 'default' : 'secondary'}>
-                    {notification.priority}
-                  </Badge>
-                  <Switch checked={!notification.read} />
-                </div>
-              </div>
-            ))}
-          </div>
+                );
+              })}
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>

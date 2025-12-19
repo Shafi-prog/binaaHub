@@ -9,19 +9,35 @@ import { randomBytes } from 'crypto';
 
 /**
  * Generate a cryptographically secure random string
+ * Uses rejection sampling to ensure uniform distribution across the charset
  * @param length - Length of the string to generate
  * @param charset - Character set to use (default: alphanumeric)
- * @returns Secure random string
+ * @returns Secure random string with uniform distribution
  */
 export function generateSecureRandomString(
   length: number, 
   charset: string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
 ): string {
-  const randomBytesBuffer = randomBytes(length);
   const result: string[] = [];
+  const charsetLength = charset.length;
+  const maxValid = 256 - (256 % charsetLength); // Ensure uniform distribution
+  
+  // Allocate extra bytes for rejection sampling
+  let randomIndex = 0;
+  let randomBytesBuffer = randomBytes(length * 2);
   
   for (let i = 0; i < length; i++) {
-    result.push(charset[randomBytesBuffer[i] % charset.length]);
+    let byte: number;
+    do {
+      if (randomIndex >= randomBytesBuffer.length) {
+        // Need more random bytes
+        randomBytesBuffer = randomBytes(length * 2);
+        randomIndex = 0;
+      }
+      byte = randomBytesBuffer[randomIndex++];
+    } while (byte >= maxValid); // Reject biased values
+    
+    result.push(charset[byte % charsetLength]);
   }
   
   return result.join('');
@@ -79,10 +95,14 @@ export function generateSecureToken(length: number = 32): string {
 }
 
 /**
- * Generate a secure random integer within a range
+ * Generate a secure random integer within a range using rejection sampling
+ * This implementation avoids modulo bias by rejecting values that would
+ * create non-uniform distribution. The rejection sampling loop ensures
+ * that only values within the acceptable range are used.
+ * 
  * @param min - Minimum value (inclusive)
  * @param max - Maximum value (exclusive)
- * @returns Secure random integer
+ * @returns Secure random integer with uniform distribution
  */
 export function generateSecureRandomInt(min: number, max: number): number {
   const range = max - min;
@@ -95,6 +115,7 @@ export function generateSecureRandomInt(min: number, max: number): number {
   const maxValue = Math.pow(256, bytesNeeded);
   const maxAcceptable = Math.floor(maxValue / range) * range;
   
+  // Rejection sampling: Keep generating until we get a value in acceptable range
   let randomValue: number;
   do {
     const bytes = randomBytes(bytesNeeded);
@@ -102,7 +123,8 @@ export function generateSecureRandomInt(min: number, max: number): number {
     for (let i = 0; i < bytesNeeded; i++) {
       randomValue = (randomValue << 8) + bytes[i];
     }
-  } while (randomValue >= maxAcceptable);
+  } while (randomValue >= maxAcceptable); // This ensures uniform distribution
   
+  // Now we can safely use modulo since randomValue < maxAcceptable
   return min + (randomValue % range);
 }

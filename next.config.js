@@ -274,6 +274,8 @@ const nextConfig = {
             value: 'Content-Type, Authorization, apikey, x-client-info',
           },
           // Content Security Policy - Enhanced for XSS protection
+          // Note: 'unsafe-inline' and 'unsafe-eval' are kept for Next.js compatibility
+          // TODO: Migrate to nonces/hashes for inline scripts when possible
           {
             key: 'Content-Security-Policy',
             value: [
@@ -283,7 +285,8 @@ const nextConfig = {
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "font-src 'self' https://fonts.gstatic.com data:",
-              "img-src 'self' data: https: blob:",
+              // Restrict image sources to specific trusted domains
+              "img-src 'self' data: blob: https://*.supabase.co https://*.googleusercontent.com https://maps.googleapis.com https://maps.gstatic.com",
               "frame-src 'self' https://maps.googleapis.com",
               "object-src 'none'",
               "base-uri 'self'",

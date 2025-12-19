@@ -13,13 +13,13 @@ import DOMPurify from 'isomorphic-dompurify';
  */
 export function sanitizeHtml(
   dirty: string,
-  config?: DOMPurify.Config
+  config?: any
 ): string {
   if (typeof dirty !== 'string') {
     return '';
   }
   
-  const defaultConfig: DOMPurify.Config = {
+  const defaultConfig: any = {
     ALLOWED_TAGS: [
       'p', 'br', 'strong', 'em', 'u', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
       'ul', 'ol', 'li', 'a', 'img', 'blockquote', 'code', 'pre', 'span', 'div'
@@ -29,7 +29,7 @@ export function sanitizeHtml(
     ALLOWED_URI_REGEXP: /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|cid|xmpp):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i,
   };
   
-  return DOMPurify.sanitize(dirty, { ...defaultConfig, ...config });
+  return String(DOMPurify.sanitize(dirty, { ...defaultConfig, ...config }));
 }
 
 /**
@@ -43,7 +43,7 @@ export function sanitizeUserInput(input: string): string {
   }
   
   // Remove all HTML tags and decode HTML entities
-  return DOMPurify.sanitize(input, { ALLOWED_TAGS: [] });
+  return String(DOMPurify.sanitize(input, { ALLOWED_TAGS: [] }));
 }
 
 /**
@@ -56,7 +56,7 @@ export function sanitizeMarkdown(content: string): string {
     return '';
   }
   
-  const markdownConfig: DOMPurify.Config = {
+  const markdownConfig: any = {
     ALLOWED_TAGS: [
       'p', 'br', 'strong', 'em', 'u', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
       'ul', 'ol', 'li', 'a', 'blockquote', 'code', 'pre'
@@ -64,7 +64,7 @@ export function sanitizeMarkdown(content: string): string {
     ALLOWED_ATTR: ['href'],
   };
   
-  return DOMPurify.sanitize(content, markdownConfig);
+  return String(DOMPurify.sanitize(content, markdownConfig));
 }
 
 /**

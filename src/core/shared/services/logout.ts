@@ -126,12 +126,13 @@ export function clearAllCookies() {
 
     // Clear known cookies with secure attributes for root path
     authCookies.forEach(cookieName => {
-      // Clear for root path with all security attributes
-      const secureFlags = 'SameSite=Strict; Secure; HttpOnly';
+      // Clear for root path - HttpOnly can only be set server-side
+      // We can't set HttpOnly from client-side, but we clear cookies as much as possible
+      const secureFlags = 'SameSite=Strict; Secure';
       document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; ${secureFlags}`;
       document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
       
-      // Clear for current domain with security attributes
+      // Clear for current domain
       if (window.location.hostname) {
         document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${window.location.hostname}; ${secureFlags}`;
         document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.${window.location.hostname}; ${secureFlags}`;
@@ -141,7 +142,8 @@ export function clearAllCookies() {
       }
     });
 
-    // Clear all existing cookies (brute force approach) with security considerations
+    // Clear all existing cookies (brute force approach)
+    // Note: HttpOnly cookies set by the server cannot be cleared from client-side
     document.cookie.split(";").forEach(function(c) {
       const cookieName = c.replace(/^ +/, "").replace(/=.*/, "");
       if (!cookieName.includes('logout_timestamp')) {

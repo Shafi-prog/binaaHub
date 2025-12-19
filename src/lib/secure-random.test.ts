@@ -30,6 +30,8 @@ describe('Secure Random Generation', () => {
 
     it('should have uniform distribution (chi-square test)', () => {
       const charset = 'ABCDEFGHIJ'; // 10 characters for easier testing
+      // Using 10,000 iterations for statistical significance in chi-square test
+      // This ensures we can reliably detect distribution bias
       const iterations = 10000;
       const expectedFrequency = iterations / charset.length;
       const counts: Record<string, number> = {};
@@ -88,6 +90,7 @@ describe('Secure Random Generation', () => {
     it('should have uniform distribution', () => {
       const min = 0;
       const max = 10;
+      // Using 10,000 iterations for statistical significance in distribution testing
       const iterations = 10000;
       const expectedFrequency = iterations / (max - min);
       const counts: number[] = new Array(max - min).fill(0);

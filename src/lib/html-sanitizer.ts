@@ -5,6 +5,8 @@
  * to prevent XSS attacks when using dangerouslySetInnerHTML.
  */
 
+// Using namespace import for isomorphic-dompurify to avoid TypeScript errors
+// The library uses 'export =' syntax which requires this import pattern
 import * as DOMPurify from 'isomorphic-dompurify';
 
 /**

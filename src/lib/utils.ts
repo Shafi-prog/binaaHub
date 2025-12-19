@@ -1,6 +1,13 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { formatDateSafe, formatNumberSafe, formatCurrencySafe, generateSafeId } from '../core/shared/utils/hydration-safe';
+import { 
+  safeDelay, 
+  safeDebounce,
+  validateEmail as secureValidateEmail,
+  validateSaudiPhone as secureValidateSaudiPhone,
+  sanitizeString 
+} from './security-utils';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -36,28 +43,26 @@ export function generateId(): string {
 }
 
 export function isValidEmail(email: string): boolean {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
+  // Use secure email validation to prevent ReDoS
+  return secureValidateEmail(email) !== null;
 }
 
 export function isValidSaudiPhone(phone: string): boolean {
-  const phoneRegex = /^(\+966|0)?5[0-9]{8}$/;
-  return phoneRegex.test(phone);
+  // Use secure phone validation with safe regex
+  return secureValidateSaudiPhone(phone) !== null;
 }
 
 export function sleep(ms: number): Promise<void> {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  // Use safe delay function that validates input
+  return safeDelay(ms);
 }
 
 export function debounce<T extends (...args: any[]) => any>(
   func: T,
   wait: number
 ): (...args: Parameters<T>) => void {
-  let timeout: NodeJS.Timeout;
-  return (...args: Parameters<T>) => {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => func(...args), wait);
-  };
+  // Use secure debounce function with input validation
+  return safeDebounce(func, wait);
 }
 
 export function capitalizeFirst(str: string): string {

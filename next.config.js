@@ -257,9 +257,10 @@ const nextConfig = {
   async headers() {
     return [
       {
-        // Apply CORS headers to all routes
+        // Apply security headers to all routes
         source: '/(.*)',
         headers: [
+          // CORS headers
           {
             key: 'Access-Control-Allow-Origin',
             value: '*',
@@ -272,9 +273,66 @@ const nextConfig = {
             key: 'Access-Control-Allow-Headers',
             value: 'Content-Type, Authorization, apikey, x-client-info',
           },
+          // Content Security Policy - Enhanced for XSS protection
+          // Note: 'unsafe-inline' and 'unsafe-eval' are kept for Next.js compatibility
+          // TODO: Migrate to nonces/hashes for inline scripts when possible
           {
             key: 'Content-Security-Policy',
-            value: "default-src 'self'; connect-src 'self' https://*.supabase.co https://lqhopwohuddhapkhhikf.supabase.co http://localhost:* https://api.supabase.co wss://realtime.supabase.co; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https: blob:;",
+            value: [
+              "default-src 'self'",
+              "connect-src 'self' https://*.supabase.co http://localhost:* https://api.supabase.co wss://realtime.supabase.co https://*.google.com https://generativelanguage.googleapis.com",
+              "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://maps.googleapis.com",
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+              "style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com",
+              "font-src 'self' https://fonts.gstatic.com data:",
+              // Restrict image sources to specific trusted domains
+              "img-src 'self' data: blob: https://*.supabase.co https://*.googleusercontent.com https://maps.googleapis.com https://maps.gstatic.com",
+              "frame-src 'self' https://maps.googleapis.com",
+              "object-src 'none'",
+              "base-uri 'self'",
+              "form-action 'self'",
+              "frame-ancestors 'self'",
+              "upgrade-insecure-requests"
+            ].join('; '),
+          },
+          // Prevent clickjacking attacks
+          {
+            key: 'X-Frame-Options',
+            value: 'SAMEORIGIN',
+          },
+          // Prevent MIME type sniffing
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+          // Enable XSS protection in older browsers
+          {
+            key: 'X-XSS-Protection',
+            value: '1; mode=block',
+          },
+          // Control referrer information
+          {
+            key: 'Referrer-Policy',
+            value: 'strict-origin-when-cross-origin',
+          },
+          // Permissions Policy (formerly Feature-Policy)
+          {
+            key: 'Permissions-Policy',
+            value: [
+              'camera=()',
+              'microphone=()',
+              'geolocation=(self)',
+              'payment=(self)',
+              'usb=()',
+              'magnetometer=()',
+              'gyroscope=()',
+              'accelerometer=()'
+            ].join(', '),
+          },
+          // Strict Transport Security (HTTPS only)
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=31536000; includeSubDomains',
           },
         ],
       },

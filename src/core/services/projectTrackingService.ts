@@ -1,5 +1,6 @@
 // Project Tracking Service for managing construction project phases
 import { Project as ProjectType } from '@/core/shared/types/types';
+import { safeDelay } from '@/lib/security-utils';
 
 export interface Project {
   id: string;
@@ -21,7 +22,7 @@ export class ProjectTrackingService {
   static async getProjectById(projectId: string): Promise<Project | null> {
     try {
       // Mock implementation - replace with actual API call
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await safeDelay(100);
       
       // Return mock project data
       return {
@@ -47,7 +48,7 @@ export class ProjectTrackingService {
   static async updateProjectProgress(projectId: string, progress: number): Promise<boolean> {
     try {
       // Mock implementation - replace with actual API call
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await safeDelay(100);
       console.log(`Updated project ${projectId} progress to ${progress}%`);
       return true;
     } catch (error) {
@@ -59,7 +60,7 @@ export class ProjectTrackingService {
   static async saveProject(project: ProjectType, userId?: string): Promise<boolean> {
     try {
       // Mock implementation - replace with actual API call
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await safeDelay(100);
       console.log(`Saved project: ${project.name} for user: ${userId}`);
       return true;
     } catch (error) {
@@ -71,7 +72,7 @@ export class ProjectTrackingService {
   static async getProjectPhases(projectId: string): Promise<any[]> {
     try {
       // Mock implementation - replace with actual API call
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await safeDelay(100);
       return [];
     } catch (error) {
       console.error('Error fetching project phases:', error);

@@ -1,4 +1,5 @@
 import puppeteer, { Browser, Page } from 'puppeteer';
+import { safeDelay } from '../src/lib/security-utils';
 
 const BASE = process.env.E2E_BASE_URL || 'http://localhost:3000';
 const ROUTES = (process.env.E2E_ROUTES || '/,/marketplace,/user,/user/projects,/user/projects/create,/user/expenses').split(',');
@@ -12,7 +13,8 @@ async function clickAll(page: Page) {
         const box = await el.boundingBox();
         if (!box) continue;
         await el.click();
-        await page.evaluate(() => new Promise(res => setTimeout(res, 50)));
+        // Use secure delay function
+        await safeDelay(50);
       } catch {}
     }
   }

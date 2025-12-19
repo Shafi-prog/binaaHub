@@ -5,7 +5,7 @@
  * to prevent XSS attacks when using dangerouslySetInnerHTML.
  */
 
-import DOMPurify from 'isomorphic-dompurify';
+import * as DOMPurify from 'isomorphic-dompurify';
 
 /**
  * Default configuration for HTML sanitization

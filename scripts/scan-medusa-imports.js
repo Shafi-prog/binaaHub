@@ -87,7 +87,8 @@ function main() {
     console.log('| File | Line | Snippet |')
     console.log('|------|------|---------|')
     for (const r of rows) {
-      const snippet = r.text.replace(/\|/g, '\\|')
+      // Properly escape pipe characters and other markdown special characters
+      const snippet = r.text.replace(/\\/g, '\\\\').replace(/\|/g, '\\|').replace(/\n/g, ' ')
       console.log(`| ${r.file} | ${r.line} | ${snippet} |`)
     }
   } else {

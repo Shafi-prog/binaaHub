@@ -38,6 +38,26 @@ yarn-error.log*
 .env.development
 .env.vercel
 
+# Secret and API key files
+*api-key*.txt
+*secret*.txt
+*credential*.txt
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+
+# Documentation with example credentials (prevent accidental commits)
+COMPLETE_ERP_SYSTEM_GUIDE*.md
+COMPLETE_ERP_SETUP_GUIDE*.md
+
+# Suspicious executables
+*.exe
+*.dll
+*.so
+*.dylib
+
 # vercel
 .vercel
 

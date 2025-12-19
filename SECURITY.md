@@ -177,3 +177,151 @@ Consider using tools like:
 ## Contact
 
 For security concerns, contact the repository maintainers directly.
+
+---
+
+## Secure Coding Patterns (Updated December 2024)
+
+### ✅ Security Fixes Applied
+
+As of December 19, 2024, the following security improvements have been implemented:
+
+#### 1. Cryptographically Secure Random Generation
+
+**Problem:** Using `Math.random()` for security-sensitive operations (UUIDs, passwords, session IDs) is insecure.
+
+**Solution:** Use the `secure-random` utility library:
+
+```typescript
+import { 
+  generateSecureUUID, 
+  generateSecurePassword, 
+  generateSecureSessionId,
+  generateSecureRandomString,
+  generateSecureToken,
+  generateSecureRandomInt
+} from '@/lib/secure-random';
+
+// Generate secure UUID for ZATCA compliance, user IDs, etc.
+const uuid = generateSecureUUID();
+
+// Generate secure temporary password
+const tempPassword = generateSecurePassword(16);
+
+// Generate secure session ID
+const sessionId = generateSecureSessionId();
+
+// Generate secure random string
+const randomString = generateSecureRandomString(32);
+
+// Generate secure token
+const token = generateSecureToken(32);
+
+// Generate secure random integer
+const randomInt = generateSecureRandomInt(0, 100);
+```
+
+**❌ DON'T:**
+```typescript
+// Insecure - predictable and not cryptographically secure
+const uuid = 'xxxx-xxxx'.replace(/x/g, () => (Math.random() * 16 | 0).toString(16));
+const password = 'temp_' + Math.random().toString(36).slice(-8);
+```
+
+#### 2. Proper String Sanitization
+
+**Problem:** Incomplete HTML sanitization can lead to XSS attacks.
+
+**Solution:** Use DOMPurify for all HTML sanitization:
+
+```typescript
+import { sanitizeString } from '@/lib/sanitize';
+
+// Sanitize user input (strips HTML)
+const clean = sanitizeString(userInput, { allowHtml: false });
+
+// Sanitize with allowed HTML tags
+const cleanHtml = sanitizeString(userInput, {
+  allowHtml: true,
+  allowedTags: ['b', 'i', 'em', 'strong', 'a', 'p'],
+  allowedAttributes: { a: ['href', 'title'] }
+});
+```
+
+**❌ DON'T:**
+```typescript
+// Insecure - can be bypassed
+const clean = input.replace(/<[^>]*>/g, '');
+```
+
+#### 3. Proper Regular Expression Escaping
+
+**Problem:** Unescaped special characters in regex patterns can cause injection vulnerabilities.
+
+**Solution:** Properly escape special regex characters:
+
+```typescript
+// Escape special regex characters except wildcards
+const escapedKey = key.replace(/[.+?^${}()|[\]\\]/g, '\\$&').replace(/\*/g, ".*");
+const regExp = new RegExp(`^${escapedKey}$`);
+```
+
+**❌ DON'T:**
+```typescript
+// Insecure - special characters not escaped
+const regExp = new RegExp(key.replace("*", ".*"));
+```
+
+#### 4. No Sensitive Data in Logs
+
+**Problem:** Logging passwords, API keys, or tokens can expose them.
+
+**Solution:** Redact sensitive information:
+
+```typescript
+// ✅ Good - redact passwords
+console.log(`User: ${user.email} / [REDACTED]`);
+
+// ✅ Good - redact tokens
+console.log(`Token: ${token.substring(0, 8)}...`);
+```
+
+**❌ DON'T:**
+```typescript
+// Bad - exposes sensitive data
+console.log(`Password: ${password}`);
+console.log(`API Key: ${apiKey}`);
+```
+
+#### 5. GitHub Actions Security
+
+All GitHub Actions workflows now include explicit permissions following the principle of least privilege:
+
+```yaml
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read      # Only read access to repository
+      checks: write       # Write access to checks (for test results)
+    steps:
+      # ...
+```
+
+### Security Resources
+
+- **Secure Random Library:** `/src/lib/secure-random.ts`
+- **Sanitization Library:** `/src/lib/sanitize.ts`
+- **Secrets Documentation:** `SECRETS_REMOVED.md`
+
+### Security Testing
+
+Before committing code, ensure:
+1. No hardcoded secrets or credentials
+2. No `Math.random()` for security-sensitive operations
+3. All user input is properly sanitized
+4. No sensitive data in log statements
+5. All regex patterns properly escape special characters
+6. GitHub Actions have explicit permissions
+
+For more information, see `SECRETS_REMOVED.md`.

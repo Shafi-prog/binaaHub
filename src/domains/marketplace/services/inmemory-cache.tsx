@@ -79,8 +79,10 @@ class InMemoryCacheService implements ICacheService {
     let keys = [key]
 
     if (key.includes("*")) {
-      const regExp = new RegExp(key.replace("*", ".*"))
-      keys = Array.from(this.store.keys()).filter((k) => k.match(regExp))
+      // Escape special regex characters except * which we want to treat as wildcard
+      const escapedKey = key.replace(/[.+?^${}()|[\]\\]/g, '\\$&').replace(/\*/g, ".*")
+      const regExp = new RegExp(`^${escapedKey}$`)
+      keys = Array.from(this.store.keys()).filter((k) => regExp.test(k))
     }
 
     keys.forEach((key) => {

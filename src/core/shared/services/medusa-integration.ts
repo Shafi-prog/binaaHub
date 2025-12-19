@@ -1,6 +1,7 @@
 // Medusa Integration Service
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import * as ERP from '@/core/erp/services/products'
+import { generateSecurePassword } from '@/lib/secure-random';
 
 const supabase = createClientComponentClient();
 
@@ -364,7 +365,7 @@ export const syncUserWithMedusa = async (userData: { email: string; name: string
   try {
     return await medusaService.createCustomer({
       email: userData.email,
-      password: userData.password || 'temp_password_' + Math.random().toString(36).slice(-8),
+      password: userData.password || generateSecurePassword(16),
       first_name: userData.name.split(' ')[0] || userData.name,
       last_name: userData.name.split(' ').slice(1).join(' ') || '',
       phone: ''

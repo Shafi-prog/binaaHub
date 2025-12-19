@@ -147,7 +147,7 @@
     "lucide-react": "^0.511.0",
     "mongodb": "^6.17.0",
     "multer": "^2.0.2",
-    "next": "^15.3.4",
+    "next": "^15.5.9",
     "next-auth": "^4.24.11",
     "node-fetch": "^2.7.0",
     "on-headers": "^1.1.0",

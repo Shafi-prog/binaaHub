@@ -13,6 +13,9 @@ jobs:
   audit:
     name: NPM Security Audit
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
     
     steps:
       - name: Checkout code
@@ -45,6 +48,9 @@ jobs:
   secrets-detection:
     name: Detect Secrets in Code
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
     
     steps:
       - name: Checkout code
@@ -82,6 +88,8 @@ jobs:
   env-file-check:
     name: Ensure .env Files Not Committed
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     
     steps:
       - name: Checkout code
@@ -110,6 +118,9 @@ jobs:
     name: Dependency Review
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
+    permissions:
+      contents: read
+      pull-requests: write
     
     steps:
       - name: Checkout code
@@ -126,6 +137,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: [audit, secrets-detection, env-file-check]
     if: always()
+    permissions:
+      contents: read
     
     steps:
       - name: Generate Summary

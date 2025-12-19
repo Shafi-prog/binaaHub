@@ -67,31 +67,51 @@ export async function exportReportToPDF(summary: ReportSummary) {
 }
 
 export async function exportReportToExcel(summary: ReportSummary) {
-  // Try to use xlsx if available; otherwise, fallback to CSV
+  // Use exceljs for secure Excel file generation
   try {
-    const xlsx: any = await import('xlsx');
-    const wb = xlsx.utils.book_new();
-
-    const overview = [
-      { الحقل: 'الفترة', القيمة: summary.periodLabel },
-      { الحقل: 'العميل', القيمة: summary.customerName || '-' },
-      { الحقل: 'إجمالي المبيعات', القيمة: summary.totalSales },
-      { الحقل: 'عدد الطلبات', القيمة: summary.ordersCount },
-      { الحقل: 'عدد العملاء', القيمة: summary.customersCount },
+    const { Workbook } = await import('exceljs');
+    const workbook = new Workbook();
+    
+    // Overview sheet
+    const overviewSheet = workbook.addWorksheet('نظرة عامة');
+    overviewSheet.columns = [
+      { header: 'الحقل', key: 'field', width: 30 },
+      { header: 'القيمة', key: 'value', width: 30 }
     ];
-    const wsOverview = xlsx.utils.json_to_sheet(overview);
-    xlsx.utils.book_append_sheet(wb, wsOverview, 'نظرة عامة');
-
-    const topProducts = summary.topProducts.map(p => ({
-      المنتج: p.product_name,
-      الكمية: p.quantity,
-      المبيعات: p.sales,
-    }));
-    const wsTop = xlsx.utils.json_to_sheet(topProducts);
-    xlsx.utils.book_append_sheet(wb, wsTop, 'أفضل المنتجات');
-
-    const wbout = xlsx.write(wb, { bookType: 'xlsx', type: 'array' });
-    const blob = new Blob([wbout], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    
+    overviewSheet.addRows([
+      { field: 'الفترة', value: summary.periodLabel },
+      { field: 'العميل', value: summary.customerName || '-' },
+      { field: 'إجمالي المبيعات', value: summary.totalSales },
+      { field: 'عدد الطلبات', value: summary.ordersCount },
+      { field: 'عدد العملاء', value: summary.customersCount },
+    ]);
+    
+    // Style the header row
+    overviewSheet.getRow(1).font = { bold: true };
+    
+    // Top Products sheet
+    const topProductsSheet = workbook.addWorksheet('أفضل المنتجات');
+    topProductsSheet.columns = [
+      { header: 'المنتج', key: 'product', width: 40 },
+      { header: 'الكمية', key: 'quantity', width: 15 },
+      { header: 'المبيعات', key: 'sales', width: 20 }
+    ];
+    
+    topProductsSheet.addRows(
+      summary.topProducts.map(p => ({
+        product: p.product_name,
+        quantity: p.quantity,
+        sales: p.sales,
+      }))
+    );
+    
+    // Style the header row
+    topProductsSheet.getRow(1).font = { bold: true };
+    
+    // Write to buffer and save
+    const buffer = await workbook.xlsx.writeBuffer();
+    const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
     saveAs(blob, `binaahub-report-${Date.now()}.xlsx`);
   } catch (e) {
     // Fallback: generate CSV compatible with Excel

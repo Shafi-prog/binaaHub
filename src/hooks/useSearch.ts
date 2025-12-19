@@ -1,16 +1,19 @@
 import { useState, useEffect, useMemo } from 'react';
+import { safeDebounce } from '@/lib/security-utils';
 
 export function useDebounce<T>(value: T, delay: number): T {
   const [debouncedValue, setDebouncedValue] = useState<T>(value);
 
   useEffect(() => {
-    const handler = setTimeout(() => {
+    // Use secure debounce implementation
+    const debouncedUpdate = safeDebounce(() => {
       setDebouncedValue(value);
     }, delay);
-
-    return () => {
-      clearTimeout(handler);
-    };
+    
+    debouncedUpdate();
+    
+    // Cleanup is handled internally by safeDebounce
+    return () => {};
   }, [value, delay]);
 
   return debouncedValue;

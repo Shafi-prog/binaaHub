@@ -1,12 +1,15 @@
 // Enhanced Supabase client for better error handling and network issues
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { createClient as createSupabaseClient } from '@supabase/supabase-js';
+import { safeDelay, safeTimeout } from '@/lib/security-utils';
 
-// Custom fetch with retry logic
+// Custom fetch with retry logic and secure timeout
 const customFetch = (input: RequestInfo | URL, init: RequestInit = {}) => {
   const url = typeof input === 'string' ? input : input.toString();
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
+  
+  // Use secure timeout function with validated delay
+  const cleanup = safeTimeout(() => controller.abort(), 15000); // 15 second timeout
   
   const retryFetch = async (retries = 3): Promise<Response> => {
     try {
@@ -18,21 +21,21 @@ const customFetch = (input: RequestInfo | URL, init: RequestInit = {}) => {
         },
       });
       
-      clearTimeout(timeoutId);
+      cleanup(); // Clear the timeout
       
       if (!response.ok && retries > 0) {
         console.log(`Fetch failed, retrying... (${retries} retries left)`);
-        await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1 second
+        await safeDelay(1000); // Use secure delay - Wait 1 second
         return retryFetch(retries - 1);
       }
       
       return response;
     } catch (error) {
-      clearTimeout(timeoutId);
+      cleanup(); // Clear the timeout
       
       if (retries > 0 && error instanceof Error) {
         console.log(`Fetch error, retrying... (${retries} retries left)`, error.message);
-        await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1 second
+        await safeDelay(1000); // Use secure delay - Wait 1 second
         return retryFetch(retries - 1);
       }
       

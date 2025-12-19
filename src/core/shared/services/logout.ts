@@ -1,5 +1,6 @@
 // Comprehensive logout utility for clearing all authentication data
 import toast from 'react-hot-toast';
+import { safeTimeout } from '@/lib/security-utils';
 
 interface LogoutOptions {
   showToast?: boolean;
@@ -53,7 +54,7 @@ export async function performLogout(options: LogoutOptions = {}) {
     }
 
     // Redirect immediately to avoid any intermediate redirects
-    setTimeout(() => {
+    safeTimeout(() => {
       // Force redirect to main login page
       window.location.href = '/login';
     }, 500); // Reduced delay
@@ -72,7 +73,7 @@ export async function performLogout(options: LogoutOptions = {}) {
     clearAllCookies();
 
     // Still redirect to ensure user is logged out
-    setTimeout(() => {
+    safeTimeout(() => {
       // Force redirect to main login page
       window.location.href = '/login';
     }, 500); // Reduced delay
@@ -94,7 +95,7 @@ export function clearClientStorage() {
 }
 
 /**
- * Clear all cookies including authentication and session cookies
+ * Clear all cookies including authentication and session cookies with secure attributes
  */
 export function clearAllCookies() {
   try {
@@ -123,24 +124,36 @@ export function clearAllCookies() {
       '__Host-next-auth.csrf-token'
     ];
 
-    // Clear known cookies with specific paths and domains
+    // Clear known cookies with secure attributes for root path
     authCookies.forEach(cookieName => {
-      // Clear for root path
-      document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=;`;
+      // Clear for root path with all security attributes
+      const secureFlags = 'SameSite=Strict; Secure; HttpOnly';
+      document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; ${secureFlags}`;
       document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
       
-      // Clear for current domain
+      // Clear for current domain with security attributes
       if (window.location.hostname) {
+        document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${window.location.hostname}; ${secureFlags}`;
+        document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.${window.location.hostname}; ${secureFlags}`;
+        // Also clear without secure flags for legacy cookies
         document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${window.location.hostname};`;
         document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.${window.location.hostname};`;
       }
     });
 
-    // Clear all existing cookies (brute force approach)
-    document.cookie.split(";").forEach(function(c) { 
-      document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); 
-      document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/; domain=" + window.location.hostname); 
-      document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/; domain=." + window.location.hostname); 
+    // Clear all existing cookies (brute force approach) with security considerations
+    document.cookie.split(";").forEach(function(c) {
+      const cookieName = c.replace(/^ +/, "").replace(/=.*/, "");
+      if (!cookieName.includes('logout_timestamp')) {
+        document.cookie = cookieName + "=;expires=" + new Date().toUTCString() + ";path=/;SameSite=Strict;Secure";
+        document.cookie = cookieName + "=;expires=" + new Date().toUTCString() + ";path=/";
+        if (window.location.hostname) {
+          document.cookie = cookieName + "=;expires=" + new Date().toUTCString() + ";path=/;domain=" + window.location.hostname + ";SameSite=Strict;Secure";
+          document.cookie = cookieName + "=;expires=" + new Date().toUTCString() + ";path=/;domain=." + window.location.hostname + ";SameSite=Strict;Secure";
+          document.cookie = cookieName + "=;expires=" + new Date().toUTCString() + ";path=/;domain=" + window.location.hostname;
+          document.cookie = cookieName + "=;expires=" + new Date().toUTCString() + ";path=/;domain=." + window.location.hostname;
+        }
+      }
     });
 
   } catch (error) {

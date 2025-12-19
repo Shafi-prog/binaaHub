@@ -1,6 +1,7 @@
 // خدمة محسنة للتحقق من عمليات CRUD ومعالجة الأخطاء
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import type { Database } from '@/types/database';
+import { safeDelay, sanitizeObject, createSafeErrorMessage } from '@/lib/security-utils';
 
 export interface CRUDValidationResult {
   isValid: boolean;
@@ -39,9 +40,12 @@ export class EnhancedCRUDService {
     const opts = { ...this.defaultOptions, ...options };
     
     try {
+      // Sanitize input data to prevent prototype pollution
+      const sanitizedData = sanitizeObject(data as Record<string, any>);
+      
       // التحقق من البيانات قبل الإنشاء
       if (opts.validateBeforeOperation) {
-        const validation = await this.validateCreateData(data);
+        const validation = await this.validateCreateData(sanitizedData);
         if (!validation.isValid) {
           return validation;
         }
@@ -49,16 +53,16 @@ export class EnhancedCRUDService {
 
       // تسجيل العملية
       if (opts.enableLogging) {
-        this.logOperation('CREATE', this.tableName, data);
+        this.logOperation('CREATE', this.tableName, sanitizedData);
       }
 
       let result;
       if (opts.useTransaction) {
         result = await this.executeInTransaction(async () => {
-          return await this.performCreate(data);
+          return await this.performCreate(sanitizedData);
         });
       } else {
-        result = await this.performCreateWithRetry(data, opts.maxRetries || 3);
+        result = await this.performCreateWithRetry(sanitizedData, opts.maxRetries || 3);
       }
 
       return {
@@ -69,7 +73,7 @@ export class EnhancedCRUDService {
       };
 
     } catch (error) {
-      const errorMsg = error instanceof Error ? error.message : 'Unknown error';
+      const errorMsg = createSafeErrorMessage(error, 'خطأ في عملية الإنشاء');
       
       if (opts.enableLogging) {
         console.error(`CREATE operation failed for ${this.tableName}:`, error);
@@ -594,10 +598,10 @@ export class EnhancedCRUDService {
   }
 
   /**
-   * تأخير تنفيذ
+   * تأخير تنفيذ - uses secure delay function
    */
   private delay(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return safeDelay(ms);
   }
 
   /**

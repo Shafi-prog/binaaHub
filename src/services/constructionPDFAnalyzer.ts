@@ -1,6 +1,8 @@
 // AI Construction Materials Extraction Service
 // This service simulates AI-powered PDF analysis for construction material calculation
 
+import { safeDelay } from '@/lib/security-utils';
+
 export interface ExtractedProjectData {
   projectInfo: {
     name: string;
@@ -110,8 +112,8 @@ export class ConstructionPDFAnalyzer {
   
   // Simulate AI PDF text extraction and analysis
   static async extractProjectData(pdfFile: File): Promise<ExtractedProjectData> {
-    // Simulate processing time
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    // Simulate processing time with secure delay
+    await safeDelay(2000);
     
     // Mock extracted data - in real implementation, this would use OCR and AI
     return {

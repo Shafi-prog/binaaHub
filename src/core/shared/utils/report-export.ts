@@ -69,8 +69,8 @@ export async function exportReportToPDF(summary: ReportSummary) {
 export async function exportReportToExcel(summary: ReportSummary) {
   // Use exceljs for secure Excel file generation
   try {
-    const ExcelJS = await import('exceljs');
-    const workbook = new ExcelJS.Workbook();
+    const { Workbook } = await import('exceljs');
+    const workbook = new Workbook();
     
     // Overview sheet
     const overviewSheet = workbook.addWorksheet('نظرة عامة');

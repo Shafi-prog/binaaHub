@@ -366,9 +366,10 @@ export default function SettingsPage() {
                     <div className="flex items-center gap-2">
                       <Input
                         type={showApiKey ? "text" : "password"}
-                        value="sk_live_xxxxxxxxxxxxxxxxxxxxxxxxxx"
+                        value="••••••••••••••••••••••••••••"
                         readOnly
                         className="font-mono text-xs"
+                        placeholder="API Key stored securely"
                       />
                       <Button
                         size="sm"

@@ -66,7 +66,7 @@ async function resetDemoPasswords() {
   console.log('\nPassword reset complete!')
   console.log('Demo user credentials:')
   demoUsers.forEach(user => {
-    console.log(`- ${user.email} / ${user.password}`)
+    console.log(`- ${user.email} / [REDACTED]`)
   })
   console.log('\nTry the demo login buttons now.')
 }

@@ -44,11 +44,14 @@ export function sanitizeString(input: string, options: SanitizationOptions = {})
       ALLOWED_ATTR: Array.isArray(opts.allowedAttributes) ? opts.allowedAttributes : ['href', 'title', 'class', 'id']
     });
   } else {
-    // Strip all HTML tags
-    sanitized = sanitized.replace(/<[^>]*>/g, '');
+    // Use DOMPurify to strip all HTML tags properly (more secure than regex)
+    sanitized = DOMPurify.sanitize(sanitized, {
+      ALLOWED_TAGS: [],
+      ALLOWED_ATTR: []
+    });
   }
   
-  // Escape special characters
+  // Escape special characters for additional safety
   sanitized = validator.escape(sanitized);
   
   return sanitized;

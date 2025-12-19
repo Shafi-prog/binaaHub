@@ -1,4 +1,6 @@
 // Excel Import Service
+import { generateSecureSessionId } from '@/lib/secure-random';
+
 export interface ExcelImportSession {
   id: string;
   filename: string;
@@ -223,7 +225,7 @@ class ExcelImportService {
 
   // Utility methods
   private generateSessionId(): string {
-    return 'session_' + Date.now().toString(36) + Math.random().toString(36).substr(2);
+    return generateSecureSessionId();
   }
 
   private isValidEmail(email: string): boolean {
